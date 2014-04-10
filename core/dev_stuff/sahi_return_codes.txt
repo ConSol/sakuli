@@ -1,0 +1,14 @@
+Case-Stati: 
+
+  Nagios	Sahi
+1. fatal exception 
+	2		4	CRITICAL 	= fatal: ended with errors (-> msg) 
+2.1 case duration 
+	2		3	CRIT		= case exceeded runtime 
+	1		2	WARN		= case exceeded runtime 
+2.2 step duration 
+	1 		1	WARN        = step exceeded runtime
+							(only warning)
+	0		0	OK			= no error 
+
+

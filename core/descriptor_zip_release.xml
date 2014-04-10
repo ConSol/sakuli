@@ -1,0 +1,102 @@
+<!--
+  ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+  ~
+  ~ Copyright 2013 - 2014 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <id>${sakuli.zipped.release.prefix}${project.version}</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <!-- copy readme -->
+        <fileSet>
+            <directory>${parent.basedir}/</directory>
+            <includes>
+                <include>*.txt</include>
+                <include>*.md</include>
+            </includes>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+
+        <!-- create setup folder -->
+        <!-- copy database script to setup folder -->
+        <fileSet>
+            <directory>${basedir}/src/database_scripts</directory>
+            <includes>
+                <include>*.sql</include>
+            </includes>
+            <outputDirectory>/setup/database</outputDirectory>
+        </fileSet>
+        <!-- copy nagios files to setup folder -->
+        <fileSet>
+            <directory>${basedir}/src/nagios_scripts</directory>
+            <outputDirectory>/setup/nagios</outputDirectory>
+        </fileSet>
+
+        <!-- create "bin" folder -->
+        <fileSet>
+            <directory>${basedir}/src/bin_scripts</directory>
+            <outputDirectory>/bin</outputDirectory>
+        </fileSet>
+        <!-- copy compiled jar -->
+        <fileSet>
+            <directory>${basedir}/target</directory>
+            <includes>
+                <include>${project.jar.name}.jar</include>
+            </includes>
+            <outputDirectory>/bin</outputDirectory>
+        </fileSet>
+        <!-- copy Context-files to bin/lib/resources -->
+        <fileSet>
+            <directory>${basedir}/src/main/resources</directory>
+            <includes>
+                <include>*.xml</include>
+            </includes>
+            <outputDirectory>/bin/lib/resources</outputDirectory>
+        </fileSet>
+
+        <!-- create "_include" folder-->
+        <fileSet>
+            <directory>${basedir}/src/main/_include</directory>
+            <outputDirectory>/_include</outputDirectory>
+        </fileSet>
+
+        <!-- copy sample test suites -->
+        <fileSet>
+            <directory>${basedir}/_sakuli_test_suites</directory>
+            <outputDirectory>/_sakuli_test_suites</outputDirectory>
+            <excludes>
+                <!-- excludes the whole _logs folder -->
+                <exclude>*/_logs/**</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
+
+    <!-- add dependency jars to "bin/lib" -->
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>/bin/lib</outputDirectory>
+            <useProjectArtifact>true</useProjectArtifact>
+            <unpack>false</unpack>
+            <scope>runtime</scope>
+        </dependencySet>
+    </dependencySets>
+
+</assembly>

@@ -1,0 +1,19 @@
+#ONLY FOR DEVELOPEMENT:
+#
+#install the following libraries in your local maven repository
+
+mvn install:install-file -DgroupId=net.sf.sahi -DartifactId=ant-sahi -Dversion=4.3 -Dpackaging=jar -Dfile=dev_stuff/ext_libs/ant-sahi-4.3.jar
+
+mvn install:install-file -DgroupId=net.sf.sahi -DartifactId=sahi -Dversion=4.3 -Dpackaging=jar -Dfile=dev_stuff/ext_libs/sahi-4.3.jar
+
+mvn install:install-file -DgroupId=org.sikuli -DartifactId=SikuliX-API -Dversion=1.0.1 -Dpackaging=jar -Dfile=dev_stuff/ext_libs/SikuliX-API-1.0.1.jar
+
+# 10.2013:
+#SIKULI-X Libraries
+To get the Sikuli-X Libraries into the local repository checkout and install all Sikuli-X-Libraries
+like described under:
+https://github.com/RaiMan/SikuliX-API/wiki/Maven-support
+
+To Activate the AspectJ-Features for the development environment add to the goal "aspectj:compile"
+after "make" to your IDE run and debug feature. In IntelliJ go to the Maven-Plugin and make a rigth click to the
+goal an select "Execute After Make".

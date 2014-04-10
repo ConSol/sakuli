@@ -1,0 +1,134 @@
+/*
+ * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+ *
+ * Copyright 2013 - 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/* global _include,_alert, _navigateTo,_isFF,_isChrome, backEndInit, getFilePathOfTestcase, sakuliInit, writeTC2DB, _wait, navigate */
+_include("../../../../../../../_includes/sakuli.inc");
+
+var backEnd, sakuli;
+
+java.lang.System.out.println("TC init starts");
+
+backEnd = backEndInit();
+sakuli = sakuliInit();
+backEnd.logDebug("back end & sakuli init finished!! => try block starts");
+
+try {
+    backEnd.logDebug("set the warining and critical time for this case");
+    backEnd.initializeNagios(80, 100);
+
+    /**** Sahi Actions ***/
+    backEnd.logInfo("Sahi wait for 5 seconds!!!");
+    //_wait(5000);
+    _navigateTo("http://99.99.99.16/wr-applet", true);
+    backEnd.setNagiosStep("1. wait", 6);
+    //CREATE.ERROR();
+    /**** Sikuli Actions ***/
+    //capture the security message
+    if (_isFF()) {
+        var securityMsg1 = sakuli.wait("1_1_sec_warn.png", 5);
+        if (securityMsg1 !== null) {
+            sakuli.click("1_1_sec_warn_execute.png");
+        }
+    }
+    if (_isChrome()) {
+        backEnd.logInfo("check Chrome Messages");
+        //Check if a Chrome message appears
+        var chrome_msg = sakuli.wait("1_2_chrome_ausf.png", 5);
+        if (chrome_msg !== null) {
+            //If Chrome message appears, click it and check for security message
+            sakuli.click("1_2_chrome_ausf_ok.png");
+        }
+        var securityMsg1 = sakuli.wait("1_1_sec_warn.png", 10);
+        if (securityMsg1 !== null) {
+            sakuli.click("1_1_sec_warn_execute.png");
+        }
+    } else {
+        sakuli.throwException("No security message appeard");
+    }
+    backEnd.setNagiosStep("seccurity warning", 20);
+
+    var app = sakuli.wait("2_app.png", 30);
+    if (app !== null) {
+        //type in Ammount
+        sakuli.type("500", "2_betrag.png");
+
+        //select currency "Tschechische Krone"
+        var currencyLine = sakuli.find("3_fw_kronen.png");
+        var button = sakuli.findInRegion("3_fw_button.png", currencyLine);
+        sakuli.clickOnRegion(button);
+
+        //click OK-Button
+        sakuli.click("4_ok_button");
+
+//
+//        /**** Sahi Actions ***/
+//            //Wait 5 Seconds
+//        backEnd.logInfo("Sahi wait for 5 seconds!!!");
+//        _wait(5000);
+//        backEnd.setNagiosStep("Type in first amount", 20);
+//
+//        /**** Sikuli Actions ***/
+//        backEnd.logInfo("select currency 'Japanische Yen'");
+//        var currencyLine = sakuli.find("5_fw_yen.png");
+//        var button = sakuli.findInRegion("3_fw_button.png", currencyLine);
+//        sakuli.clickOnRegion(button);
+//
+//        //click OK-Button
+//        sakuli.click("4_ok_button");
+//        backEnd.setNagiosStep("Type in second amount", 7);
+//
+//        /**** Sahi Actions ***/
+//        backEnd.logInfo("Sahi wait for 5 seconds!!!");
+//        _wait(5000);
+//
+
+        /**** Sikuli Actions ***/
+            //click beenden
+        sakuli.click("6_beenden.png");
+        backEnd.setNagiosStep("applet executed", 0);
+    } else {
+        sakuli.throwException("No WR-Applet appeart!!!");
+    }
+//    /**** Sahi Actions ***/
+//    backEnd.logInfo("Sahi wait for 5 seconds!!!");
+//    _wait(5000);          // 10 seconds
+//    _alert("Alert for Sikuli click action");
+//
+//
+//    /**** Sikuli Actions ***/
+//        //click browser alert if necessary
+//    sakuli.click("7_browser_ok");
+//
+//    /**** Sahi Actions ***/
+//    _navigateTo("http://99.99.99.16/wr-applet/finished", true);
+//    backEnd.logInfo("Sahi wait for 5 seconds!!!");
+//    _wait(5000);
+//
+//    backEnd.setNagiosStep("click on alert finished", 0);
+
+
+//        sakuli.throwException("TEST EXCEPTION!!!");
+
+} catch (e) {
+    java.lang.System.out.println(e);
+    backEnd.handleException(e);
+} finally {
+    backEnd.logInfo("Testcase finished!");
+    sakuli.close();
+    backEnd.saveResultToNagios();
+}
