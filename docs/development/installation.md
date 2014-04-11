@@ -43,12 +43,11 @@ Development-Environment-Konfiguration
 -----------------
 * Follow the [local maven setup instructions](developer_maven_local_repo_instructions.md)
 * Execute 'mvn clean test'
-* Mark *.inc__ and *.sah as JavaScript-Files in your IDE
-* Include the license header to your IDE
-
+* Mark `*.inc` and `*.sah` as JavaScript-Files in your IDE* Include the license header to your IDE
     * For IntelliJ see [Help](http://www.jetbrains.com/idea/webhelp/generating-and-updating-copyright-notice.html)
     * License Header:
 
+        ```
         Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
 
         Copyright 2013 - $today.year the original author or authors.
@@ -64,6 +63,7 @@ Development-Environment-Konfiguration
         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
         See the License for the specific language governing permissions and
         limitations under the License.
+        ```
 
 ___Attention!___
 --------------
