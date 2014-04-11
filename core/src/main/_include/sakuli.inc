@@ -1,20 +1,20 @@
 /*
-* Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
-*
-* Copyright 2013 - 2014 the original author or authors.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+ *
+ * Copyright 2013 - 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 /**** Exclude this global variables from JSLint Warnings ****/
 /* global navigator, window, java, Packages,saveResult,step, $output, _set, _stopOnError, _logExceptionAsFailure,_resolvePath,_include, $sahi_userdata, $guid, $capture, initialize */
@@ -34,7 +34,10 @@ _include("sakuli_Region.inc");
 
 /**
  * Set as default folder the current test case folde and calls
- * the {@link #TestCaseWithImagePathArray}.
+ * @constructor TestCase
+ * @param warningTime   threshold in seconds
+ * @param criticalTime  threshold in seconds
+ * the {@link TestCaseWithImagePathArray}.
  */
 function TestCase(warningTime, criticalTime) {
     var defaultImagePath = _resolvePath();
@@ -46,14 +49,14 @@ function TestCase(warningTime, criticalTime) {
 }
 
 /**
- * see {@link #TestCaseWithImagePathArray}.
+ * see {@link TestCaseWithImagePathArray}.
  */
 function TestCaseWithImagePath(warningTime, criticalTime, picPath) {
     return new TestCaseWithImagePathArray(warningTime, criticalTime, new Array(picPath));
 }
 /**
- *  This function initialize the Sakuli object and set the warning and critical time for this test case;
- *
+ * This function initialize the Sakuli object and set the warning and critical time for this test case;
+ * @constructor TestCase
  * @param warningTime   threshold in seconds
  * @param criticalTime  threshold in seconds
  * @param picPathArray       an Array of Paths to the folder, which contains all the pictures for these test case.
@@ -61,7 +64,12 @@ function TestCaseWithImagePath(warningTime, criticalTime, picPath) {
  * @returns {*}  a initialized Sakuli object.
  */
 function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
-    var that = {}, env, init;
+    /** @namespace
+     @alias TestCase.TestCaseFunctions
+     */
+    var that = {};
+    var env, init;
+
     that.javaObject = null;
     that.tcID = null;
     env = null;
