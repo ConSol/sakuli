@@ -1,6 +1,8 @@
 Sakuli Api
 ==========
 
+This Page give you informations about the structur and an overview about some important Sakuli functions.
+Use the [Sakuli-API][1] get further informations about the features of Sakuli.
 
 
 Command structure<br />
@@ -57,3 +59,4 @@ __Adds a step over the java backend into the current test case and stores it to 
 >`warningTime`<br />
 >Time in sec. for a warning message<br />
 
+[1]: http://htmlpreview.github.io/?https://github.com/ConSol/sakuli/blob/master/docs/api/index.html
