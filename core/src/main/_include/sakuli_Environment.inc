@@ -40,7 +40,7 @@ function Environment(optResumeOnException) {
 
 function loadEnvironment(javaObject, resumeOnException) {
     /** @namespace
-     @alias Environment.functions
+     @alias Environment.EnvironmentFunctions
      */
     var that = {};
     var update;
@@ -136,7 +136,7 @@ function loadEnvironment(javaObject, resumeOnException) {
 
 
     /**
-     * makes a masked {@link #paste(String)} without any logging.
+     * makes a masked {@link paste(String)} without any logging.
      *
      * @param text a string, which might contain unicode characters
      * @return this {@link Environment} or NULL on errors.
@@ -146,7 +146,7 @@ function loadEnvironment(javaObject, resumeOnException) {
     };
 
     /**
-     * combines {@link #pasteMasked(String)} and {@link #decryptSecret(String)}.
+     * combines {@link pasteMasked(String)} and {@link decryptSecret(String)}.
      *
      * @param text encrypted secret
      * @return this {@link Environment} or NULL on errors.
@@ -195,7 +195,7 @@ function loadEnvironment(javaObject, resumeOnException) {
 
     /**
      * Decrypt and enters the given text one character/key after another using keyDown/keyUp.
-     * The entered text will be masked at the logging. For the deatails of the decryption see {@link #decryptSecret(String)}.
+     * The entered text will be masked at the logging. For the details of the decryption see {@link decryptSecret(String)}.
      * <p/>
      * About the usable Key constants see documentation of {@link Key}.
      * The function use a subset of a US-QWERTY PC keyboard layout to type the text.

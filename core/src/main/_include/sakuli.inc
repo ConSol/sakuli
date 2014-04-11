@@ -37,7 +37,7 @@ _include("sakuli_Region.inc");
  * @constructor TestCase
  * @param warningTime   threshold in seconds
  * @param criticalTime  threshold in seconds
- * the {@link #TestCaseWithImagePathArray}.
+ * the {@link TestCaseWithImagePathArray}.
  */
 function TestCase(warningTime, criticalTime) {
     var defaultImagePath = _resolvePath();
@@ -49,7 +49,7 @@ function TestCase(warningTime, criticalTime) {
 }
 
 /**
- * see {@link #TestCaseWithImagePathArray}.
+ * see {@link TestCaseWithImagePathArray}.
  */
 function TestCaseWithImagePath(warningTime, criticalTime, picPath) {
     return new TestCaseWithImagePathArray(warningTime, criticalTime, new Array(picPath));
@@ -65,7 +65,7 @@ function TestCaseWithImagePath(warningTime, criticalTime, picPath) {
  */
 function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
     /** @namespace
-     @alias Sakuli.functions
+     @alias TestCase.TestCaseFunctions
      */
     var that = {};
     var env, init;

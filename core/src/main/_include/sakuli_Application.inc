@@ -43,14 +43,14 @@ function Application(applicationNameOrPath, optResumeOnException) {
 function loadApplication(javaObject, resumeOnException) {
 
     /** @namespace
-     @alias Application.functions
+     @alias Application.ApplicationFunctions
      */
     var that = {};
     var update;
 
     /**
      * Opens the created application.
-     * For loadtime intensiv application change the default sleep time with {@link #setSleepTime(Integer)}.
+     * For loadtime intensiv application change the default sleep time with {@link setSleepTime(Integer)}.
      *
      * @return this {@link Application}.
      */
