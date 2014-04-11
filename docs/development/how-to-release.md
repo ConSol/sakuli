@@ -2,16 +2,12 @@ How to prepare a new release
 ============================
 
 ## Process a new release over maven
-- - -
+
 
 ### 1. simulate a new release
-* generate new branch (if needed)
-
-        ``mvn release:branch``
-
-* run maven with
-
-        ``mvn release:prepare -DdryRun=true``
+* generate new branch (if needed) `mvn release:branch`
+        
+* run maven with `mvn release:prepare -DdryRun=true`
 
 * __result:__ it just makes a simulation _without_ generating any new files or commits.
 
