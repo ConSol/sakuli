@@ -4,4 +4,4 @@
 - - -
 
 
-[Sakuli-API](https://github.com/ConSol/sakuli/blob/master/docs/api.md)
+[Sakuli API](https://github.com/ConSol/sakuli/blob/master/docs/api.md)
