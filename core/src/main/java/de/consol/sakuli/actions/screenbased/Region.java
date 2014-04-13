@@ -210,6 +210,22 @@ public class Region implements Action {
         return update(regionImpl.waitFor(seconds));
     }
 
+    /**
+     * Waits in a parallel procedure besides the regular test case execution until a target vanish.
+     * The target is specified by the optImageName und will be searched in the current region within a given time
+     * period in seconds.
+     *
+     * @param imageName name of the image pattern
+     * @param seconds   the maximum waiting time in seconds
+     * @return a {@link Region} object representing the region occupied by the found target,
+     * or null if the target can't be found in the given time.
+     */
+    //TODO RH wrapper for the javascript call
+    //TODO RH the callback should ideally work as "pure Java" and JavaScript function
+    @LogToResult(message = "start with wait on vanish for x secondes")
+    public Region waitOnVanish(String imageName, int seconds) {
+        return update(regionImpl.waitOnVanish(imageName, seconds));
+    }
 
     /********************
      * KEYBOARD FUNCTIONS

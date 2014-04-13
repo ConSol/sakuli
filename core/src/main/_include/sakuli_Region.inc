@@ -179,6 +179,22 @@ function loadRegion(javaObject, resumeOnException) {
     };
 
     /**
+     * Waits in a parallel procedure besides the regular test case execution until a target vanish.
+     * The target is specified by the optImageName und will be searched in the current region within a given time
+     * period in seconds.
+     *
+     * @param imageName name of the image pattern
+     * @param seconds   the maximum waiting time in seconds
+     * @return a {@link Region} object representing the region occupied by the found target,
+     * or null if the target can't be found in the given time.
+     */
+        //TODO RH JS part of function
+    that.waitOnVanish = function (imageName, seconds) {
+        return update(that.javaObject.waitOnVanish(imageName, seconds));
+    };
+
+
+    /**
      * pastes the text at the current position of the focus/carret <br/>using the
      * clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
      *
@@ -334,7 +350,7 @@ function loadRegion(javaObject, resumeOnException) {
      */
     that.grow = function (width, height) {
         if (undefined == height) {
-//prevents js wrong function matching
+            //prevents js wrong function matching
             return update(that.javaObject.grow(width));
         }
         return update(that.javaObject.grow(width, height));

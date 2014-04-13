@@ -283,7 +283,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         if (match != null) {
             return toRegion(match);
         }
-        loader.getExceptionHandler().handleException("Can't find \"" + imageObj + "' in" + baseRegion + "waitFor function in " + seconds + " sec.", baseRegion, resumeOnException);
+        loader.getExceptionHandler().handleException("Can't find \"" + imageObj + "' in" + baseRegion + " waitFor function in " + seconds + " sec.", baseRegion, resumeOnException);
         return null;
     }
 
@@ -305,6 +305,28 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
             return toRegion(match);
         }
         loader.getExceptionHandler().handleException("Can't find \"" + this + "' in " + this + " waitFor function in " + seconds + " sec.", this, resumeOnException);
+        return null;
+    }
+
+    /**
+     * {@link Region#waitOnVanish(String, int)}
+     */
+    public RegionImpl waitOnVanish(String imageName, int seconds) {
+        RegionImpl baseRegion = findBaseRegion();
+        boolean match;
+        ImageLibObject imageObj = loadImage(imageName);
+
+        try {                   //TODO RH waitVanish function from sikuliX library
+            match = baseRegion.waitVanish(imageObj.getPattern(), seconds);
+            if (match ) {
+                return toRegion(find(imageObj.getPattern()));
+                //TODO RH after return, start with callback
+            }
+        } catch (Exception e) {
+            loader.getExceptionHandler().handleException(e, resumeOnException);
+        }
+
+        loader.getExceptionHandler().handleException("Can't find \"" + imageObj + "' in" + baseRegion + " waitOnVanish function in " + seconds + " sec.", baseRegion, resumeOnException);
         return null;
     }
 
