@@ -18,10 +18,7 @@
 
 package de.consol.sakuli.dao.impl;
 
-import de.consol.sakuli.BaseTest;
-import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.exceptions.SakuliException;
-import de.consol.sakuli.loader.BeanLoader;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -36,27 +33,22 @@ import javax.sql.DataSource;
  *         Date: 22.07.13
  */
 
-public class DaoTest<D extends Dao> extends BaseTest {
+public class DaoTest {
 
-    protected D testling;
-
-    protected DataSource dataSource;
-
+    private Dao testling;
     @Mock
-    protected TestSuite testSuiteMock;
+    private DataSource dataSource;
 
     @BeforeMethod
     public void init() throws SakuliException {
         MockitoAnnotations.initMocks(this);
-        dataSource = BeanLoader.loadBean(DataSource.class);
 
     }
 
     @Test
     public void testCreateSqlSetStringForNamedParameter() throws Throwable {
-        Dao testling = new Dao(dataSource) {
+        testling = new Dao(dataSource) {
         };
-
         MapSqlParameterSource source = new MapSqlParameterSource().addValue("testling2", "value").addValue("testling", "value");
         Assert.assertEquals("SET testling2=:testling2, testling=:testling ", testling.createSqlSetStringForNamedParameter(source.getValues()));
         source.addValue("nullable", null);

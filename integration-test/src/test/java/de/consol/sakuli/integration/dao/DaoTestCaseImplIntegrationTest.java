@@ -16,9 +16,10 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.dao.impl;
+package de.consol.sakuli.integration.dao;
 
-import de.consol.sakuli.dao.DaoTestCase;
+import de.consol.sakuli.dao.impl.DaoTestCaseImpl;
+import de.consol.sakuli.exceptions.SakuliException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -26,7 +27,14 @@ import org.testng.annotations.Test;
  * @author tschneck
  *         Date: 25.07.13
  */
-public class DaoTestCaseImplTest extends DaoTest {
+public class DaoTestCaseImplIntegrationTest extends DaoIntegrationTest<DaoTestCaseImpl> {
+
+
+    @Override
+    protected DaoTestCaseImpl createTestling() throws SakuliException {
+        return new DaoTestCaseImpl(dataSource);
+    }
+
     @Test
     public void testSaveTestCaseResult() throws Exception {
         //TODO Implement
@@ -38,8 +46,6 @@ public class DaoTestCaseImplTest extends DaoTest {
 
     @Test
     public void testGetCountOfSahiCases() throws Throwable {
-        DaoTestCase testling = new DaoTestCaseImpl(dataSource) {
-        };
         Assert.assertNotNull(testling.getCountOfSahiCases());
 
     }
@@ -48,4 +54,5 @@ public class DaoTestCaseImplTest extends DaoTest {
     public void testGetScreenShotFromDB() throws Exception {
         // TODO implement test
     }
+
 }

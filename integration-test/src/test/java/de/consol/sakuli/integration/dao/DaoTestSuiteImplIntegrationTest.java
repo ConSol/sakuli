@@ -16,12 +16,12 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.dao.impl;
+package de.consol.sakuli.integration.dao;
 
+import de.consol.sakuli.dao.impl.DaoTestSuiteImpl;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.exceptions.SakuliException;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Date;
@@ -32,15 +32,13 @@ import static org.mockito.Mockito.when;
  * @author tschneck
  *         Date: 25.07.13
  */
-public class DaoTestSuiteImplTest extends DaoTest<DaoTestSuiteImpl> {
+public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestSuiteImpl> {
 
-    @BeforeMethod
     @Override
-    public void init() throws SakuliException {
-        super.init();
-        testling = new DaoTestSuiteImpl(dataSource);
-        testling.testSuite = testSuiteMock;
+    protected DaoTestSuiteImpl createTestling() throws SakuliException {
+        return new DaoTestSuiteImpl(dataSource);
     }
+
 
     @Test
     public void testGetTestSuitePrimaryKey() throws Exception {
