@@ -24,16 +24,75 @@
 
     <parent>
         <groupId>de.consol.sakuli</groupId>
-        <artifactId>sakuli</artifactId>
+        <artifactId>root</artifactId>
         <version>0.4.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>sakuli-integration-test</artifactId>
-    <version>${parent.version}</version>
-    <name>sakuli-integration-test</name>
+    <groupId>de.consol.sakuli.root</groupId>
+    <artifactId>integration-test</artifactId>
+    <version>${project.parent.version}</version>
+    <name>integration-test</name>
     <description>integration test modul for sakuli</description>
 
     <packaging>jar</packaging>
 
+    <properties>
+        <jdbc.database>sahi</jdbc.database>
+        <jdbc.user>sahi</jdbc.user>
+        <jdbc.pw>sahi</jdbc.pw>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.btmatthews.maven.plugins.inmemdb</groupId>
+                <artifactId>inmemdb-maven-plugin</artifactId>
+                <version>1.4.2</version>
+                <configuration>
+                    <monitorKey>inmemdb</monitorKey>
+                    <monitorPort>11527</monitorPort>
+                    <daemon>true</daemon>
+                    <type>h2</type>
+                    <database>${jdbc.database}</database>
+                    <username>${jdbc.user}</username>
+                    <password>${jdbc.pw}</password>
+                    <sources>
+                        <script>
+                            <sourceFile>
+                                ${project.parent.basedir}/core/src/database_scripts/create_and_drop_database.sql
+                            </sourceFile>
+                        </script>
+                        <!--<dataSet>-->
+                        <!--<sourceFile>src/test/resources/users.dbunit.xml</sourceFile>-->
+                        <!--</dataSet>-->
+                    </sources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>run</id>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>pre-integration-test</phase>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                        <phase>post-integration-test</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 </project>

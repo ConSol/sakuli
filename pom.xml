@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.consol.sakuli</groupId>
-    <artifactId>sakuli</artifactId>
+    <artifactId>root</artifactId>
     <version>0.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -45,6 +45,8 @@
         <downloadJavadocs>true</downloadJavadocs>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
+        <dependencies.spring.version>4.0.3.RELEASE</dependencies.spring.version>
+        <dependencies.aspectj.version>1.7.4</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
@@ -153,6 +155,112 @@
 
     <!-- general dependencies -->
     <dependencies>
+        <!-- Spring Libraries -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${dependencies.spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${dependencies.spring.version}</version>
+        </dependency>
+        <!-- Spring JDBC-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${dependencies.spring.version}</version>
+        </dependency>
+        <!--Aspect libaries -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${dependencies.spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${dependencies.aspectj.version}</version>
+        </dependency>
+        <!-- JavaConfig need this library -->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjtools</artifactId>
+            <version>${dependencies.aspectj.version}</version>
+        </dependency>
+
+
+        <!--MySQL Driver for DB Access -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.25</version>
+        </dependency>
+        <!-- H2 Driver for embedded DB -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.3.175</version>
+        </dependency>
+
+        <!-- log4j over maven central -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.6</version>
+        </dependency>
+
+        <!-- Command line tools -->
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.8</version>
+        </dependency>
+
+
+        <!-- Sahi Library (OpenSource Version)-->
+        <!-- local libaries, included with 'install_local_lib.sh' ... the are still not available over maven central -->
+        <dependency>
+            <groupId>net.sf.sahi</groupId>
+            <artifactId>sahi</artifactId>
+            <version>4.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.sahi</groupId>
+            <artifactId>ant-sahi</artifactId>
+            <version>4.3</version>
+        </dependency>
+
+        <!-- Sahi API Dependencies-->
+        <dependency>
+            <groupId>rhino</groupId>
+            <artifactId>js</artifactId>
+            <version>1.7R2</version>
+        </dependency>
+
+        <!-- SikuliX-Java Library (FULL LIBRARY) - is part of the  sikuli-setup.jar-->
+        <!-- well be needed for Functions like App() and so on...-->
+        <!-- local libaries, included with 'install_local_lib.sh' ... the are still not available over maven central -->
+        <dependency>
+            <groupId>org.sikuli</groupId>
+            <artifactId>SikuliX-API</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
+        <!-- Testing frameworks -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${dependencies.spring.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
