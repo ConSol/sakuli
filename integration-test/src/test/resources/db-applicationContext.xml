@@ -17,29 +17,33 @@
   ~ limitations under the License.
   -->
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd"
         >
 
     <import resource="property-placeholderContext.xml"/>
 
-    <!-- Definiert die DataSource -->
-    <!--<jdbc:embedded-database id="dataSource" type="H2">-->
-    <!--&lt;!&ndash;<jdbc:script location="file:${project.parent.basedir}/core/src/create_and_drop_database.sql"/>&ndash;&gt;-->
-    <!--&lt;!&ndash;<jdbc:script location="classpath:test-data.sql"/>&ndash;&gt;-->
-    <!--</jdbc:embedded-database>-->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${jdbc.driverClass}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.user}"/>
-        <property name="password" value="${jdbc.pw}"/>
-        <property name="connectionProperties">
-            <props>
-                <prop key="autoCommit">true</prop>
-            </props>
-        </property>
-    </bean>
+    <!-- Definiert die DataSource-->
+    <jdbc:embedded-database id="dataSource" type="DERBY">
+        <jdbc:script location="classpath*:create.sql"/>
+        <!--<jdbc:script location="classpath:test-data.sql"/>-->
+    </jdbc:embedded-database>
+
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+    <!--<property name="driverClassName" value="${jdbc.driverClass}"/>-->
+    <!--<property name="url" value="${jdbc.url}"/>-->
+    <!--<property name="username" value="${jdbc.user}"/>-->
+    <!--<property name="password" value="${jdbc.pw}"/>-->
+    <!--<property name="connectionProperties">-->
+    <!--<props>-->
+    <!--<prop key="autoCommit">true</prop>-->
+    <!--</props>-->
+    <!--</property>-->
+    <!--</bean>-->
     <bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler"/>
 
     <!-- Transactions Manager für Test -->

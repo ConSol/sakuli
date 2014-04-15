@@ -17,8 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -44,48 +44,48 @@
     </properties>
 
     <build>
-        <plugins>
-            <plugin>
-                <groupId>com.btmatthews.maven.plugins.inmemdb</groupId>
-                <artifactId>inmemdb-maven-plugin</artifactId>
-                <version>1.4.2</version>
-                <configuration>
-                    <monitorKey>inmemdb</monitorKey>
-                    <monitorPort>11527</monitorPort>
-                    <daemon>true</daemon>
-                    <type>h2</type>
-                    <database>${jdbc.database}</database>
-                    <username>${jdbc.user}</username>
-                    <password>${jdbc.pw}</password>
-                    <sources>
-                        <script>
-                            <sourceFile>
-                                ${project.parent.basedir}/core/src/database_scripts/create_and_drop_database.sql
-                            </sourceFile>
-                        </script>
-                        <!--<dataSet>-->
-                        <!--<sourceFile>src/test/resources/users.dbunit.xml</sourceFile>-->
-                        <!--</dataSet>-->
-                    </sources>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>run</id>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <phase>pre-integration-test</phase>
-                    </execution>
-                    <execution>
-                        <id>stop</id>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                        <phase>post-integration-test</phase>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+        <!--<plugins>-->
+        <!--<plugin>-->
+        <!--<groupId>com.btmatthews.maven.plugins.inmemdb</groupId>-->
+        <!--<artifactId>inmemdb-maven-plugin</artifactId>-->
+        <!--<version>1.4.2</version>-->
+        <!--<configuration>-->
+        <!--<monitorKey>inmemdb</monitorKey>-->
+        <!--<monitorPort>11527</monitorPort>-->
+        <!--<daemon>true</daemon>-->
+        <!--<type>derby</type>-->
+        <!--<database>${jdbc.database}</database>-->
+        <!--<username>${jdbc.user}</username>-->
+        <!--<password>${jdbc.pw}</password>-->
+        <!--<sources>-->
+        <!--<script>-->
+        <!--<sourceFile>-->
+        <!--${project.parent.basedir}/core/src/database_scripts/create.sql-->
+        <!--</sourceFile>-->
+        <!--</script>-->
+        <!--&lt;!&ndash;<dataSet>&ndash;&gt;-->
+        <!--&lt;!&ndash;<sourceFile>src/test/resources/users.dbunit.xml</sourceFile>&ndash;&gt;-->
+        <!--&lt;!&ndash;</dataSet>&ndash;&gt;-->
+        <!--</sources>-->
+        <!--</configuration>-->
+        <!--<executions>-->
+        <!--<execution>-->
+        <!--<id>run</id>-->
+        <!--<goals>-->
+        <!--<goal>run</goal>-->
+        <!--</goals>-->
+        <!--<phase>pre-integration-test</phase>-->
+        <!--</execution>-->
+        <!--<execution>-->
+        <!--<id>stop</id>-->
+        <!--<goals>-->
+        <!--<goal>stop</goal>-->
+        <!--</goals>-->
+        <!--<phase>post-integration-test</phase>-->
+        <!--</execution>-->
+        <!--</executions>-->
+        <!--</plugin>-->
+        <!--</plugins>-->
     </build>
 
     <dependencies>
