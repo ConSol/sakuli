@@ -23,10 +23,13 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 # Resources
 ## Use SaKuli: 
 [Installation (Windows 7)](https://github.com/ConSol/sakuli/blob/master/docs/installation-windows.md) - Installation on Windows 7
+
 [Installation (Ubuntu)](https://github.com/ConSol/sakuli/blob/master/docs/installation-ubuntu) - Installation on Ubuntu Desktop 14.04 LTS
+
 [SaKuli API](https://github.com/ConSol/sakuli/blob/master/docs/api.md) - an overview about the most important SaKuli functions. 
 
 ## Contribute to SaKuli: 
 [Installation instructions for developers](https://github.com/ConSol/sakuli/blob/master/docs/development/developer_maven_local_repo_instructions.md)
+
 [How to prepare a new release](https://github.com/ConSol/sakuli/blob/master/docs/development/how-to-release.md)
 
