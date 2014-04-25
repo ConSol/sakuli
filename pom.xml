@@ -282,8 +282,8 @@
 
   <repositories>
     <repository>
-      <!-- ConSol Labs repository holds Sahi and Sikulu dependencies -->
-      <id>labs-consol</id>
+        <!-- ConSol Labs repository holds Sahi and SikuliX dependencies -->
+        <id>labs-consol</id>
       <name>ConSol* Labs Repository</name>
       <url>http://labs.consol.de/maven/repository</url>
       <snapshots>
