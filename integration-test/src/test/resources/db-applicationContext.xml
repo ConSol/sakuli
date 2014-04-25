@@ -27,23 +27,24 @@
 
     <import resource="property-placeholderContext.xml"/>
 
-    <!-- Definiert die DataSource-->
-    <jdbc:embedded-database id="dataSource" type="DERBY">
-        <jdbc:script location="classpath*:create.sql"/>
-        <!--<jdbc:script location="classpath:test-data.sql"/>-->
-    </jdbc:embedded-database>
+    <!-- defines the init scripts -->
+    <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
+        <jdbc:script location="classpath*:create_derby_db.sql"/>
+    </jdbc:initialize-database>
 
-    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
-    <!--<property name="driverClassName" value="${jdbc.driverClass}"/>-->
-    <!--<property name="url" value="${jdbc.url}"/>-->
-    <!--<property name="username" value="${jdbc.user}"/>-->
-    <!--<property name="password" value="${jdbc.pw}"/>-->
-    <!--<property name="connectionProperties">-->
-    <!--<props>-->
-    <!--<prop key="autoCommit">true</prop>-->
-    <!--</props>-->
-    <!--</property>-->
-    <!--</bean>-->
+
+    <!-- Definiert die DataSource -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClass}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.pw}"/>
+        <property name="connectionProperties">
+            <props>
+                <prop key="autoCommit">true</prop>
+            </props>
+        </property>
+    </bean>
     <bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler"/>
 
     <!-- Transactions Manager für Test -->

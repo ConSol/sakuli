@@ -1,7 +1,12 @@
---DROP SCHEMA sahi RESTRICT;
+-- delete alt DB
+DROP TABLE sahi.sahi_steps;
+DROP TABLE sahi.sahi_cases;
+DROP TABLE sahi.sahi_suites;
+DROP TABLE sahi.sahi_jobs;
+DROP SCHEMA sahi RESTRICT;
+
+-- create new schema
 CREATE SCHEMA sahi;
-
-
 CREATE TABLE sahi.sahi_cases
 (
   id             INT                                 NOT NULL
@@ -20,7 +25,7 @@ CREATE TABLE sahi.sahi_cases
   lastpage       VARCHAR(255),
   screenshot     BLOB,
   msg            VARCHAR(2500),
-  time           TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id, sahi_suites_id)
 );
 CREATE INDEX fk_sahi_cases_sahi_suites ON sahi.sahi_cases (sahi_suites_id);
@@ -43,7 +48,7 @@ CREATE TABLE sahi.sahi_steps
   stop          VARCHAR(255)                        NOT NULL,
   warning       INT,
   duration      REAL                                NOT NULL,
-  time          TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+  time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id, sahi_cases_id)
 );
 CREATE INDEX fk_sahi_steps_sahi_cases1 ON sahi.sahi_steps (sahi_cases_id);
@@ -65,6 +70,6 @@ CREATE TABLE sahi.sahi_suites
   host        VARCHAR(255),
   screenshot  BLOB,
   msg         VARCHAR(2500),
-  time        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+  time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE UNIQUE INDEX guid_UNIQUE ON sahi.sahi_suites (guid);

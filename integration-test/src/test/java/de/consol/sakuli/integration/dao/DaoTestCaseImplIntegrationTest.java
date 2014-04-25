@@ -46,9 +46,15 @@ public class DaoTestCaseImplIntegrationTest extends DaoIntegrationTest<DaoTestCa
 
     @Test
     public void testGetCountOfSahiCases() throws Throwable {
-        Assert.assertNotNull(testling.getCountOfSahiCases());
+        int countOfSahiCases = testling.getCountOfSahiCases();
+        Assert.assertTrue(countOfSahiCases >= 0);
 
+        //save new testcase
+        initDeafultTestSuiteMock();
+        testling.saveTestCaseResult(createEmptyTestCase());
+        Assert.assertEquals(testling.getCountOfSahiCases(), countOfSahiCases + 1);
     }
+
 
     @Test
     public void testGetScreenShotFromDB() throws Exception {

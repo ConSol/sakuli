@@ -39,10 +39,17 @@ public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestS
         return new DaoTestSuiteImpl(dataSource);
     }
 
-
     @Test
     public void testGetTestSuitePrimaryKey() throws Exception {
+        //first
+        testling.setTestSuite(createEmptyTestSuite());
+        int key1 = testling.getTestSuitePrimaryKey();
+        Assert.assertTrue(key1 > 0);
 
+        //second init
+        testling.setTestSuite(createEmptyTestSuite());
+        int key2 = testling.getTestSuitePrimaryKey();
+        Assert.assertEquals(key2, key1 + 1);
     }
 
     @Test
