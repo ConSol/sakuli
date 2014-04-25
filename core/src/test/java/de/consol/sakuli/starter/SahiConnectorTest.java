@@ -36,6 +36,7 @@ import java.io.File;
 import java.net.ConnectException;
 import java.util.Date;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 
@@ -55,10 +56,6 @@ public class SahiConnectorTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    @Test
-    public void testReconnect() throws Exception {
-        //TODO impl
-    }
 
     @Test
     public void testStartSahiTestSuiteFAILURE() throws Throwable {
@@ -115,5 +112,21 @@ public class SahiConnectorTest {
             String result = testling.getIncludeFolderJsPath();
             Assert.assertEquals("D:\\\\sakuli\\\\src\\\\main\\\\_include\\\\sakuli.inc", result);
         }
+    }
+
+    @Test
+    public void testReconnectOK() throws Throwable {
+        testling.countConnections = 3;
+        testling.maxConnectTries = 3;
+        testling.reconnect(new Exception("Test"));
+        verify(testling).startSahiTestSuite();
+    }
+
+    @Test(expectedExceptions = InterruptedException.class)
+    public void testReconnectFAILURE() throws Throwable {
+        testling.countConnections = 4;
+        testling.maxConnectTries = 3;
+        testling.reconnect(new Exception("Test"));
+        verify(testling, never()).startSahiTestSuite();
     }
 }

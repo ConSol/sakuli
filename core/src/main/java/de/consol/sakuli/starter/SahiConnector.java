@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class SahiConnector {
     private final Logger logger = Logger.getLogger(this.getClass());
-    private int countConnections = 0;
+    protected int countConnections = 0;
     /**
      * autowired variables **
      */
@@ -52,7 +52,7 @@ public class SahiConnector {
      * ** Values from the the property file "sahi.properties" **
      */
     @Value("${sahiproxy.maxConnectTries}")
-    private int maxConnectTries;
+    protected int maxConnectTries;
     @Value("${sahiproxy.reconnectSeconds}")
     private int reconnectSeconds;
     @Value("${sahiproxy.configurationPath}")
@@ -150,7 +150,7 @@ public class SahiConnector {
      */
     protected void reconnect(Exception e) throws InterruptedException, SakuliException {
         logger.warn("Cannot connect to sahi proxy - start Proxy.main()");
-        if (countConnections < maxConnectTries) {
+        if (countConnections <= maxConnectTries) {
             logger.info(
                     "RECONNECT to sahi proxy in "
                             + reconnectSeconds
