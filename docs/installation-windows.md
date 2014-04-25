@@ -1,21 +1,28 @@
-How to: Sakuli
-=============
+# Installation guide for Sakuli under Windows 7
+You probably came from the page "Introduction" - if not, and if you are nor sure what Sakuli is, please read first [README](https://github.com/ConSol/sakuli/blob/master/README.md). 
 
-Introduction
-------------
-Sakuli is an Open Source Framework that contains features of Sikuli and Sahi.
-//TODO mehr schreiben, Open Source?
-
-
-Sakuli structure
------------------
-See (//TODO link api.md)
+## Prerequisites
+The following installation manual assumes that...
+* you have a fresh installed Windows 7 (no matter if Home/Professional/whatever) machine in front of you
+* this machine has access to the internet
+* is up to date
+* has already a user account "sakuli" with admin rights
 
 
-Step 0: Installation
---------------------
-See (//TODO link installation.md)
-Setup your environment (TODO mit Simon absprechen)
+## Preparations
+### Disable desktop background 
+Set the desktop background to a homogenous color. 
+
+### Change theme and title bar colors
+Windows 7 comes by default with an "aero" theme, which is quite awkward for Sakuli, because there are many transparency effects which cause window elements to change their appearance dependend on the elements below. For that, change the theme to "Windows Classic".
+![classic](https://raw.githubusercontent.com/ConSol/sakuli/master/docs/pics/w_classictheme.jpg)
+Furthermore, change the colors of active and inactive title bars to non gradient: 
+![titlebars](https://raw.githubusercontent.com/ConSol/sakuli/master/docs/pics/w_titlebar.jpg)
+
+
+
+
+
 
 Step 1: Run Sakuli example for your OS
 -------------------------------------

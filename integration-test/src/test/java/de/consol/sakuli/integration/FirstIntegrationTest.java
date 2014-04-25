@@ -31,7 +31,7 @@ public class FirstIntegrationTest {
     public void testTest() throws Exception {
 
         System.out.println("............................START");
-        Thread.sleep(5000);
+        Thread.sleep(500);
         System.out.println("............................STOP");
 
     }

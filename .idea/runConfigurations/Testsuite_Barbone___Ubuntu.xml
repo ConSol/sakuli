@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="UbuntuBB" type="Application" factoryName="Application">
+  <configuration default="false" name="Testsuite Barbone - Ubuntu" type="Application" factoryName="Application" singleton="true">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="de.consol.sakuli.starter.SakuliStarter" />
     <option name="VM_PARAMETERS" value="-Dlog4j.configuration=file:src/main/resources/log4j.properties" />

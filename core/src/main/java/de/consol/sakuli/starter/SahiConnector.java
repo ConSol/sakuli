@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class SahiConnector {
     private final Logger logger = Logger.getLogger(this.getClass());
-    private int countConnections = 0;
+    protected int countConnections = 0;
     /**
      * autowired variables **
      */
@@ -52,7 +52,7 @@ public class SahiConnector {
      * ** Values from the the property file "sahi.properties" **
      */
     @Value("${sahiproxy.maxConnectTries}")
-    private int maxConnectTries;
+    protected int maxConnectTries;
     @Value("${sahiproxy.reconnectSeconds}")
     private int reconnectSeconds;
     @Value("${sahiproxy.configurationPath}")
@@ -78,24 +78,16 @@ public class SahiConnector {
      * starts a specific sahi test suite in sakuli
      */
     public void startSahiTestSuite() throws SakuliProxyException {
-        //have to be allways one, to prevent errors in the sikuli screen capturing parts
-        String threads = "1";
-        //default start URL of the sahi proxy
-        String startUrl = "http://localhost:9999";
+
 
         //default sahi runner to play the sahi script
-        TestRunner runner = new TestRunner(
-                testSuite.getAbsolutePathOfTestSuiteFile(),  //path to the .suite file
-                testSuite.getBrowserName(),   //the browser name, for example "firefox"
-                startUrl,                     //the start url, for example "http://localhost:9999"
-                threads);                     //numer of parallel process in the sakuli application still 1
-
+        TestRunner runner = getTestRunner();
         //config reporter
         runner.addReport(new Report("html", logFolder));
         //add include folder property
         runner.setInitJS("var $includeFolder = \"" + getIncludeFolderJsPath() + "\";");
 
-        try {
+        try { //is there to handle exceptions in the catch block from this.reconnect()
             try {
                 countConnections++;
                 // Script-Runner starts
@@ -129,6 +121,18 @@ public class SahiConnector {
         }
     }
 
+    protected TestRunner getTestRunner() {
+        //have to be always one, to prevent errors in the sikuli screen capturing parts
+        String threads = "1";
+        //default start URL of the sahi proxy
+        String startUrl = "http://localhost:9999";
+        return new TestRunner(
+                testSuite.getAbsolutePathOfTestSuiteFile(),  //path to the .suite file
+                testSuite.getBrowserName(),   //the browser name, for example "firefox"
+                startUrl,                     //the start url, for example "http://localhost:9999"
+                threads);                     //numer of parallel process in the sakuli application still 1
+    }
+
     protected String getIncludeFolderJsPath() {
         String path = testSuite.getIncludeFolderPath() + File.separator + "sakuli.inc";
         if (path.contains("\\")) {
@@ -144,9 +148,9 @@ public class SahiConnector {
      * @param e the thrown ConnectException or IllegalMonitorStateException
      * @throws InterruptedException
      */
-    private void reconnect(Exception e) throws InterruptedException, SakuliException {
+    protected void reconnect(Exception e) throws InterruptedException, SakuliException {
         logger.warn("Cannot connect to sahi proxy - start Proxy.main()");
-        if (countConnections < maxConnectTries) {
+        if (countConnections <= maxConnectTries) {
             logger.info(
                     "RECONNECT to sahi proxy in "
                             + reconnectSeconds

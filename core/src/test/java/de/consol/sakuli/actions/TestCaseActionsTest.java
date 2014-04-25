@@ -179,7 +179,9 @@ public class TestCaseActionsTest extends BaseTest {
 
     @Test
     public void testHandleException() throws Exception {
-        // TODO add tests
+        String tcExcMessage = "test exception handler";
+        testling.handleException(tcExcMessage);
+        verify(exceptionHandlerMock, times(1)).handleException(eq(tcExcMessage), anyBoolean());
     }
 
 }

@@ -16,22 +16,20 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.integration;/**
- * @author tschneck
- * Date: 11.04.14
- */
+(function () {
+    var counter = 0;
+    var numbered;
+    var source = document.getElementsByClassName('prettyprint source');
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+    if (source && source[0]) {
+        source = source[0].getElementsByTagName('code')[0];
 
-public class ClickDialog extends Application {
+        numbered = source.innerHTML.split('\n');
+        numbered = numbered.map(function (item) {
+            counter++;
+            return '<span id="line' + counter + '" class="line"></span>' + item;
+        });
 
-    public static void main(String[] args) {
-        launch(args);
+        source.innerHTML = numbered.join('\n');
     }
-
-    @Override
-    public void start(Stage primaryStage) {
-
-    }
-}
+})();
