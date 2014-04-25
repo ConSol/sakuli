@@ -28,7 +28,7 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 
 [Installation (Ubuntu)](./docs/installation-ubuntu.md) - Installation on Ubuntu Desktop 14.04 LTS
 
-[Sakuli API](./docs/api.md) - an overview about the most important Sakuli functions. 
+[Sakuli API](./docs/sakuli-api.md) - an overview about the most important Sakuli functions. 
 
 ## Contribute to Sakuli: 
 [Installation instructions for developers](./docs/development/developer_maven_local_repo_instructions.md)
