@@ -14,7 +14,7 @@ The following installation manual assumes that...
 Set the desktop background to a homogenous color. 
 
 ### Change theme and title bar colors
-Windows 7 comes by default with an "aero" theme, which is quite awkward for SaKuli, because there are many transparency effects which cause window elements to change their appearance dependend on the elements below. For that, change the theme to "Windows Classic".
+Windows 7 comes by default with an "aero" theme, which is quite awkward for Sakuli, because there are many transparency effects which cause window elements to change their appearance dependend on the elements below. For that, change the theme to "Windows Classic".
 ![classic](https://raw.githubusercontent.com/ConSol/sakuli/master/docs/pics/w_classictheme.jpg)
 Furthermore, change the colors of active and inactive title bars to non gradient: 
 ![titlebars](https://raw.githubusercontent.com/ConSol/sakuli/master/docs/pics/w_titlebar.jpg)
