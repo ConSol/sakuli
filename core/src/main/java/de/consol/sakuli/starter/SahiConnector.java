@@ -87,7 +87,7 @@ public class SahiConnector {
         //add include folder property
         runner.setInitJS("var $includeFolder = \"" + getIncludeFolderJsPath() + "\";");
 
-        try { //TODO reconnect testen, da try{ try{
+        try { //is there to handle exceptions in the catch block from this.reconnect()
             try {
                 countConnections++;
                 // Script-Runner starts
