@@ -228,7 +228,8 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         );
 
         //handle each line of the .suite file
-        for (String line : testSuiteString.split(System.getProperty("line.separator"))) {
+        String regExLineSep = System.getProperty("line.separator") + "|\n";
+        for (String line : testSuiteString.split(regExLineSep)) {
             if (!line.startsWith("//") && !(line.isEmpty())) {
                 //get the start URL from suite
                 String startURL = line.substring(line.lastIndexOf(' ') + 1);
