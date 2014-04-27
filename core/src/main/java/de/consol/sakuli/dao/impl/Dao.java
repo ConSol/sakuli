@@ -70,4 +70,16 @@ public abstract class Dao extends NamedParameterJdbcDaoSupport {
 
         return sql.substring(0, sql.lastIndexOf(",")) + " ";
     }
+
+    public void setExceptionHandler(SakuliExceptionHandler exceptionHandler) {
+        this.exceptionHandler = exceptionHandler;
+    }
+
+    public void setTestSuite(TestSuite testSuite) {
+        this.testSuite = testSuite;
+    }
+
+    public void setLobHandler(LobHandler lobHandler) {
+        this.lobHandler = lobHandler;
+    }
 }

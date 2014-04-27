@@ -228,7 +228,8 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         );
 
         //handle each line of the .suite file
-        for (String line : testSuiteString.split(System.getProperty("line.separator"))) {
+        String regExLineSep = System.getProperty("line.separator") + "|\n";
+        for (String line : testSuiteString.split(regExLineSep)) {
             if (!line.startsWith("//") && !(line.isEmpty())) {
                 //get the start URL from suite
                 String startURL = line.substring(line.lastIndexOf(' ') + 1);
@@ -273,6 +274,10 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getAbsolutePathOfTestSuiteFile() {
@@ -333,7 +338,14 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
      * @return a unique identifier for each execution of the test suite
      */
     public String getGuid() {
-        return dbPrimaryKey + "_" + id + "__" + GUID_DATE_FORMATE.format(startDate);
+        return id + "__" + GUID_DATE_FORMATE.format(startDate);
+    }
+
+    public void addTestCase(String testCaseId, TestCase testCase) {
+        if (this.testCases == null) {
+            this.testCases = new HashMap<>();
+        }
+        this.testCases.put(testCaseId, testCase);
     }
 
     public TestCase getTestCase(String testCaseId) {
