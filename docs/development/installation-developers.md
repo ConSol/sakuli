@@ -41,6 +41,14 @@ Install Sahi
 
 
 
+* Build up you own run configuration, to run your sakuli test cases directly from your IDE.
+  * __classpath of module:__ `sakuli-core`
+  * __working directory:__ `$MODULE_DIR$`
+  * __main class:__ `de.consol.sakuli.starter.SakuliStarter`
+  * __program arguments:__ `-run <path to your sakuli test suites>/<test suite folder> <path to your _include folder> <path to your sahi folder>`e.g. for the provided Win7 example use `-run _sakuli_test_suites/example src/main/_include ../sahi`
+  * __VM options:__ `-Dlog4j.configuration=file:src/main/resources/log4j.properties`
+
+
 Development-Environment-Konfiguration
 -----------------
 * Follow the [local maven setup instructions](developer_maven_local_repo_instructions.md)
