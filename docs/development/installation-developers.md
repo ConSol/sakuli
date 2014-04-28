@@ -19,10 +19,12 @@ Import
 
 Database setup
 -----------------------
->__User:__ sahi
->__Password:__ sahi
->__Database:__ sahi
->__SQL-Script:__ create_and_drop_database.sql
+ >__User:__ sahi
+ >__Password:__ sahi
+ 
+ >__Database:__ sahi
+ 
+ >__SQL-Script:__ create_and_drop_database.sql
 
 Install Sahi
 ------------
