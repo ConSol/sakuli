@@ -45,7 +45,7 @@ Development-Environment-Konfiguration
 * Execute 'mvn clean verify' to ensure that all is setup correctly
 * Mark `*.inc` and `*.sah` as JavaScript-Files in your IDE
 * Include the license header to your IDE
-  * For IntelliJ see [Help](http://www.jetbrains.com/idea/webhelp/generating-and-updating-copyright-notice.html)
+  * For IntelliJ see [Help](http://www.jetbrains.com/idea/webhelp/generating-and-updating-copyright-notice.html) or our predefined copyright configuration under [intellij/copyright](intellij/copyright).
   * License Header:
     ```
     Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
@@ -64,7 +64,7 @@ Development-Environment-Konfiguration
     See the License for the specific language governing permissions and
     limitations under the License.
     ```
-* Build up you own run configuration, to run your sakuli test cases directly from your IDE.
+* Build up you own run configuration, to run your sakuli test cases directly from your IDE. For Intellij see our predefined run configurations under [intellij/run-configs](intellij/run-configs)
   * __classpath of module:__ `sakuli-core`
   * __working directory:__ `$MODULE_DIR$`
   * __main class:__ `de.consol.sakuli.starter.SakuliStarter`
