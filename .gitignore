@@ -1,0 +1,7 @@
+target
+core/target
+integration-test/target
+sahi
+.idea
+*.iml
+*.log

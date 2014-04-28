@@ -1,4 +1,7 @@
-# !!! ONLY FOR DEVELOPEMENT:
+# !!! DEPRECATED - NO LONGER NEED:
+since the artifacts are provided by our ConSol-Labs nexus repository.
+
+- - -
 
 ### install the following libraries in your local maven repository
 * Sahi
