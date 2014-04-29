@@ -18,6 +18,7 @@
 
 package de.consol.sakuli.integration;
 
+import de.consol.sakuli.integration.demo.DemoApplication;
 import org.testng.annotations.Test;
 
 /**
@@ -29,10 +30,13 @@ public class FirstIntegrationTest {
 
     @Test
     public void testTest() throws Exception {
-
+        DemoApplication demoApplication = new DemoApplication();
         System.out.println("............................START");
-        Thread.sleep(500);
-        System.out.println("............................STOP");
+        Thread thread = new Thread(demoApplication);
+        thread.start();
 
+        Thread.sleep(10000);
+        System.out.println("............................STOP");
+        demoApplication.stop();
     }
 }
