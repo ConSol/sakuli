@@ -18,6 +18,7 @@
 
 package de.consol.sakuli.integration.ui;
 
+import de.consol.sakuli.actions.screenbased.Region;
 import de.consol.sakuli.integration.IntegrationTest;
 import de.consol.sakuli.integration.ui.app.UiTestApplication;
 import javafx.application.Platform;
@@ -38,29 +39,44 @@ import static org.testng.Assert.assertTrue;
 @Test(groups = IntegrationTest.GROUP)
 public class ClickActionIT extends AbstractUiTestApplicationIT {
 
+    @Override
+    protected String getTestCaseId() {
+        return "Click_Action_Test";
+    }
 
     @Test
     public void testClickAction() throws Exception {
-
+        final int expectedCount = 2;
         //set click event handler
-        UiTestApplication.addLoginControllEvent(LOGIN_BT, MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+        UiTestApplication.addLoginControllEvent(LOGIN_BT, MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                System.out.println("event!");
+                logger.info("mouse event triggered");
                 countEvent(LOGIN_BT);
-                Platform.exit();
+                if (getEventCount(LOGIN_BT) >= expectedCount) {
+                    Platform.exit();
+                }
             }
         });
         Future<Long> future = startUiTestApplication();
 
-        //TODO click with sakuli
+        /**
+         * SAKULI ACTIONS
+         */
+        env.sleep(2);
+
+        //opt 1
+        new Region("login_bt", false, getScreenActionLoader()).find().click();
+        Region region = new Region(false, getScreenActionLoader());
+        region.find("login_bt.png").click().highlight();
+        //opt 2
+        new Region("login_bt", false, getScreenActionLoader()).click();
+        //opt3
 
         //assert that the runtime of the application fits
         assertTrue(future.get() > 0);
         //assert the count of button clicks
-        assertEquals(getEventCount(LOGIN_BT), 1);
+        assertEquals(getEventCount(LOGIN_BT), expectedCount);
 
     }
-
-
 }

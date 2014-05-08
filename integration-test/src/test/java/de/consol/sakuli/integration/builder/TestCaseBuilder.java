@@ -16,22 +16,29 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.loader;
+package de.consol.sakuli.integration.builder;
 
-import de.consol.sakuli.actions.screenbased.ScreenshotActions;
-import de.consol.sakuli.actions.settings.ScreenBasedSettings;
-import org.sikuli.script.Screen;
+import de.consol.sakuli.datamodel.TestCase;
+import de.consol.sakuli.datamodel.state.TestCaseState;
+
+import java.util.Date;
 
 /**
- * @author Tobias Schneck
+ * @author tschneck
+ *         Date: 08.05.2014
  */
-public interface ScreenActionLoader extends BaseActionLoader {
+public class TestCaseBuilder {
 
-    Screen getScreen();
 
-    ScreenBasedSettings getSettings();
+    public static TestCase createEmptyTestCase() {
+        return createEmptyTestCase("Integration Test Case", "IT_TEST_CASE_" + System.nanoTime());
+    }
 
-    ScreenshotActions getScreenshotActions();
-
-    BaseActionLoader getBaseLoader();
+    public static TestCase createEmptyTestCase(String name, String id) {
+        TestCase newTestCase = new TestCase(name, id);
+        newTestCase.setState(TestCaseState.OK);
+        newTestCase.setStartDate(new Date());
+        newTestCase.setStopDate(new Date());
+        return newTestCase;
+    }
 }

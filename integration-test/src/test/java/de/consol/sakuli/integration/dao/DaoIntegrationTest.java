@@ -20,14 +20,12 @@ package de.consol.sakuli.integration.dao;
 
 import de.consol.sakuli.actions.screenbased.RegionImpl;
 import de.consol.sakuli.dao.impl.Dao;
-import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.LogResult;
-import de.consol.sakuli.datamodel.state.TestCaseState;
-import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.integration.IntegrationTest;
+import de.consol.sakuli.integration.builder.TestSuiteBuilder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -40,7 +38,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.sql.DataSource;
-import java.util.Date;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
@@ -89,23 +86,8 @@ public abstract class DaoIntegrationTest<D extends Dao> extends AbstractTestNGSp
         doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(Throwable.class), any(RegionImpl.class), anyBoolean());
     }
 
-    protected TestSuite createEmptyTestSuite() {
-        TestSuite newTestSuite = new TestSuite();
-        newTestSuite.setName("Integration Test Sample Test Suite");
-        newTestSuite.setId("IntegrationTest_" + System.nanoTime());
-        newTestSuite.setStartDate(new Date());
-        newTestSuite.setWarningTime(0);
-        newTestSuite.setCriticalTime(0);
-        newTestSuite.setState(TestSuiteState.RUNNING);
-        newTestSuite.setBrowserInfo("Firefox Test Browser");
-
-        TestCase testCase = createEmptyTestCase();
-        newTestSuite.addTestCase(testCase.getId(), testCase);
-        return newTestSuite;
-    }
-
     protected void initDeafultTestSuiteMock() {
-        TestSuite sample = createEmptyTestSuite();
+        TestSuite sample = TestSuiteBuilder.createEmptyTestSuite();
         when(testSuiteMock.getName()).thenReturn(sample.getName());
         when(testSuiteMock.getId()).thenReturn(sample.getId());
         when(testSuiteMock.getGuid()).thenReturn(sample.getGuid());
@@ -117,11 +99,4 @@ public abstract class DaoIntegrationTest<D extends Dao> extends AbstractTestNGSp
         when(testSuiteMock.getTestCases()).thenReturn(sample.getTestCases());
     }
 
-    protected TestCase createEmptyTestCase() {
-        TestCase newTestCase = new TestCase("Integration Test Case", "IT_TEST_CASE_" + System.nanoTime());
-        newTestCase.setState(TestCaseState.OK);
-        newTestCase.setStartDate(new Date());
-        newTestCase.setStopDate(new Date());
-        return newTestCase;
-    }
 }
