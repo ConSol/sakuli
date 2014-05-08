@@ -16,27 +16,21 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.integration;
-
-import de.consol.sakuli.integration.demo.DemoApplication;
-import org.testng.annotations.Test;
+package de.consol.sakuli.integration.ui.app;
 
 /**
- * @author tschneck
- *         Date: 09.04.14
+ * Represents all possible events and triggers in the {@link de.consol.sakuli.integration.ui.app.UiTestApplication}.
+ * Created by tschneck on 02.05.2014.
  */
-@Test(groups = IntegrationTest.GROUP)
-public class FirstIntegrationTest {
-
-    @Test
-    public void testTest() throws Exception {
-        DemoApplication demoApplication = new DemoApplication();
-        System.out.println("............................START");
-        Thread thread = new Thread(demoApplication);
-        thread.start();
-
-        Thread.sleep(10000);
-        System.out.println("............................STOP");
-        demoApplication.stop();
-    }
+public enum UiTestEvent {
+    LOGIN_BT,
+    PASSWORD_TF,
+    PROFILE_USER_TF,
+    PROFILE_PHONE_TF,
+    PROFILE_EMAIL_TF,
+    PROFILE_ADDRESS_TA,
+    PROFILE_SUBSCRIBED_CB,
+    PROFILE_LOG_OUT_HL,
+    PROFILE_SAVE_BT,
+    USER_TF
 }

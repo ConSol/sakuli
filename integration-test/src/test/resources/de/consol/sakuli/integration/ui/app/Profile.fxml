@@ -37,9 +37,9 @@
 <?import javafx.scene.text.Font?>
 <?import java.net.URL?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml" id="Profile" minWidth="500.0" prefHeight="500.0" prefWidth="500.0"
-            styleClass="background" fx:controller="de.consol.sakuli.integration.demo.ProfileController">
+            styleClass="background" fx:controller="de.consol.sakuli.integration.ui.app.ProfileController">
     <children>
-        <AnchorPane id="anchorPane1" prefHeight="371.0" prefWidth="500.0" styleClass="top-segment"
+    <AnchorPane id="anchorPane1" prefHeight="371.0" prefWidth="500.0" styleClass="top-segment"
                     AnchorPane.bottomAnchor="129.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                     AnchorPane.topAnchor="0.0">
             <children>

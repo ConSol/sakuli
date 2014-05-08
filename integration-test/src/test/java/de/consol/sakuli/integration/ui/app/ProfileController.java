@@ -29,23 +29,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package de.consol.sakuli.integration.demo;
+package de.consol.sakuli.integration.ui.app;
 
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
  * Profile Controller.
  */
-public class ProfileController extends AnchorPane implements Initializable {
+public class ProfileController extends AbstractUiTestPane {
 
     @FXML
     private TextField user;
@@ -65,10 +67,37 @@ public class ProfileController extends AnchorPane implements Initializable {
     @FXML
     private Label success;
 
-    private DemoApplication application;
 
-    public void setApp(DemoApplication application) {
-        this.application = application;
+    @Override
+    public void setApp(UiTestApplication application, Map<UiTestEvent, Map<EventType<? extends Event>, EventHandler<? super Event>>> controllerEvents) {
+        super.setApp(application);
+        if (controllerEvents != null) {
+            for (UiTestEvent event : controllerEvents.keySet()) {
+                switch (event) {
+                    case PROFILE_USER_TF:
+                        addEventHandlers(user, controllerEvents.get(event));
+                        break;
+                    case PROFILE_PHONE_TF:
+                        addEventHandlers(phone, controllerEvents.get(event));
+                        break;
+                    case PROFILE_EMAIL_TF:
+                        addEventHandlers(email, controllerEvents.get(event));
+                        break;
+                    case PROFILE_ADDRESS_TA:
+                        addEventHandlers(address, controllerEvents.get(event));
+                        break;
+                    case PROFILE_SUBSCRIBED_CB:
+                        addEventHandlers(subscribed, controllerEvents.get(event));
+                        break;
+                    case PROFILE_LOG_OUT_HL:
+                        addEventHandlers(subscribed, controllerEvents.get(event));
+                        break;
+                    case PROFILE_SAVE_BT:
+                        addEventHandlers(subscribed, controllerEvents.get(event));
+                        break;
+                }
+            }
+        }
         User loggedUser = application.getLoggedUser();
         user.setText(loggedUser.getId());
         email.setText(loggedUser.getEmail());

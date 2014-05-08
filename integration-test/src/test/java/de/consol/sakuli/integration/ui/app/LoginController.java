@@ -29,24 +29,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package de.consol.sakuli.integration.demo;
+package de.consol.sakuli.integration.ui.app;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
  * Login Controller.
  */
-public class LoginController extends AnchorPane implements Initializable {
+public class LoginController extends AbstractUiTestPane {
 
     @FXML
     TextField userId;
@@ -57,19 +59,10 @@ public class LoginController extends AnchorPane implements Initializable {
     @FXML
     Label errorMessage;
 
-    private DemoApplication application;
-
-
-    public void setApp(DemoApplication application) {
-        this.application = application;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         errorMessage.setText("");
-        userId.setPromptText("demo");
-        password.setPromptText("demo");
-
     }
 
 
@@ -84,4 +77,25 @@ public class LoginController extends AnchorPane implements Initializable {
             }
         }
     }
+
+    @Override
+    public void setApp(UiTestApplication application, Map<UiTestEvent, Map<EventType<? extends Event>, EventHandler<? super Event>>> controllerEvents) {
+        super.setApp(application);
+        if (controllerEvents != null) {
+            for (UiTestEvent event : controllerEvents.keySet()) {
+                switch (event) {
+                    case LOGIN_BT:
+                        addEventHandlers(login, controllerEvents.get(event));
+                        break;
+                    case PASSWORD_TF:
+                        addEventHandlers(password, controllerEvents.get(event));
+                        break;
+                    case USER_TF:
+                        addEventHandlers(userId, controllerEvents.get(event));
+                        break;
+                }
+            }
+        }
+    }
+
 }

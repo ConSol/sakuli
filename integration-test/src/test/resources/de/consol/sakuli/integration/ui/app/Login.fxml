@@ -25,7 +25,7 @@
 <?import java.net.URL?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml" id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="background"
-            fx:controller="de.consol.sakuli.integration.demo.LoginController">
+            fx:controller="de.consol.sakuli.integration.ui.app.LoginController">
     <children>
         <AnchorPane id="anchorPane2" prefHeight="300.0" prefWidth="500.0" styleClass="top-segment"
                     AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
@@ -54,7 +54,7 @@
                 </VBox>
             </children>
         </AnchorPane>
-        <Button id="button1" fx:id="login" defaultButton="true" onAction="#processLogin" prefHeight="70.0"
+        <Button id="loginButton" fx:id="login" defaultButton="true" onAction="#processLogin" prefHeight="70.0"
                 prefWidth="400.0" text="Login" AnchorPane.bottomAnchor="66.0" AnchorPane.leftAnchor="40.0"
                 AnchorPane.rightAnchor="40.0"/>
         <HBox id="hBox1" alignment="CENTER" prefHeight="25.0" prefWidth="418.0" AnchorPane.bottomAnchor="156.0"

@@ -29,13 +29,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package de.consol.sakuli.integration.demo;
+package de.consol.sakuli.integration.ui.app;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Authenticator {
-    private static final Map<String, String> USERS = new HashMap<String, String>();
+    private static Map<String, String> USERS = new HashMap<>();
 
     static {
         USERS.put("demo", "demo");
@@ -44,5 +44,9 @@ public class Authenticator {
     public static boolean validate(String user, String password) {
         String validUserPassword = USERS.get(user);
         return validUserPassword != null && validUserPassword.equals(password);
+    }
+
+    public static void addUser(String user, String password) {
+        USERS.put(user, password);
     }
 }

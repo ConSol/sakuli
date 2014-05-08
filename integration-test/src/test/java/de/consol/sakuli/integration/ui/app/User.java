@@ -29,14 +29,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package de.consol.sakuli.integration.demo;
+package de.consol.sakuli.integration.ui.app;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class User {
 
-    private static final Map<String, User> USERS = new HashMap<String, User>();
+    private static final Map<String, User> USERS = new HashMap<>();
     private String id;
     private String email = "";
     private String phone = "";
