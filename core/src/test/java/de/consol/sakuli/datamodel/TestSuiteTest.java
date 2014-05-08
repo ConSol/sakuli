@@ -32,12 +32,17 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.*;
 
 /**
  * @author tschneck
@@ -58,19 +63,19 @@ public class TestSuiteTest {
     @Test
     public void testInit() throws Throwable {
         when(tsDaoMock.getTestSuitePrimaryKey()).thenReturn(999);
-        String folderMock = "src/test/resources/de/consol/sakuli/datamodel/valid";
-        String screenshotFolderMock = "src/test/resources/de/consol/sakuli/datamodel/valid/_screnshot";
-        ReflectionTestUtils.setField(ts, "folder", folderMock);
-        ReflectionTestUtils.setField(ts, "screenShotFolderPath", screenshotFolderMock);
+        Path folderPath = setTestSuiteFolderAndScreenshotfolder("valid");
+        Assert.assertTrue(Files.exists(folderPath));
+        Assert.assertTrue(Files.isDirectory(folderPath));
+
         ts.init();
-        Assert.assertEquals(TestSuiteState.RUNNING, ts.getState());
+        assertEquals(TestSuiteState.RUNNING, ts.getState());
         Assert.assertNotNull(ts.getStartDate());
         Assert.assertTrue(ts.getAbsolutePathOfTestSuiteFile().endsWith("valid" + File.separator + "testsuite.suite"), "test absolut path");
-        Assert.assertEquals(999, ts.getDbPrimaryKey());
-        Assert.assertEquals(1, ts.getTestCases().size());
+        assertEquals(999, ts.getDbPrimaryKey());
+        assertEquals(1, ts.getTestCases().size());
         //tests if onyl the valid two testcases are in the suite, with there right names
         for (TestCase tc : ts.getTestCases().values()) {
-            Assert.assertEquals("http://localhost:8080", tc.getStartUrl());
+            assertEquals("http://localhost:8080", tc.getStartUrl());
             if (tc.getName().equals("validTestCase") || tc.getName().equals("nestedFolderTestCase")) {
                 Assert.assertTrue(true, "name of tc is valid?");
             } else {
@@ -80,42 +85,36 @@ public class TestSuiteTest {
 
     }
 
-    @Test
-    public void testInitException() throws Throwable {
-        String folderMock = "src/test/resources/de/consol/sakuli/datamodelXYZ";
-        String screenshotFolderMock = "src/test/resources/de/consol/sakuli/xds/_screnshot";
-        ReflectionTestUtils.setField(ts, "folder", folderMock);
-        ReflectionTestUtils.setField(ts, "screenShotFolderPath", screenshotFolderMock);
-        try {
-            ts.init();
-            Assert.assertTrue(false, "catch exception");
-        } catch (FileNotFoundException e) {
-            Assert.assertTrue(true, "catch exception");
-        }
+    private Path setTestSuiteFolderAndScreenshotfolder(String resourcePath) throws URISyntaxException {
+        Path folderPath = Paths.get(getClass().getResource(resourcePath).toURI());
 
+        ReflectionTestUtils.setField(ts, "folder", folderPath.toString());
+        ReflectionTestUtils.setField(ts, "screenShotFolderPath", folderPath.toString() + File.separator + "_screenshot");
+        return folderPath;
     }
 
-    @Test
-    public void testInitExceptionForTestCase() throws Throwable {
-        String folderMock = "src/test/resources/de/consol/sakuli/datamodel/unvalid";
-        String screenshotFolderMock = "src/test/resources/de/consol/sakuli/datamodel/unvalid/_screnshot";
-        ReflectionTestUtils.setField(ts, "folder", folderMock);
-        ReflectionTestUtils.setField(ts, "screenShotFolderPath", screenshotFolderMock);
-        try {
-            ts.init();
-            Assert.assertTrue(false, "wrong catch exception");
-        } catch (SakuliException e) {
-            Assert.assertTrue(e.getMessage().startsWith("test case path "));
-            Assert.assertTrue(e.getMessage().endsWith("doesn't exists - check your \"testsuite.suite\" file"));
-        }
+    @Test(expectedExceptions = FileNotFoundException.class)
+    public void testInitException() throws Throwable {
+        String folder = "datamodelXYZ" + File.separator + "testSuiteNotExist";
+        ReflectionTestUtils.setField(ts, "folder", folder);
+        ReflectionTestUtils.setField(ts, "screenShotFolderPath", folder + File.separator + "_screenshot");
+        ts.init();
+    }
 
+    @Test(expectedExceptions = SakuliException.class, expectedExceptionsMessageRegExp = "test case path \".*\" doesn't exists - check your \"testsuite.suite\" file")
+    public void testInitExceptionForTestCase() throws Throwable {
+        Path folderPath = setTestSuiteFolderAndScreenshotfolder("unvalid");
+        Assert.assertTrue(Files.exists(folderPath));
+        Assert.assertTrue(Files.isDirectory(folderPath));
+
+        ts.init();
     }
 
     @Test
     public void testRefreshState() throws Exception {
         TestSuite testling = new TestSuite();
         testling.refreshState();
-        Assert.assertEquals(TestSuiteState.ERRORS, testling.getState());
+        assertEquals(TestSuiteState.ERRORS, testling.getState());
 
         testling = new TestSuite();
         testling.setState(TestSuiteState.RUNNING);
@@ -127,23 +126,23 @@ public class TestSuiteTest {
         testCaseMap.put(tcTestling.getId(), tcTestling);
         ReflectionTestUtils.setField(testling, "testCases", testCaseMap);
         testling.refreshState();
-        Assert.assertEquals(TestSuiteState.OK, testling.getState());
+        assertEquals(TestSuiteState.OK, testling.getState());
 
         tcTestling.setState(TestCaseState.WARNING_IN_STEP);
         testling.refreshState();
-        Assert.assertEquals(TestSuiteState.WARNING_IN_STEP, testling.getState());
+        assertEquals(TestSuiteState.WARNING_IN_STEP, testling.getState());
 
         tcTestling.setState(TestCaseState.WARNING);
         testling.refreshState();
-        Assert.assertEquals(TestSuiteState.WARNING_IN_CASE, testling.getState());
+        assertEquals(TestSuiteState.WARNING_IN_CASE, testling.getState());
 
         tcTestling.setState(TestCaseState.CRITICAL);
         testling.refreshState();
-        Assert.assertEquals(TestSuiteState.CRITICAL_IN_CASE, testling.getState());
+        assertEquals(TestSuiteState.CRITICAL_IN_CASE, testling.getState());
 
         tcTestling.setState(TestCaseState.ERRORS);
         testling.refreshState();
-        Assert.assertEquals(TestSuiteState.ERRORS, testling.getState());
+        assertEquals(TestSuiteState.ERRORS, testling.getState());
 
         //prepare dates for warning and critical test
         testling.setState(TestSuiteState.RUNNING);
@@ -155,19 +154,28 @@ public class TestSuiteTest {
         testling.setCriticalTime(10);
         testling.setWarningTime(8);
         testling.refreshState();
-        Assert.assertEquals(TestSuiteState.OK, testling.getState());
+        assertEquals(TestSuiteState.OK, testling.getState());
 
         testling.setWarningTime(4);
         testling.refreshState();
-        Assert.assertEquals(TestSuiteState.WARNING_IN_SUITE, testling.getState());
+        assertEquals(TestSuiteState.WARNING_IN_SUITE, testling.getState());
 
         testling.setCriticalTime(4);
         testling.refreshState();
-        Assert.assertEquals(TestSuiteState.CRITICAL_IN_SUITE, testling.getState());
+        assertEquals(TestSuiteState.CRITICAL_IN_SUITE, testling.getState());
     }
 
     @Test
     public void testGetGuid() throws Exception {
+        ReflectionTestUtils.setField(ts, "id", "001");
+        ReflectionTestUtils.setField(ts, "startDate", new Date());
+        assertNotNull(ts.getGuid());
 
+        TestSuite ts2 = new TestSuite();
+        ReflectionTestUtils.setField(ts2, "id", "001");
+        ReflectionTestUtils.setField(ts2, "startDate", new Date());
+        assertNotNull(ts2.getGuid());
+
+        assertNotEquals(ts.getGuid(), ts2.getGuid());
     }
 }

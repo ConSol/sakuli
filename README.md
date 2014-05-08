@@ -59,7 +59,7 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 [Sakuli API (HTML)](http://htmlpreview.github.io/?https://github.com/ConSol/sakuli/blob/master/docs/api/index.html) - an overview about further Sakuli functions.  
 
 ## Contribute! 
-[Installation instructions for developers](./docs/development/developer_maven_local_repo_instructions.md)
+[Installation instructions for developers](./docs/development/installation-developers.md)
 
 [How to prepare a new release](./docs/development/how-to-release.md)
 
