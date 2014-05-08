@@ -1,8 +1,9 @@
 # Installation guide for Sakuli under Linux (Ubuntu 14.04 Desktop LTS)
-You probably came from the page "Introduction" - if not, and if you are nor sure what Sakuli is, please read first [README](https://github.com/ConSol/sakuli/blob/master/README.md). 
+You probably came from the page "Introduction" - if not, and if you are nor sure what Sakuli is, please read first [README](./README.md). 
 
 ## Prerequisites
 The following installation manual assumes that...
+
 * you have a fresh installed Ubuntu Linux 14.04 Desktop in front of you
 * this machine has access to the internet
 * is up to date
@@ -10,6 +11,7 @@ The following installation manual assumes that...
 
 
 ## Preparations
+Before you start with the implementation of Sakuli tests, the following settings have to be done on the operating system. This will help to improve the check quality. 
 ### Disable desktop background 
 Set the desktop background to a homogenous color. 
 
@@ -19,9 +21,12 @@ Change the theme by installing [gnome-session-fallback](https://apps.ubuntu.com/
  `sudo apt-get install gnome-session-fallback`
 
 After the installation, relogin and select the desktop envirionment __GNOME Flashback (Metacity)__:
-![fallback](https://raw.githubusercontent.com/ConSol/sakuli/master/docs/pics/u_theme_select.jpg)
-![flashback](https://raw.githubusercontent.com/ConSol/sakuli/master/docs/pics/u_flashback.jpg)
+![fallback](.././docs/pics/u_theme_select.jpg)
+
+![flashback](.././docs/pics/u_flashback.jpg)
+
 The Ubuntu menu bar should have changed now to the "classical" one: 
-![menu](https://raw.githubusercontent.com/ConSol/sakuli/master/docs/pics/u_menu.jpg)
+
+![menu](.././docs/pics/u_menu.jpg)
 
 
