@@ -3,17 +3,17 @@
         "allowUnknownTags": true
     },
     "source": {
-		"include": ["./"],
-		"includePattern": ".+\\.inc?$",
+        "include": ["./"],
+        "includePattern": ".+\\.inc?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
-	"markdown": {
-		"parser": "gfm",
+    "markdown": {
+        "parser": "gfm"
     },
     "plugins": [
-		"plugins/markdown",
-		"plugins/verboseOutput"
-	],
+        "plugins/markdown",
+        "plugins/verboseOutput"
+    ],
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false,

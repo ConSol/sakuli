@@ -168,6 +168,7 @@ public class TestSuiteTest {
 
     @Test
     public void testGetGuid() throws Exception {
-
+        // return dbPrimaryKey + "_" + id + "__" + GUID_DATE_FORMATE.format(startDate);
+        //TODO impl
     }
 }
