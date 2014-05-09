@@ -98,7 +98,7 @@ function loadApplication(javaObject, resumeOnException) {
     };
 
     /**
-     * creats and returns a {@link Region} object from the application.
+     * creates and returns a {@link Region} object from the application.
      *
      * @return this {@link Application}
      */
