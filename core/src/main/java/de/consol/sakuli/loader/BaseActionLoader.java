@@ -45,4 +45,12 @@ public interface BaseActionLoader {
 
     CipherUtil getCipherUtil();
 
+    /**
+     * init method to signalise the context that a new {@link TestCase} starts.
+     *
+     * @param testCaseID {@link TestCase#id}
+     * @param imagePaths paths to the located image patterns
+     */
+    void init(String testCaseID, String... imagePaths);
+
 }

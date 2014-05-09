@@ -7,7 +7,9 @@ Requirements
 * Git
 * Development environment (we advise IntelliJ IDEA)
 * Java JDK 1.7
-  <br>(unfortunately JDK 1.8 is currently not support in case that the aspectj-compiler-plugin won't work with it :-/ )</br>
+  * Please use the original Oracle JDK - OpenJDK unfortunately won't work for the JavaFX based integration test, see [Java FX installation](java_fx_installation). 
+  * Ensure that your `JAVA_HOME` system variable links to the correct jdk-version
+  * (unfortunately JDK 1.8 is currently not support in case that the aspectj-compiler-plugin won't work with it :-/ )
 
 
 Sakuli setup
@@ -19,10 +21,11 @@ Import
 
 Database setup
 -----------------------
->__User:__ sahi
->__Password:__ sahi
->__Database:__ sahi
->__SQL-Script:__ create_and_drop_database.sql
+Setup your local database to save your results of the test case executions. The database won't be needed for running `mvn install`.
+* __User:__ `sahi`
+* __Password:__ `sahi`
+* __Database:__ `sahi`
+* __SQL-Script:__ [core/src/database_scripts/create_and_drop_database.sql](/core/src/database_scripts/create_and_drop_database.sql)
 
 Install Sahi
 ------------
@@ -41,11 +44,10 @@ Install Sahi
 
 Development-Environment-Konfiguration
 -----------------
-* Follow the [local maven setup instructions](developer_maven_local_repo_instructions.md)
-* Execute 'mvn clean test'
+* Execute 'mvn clean verify' to ensure that all is setup correctly
 * Mark `*.inc` and `*.sah` as JavaScript-Files in your IDE
 * Include the license header to your IDE
-  * For IntelliJ see [Help](http://www.jetbrains.com/idea/webhelp/generating-and-updating-copyright-notice.html)
+  * For IntelliJ see [Help](http://www.jetbrains.com/idea/webhelp/generating-and-updating-copyright-notice.html) or our predefined copyright configuration under [intellij/copyright](intellij/copyright).
   * License Header:
     ```
     Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
@@ -64,6 +66,15 @@ Development-Environment-Konfiguration
     See the License for the specific language governing permissions and
     limitations under the License.
     ```
+* Build up you own run configuration, to run your sakuli test cases directly from your IDE. For Intellij see our predefined run configurations under [intellij/runConfigurations](intellij/runConfigurations)
+  * __classpath of module:__ `sakuli-core`
+  * __working directory:__ `$MODULE_DIR$`
+  * __main class:__ `de.consol.sakuli.starter.SakuliStarter`
+  * __program arguments:__ 
+    ```-run <path to your sakuli test suite folder> <path to your _include folder> <path to your sahi folder>```
+    e.g. for the provided Win7 example use `-run _sakuli_test_suites/example src/main/_include ../sahi`
+  * __VM options:__ `-Dlog4j.configuration=file:src/main/resources/log4j.properties`
+
 
 ___Attention!___
 --------------

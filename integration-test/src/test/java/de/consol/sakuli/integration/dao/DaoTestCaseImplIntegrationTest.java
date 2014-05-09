@@ -20,6 +20,7 @@ package de.consol.sakuli.integration.dao;
 
 import de.consol.sakuli.dao.impl.DaoTestCaseImpl;
 import de.consol.sakuli.exceptions.SakuliException;
+import de.consol.sakuli.integration.builder.TestCaseBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -51,7 +52,7 @@ public class DaoTestCaseImplIntegrationTest extends DaoIntegrationTest<DaoTestCa
 
         //save new testcase
         initDeafultTestSuiteMock();
-        testling.saveTestCaseResult(createEmptyTestCase());
+        testling.saveTestCaseResult(TestCaseBuilder.createEmptyTestCase());
         Assert.assertEquals(testling.getCountOfSahiCases(), countOfSahiCases + 1);
     }
 

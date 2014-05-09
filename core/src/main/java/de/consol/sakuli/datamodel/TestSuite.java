@@ -66,7 +66,8 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     public static final String SUITE_NAME_PROPERTY = "testsuite.name";
     public static final String WARNING_TIME_PROPERTY = "testsuite.warningTime";
     public static final String CRITICAL_TIME_PROPERTY = "testsuite.criticalTime";
-    public static final String IS_BY_RESUME_ON_EXCEPTION_LOGGING = "testsuite.resumeOnException.logException";
+    public static final String IS_BY_RESUME_ON_EXCEPTION_LOGGING_PROPERTY = "testsuite.resumeOnException.logException";
+    public static final String LOAD_TEST_CASES_AUTOMATIC_PROPERTY = "saklui.load.testcases.automatic";
 
 
     @Autowired
@@ -86,7 +87,7 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
      */
     @Value("${" + SUITE_ID_PROPERTY + "}")
     private String id;
-    @Value("${" + IS_BY_RESUME_ON_EXCEPTION_LOGGING + "}")
+    @Value("${" + IS_BY_RESUME_ON_EXCEPTION_LOGGING_PROPERTY + "}")
     private boolean isByResumOnExceptionLogging;
     @Value("${" + TAKE_SCREENSHOT_PROPERTY + "}")
     private boolean takeScreenshots;
@@ -101,6 +102,8 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     private int injected_warningTime;
     @Value("${" + CRITICAL_TIME_PROPERTY + "}")
     private int injected_criticalTime;
+    @Value("${" + LOAD_TEST_CASES_AUTOMATIC_PROPERTY + ":true}") //default = TRUE
+    private boolean loadTestCasesAutomatic = true;
     //additional browser infos from sahi proxy
     private String browserInfo;
     private String host;
@@ -219,34 +222,36 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
      */
     private HashMap<String, TestCase> loadTestCases() throws SakuliException, IOException {
         HashMap<String, TestCase> tcMap = new HashMap<>();
+        if (loadTestCasesAutomatic) {
+            String testSuiteString = Utils.readFileAsString(testSuiteFile.toFile());
+            logger.info(
+                    "\n--- TestSuite initialization: read test suite information of file \"" + testSuiteFile.toFile().getAbsolutePath() + "\" ----\n"
+                            + testSuiteString
+                            + "\n --- End of File \"" + testSuiteFile.toFile().getAbsolutePath() + "\" ---"
+            );
 
-        String testSuiteString = Utils.readFileAsString(testSuiteFile.toFile());
-        logger.info(
-                "\n--- TestSuite initialization: read test suite information of file \"" + testSuiteFile.toFile().getAbsolutePath() + "\" ----\n"
-                        + testSuiteString
-                        + "\n --- End of File \"" + testSuiteFile.toFile().getAbsolutePath() + "\" ---"
-        );
+            //handle each line of the .suite file
+            String regExLineSep = System.getProperty("line.separator") + "|\n";
+            for (String line : testSuiteString.split(regExLineSep)) {
+                if (!line.startsWith("//") && !(line.isEmpty())) {
+                    //get the start URL from suite
+                    String startURL = line.substring(line.lastIndexOf(' ') + 1);
 
-        //handle each line of the .suite file
-        for (String line : testSuiteString.split(System.getProperty("line.separator"))) {
-            if (!line.startsWith("//") && !(line.isEmpty())) {
-                //get the start URL from suite
-                String startURL = line.substring(line.lastIndexOf(' ') + 1);
+                    //extract tc file name name and generate new test case
+                    String tcFileName = line.substring(0, line.lastIndexOf(' '));  // get tc file name
+                    Path tcFile = Paths.get(testSuiteFolder.toFile().getCanonicalPath() + File.separator + tcFileName.replace("/", File.separator));
+                    if (Files.exists(tcFile)) {
+                        TestCase tc = new TestCase(
+                                TestCase.convertFolderPathToName(tcFileName),
+                                TestCase.convertTestCaseFileToID(tcFileName, id));
 
-                //extract tc file name name and generate new test case
-                String tcFileName = line.substring(0, line.lastIndexOf(' '));  // get tc file name
-                Path tcFile = Paths.get(testSuiteFolder.toFile().getCanonicalPath() + File.separator + tcFileName.replace("/", File.separator));
-                if (Files.exists(tcFile)) {
-                    TestCase tc = new TestCase(
-                            TestCase.convertFolderPathToName(tcFileName),
-                            TestCase.convertTestCaseFileToID(tcFileName, id));
-
-                    tc.setStartUrl(startURL);
-                    tc.setTcFile(tcFile);
-                    //set the Map with the test case id as key
-                    tcMap.put(tc.getId(), tc);
-                } else {
-                    throw new SakuliException("test case path \"" + tcFile.toFile().getAbsolutePath() + "\" doesn't exists - check your \"testsuite.suite\" file");
+                        tc.setStartUrl(startURL);
+                        tc.setTcFile(tcFile);
+                        //set the Map with the test case id as key
+                        tcMap.put(tc.getId(), tc);
+                    } else {
+                        throw new SakuliException("test case path \"" + tcFile.toFile().getAbsolutePath() + "\" doesn't exists - check your \"testsuite.suite\" file");
+                    }
                 }
             }
         }
@@ -263,9 +268,11 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         if (!Files.exists(testSuiteFolder)) {
             throw new FileNotFoundException("Can not find specified test suite base folder \"" + testSuiteFolder.toFile().getCanonicalFile() + "\"");
         }
-        testSuiteFile = Paths.get(testSuiteFolder.toFile().getCanonicalPath() + File.separator + SUITE_FILE_NAME);
-        if (!Files.exists(testSuiteFile)) {
-            throw new FileNotFoundException("Can not find specified " + SUITE_FILE_NAME + " file at \"" + testSuiteFolder.toFile().getCanonicalFile() + "\"");
+        if (loadTestCasesAutomatic) {
+            testSuiteFile = Paths.get(testSuiteFolder.toFile().getCanonicalPath() + File.separator + SUITE_FILE_NAME);
+            if (!Files.exists(testSuiteFile)) {
+                throw new FileNotFoundException("Can not find specified " + SUITE_FILE_NAME + " file at \"" + testSuiteFolder.toFile().getCanonicalFile() + "\"");
+            }
         }
         screenShotFolder = Paths.get(screenShotFolderPath).normalize();
 
@@ -280,7 +287,7 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     }
 
     public String getAbsolutePathOfTestSuiteFile() {
-        return testSuiteFile.toFile().getAbsolutePath();
+        return testSuiteFile.toAbsolutePath().toString();
     }
 
     /**
@@ -288,6 +295,10 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
      */
     public String getIncludeFolderPath() {
         return includeFolderPath;
+    }
+
+    public Path getTestSuiteFolder() {
+        return testSuiteFolder;
     }
 
     public String getBrowserName() {
