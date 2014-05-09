@@ -56,6 +56,7 @@ public class CipherUtil {
 
     /**
      * Determines a valid default network interfaces, useful in case of testing.
+     *
      * @return ethernet interface name
      * @throws Exception
      */

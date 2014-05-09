@@ -66,7 +66,7 @@ Development-Environment-Konfiguration
     See the License for the specific language governing permissions and
     limitations under the License.
     ```
-* Build up you own run configuration, to run your sakuli test cases directly from your IDE. For Intellij see our predefined run configurations under [intellij/run-configs](intellij/run-configs)
+* Build up you own run configuration, to run your sakuli test cases directly from your IDE. For Intellij see our predefined run configurations under [intellij/runConfigurations](intellij/runConfigurations)
   * __classpath of module:__ `sakuli-core`
   * __working directory:__ `$MODULE_DIR$`
   * __main class:__ `de.consol.sakuli.starter.SakuliStarter`

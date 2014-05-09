@@ -1,20 +1,20 @@
 /*
- * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
- *
- * Copyright 2013 - 2014 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+*
+* Copyright 2013 - 2014 the original author or authors.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 package de.consol.sakuli.actions.screenbased;
 
@@ -31,7 +31,6 @@ import org.sikuli.script.Pattern;
 import static org.springframework.util.StringUtils.isEmpty;
 
 /**
- *
  * @author Tobias Schneck
  */
 public class RegionImpl extends org.sikuli.script.Region implements Action {
@@ -86,13 +85,6 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
      * FIND FUNCTIONS
      **********************/
 
-    public static RegionImpl toRegion(org.sikuli.script.Region region, boolean resumeOnException, ScreenActionLoader loader) {
-        if (region != null) {
-            return new RegionImpl(region, resumeOnException, loader);
-        }
-        return null;
-    }
-
     /**
      * {@link Region#find(String)}.
      */
@@ -134,11 +126,6 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         return null;
     }
 
-
-    /**************************************
-     * EXISTS FUNCTIONS
-     *************************************/
-
     /**
      * {@link Region#findRegion(Region)}
      */
@@ -156,6 +143,11 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         loader.getExceptionHandler().handleException("Can't find \"" + region + "\" in this region!", baseRegion, resumeOnException);
         return null;
     }
+
+
+    /**************************************
+     * EXISTS FUNCTIONS
+     *************************************/
 
     /**
      * Check whether the give pattern is visible on the screen.
@@ -183,10 +175,6 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         return toRegion(baseRegion.exists(loadPattern(imageName)));
     }
 
-    /**************************************
-     * CLICKS
-     *************************************/
-
     /**
      * Check whether the give imageName is visible in the Region for x Seconds.
      *
@@ -203,17 +191,16 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         return toRegion(baseRegion.exists(loadPattern(imageName), seconds));
     }
 
-
-    /***************************
-     * DOUBLE CLICK
-     ***************************/
+    /**************************************
+     * CLICKS
+     *************************************/
 
     /**
      * {@link de.consol.sakuli.actions.screenbased.Region#click()}
      */
     public RegionImpl clickMe() {
         RegionImpl baseRegion = findBaseRegion();
-        int ret = 0;
+        int ret;
         try {
             ret = baseRegion.click(this.getCenter());
         } catch (FindFailed findFailed) {
@@ -229,7 +216,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
 
 
     /***************************
-     * RIGHT CLICKS
+     * DOUBLE CLICK
      ***************************/
 
     /**
@@ -237,7 +224,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
      */
     public RegionImpl doubleClickMe() {
         RegionImpl baseRegion = findBaseRegion();
-        int ret = 0;
+        int ret;
         try {
             ret = baseRegion.doubleClick(this.getCenter());
         } catch (FindFailed findFailed) {
@@ -253,15 +240,14 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
 
 
     /***************************
-     * WAIT
+     * RIGHT CLICKS
      ***************************/
-
     /**
      * {@link Region#rightClick()} ()}
      */
     public RegionImpl rightClickMe() {
         RegionImpl baseRegion = findBaseRegion();
-        int ret = 0;
+        int ret;
         try {
             ret = baseRegion.rightClick(this.getCenter());
         } catch (FindFailed findFailed) {
@@ -275,12 +261,16 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         return baseRegion;
     }
 
+
+    /***************************
+     * WAIT
+     ***************************/
     /**
      * {@link Region#waitForImage(String, int)} ()}
      */
     public RegionImpl waitForImage(String imageName, int seconds) {
         RegionImpl baseRegion = findBaseRegion();
-        Match match = null;
+        Match match;
         ImageLibObject imageObj = loadImage(imageName);
 
         try {
@@ -295,16 +285,11 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         return null;
     }
 
-
-    /********************
-     * KEYBOARD FUNCTIONS
-     *******************/
-
     /**
      * {@link Region#waitFor(int)}
      */
     public RegionImpl waitFor(int seconds) {
-        Match match = null;
+        Match match;
         try {
             if (imagePattern != null) {
                 match = this.wait(imagePattern.getPattern(), seconds);
@@ -322,9 +307,10 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     }
 
 
-    /*******************
-     * HELPER FUNCTIONS
-     ******************/
+    /********************
+     * KEYBOARD FUNCTIONS
+     *******************/
+
 
     /**
      * {@link Region#deleteChars(int)}
@@ -347,6 +333,12 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         return this;
     }
 
+
+    /*******************
+     * HELPER FUNCTIONS
+     ******************/
+
+
     /**
      * {@link Region#move(int, int)}.
      */
@@ -360,9 +352,6 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         return null;
     }
 
-    /************************
-     * INTERNAL FUNCTIONS
-     **********************/
 
     /**
      * {@link de.consol.sakuli.actions.screenbased.Region#extractText()}
@@ -378,6 +367,10 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         logger.info("Extracted text from region " + this + " is: " + erg);
         return erg;
     }
+
+    /************************
+     * INTERNAL FUNCTIONS
+     **********************/
 
     /**
      * loads the picture from the imageLib, if it is available. Else the Exceptionn will be forwarded to the ExceptionHandler.
@@ -406,6 +399,13 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     }
 
     private RegionImpl toRegion(org.sikuli.script.Region region) {
+        if (region != null) {
+            return new RegionImpl(region, resumeOnException, loader);
+        }
+        return null;
+    }
+
+    public static RegionImpl toRegion(org.sikuli.script.Region region, boolean resumeOnException, ScreenActionLoader loader) {
         if (region != null) {
             return new RegionImpl(region, resumeOnException, loader);
         }
