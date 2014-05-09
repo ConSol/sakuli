@@ -50,7 +50,7 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 
 [First steps (Windows 7)](./docs/firststeps-windows.md) - Hot to set up the Sakuli example check on Windows 7
 
-[First steos (Ubuntu)](./docs/firststeps-ubuntu.md) - How to set up the Sakuli example check on Ubuntu Desktop 14.04 LTS
+[First steps (Ubuntu)](./docs/firststeps-ubuntu.md) - How to set up the Sakuli example check on Ubuntu Desktop 14.04 LTS
 
 **OMD**
 
