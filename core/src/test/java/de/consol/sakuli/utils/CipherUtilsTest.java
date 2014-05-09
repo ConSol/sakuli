@@ -26,8 +26,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.crypto.IllegalBlockSizeException;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
 
 /**
  * @author tschneck
@@ -40,19 +38,8 @@ public class CipherUtilsTest {
     @BeforeMethod
     public void setUp() throws Throwable {
         MockitoAnnotations.initMocks(this);
-        testling.setInterfaceName(determinAValidNetworkInterface());
+        testling.setInterfaceName(CipherUtil.determineAValidDefaultNetworkInterface());
         testling.getNetworkInterfaceNames();
-    }
-
-    private String determinAValidNetworkInterface() throws Exception {
-        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-        while (interfaces.hasMoreElements()) {
-            NetworkInterface anInterface = interfaces.nextElement();
-            if (anInterface.getHardwareAddress() != null && anInterface.getHardwareAddress().length == 6) {
-                return anInterface.getName();
-            }
-        }
-        throw new Exception("No network interface with a MAC address is present, please check your os settings!");
     }
 
     @Test

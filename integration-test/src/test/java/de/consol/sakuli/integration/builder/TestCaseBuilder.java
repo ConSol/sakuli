@@ -16,23 +16,29 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.integration;
+package de.consol.sakuli.integration.builder;
 
-import org.testng.annotations.Test;
+import de.consol.sakuli.datamodel.TestCase;
+import de.consol.sakuli.datamodel.state.TestCaseState;
+
+import java.util.Date;
 
 /**
  * @author tschneck
- *         Date: 09.04.14
+ *         Date: 08.05.2014
  */
-@Test(groups = IntegrationTest.GROUP)
-public class FirstIntegrationTest {
+public class TestCaseBuilder {
 
-    @Test
-    public void testTest() throws Exception {
 
-        System.out.println("............................START");
-        Thread.sleep(500);
-        System.out.println("............................STOP");
+    public static TestCase createEmptyTestCase() {
+        return createEmptyTestCase("Integration Test Case", "IT_TEST_CASE_" + System.nanoTime());
+    }
 
+    public static TestCase createEmptyTestCase(String name, String id) {
+        TestCase newTestCase = new TestCase(name, id);
+        newTestCase.setState(TestCaseState.OK);
+        newTestCase.setStartDate(new Date());
+        newTestCase.setStopDate(new Date());
+        return newTestCase;
     }
 }
