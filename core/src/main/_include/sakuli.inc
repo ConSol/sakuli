@@ -50,7 +50,6 @@ function TestCase(warningTime, criticalTime) {
 
 /**
  * This function initialize the Sakuli object and set the warning and critical time for this test case;
- * @constructor TestCase
  * @param warningTime   threshold in seconds
  * @param criticalTime  threshold in seconds
  * @param picPathArray       a path to the folder, which contains the picture for these test case.
@@ -63,7 +62,6 @@ function TestCaseWithImagePath(warningTime, criticalTime, picPath) {
 
 /**
  * This function initialize the Sakuli object and set the warning and critical time for this test case;
- * @constructor TestCase
  * @param warningTime   threshold in seconds
  * @param criticalTime  threshold in seconds
  * @param picPathArray       an Array of Paths to the folder, which contains all the pictures for these test case.
