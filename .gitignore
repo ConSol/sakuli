@@ -1,6 +1,8 @@
 target
 core/target
 integration-test/target
+integration-test/temp-db-sahi
+**/_logs
 sahi
 .idea
 *.iml

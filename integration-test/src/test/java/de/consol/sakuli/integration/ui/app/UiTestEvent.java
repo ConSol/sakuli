@@ -16,22 +16,21 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.loader;
-
-import de.consol.sakuli.actions.screenbased.ScreenshotActions;
-import de.consol.sakuli.actions.settings.ScreenBasedSettings;
-import org.sikuli.script.Screen;
+package de.consol.sakuli.integration.ui.app;
 
 /**
- * @author Tobias Schneck
+ * Represents all possible events and triggers in the {@link de.consol.sakuli.integration.ui.app.UiTestApplication}.
+ * Created by tschneck on 02.05.2014.
  */
-public interface ScreenActionLoader extends BaseActionLoader {
-
-    Screen getScreen();
-
-    ScreenBasedSettings getSettings();
-
-    ScreenshotActions getScreenshotActions();
-
-    BaseActionLoader getBaseLoader();
+public enum UiTestEvent {
+    LOGIN_BT,
+    PASSWORD_TF,
+    PROFILE_USER_TF,
+    PROFILE_PHONE_TF,
+    PROFILE_EMAIL_TF,
+    PROFILE_ADDRESS_TA,
+    PROFILE_SUBSCRIBED_CB,
+    PROFILE_LOG_OUT_HL,
+    PROFILE_SAVE_BT,
+    USER_TF
 }

@@ -37,62 +37,50 @@
 
     <packaging>jar</packaging>
 
-    <properties>
-        <jdbc.database>sahi</jdbc.database>
-        <jdbc.user>sahi</jdbc.user>
-        <jdbc.pw>sahi</jdbc.pw>
-    </properties>
-
     <build>
-        <!--<plugins>-->
-        <!--<plugin>-->
-        <!--<groupId>com.btmatthews.maven.plugins.inmemdb</groupId>-->
-        <!--<artifactId>inmemdb-maven-plugin</artifactId>-->
-        <!--<version>1.4.2</version>-->
-        <!--<configuration>-->
-        <!--<monitorKey>inmemdb</monitorKey>-->
-        <!--<monitorPort>11527</monitorPort>-->
-        <!--<daemon>true</daemon>-->
-        <!--<type>derby</type>-->
-        <!--<database>${jdbc.database}</database>-->
-        <!--<username>${jdbc.user}</username>-->
-        <!--<password>${jdbc.pw}</password>-->
-        <!--<sources>-->
-        <!--<script>-->
-        <!--<sourceFile>-->
-        <!--${project.parent.basedir}/core/src/database_scripts/create.sql-->
-        <!--</sourceFile>-->
-        <!--</script>-->
-        <!--&lt;!&ndash;<dataSet>&ndash;&gt;-->
-        <!--&lt;!&ndash;<sourceFile>src/test/resources/users.dbunit.xml</sourceFile>&ndash;&gt;-->
-        <!--&lt;!&ndash;</dataSet>&ndash;&gt;-->
-        <!--</sources>-->
-        <!--</configuration>-->
-        <!--<executions>-->
-        <!--<execution>-->
-        <!--<id>run</id>-->
-        <!--<goals>-->
-        <!--<goal>run</goal>-->
-        <!--</goals>-->
-        <!--<phase>pre-integration-test</phase>-->
-        <!--</execution>-->
-        <!--<execution>-->
-        <!--<id>stop</id>-->
-        <!--<goals>-->
-        <!--<goal>stop</goal>-->
-        <!--</goals>-->
-        <!--<phase>post-integration-test</phase>-->
-        <!--</execution>-->
-        <!--</executions>-->
-        <!--</plugin>-->
-        <!--</plugins>-->
+        <plugins>
+
+            <!-- Config for the integration tests unit test are skipped -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.17</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <skip>false</skip>
+                            <includes>
+                                <include>**/*.class</include>
+                            </includes>
+                            <groups>integration</groups>
+                            <groups>${test.group.integration}</groups>
+                            <excludedGroups>${test.group.unit}</excludedGroups>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
+
 
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>core</artifactId>
             <version>${project.parent.version}</version>
+        </dependency>
+
+        <!-- JAVA FX - unfortunately only over this way possible yet -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>javafx</artifactId>
+            <version>2.2</version>
+            <systemPath>${java.home}/lib/jfxrt.jar</systemPath>
+            <scope>system</scope>
         </dependency>
     </dependencies>
 </project>
