@@ -7,7 +7,9 @@ Requirements
 * Git
 * Development environment (we advise IntelliJ IDEA)
 * Java JDK 1.7
-  <br>(unfortunately JDK 1.8 is currently not support in case that the aspectj-compiler-plugin won't work with it :-/ )</br>
+  * Please use the orginal Oracle JDK - OpenJDK unfortunately won't work for the JavaFX based integration test.
+  * Ensure that your `JAVA_HOME` system variable links to the correct jdk-version
+  * (unfortunately JDK 1.8 is currently not support in case that the aspectj-compiler-plugin won't work with it :-/ )
 
 
 Sakuli setup
