@@ -17,72 +17,97 @@
   ~ limitations under the License.
   -->
 
-<!--<project xmlns="http://maven.apache.org/POM/4.0.0"-->
-<!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
-<!--xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">-->
-<!--<modelVersion>4.0.0</modelVersion>-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-<!--<parent>-->
-<!--<groupId>de.consol.sakuli</groupId>-->
-<!--<artifactId>root</artifactId>-->
-<!--<version>0.4.0-SNAPSHOT</version>-->
-<!--<relativePath>../pom.xml</relativePath>-->
-<!--</parent>-->
+    <parent>
+        <groupId>de.consol.sakuli</groupId>
+        <artifactId>root</artifactId>
+        <version>0.4.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
-<!--<groupId>de.consol.sakuli.root</groupId>-->
-<!--<artifactId>docs</artifactId>-->
-<!--<version>${project.parent.version}</version>-->
-<!--<name>docs</name>-->
-<!--<description>create api docs with jsdoc</description>-->
+    <groupId>de.consol.sakuli.root</groupId>
+    <artifactId>docs</artifactId>
+    <version>${project.parent.version}</version>
+    <name>docs</name>
+    <description>create api docs with jsdoc</description>
 
-<!--<packaging>jar</packaging>-->
+    <packaging>jar</packaging>
 
-<!--<properties>-->
-<!--<project.jar.name>sakuli</project.jar.name>-->
-<!--<sakuli.zipped.release.prefix>zipped-release-v</sakuli.zipped.release.prefix>-->
-<!--</properties>-->
+    <properties>
+        <project.jar.name>sakuli</project.jar.name>
+        <sakuli.zipped.release.prefix>zipped-release-v</sakuli.zipped.release.prefix>
+    </properties>
 
-<!--<pluginRepositories>-->
-<!--<pluginRepository>-->
-<!--<id>jsdoctk2</id>-->
-<!--<url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>-->
-<!--</pluginRepository>-->
-<!--</pluginRepositories>-->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jsdoctk2</id>
+            <url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>
+        </pluginRepository>
+    </pluginRepositories>
 
-<!--<build>-->
-<!--<plugins>-->
-<!--<plugin>-->
-<!--<groupId>nl.windgazer</groupId>-->
-<!--<artifactId>jsdoctk-plugin</artifactId>-->
-<!--<version>2.3.2</version>-->
-<!--<executions>-->
-<!--<execution>-->
-<!--<id>jsdoc</id>-->
-<!--<phase>install</phase>-->
-<!--<goals>-->
-<!--<goal>jsdoc</goal>-->
-<!--</goals>-->
-<!--</execution>-->
-<!--</executions>-->
-<!--<configuration>-->
-<!--<template>jsdoc</template> &lt;!&ndash; Alternatives are not pre-installed for version 2.x&ndash;&gt;-->
-<!--<directory>${project.build.directory}/jsdoc</directory>-->
-<!--<recurse>1</recurse>-->
-<!--&lt;!&ndash;<ext>js</ext>&ndash;&gt;-->
-<!--&lt;!&ndash;<allfunctions>true</allfunctions>&ndash;&gt;-->
-<!--&lt;!&ndash;<Allfunctions>false</Allfunctions>&ndash;&gt;-->
-<!--<privateOption>false</privateOption>-->
-<!--&lt;!&ndash; If you're using the maven default setup this alternative is sometimes required-->
-<!--to make the plugin work: ${basedir}/src/main/webapp/ &ndash;&gt;-->
-<!--&lt;!&ndash;<srcDir>${basedir}/src/main/webapp</srcDir>&ndash;&gt;-->
-<!--&lt;!&ndash;TODO funktioniert noch nicht, jsdoc muss konfiguriert werden&ndash;&gt;-->
-<!--<srcDir>${project.parent.basedir}/core/src/main/_include/</srcDir>-->
-<!--<exclude>&lt;!&ndash; Since jsdoctk 2.3.2 &ndash;&gt;-->
-<!--<param>regularexpression</param>&lt;!&ndash;Multiple param entries allowed&ndash;&gt;-->
-<!--</exclude>-->
-<!--</configuration>-->
-<!--</plugin>-->
-<!--</plugins>-->
-<!--</build>-->
+    <build>
+        <plugins>
 
-<!--</project>-->
+
+            <!--<plugin>-->
+                <!--<groupId>org.codehaus.mojo</groupId>-->
+                <!--<artifactId>properties-maven-plugin</artifactId>-->
+                <!--<version>1.0.0</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<goals>-->
+                            <!--<goal>set-system-properties</goal>-->
+                        <!--</goals>-->
+                        <!--<configuration>-->
+                            <!--<properties>-->
+                                <!--<property>-->
+                                    <!--<name>my.property.name</name>-->
+                                    <!--<value>my.property.value</value>-->
+                                <!--</property>-->
+                            <!--</properties>-->
+                        <!--</configuration>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+
+            <plugin>
+                <groupId>nl.windgazer</groupId>
+                <artifactId>jsdoctk-plugin</artifactId>
+                <version>2.3.2</version>
+                <executions>
+                    <execution>
+                        <id>jsdoc</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>jsdoc</goal>
+                        </goals>
+                                           </execution>
+                </executions>
+                <configuration>
+                    <template>jsdoc</template>
+                    <!-- Alternatives are not pre-installed for version 2.x-->
+                    <directory>${project.basedir}/api_temp</directory>
+                    <recurse>1</recurse>
+                    <!--<ext>js</ext>-->
+                    <!--<allfunctions>true</allfunctions>-->
+                    <!--<Allfunctions>false</Allfunctions>-->
+                    <privateOption>false</privateOption>
+                    <!-- If you're using the maven default setup this alternative is sometimes required
+                    to make the plugin work: ${basedir}/src/main/webapp/ -->
+                    <!--<srcDir>${basedir}/src/main/webapp</srcDir>-->
+                    <!--TODO funktioniert noch nicht, jsdoc muss konfiguriert werden-->
+                    <srcDir>${project.parent.basedir}/core/src/main/_include/</srcDir>
+                    <exclude><!-- Since jsdoctk 2.3.2 -->
+                        <param>regularexpression</param>
+                        <!--Multiple param entries allowed-->
+                    </exclude>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
