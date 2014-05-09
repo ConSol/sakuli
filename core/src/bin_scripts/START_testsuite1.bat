@@ -6,7 +6,7 @@ PROJECT_FOLDER=%0
 echo project-folder: %PROJECT_FOLDER%
 
 ::define your test suite folder here:
-TEST_SUITE_FOLDER=%PROJECT_FOLDER%\_sakuli_test_suites\_test_xp_on_barbone
+TEST_SUITE_FOLDER=%PROJECT_FOLDER%\sakuli_test_suites\example
 echo suite-folder: %TEST_SUITE_FOLDER%
 
 ::internal folders for application logic

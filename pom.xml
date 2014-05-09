@@ -172,6 +172,7 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
             <version>${dependencies.aspectj.version}</version>
+            <scope>provided</scope>
         </dependency>
 
 
