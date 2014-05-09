@@ -1,6 +1,7 @@
 ![sakuli-logo](./docs/pics/sakuli-logo.png) 
 
-*A end-to-end testing tool for web sites and common UIs*
+*A end-to-end testing tool for web sites and common UIs with full Nagios integration*
+
 # Introduction
 ## What is Sakuli? 
 ### Short version
@@ -32,34 +33,50 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 # Resources
 ## Use Sakuli: 
 ### Installation 
+**OMD**
+
+[OMD Preparation](./docs/installation-omd.md) - How to configure [OMD](http://www.omdistro.org) (containing **Nagios/Icinga/Shinken**) to monitor Sakuli
+
 **Sakuli Client**
 
 [Installation (Windows 7)](./docs/installation-windows.md) - Hot to set up a Windows Sakuli Client on Windows 7
 
 [Installation (Ubuntu)](./docs/installation-ubuntu.md) - How to set up a Ubuntu Sakuli Client (Ubuntu Desktop 14.04 LTS)
 
-**OMD**
 
-[Monitoring Preparation](./docs/installation-omd.md) - How to configure [OMD](http://www.omdistro.org) (containing **Nagios/Icinga/Shinken**) to monitor Sakuli
-
-### Get started
+### Get started: Example
 
 **Sakuli Client**
 
-[First steps (Windows 7)](./docs/firststeps-windows.md) - Hot to set up the first Sakuli check on Windows 7
+[First steps (Windows 7)](./docs/firststeps-windows.md) - Hot to set up the Sakuli example check on Windows 7
 
-[First steos (Ubuntu)](./docs/firststeps-ubuntu.md) - How to set up the first Sakuli on Ubuntu Desktop 14.04 LTS
+[First steos (Ubuntu)](./docs/firststeps-ubuntu.md) - How to set up the Sakuli example check on Ubuntu Desktop 14.04 LTS
 
 **OMD**
 
-[Configuration (OMD)](./docs/installation-omd.md) - How to configure [OMD](http://www.omdistro.org) (containing **Nagios/Icinga/Shinken**) to monitor Sakuli
+[Configuration (OMD)](./docs/installation-omd.md) - How to configure [OMD](http://www.omdistro.org) (containing **Nagios/Icinga/Shinken**) to monitor the Sakuli example check
+
+### Manual 
+
+[Sakuli Manual](./docs/sakuli-manual.md) 
+
+
+### Troubleshooting
+
+[Nagios Troubleshooting](./docs/troubleshooting-nagios.md) 
+
+[Sakuli Client Troubleshooting](./docs/troubleshooting-sakuli-client.md) 
+
+
 ### Resources
+(Auto-generated documentation of all functions)
+
 [Sakuli API](./docs/sakuli-api.md) - an overview about the most important Sakuli functions. 
 
 [Sakuli API (HTML)](http://htmlpreview.github.io/?https://github.com/ConSol/sakuli/blob/master/docs/api/index.html) - an overview about further Sakuli functions.  
 
 ## Contribute! 
-[Installation instructions for developers](./docs/development/installation-developers.md)
+[Installation instructions for developers](./docs/development/developer_maven_local_repo_instructions.md)
 
 [How to prepare a new release](./docs/development/how-to-release.md)
 

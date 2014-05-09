@@ -9,9 +9,10 @@ The following installation manual assumes that...
 * is up to date
 * has already a user account "sakuli" with sudo rights
 
+We recommend to run Sakuli clients on virtual machines, as they are easy to manage. 
 
 ## Preparations
-Before you start with the implementation of Sakuli tests, the following settings have to be done on the operating system. This will help to improve the check quality. 
+Before you start with the implementation of Sakuli tests, the following settings have to be done on the operating system.
 ### Disable desktop background 
 Set the desktop background to a homogenous color. 
 
