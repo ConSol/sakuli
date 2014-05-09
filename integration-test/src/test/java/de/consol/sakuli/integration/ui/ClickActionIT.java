@@ -64,6 +64,7 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
          * SAKULI ACTIONS
          */
         env.sleep(2);
+        env.setSimilarity(0.4);
 
         //opt 1
         new Region("login_bt", false, getScreenActionLoader()).find().click();
