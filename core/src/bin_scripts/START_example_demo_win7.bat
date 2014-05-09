@@ -1,19 +1,10 @@
-::Starter script for the sakuli application
-::
-::
-::project folder: default def
-PROJECT_FOLDER=%0
-echo project-folder: %PROJECT_FOLDER%
+@echo off
 
-::define your test suite folder here:
-TEST_SUITE_FOLDER=%PROJECT_FOLDER%\sakuli_test_suites\example
-echo suite-folder: %TEST_SUITE_FOLDER%
+set TEST_SUITE_FOLDER=%SAKULI_HOME%\sakuli_test_suites\example
 
-::internal folders for application logic
-INCLUDE_FOLDER=%PROJECT_FOLDER%\_include
-LIB_FOLDER=%PROJECT_FOLDER%\bin\lib
-SAKULI_JARS=%LIB_FOLDER%\*;%LIB_FOLDER%\lib\resource;%INCLUDE_FOLDER%\log4j.properties
+set SAKULI_JARS=%SAKULI_HOME%\bin\lib\*;%SAKULI_HOME%\bin\lib\resource;%SAKULI_HOME%\_include\log4j.properties
 
-::start the java application
+cscript.exe %SAKULI_HOME%\_include\vb-scripts\killproc.vbs -f %SAKULI_HOME\_include\vb-scripts\procs_to_kill.txt
+
 echo jar-file: %SAKULI_JARS%
-java -Dsikuli.Home=%LIB_FOLDER% -Dlog4j.configuration=file:%INCLUDE_FOLDER%\log4j.properties -classpath %PROJECT_FOLDER%\bin\sakuli.jar;%SAKULI_JARS% de.consol.sakuli.starter.SakuliStarter -run "%TEST_SUITE_FOLDER%" "%INCLUDE_FOLDER%"
+java -Dsikuli.Home=%SAKULI_HOME%\bin\lib -Dlog4j.configuration=file:%SAKULI_HOME%\_include\log4j.properties -classpath %SAKULI_HOME%\bin\sakuli.jar;%SAKULI_JARS% de.consol.sakuli.starter.SakuliStarter -run "%TEST_SUITE_FOLDER%" "%SAKULI_HOME%\_include"
