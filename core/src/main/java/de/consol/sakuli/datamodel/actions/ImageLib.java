@@ -21,6 +21,8 @@ package de.consol.sakuli.datamodel.actions;
 import de.consol.sakuli.actions.settings.ScreenBasedSettings;
 import de.consol.sakuli.exceptions.SakuliException;
 import org.sikuli.script.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -37,7 +39,7 @@ import java.util.HashMap;
  */
 public class ImageLib extends HashMap<String, ImageLibObject> {
 
-    private final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * Helper methode to load all png images from folders as {@link ImageLibObject}

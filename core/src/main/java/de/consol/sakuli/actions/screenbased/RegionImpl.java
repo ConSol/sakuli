@@ -27,6 +27,8 @@ import org.sikuli.script.FindFailed;
 import org.sikuli.script.Key;
 import org.sikuli.script.Match;
 import org.sikuli.script.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.springframework.util.StringUtils.isEmpty;
 
@@ -35,7 +37,7 @@ import static org.springframework.util.StringUtils.isEmpty;
  */
 public class RegionImpl extends org.sikuli.script.Region implements Action {
 
-    private final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final boolean resumeOnException;
     private final ImageLibObject imagePattern;
     private ScreenActionLoader loader;

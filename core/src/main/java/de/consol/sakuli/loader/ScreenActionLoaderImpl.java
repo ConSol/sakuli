@@ -98,6 +98,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     }
 
     @Override
+    public void setCurrentTestCase(TestCase testCase) {
+        baseLoader.setCurrentTestCase(testCase);
+    }
+
+    @Override
     public ImageLib getImageLib() {
         return baseLoader.getImageLib();
     }
@@ -105,6 +110,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     @Override
     public RhinoScriptRunner getRhinoScriptRunner() {
         return baseLoader.getRhinoScriptRunner();
+    }
+
+    @Override
+    public void setRhinoScriptRunner(RhinoScriptRunner scriptRunner) {
+        baseLoader.setRhinoScriptRunner(scriptRunner);
     }
 
     @Override

@@ -21,6 +21,8 @@ package de.consol.sakuli.actions.screenbased;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.Screen;
 import org.sikuli.script.ScreenHighlighter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -39,7 +41,8 @@ import java.util.Date;
 @Component
 public class ScreenshotActions {
     private static int MAX_FILENAME_LENGTH = 50;
-    private final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Value("${" + TestSuite.SCREENSHOT_FORMAT_PROPERTY + "}")
     private String screenShotFormat;
     @Autowired

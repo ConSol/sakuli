@@ -25,7 +25,8 @@ import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.starter.proxy.SahiProxy;
 import net.sf.sahi.ant.Report;
 import net.sf.sahi.test.TestRunner;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -39,8 +40,13 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class SahiConnector {
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     protected int countConnections = 0;
+    /**
+     * ** Values from the the property file "sahi.properties" **
+     */
+    @Value("${sahiproxy.maxConnectTries}")
+    protected int maxConnectTries;
     /**
      * autowired variables **
      */
@@ -48,11 +54,6 @@ public class SahiConnector {
     private SahiProxy sahiProxy;
     @Autowired
     private TestSuite testSuite;
-    /**
-     * ** Values from the the property file "sahi.properties" **
-     */
-    @Value("${sahiproxy.maxConnectTries}")
-    protected int maxConnectTries;
     @Value("${sahiproxy.reconnectSeconds}")
     private int reconnectSeconds;
     @Value("${sahiproxy.configurationPath}")

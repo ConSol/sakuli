@@ -29,9 +29,10 @@ import de.consol.sakuli.loader.ScreenActionLoader;
 import javafx.application.Platform;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.rhino.RhinoScriptRunner;
-import org.apache.log4j.Logger;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -55,10 +56,9 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(locations = {"classpath*:ui-applicationContext.xml"})
 public abstract class AbstractUiTestApplicationIT extends AbstractTestNGSpringContextTests {
 
-    protected static final Logger logger = Logger.getLogger(AbstractUiTestApplicationIT.class);
     protected static Long DEFAULT_TIME_OUT_SEC = 30L;
-
     protected static Map<UiTestEvent, Integer> eventCounter;
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     protected ExecutorService executorService;
     protected UiTestApplication uiTestApplication;
     protected Environment env;

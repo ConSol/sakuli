@@ -20,6 +20,8 @@ package de.consol.sakuli.datamodel.actions;
 
 import de.consol.sakuli.exceptions.SakuliException;
 import org.sikuli.script.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,7 +34,7 @@ import java.nio.file.Path;
  */
 public class ImageLibObject {
 
-    private final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final Path imageFile;
     private String id;
     private Pattern pattern;

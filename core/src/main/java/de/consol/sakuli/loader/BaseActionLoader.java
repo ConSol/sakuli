@@ -37,9 +37,16 @@ public interface BaseActionLoader {
 
     TestCase getCurrentTestCase();
 
+    /**
+     * Sets the current {@link TestCase} during execution of a {@link TestSuite}.
+     */
+    void setCurrentTestCase(TestCase testCase);
+
     ImageLib getImageLib();
 
     RhinoScriptRunner getRhinoScriptRunner();
+
+    void setRhinoScriptRunner(RhinoScriptRunner scriptRunner);
 
     Report getSahiReport();
 
@@ -52,5 +59,4 @@ public interface BaseActionLoader {
      * @param imagePaths paths to the located image patterns
      */
     void init(String testCaseID, String... imagePaths);
-
 }

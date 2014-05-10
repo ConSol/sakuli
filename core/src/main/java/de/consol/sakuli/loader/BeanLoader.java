@@ -22,6 +22,8 @@ import de.consol.sakuli.actions.TestCaseActions;
 import de.consol.sakuli.actions.environment.Application;
 import de.consol.sakuli.actions.environment.Environment;
 import de.consol.sakuli.actions.screenbased.Region;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.access.BeanFactoryLocator;
 import org.springframework.beans.factory.access.BeanFactoryReference;
@@ -32,11 +34,11 @@ import org.springframework.beans.factory.access.SingletonBeanFactoryLocator;
  *         Date: 24.06.13
  */
 public class BeanLoader {
-    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(BeanLoader.class);
+    protected static final Logger logger = LoggerFactory.getLogger(BeanLoader.class);
     public static String CONTEXT_PATH = "beanRefFactory.xml";
 
-    public static BaseActionLoaderImpl loadBaseActionLoader() {
-        return loadBean(BaseActionLoaderImpl.class);
+    public static BaseActionLoader loadBaseActionLoader() {
+        return loadBean(BaseActionLoaderImpl.QUALIFIER, BaseActionLoader.class);
     }
 
     public static ScreenActionLoader loadScreenActionLoader() {
@@ -79,10 +81,13 @@ public class BeanLoader {
         return getBeanFacotry().getBean(classDef);
     }
 
+    public static <T> T loadBean(String qualifier, Class<T> classDef) {
+        return getBeanFacotry().getBean(qualifier, classDef);
+    }
+
     private static BeanFactory getBeanFacotry() {
         BeanFactoryLocator bfl = SingletonBeanFactoryLocator.getInstance(CONTEXT_PATH);
         BeanFactoryReference bf = bfl.useBeanFactory("de.consol.sakuli.app.root");
         return bf.getFactory();
     }
-
 }

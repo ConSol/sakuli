@@ -19,7 +19,6 @@
 package de.consol.sakuli;
 
 import de.consol.sakuli.loader.BeanLoader;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -38,17 +37,10 @@ import static org.testng.AssertJUnit.assertTrue;
  */
 
 public class PropertyTest extends BaseTest {
-    final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
-
-    private PropertyHolder properties;
-
-    @BeforeSuite
-    public void init() {
-        properties = BeanLoader.loadBean(PropertyHolder.class);
-    }
 
     @Test
     public void testTestSuiteFolder() throws IOException {
+        PropertyHolder properties = BeanLoader.loadBean(PropertyHolder.class);
         Path tsFolder = Paths.get(properties.getTestSuiteFolder());
 
         assertTrue("find test suite folder over system arguments" +
@@ -60,29 +52,5 @@ public class PropertyTest extends BaseTest {
         assertTrue(tsFolder.toFile().getAbsolutePath().contains(TEST_FOLDER_PATH));
     }
 
-    @Test
-    public void testLogFolders() throws IOException {
-
-        logger.info("testlog");
-        Path logFile = Paths.get(properties.getLogFile());
-        assertTrue("log file '_sakuli.log'", Files.exists(logFile));
-//        Files.delete(logFile);
-
-        Path logFileAll = Paths.get(properties.getLogFileAll());
-        assertTrue("log file 'all.log'", Files.exists(logFileAll));
-//        Files.delete(logFileAll);
-    }
-
-    @Test
-    public void testScreenShotFolders() throws IOException {
-
-//        logger.info("testlog");
-//        Path screenshotFolder = Paths.get(properties.getScreenShotFolder());
-//        if (!Files.exists(screenshotFolder)) {
-//            Files.createDirectory(screenshotFolder);
-//        }
-//        assertTrue("screenShotFolder", Files.exists(screenshotFolder));
-//        Files.delete(screenshotFolder);
-    }
 
 }

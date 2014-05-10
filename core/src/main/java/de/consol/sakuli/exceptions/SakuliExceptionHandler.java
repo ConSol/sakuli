@@ -23,7 +23,8 @@ import de.consol.sakuli.aop.RhinoAspect;
 import de.consol.sakuli.datamodel.actions.LogResult;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import net.sf.sahi.report.ResultType;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +38,7 @@ import java.nio.file.Path;
 @Component
 public class SakuliExceptionHandler {
 
-    private final Logger logger = Logger.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private ScreenActionLoader loader;
@@ -105,14 +106,14 @@ public class SakuliExceptionHandler {
                 //Do different exception handling for different use cases:
                 if (sakuliException.resumeOnException
                         && loader.getTestSuite().isByResumOnExceptionLogging()) {
-                    logger.error(sakuliException);
+                    logger.error(sakuliException.getMessage(), sakuliException);
                     saveException(sakuliException);
                     addExceptionToSahiReport(sakuliException);
                 } else if (sakuliException.resumeOnException &&
                         !loader.getTestSuite().isByResumOnExceptionLogging()) {
-                    logger.debug(sakuliException, sakuliException);
+                    logger.debug(sakuliException.getMessage(), sakuliException);
                 } else {
-                    logger.error(sakuliException);
+                    logger.error(sakuliException.getMessage(), sakuliException);
                     saveException(sakuliException);
 
                     /**

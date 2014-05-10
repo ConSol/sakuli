@@ -21,7 +21,8 @@ package de.consol.sakuli.starter.proxy;
 import de.consol.sakuli.exceptions.SakuliProxyException;
 import net.sf.sahi.Proxy;
 import net.sf.sahi.config.Configuration;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +42,8 @@ public class SahiProxy {
     public static final String SAHI_PROXY_CONFIG = "sahiproxy.configurationPath";
     public static final String SAHI_PROXY_PORT = "sahiproxy.port";
 
-    private final Logger logger = Logger.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     //Values are defined in the the property file "sahi.properties"
     @Value("${" + SAHI_PROXY_HOME + "}")
     private String sahiHomePath;

@@ -22,6 +22,8 @@ import de.consol.sakuli.actions.logging.LogToResult;
 import de.consol.sakuli.actions.screenbased.Region;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.App;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class Application extends App {
-    protected final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final boolean resumeOnException;
 
@@ -177,7 +179,7 @@ public class Application extends App {
         try {
             Thread.sleep(milli);
         } catch (InterruptedException e) {
-            logger.error(e);
+            logger.error("error during sleeping", e);
         }
     }
 

@@ -21,7 +21,8 @@ package de.consol.sakuli.dao.impl;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
 import org.springframework.jdbc.support.lob.LobHandler;
@@ -37,8 +38,7 @@ import java.util.Map;
  */
 
 public abstract class Dao extends NamedParameterJdbcDaoSupport {
-    protected final Logger logger = Logger.getLogger(this.getClass());
-
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     protected SakuliExceptionHandler exceptionHandler;
     @Autowired

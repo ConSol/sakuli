@@ -21,7 +21,8 @@ package de.consol.sakuli.datamodel;
 import de.consol.sakuli.datamodel.state.SakuliStateInterface;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliExceptionWithScreenshot;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Path;
 import java.text.DateFormat;
@@ -36,7 +37,7 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
 
     public final static DateFormat GUID_DATE_FORMATE = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss_SS");
     public final static DateFormat PRINT_DATE_FORMATE = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-    protected final Logger logger = Logger.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     protected Date startDate;
     protected Date stopDate;
     protected E exception;

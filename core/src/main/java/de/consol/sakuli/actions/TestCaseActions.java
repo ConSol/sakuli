@@ -26,9 +26,12 @@ import de.consol.sakuli.datamodel.TestCaseStep;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
+import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BaseActionLoaderImpl;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -39,7 +42,7 @@ import java.util.Date;
  */
 @Component
 public class TestCaseActions {
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private DaoTestCase daoTestCase;
@@ -52,7 +55,8 @@ public class TestCaseActions {
      * and releases at {@link #saveResult(String, String, String, String, String)}
      */
     @Autowired
-    private BaseActionLoaderImpl loader;
+    @Qualifier(BaseActionLoaderImpl.QUALIFIER)
+    private BaseActionLoader loader;
 
     /****************
      * Init functions for the java script engine.

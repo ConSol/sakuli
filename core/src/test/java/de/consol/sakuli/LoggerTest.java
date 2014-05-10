@@ -19,12 +19,13 @@
 package de.consol.sakuli;
 
 import de.consol.sakuli.datamodel.TestSuite;
-import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BeanLoader;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -43,22 +44,18 @@ import static org.testng.AssertJUnit.assertTrue;
  * @author tschneck
  *         Date: 24.07.13
  */
-public class Log4JLoggerTest extends BaseTest {
-    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Log4JLoggerTest.class);
+public class LoggerTest extends BaseTest {
+    protected static Logger logger = LoggerFactory.getLogger(LoggerTest.class);
+
     @Mock
     private TestSuite testSuite;
     private PropertyHolder properties;
 
-    @BeforeTest
+    @BeforeMethod
     public void init() {
         MockitoAnnotations.initMocks(this);
-        BaseActionLoader loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
-        when(loaderMock.getTestSuite()).thenReturn(testSuite);
         when(testSuite.getId()).thenReturn("test_id_for_logger_test");
         properties = BeanLoader.loadBean(PropertyHolder.class);
-        System.out.println(properties.getTestSuiteFolder());
-
-
     }
 
     @AfterClass
@@ -100,14 +97,14 @@ public class Log4JLoggerTest extends BaseTest {
         logger.info(logMessage);
 
         String lastLine = getLastLineOfLogFile(logFile);
-        assertEquals(" INFO", lastLine.substring(0, 5));
+        assertEquals("INFO ", lastLine.substring(0, 5));
         assertTrue("Test for info log", lastLine.contains(logMessage));
 
         //Test-Warning-Log
         logMessage = "WARNING-LOG-MESSAGE FOR " + testSuite.getId();
         logger.warn(logMessage);
         lastLine = getLastLineOfLogFile(logFile);
-        assertEquals(" WARN", lastLine.substring(0, 5));
+        assertEquals("WARN ", lastLine.substring(0, 5));
         assertTrue("Test for warning log", lastLine.contains(logMessage));
 
         //Test-Debug-Log

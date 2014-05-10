@@ -26,7 +26,8 @@ import de.consol.sakuli.exceptions.SakuliCipherException;
 import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.starter.proxy.SahiProxy;
 import org.apache.commons.cli.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.access.BeanFactoryLocator;
 import org.springframework.beans.factory.access.BeanFactoryReference;
@@ -92,7 +93,7 @@ public class SakuliStarter {
                     tempLogCache += "\nsystem property '" + TestSuite.LOG_FOLDER_PROPERTY + "' has been set to \"" + logFolderPath + "\"";
                 }
                 //because of the property, the logger must be initialized after setProperty() of the log folder!
-                Logger logger = Logger.getLogger(SakuliStarter.class);
+                Logger logger = LoggerFactory.getLogger(SakuliStarter.class);
                 logger.debug(tempLogCache);
 
                 String absolutePathIncludeFolder = checkFolder(args[2], "sakuli include folder");
