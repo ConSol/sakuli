@@ -1,0 +1,24 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "source": {
+        "include": ["./"],
+        "includePattern": ".+\\.inc?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "markdown": {
+        "parser": "gfm"
+    },
+    "plugins": [
+        "plugins/markdown",
+        "plugins/verboseOutput"
+    ],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "default": {
+            "outputSourceFiles": true
+        }
+    }
+}

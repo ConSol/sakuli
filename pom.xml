@@ -36,6 +36,7 @@
     <modules>
         <module>core</module>
         <module>integration-test</module>
+        <module>docs</module>
     </modules>
 
     <properties>
