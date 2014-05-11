@@ -20,9 +20,8 @@ package de.consol.sakuli;
 
 import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BeanLoader;
-import de.consol.sakuli.utils.SakuliProperties;
+import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import net.sf.sahi.report.Report;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 
 import java.io.File;
@@ -47,16 +46,10 @@ public abstract class BaseTest {
 
     protected BaseActionLoader loaderMock;
 
-    @AfterSuite
-    public static void cleanSysProperty() {
-        System.clearProperty(SakuliProperties.TEST_SUITE_FOLDER);
-        System.clearProperty(SakuliProperties.INCLUDE_FOLDER);
-    }
-
     @BeforeClass
     public void setSysProperty() {
-        System.setProperty(SakuliProperties.TEST_SUITE_FOLDER, TEST_FOLDER_PATH);
-        System.setProperty(SakuliProperties.INCLUDE_FOLDER, INCLUDE_FOLDER_PATH);
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
         loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
         when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));

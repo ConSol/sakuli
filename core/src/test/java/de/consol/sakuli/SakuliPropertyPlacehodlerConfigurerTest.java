@@ -19,6 +19,7 @@
 package de.consol.sakuli;
 
 import de.consol.sakuli.loader.BeanLoader;
+import de.consol.sakuli.utils.SakuliProperties;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -26,7 +27,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 
 /**
@@ -36,20 +38,26 @@ import static org.testng.AssertJUnit.assertTrue;
  *         Date: 10.06.13
  */
 
-public class PropertyTest extends BaseTest {
+public class SakuliPropertyPlacehodlerConfigurerTest extends BaseTest {
 
     @Test
     public void testTestSuiteFolder() throws IOException {
         PropertyHolder properties = BeanLoader.loadBean(PropertyHolder.class);
         Path tsFolder = Paths.get(properties.getTestSuiteFolder());
 
-        assertTrue("find test suite folder over system arguments" +
-                "if it cannot found run \"mvn test\"" +
-                "or add to vm args \"" +
-                "-Dtest.suite.folder=<...pathToproject...>" + TEST_FOLDER_PATH
-                , Files.exists(tsFolder));
+        assertTrue(Files.exists(tsFolder), "test suite folder doesn't exists or have not been set correctly");
         System.out.println(tsFolder.toFile().getAbsolutePath());
         assertTrue(tsFolder.toFile().getAbsolutePath().contains(TEST_FOLDER_PATH));
+    }
+
+    @Test
+    public void testIncludeFolder() throws IOException {
+        SakuliProperties properties = BeanLoader.loadBean(SakuliProperties.class);
+
+        assertTrue(Files.exists(properties.getIncludeFolder()), "include folder doesn't exists");
+        assertTrue(properties.getIncludeFolder().toString().contains(INCLUDE_FOLDER_PATH));
+
+        assertNotNull(properties.getTestSuiteId());
     }
 
 

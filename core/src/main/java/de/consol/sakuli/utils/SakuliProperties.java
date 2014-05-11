@@ -51,6 +51,10 @@ public class SakuliProperties {
     @Value("${" + LOG_PATTERN + "}")
     private String logPattern;
 
+    //TODO TS make separate testsuitepropertyClass ?
+    @Value("${testsuite.id}")
+    private String testSuiteId;
+
     @PostConstruct
     public void initFolders() {
         testSuiteFolder = Paths.get(testSuiteFolderPropertyValue);
@@ -112,5 +116,13 @@ public class SakuliProperties {
 
     public void setLogPattern(String logPattern) {
         this.logPattern = logPattern;
+    }
+
+    public String getTestSuiteId() {
+        return testSuiteId;
+    }
+
+    public void setTestSuiteId(String testSuiteId) {
+        this.testSuiteId = testSuiteId;
     }
 }

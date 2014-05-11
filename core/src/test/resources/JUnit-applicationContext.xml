@@ -21,12 +21,24 @@
        xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="property-placeholderContext.xml"/>
-
     <context:annotation-config/>
     <context:component-scan base-package="de.consol.sakuli.utils"/>
 
-    <bean id="properties" class="de.consol.sakuli.PropertyHolder">
+
+    <bean id="propertyResolver"
+          class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="systemPropertiesMode" value="2"/>
+        <property name="locations">
+            <list>
+                <value>classpath:JUnit-db.properties</value>
+                <value>classpath:JUnit-sakuli.properties</value>
+                <value>classpath:JUnit-sahi.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="properties" class="de.consol.sakuli.PropertyHolder" depends-on="propertyResolver">
         <property name="testSuiteFolder" value="${sakuli.test.suite.folder}"/>
         <property name="logFile" value="${sakuli.log.folder}/_sakuli.log"/>
         <property name="logFileAll" value="${sakuli.log.folder}/all.log"/>
