@@ -18,7 +18,6 @@
   -->
 
 <configuration scan="true">
-    <property resource="JUnit-sakuli.properties"/>
 
     <appender name="sakuli" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
