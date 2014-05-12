@@ -7,15 +7,16 @@ Represents an Environment
 
 **optResumeOnException**:  *Boolean*,  if this parameter is undefined, it will be false.
 
-setSimilarity(<ul><li>)
------------------------
+setSimilarity(similarity)
+-------------------------
 set a new default similarity for the screen capturing methods.
-
+<ul>
+</ul>
 
 
 **Parameters**
 
-**<ul><li>**,  similarity double value between 0 and 1, default = 0.8f </li></ul>
+**similarity**,  double value between 0 and 1, default = 0.8f </li>
 
 **Returns**
 
