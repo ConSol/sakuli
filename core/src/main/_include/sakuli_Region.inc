@@ -28,7 +28,7 @@
 
 /**
  * Represents a region.
- * @class Region
+ * CONSTRUCTOR: Region
  * @param {Boolean} `optResumeOnException` if this parameter is undefined, it will be false.
  */
 function Region(optResumeOnException) {
@@ -40,7 +40,7 @@ function Region(optResumeOnException) {
 
 /**
  * Represents a region.
- * @class Region
+ * CONSTRUCTOR: Region
  * @param {Boolean} `optResumeOnException` if this parameter is undefined, it will be false.
  * @param {String} `imageName` name of the image pattern
  */
@@ -53,7 +53,7 @@ function RegionImage(imageName, optResumeOnException) {
 
 /**
  * Represents a region.
- * @class Region
+ * CONSTRUCTOR: Region
  * @param {Boolean} `optResumeOnException` if this parameter is undefined, it will be false.
  * @param {Integer} `x` – x position of a rectangle.
  * @param {Integer} `y` – y position of a rectangle.
@@ -86,7 +86,7 @@ function loadRegion(javaObject, resumeOnException) {
      *
      * @param {String} `optImageName` name of the preloaded picture
      *        (if not set, the find operation will take place on the predefined region object.)
-     * @return the found Region or if the target can't be found {@code null}.
+     * @return the found Region or if the target can't be found  null.
      */
     that.find = function (optImageName) {
         if (undefined == optImageName) {
@@ -98,7 +98,7 @@ function loadRegion(javaObject, resumeOnException) {
     /**
      * Finds a target in this Region immediately;
      *
-     * @return the found Region or if the target can't be found {@code null}.
+     * @return the found Region or if the target can't be found null.
      */
     that.findRegion = function (region) {
         return update(that.javaObject.findRegion(region));

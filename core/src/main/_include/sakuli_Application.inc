@@ -28,7 +28,7 @@
 
 /**
  * Represents an application.
- * @class Application
+ * CONSTRUCTOR: Application
  * @param {String} `applicationNameOrPath` Path to the application file. Example: C:\Windows\system32\notepad.exe
  * @param {Boolean} `optResumeOnException` Determines whether to ignore exceptions from this class. If this parameter is undefined, it will be false.
  */

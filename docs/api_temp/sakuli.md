@@ -1,3 +1,34 @@
+TestCase(`warningTime`, `criticalTime`)
+---------------------------------------
+Sets the current test case folder as default folder and calls TestCaseWithImagePathArray(...).
+CONSTRUCTOR: TestCase
+
+
+**Parameters**
+
+**`warningTime`**:  *Integer*,  threshold in seconds
+
+**`criticalTime`**:  *Integer*,  threshold in seconds
+
+TestCaseWithImagePath(`warningTime`, `criticalTime`, `picPath`)
+---------------------------------------------------------------
+This function initializes the Sakuli object and sets the warning and critical time for this test case.
+CONSTRUCTOR: TestCase
+
+
+
+**Parameters**
+
+**`warningTime`**:  *Integer*,  threshold in seconds
+
+**`criticalTime`**:  *Integer*,  threshold in seconds
+
+**`picPath`**:  *String*,  Path to the folder containing the pictures for these test cases.
+
+**Returns**
+
+an initialized Sakuli object.
+
 TestCaseWithImagePathArray(`warningTime`, `criticalTime`, `picPathArray`)
 -------------------------------------------------------------------------
 This function initializes the Sakuli object and sets the warning and critical time for this test case.
@@ -73,7 +104,3 @@ init()
 This function will be called automatically on the startup of TestCase().
 
 
-class TestCase
---------------
-class TestCase
---------------

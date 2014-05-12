@@ -1,3 +1,43 @@
+Region(`optResumeOnException`)
+------------------------------
+Represents a region.
+CONSTRUCTOR: Region
+
+
+**Parameters**
+
+**`optResumeOnException`**:  *Boolean*,  if this parameter is undefined, it will be false.
+
+RegionImage(`optResumeOnException`, `imageName`)
+------------------------------------------------
+Represents a region.
+CONSTRUCTOR: Region
+
+
+**Parameters**
+
+**`optResumeOnException`**:  *Boolean*,  if this parameter is undefined, it will be false.
+
+**`imageName`**:  *String*,  name of the image pattern
+
+RegionRectangle(`optResumeOnException`, `x`, `y`, `w`, `h`)
+-----------------------------------------------------------
+Represents a region.
+CONSTRUCTOR: Region
+
+
+**Parameters**
+
+**`optResumeOnException`**:  *Boolean*,  if this parameter is undefined, it will be false.
+
+**`x`**:  *Integer*,  – x position of a rectangle.
+
+**`y`**:  *Integer*,  – y position of a rectangle.
+
+**`w`**:  *Integer*,  – height of a rectangle.
+
+**`h`**:  *Integer*,  – width of a rectangle.
+
 loadRegion(`javaObject`, `resumeOnException`)
 ---------------------------------------------
 Loads a region
@@ -28,7 +68,7 @@ Finds an image inside this region immediately.
 
 **Returns**
 
-*he found Region or if the target can't be found {@code null*,  .
+the found Region or if the target can't be found  null.
 
 findRegion()
 ------------
@@ -38,7 +78,7 @@ Finds a target in this Region immediately;
 
 **Returns**
 
-*he found Region or if the target can't be found {@code null*,  .
+the found Region or if the target can't be found null.
 
 exists(`optImageName`, `optWaitSeconds`)
 ----------------------------------------
@@ -421,9 +461,3 @@ updates the inherit java object after modifaction with getRegionImpl.
 **`modifiedJavaObject`**,  
 
 
-class Region
-------------
-class Region
-------------
-class Region
-------------

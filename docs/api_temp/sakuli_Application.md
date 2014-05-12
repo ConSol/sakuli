@@ -1,3 +1,15 @@
+Application(`applicationNameOrPath`, `optResumeOnException`)
+------------------------------------------------------------
+Represents an application.
+CONSTRUCTOR: Application
+
+
+**Parameters**
+
+**`applicationNameOrPath`**:  *String*,  Path to the application file. Example: C:\Windows\system32\notepad.exe
+
+**`optResumeOnException`**:  *Boolean*,  Determines whether to ignore exceptions from this class. If this parameter is undefined, it will be false.
+
 loadApplication(`javaObject`, `resumeOnException`)
 --------------------------------------------------
 Loads an application.
@@ -101,5 +113,3 @@ getName()
 
 the name of the current application.
 
-class Application
------------------

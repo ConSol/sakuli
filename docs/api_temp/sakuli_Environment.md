@@ -1,3 +1,13 @@
+Environment(`optResumeOnException`)
+-----------------------------------
+Represents an Environment
+CONSTRUCTOR: Environment
+
+
+**Parameters**
+
+**`optResumeOnException`**:  *Boolean*,  if this parameter is undefined, it will be false.
+
 setSimilarity(`similarity`)
 ---------------------------
 set a new default similarity for the screen capturing methods.
@@ -278,5 +288,3 @@ The log entries can be configured over the properties "log4.properties"
 
 **`message`**:  *String*,  as a String
 
-class Environment
------------------
