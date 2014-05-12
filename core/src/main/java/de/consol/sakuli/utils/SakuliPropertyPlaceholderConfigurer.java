@@ -18,11 +18,12 @@
 
 package de.consol.sakuli.utils;
 
+import de.consol.sakuli.starter.proxy.SahiProxy;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Iterator;
@@ -37,12 +38,11 @@ import java.util.Properties;
  */
 public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
 
-    protected static final String TEST_SUITE_PROPERTY_FILE_APPENDER = File.separator + "testsuite.properties";
-    protected static final String INCLUDE_PROPERTY_FILE_APPENDER = File.separator + "sakuli.properties";
     public static String TEST_SUITE_FOLDER_VALUE;
     public static String INCLUDE_FOLDER_VALUE;
+    public static String SAHI_PROXY_HOME_VALUE;
 
-    //TODO TS WRITE config SakuliStarter to this logic
+    //TODO TS config SakuliStarter application context to this logic
 
     @Override
     protected void loadProperties(Properties props) throws IOException {
@@ -51,12 +51,16 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         props.put(SakuliProperties.INCLUDE_FOLDER, INCLUDE_FOLDER_VALUE);
 
         //load common sakuli properties
-        String sakuliProperties = Paths.get(INCLUDE_FOLDER_VALUE).toAbsolutePath().toString() + INCLUDE_PROPERTY_FILE_APPENDER;
+        String sakuliProperties = Paths.get(INCLUDE_FOLDER_VALUE).toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER;
         addPropertiesFromFile(props, sakuliProperties);
         //load test suite properties
-        String testSuitePropFile = Paths.get(TEST_SUITE_FOLDER_VALUE).toAbsolutePath().toString() + TEST_SUITE_PROPERTY_FILE_APPENDER;
+        String testSuitePropFile = Paths.get(TEST_SUITE_FOLDER_VALUE).toAbsolutePath().toString() + SakuliProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER;
         addPropertiesFromFile(props, testSuitePropFile);
 
+        //override if set sahi proxy home
+        if (StringUtils.isNotEmpty(SAHI_PROXY_HOME_VALUE)) {
+            props.setProperty(SahiProxy.SAHI_PROXY_HOME, SAHI_PROXY_HOME_VALUE);
+        }
         super.loadProperties(props);
     }
 

@@ -19,6 +19,7 @@
 package de.consol.sakuli.actions.settings;
 
 import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.utils.SakuliProperties;
 import org.sikuli.basics.Settings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -32,7 +33,7 @@ import java.security.InvalidParameterException;
 @Component
 public class ScreenBasedSettings extends Settings {
 
-    @Value("${" + TestSuite.INCLUDE_FOLDER_PROPERTY + "}")
+    @Value("${" + SakuliProperties.INCLUDE_FOLDER + "}")
     private String includeFolderPath;
     @Value("${" + TestSuite.AUTO_HIGHLIGHT_PROPERTY + "}")
     private boolean autoHighlightEnabled;

@@ -41,6 +41,7 @@ import static org.mockito.Mockito.when;
 public abstract class BaseTest {
 
     protected static final String INCLUDE_FOLDER_PATH = "." + File.separator + "src" + File.separator + "main" + File.separator + "_include";
+    protected static final String SAHI_FOLDER_PATH = ".." + File.separator + "sahi";
     protected static final String TEST_FOLDER_PATH = "." + File.separator + "src" + File.separator + "test" + File.separator +
             "resources" + File.separator + "_testsuite4JUnit";
     private static final String TEST_CONTEXT_PATH = "JUnit-beanRefFactory.xml";
@@ -60,6 +61,7 @@ public abstract class BaseTest {
     public void setContextProperties() {
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
         loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
         when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));

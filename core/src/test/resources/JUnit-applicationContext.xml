@@ -39,7 +39,7 @@
     </bean>
 
     <bean id="properties" class="de.consol.sakuli.PropertyHolder" depends-on="propertyResolver">
-        <property name="testSuiteFolder" value="${sakuli.test.suite.folder}"/>
+        <property name="testSuiteFolder" value="${sakuli.testsuite.folder}"/>
         <property name="logFile" value="${sakuli.log.folder}/_sakuli.log"/>
         <property name="logFileAll" value="${sakuli.log.folder}/all.log"/>
         <property name="screenShotFolder" value="${sakuli.screenshot.dir}"/>

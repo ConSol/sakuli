@@ -23,6 +23,7 @@ import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.starter.proxy.SahiProxy;
+import de.consol.sakuli.utils.SakuliProperties;
 import net.sf.sahi.ant.Report;
 import net.sf.sahi.test.TestRunner;
 import org.slf4j.Logger;
@@ -61,7 +62,7 @@ public class SahiConnector {
     /**
      * ** Values form the property file "log4j.properties" **
      */
-    @Value("${log.folder}")
+    @Value("${" + SakuliProperties.LOG_FOLDER + "}")
     private String logFolder;
     @Autowired
     private SakuliExceptionHandler sakuliExceptionHandler;

@@ -25,6 +25,8 @@ import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.starter.proxy.SahiProxy;
+import de.consol.sakuli.utils.SakuliProperties;
+import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +35,6 @@ import org.springframework.beans.factory.access.BeanFactoryLocator;
 import org.springframework.beans.factory.access.BeanFactoryReference;
 import org.springframework.beans.factory.access.SingletonBeanFactoryLocator;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -73,41 +74,31 @@ public class SakuliStarter {
                  */
                 String tempLogCache = "";
                 if (cmd.hasOption(run.getOpt()) || cmd.hasOption(r.getOpt())) {
-                    //Set the path to the test suite and logger
-                    String absolutePathSuiteFolder = checkTestSuiteFolder(args[1]);
-                    System.setProperty(TestSuite.SUITE_FOLDER_PROPERTY, absolutePathSuiteFolder);
-                    tempLogCache += "\nsystem property '" + TestSuite.SUITE_FOLDER_PROPERTY + "' has been set to \"" + absolutePathSuiteFolder + "\"";
-                    System.setProperty(TestSuite.LOG_FOLDER_PROPERTY, absolutePathSuiteFolder);
-                    tempLogCache += "\nsystem property '" + TestSuite.LOG_FOLDER_PROPERTY + "' has been set to \"" + absolutePathSuiteFolder + "\"";
+                    //check and set the path to the test suite
+                    tempLogCache = checkTestSuiteFolderAndSetContextVariables(args[1], tempLogCache);
 
-                    //if sahi home have been set override the defaul
+                    //if sahi home have been set override the default
                     if (args.length > 3) {
-                        String absolutSahiHomePath = checkFolder(args[3], "sahi home folder");
-                        System.setProperty(SahiProxy.SAHI_PROXY_HOME, absolutSahiHomePath);
-                        tempLogCache += "\nsystem property '" + SahiProxy.SAHI_PROXY_HOME + "' has been set to \"" + absolutSahiHomePath + "\"";
+                        tempLogCache = checkSahiProxyHomeAndSetContextVariables(args[3], tempLogCache);
                     }
-                } else {
-                    //Set logger properties
-                    String logFolderPath = Paths.get(args[1]).toFile().getAbsolutePath();
-                    System.setProperty(TestSuite.LOG_FOLDER_PROPERTY, logFolderPath);
-                    tempLogCache += "\nsystem property '" + TestSuite.LOG_FOLDER_PROPERTY + "' has been set to \"" + logFolderPath + "\"";
                 }
-                //because of the property, the logger must be initialized after setProperty() of the log folder!
+                //check and set the include folder
+                tempLogCache = checkIncludeFolderAndSetContextVariables(args[2], tempLogCache);
+
+                //because of the property loading strategy, the logger must be initialized through the Spring Context!
+                BeanFactory beanFacorty = getBeanFacorty();
                 Logger logger = LoggerFactory.getLogger(SakuliStarter.class);
                 logger.debug(tempLogCache);
-
-                String absolutePathIncludeFolder = checkFolder(args[2], "sakuli include folder");
-                System.setProperty(TestSuite.INCLUDE_FOLDER_PROPERTY, absolutePathIncludeFolder);
-                logger.debug("system property '" + TestSuite.INCLUDE_FOLDER_PROPERTY + "' has been set to \"" + absolutePathIncludeFolder + "\"");
 
 
                 /***
                  * SAKULI Starter to run the test suite with embedded sahi proxy
                  */
-
                 try {
-                    logger.info("Start Sakuli-Test-Suite in folder \"" + System.getProperty(TestSuite.SUITE_FOLDER_PROPERTY) + "\"");
-                    SahiConnector sahiConnector = getBeanFacorty().getBean(SahiConnector.class);
+                    logger.info("Start Sakuli-Test-Suite in folder \""
+                            + beanFacorty.getBean(SakuliProperties.class).getTestSuiteFolder().toAbsolutePath().toString()
+                            + "\"");
+                    SahiConnector sahiConnector = beanFacorty.getBean(SahiConnector.class);
 
                     //start the execution of the test suite
                     logger.debug("initialize SakuliStarter");
@@ -134,7 +125,6 @@ public class SakuliStarter {
                         logger.error(errorMsg + "\n");
                     }
 
-                    clearProperties();
                     //return the state as system exit parameter
                     //return values are corresponding to the error codes in file "sahi_return_codes.txt"
                     System.exit(testSuite.getState().getErrorCode());
@@ -165,12 +155,6 @@ public class SakuliStarter {
         }
     }
 
-    private static void clearProperties() {
-        System.clearProperty(TestSuite.SUITE_FOLDER_PROPERTY);
-        System.clearProperty(TestSuite.INCLUDE_FOLDER_PROPERTY);
-        System.clearProperty(TestSuite.LOG_FOLDER_PROPERTY);
-    }
-
     /**
      * build up the application context "starter"
      *
@@ -182,31 +166,69 @@ public class SakuliStarter {
         return bf.getFactory();
     }
 
-    private static String checkFolder(String arg, String nameOfFolder) throws FileNotFoundException {
-        Path folder = Paths.get(arg);
-        if (!Files.exists(folder)) {
-            throw new FileNotFoundException(nameOfFolder + " \"" + arg + "\" does not exist!");
+
+    /**
+     * Validates the path to the test suite folder and ensure that it contains the files:
+     * <ul>
+     * <li>testsuite.properties</li>
+     * <li>testsuite.suite</li>
+     * </ul>
+     * After all checks were succefull,the values will be set to the {@link SakuliPropertyPlaceholderConfigurer}.
+     *
+     * @param testSuiteFolderPath path to test suite folder
+     * @param tempLogCache        temporary string for later logging
+     * @return the updated tempLogCache String.
+     * @throws FileNotFoundException if some of the above files are missing
+     */
+    protected static String checkTestSuiteFolderAndSetContextVariables(String testSuiteFolderPath, String tempLogCache) throws FileNotFoundException {
+        Path testSuiteFolder = Paths.get(testSuiteFolderPath);
+        Path propertyFile = Paths.get(testSuiteFolderPath + SakuliProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER);
+        Path suiteFile = Paths.get(testSuiteFolderPath + SakuliProperties.TEST_SUITE_SUITE_FILE_APPENDER);
+
+        if (!Files.exists(testSuiteFolder)) {
+            throw new FileNotFoundException("sakuli test suite folder \"" + testSuiteFolderPath + "\" does not exist!");
+        } else if (!Files.exists(propertyFile)) {
+            throw new FileNotFoundException("property file \"" + SakuliProperties.TEST_SUITE_PROPERTIES_FILE_NAME + "\" does not exist in folder: " + testSuiteFolderPath);
+        } else if (!Files.exists(suiteFile)) {
+            throw new FileNotFoundException("suite file \"" + SakuliProperties.TEST_SUITE_SUITE_FILE_NAME + "\" does not exist in folder: " + testSuiteFolderPath);
         }
-        // TODO add propertie check
-        return folder.toFile().getAbsolutePath();
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = testSuiteFolder.toAbsolutePath().toString();
+        return tempLogCache + "\nset property '" + SakuliProperties.TEST_SUITE_FOLDER + "' to \"" + SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE + "\"";
     }
 
-    private static String checkTestSuiteFolder(String arg) throws FileNotFoundException {
-        // TODO change to nio.Path
-        File testSuiteFolder = new File(arg);
-        File propertyFile = new File(arg + "/testsuite.properties");
-        File suiteFile = new File(arg + "/testsuite.suite");
-
-        if (!testSuiteFolder.exists()) {
-            throw new FileNotFoundException("sakuli test suite folder \"" + arg + "\" does not exist");
-        } else if (!propertyFile.exists()) {
-            throw new FileNotFoundException("property file \"testsuite.properties\" does not exist in folder: " + arg);
-        } else if (!suiteFile.exists()) {
-            throw new FileNotFoundException("suite file \"testsuite.suite\" does not exist in folder: " + arg);
-        } else {
-            return testSuiteFolder.getAbsolutePath();
+    /**
+     * Validates the path to the include folder and set the path to {@link SakuliPropertyPlaceholderConfigurer}
+     *
+     * @param includeFolderPath path to the include folder
+     * @param tempLogCache      temporary string for later logging
+     * @return the updated tempLogCache String.
+     * @throws FileNotFoundException if the folde doesn't exist
+     */
+    protected static String checkIncludeFolderAndSetContextVariables(String includeFolderPath, String tempLogCache) throws FileNotFoundException {
+        Path includeFolder = Paths.get(includeFolderPath);
+        if (!Files.exists(includeFolder)) {
+            throw new FileNotFoundException("sakuli include folder \"" + includeFolderPath + "\" does not exist!");
         }
-
+        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = includeFolder.toAbsolutePath().toString();
+        return tempLogCache + "\nset property '" + SakuliProperties.INCLUDE_FOLDER + "' to \"" + SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE + "\"";
     }
+
+    /**
+     * Validates the path to the sahi home folder and set the path to {@link SakuliPropertyPlaceholderConfigurer}
+     *
+     * @param sahiProxyHomePath path to the sahi home folder
+     * @param tempLogCache      temporary string for later logging
+     * @return the updated tempLogCache String.
+     * @throws FileNotFoundException if the folde doesn't exist
+     */
+    protected static String checkSahiProxyHomeAndSetContextVariables(String sahiProxyHomePath, String tempLogCache) throws FileNotFoundException {
+        Path sahiFolder = Paths.get(sahiProxyHomePath);
+        if (!Files.exists(sahiFolder)) {
+            throw new FileNotFoundException("sahi folder \"" + sahiProxyHomePath + "\" does not exist!");
+        }
+        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = sahiFolder.toAbsolutePath().toString();
+        return tempLogCache + "\nset property '" + SahiProxy.SAHI_PROXY_HOME + "' to \"" + SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE + "\"";
+    }
+
 
 }

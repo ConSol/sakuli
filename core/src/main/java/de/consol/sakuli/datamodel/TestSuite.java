@@ -22,6 +22,7 @@ import de.consol.sakuli.dao.DaoTestSuite;
 import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliException;
+import de.consol.sakuli.utils.SakuliProperties;
 import net.sf.sahi.util.FileNotFoundRuntimeException;
 import net.sf.sahi.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,10 +54,8 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     //Property names
     public static final String TYPE_DELAY_PROPERTY = "sakuli.screenbased.typeDelay";
     public static final String CLICK_DELAY_PROPERTY = "sakuli.screenbased.clickDelay";
-    public static final String LOG_FOLDER_PROPERTY = "sakuli.log.folder";
     public static final String SCREENSHOT_FOLDER_PROPERTY = "sakuli.screenshot.dir";
     public static final String SCREENSHOT_FORMAT_PROPERTY = "sakuli.screenshot.format";
-    public static final String INCLUDE_FOLDER_PROPERTY = "test.suite.includefolder";
     public static final String SUITE_FOLDER_PROPERTY = "test.suite.folder";
     public static final String SUITE_ID_PROPERTY = "testsuite.id";
     public static final String TAKE_SCREENSHOT_PROPERTY = "testsuite.takeScreenShots";
@@ -80,7 +79,7 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     /**
      * Value of the javascript include folder, per default "_inlcude" in the projekt dir
      */
-    @Value("${" + TestSuite.INCLUDE_FOLDER_PROPERTY + "}")
+    @Value("${" + SakuliProperties.INCLUDE_FOLDER + "}")
     private String includeFolderPath;
     /**
      * values from the "testsuiteXX.properties" file

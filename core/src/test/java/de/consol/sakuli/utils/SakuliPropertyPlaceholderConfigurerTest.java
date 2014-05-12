@@ -19,6 +19,7 @@
 package de.consol.sakuli.utils;
 
 import de.consol.sakuli.BaseTest;
+import de.consol.sakuli.starter.proxy.SahiProxy;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.testng.annotations.BeforeMethod;
@@ -29,8 +30,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -49,11 +49,21 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         testling.loadProperties(props);
         verify(props).put(SakuliProperties.TEST_SUITE_FOLDER, TEST_FOLDER_PATH);
         verify(props).put(SakuliProperties.INCLUDE_FOLDER, INCLUDE_FOLDER_PATH);
-        verify(testling).addPropertiesFromFile(props, Paths.get(INCLUDE_FOLDER_PATH).toAbsolutePath().toString() + SakuliPropertyPlaceholderConfigurer.INCLUDE_PROPERTY_FILE_APPENDER);
-        verify(testling).addPropertiesFromFile(props, Paths.get(TEST_FOLDER_PATH).toAbsolutePath().toString() + SakuliPropertyPlaceholderConfigurer.TEST_SUITE_PROPERTY_FILE_APPENDER);
+        verify(props).put(SahiProxy.SAHI_PROXY_HOME, SAHI_FOLDER_PATH);
+        verify(testling).addPropertiesFromFile(props, Paths.get(INCLUDE_FOLDER_PATH).toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER);
+        verify(testling).addPropertiesFromFile(props, Paths.get(TEST_FOLDER_PATH).toAbsolutePath().toString() + SakuliProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER);
 
         assertEquals(props.getProperty(SakuliProperties.ENCRYPTION_INTERFACE_TEST_MODE), "true");
         assertEquals(props.getProperty(SakuliProperties.TEST_SUITE_ID), "0001_testsuite_example");
+    }
+
+    @Test
+    public void testLoadPropertiesSahiHomeNotset() throws Exception {
+        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = "";
+        Properties props = spy(new Properties());
+        testling.loadProperties(props);
+        verify(props, never()).put(SahiProxy.SAHI_PROXY_HOME, "");
+        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
     }
 
     @Test
