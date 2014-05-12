@@ -31,7 +31,6 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.spi.FileSystemProvider;
 
 import static org.mockito.Mockito.when;
 import static org.testng.AssertJUnit.assertEquals;
@@ -65,15 +64,6 @@ public class LoggerTest extends BaseTest {
         deleteFile(logFile);
         deleteFile(logFileAll);
         deleteFile(logFileAll.getParent());
-    }
-
-    private void deleteFile(Path logFile) {
-        FileSystemProvider provider = logFile.getFileSystem().provider();
-        try {
-            provider.deleteIfExists(logFile);
-        } catch (IOException e) {
-            //do nothing
-        }
     }
 
     @Test

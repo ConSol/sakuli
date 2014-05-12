@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.spi.FileSystemProvider;
 import java.util.Scanner;
 
 import static org.mockito.Mockito.mock;
@@ -46,8 +47,17 @@ public abstract class BaseTest {
 
     protected BaseActionLoader loaderMock;
 
+    public static void deleteFile(Path logFile) {
+        FileSystemProvider provider = logFile.getFileSystem().provider();
+        try {
+            provider.deleteIfExists(logFile);
+        } catch (IOException e) {
+            //do nothing
+        }
+    }
+
     @BeforeClass
-    public void setSysProperty() {
+    public void setContextProperties() {
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;

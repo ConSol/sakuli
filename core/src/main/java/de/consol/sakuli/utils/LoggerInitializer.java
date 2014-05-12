@@ -46,12 +46,10 @@ public class LoggerInitializer {
     private static Logger logger = LoggerFactory.getLogger(LoggerInitializer.class);
 
     @Autowired
-    SakuliProperties sakuliProperties;
+    private SakuliProperties sakuliProperties;
 
     @PostConstruct
     public void initLoggerContext() throws JoranException, URISyntaxException, SakuliException {
-        //TODO TS write UNIT test
-
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         JoranConfigurator jc = new JoranConfigurator();
         jc.setContext(context);
@@ -62,17 +60,12 @@ public class LoggerInitializer {
         context.putProperty(SakuliProperties.LOG_PATTERN, sakuliProperties.getLogPattern());
 
         //determine the config file
-        String configFilePath;
-        URL classPathConfigURL = getClass().getResource("/" + LOG_CONFIG_FILE_NAME);
-        if (classPathConfigURL != null) {
-            configFilePath = Paths.get(classPathConfigURL.toURI()).toAbsolutePath().toString();
-        } else {
-            Path includeFolderConfigFile = Paths.get(sakuliProperties.getIncludeFolder().toString() + File.separator + LOG_CONFIG_FILE_NAME);
-            if (Files.exists(includeFolderConfigFile)) {
-                configFilePath = includeFolderConfigFile.toAbsolutePath().toString();
-            } else {
-                throw new SakuliException("file '" + includeFolderConfigFile.toString() + "'not found! Please ensure that your include folder contains one file '" + LOG_CONFIG_FILE_NAME + "'.");
-            }
+        String configFilePath = getConfigFileFromClasspath();
+        if (configFilePath == null) {
+            configFilePath = getConfigFileFromIncludeFolder();
+        }
+        if (configFilePath == null) {
+            throw new SakuliException("file '" + LOG_CONFIG_FILE_NAME + "'not found! Please ensure that your include folder or your classpath contains at least the file '" + LOG_CONFIG_FILE_NAME + "'.");
         }
         jc.doConfigure(configFilePath);
 
@@ -80,6 +73,26 @@ public class LoggerInitializer {
         logger.info("set '{}' to '{}'", SakuliProperties.LOG_FOLDER, sakuliProperties.getLogFolder().toAbsolutePath().toString());
         logger.info("set '{}' to '{}''", SakuliProperties.LOG_PATTERN, sakuliProperties.getLogPattern());
         logger.info("set logback configuration file '{}'", configFilePath);
+    }
+
+    protected String getConfigFileFromIncludeFolder() throws SakuliException {
+        Path includeFolderConfigFile = Paths.get(sakuliProperties.getIncludeFolder().toString() + File.separator + LOG_CONFIG_FILE_NAME);
+        if (Files.exists(includeFolderConfigFile)) {
+            return includeFolderConfigFile.toAbsolutePath().toString();
+        }
+        return null;
+    }
+
+    protected String getConfigFileFromClasspath() {
+        URL classPathConfigURL = getClass().getResource("/" + LOG_CONFIG_FILE_NAME);
+        if (classPathConfigURL != null) {
+            try {
+                return Paths.get(classPathConfigURL.toURI()).toAbsolutePath().toString();
+            } catch (URISyntaxException e) {
+                logger.error("unexpected error by resolving the '" + LOG_CONFIG_FILE_NAME + "' from classpath, now try to resolve it from the include folder.");
+            }
+        }
+        return null;
     }
 
 }
