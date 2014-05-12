@@ -79,7 +79,9 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
      *****************************************************************************************************/
 
     /**
-     * Adds a step over the java backend into the current test case and stores it to the database.
+     * A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its particular runtime.
+     * Together with the test Case, a special "step" timer is started. Each time endOfStep is called, the current timer value is read out,
+     * stored with the step name (first parameter) and gets resetted . If the runtime exceeds the step threshold (second parameter), the step is saved with state "WARNING".
      * @param {String} `stepName`
      * @param {Integer} `warningTime` threshold in seconds
      */

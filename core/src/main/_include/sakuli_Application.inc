@@ -38,11 +38,6 @@ function Application(applicationNameOrPath, optResumeOnException) {
     return loadApplication(Packages.de.consol.sakuli.loader.BeanLoader.loadApplication(applicationNameOrPath, optResumeOnException), optResumeOnException);
 }
 
-/**
- * Loads an application.
- * @param {JavaObject} `javaObject`
- * @param {Boolean} `resumeOnException`
- */
 function loadApplication(javaObject, resumeOnException) {
     var that = {};
     var update;

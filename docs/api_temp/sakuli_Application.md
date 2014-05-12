@@ -9,19 +9,6 @@ CONSTRUCTOR: Application - Represents an application.
 
 **`optResumeOnException`**:  *Boolean*,  Determines whether to ignore exceptions from this class. If this parameter is undefined, it will be false.
 
-loadApplication(`javaObject`, `resumeOnException`)
---------------------------------------------------
-Loads an application.
-
-
-**Parameters**
-
-**`javaObject`**:  *JavaObject*,  
-
-
-**`resumeOnException`**:  *Boolean*,  
-
-
 open()
 ------
 Opens the created application.

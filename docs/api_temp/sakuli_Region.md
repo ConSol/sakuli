@@ -35,23 +35,6 @@ CONSTRUCTOR: Region - Represents a region.
 
 **`h`**:  *Integer*,  – width of a rectangle.
 
-loadRegion(`javaObject`, `resumeOnException`)
----------------------------------------------
-Loads a region
-
-
-**Parameters**
-
-**`javaObject`**,  
-
-
-**`resumeOnException`**,  
-
-
-**Returns**
-
-*{*,  }
-
 find(`optImageName`)
 --------------------
 Finds an image inside this region immediately.
@@ -307,9 +290,9 @@ The size of the rectangle will be the same.
 
 **Parameters**
 
-**`offsetX`**,  x-value for the offset action
+**`offsetX`**:  *Integer*,  x-value for the offset action
 
-**`offsetY`**,  y-value for the offset action
+**`offsetY`**:  *Integer*,  y-value for the offset action
 
 **Returns**
 
@@ -323,7 +306,7 @@ create a region enlarged range pixels on each side
 
 **Parameters**
 
-**`range`**,  of pixels
+**`range`**:  *Integer*,  of pixels
 
 **Returns**
 
@@ -337,9 +320,9 @@ create a region with enlarged range pixels
 
 **Parameters**
 
-**`width`**,  in pixels to grow in both directions
+**`width`**:  *Integer*,  in pixels to grow in both directions
 
-**`height`**,  in pixels to grow in both directions
+**`height`**:  *Integer*,  in pixels to grow in both directions
 
 **Returns**
 
@@ -381,10 +364,14 @@ with a height of range number of pixels.
 
 a new Region that is defined on the right the current region’s top border
 
-setH()
-------
+setH(`height`)
+--------------
 set the height, based form the upper left corner downsides
 
+
+**Parameters**
+
+**`height`**:  *Integer*,  in pixels
 
 getH()
 ------
@@ -396,7 +383,7 @@ setW(`width`)
 -------------
 **Parameters**
 
-**`width`**,  set the width, based form the upper left corner to the right
+**`width`**:  *Integer*,  set the width, based form the upper left corner to the right
 
 getW()
 ------
@@ -408,7 +395,7 @@ setX(`x`)
 ---------
 **Parameters**
 
-**`x`**,  set the X coordinate of the upper left corner.
+**`x`**:  *Integer*,  set the X coordinate of the upper left corner.
 
 getX()
 ------
@@ -435,7 +422,7 @@ or the default time
 
 **Parameters**
 
-**`seconds`**,  highlights this Region for x seconds
+**`seconds`**:  *Integer*,  highlights this Region for x seconds
 
 extractText()
 -------------

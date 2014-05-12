@@ -54,6 +54,7 @@ function loadEnvironment(javaObject, resumeOnException) {
     };
 
     /**
+     * Get a Region object from the current focused window
      * @return a Region object from the current focused window
      *         or NULL on errors.
      */
@@ -215,7 +216,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * The decryption will only work if the encryption and decryption happen on the same physical machine.
      * There will be no logging with the decrypted secret during this step.
      * <p/>
-     * To create a encrypted secret see "README.txt".
+     * To create a encrypted secret see "sakuli-manual.md".
      *
      * @param {String} `secret` encrypted secret as String
      * @return decrypted String

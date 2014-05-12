@@ -64,12 +64,6 @@ function RegionRectangle(x, y, w, h, optResumeOnException) {
     return loadRegion(Packages.de.consol.sakuli.loader.BeanLoader.loadRegionRectangle(x, y, w, h, optResumeOnException), optResumeOnException);
 };
 
-/**
- * Loads a region
- * @param `javaObject`
- * @param `resumeOnException`
- * @returns {{}}
- */
 function loadRegion(javaObject, resumeOnException) {
 
     /**
@@ -304,8 +298,8 @@ function loadRegion(javaObject, resumeOnException) {
      * The offset function will move the Region's rectangle with x to the right and with y to the left.
      * The size of the rectangle will be the same.
      *
-     * @param `offsetX` x-value for the offset action
-     * @param `offsetY` y-value for the offset action
+     * @param {Integer} `offsetX` x-value for the offset action
+     * @param {Integer} `offsetY` y-value for the offset action
      * @return a Region with the new coordinates
      */
     that.move = function (offsetX, offsetY) {
@@ -315,7 +309,7 @@ function loadRegion(javaObject, resumeOnException) {
     /**
      * create a region enlarged range pixels on each side
      *
-     * @param `range` of pixels
+     * @param {Integer} `range` of pixels
      * @return a new Region
      */
     that.grow = function (range) {
@@ -325,8 +319,8 @@ function loadRegion(javaObject, resumeOnException) {
     /**
      * create a region with enlarged range pixels
      *
-     * @param `width`  in pixels to grow in both directions
-     * @param `height` in pixels to grow in both directions
+     * @param {Integer} `width`  in pixels to grow in both directions
+     * @param {Integer} `height` in pixels to grow in both directions
      * @return a new Region
      */
     that.grow = function (width, height) {
@@ -371,6 +365,7 @@ function loadRegion(javaObject, resumeOnException) {
 
 
     /**
+     * @param {Integer} `height` in pixels
      * set the height, based form the upper left corner downsides
      */
     that.setH = function (height) {
@@ -385,7 +380,7 @@ function loadRegion(javaObject, resumeOnException) {
     };
 
     /**
-     * @param `width` set the width, based form the upper left corner to the right
+     * @param {Integer} `width` set the width, based form the upper left corner to the right
      */
     that.setW = function (width) {
         return update(that.javaObject.setW(width));
@@ -399,7 +394,7 @@ function loadRegion(javaObject, resumeOnException) {
     };
 
     /**
-     * @param `x` set the X coordinate of the upper left corner.
+     * @param {Integer} `x` set the X coordinate of the upper left corner.
      */
     that.setX = function (x) {
         return update(that.javaObject.setX(x));
@@ -427,7 +422,7 @@ function loadRegion(javaObject, resumeOnException) {
     };
 
     /**
-     * @param `seconds` highlights this Region for x seconds
+     * @param {Integer} `seconds` highlights this Region for x seconds
      * or the default time
      */
     that.highlight = function (seconds) {

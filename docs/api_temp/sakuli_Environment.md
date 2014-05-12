@@ -22,6 +22,7 @@ this Environment or NULL on errors.
 
 getRegionFromFocusedWindow()
 ----------------------------
+Get a Region object from the current focused window
 or NULL on errors.
 
 
@@ -208,7 +209,7 @@ Decrypt a encrypted secret and returns the value at runtime.
 The decryption will only work if the encryption and decryption happen on the same physical machine.
 There will be no logging with the decrypted secret during this step.
 <p/>
-To create a encrypted secret see "README.txt".
+To create a encrypted secret see "sakuli-manual.md".
 
 
 
