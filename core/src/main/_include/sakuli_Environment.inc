@@ -47,8 +47,9 @@ function loadEnvironment(javaObject, resumeOnException) {
 
     /**
      * set a new default similarity for the screen capturing methods.
-     *
-     * @param <ul><li> similarity double value between 0 and 1, default = 0.8f </li></ul>
+     * <ul>
+     * <li> @param similarity double value between 0 and 1, default = 0.8f </li>
+     * </ul>
      * @return this {@link Environment} or NULL on errors.
      */
     that.setSimilarity = function (similarity) {
