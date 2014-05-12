@@ -1,59 +1,57 @@
-TestCase(`warningTime`		threshold, `criticalTime`		threshold)
--------------------------------------------------------------
+TestCase(`warningTime`, `criticalTime`)
+---------------------------------------
 **Parameters**
 
-**`warningTime`		threshold**:  *Integer*,  in seconds
+**`warningTime`**:  *Integer*,  threshold in seconds
 
-**`criticalTime`		threshold**:  *Integer*,  in seconds
+**`criticalTime`**:  *Integer*,  threshold in seconds
 
-TestCaseWithImagePath(warningTime		threshold, criticalTime	threshold, picPathArray	a)
--------------------------------------------------------------------------------------
+TestCaseWithImagePath(warningTime, criticalTime, picPathArray)
+--------------------------------------------------------------
 This function initializes the Sakuli object and sets the warning and critical time for this test case.
 
 
 
 **Parameters**
 
-**warningTime		threshold**:  *Integer*,  in seconds
+**warningTime**:  *Integer*,  `threshold in seconds`
 
-**criticalTime	threshold**:  *Integer*,  in seconds
+**criticalTime**:  *Integer*,  `threshold in seconds`
 
-**picPathArray	a**:  *String[]*,  path to the folder, which contains the picture for these test cases.
+**picPathArray**:  *String[]*,  `a path to the folder, which contains the picture for these test cases.`
 
 **Returns**
 
 an initialized Sakuli object.
 
-TestCaseWithImagePathArray(Integer	warningTime		threshold, Integer	criticalTime	threshold, String\[\]	picPathArray	an)
-----------------------------------------------------------------------------------------------------
+TestCaseWithImagePathArray(`warningTime, `criticalTime, picPathArray)
+---------------------------------------------------------------------
 This function initializes the Sakuli object and sets the warning and critical time for this test case.
 
 
 
 **Parameters**
 
-**Integer	warningTime		threshold**,  in seconds
+**`warningTime**,  threshold in seconds`
 
-**Integer	criticalTime	threshold**,  in seconds
+**`criticalTime**,  threshold in seconds`
 
-**String[]	picPathArray	an**,  Array of Paths to the folders containing all the pictures for these test cases.
+**picPathArray**,  an Array of Paths to the folders containing all the pictures for these test cases.
 
 **Returns**
 
 an initialized Sakuli object.
 
-endOfStep(String	stepName, Integer	warningTime)
------------------------------------------------
+endOfStep(`stepName`, `warningTime`)
+------------------------------------
 Adds a step over the java backend into the current test case and stores it to the database.
 
 
 **Parameters**
 
-**String	stepName**,  
+**`stepName`**,  Lalalalalala
 
-
-**Integer	warningTime**,  
-
+**`warningTime`**,  Blablabla
 
 handleException(Exception	e	Any)
 --------------------------------
