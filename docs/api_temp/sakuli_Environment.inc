@@ -29,7 +29,7 @@
 /**
  * Represents an Environment
  * @constructor Environment
- * @param optResumeOnException if this parameter is undefined, it will be false.
+ * @param {Boolean} optResumeOnException if this parameter is undefined, it will be false.
  */
 function Environment(optResumeOnException) {
     if (undefined == optResumeOnException) {
@@ -48,7 +48,7 @@ function loadEnvironment(javaObject, resumeOnException) {
     /**
      * set a new default similarity for the screen capturing methods.
      *
-     * @param similarity double value between 0 and 1, default = 0.8f
+     * @param <ul><li> similarity double value between 0 and 1, default = 0.8f </li></ul>
      * @return this {@link Environment} or NULL on errors.
      */
     that.setSimilarity = function (similarity) {
@@ -67,7 +67,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * Takes a screenshot of the current screen and saves it to the overgiven path.
      * If there ist just a file name, the screenshot will be saved in your testsuite log folder.
      *
-     * @param pathName "pathname/filname.format" or just "filename.format"<br>
+     * @param {String} pathName "pathname/filname.format" or just "filename.format"<br>
      *                 for example "test.png".
      */
     that.takeScreenshot = function (pathName) {
