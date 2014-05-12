@@ -56,7 +56,7 @@ If you minimize the Remote Desktop window (the window that display the remote co
 
 ## Additional tools
 ### Browser 
-Install any of your desired browsers (Firefox, Chrome, Opera, …)
+Install any of your desired browsers (Firefox, Chrome, Opera, …). To implement the sakuli_demo test case, install at least firefox. 
 ### Greenshot 
 To take screenshots which should be used by Sikuli, you need a handy screenshot capturing tool. We highly recommend the installation of [Greenshot](http://www.getgreenshot.org), but any other tool which is able to save screenshots as JPG/PNG is possible, too. 
 ### Notepad++
@@ -101,20 +101,9 @@ Congratulations; Sahi is now installed completely!
 * Download the latest version of phantomJS from [http://phantomjs.org](http://phantomjs.org)
 * Open the ZIP file and copy *phantomjs.exe* to _**%SAKULI_HOME%**\phantomjs_ (create that folder)
 * Save [sahi.js](https://github.com/ConSol/sakuli/blob/master/install/3rd-party/phantom/sahi.js) into _**%SAKULI_HOME%**\phantomjs_## Configuration
-Now it's time to set some configuration settings._**%SAKULI_HOME%**_\\_include\sahi.properties_: * *sahiproxy.homepath=c:/sakuli/sahi** *sahiproxy.configurationPath=c:/sakuli/sahi/userdata*_**%SAKULI_HOME%**_\\_include\sakuli.properties_: * *sakuli.encryption.interface=eth3*Fixme interface wählen_**%SAKULI_HOME%**_\\_include\db.properties_: * *jdbc.driverClass=com.mysql.jdbc.Driver** *jdbc.url=jdbc:mysql://10.100.140.101:3306/sahi** *jdbc.user=sakuli** *jdbc.pw=sakulipbbapp2013** *jdbc.model=sahi*## Test 
-FIXME
+Some configuration settings:_**%SAKULI_HOME%**_\\_include\sahi.properties_: * *sahiproxy.homepath=c:/sakuli/sahi** *sahiproxy.configurationPath=c:/sakuli/sahi/userdata*_**%SAKULI_HOME%**_\\_include\sakuli.properties_: * *sakuli.encryption.interface=eth3*Fixme interface wählen_**%SAKULI_HOME%**_\\_include\db.properties_: * *jdbc.driverClass=com.mysql.jdbc.Driver** *jdbc.url=jdbc:mysql://10.100.140.101:3306/sahi** *jdbc.user=sakuli** *jdbc.pw=sakulipbbapp2013** *jdbc.model=sahi*## Test 
 Now it's time to test Sakuli and see how Sahi and Sikuli are working together. 
-Open _**%SAKULI_HOME%**\START_helloworld.bat_ and change it as follows: 	:@echo off 	set PROJECT_FOLDER=C:\SAKULI 	set INCLUDE_FOLDER=%PROJECT_FOLDER%\_include 	set TEST_SUITE_FOLDER=%PROJECT_FOLDER%\_sakuli_test_suites\helloworld                                                               ^^^^^^^^^^	:get jars set LIB_FOLDER=%PROJECT_FOLDER%\lib	set SAKULI_JARS=%LIB_FOLDER%\*;%LIB_FOLDER%\resource;%INCLUDE_FOLDER%\log4j.properties	echo jar-file: %SAKULI_JARS% java -Dsikuli.Home=%LIB_FOLDER% -Dlog4j.configuration=file:%INCLUDE_FOLDER%\log4j.properties -classpath %PROJECT_FOLDER%\sakuli.jar;%SAKULI_JARS% de.consol.sakuli.starter.SakuliStarter -run "%TEST_SUITE_FOLDER%" "%INCLUDE_FOLDER%" 
-fixme disconnect scripts
-
-Step 1: Run Sakuli example for your OS
--------------------------------------
-
-Run the SakuliStarterWin.bat (TODO name) for Windows
-Run the SakuliStarterUnix (TODO name) for Unix
-Param - include folder
-
-
+Open _**%SAKULI_HOME%**\START_helloworld.bat_ and change it as follows: 	:@echo off 	set PROJECT_FOLDER=C:\SAKULI 	set INCLUDE_FOLDER=%PROJECT_FOLDER%\_include 	set TEST_SUITE_FOLDER=%PROJECT_FOLDER%\_sakuli_test_suites\helloworld                                                               ^^^^^^^^^^	:get jars set LIB_FOLDER=%PROJECT_FOLDER%\lib	set SAKULI_JARS=%LIB_FOLDER%\*;%LIB_FOLDER%\resource;%INCLUDE_FOLDER%\log4j.properties	echo jar-file: %SAKULI_JARS% java -Dsikuli.Home=%LIB_FOLDER% -Dlog4j.configuration=file:%INCLUDE_FOLDER%\log4j.properties -classpath %PROJECT_FOLDER%\sakuli.jar;%SAKULI_JARS% de.consol.sakuli.starter.SakuliStarter -run "%TEST_SUITE_FOLDER%" "%INCLUDE_FOLDER%" 
 Step 2: How to create a Sakuli test
 -------------------------------
 

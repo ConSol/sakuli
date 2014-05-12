@@ -3,4 +3,4 @@
 // ... define your tescase like:
 // folder-of-testcase http://www.startURL.de
 //
-demo_win7/_tc.sah http://labs.consol.de/
+demo_win7/sakuli_demo.sah http://labs.consol.de/

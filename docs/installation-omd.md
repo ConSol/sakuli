@@ -142,11 +142,11 @@ Create a new check_command:
         --with-mymodules-dyn-dir=$USER15$
 	}
 
-Create a new service (e.g. on host "win7sakulidemo"):   FIXME suitename
+Create a new service (e.g. on host "win7sakulidemo"):
 
 	define service {
-	  service_description            0001_testsuite_example
+	  service_description            sakuli_demo
 	  host_name                      win7sakulidemo
 	  use                            generic-service,srv-pnp
-	  check_command                  check_sakuli_db_suite!0001_testsuite_example!3600
+	  check_command                  check_sakuli_db_suite!sakuli_demo!3600
 }

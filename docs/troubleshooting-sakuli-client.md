@@ -16,3 +16,15 @@ Copy one and add a new section pointing to the executable path.
 
 Remark: <path> is defined with **"$ProgramFiles (x86)…"**, which is wrong. If your browsers does not appear in the dashboard, try to delete the " (x86)"-part of each line and restart the Sahi dashboard.
 
+## Sakuli
+### cannot resolve mac address
+
+FIXME
+
+![macadress](../docs/pics/w_macaddress.jpg) 
+### Suite does not start
+#### Sikuli lib path
+
+sdfdfsf
+
+FIXME
