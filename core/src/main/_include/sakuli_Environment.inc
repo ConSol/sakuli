@@ -28,8 +28,8 @@
 
 /**
  * Represents an Environment
- * @constructor Environment
- * @param {Boolean} optResumeOnException if this parameter is undefined, it will be false.
+ * @class Environment
+ * @param {Boolean} `optResumeOnException` if this parameter is undefined, it will be false.
  */
 function Environment(optResumeOnException) {
     if (undefined == optResumeOnException) {
@@ -39,25 +39,23 @@ function Environment(optResumeOnException) {
 }
 
 function loadEnvironment(javaObject, resumeOnException) {
-    /** @namespace
-     @alias Environment.EnvironmentFunctions
+    /**
+     Environment.EnvironmentFunctions
      */
     var that = {};
     var update;
 
     /**
      * set a new default similarity for the screen capturing methods.
-     * <ul>
-     * <li> @param similarity double value between 0 and 1, default = 0.8f </li>
-     * </ul>
-     * @return this {@link Environment} or NULL on errors.
+     * @param {Double} `similarity` value between 0 and 1, default = 0.8f
+     * @return this Environment or NULL on errors.
      */
     that.setSimilarity = function (similarity) {
         return update(that.javaObject.setSimilarity(similarity));
     };
 
     /**
-     * @return a {@link Region} object from the current focused window
+     * @return a Region object from the current focused window
      *         or NULL on errors.
      */
     that.getRegionFromFocusedWindow = function () {
@@ -68,7 +66,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * Takes a screenshot of the current screen and saves it to the overgiven path.
      * If there ist just a file name, the screenshot will be saved in your testsuite log folder.
      *
-     * @param {String} pathName "pathname/filname.format" or just "filename.format"<br>
+     * @param {String} `pathName` "pathname/filname.format" or just "filename.format"<br>
      *                 for example "test.png".
      */
     that.takeScreenshot = function (pathName) {
@@ -78,15 +76,15 @@ function loadEnvironment(javaObject, resumeOnException) {
     /**
      * Blocks the current testcase execution for x seconds
      *
-     * @param seconds to sleep
-     * @return this {@link Environment} or NULL on errors.
+     * @param {Integer} `seconds` to sleep
+     * @return this Environment or NULL on errors.
      */
     that.sleep = function (seconds) {
         return update(that.javaObject.sleep(seconds));
     };
 
     /**
-     * @return the current content of the clipboard as {@link String} or NULL on errors
+     * @return the current content of the clipboard as String or NULL on errors
      */
     that.getClipboard = function () {
         return that.javaObject.getClipboard();
@@ -95,8 +93,8 @@ function loadEnvironment(javaObject, resumeOnException) {
     /**
      * sets the String paramter to the system clipboard
      *
-     * @param text as {@link String}
-     * @return this {@link Environment}.
+     * @param {String} `text` text as string
+     * @return this Environment.
      */
     that.setClipboard = function (text) {
         return update(that.javaObject.setClipboard(text));
@@ -106,7 +104,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * pastes the current clipboard content into the focused area.
      * Will do the same as "STRG + C".
      *
-     * @return this {@link Environment}.
+     * @return this Environment.
      */
     that.pasteClipboard = function () {
         return update(that.javaObject.pasteClipboard());
@@ -117,7 +115,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * copy the current selected item or text to the clipboard.
      * Will do the same as "STRG + V".
      *
-     * @return this {@link Environment}.
+     * @return this Environment.
      */
     that.copyIntoClipboard = function () {
         return update(that.javaObject.copyIntoClipboard());
@@ -128,8 +126,8 @@ function loadEnvironment(javaObject, resumeOnException) {
      * pastes the text at the current position of the focus/carret <br/>using the
      * clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
      *
-     * @param text a string, which might contain unicode characters
-     * @return this {@link Environment} or NULL on errors.
+     * @param {String} `text` a string, which might contain unicode characters
+     * @return this Environment or NULL on errors.
      */
     that.paste = function (text) {
         return update(that.javaObject.paste(text));
@@ -137,20 +135,20 @@ function loadEnvironment(javaObject, resumeOnException) {
 
 
     /**
-     * makes a masked {@link paste(String)} without any logging.
+     * makes a masked paste(String) without any logging.
      *
-     * @param text a string, which might contain unicode characters
-     * @return this {@link Environment} or NULL on errors.
+     * @param {String} `text` a string, which might contain unicode characters
+     * @return this Environment or NULL on errors.
      */
     that.pasteMasked = function (text) {
         return update(that.javaObject.pasteMasked(text));
     };
 
     /**
-     * combines {@link pasteMasked(String)} and {@link decryptSecret(String)}.
+     * combines pasteMasked(String) and decryptSecret(String).
      *
-     * @param text encrypted secret
-     * @return this {@link Environment} or NULL on errors.
+     * @param {String} `text` encrypted secret
+     * @return this Environment or NULL on errors.
      */
     that.pasteAndDecrypt = function (text) {
         return update(that.javaObject.pasteAndDecrypt(text));
@@ -159,13 +157,13 @@ function loadEnvironment(javaObject, resumeOnException) {
     /**
      * Enters the given text one character/key after another using keyDown/keyUp.
      * <p/>
-     * About the usable Key constants see documentation of {@link Key}.
+     * About the usable Key constants see documentation of Key.
      * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
      * The text is entered at the current position of the focus.
      *
-     * @param text containing characters and/or {@link Key} constants
-     * @param optModifiers (optional) an String with only {@link Key} constants.
-     * @return this {@link Environment} or NULL on errors.
+     * @param {String} `text` containing characters and/or Key constants
+     * @param {String} `optModifiers` (optional) an String with only Key constants.
+     * @return this Environment or NULL on errors.
      */
     that.type = function (text, optModifiers) {
         if (undefined == optModifiers) {
@@ -178,13 +176,13 @@ function loadEnvironment(javaObject, resumeOnException) {
      * Enters the given text one character/key after another using keyDown/keyUp.
      * The entered text will be masked at the logging.
      * <p/>
-     * About the usable Key constants see documentation of {@link Key}.
+     * About the usable Key constants see documentation of Key.
      * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
      * The text is entered at the current position of the focus.
      *
-     * @param text containing characters and/or {@link Key} constants
-     * @param optModifiers (optional) an String with only {@link Key} constants.
-     * @return this {@link Environment} or NULL on errors.
+     * @param {String} `text` containing characters and/or Key constants
+     * @param {String} `optModifiers` (optional) an String with only Key constants.
+     * @return this Environment or NULL on errors.
      */
     that.typeMasked = function (text, optModifiers) {
         if (undefined == optModifiers) {
@@ -196,15 +194,15 @@ function loadEnvironment(javaObject, resumeOnException) {
 
     /**
      * Decrypt and enters the given text one character/key after another using keyDown/keyUp.
-     * The entered text will be masked at the logging. For the details of the decryption see {@link decryptSecret(String)}.
+     * The entered text will be masked at the logging. For the details of the decryption see decryptSecret(String).
      * <p/>
-     * About the usable Key constants see documentation of {@link Key}.
+     * About the usable Key constants see documentation of Key.
      * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
      * The text is entered at the current position of the focus.
      *
-     * @param text containing characters and/or {@link Key} constants
-     * @param optModifiers (optional) an String with only {@link Key} constants.
-     * @return this {@link Environment} or NULL on errors.
+     * @param {String} `text` containing characters and/or Key constants
+     * @param {String} `optModifiers` (optional) an String with only Key constants.
+     * @return this Environment or NULL on errors.
      */
     that.typeAndDecrypt = function (text, optModifiers) {
         if (undefined == optModifiers) {
@@ -220,8 +218,8 @@ function loadEnvironment(javaObject, resumeOnException) {
      * <p/>
      * To create a encrypted secret see "README.txt".
      *
-     * @param secret encrypted secret as {@link String}
-     * @return decrypted {@link String}
+     * @param {String} `secret` encrypted secret as String
+     * @return decrypted String
      */
     that.decryptSecret = function (text) {
         return that.javaObject.decryptSecret(text);
@@ -234,7 +232,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * move the mouse pointer to the given target location and move the
      * wheel the given steps down.
      *
-     * @param steps the number of steps
+     * @param {Integer} `steps` the number of steps
      */
     that.mouseWheelDown = function (steps) {
         return update(that.javaObject.mouseWheelDown(steps));
@@ -244,7 +242,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * move the mouse pointer to the given target location and move the
      * wheel the given steps up.
      *
-     * @param steps the number of steps
+     * @param {Integer} `steps` the number of steps
      */
     that.mouseWheelUp = function (steps) {
         return update(that.javaObject.mouseWheelUp(steps));
@@ -259,7 +257,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * This won't stop the execution of the test case.
      * The log entries can be configured over the properties "log4.properties"
      *
-     * @param message as a String
+     * @param {String} `message` as a String
      */
     that.logError = function (message) {
         Packages.de.consol.sakuli.actions.logging.Logger.logError(message);
@@ -270,7 +268,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * make a debug-log over Java backend into the log file.
      * The log entries can be configured over the properties "log4.properties"
      *
-     * @param message as a String
+     * @param {String} `message` as a String
      */
     that.logWarning = function (message) {
         Packages.de.consol.sakuli.actions.logging.Logger.logWarning(message);
@@ -281,7 +279,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * make a info-log over Java backend into the log file.
      * The log entries can be configured over the properties "log4.properties"
      *
-     * @param message as a String
+     * @param {String} `message` as a String
      */
     that.logInfo = function (message) {
         Packages.de.consol.sakuli.actions.logging.Logger.logInfo(message);
@@ -291,7 +289,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * make a debug-log over Java backend into the log file.
      * The log entries can be configured over the properties "log4.properties"
      *
-     * @param message as a String
+     * @param {String} `message` as a String
      */
     that.logDebug = function (message) {
         Packages.de.consol.sakuli.actions.logging.Logger.logDebug(message);

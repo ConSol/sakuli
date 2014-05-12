@@ -1,26 +1,15 @@
-Environment(optResumeOnException)
----------------------------------
-Represents an Environment
-
-
-**Parameters**
-
-**optResumeOnException**:  *Boolean*,  if this parameter is undefined, it will be false.
-
-setSimilarity(similarity)
--------------------------
+setSimilarity(`similarity`)
+---------------------------
 set a new default similarity for the screen capturing methods.
-<ul>
-</ul>
 
 
 **Parameters**
 
-**similarity**,  double value between 0 and 1, default = 0.8f </li>
+**`similarity`**:  *Double*,  value between 0 and 1, default = 0.8f
 
 **Returns**
 
-*his {@link Environment*,  or NULL on errors.
+this Environment or NULL on errors.
 
 getRegionFromFocusedWindow()
 ----------------------------
@@ -29,10 +18,10 @@ or NULL on errors.
 
 **Returns**
 
-* {@link Region*,  object from the current focused window
+a Region object from the current focused window
 
-takeScreenshot(pathName)
-------------------------
+takeScreenshot(`pathName`)
+--------------------------
 Takes a screenshot of the current screen and saves it to the overgiven path.
 If there ist just a file name, the screenshot will be saved in your testsuite log folder.
 
@@ -41,42 +30,41 @@ for example "test.png".
 
 **Parameters**
 
-**pathName**:  *String*,  "pathname/filname.format" or just "filename.format"<br>
+**`pathName`**:  *String*,  "pathname/filname.format" or just "filename.format"<br>
 
-sleep(seconds)
---------------
+sleep(`seconds`)
+----------------
 Blocks the current testcase execution for x seconds
 
 
 
 **Parameters**
 
-**seconds**,  to sleep
+**`seconds`**:  *Integer*,  to sleep
 
 **Returns**
 
-*his {@link Environment*,  or NULL on errors.
+this Environment or NULL on errors.
 
 getClipboard()
 --------------
 **Returns**
 
-*he current content of the clipboard as {@link String*,  or NULL on errors
+the current content of the clipboard as String or NULL on errors
 
-setClipboard()
---------------
+setClipboard(`text`)
+--------------------
 sets the String paramter to the system clipboard
 
 
 
 **Parameters**
 
-****:  *ext as {@link String*,  
-
+**`text`**:  *String*,  text as string
 
 **Returns**
 
-*his {@link Environment*,  .
+this Environment.
 
 pasteClipboard()
 ----------------
@@ -87,7 +75,7 @@ Will do the same as "STRG + C".
 
 **Returns**
 
-*his {@link Environment*,  .
+this Environment.
 
 copyIntoClipboard()
 -------------------
@@ -98,10 +86,10 @@ Will do the same as "STRG + V".
 
 **Returns**
 
-*his {@link Environment*,  .
+this Environment.
 
-paste(text)
------------
+paste(`text`)
+-------------
 pastes the text at the current position of the focus/carret <br/>using the
 clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
 
@@ -109,36 +97,45 @@ clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
 
 **Parameters**
 
-**text**,  a string, which might contain unicode characters
+**`text`**:  *String*,  a string, which might contain unicode characters
 
 **Returns**
 
-*his {@link Environment*,  or NULL on errors.
+this Environment or NULL on errors.
 
-pasteMasked(text)
------------------
+pasteMasked(`text`)
+-------------------
+makes a masked paste(String) without any logging.
+
+
+
 **Parameters**
 
-**text**,  a string, which might contain unicode characters
+**`text`**:  *String*,  a string, which might contain unicode characters
 
 **Returns**
 
-*his {@link Environment*,  or NULL on errors.
+this Environment or NULL on errors.
 
-pasteAndDecrypt(text)
----------------------
+pasteAndDecrypt(`text`)
+-----------------------
+combines pasteMasked(String) and decryptSecret(String).
+
+
+
 **Parameters**
 
-**text**,  encrypted secret
+**`text`**:  *String*,  encrypted secret
 
 **Returns**
 
-*his {@link Environment*,  or NULL on errors.
+this Environment or NULL on errors.
 
-type(constants, constants.)
----------------------------
+type(`text`, `optModifiers`)
+----------------------------
 Enters the given text one character/key after another using keyDown/keyUp.
 <p/>
+About the usable Key constants see documentation of Key.
 The function use a subset of a US-QWERTY PC keyboard layout to type the text.
 The text is entered at the current position of the focus.
 
@@ -146,21 +143,20 @@ The text is entered at the current position of the focus.
 
 **Parameters**
 
-**constants**:  *ext containing characters and/or {@link Key*,  
+**`text`**:  *String*,  containing characters and/or Key constants
 
-
-**constants.**:  *ptModifiers (optional) an String with only {@link Key*,  
-
+**`optModifiers`**:  *String*,  (optional) an String with only Key constants.
 
 **Returns**
 
-*his {@link Environment*,  or NULL on errors.
+this Environment or NULL on errors.
 
-typeMasked(constants, constants.)
----------------------------------
+typeMasked(`text`, `optModifiers`)
+----------------------------------
 Enters the given text one character/key after another using keyDown/keyUp.
 The entered text will be masked at the logging.
 <p/>
+About the usable Key constants see documentation of Key.
 The function use a subset of a US-QWERTY PC keyboard layout to type the text.
 The text is entered at the current position of the focus.
 
@@ -168,20 +164,20 @@ The text is entered at the current position of the focus.
 
 **Parameters**
 
-**constants**:  *ext containing characters and/or {@link Key*,  
+**`text`**:  *String*,  containing characters and/or Key constants
 
-
-**constants.**:  *ptModifiers (optional) an String with only {@link Key*,  
-
+**`optModifiers`**:  *String*,  (optional) an String with only Key constants.
 
 **Returns**
 
-*his {@link Environment*,  or NULL on errors.
+this Environment or NULL on errors.
 
-typeAndDecrypt(constants, constants.)
--------------------------------------
+typeAndDecrypt(`text`, `optModifiers`)
+--------------------------------------
 Decrypt and enters the given text one character/key after another using keyDown/keyUp.
+The entered text will be masked at the logging. For the details of the decryption see decryptSecret(String).
 <p/>
+About the usable Key constants see documentation of Key.
 The function use a subset of a US-QWERTY PC keyboard layout to type the text.
 The text is entered at the current position of the focus.
 
@@ -189,18 +185,16 @@ The text is entered at the current position of the focus.
 
 **Parameters**
 
-**constants**:  *ext containing characters and/or {@link Key*,  
+**`text`**:  *String*,  containing characters and/or Key constants
 
-
-**constants.**:  *ptModifiers (optional) an String with only {@link Key*,  
-
+**`optModifiers`**:  *String*,  (optional) an String with only Key constants.
 
 **Returns**
 
-*his {@link Environment*,  or NULL on errors.
+this Environment or NULL on errors.
 
-decryptSecret()
----------------
+decryptSecret(`secret`)
+-----------------------
 Decrypt a encrypted secret and returns the value at runtime.
 The decryption will only work if the encryption and decryption happen on the same physical machine.
 There will be no logging with the decrypted secret during this step.
@@ -211,11 +205,14 @@ To create a encrypted secret see "README.txt".
 
 **Parameters**
 
-****:  *ecret encrypted secret as {@link String*,  
+**`secret`**:  *String*,  encrypted secret as String
 
+**Returns**
 
-mouseWheelDown(steps)
----------------------
+decrypted String
+
+mouseWheelDown(`steps`)
+-----------------------
 move the mouse pointer to the given target location and move the
 wheel the given steps down.
 
@@ -223,10 +220,10 @@ wheel the given steps down.
 
 **Parameters**
 
-**steps**,  the number of steps
+**`steps`**:  *Integer*,  the number of steps
 
-mouseWheelUp(steps)
--------------------
+mouseWheelUp(`steps`)
+---------------------
 move the mouse pointer to the given target location and move the
 wheel the given steps up.
 
@@ -234,10 +231,10 @@ wheel the given steps up.
 
 **Parameters**
 
-**steps**,  the number of steps
+**`steps`**:  *Integer*,  the number of steps
 
-logError(message)
------------------
+logError(`message`)
+-------------------
 make a error-log over Java backend into the log file.
 This won't stop the execution of the test case.
 The log entries can be configured over the properties "log4.properties"
@@ -246,9 +243,31 @@ The log entries can be configured over the properties "log4.properties"
 
 **Parameters**
 
-**message**,  as a String
+**`message`**:  *String*,  as a String
 
-logWarning(message)
+logWarning(`message`)
+---------------------
+make a debug-log over Java backend into the log file.
+The log entries can be configured over the properties "log4.properties"
+
+
+
+**Parameters**
+
+**`message`**:  *String*,  as a String
+
+logInfo(`message`)
+------------------
+make a info-log over Java backend into the log file.
+The log entries can be configured over the properties "log4.properties"
+
+
+
+**Parameters**
+
+**`message`**:  *String*,  as a String
+
+logDebug(`message`)
 -------------------
 make a debug-log over Java backend into the log file.
 The log entries can be configured over the properties "log4.properties"
@@ -257,27 +276,7 @@ The log entries can be configured over the properties "log4.properties"
 
 **Parameters**
 
-**message**,  as a String
+**`message`**:  *String*,  as a String
 
-logInfo(message)
-----------------
-make a info-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
-
-
-
-**Parameters**
-
-**message**,  as a String
-
-logDebug(message)
+class Environment
 -----------------
-make a debug-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
-
-
-
-**Parameters**
-
-**message**,  as a String
-

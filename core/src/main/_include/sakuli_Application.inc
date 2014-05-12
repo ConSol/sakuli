@@ -27,8 +27,10 @@
  *****************************************************************************************************/
 
 /**
- Represents an application.
- @constructor Application
+ * Represents an application.
+ * @class Application
+ * @param {String} `applicationNameOrPath` Path to the application file. Example: C:\Windows\system32\notepad.exe
+ * @param {Boolean} `optResumeOnException` Determines whether to ignore exceptions from this class. If this parameter is undefined, it will be false.
  */
 function Application(applicationNameOrPath, optResumeOnException) {
     if (undefined == optResumeOnException) {
@@ -38,86 +40,84 @@ function Application(applicationNameOrPath, optResumeOnException) {
 }
 
 /**
- Load an application
+ * Loads an application.
+ * @param {JavaObject} `javaObject`
+ * @param {Boolean} `resumeOnException`
  */
 function loadApplication(javaObject, resumeOnException) {
-
-    /** @namespace
-     @alias Application.ApplicationFunctions
-     */
     var that = {};
     var update;
 
     /**
      * Opens the created application.
-     * For loadtime intensiv application change the default sleep time with {@link setSleepTime(Integer)}.
+     * For application with a long load time you may need to change the default sleep time with setSleepTime(...).
      *
-     * @return this {@link Application}.
+     * @return this Application object.
      */
     that.open = function () {
         return update(that.javaObject.open());
     };
 
     /**
-     * focus the current application, if the application is in the background.
+     * Focuses the current application, if the application is in the background.
      *
-     * @return this {@link Application}.
+     * @return this Application object.
      */
     that.focus = function () {
         return update(that.javaObject.focus());
     };
 
     /**
-     * focus a specific window of the application.
+     * Focuses a specific window of the application.
      *
-     * @param windowNumber indemnifies the window
-     * @return this {@link Application}.
+     * @param `windowNumber` identifies the window
+     * @return this Application object.
      */
     that.focusWindow = function (windowNumber) {
         return update(that.javaObject.focusWindow(windowNumber));
     };
 
     /**
-     * close the already existing application.
+     * Closes the already existing application.
      *
-     * @return this {@link Application}.
+     * @return this Application object.
      */
     that.closeApp = function () {
         return update(that.javaObject.closeApp());
     };
 
     /**
-     * sets the sleep time in seconds of the application actions to handle with long loading times.
-     * The default sleep time is set to 1 seconds
+     * Sets the sleep time in seconds of the application actions to handle with long loading times.
+     * The default sleep time is set to 1 seconds.
      *
-     * @param seconds sleep time in seconds
-     * @return this {@link Application}.
+     * @param `seconds` sleep time in seconds
+     * @return this Application object.
      */
     that.setSleepTime = function (seconds) {
         return update(that.javaObject.setSleepTime(seconds));
     };
 
     /**
-     * creates and returns a {@link Region} object from the application.
+     * Creates and returns a Region object from the application.
      *
-     * @return this {@link Application}
+     * @return a Region object.
      */
     that.getRegion = function () {
         return loadRegion(that.javaObject.getRegion(), that.resumeOnException);
     };
 
     /**
-     * creats and returns a {@link Region} object from the specific window of the application.
+     * Creates and returns a Region object from a specific window of the application.
      *
-     * @param windowNumber indemnifies the window
-     * @return this {@link Application}
+     * @param `windowNumber` identifies the window
+     * @return a Region object.
      */
     that.getRegionForWindow = function (windowNumber) {
         return loadRegion(that.javaObject.getRegionForWindow(windowNumber), that.resumeOnException);
     };
 
     /**
-     * @return the name of the current application as {@link String}.
+     * @return the name of the current application.
      */
     that.getName = function () {
         return that.javaObject.getName();
