@@ -24,19 +24,19 @@ This function initializes the Sakuli object and sets the warning and critical ti
 
 an initialized Sakuli object.
 
-TestCaseWithImagePathArray(`warningTime, `criticalTime, picPathArray)
----------------------------------------------------------------------
+TestCaseWithImagePathArray(*, criticalTime, *)
+----------------------------------------------
 This function initializes the Sakuli object and sets the warning and critical time for this test case.
 
 
 
 **Parameters**
 
-**`warningTime**,  threshold in seconds`
+*****,  warningTime threshold in seconds
 
-**`criticalTime**,  threshold in seconds`
+**criticalTime**:  * {Integer*,  threshold in seconds
 
-**picPathArray**,  an Array of Paths to the folders containing all the pictures for these test cases.
+*****,  picPathArray an Array of Paths to the folders containing all the pictures for these test cases.
 
 **Returns**
 
