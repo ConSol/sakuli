@@ -37,6 +37,8 @@ public class SakuliProperties {
     public static final String INCLUDE_FOLDER = "sakuli.include.folder";
     public static final String LOG_FOLDER = "sakuli.log.folder";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
+    public static final String ENCRYPTION_INTERFACE_TEST_MODE = "sakuli.encryption.interface.testmode";
+    public static final String TEST_SUITE_ID = "testsuite.id";
 
     @Value("${" + TEST_SUITE_FOLDER + "}")
     private String testSuiteFolderPropertyValue;

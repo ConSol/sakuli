@@ -37,12 +37,12 @@ import java.util.Properties;
  */
 public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
 
-    private static final String TEST_SUITE_PROPERTY_FILE_APPENDER = File.separator + "testsuite.properties";
-    private static final String INCLUDE_PROPERTY_FILE_APPENDER = File.separator + "sakuli.properties";
+    protected static final String TEST_SUITE_PROPERTY_FILE_APPENDER = File.separator + "testsuite.properties";
+    protected static final String INCLUDE_PROPERTY_FILE_APPENDER = File.separator + "sakuli.properties";
     public static String TEST_SUITE_FOLDER_VALUE;
     public static String INCLUDE_FOLDER_VALUE;
 
-    //TODO TS WRITE TEST and config SakuliStarter to this logic
+    //TODO TS WRITE config SakuliStarter to this logic
 
     @Override
     protected void loadProperties(Properties props) throws IOException {
@@ -77,7 +77,7 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
                 props.put(key, value);
             }
         } catch (ConfigurationException | NullPointerException e) {
-            throw new RuntimeException("Error by reading the property file " + filePath);
+            throw new RuntimeException("Error by reading the property file '" + filePath + "'");
         }
 
     }
