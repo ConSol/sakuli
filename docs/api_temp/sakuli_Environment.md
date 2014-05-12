@@ -1,7 +1,6 @@
 Environment(`optResumeOnException`)
 -----------------------------------
-Represents an Environment
-CONSTRUCTOR: Environment
+CONSTRUCTOR: Environment - Represents an Environment
 
 
 **Parameters**

@@ -1,7 +1,6 @@
 Application(`applicationNameOrPath`, `optResumeOnException`)
 ------------------------------------------------------------
-Represents an application.
-CONSTRUCTOR: Application
+CONSTRUCTOR: Application - Represents an application.
 
 
 **Parameters**

@@ -33,8 +33,7 @@ _include("sakuli_Region.inc");
  *****************************************************************************************************/
 
 /**
- * Sets the current test case folder as default folder and calls TestCaseWithImagePathArray(...).
- * CONSTRUCTOR: TestCase
+ * CONSTRUCTOR: TestCase - Sets the current test case folder as default folder and calls TestCaseWithImagePathArray(...).
  * @param {Integer} `warningTime` threshold in seconds
  * @param {Integer} `criticalTime` threshold in seconds
  */
@@ -48,8 +47,7 @@ function TestCase(warningTime, criticalTime) {
 }
 
 /**
- * This function initializes the Sakuli object and sets the warning and critical time for this test case.
- * CONSTRUCTOR: TestCase
+ * CONSTRUCTOR: TestCase - This function initializes the Sakuli object and sets the warning and critical time for this test case.
  * @param {Integer} `warningTime` threshold in seconds
  * @param {Integer} `criticalTime` threshold in seconds
  * @param {String} `picPath` Path to the folder containing the pictures for these test cases.

@@ -27,8 +27,7 @@
  *****************************************************************************************************/
 
 /**
- * Represents a region.
- * CONSTRUCTOR: Region
+ * CONSTRUCTOR: Region - Represents a region.
  * @param {Boolean} `optResumeOnException` if this parameter is undefined, it will be false.
  */
 function Region(optResumeOnException) {
@@ -39,8 +38,7 @@ function Region(optResumeOnException) {
 }
 
 /**
- * Represents a region.
- * CONSTRUCTOR: Region
+ * CONSTRUCTOR: Region - Represents a region.
  * @param {Boolean} `optResumeOnException` if this parameter is undefined, it will be false.
  * @param {String} `imageName` name of the image pattern
  */
@@ -52,8 +50,7 @@ function RegionImage(imageName, optResumeOnException) {
 };
 
 /**
- * Represents a region.
- * CONSTRUCTOR: Region
+ * CONSTRUCTOR: Region - Represents a region.
  * @param {Boolean} `optResumeOnException` if this parameter is undefined, it will be false.
  * @param {Integer} `x` – x position of a rectangle.
  * @param {Integer} `y` – y position of a rectangle.

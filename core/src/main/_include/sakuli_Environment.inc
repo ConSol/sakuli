@@ -27,8 +27,7 @@
  *****************************************************************************************************/
 
 /**
- * Represents an Environment
- * CONSTRUCTOR: Environment
+ * CONSTRUCTOR: Environment - Represents an Environment
  * @param {Boolean} `optResumeOnException` if this parameter is undefined, it will be false.
  */
 function Environment(optResumeOnException) {

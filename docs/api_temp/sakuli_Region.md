@@ -1,7 +1,6 @@
 Region(`optResumeOnException`)
 ------------------------------
-Represents a region.
-CONSTRUCTOR: Region
+CONSTRUCTOR: Region - Represents a region.
 
 
 **Parameters**
@@ -10,8 +9,7 @@ CONSTRUCTOR: Region
 
 RegionImage(`optResumeOnException`, `imageName`)
 ------------------------------------------------
-Represents a region.
-CONSTRUCTOR: Region
+CONSTRUCTOR: Region - Represents a region.
 
 
 **Parameters**
@@ -22,8 +20,7 @@ CONSTRUCTOR: Region
 
 RegionRectangle(`optResumeOnException`, `x`, `y`, `w`, `h`)
 -----------------------------------------------------------
-Represents a region.
-CONSTRUCTOR: Region
+CONSTRUCTOR: Region - Represents a region.
 
 
 **Parameters**
