@@ -1,5 +1,10 @@
 # Sakuli Manual
 
+## Proxy settings
+To define your company's proxy within Sahi, open *%SAKULI_HOME%/sahi/userdata/config/userdata.properties* : 
+
+For information on how to define the proxy settings, please refer to [Configuring an External Proxy](http://sahi.co.in/w/configuring-an-external-proxy) on the Sahi documentation. 
+
 ## Connecting to Sakuli clients
 
 ### Windows 
@@ -28,31 +33,48 @@ As described in the [Windows 7 installation manual](../docs/installation-windows
 
 ### Ubuntu
 
+## Proxy settings
+FIXME
 
 
+## Secret De-/Encryption
+### Encryption
 
-## Encryption of a secret
+(You probably came from [Installation (Windows 7)](../docs/installation-windows.md) or [Installation (Ubuntu)](../docs/installation-ubuntu.md)- if so, do the following section and jump back to the link mentioned at the end.)
 
-If some test cases have the need to encrypt a secret, you have to do the following steps:
+To ensure that secrets (passwords, PIN, etc) never get logged in plain text, they can be encrypted on the command line; Sakuli then decrypts them on runtime (for more information on how to do this, refer to FIXME) to use them on tests. There is no (quick) way to decrypt secrets again on the command line. This is of course no high-secure encryption mechanism but rather a way to obscure things not everybody should see. 
 
-1. Encrypt your secret with the following command in the command line of your system:
+For the encryption, Sakuli uses among other parameters the MAC address of a given network interface card as a salt. When you set up a new Sakuli client, the interface name has to be defined in _sakuli.properties_.    
 
-    * unix
+To determine the correct name of an encryption interface do the following steps on _cmd.exe_ (Windows) or the Unix Shell: 
 
-        ```
-        java -classpath sakuli.jar:lib/* de.consol.sakuli.starter.SakuliStarter -encrypt yourSecrect -interface eth0
-        ```
+* Windows:  
 
-    * windows
+			cd %SAKULI_HOME%\bin
+			encrypt_password.bat somesecret eth0
+		
+	* If "eth0" points to an interface with no valid MAC address (e.g. Virtual adapters), you will get a long error message starting with "Cannot resolve mac address". 
+	 ![enc_error](../docs/pics/w_enc_error.jpg) 
+	* Select an interface with a valid MAC (here: eth3) and start the script again. The output should be now something like 
+	 ![encrypted](../docs/pics/w_encrypted.jpg) 
+	* Remember the Interface name. 
 
-         ```
-         java -classpath sakuli.jar;lib\* de.consol.sakuli.starter.SakuliStarter -encrypt yourSecrect -interface eth0
-         ```
+* Linux:
 
-2. Copy the encrypted secret in your clipoard.
+		java -classpath sakuli.jar:lib/* de.consol.sakuli.starter.SakuliStarter -encrypt yourSecrect -interface eth0
 
-3. Paste the encrypted secret in your test case into the function:
+If you came here during the [Installation on Windows 7](../docs/installation-windows.md) or [on Ubuntu](../docs/installation-ubuntu.md), go back there now. 
 
-    ```
-        sakuli.decryptSecret("yourEncryptedSecrect");
-    ```
+Otherwise: the red arrow shows the encrypted string, which you can copy into the clipboard. 
+
+### Decryption 
+
+To decrypt a secret, use one of the following methods:
+ 
+* [pasteAndDecrypt](./docs/api/sakuli_Environment.md#pasteanddecrypttext)
+* [typeAndDecrypt](./docs/api/sakuli_Environment.md#typeanddecrypttext-optmodifiers)
+* [decryptSecret](./docs/api/sakuli_Environment.md#decryptsecretsecret)
+
+## Making tests more reliable
+### Killing orphaned processes 
+FIXME killproc.vbs

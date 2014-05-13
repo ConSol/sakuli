@@ -7,11 +7,12 @@
 ### Short version
 **Sakuli simulates user actions** on graphical user interfaces (web, fat client, citrix, …), and provides the obtained information (runtime, result, screenshots) to **Nagios**-compatible monitoring systems. 
 
-fixme: Grafik mit Nagios und Sakui
 ###  Long version 
 The **Sakuli** project brings together two Open-Source end-to-end testing tools which perfectly fit together: **Sahi** (http://www.sahi.co.in/) for web-based tests (injecting JavaScript code into the browser), as well as the screenshot-based testing tool **Sikuli** (http://www.sikuli.org), which allows the execution of keyboard and mouse actions on screen areas that have been defined by previously recorded screenshots and are recognized using the OpenCV engine. 
 
 Sakuli accesses both tools via its Java API and makes it possible to use them alternately, line by line. For example, web tests can be done very performant with Sahi (where a screenshot-based approach would be at best the second choice), whereas "off-DOM"-content can be catched with Sikuli. Whenever a web test comes into a situation which Sahi can't handle (e.g. a PIN dialogue for a smartcard), use a Sikuli command. On the other hand, pure tests of fat client applications can be easily be setup by using only the Sikuli functions of Sakuli.
+
+![sakuli-api](./docs/pics/sakuli_api.jpg) 
 
 ## Backgrund: the history of Sakuli
 First we only wanted to have the possibility to integrate Sahi web tests into Nagios. This was done with a simple VBscript wrapper (thus, only Windows...), which called Sahi with the correct parameters, and sent the results to Nagios via [NSCA](http://exchange.nagios.org/directory/Addons/Passive-Checks/NSCA--2D-Nagios-Service-Check-Acceptor/details). This brought Sahi tests into the well-known format of OK/WARNING/CRITICAL states in Nagios, including performance data of the test runtimes, which could be feeded into PNP4Nagios. 
