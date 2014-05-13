@@ -448,10 +448,10 @@ function loadRegion(javaObject, resumeOnException) {
         return that.javaObject.getRegionImpl();
     }
 
-    /**
-     * @param `modifiedJavaObject`
+    /*
+     * param: `modifiedJavaObject`
      * updates the inherit java object after modifaction with getRegionImpl.
-     * @returns {*}
+     * returns: {*}
      */
     that.setRegionImpl = function (modifiedJavaObject) {
         that.javaObject.setRegionImpl(modifiedJavaObject);

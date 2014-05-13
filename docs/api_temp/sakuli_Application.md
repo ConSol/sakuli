@@ -38,7 +38,7 @@ Focuses a specific window of the application.
 
 **Parameters**
 
-**`windowNumber`**,  identifies the window
+**`windowNumber`**:  *Integer*,  identifies the window
 
 **Returns**
 
@@ -63,7 +63,7 @@ The default sleep time is set to 1 seconds.
 
 **Parameters**
 
-**`seconds`**,  sleep time in seconds
+**`seconds`**:  *Integer*,  sleep time in seconds
 
 **Returns**
 
@@ -87,7 +87,7 @@ Creates and returns a Region object from a specific window of the application.
 
 **Parameters**
 
-**`windowNumber`**,  identifies the window
+**`windowNumber`**:  *Integer*,  identifies the window
 
 **Returns**
 
