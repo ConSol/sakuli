@@ -18,7 +18,10 @@
 
 package de.consol.sakuli.starter;
 
+import de.consol.sakuli.BaseTest;
 import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.starter.proxy.SahiProxy;
@@ -34,19 +37,24 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.net.ConnectException;
+import java.nio.file.Path;
 import java.util.Date;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 
-public class SahiConnectorTest {
+public class SahiConnectorTest extends BaseTest {
     @Mock
     private SakuliExceptionHandler sakuliExceptionHandler;
     @Mock
     private SahiProxy sahiProxy;
     @Mock
     private TestSuite testSuiteMock;
+    @Mock
+    private SakuliProperties sakuliProperties;
+    @Mock
+    private SahiProxyProperties sahiProxyProperties;
     @Spy
     @InjectMocks
     private SahiConnector testling;
@@ -103,12 +111,16 @@ public class SahiConnectorTest {
 
     @Test
     public void testGetIncludFolderJsPath() throws Exception {
+        Path pathMock = mock(Path.class);
+        when(sakuliProperties.getIncludeFolder()).thenReturn(pathMock);
+        when(pathMock.toAbsolutePath()).thenReturn(pathMock);
+
         if (File.separator.equals("/")) {
-            when(testSuiteMock.getIncludeFolderPath()).thenReturn("/sakuli/src/main/include");
+            when(pathMock.toString()).thenReturn("/sakuli/src/main/include");
             String result = testling.getIncludeFolderJsPath();
             Assert.assertEquals("/sakuli/src/main/include/sakuli.inc", result);
         } else {
-            when(testSuiteMock.getIncludeFolderPath()).thenReturn("D:\\sakuli\\src\\main\\_include");
+            when(pathMock.toString()).thenReturn("D:\\sakuli\\src\\main\\_include");
             String result = testling.getIncludeFolderJsPath();
             Assert.assertEquals("D:\\\\sakuli\\\\src\\\\main\\\\_include\\\\sakuli.inc", result);
         }
@@ -117,7 +129,7 @@ public class SahiConnectorTest {
     @Test
     public void testReconnectOK() throws Throwable {
         testling.countConnections = 3;
-        testling.maxConnectTries = 3;
+        when(sahiProxyProperties.getMaxConnectTries()).thenReturn(3);
         testling.reconnect(new Exception("Test"));
         verify(testling).startSahiTestSuite();
     }
@@ -125,7 +137,7 @@ public class SahiConnectorTest {
     @Test(expectedExceptions = InterruptedException.class)
     public void testReconnectFAILURE() throws Throwable {
         testling.countConnections = 4;
-        testling.maxConnectTries = 3;
+        when(sahiProxyProperties.getMaxConnectTries()).thenReturn(3);
         testling.reconnect(new Exception("Test"));
         verify(testling, never()).startSahiTestSuite();
     }

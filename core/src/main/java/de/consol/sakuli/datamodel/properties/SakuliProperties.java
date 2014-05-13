@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.utils;
+package de.consol.sakuli.datamodel.properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,21 +34,12 @@ import java.nio.file.Paths;
 public class SakuliProperties {
 
     // TODO TS go on here and centralize all properties, set TEST_SUITE_FOLDER and INCLUDE_FOLDER over system Properies or before Context runs up.
-    public static final String TEST_SUITE_FOLDER = "sakuli.testsuite.folder";
     public static final String INCLUDE_FOLDER = "sakuli.include.folder";
     public static final String LOG_FOLDER = "sakuli.log.folder";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
     public static final String ENCRYPTION_INTERFACE_TEST_MODE = "sakuli.encryption.interface.testmode";
-    public static final String TEST_SUITE_ID = "testsuite.id";
-    public static final String TEST_SUITE_PROPERTIES_FILE_NAME = "testsuite.properties";
-    public static final String TEST_SUITE_PROPERTIES_FILE_APPENDER = File.separator + TEST_SUITE_PROPERTIES_FILE_NAME;
-    public static final String TEST_SUITE_SUITE_FILE_NAME = "testsuite.suite";
-    public static final String TEST_SUITE_SUITE_FILE_APPENDER = File.separator + TEST_SUITE_SUITE_FILE_NAME;
     public static final String SAKULI_PROPERTIES_FILE_APPENDER = File.separator + "sakuli.properties";
 
-    @Value("${" + TEST_SUITE_FOLDER + "}")
-    private String testSuiteFolderPropertyValue;
-    private Path testSuiteFolder;
     @Value("${" + INCLUDE_FOLDER + "}")
     private String includeFolderPropertyValue;
     private Path includeFolder;
@@ -59,31 +50,11 @@ public class SakuliProperties {
     @Value("${" + LOG_PATTERN + "}")
     private String logPattern;
 
-    //TODO TS make separate testsuitepropertyClass ?
-    @Value("${testsuite.id}")
-    private String testSuiteId;
 
     @PostConstruct
     public void initFolders() {
-        testSuiteFolder = Paths.get(testSuiteFolderPropertyValue);
         includeFolder = Paths.get(includeFolderPropertyValue);
         logFolder = Paths.get(logFolderPropertyValue);
-    }
-
-    public String getTestSuiteFolderPropertyValue() {
-        return testSuiteFolderPropertyValue;
-    }
-
-    public void setTestSuiteFolderPropertyValue(String testSuiteFolderPropertyValue) {
-        this.testSuiteFolderPropertyValue = testSuiteFolderPropertyValue;
-    }
-
-    public Path getTestSuiteFolder() {
-        return testSuiteFolder;
-    }
-
-    public void setTestSuiteFolder(Path testSuiteFolder) {
-        this.testSuiteFolder = testSuiteFolder;
     }
 
     public String getIncludeFolderPropertyValue() {
@@ -124,13 +95,5 @@ public class SakuliProperties {
 
     public void setLogPattern(String logPattern) {
         this.logPattern = logPattern;
-    }
-
-    public String getTestSuiteId() {
-        return testSuiteId;
-    }
-
-    public void setTestSuiteId(String testSuiteId) {
-        this.testSuiteId = testSuiteId;
     }
 }

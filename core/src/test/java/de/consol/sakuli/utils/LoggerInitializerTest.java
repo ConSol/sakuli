@@ -23,6 +23,7 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
 import de.consol.sakuli.BaseTest;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.loader.BeanLoader;
 import org.mockito.InjectMocks;

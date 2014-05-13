@@ -19,7 +19,7 @@
 package de.consol.sakuli.actions.screenbased;
 
 import de.consol.sakuli.actions.settings.ScreenBasedSettings;
-import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -40,7 +40,7 @@ public class ScreenBasedSettingsTest {
             testling.setDefaults();
             Assert.assertTrue(false, "eception should thrown");
         } catch (InvalidParameterException e) {
-            Assert.assertTrue(e.getMessage().contains("the property '" + TestSuite.AUTO_HIGHLIGHT_SEC_PROPERTY));
+            Assert.assertTrue(e.getMessage().contains("the property '" + TestSuiteProperties.AUTO_HIGHLIGHT_SEC));
         }
 
     }

@@ -19,7 +19,8 @@
 package de.consol.sakuli.actions.settings;
 
 import de.consol.sakuli.datamodel.TestSuite;
-import de.consol.sakuli.utils.SakuliProperties;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
+import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sikuli.basics.Settings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -35,9 +36,9 @@ public class ScreenBasedSettings extends Settings {
 
     @Value("${" + SakuliProperties.INCLUDE_FOLDER + "}")
     private String includeFolderPath;
-    @Value("${" + TestSuite.AUTO_HIGHLIGHT_PROPERTY + "}")
+    @Value("${" + TestSuiteProperties.AUTO_HIGHLIGHT_ENABLED + "}")
     private boolean autoHighlightEnabled;
-    @Value("${" + TestSuite.AUTO_HIGHLIGHT_SEC_PROPERTY + "}")
+    @Value("${" + TestSuiteProperties.AUTO_HIGHLIGHT_SEC + "}")
     private float autoHighlightSeconds;
     @Value("${" + TestSuite.CLICK_DELAY_PROPERTY + "}")
     private double defClickDelay;
@@ -66,7 +67,7 @@ public class ScreenBasedSettings extends Settings {
             /**
              * because of the mehtode {@link org.sikuli.script.ScreenHighlighter#closeAfter(float)}
              * */
-            throw new InvalidParameterException("the property '" + TestSuite.AUTO_HIGHLIGHT_SEC_PROPERTY + "' has to be greater as 1, but was " + autoHighlightSeconds);
+            throw new InvalidParameterException("the property '" + TestSuiteProperties.AUTO_HIGHLIGHT_SEC + "' has to be greater as 1, but was " + autoHighlightSeconds);
         }
         DefaultHighlightTime = autoHighlightSeconds;
         WaitAfterHighlight = 0.1f;

@@ -24,16 +24,18 @@
     <context:annotation-config/>
     <context:component-scan base-package="de.consol.sakuli.utils"/>
 
+    <bean class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
 
     <bean id="propertyResolver"
           class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
         <property name="fileEncoding" value="UTF-8"/>
         <property name="systemPropertiesMode" value="2"/>
+        <property name="loadSakuliProperties" value="false"/>
+        <property name="loadTestSuiteProperties" value="true"/>
         <property name="locations">
             <list>
-                <value>classpath:JUnit-db.properties</value>
+                <!-- override the properties from the test-suite folder and so on-->
                 <value>classpath:JUnit-sakuli.properties</value>
-                <value>classpath:JUnit-sahi.properties</value>
             </list>
         </property>
     </bean>

@@ -19,8 +19,8 @@
 package de.consol.sakuli.starter;
 
 import de.consol.sakuli.BaseTest;
-import de.consol.sakuli.starter.proxy.SahiProxy;
-import de.consol.sakuli.utils.SakuliProperties;
+import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
+import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -50,7 +50,7 @@ public class SakuliStarterTest extends BaseTest {
         String log = "";
         log = SakuliStarter.checkSahiProxyHomeAndSetContextVariables(TEST_FOLDER_PATH, log);
         assertEquals(absoluteSahiPath, SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE);
-        assertEquals(log, "\nset property '" + SahiProxy.SAHI_PROXY_HOME + "' to \"" + absoluteSahiPath + "\"");
+        assertEquals(log, "\nset property '" + SahiProxyProperties.PROXY_HOME_FOLDER + "' to \"" + absoluteSahiPath + "\"");
     }
 
     @Test(expectedExceptions = FileNotFoundException.class, expectedExceptionsMessageRegExp = "sahi folder .* does not exist!")
@@ -64,7 +64,7 @@ public class SakuliStarterTest extends BaseTest {
         String log = "";
         log = SakuliStarter.checkTestSuiteFolderAndSetContextVariables(TEST_FOLDER_PATH, log);
         assertEquals(absoluteTestSuitePath, SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE);
-        assertEquals(log, "\nset property '" + SakuliProperties.TEST_SUITE_FOLDER + "' to \"" + absoluteTestSuitePath + "\"");
+        assertEquals(log, "\nset property '" + TestSuiteProperties.TEST_SUITE_FOLDER + "' to \"" + absoluteTestSuitePath + "\"");
     }
 
     @Test(expectedExceptions = FileNotFoundException.class, expectedExceptionsMessageRegExp = "sakuli test suite folder .* does not exist!")

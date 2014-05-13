@@ -19,10 +19,10 @@
 package de.consol.sakuli.datamodel;
 
 import de.consol.sakuli.dao.DaoTestSuite;
+import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliException;
-import de.consol.sakuli.utils.SakuliProperties;
 import net.sf.sahi.util.FileNotFoundRuntimeException;
 import net.sf.sahi.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,58 +49,27 @@ import java.util.Map;
 @Component
 public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteState> {
 
-    public static final String SUITE_FILE_NAME = "testsuite.suite";
-
     //Property names
     public static final String TYPE_DELAY_PROPERTY = "sakuli.screenbased.typeDelay";
     public static final String CLICK_DELAY_PROPERTY = "sakuli.screenbased.clickDelay";
     public static final String SCREENSHOT_FOLDER_PROPERTY = "sakuli.screenshot.dir";
     public static final String SCREENSHOT_FORMAT_PROPERTY = "sakuli.screenshot.format";
-    public static final String SUITE_FOLDER_PROPERTY = "test.suite.folder";
-    public static final String SUITE_ID_PROPERTY = "testsuite.id";
-    public static final String TAKE_SCREENSHOT_PROPERTY = "testsuite.takeScreenShots";
-    public static final String AUTO_HIGHLIGHT_PROPERTY = "testsuite.autoHighlight.enabled";
-    public static final String AUTO_HIGHLIGHT_SEC_PROPERTY = "testsuite.autoHighlight.seconds";
-    public static final String BROWSER_PROPERTY = "testsuite.browser";
-    public static final String SUITE_NAME_PROPERTY = "testsuite.name";
-    public static final String WARNING_TIME_PROPERTY = "testsuite.warningTime";
-    public static final String CRITICAL_TIME_PROPERTY = "testsuite.criticalTime";
-    public static final String IS_BY_RESUME_ON_EXCEPTION_LOGGING_PROPERTY = "testsuite.resumeOnException.logException";
+
+
     public static final String LOAD_TEST_CASES_AUTOMATIC_PROPERTY = "saklui.load.testcases.automatic";
 
 
     @Autowired
     private DaoTestSuite dao;
-    /**
-     * value from the set system property in {@link de.consol.sakuli.starter.SakuliStarter#main(String[])}
-     */
-    @Value("${" + SUITE_FOLDER_PROPERTY + "}")
-    private String folder;
-    /**
-     * Value of the javascript include folder, per default "_inlcude" in the projekt dir
-     */
-    @Value("${" + SakuliProperties.INCLUDE_FOLDER + "}")
-    private String includeFolderPath;
-    /**
-     * values from the "testsuiteXX.properties" file
-     */
-    @Value("${" + SUITE_ID_PROPERTY + "}")
+
     private String id;
-    @Value("${" + IS_BY_RESUME_ON_EXCEPTION_LOGGING_PROPERTY + "}")
-    private boolean isByResumOnExceptionLogging;
-    @Value("${" + TAKE_SCREENSHOT_PROPERTY + "}")
+    private boolean byResumOnExceptionLogging;
     private boolean takeScreenshots;
     @Value("${" + SCREENSHOT_FOLDER_PROPERTY + "}")
     private String screenShotFolderPath;
-    //Browser-Info
-    @Value("${" + BROWSER_PROPERTY + "}")
+    //browser name where to start the test execution
     private String browserName;
-    @Value("${" + SUITE_NAME_PROPERTY + "}")
-    private String injected_name;
-    @Value("${" + WARNING_TIME_PROPERTY + "}")
-    private int injected_warningTime;
-    @Value("${" + CRITICAL_TIME_PROPERTY + "}")
-    private int injected_criticalTime;
+
     @Value("${" + LOAD_TEST_CASES_AUTOMATIC_PROPERTY + ":true}") //default = TRUE
     private boolean loadTestCasesAutomatic = true;
     //additional browser infos from sahi proxy
@@ -112,6 +81,21 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     private int dbJobPrimaryKey;
     private Map<String, TestCase> testCases;
 
+    public TestSuite() {
+    }
+
+    @Autowired
+    public TestSuite(TestSuiteProperties properties) {
+        id = properties.getTestSuiteId();
+        name = properties.getTestSuiteName();
+        warningTime = properties.getWarningTime();
+        criticalTime = properties.getCriticalTime();
+        testSuiteFolder = properties.getTestSuiteFolder();
+        testSuiteFile = properties.getTestSuiteSuiteFile();
+        browserName = properties.getBrowserName();
+        takeScreenshots = properties.isTakeScreenshots();
+        byResumOnExceptionLogging = properties.isByResumOnExceptionLogging();
+    }
 
     /**
      * initialize the test suite object
@@ -121,12 +105,9 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
      */
     @PostConstruct
     public void init() throws IOException, SakuliException {
-        this.name = injected_name;
-        this.warningTime = injected_warningTime;
-        this.criticalTime = injected_criticalTime;
-
         logger.info("Initialize test suite");
         state = TestSuiteState.RUNNING;
+
         setFileBase();
         testCases = loadTestCases();
         startDate = new Date();
@@ -222,11 +203,14 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     private HashMap<String, TestCase> loadTestCases() throws SakuliException, IOException {
         HashMap<String, TestCase> tcMap = new HashMap<>();
         if (loadTestCasesAutomatic) {
+            if (!Files.exists(testSuiteFile)) {
+                throw new FileNotFoundException("Can not find specified " + TestSuiteProperties.TEST_SUITE_SUITE_FILE_NAME + " file at \"" + testSuiteFolder.toString() + "\"");
+            }
             String testSuiteString = Utils.readFileAsString(testSuiteFile.toFile());
             logger.info(
-                    "\n--- TestSuite initialization: read test suite information of file \"" + testSuiteFile.toFile().getAbsolutePath() + "\" ----\n"
+                    "\n--- TestSuite initialization: read test suite information of file \"" + testSuiteFile.toAbsolutePath().toString() + "\" ----\n"
                             + testSuiteString
-                            + "\n --- End of File \"" + testSuiteFile.toFile().getAbsolutePath() + "\" ---"
+                            + "\n --- End of File \"" + testSuiteFile.toAbsolutePath().toString() + "\" ---"
             );
 
             //handle each line of the .suite file
@@ -249,7 +233,7 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
                         //set the Map with the test case id as key
                         tcMap.put(tc.getId(), tc);
                     } else {
-                        throw new SakuliException("test case path \"" + tcFile.toFile().getAbsolutePath() + "\" doesn't exists - check your \"testsuite.suite\" file");
+                        throw new SakuliException("test case path \"" + tcFile.toFile().getAbsolutePath() + "\" doesn't exists - check your \"" + TestSuiteProperties.TEST_SUITE_SUITE_FILE_NAME + "\" file");
                     }
                 }
             }
@@ -263,16 +247,6 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
      * @throws FileNotFoundRuntimeException
      */
     private void setFileBase() throws IOException {
-        testSuiteFolder = Paths.get(folder).normalize();
-        if (!Files.exists(testSuiteFolder)) {
-            throw new FileNotFoundException("Can not find specified test suite base folder \"" + testSuiteFolder.toFile().getCanonicalFile() + "\"");
-        }
-        if (loadTestCasesAutomatic) {
-            testSuiteFile = Paths.get(testSuiteFolder.toFile().getCanonicalPath() + File.separator + SUITE_FILE_NAME);
-            if (!Files.exists(testSuiteFile)) {
-                throw new FileNotFoundException("Can not find specified " + SUITE_FILE_NAME + " file at \"" + testSuiteFolder.toFile().getCanonicalFile() + "\"");
-            }
-        }
         screenShotFolder = Paths.get(screenShotFolderPath).normalize();
 
     }
@@ -287,13 +261,6 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
 
     public String getAbsolutePathOfTestSuiteFile() {
         return testSuiteFile.toAbsolutePath().toString();
-    }
-
-    /**
-     * returns the path tot the include folder *
-     */
-    public String getIncludeFolderPath() {
-        return includeFolderPath;
     }
 
     public Path getTestSuiteFolder() {
@@ -325,7 +292,7 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     }
 
     public boolean isByResumOnExceptionLogging() {
-        return isByResumOnExceptionLogging;
+        return byResumOnExceptionLogging;
     }
 
     public Path getScreenShotFolderPath() {

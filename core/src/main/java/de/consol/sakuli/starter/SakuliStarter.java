@@ -21,11 +21,12 @@ package de.consol.sakuli.starter;
 import de.consol.sakuli.actions.environment.CipherUtil;
 import de.consol.sakuli.dao.DaoTestSuite;
 import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
+import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import de.consol.sakuli.exceptions.SakuliProxyException;
-import de.consol.sakuli.starter.proxy.SahiProxy;
-import de.consol.sakuli.utils.SakuliProperties;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
@@ -96,7 +97,7 @@ public class SakuliStarter {
                  */
                 try {
                     logger.info("Start Sakuli-Test-Suite in folder \""
-                            + beanFacorty.getBean(SakuliProperties.class).getTestSuiteFolder().toAbsolutePath().toString()
+                            + beanFacorty.getBean(TestSuiteProperties.class).getTestSuiteFolder().toAbsolutePath().toString()
                             + "\"");
                     SahiConnector sahiConnector = beanFacorty.getBean(SahiConnector.class);
 
@@ -182,18 +183,18 @@ public class SakuliStarter {
      */
     protected static String checkTestSuiteFolderAndSetContextVariables(String testSuiteFolderPath, String tempLogCache) throws FileNotFoundException {
         Path testSuiteFolder = Paths.get(testSuiteFolderPath);
-        Path propertyFile = Paths.get(testSuiteFolderPath + SakuliProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER);
-        Path suiteFile = Paths.get(testSuiteFolderPath + SakuliProperties.TEST_SUITE_SUITE_FILE_APPENDER);
+        Path propertyFile = Paths.get(testSuiteFolderPath + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER);
+        Path suiteFile = Paths.get(testSuiteFolderPath + TestSuiteProperties.TEST_SUITE_SUITE_FILE_APPENDER);
 
         if (!Files.exists(testSuiteFolder)) {
             throw new FileNotFoundException("sakuli test suite folder \"" + testSuiteFolderPath + "\" does not exist!");
         } else if (!Files.exists(propertyFile)) {
-            throw new FileNotFoundException("property file \"" + SakuliProperties.TEST_SUITE_PROPERTIES_FILE_NAME + "\" does not exist in folder: " + testSuiteFolderPath);
+            throw new FileNotFoundException("property file \"" + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_NAME + "\" does not exist in folder: " + testSuiteFolderPath);
         } else if (!Files.exists(suiteFile)) {
-            throw new FileNotFoundException("suite file \"" + SakuliProperties.TEST_SUITE_SUITE_FILE_NAME + "\" does not exist in folder: " + testSuiteFolderPath);
+            throw new FileNotFoundException("suite file \"" + TestSuiteProperties.TEST_SUITE_SUITE_FILE_NAME + "\" does not exist in folder: " + testSuiteFolderPath);
         }
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = testSuiteFolder.toAbsolutePath().toString();
-        return tempLogCache + "\nset property '" + SakuliProperties.TEST_SUITE_FOLDER + "' to \"" + SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE + "\"";
+        return tempLogCache + "\nset property '" + TestSuiteProperties.TEST_SUITE_FOLDER + "' to \"" + SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE + "\"";
     }
 
     /**
@@ -227,7 +228,7 @@ public class SakuliStarter {
             throw new FileNotFoundException("sahi folder \"" + sahiProxyHomePath + "\" does not exist!");
         }
         SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = sahiFolder.toAbsolutePath().toString();
-        return tempLogCache + "\nset property '" + SahiProxy.SAHI_PROXY_HOME + "' to \"" + SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE + "\"";
+        return tempLogCache + "\nset property '" + SahiProxyProperties.PROXY_HOME_FOLDER + "' to \"" + SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE + "\"";
     }
 
 

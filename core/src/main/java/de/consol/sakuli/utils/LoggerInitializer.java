@@ -21,6 +21,7 @@ package de.consol.sakuli.utils;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
