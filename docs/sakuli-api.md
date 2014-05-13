@@ -59,4 +59,4 @@ __Adds a step over the java backend into the current test case and stores it to 
 >`warningTime`
 >Time in sec. for a warning message
 
-[1]: http://htmlpreview.github.io/?https://github.com/ConSol/sakuli/blob/master/docs/api/index.html
+[1]: https://github.com/ConSol/sakuli/tree/master/docs/api/
