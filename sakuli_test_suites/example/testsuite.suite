@@ -1,6 +1,3 @@
-// use "//" to disable single testcases
-//
-// ... define your tescase like:
-// folder-of-testcase http://www.startURL.de
-//
+// format: 
+// testcase_folder/testcase.sah http://www.starturl.de
 demo_win7/sakuli_demo.sah http://labs.consol.de/
