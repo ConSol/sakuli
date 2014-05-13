@@ -2,7 +2,7 @@ Sakuli Api
 ==========
 
 This page gives an overview about the structure behinde Sakuli and the most important functions of Sakuli.
-Use the [Sakuli-API][1] get further informations about the features of Sakuli.
+Use the [Sakuli-API][1] to get further informations about the features of Sakuli.
 
 
 Command structure
