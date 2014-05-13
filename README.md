@@ -80,3 +80,20 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 
 [How to prepare a new release](./docs/development/how-to-release.md)
 
+## Help
+In case you have any questions or requests for help, feel free to get in contact with us! 
+The Sakuli team members are reachable on the email address [sakuli@consol.de](mailto:sakuli@consol.de).
+
+The company behind Sakuli: 
+
+*ConSol\* Consulting & Solutions Software GmbH*
+
+*Franziskanerstr. 38*
+
+*D-81669 München*
+
+*Tel. +49-89-45841-100*
+
+*Fax +49-89-45841-111*
+
+*Homepage: http://www.consol.de E-Mail: [info@consol.de](info@consol.de)*

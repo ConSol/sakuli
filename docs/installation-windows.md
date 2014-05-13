@@ -45,7 +45,7 @@ ClearType ("antialiasing" / "Font Smoothing"), is a technology that is used to d
 #### RDP related settings ####
 The following steps have only to be done if you are accessing the Sakuli Client with RDP. 
 ##### Disable Clipboard Sharing #####
-The "paste" function of Sakuli uses the clipboard at runtime to decrypt and paste passwords. For this reason, the clipboard exchange of the Sakuli client and the RDP client should be suppressed in the settings tab of your **local Remote Desktop client**:![visualeffects](../docs/pics/w_clipboard.jpg)
+The "paste" function of Sakuli uses the clipboard at runtime to decrypt and paste passwords. For this reason, the clipboard exchange of the Sakuli client and the RDP client should be suppressed in the settings tab of your **local Remote Desktop client**:![clipboard](../docs/pics/w_clipboard.jpg)
 This can be set globally in the registry **of your local host**: * "regedit"* [ HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client ]* "DisableDriveRedirection" (DWORD) => "1" 
 
 ##### Disable the "GUI-less" mode #####
