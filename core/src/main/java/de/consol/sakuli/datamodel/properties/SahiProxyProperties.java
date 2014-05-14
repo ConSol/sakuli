@@ -26,8 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * @author tschneck
- *         Date: 14.05.14
+ * @author tschneck Date: 14.05.14
  */
 @Component
 public class SahiProxyProperties {
@@ -38,7 +37,6 @@ public class SahiProxyProperties {
     public static final String MAX_CONNECT_TRIES = "sahi.proxy.maxConnectTries";
     public static final String RECONNECT_SECONDS = "sahi.proxy.reconnectSeconds";
 
-    //Values are defined in the the property file "sahi.properties"
     @Value("${" + PROXY_HOME_FOLDER + "}")
     private String sahiHomeValue;
     @Value("${" + PROXY_CONFIG_FOLDER + "}")

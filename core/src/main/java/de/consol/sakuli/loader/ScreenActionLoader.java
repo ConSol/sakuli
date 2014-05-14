@@ -34,4 +34,6 @@ public interface ScreenActionLoader extends BaseActionLoader {
     ScreenshotActions getScreenshotActions();
 
     BaseActionLoader getBaseLoader();
+
+    void loadSettingDefaults();
 }

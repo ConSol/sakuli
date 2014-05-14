@@ -43,15 +43,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author tschneck
- *         Date: 10.06.13
+ * @author tschneck Date: 10.06.13
  */
 @Component
 public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteState> {
 
     //Property names
-    public static final String TYPE_DELAY_PROPERTY = "sakuli.screenbased.typeDelay";
-    public static final String CLICK_DELAY_PROPERTY = "sakuli.screenbased.clickDelay";
     public static final String SCREENSHOT_FOLDER_PROPERTY = "sakuli.screenshot.dir";
     public static final String SCREENSHOT_FORMAT_PROPERTY = "sakuli.screenshot.format";
 
@@ -64,7 +61,6 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
 
     private String id;
     private boolean byResumOnExceptionLogging;
-    private boolean takeScreenshots;
     @Value("${" + SCREENSHOT_FOLDER_PROPERTY + "}")
     private String screenShotFolderPath;
     //browser name where to start the test execution
@@ -93,15 +89,11 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         testSuiteFolder = properties.getTestSuiteFolder();
         testSuiteFile = properties.getTestSuiteSuiteFile();
         browserName = properties.getBrowserName();
-        takeScreenshots = properties.isTakeScreenshots();
         byResumOnExceptionLogging = properties.isByResumOnExceptionLogging();
     }
 
     /**
-     * initialize the test suite object
-     * 1. set and check .suite file
-     * 2. set the id from the db
-     * 3. load the testcases
+     * initialize the test suite object 1. set and check .suite file 2. set the id from the db 3. load the testcases
      */
     @PostConstruct
     public void init() throws IOException, SakuliException {
@@ -285,10 +277,6 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
 
     public void setDbJobPrimaryKey(int dbJobPrimaryKey) {
         this.dbJobPrimaryKey = dbJobPrimaryKey;
-    }
-
-    public boolean isTakeScreenshots() {
-        return takeScreenshots;
     }
 
     public boolean isByResumOnExceptionLogging() {

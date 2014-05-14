@@ -44,9 +44,8 @@ public class TestSuiteProperties {
     public static final String WARNING_TIME = "testsuite.warningTime";
     public static final String CRITICAL_TIME = "testsuite.criticalTime";
     public static final String BROWSER_NAME = "testsuite.browser";
-    public static final String TAKE_SCREENSHOTS = "testsuite.takeScreenShots";
-    public static final String AUTO_HIGHLIGHT_ENABLED = "testsuite.autoHighlight.enabled";
-    public static final String AUTO_HIGHLIGHT_SEC = "testsuite.autoHighlight.seconds";
+
+    //TODO TS move to logging properties
     public static final String BY_RESUME_ON_EXCEPTION_LOGGING = "testsuite.resumeOnException.logException";
 
     @Value("${" + TEST_SUITE_FOLDER + "}")
@@ -64,8 +63,6 @@ public class TestSuiteProperties {
     private Path testSuiteSuiteFile;
     @Value("${" + BROWSER_NAME + "}")
     private String browserName;
-    @Value("${" + TAKE_SCREENSHOTS + "}")
-    private boolean takeScreenshots;
     @Value("${" + BY_RESUME_ON_EXCEPTION_LOGGING + "}")
     private boolean byResumOnExceptionLogging;
 
@@ -137,14 +134,6 @@ public class TestSuiteProperties {
 
     public void setBrowserName(String browserName) {
         this.browserName = browserName;
-    }
-
-    public boolean isTakeScreenshots() {
-        return takeScreenshots;
-    }
-
-    public void setTakeScreenshots(boolean takeScreenshots) {
-        this.takeScreenshots = takeScreenshots;
     }
 
     public boolean isByResumOnExceptionLogging() {

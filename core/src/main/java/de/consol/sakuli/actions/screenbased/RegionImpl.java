@@ -208,7 +208,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         } catch (FindFailed findFailed) {
             ret = 0;
         }
-        loader.getSettings().setDefaults();
+        loader.loadSettingDefaults();
         if (ret != 1) {
             loader.getExceptionHandler().handleException("Couldn't click on region " + baseRegion, baseRegion, resumeOnException);
             return null;
@@ -232,7 +232,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         } catch (FindFailed findFailed) {
             ret = 0;
         }
-        loader.getSettings().setDefaults();
+        loader.loadSettingDefaults();
         if (ret != 1) {
             loader.getExceptionHandler().handleException("Couldn't double click on region " + baseRegion, baseRegion, resumeOnException);
             return null;
@@ -255,7 +255,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         } catch (FindFailed findFailed) {
             ret = 0;
         }
-        loader.getSettings().setDefaults();
+        loader.loadSettingDefaults();
         if (ret != 1) {
             loader.getExceptionHandler().handleException("Couldn't right click on region " + baseRegion, baseRegion, resumeOnException);
             return null;

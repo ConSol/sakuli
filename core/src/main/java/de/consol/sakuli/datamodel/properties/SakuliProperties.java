@@ -27,8 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * @author tschneck
- *         Date: 09.05.14
+ * @author tschneck Date: 09.05.14
  */
 @Component
 public class SakuliProperties {
@@ -37,7 +36,6 @@ public class SakuliProperties {
     public static final String INCLUDE_FOLDER = "sakuli.include.folder";
     public static final String LOG_FOLDER = "sakuli.log.folder";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
-    public static final String ENCRYPTION_INTERFACE_TEST_MODE = "sakuli.encryption.interface.testmode";
     public static final String SAKULI_PROPERTIES_FILE_APPENDER = File.separator + "sakuli.properties";
 
     @Value("${" + INCLUDE_FOLDER + "}")

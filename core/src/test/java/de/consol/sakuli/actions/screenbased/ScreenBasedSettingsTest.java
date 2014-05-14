@@ -19,11 +19,11 @@
 package de.consol.sakuli.actions.screenbased;
 
 import de.consol.sakuli.actions.settings.ScreenBasedSettings;
-import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.testng.Assert;
+import de.consol.sakuli.datamodel.properties.ActionProperties;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import org.testng.annotations.Test;
 
+import java.nio.file.Paths;
 import java.security.InvalidParameterException;
 
 
@@ -32,16 +32,12 @@ public class ScreenBasedSettingsTest {
 
     private ScreenBasedSettings testling = new ScreenBasedSettings();
 
-    @Test
+    @Test(expectedExceptions = InvalidParameterException.class, expectedExceptionsMessageRegExp = "the property '" + ActionProperties.AUTO_HIGHLIGHT_SEC + "' has to be greater as 1, but was 0.6")
     public void testSetDefaults() throws Exception {
-
-        ReflectionTestUtils.setField(testling, "autoHighlightSeconds", 0.6f, float.class);
-        try {
-            testling.setDefaults();
-            Assert.assertTrue(false, "eception should thrown");
-        } catch (InvalidParameterException e) {
-            Assert.assertTrue(e.getMessage().contains("the property '" + TestSuiteProperties.AUTO_HIGHLIGHT_SEC));
-        }
-
+        ActionProperties props = new ActionProperties();
+        props.setAutoHighlightSeconds(0.6f);
+        SakuliProperties sakuliProps = new SakuliProperties();
+        sakuliProps.setIncludeFolder(Paths.get("."));
+        testling.setDefaults(props, sakuliProps);
     }
 }

@@ -20,6 +20,7 @@ package de.consol.sakuli.utils;
 
 import de.consol.sakuli.BaseTest;
 import de.consol.sakuli.PropertyHolder;
+import de.consol.sakuli.datamodel.properties.ActionProperties;
 import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
@@ -62,7 +63,7 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         verify(testling).addPropertiesFromFile(props,
                 Paths.get(TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER);
 
-        assertNull(props.getProperty(SakuliProperties.ENCRYPTION_INTERFACE_TEST_MODE), null);
+        assertNull(props.getProperty(ActionProperties.ENCRYPTION_INTERFACE_TEST_MODE), null);
         assertEquals(props.getProperty(TestSuiteProperties.SUITE_ID), "0001_testsuite_example");
     }
 
@@ -98,7 +99,7 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         Properties props = new Properties();
         testling.addPropertiesFromFile(props, sakuliPropFile.toAbsolutePath().toString());
         assertTrue(props.size() > 0);
-        assertEquals(props.getProperty(SakuliProperties.ENCRYPTION_INTERFACE_TEST_MODE), "true");
+        assertEquals(props.getProperty(ActionProperties.ENCRYPTION_INTERFACE_TEST_MODE), "true");
     }
 
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Error by reading the property file '.*invalid.properties'")

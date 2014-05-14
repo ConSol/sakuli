@@ -19,6 +19,7 @@
 package de.consol.sakuli.utils;
 
 import de.consol.sakuli.actions.environment.CipherUtil;
+import de.consol.sakuli.datamodel.properties.ActionProperties;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import org.mockito.MockitoAnnotations;
 import org.testng.Assert;
@@ -33,12 +34,14 @@ import javax.crypto.IllegalBlockSizeException;
  */
 public class CipherUtilsTest {
 
-    private CipherUtil testling = new CipherUtil();
+    private CipherUtil testling;
 
     @BeforeMethod
     public void setUp() throws Throwable {
         MockitoAnnotations.initMocks(this);
-        testling.setInterfaceName(CipherUtil.determineAValidDefaultNetworkInterface());
+        ActionProperties props = new ActionProperties();
+        props.setEncryptionInterfaceTestMode(true);
+        testling = new CipherUtil(props);
         testling.getNetworkInterfaceNames();
     }
 
@@ -73,8 +76,10 @@ public class CipherUtilsTest {
     @Test
     public void testChipherException() throws Throwable {
         try {
-            testling = new CipherUtil();
-            testling.setInterfaceName("etNOVALID");
+            ActionProperties props = new ActionProperties();
+            props.setEncryptionInterfaceTestMode(false);
+            props.setEncryptionInterface("etNOVALID");
+            testling = new CipherUtil(props);
             testling.getNetworkInterfaceNames();
             Assert.assertTrue(false, "Error, no exception is thrown");
         } catch (SakuliCipherException e) {

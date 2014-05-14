@@ -21,6 +21,7 @@ package de.consol.sakuli.starter;
 import de.consol.sakuli.actions.environment.CipherUtil;
 import de.consol.sakuli.dao.DaoTestSuite;
 import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.datamodel.properties.ActionProperties;
 import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
@@ -134,8 +135,10 @@ public class SakuliStarter {
 
             } else if (cmd.hasOption(encrypt.getOpt())) {
                 String ethinterface = cmd.getOptionValue("interface");
-                CipherUtil cipher = new CipherUtil();
-                cipher.setInterfaceName(ethinterface);
+                ActionProperties cipherProps = new ActionProperties();
+                cipherProps.setEncryptionInterface(ethinterface);
+                cipherProps.setEncryptionInterfaceTestMode(false);
+                CipherUtil cipher = new CipherUtil(cipherProps);
                 cipher.getNetworkInterfaceNames();
                 final String strToEncrypt = cmd.getOptionValue("encrypt");
                 final String encryptedStr = cipher.encrypt(strToEncrypt);

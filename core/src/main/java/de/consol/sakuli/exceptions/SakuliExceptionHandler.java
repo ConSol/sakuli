@@ -176,7 +176,7 @@ public class SakuliExceptionHandler {
 
     /**
      * transforms any {@link Throwable} to SakuliException.
-     * If the property 'testsuite.takeScreenShots=true' is set, the methods add a Screenshot.
+     * If the property 'sakuli.takeScreenShots.onErrors=true' is set, the methods add a Screenshot.
      *
      * @param e a {@link Throwable}
      * @return <EX>  {@link SakuliException} or any child.
@@ -186,7 +186,7 @@ public class SakuliExceptionHandler {
         if (e instanceof SakuliException) {
             resumeOnException = ((SakuliException) e).resumeOnException;
         }
-        if (loader.getTestSuite().isTakeScreenshots()) {
+        if (loader.getActionProperties().isTakeScreenshots()) {
             //try to get a screenshot
             try {
                 Path screenshot = null;

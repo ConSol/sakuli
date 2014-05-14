@@ -18,9 +18,10 @@
 
 package de.consol.sakuli.actions.environment;
 
+import de.consol.sakuli.datamodel.properties.ActionProperties;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -40,19 +41,24 @@ import static java.net.NetworkInterface.getNetworkInterfaces;
  */
 @Component
 public class CipherUtil {
-    public static final String SAKULI_ENCRYPTION_INTERFACE_PROPERTY = "sakuli.encryption.interface";
-    public static final String SAKULI_ENCRYPTION_INTERFACE_TEST_MODE_PROPERTY = "sakuli.encryption.interface.testmode";
     private static byte[] keyPart1 =
             {
                     0x63, 0x6f, 0x6e, 0x31, 0x33, 0x53, 0x61, 0x6b, 0x53, 0x6f
             };//"con13SakSo"
     private static String algorithm = "AES/ECB/PKCS5Padding";
-    @Value("${" + SAKULI_ENCRYPTION_INTERFACE_PROPERTY + ":null}")
     private String interfaceName;
-    @Value("${" + SAKULI_ENCRYPTION_INTERFACE_TEST_MODE_PROPERTY + ":false}")
     private boolean testMode;
     private byte[] macOfEncryptionInterface;
     private String interfaceLog = "";
+
+    public CipherUtil() {
+    }
+
+    @Autowired
+    public CipherUtil(ActionProperties cipherProps) {
+        interfaceName = cipherProps.getEncryptionInterface();
+        testMode = cipherProps.isEncryptionInterfaceTestMode();
+    }
 
     /**
      * Determines a valid default network interfaces, useful in case of testing.
@@ -98,7 +104,7 @@ public class CipherUtil {
 
             }
             if (macOfEncryptionInterface == null) {
-                throw new SakuliCipherException("Cannot resolve mac adresse ... please check your config of the property: sakuli.encryption.interface=" + interfaceName, interfaceLog);
+                throw new SakuliCipherException("Cannot resolve mac adresse ... please check your config of the property: " + ActionProperties.ENCRYPTION_INTERFACE + "=" + interfaceName, interfaceLog);
             }
         } catch (Exception e) {
             throw new SakuliCipherException(e, interfaceLog);
@@ -109,7 +115,7 @@ public class CipherUtil {
      * checks if {@link #testMode} is enabled and returns:
      * <ul>
      * <li>true: the first valid interface at this computer</li>
-     * <li>false: the interface name defined at the property {@link #SAKULI_ENCRYPTION_INTERFACE_PROPERTY}</li>
+     * <li>false: the interface name defined at the property {@link ActionProperties#ENCRYPTION_INTERFACE}</li>
      * </ul>
      *
      * @return
@@ -179,15 +185,6 @@ public class CipherUtil {
         System.arraycopy(keyPart1, 0, key, 0, keyPart1.length);
         System.arraycopy(keyPar2, 0, key, keyPart1.length, keyPar2.length);
         return new SecretKeySpec(key, "AES");
-    }
-
-    /**
-     * Set the name of the interface to use for the encryption if autowired will not be used, like in {@link de.consol.sakuli.starter.SakuliStarter#main(String[])}.
-     *
-     * @param interfaceName as {@link String}
-     */
-    public void setInterfaceName(String interfaceName) {
-        this.interfaceName = interfaceName;
     }
 
 }
