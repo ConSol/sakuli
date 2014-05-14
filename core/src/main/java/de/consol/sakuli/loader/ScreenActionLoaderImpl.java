@@ -63,6 +63,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     }
 
     @Override
+    public BaseActionLoader getBaseLoader() {
+        return baseLoader;
+    }
+
+    @Override
     public ScreenBasedSettings getSettings() {
         return settings;
     }
@@ -70,6 +75,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     @Override
     public CipherUtil getCipherUtil() {
         return baseLoader.getCipherUtil();
+    }
+
+    @Override
+    public void init(String testCaseID, String... imagePaths) {
+        baseLoader.init(testCaseID, imagePaths);
     }
 
     @Override

@@ -28,7 +28,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.Enumeration;
 
 import static java.net.NetworkInterface.getNetworkInterfaces;
@@ -41,16 +40,36 @@ import static java.net.NetworkInterface.getNetworkInterfaces;
  */
 @Component
 public class CipherUtil {
-
+    public static final String SAKULI_ENCRYPTION_INTERFACE_PROPERTY = "sakuli.encryption.interface";
+    public static final String SAKULI_ENCRYPTION_INTERFACE_TEST_MODE_PROPERTY = "sakuli.encryption.interface.testmode";
     private static byte[] keyPart1 =
             {
                     0x63, 0x6f, 0x6e, 0x31, 0x33, 0x53, 0x61, 0x6b, 0x53, 0x6f
             };//"con13SakSo"
     private static String algorithm = "AES/ECB/PKCS5Padding";
-    @Value("${sahi.encryption.interface}")
+    @Value("${" + SAKULI_ENCRYPTION_INTERFACE_PROPERTY + ":null}")
     private String interfaceName;
+    @Value("${" + SAKULI_ENCRYPTION_INTERFACE_TEST_MODE_PROPERTY + ":false}")
+    private boolean testMode;
     private byte[] macOfEncryptionInterface;
     private String interfaceLog = "";
+
+    /**
+     * Determines a valid default network interfaces, useful in case of testing.
+     *
+     * @return ethernet interface name
+     * @throws Exception
+     */
+    public static String determineAValidDefaultNetworkInterface() throws Exception {
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        while (interfaces.hasMoreElements()) {
+            NetworkInterface anInterface = interfaces.nextElement();
+            if (anInterface.getHardwareAddress() != null && anInterface.getHardwareAddress().length == 6) {
+                return anInterface.getName();
+            }
+        }
+        throw new Exception("No network interface with a MAC address is present, please check your os settings!");
+    }
 
     /**
      * fetch the local network interfaceLog and reads out the MAC of the chosen encryption interface.
@@ -62,6 +81,7 @@ public class CipherUtil {
     public void getNetworkInterfaceNames() throws SakuliCipherException {
         Enumeration<NetworkInterface> networkInterfaces;
         try {
+            interfaceName = checkEthInterfaceName();
             networkInterfaces = getNetworkInterfaces();
             while (networkInterfaces.hasMoreElements()) {
                 NetworkInterface anInterface = networkInterfaces.nextElement();
@@ -78,11 +98,27 @@ public class CipherUtil {
 
             }
             if (macOfEncryptionInterface == null) {
-                throw new SakuliCipherException("Cannot resolve mac adresse ... please check your config of the property: sahi.encryption.interface=" + interfaceName, interfaceLog);
+                throw new SakuliCipherException("Cannot resolve mac adresse ... please check your config of the property: sakuli.encryption.interface=" + interfaceName, interfaceLog);
             }
-        } catch (SocketException e) {
+        } catch (Exception e) {
             throw new SakuliCipherException(e, interfaceLog);
         }
+    }
+
+    /**
+     * checks if {@link #testMode} is enabled and returns:
+     * <ul>
+     * <li>true: the first valid interface at this computer</li>
+     * <li>false: the interface name defined at the property {@link #SAKULI_ENCRYPTION_INTERFACE_PROPERTY}</li>
+     * </ul>
+     *
+     * @return
+     */
+    private String checkEthInterfaceName() throws Exception {
+        if (testMode) {
+            return determineAValidDefaultNetworkInterface();
+        }
+        return interfaceName;
     }
 
     private String formatMAC(byte[] mac) {
@@ -153,4 +189,5 @@ public class CipherUtil {
     public void setInterfaceName(String interfaceName) {
         this.interfaceName = interfaceName;
     }
+
 }

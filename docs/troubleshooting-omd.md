@@ -1,0 +1,13 @@
+# Troubleshooting Nagios/OMD
+
+
+## Performance Data
+
+### No CPU/Mem graphs 
+
+FIXME
+
+  <NAGIOS_E2ECPUHOST>win7sakuli</NAGIOS_E2ECPUHOST>
+  <NAGIOS_E2ECPUSVC>CPU_Usage</NAGIOS_E2ECPUSVC>
+  <NAGIOS_E2EMEMHOST>win7sakuli</NAGIOS_E2EMEMHOST>
+  <NAGIOS_E2EMEMSVC>Mem_Usage</NAGIOS_E2EMEMSVC>

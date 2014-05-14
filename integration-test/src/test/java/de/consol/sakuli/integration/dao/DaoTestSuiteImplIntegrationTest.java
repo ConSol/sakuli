@@ -21,6 +21,7 @@ package de.consol.sakuli.integration.dao;
 import de.consol.sakuli.dao.impl.DaoTestSuiteImpl;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.exceptions.SakuliException;
+import de.consol.sakuli.integration.builder.TestSuiteBuilder;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -42,12 +43,12 @@ public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestS
     @Test
     public void testGetTestSuitePrimaryKey() throws Exception {
         //first
-        testling.setTestSuite(createEmptyTestSuite());
+        testling.setTestSuite(TestSuiteBuilder.createEmptyTestSuite());
         int key1 = testling.getTestSuitePrimaryKey();
         Assert.assertTrue(key1 > 0);
 
         //second init
-        testling.setTestSuite(createEmptyTestSuite());
+        testling.setTestSuite(TestSuiteBuilder.createEmptyTestSuite());
         int key2 = testling.getTestSuitePrimaryKey();
         Assert.assertEquals(key2, key1 + 1);
     }

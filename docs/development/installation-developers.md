@@ -6,8 +6,10 @@ Requirements
 * Access to the issue-tracker project (currently JIRA)
 * Git
 * Development environment (we advise IntelliJ IDEA)
-* Java JDK 1.7 with JavaFX (only needed for the integration tests, see [Java FX installation](java_fx_installation)
-  <br>(unfortunately JDK 1.8 is currently not support in case that the aspectj-compiler-plugin won't work with it :-/ )</br>
+* Java JDK 1.7
+  * Please use the original Oracle JDK - OpenJDK unfortunately won't work for the JavaFX based integration test, see [Java FX installation](java_fx_installation). 
+  * Ensure that your `JAVA_HOME` system variable links to the correct jdk-version
+  * (unfortunately JDK 1.8 is currently not support in case that the aspectj-compiler-plugin won't work with it :-/ )
 
 
 Sakuli setup
