@@ -233,7 +233,7 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
                         //set the Map with the test case id as key
                         tcMap.put(tc.getId(), tc);
                     } else {
-                        throw new SakuliException("test case path \"" + tcFile.toFile().getAbsolutePath() + "\" doesn't exists - check your \"" + TestSuiteProperties.TEST_SUITE_SUITE_FILE_NAME + "\" file");
+                        throw new SakuliException("test case path \"" + tcFile.toAbsolutePath().toString() + "\" doesn't exists - check your \"" + TestSuiteProperties.TEST_SUITE_SUITE_FILE_NAME + "\" file");
                     }
                 }
             }

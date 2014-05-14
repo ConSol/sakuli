@@ -27,8 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * @author tschneck
- *         Date: 09.05.14
+ * @author tschneck Date: 09.05.14
  */
 @Component
 public class TestSuiteProperties {
@@ -59,9 +58,9 @@ public class TestSuiteProperties {
     @Value("${" + SUITE_NAME + "}")
     private String testSuiteName;
     @Value("${" + WARNING_TIME + "}")
-    private Integer warningTime;
+    private int warningTime;
     @Value("${" + CRITICAL_TIME + "}")
-    private Integer criticalTime;
+    private int criticalTime;
     private Path testSuiteSuiteFile;
     @Value("${" + BROWSER_NAME + "}")
     private String browserName;
@@ -116,19 +115,19 @@ public class TestSuiteProperties {
         this.testSuiteName = testSuiteName;
     }
 
-    public Integer getWarningTime() {
+    public int getWarningTime() {
         return warningTime;
     }
 
-    public void setWarningTime(Integer warningTime) {
+    public void setWarningTime(int warningTime) {
         this.warningTime = warningTime;
     }
 
-    public Integer getCriticalTime() {
+    public int getCriticalTime() {
         return criticalTime;
     }
 
-    public void setCriticalTime(Integer criticalTime) {
+    public void setCriticalTime(int criticalTime) {
         this.criticalTime = criticalTime;
     }
 

@@ -56,12 +56,12 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
 
         //load common sakuli properties
         if (loadSakuliProperties) {
-            String sakuliProperties = Paths.get(INCLUDE_FOLDER_VALUE).toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER;
+            String sakuliProperties = Paths.get(INCLUDE_FOLDER_VALUE).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER;
             addPropertiesFromFile(props, sakuliProperties);
         }
         if (loadTestSuiteProperties) {
             //load test suite properties
-            String testSuitePropFile = Paths.get(TEST_SUITE_FOLDER_VALUE).toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER;
+            String testSuitePropFile = Paths.get(TEST_SUITE_FOLDER_VALUE).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER;
             addPropertiesFromFile(props, testSuitePropFile);
         }
         //override if set sahi proxy home
