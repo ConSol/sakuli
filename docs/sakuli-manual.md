@@ -28,8 +28,12 @@ Sakuli will also run within that RDP session. But closing/disconnecting/logging 
 As described in the [Windows 7 installation manual](../docs/installation-windows.md)), use instead **LOGOFF.bat** on the Desktop to disconnect the session (right-click and execute it with Administrator privileges!). This will
 
 * first "move" the RDP session back to the local console
-* an terminate the RDP session.##### check_logon_session.ps1In *sakuli\setup\nagios* you can find **check_logon_session.ps1** which can be used as a client-side check to ensure that the Sakuli user is always logged on, either via RDP or on the local console. Instructions for the imeplentation of this check can be found in the script header. 
-Define a service dependency of all Sakuli checks to this logon check; this will ensure that a locked session will not raise false alarms. 
+* an terminate the RDP session.
+
+##### check_logon_session.ps1
+In *sakuli\setup\nagios* you can find **check_logon_session.ps1** which can be used as a client-side check to ensure that the Sakuli user is always logged on, either via RDP or on the local console. Instructions for the imeplentation of this check can be found in the script header. 
+
+Define a service dependency of all Sakuli checks to this logon check; this will ensure that a locked session will not raise false alarms. 
 
 ### Ubuntu
 
@@ -71,9 +75,9 @@ Otherwise: the red arrow shows the encrypted string, which you can copy into the
 
 To decrypt a secret, use one of the following methods:
  
-* [pasteAndDecrypt](./docs/api/sakuli_Environment.md#pasteanddecrypttext)
-* [typeAndDecrypt](./docs/api/sakuli_Environment.md#typeanddecrypttext-optmodifiers)
-* [decryptSecret](./docs/api/sakuli_Environment.md#decryptsecretsecret)
+* [pasteAndDecrypt](./api/sakuli_Environment.md#pasteanddecrypttext)
+* [typeAndDecrypt](./api/sakuli_Environment.md#typeanddecrypttext-optmodifiers)
+* [decryptSecret](./api/sakuli_Environment.md#decryptsecretsecret)
 
 ## Making tests more reliable
 ### Killing orphaned processes 
