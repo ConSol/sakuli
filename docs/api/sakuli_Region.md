@@ -435,13 +435,3 @@ getRegionImpl()
 gets the inherit java object for not yet wrapped methods
 
 
-setRegionImpl(`modifiedJavaObject`)
------------------------------------
-updates the inherit java object after modifaction with getRegionImpl.
-
-
-**Parameters**
-
-**`modifiedJavaObject`**,  
-
-

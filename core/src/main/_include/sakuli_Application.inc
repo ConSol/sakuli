@@ -64,7 +64,7 @@ function loadApplication(javaObject, resumeOnException) {
     /**
      * Focuses a specific window of the application.
      *
-     * @param `windowNumber` identifies the window
+     * @param {Integer} `windowNumber` identifies the window
      * @return this Application object.
      */
     that.focusWindow = function (windowNumber) {
@@ -84,7 +84,7 @@ function loadApplication(javaObject, resumeOnException) {
      * Sets the sleep time in seconds of the application actions to handle with long loading times.
      * The default sleep time is set to 1 seconds.
      *
-     * @param `seconds` sleep time in seconds
+     * @param {Integer} `seconds` sleep time in seconds
      * @return this Application object.
      */
     that.setSleepTime = function (seconds) {
@@ -103,7 +103,7 @@ function loadApplication(javaObject, resumeOnException) {
     /**
      * Creates and returns a Region object from a specific window of the application.
      *
-     * @param `windowNumber` identifies the window
+     * @param {Integer} `windowNumber` identifies the window
      * @return a Region object.
      */
     that.getRegionForWindow = function (windowNumber) {
