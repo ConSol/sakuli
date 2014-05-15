@@ -30,4 +30,4 @@ The Ubuntu menu bar should have changed now to the "classical" one:
 
 ![menu](.././docs/pics/u_menu.jpg)
 
-All other steps can be done similar to [Installation Windows7 - Install Sakuli](installation-windows.md#installation-of-sakuli
+All other steps can be done similar to [Installation Windows7 - Install Sakuli](installation-windows.md#installation-of-sakuli)
