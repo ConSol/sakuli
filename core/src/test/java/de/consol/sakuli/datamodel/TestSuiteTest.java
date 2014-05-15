@@ -65,9 +65,6 @@ public class TestSuiteTest {
     public void testInit() throws Throwable {
         ts = new TestSuite(getTestProps("valid"));
 
-        //TODO TS remove after screenshot folder is in Properties
-        ReflectionTestUtils.setField(ts, "screenShotFolderPath", ts.getTestSuiteFolder().toString() + File.separator + "_screenshot");
-
         MockitoAnnotations.initMocks(this);
         when(tsDaoMock.getTestSuitePrimaryKey()).thenReturn(999);
 
@@ -103,8 +100,6 @@ public class TestSuiteTest {
     @Test(expectedExceptions = SakuliException.class, expectedExceptionsMessageRegExp = "test case path \".*unValidTestCase.*\" doesn't exists - check your \"testsuite.suite\" file")
     public void testInitExceptionForTestCase() throws Throwable {
         ts = new TestSuite(getTestProps("unvalid"));
-        //TODO TS remove after screenshot folder is in Properties
-        ReflectionTestUtils.setField(ts, "screenShotFolderPath", ts.getTestSuiteFolder().toString() + File.separator + "_screenshot");
 
         MockitoAnnotations.initMocks(this);
         when(tsDaoMock.getTestSuitePrimaryKey()).thenReturn(999);

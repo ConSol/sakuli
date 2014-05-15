@@ -23,10 +23,8 @@ import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliException;
-import net.sf.sahi.util.FileNotFoundRuntimeException;
 import net.sf.sahi.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -49,33 +47,23 @@ import java.util.Map;
 public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteState> {
 
     //Property names
-    public static final String SCREENSHOT_FOLDER_PROPERTY = "sakuli.screenshot.dir";
-    public static final String SCREENSHOT_FORMAT_PROPERTY = "sakuli.screenshot.format";
 
-
-    public static final String LOAD_TEST_CASES_AUTOMATIC_PROPERTY = "saklui.load.testcases.automatic";
 
 
     @Autowired
     private DaoTestSuite dao;
 
     private String id;
-    private boolean byResumOnExceptionLogging;
-    @Value("${" + SCREENSHOT_FOLDER_PROPERTY + "}")
-    private String screenShotFolderPath;
     //browser name where to start the test execution
     private String browserName;
-
-    @Value("${" + LOAD_TEST_CASES_AUTOMATIC_PROPERTY + ":true}") //default = TRUE
-    private boolean loadTestCasesAutomatic = true;
     //additional browser infos from sahi proxy
     private String browserInfo;
     private String host;
     private Path testSuiteFolder;
     private Path testSuiteFile;
-    private Path screenShotFolder;
     private int dbJobPrimaryKey;
     private Map<String, TestCase> testCases;
+    private boolean loadTestCasesAutomatic;
 
     public TestSuite() {
     }
@@ -89,7 +77,7 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         testSuiteFolder = properties.getTestSuiteFolder();
         testSuiteFile = properties.getTestSuiteSuiteFile();
         browserName = properties.getBrowserName();
-        byResumOnExceptionLogging = properties.isByResumOnExceptionLogging();
+        loadTestCasesAutomatic = properties.isLoadTestCasesAutomatic();
     }
 
     /**
@@ -100,7 +88,6 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         logger.info("Initialize test suite");
         state = TestSuiteState.RUNNING;
 
-        setFileBase();
         testCases = loadTestCases();
         startDate = new Date();
         dbPrimaryKey = dao.getTestSuitePrimaryKey();
@@ -233,16 +220,6 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         return tcMap;
     }
 
-    /**
-     * check if the specified test suite in the "testsuite.properies" file can be found
-     *
-     * @throws FileNotFoundRuntimeException
-     */
-    private void setFileBase() throws IOException {
-        screenShotFolder = Paths.get(screenShotFolderPath).normalize();
-
-    }
-
     public String getId() {
         return id;
     }
@@ -277,14 +254,6 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
 
     public void setDbJobPrimaryKey(int dbJobPrimaryKey) {
         this.dbJobPrimaryKey = dbJobPrimaryKey;
-    }
-
-    public boolean isByResumOnExceptionLogging() {
-        return byResumOnExceptionLogging;
-    }
-
-    public Path getScreenShotFolderPath() {
-        return screenShotFolder;
     }
 
     public String getBrowserInfo() {

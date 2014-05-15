@@ -21,11 +21,16 @@ package de.consol.sakuli.datamodel.properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * @author tschneck Date: 14.05.14
  */
 @Component
-public class ActionProperties {
+public class ActionProperties extends AbstractProperties {
 
     public static final String TAKE_SCREENSHOTS = "sakuli.takeScreenShots.onErrors";
     public static final String AUTO_HIGHLIGHT_ENABLED = "sakuli.autoHighlight.enabled";
@@ -36,6 +41,8 @@ public class ActionProperties {
     protected static final String ENCRYPTION_INTERFACE_DEFAULT = "null";
     public static final String ENCRYPTION_INTERFACE_TEST_MODE = "sakuli.encryption.interface.testmode";
     protected static final String ENCRYPTION_INTERFACE_TEST_MODE_DEFAULT = "false";
+    public static final String SCREENSHOT_FOLDER_PROPERTY = "sakuli.screenshot.dir";
+    public static final String SCREENSHOT_FORMAT_PROPERTY = "sakuli.screenshot.format";
 
     @Value("${" + TAKE_SCREENSHOTS + "}")
     private boolean takeScreenshots;
@@ -51,7 +58,19 @@ public class ActionProperties {
     private String encryptionInterface;
     @Value("${" + ENCRYPTION_INTERFACE_TEST_MODE + ":" + ENCRYPTION_INTERFACE_TEST_MODE_DEFAULT + "}")
     private boolean encryptionInterfaceTestMode;
+    @Value("${" + SCREENSHOT_FOLDER_PROPERTY + "}")
+    private String screenShotFolderPropertyValue;
+    private Path screenShotFolder;
+    @Value("${" + SCREENSHOT_FORMAT_PROPERTY + "}")
+    private String screenShotFormat;
 
+    @PostConstruct
+    public void initFolders() throws FileNotFoundException {
+        if (takeScreenshots) {
+            screenShotFolder = Paths.get(screenShotFolderPropertyValue).normalize();
+            checkFolders(screenShotFolder);
+        }
+    }
     public boolean isTakeScreenshots() {
         return takeScreenshots;
     }
@@ -108,4 +127,27 @@ public class ActionProperties {
         this.encryptionInterfaceTestMode = encryptionInterfaceTestMode;
     }
 
+    public String getScreenShotFolderPropertyValue() {
+        return screenShotFolderPropertyValue;
+    }
+
+    public void setScreenShotFolderPropertyValue(String screenShotFolderPropertyValue) {
+        this.screenShotFolderPropertyValue = screenShotFolderPropertyValue;
+    }
+
+    public Path getScreenShotFolder() {
+        return screenShotFolder;
+    }
+
+    public void setScreenShotFolder(Path screenShotFolder) {
+        this.screenShotFolder = screenShotFolder;
+    }
+
+    public String getScreenShotFormat() {
+        return screenShotFormat;
+    }
+
+    public void setScreenShotFormat(String screenShotFormat) {
+        this.screenShotFormat = screenShotFormat;
+    }
 }

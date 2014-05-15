@@ -123,7 +123,7 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         SakuliProperties properties = BeanLoader.loadBean(SakuliProperties.class);
 
         assertTrue(Files.exists(properties.getIncludeFolder()), "include folder doesn't exists");
-        assertTrue(properties.getIncludeFolder().toString().contains(INCLUDE_FOLDER_PATH));
+        assertTrue(properties.getIncludeFolder().toString().contains(INCLUDE_FOLDER_PATH.substring(2)));
 
         assertNotNull(properties.getLogPattern());
     }

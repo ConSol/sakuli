@@ -106,7 +106,7 @@ public class Environment implements Action {
             folderPath = Paths.get(pathName.substring(0, pathName.lastIndexOf(File.separator)));
             message = pathName.substring(pathName.lastIndexOf(File.separator) + 1, pathName.lastIndexOf("."));
         } else {
-            folderPath = loader.getTestSuite().getScreenShotFolderPath();
+            folderPath = loader.getActionProperties().getScreenShotFolder();
             message = pathName.substring(0, pathName.lastIndexOf("."));
         }
 

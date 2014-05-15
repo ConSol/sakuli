@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -29,7 +30,7 @@ import java.nio.file.Paths;
  * @author tschneck Date: 14.05.14
  */
 @Component
-public class SahiProxyProperties {
+public class SahiProxyProperties extends AbstractProperties {
 
     public static final String PROXY_HOME_FOLDER = "sahi.proxy.homePath";
     public static final String PROXY_CONFIG_FOLDER = "sahi.proxy.configurationPath";
@@ -38,10 +39,10 @@ public class SahiProxyProperties {
     public static final String RECONNECT_SECONDS = "sahi.proxy.reconnectSeconds";
 
     @Value("${" + PROXY_HOME_FOLDER + "}")
-    private String sahiHomeValue;
-    @Value("${" + PROXY_CONFIG_FOLDER + "}")
-    private String configPathValue;
+    private String sahiHomeFolderPropertyValue;
     private Path sahiHomeFolder;
+    @Value("${" + PROXY_CONFIG_FOLDER + "}")
+    private String sahiConfigFolderPropertyValue;
     private Path sahiConfigFolder;
     @Value("${" + PROXY_PORT + "}")
     private Integer proxyPort;
@@ -51,25 +52,26 @@ public class SahiProxyProperties {
     private Integer maxConnectTries;
 
     @PostConstruct
-    public void initFolders() {
-        sahiHomeFolder = Paths.get(sahiHomeValue).normalize();
-        sahiConfigFolder = Paths.get(configPathValue).normalize();
+    public void initFolders() throws FileNotFoundException {
+        sahiHomeFolder = Paths.get(sahiHomeFolderPropertyValue).normalize();
+        sahiConfigFolder = Paths.get(sahiConfigFolderPropertyValue).normalize();
+        checkFolders(sahiHomeFolder, sahiConfigFolder);
     }
 
-    public String getSahiHomeValue() {
-        return sahiHomeValue;
+    public String getSahiHomeFolderPropertyValue() {
+        return sahiHomeFolderPropertyValue;
     }
 
-    public void setSahiHomeValue(String sahiHomeValue) {
-        this.sahiHomeValue = sahiHomeValue;
+    public void setSahiHomeFolderPropertyValue(String sahiHomeFolderPropertyValue) {
+        this.sahiHomeFolderPropertyValue = sahiHomeFolderPropertyValue;
     }
 
-    public String getConfigPathValue() {
-        return configPathValue;
+    public String getSahiConfigFolderPropertyValue() {
+        return sahiConfigFolderPropertyValue;
     }
 
-    public void setConfigPathValue(String configPathValue) {
-        this.configPathValue = configPathValue;
+    public void setSahiConfigFolderPropertyValue(String sahiConfigFolderPropertyValue) {
+        this.sahiConfigFolderPropertyValue = sahiConfigFolderPropertyValue;
     }
 
     public Path getSahiHomeFolder() {

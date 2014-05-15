@@ -105,12 +105,12 @@ public class SakuliExceptionHandler {
 
                 //Do different exception handling for different use cases:
                 if (sakuliException.resumeOnException
-                        && loader.getTestSuite().isByResumOnExceptionLogging()) {
+                        && loader.getSakuliProperties().isLogResumOnException()) {
                     logger.error(sakuliException.getMessage(), sakuliException);
                     saveException(sakuliException);
                     addExceptionToSahiReport(sakuliException);
                 } else if (sakuliException.resumeOnException &&
-                        !loader.getTestSuite().isByResumOnExceptionLogging()) {
+                        !loader.getSakuliProperties().isLogResumOnException()) {
                     logger.debug(sakuliException.getMessage(), sakuliException);
                 } else {
                     logger.error(sakuliException.getMessage(), sakuliException);
@@ -193,14 +193,14 @@ public class SakuliExceptionHandler {
                 if (e instanceof SakuliActionException) {
                     screenshot = loader.getScreenshotActions().takeScreenshotAndHighlight(
                             e.getMessage(),
-                            loader.getTestSuite().getScreenShotFolderPath(),
+                            loader.getActionProperties().getScreenShotFolder(),
                             ((SakuliActionException) e).getLastRegion()
                     );
                 }
                 if (screenshot == null) {
                     screenshot = loader.getScreenshotActions().takeScreenshot(
                             e.getMessage(),
-                            loader.getTestSuite().getScreenShotFolderPath());
+                            loader.getActionProperties().getScreenShotFolder());
                 }
                 return new SakuliExceptionWithScreenshot(e, screenshot, resumeOnException);
             } catch (IOException e2) {

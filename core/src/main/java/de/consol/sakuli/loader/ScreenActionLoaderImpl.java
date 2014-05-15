@@ -105,6 +105,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     }
 
     @Override
+    public SakuliProperties getSakuliProperties() {
+        return baseLoader.getSakuliProperties();
+    }
+
+    @Override
     public ActionProperties getActionProperties() {
         return baseLoader.getActionProperties();
     }

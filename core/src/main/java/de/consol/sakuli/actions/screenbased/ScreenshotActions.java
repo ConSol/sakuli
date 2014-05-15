@@ -20,11 +20,11 @@ package de.consol.sakuli.actions.screenbased;
 
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.Screen;
+import de.consol.sakuli.datamodel.properties.ActionProperties;
 import org.sikuli.script.ScreenHighlighter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
@@ -40,13 +40,17 @@ import java.util.Date;
 
 @Component
 public class ScreenshotActions {
-    private static int MAX_FILENAME_LENGTH = 50;
+    private static final int MAX_FILENAME_LENGTH = 50;
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Value("${" + TestSuite.SCREENSHOT_FORMAT_PROPERTY + "}")
     private String screenShotFormat;
-    @Autowired
     private Screen screen;
+
+    @Autowired
+    public ScreenshotActions(Screen screen, ActionProperties props) {
+        this.screen = screen;
+        screenShotFormat = props.getScreenShotFormat();
+    }
 
     /**
      * Takes a screenshot of the current arrea and save in the given format;

@@ -32,7 +32,6 @@ import java.nio.file.Paths;
 @Component
 public class TestSuiteProperties {
 
-    // TODO TS go on here and centralize all properties, set TEST_SUITE_FOLDER and INCLUDE_FOLDER over system Properies or before Context runs up.
     public static final String TEST_SUITE_FOLDER = "sakuli.testsuite.folder";
     public static final String TEST_SUITE_PROPERTIES_FILE_NAME = "testsuite.properties";
     public static final String TEST_SUITE_PROPERTIES_FILE_APPENDER = File.separator + TEST_SUITE_PROPERTIES_FILE_NAME;
@@ -45,13 +44,14 @@ public class TestSuiteProperties {
     public static final String CRITICAL_TIME = "testsuite.criticalTime";
     public static final String BROWSER_NAME = "testsuite.browser";
 
-    //TODO TS move to logging properties
-    public static final String BY_RESUME_ON_EXCEPTION_LOGGING = "testsuite.resumeOnException.logException";
+    /**
+     * Special propety to enable java-based defining of test cases
+     */
+    public static final String LOAD_TEST_CASES_AUTOMATIC_PROPERTY = "saklui.load.testcases.automatic";
 
     @Value("${" + TEST_SUITE_FOLDER + "}")
     private String testSuiteFolderPropertyValue;
     private Path testSuiteFolder;
-
     @Value("${" + SUITE_ID + "}")
     private String testSuiteId;
     @Value("${" + SUITE_NAME + "}")
@@ -63,8 +63,8 @@ public class TestSuiteProperties {
     private Path testSuiteSuiteFile;
     @Value("${" + BROWSER_NAME + "}")
     private String browserName;
-    @Value("${" + BY_RESUME_ON_EXCEPTION_LOGGING + "}")
-    private boolean byResumOnExceptionLogging;
+    @Value("${" + LOAD_TEST_CASES_AUTOMATIC_PROPERTY + ":true}") //default = TRUE
+    private boolean loadTestCasesAutomatic = true;
 
     @PostConstruct
     public void initFolders() {
@@ -136,11 +136,11 @@ public class TestSuiteProperties {
         this.browserName = browserName;
     }
 
-    public boolean isByResumOnExceptionLogging() {
-        return byResumOnExceptionLogging;
+    public boolean isLoadTestCasesAutomatic() {
+        return loadTestCasesAutomatic;
     }
 
-    public void setByResumOnExceptionLogging(boolean byResumOnExceptionLogging) {
-        this.byResumOnExceptionLogging = byResumOnExceptionLogging;
+    public void setLoadTestCasesAutomatic(boolean loadTestCasesAutomatic) {
+        this.loadTestCasesAutomatic = loadTestCasesAutomatic;
     }
 }

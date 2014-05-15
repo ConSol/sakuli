@@ -46,8 +46,6 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
     private boolean loadSakuliProperties = true;
     private boolean loadTestSuiteProperties = true;
 
-    //TODO TS config SakuliStarter application context to this logic
-
     @Override
     protected void loadProperties(Properties props) throws IOException {
         //load properties set by command args

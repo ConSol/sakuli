@@ -23,6 +23,7 @@ import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.ImageLib;
 import de.consol.sakuli.datamodel.properties.ActionProperties;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.rhino.RhinoScriptRunner;
@@ -60,6 +61,8 @@ public interface BaseActionLoader {
      * @param imagePaths paths to the located image patterns
      */
     void init(String testCaseID, String... imagePaths);
+
+    SakuliProperties getSakuliProperties();
 
     ActionProperties getActionProperties();
 }
