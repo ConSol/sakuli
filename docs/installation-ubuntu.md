@@ -1,5 +1,5 @@
 # Installation guide for Sakuli under Linux (Ubuntu 14.04 Desktop LTS)
-You probably came from the page "Introduction" - if not, and if you are nor sure what Sakuli is, please read first [README](./README.md). 
+You probably came from the page "Introduction" - if not, and if you are nor sure what Sakuli is, please read first [README](../README.md). 
 
 ## Prerequisites
 The following installation manual assumes that...
@@ -30,4 +30,4 @@ The Ubuntu menu bar should have changed now to the "classical" one:
 
 ![menu](.././docs/pics/u_menu.jpg)
 
-
+All other steps can be done similar to [Installation Windows7](installation-windows.md ). 
