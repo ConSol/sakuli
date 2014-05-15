@@ -129,6 +129,16 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     }
 
     @Test
+    public void testHandleSakuliProxyExceptionForTestCases() throws Exception {
+        setUp();
+        when(loader.getCurrentTestCase()).thenReturn(null);
+        testling.handleException(new SakuliProxyException(testExcMessage));
+        Assert.assertTrue(testSuite.getException().getCause() instanceof SakuliProxyException);
+        Assert.assertTrue(testSuite.getException().getMessage().contains(testExcMessage));
+        Assert.assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
+    }
+
+    @Test
     public void testGetScreenshotFile() throws Exception {
         SakuliExceptionWithScreenshot ex = new SakuliExceptionWithScreenshot(testExcMessage, expectedScreenshotPath);
         Assert.assertEquals(SakuliExceptionHandler.getScreenshotFile(ex), expectedScreenshotPath);

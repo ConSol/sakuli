@@ -94,9 +94,10 @@ public class SakuliExceptionHandler {
      */
     public void handleException(Throwable e) {
         //Proxy Exception should only be handled if no other exceptions have been added
-        if (!(e instanceof SakuliProxyException
-                && loader.getTestSuite().getException() == null
-                && loader.getCurrentTestCase().getException() == null)) {
+        if (!(e instanceof SakuliProxyException) ||
+                (loader.getTestSuite().getException() == null
+                        && (loader.getCurrentTestCase() == null
+                        || loader.getCurrentTestCase().getException() == null))) {
             //if the exception have been already handled do no exception handling!
             if (!e.getMessage().contains(RhinoAspect.ALREADY_HANDELED)
                     && !e.getMessage().contains(("Logging exception:"))) {
