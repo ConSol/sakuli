@@ -21,9 +21,10 @@
 
 <beans>
     <bean id="de.consol.sakuli.app.root" lazy-init="false"
-          class="org.springframework.context.support.ClassPathXmlApplicationContext">
+          class="org.springframework.context.support.FileSystemXmlApplicationContext">
         <constructor-arg>
-            <value>applicationContext.xml</value>
+            <value>src/test/resources/de/consol/sakuli/loader/loaderTest-applicationContext.xml</value>
         </constructor-arg>
     </bean>
+
 </beans>

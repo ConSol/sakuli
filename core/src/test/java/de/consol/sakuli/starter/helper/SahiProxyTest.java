@@ -16,17 +16,14 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.starter.proxy;
+package de.consol.sakuli.starter.helper;
 
 import de.consol.sakuli.datamodel.TestSuite;
-import net.sf.sahi.config.Configuration;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import static org.mockito.Mockito.when;
 
 /**
  * Created by thomasr on 25.04.14.
@@ -48,7 +45,7 @@ public class SahiProxyTest {
     public void testStartProxy() throws Exception {
         //TODO impl
 //        when(Configuration.setUnmodifiedTrafficLogging(true)) {
-            //TODO proxy infos auslesen
+        //TODO proxy infos auslesen
 //        }
     }
 

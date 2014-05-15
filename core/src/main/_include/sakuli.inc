@@ -39,7 +39,7 @@ _include("sakuli_Region.inc");
  */
 function TestCase(warningTime, criticalTime) {
     var defaultImagePath = _resolvePath();
-    defaultImagePath = defaultImagePaths.substring(0, defaultImagePath.lastIndexOf(Packages.java.io.File.separator));
+    defaultImagePath = defaultImagePath.substring(0, defaultImagePath.lastIndexOf(Packages.java.io.File.separator));
     // TODO change to log
     java.lang.System.out.println("set default path for images to the test case folder \"" + defaultImagePath + "\"");
 

@@ -24,7 +24,7 @@ import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliProxyException;
-import de.consol.sakuli.starter.proxy.SahiProxy;
+import de.consol.sakuli.starter.helper.SahiProxy;
 import net.sf.sahi.ant.Report;
 import net.sf.sahi.test.TestRunner;
 import org.mockito.InjectMocks;

@@ -148,7 +148,7 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
 
     @Override
     public Report getSahiReport() {
-        return rhinoScriptRunner.getReport();
+        return rhinoScriptRunner == null ? null : rhinoScriptRunner.getReport();
     }
 
     @Override

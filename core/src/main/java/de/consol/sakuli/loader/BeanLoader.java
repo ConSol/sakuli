@@ -38,7 +38,7 @@ public class BeanLoader {
     public static String CONTEXT_PATH = "beanRefFactory.xml";
 
     public static BaseActionLoader loadBaseActionLoader() {
-        return loadBean(BaseActionLoaderImpl.QUALIFIER, BaseActionLoader.class);
+        return loadBean(BaseActionLoaderImpl.class);
     }
 
     public static ScreenActionLoader loadScreenActionLoader() {
@@ -78,10 +78,17 @@ public class BeanLoader {
 
 
     public static <T> T loadBean(Class<T> classDef) {
-        return getBeanFacotry().getBean(classDef);
+        try {
+            logger.debug("load bean '{}' from application context", classDef.getSimpleName());
+            return getBeanFacotry().getBean(classDef);
+        } catch (Throwable e) {
+            logger.error("error in BeanLoader", e);
+            throw e;
+        }
     }
 
     public static <T> T loadBean(String qualifier, Class<T> classDef) {
+        logger.debug("load Bean '{}' with qualifier '{}' from application context", classDef.getSimpleName(), qualifier);
         return getBeanFacotry().getBean(qualifier, classDef);
     }
 

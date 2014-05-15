@@ -40,11 +40,11 @@ import static org.mockito.Mockito.when;
  */
 public abstract class BaseTest {
 
-    protected static final String INCLUDE_FOLDER_PATH = "." + File.separator + "src" + File.separator + "main" + File.separator + "_include";
-    protected static final String SAHI_FOLDER_PATH = ".." + File.separator + "sahi";
-    protected static final String TEST_FOLDER_PATH = "." + File.separator + "src" + File.separator + "test" + File.separator +
+    public static final String INCLUDE_FOLDER_PATH = "." + File.separator + "src" + File.separator + "main" + File.separator + "_include";
+    public static final String SAHI_FOLDER_PATH = ".." + File.separator + "sahi";
+    public static final String TEST_FOLDER_PATH = "." + File.separator + "src" + File.separator + "test" + File.separator +
             "resources" + File.separator + "_testsuite4JUnit";
-    private static final String TEST_CONTEXT_PATH = "JUnit-beanRefFactory.xml";
+    public static final String TEST_CONTEXT_PATH = "JUnit-beanRefFactory.xml";
 
     protected BaseActionLoader loaderMock;
 

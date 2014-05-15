@@ -24,7 +24,7 @@ import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliProxyException;
-import de.consol.sakuli.starter.proxy.SahiProxy;
+import de.consol.sakuli.starter.helper.SahiProxy;
 import net.sf.sahi.ant.Report;
 import net.sf.sahi.test.TestRunner;
 import org.slf4j.Logger;
@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
@@ -59,9 +58,8 @@ public class SahiConnector {
     /**
      * Initialize method to start the sahi proxy thread, if needed
      */
-    @PostConstruct
-    public void init() throws SakuliProxyException, FileNotFoundException {
-        logger.info("Initialize Proxy! ");
+    public void init() throws FileNotFoundException, SakuliProxyException {
+        logger.info("Initialize Sahi Proxy! ");
         sahiProxy.startProxy();
     }
 
@@ -69,8 +67,11 @@ public class SahiConnector {
      * starts a specific sahi test suite in sakuli
      */
     public void startSahiTestSuite() throws SakuliProxyException {
+        logger.info("Start Sakuli-Test-Suite from folder \""
+                + testSuite.getTestSuiteFolder().toAbsolutePath().toString()
+                + "\"");
 
-
+//        ConnectionTester.checkTestCaseInitURL(testSuite);
         //default sahi runner to play the sahi script
         TestRunner runner = getTestRunner();
         //config reporter

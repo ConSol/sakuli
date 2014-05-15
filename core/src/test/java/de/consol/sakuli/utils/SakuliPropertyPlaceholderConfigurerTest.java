@@ -46,6 +46,7 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
     @BeforeMethod
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        testling.setWritePropertiesToSahiConfig(false);
         testling.setLoadTestSuiteProperties(true);
         testling.setLoadSakuliProperties(true);
     }
@@ -59,10 +60,10 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         verify(props).put(SakuliProperties.INCLUDE_FOLDER, INCLUDE_FOLDER_PATH);
         verify(props).put(SahiProxyProperties.PROXY_HOME_FOLDER, SAHI_FOLDER_PATH);
         verify(testling, never()).addPropertiesFromFile(props,
-                Paths.get(INCLUDE_FOLDER_PATH).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER);
+                Paths.get(INCLUDE_FOLDER_PATH).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
         verify(testling).addPropertiesFromFile(props,
-                Paths.get(TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER);
-
+                Paths.get(TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER, true);
+        verify(testling, never()).modifyPropertiesConfiguration(anyString(), anyListOf(String.class), any(Properties.class));
         assertNull(props.getProperty(ActionProperties.ENCRYPTION_INTERFACE_TEST_MODE), null);
         assertEquals(props.getProperty(TestSuiteProperties.SUITE_ID), "0001_testsuite_example");
     }
@@ -75,9 +76,9 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         verify(props).put(TestSuiteProperties.TEST_SUITE_FOLDER, TEST_FOLDER_PATH);
         verify(props).put(SakuliProperties.INCLUDE_FOLDER, INCLUDE_FOLDER_PATH);
         verify(testling).addPropertiesFromFile(props,
-                Paths.get(INCLUDE_FOLDER_PATH).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER);
+                Paths.get(INCLUDE_FOLDER_PATH).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
         verify(testling, never()).addPropertiesFromFile(props,
-                Paths.get(TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER);
+                Paths.get(TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER, true);
 
         assertNotNull(props.getProperty(SakuliProperties.INCLUDE_FOLDER));
         assertNull(props.getProperty(TestSuiteProperties.SUITE_ID));
@@ -97,7 +98,7 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         Path sakuliPropFile = Paths.get(getClass().getResource("/JUnit-sakuli.properties").toURI());
         assertTrue(Files.exists(sakuliPropFile));
         Properties props = new Properties();
-        testling.addPropertiesFromFile(props, sakuliPropFile.toAbsolutePath().toString());
+        testling.addPropertiesFromFile(props, sakuliPropFile.toAbsolutePath().toString(), true);
         assertTrue(props.size() > 0);
         assertEquals(props.getProperty(ActionProperties.ENCRYPTION_INTERFACE_TEST_MODE), "true");
     }
@@ -105,7 +106,7 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Error by reading the property file '.*invalid.properties'")
     public void testAddPropertiesFromFileRuntimeException() throws Exception {
         Properties props = new Properties();
-        testling.addPropertiesFromFile(props, "invalid.properties");
+        testling.addPropertiesFromFile(props, "invalid.properties", true);
     }
 
     @Test

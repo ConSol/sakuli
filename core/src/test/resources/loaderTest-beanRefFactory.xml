@@ -17,16 +17,14 @@
   ~ limitations under the License.
   -->
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 
-    <import resource="property-placeholderContext.xml"/>
-
-    <!-- Schaltet Erkennung von @Autowired an -->
-    <context:annotation-config/>
-    <context:component-scan base-package="de.consol.sakuli.starter"/>
+<beans>
+    <bean id="de.consol.sakuli.app.root" lazy-init="false"
+          class="org.springframework.context.support.FileSystemXmlApplicationContext">
+        <constructor-arg>
+            <value>src/test/resources/de/consol/sakuli/aop/aopTest-applicationContext.xml</value>
+        </constructor-arg>
+    </bean>
 
 </beans>

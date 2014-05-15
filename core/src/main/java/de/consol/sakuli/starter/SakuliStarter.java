@@ -28,14 +28,11 @@ import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import de.consol.sakuli.exceptions.SakuliProxyException;
+import de.consol.sakuli.loader.BeanLoader;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.access.BeanFactoryLocator;
-import org.springframework.beans.factory.access.BeanFactoryReference;
-import org.springframework.beans.factory.access.SingletonBeanFactoryLocator;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
@@ -88,7 +85,7 @@ public class SakuliStarter {
                 tempLogCache = checkIncludeFolderAndSetContextVariables(args[2], tempLogCache);
 
                 //because of the property loading strategy, the logger must be initialized through the Spring Context!
-                BeanFactory beanFacorty = getBeanFacorty();
+                SahiConnector sahiConnector = BeanLoader.loadBean(SahiConnector.class);
                 Logger logger = LoggerFactory.getLogger(SakuliStarter.class);
                 logger.debug(tempLogCache);
 
@@ -97,13 +94,10 @@ public class SakuliStarter {
                  * SAKULI Starter to run the test suite with embedded sahi proxy
                  */
                 try {
-                    logger.info("Start Sakuli-Test-Suite in folder \""
-                            + beanFacorty.getBean(TestSuiteProperties.class).getTestSuiteFolder().toAbsolutePath().toString()
-                            + "\"");
-                    SahiConnector sahiConnector = beanFacorty.getBean(SahiConnector.class);
+                    sahiConnector.init();
 
                     //start the execution of the test suite
-                    logger.debug("initialize SakuliStarter");
+                    logger.debug("start new sakuli test suite");
                     sahiConnector.startSahiTestSuite();
                 }
                 /**
@@ -112,13 +106,13 @@ public class SakuliStarter {
                     e.printStackTrace();
                     System.exit(99);
                 } finally {
-                    DaoTestSuite daoTestSuite = getBeanFacorty().getBean(DaoTestSuite.class);
+                    DaoTestSuite daoTestSuite = BeanLoader.loadBean(DaoTestSuite.class);
                     //after the execution,save the test suite
                     daoTestSuite.updateTestSuiteResult();
                     daoTestSuite.saveTestSuiteToSahiJobs();
 
                     //print out the result
-                    TestSuite testSuite = getBeanFacorty().getBean(TestSuite.class);
+                    TestSuite testSuite = BeanLoader.loadBean(TestSuite.class);
                     logger.info(testSuite.getResultString()
                             + "\n===========  SAKULI Testsuite '" + testSuite.getGuid() + "' execution FINISHED - "
                             + testSuite.getState() + " ======================\n");
@@ -157,17 +151,6 @@ public class SakuliStarter {
             // TODO: Print out help
             System.exit(-1);
         }
-    }
-
-    /**
-     * build up the application context "starter"
-     *
-     * @return a Spring {@link BeanFactory}
-     */
-    private static BeanFactory getBeanFacorty() {
-        BeanFactoryLocator bfl = SingletonBeanFactoryLocator.getInstance();
-        BeanFactoryReference bf = bfl.useBeanFactory("de.consol.sakuli.app.starter");
-        return bf.getFactory();
     }
 
 

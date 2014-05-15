@@ -22,9 +22,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author tschneck Date: 14.05.14
@@ -37,6 +40,23 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String PROXY_PORT = "sahi.proxy.port";
     public static final String MAX_CONNECT_TRIES = "sahi.proxy.maxConnectTries";
     public static final String RECONNECT_SECONDS = "sahi.proxy.reconnectSeconds";
+
+    public static final String SAHI_PROPERTY_FILE_APPENDER = File.separator + "config" + File.separator + "userdata.properties";
+    public static final String SAHI_LOG_PROPERTY_FILE_APPENDER = File.separator + "config" + File.separator + "log.properties";
+
+    public static final String SAHI_LOG_DIR = "logs.dir";
+    public static final List<String> userdataPropertyNames = Arrays.asList(SAHI_LOG_DIR);
+    public static final String SAHI_HANLDER = "handlers";
+    public static final String SAHI_LOG_CONSOLE_HANLDER_LEVEL = "java.util.logging.ConsoleHandler.level";
+    public static final String SAHI_LOG_FILE_HANDLER = "java.util.logging.FileHandler.level";
+    public static final String SAHI_LOG_CONSOLE_HANDLER_FORMATTER = "java.util.logging.ConsoleHandler.formatter";
+    public static final String SAHI_LOG_FILE_HANDLER_FORMATTER = "java.util.logging.FileHandler.formatter";
+    public static final String SAHI_LOG_FILE_HANDLER_LIMIT = "java.util.logging.FileHandler.limit";
+    public static final String SAHI_LOG_FILE_HANDLER_COUNT = "java.util.logging.FileHandler.count";
+    public static final String SAHI_LOG_FILE_HANDLER_PATERN = "java.util.logging.FileHandler.pattern";
+    public static final List<String> logPropertyNames = Arrays.asList(SAHI_HANLDER, SAHI_LOG_CONSOLE_HANLDER_LEVEL,
+            SAHI_LOG_FILE_HANDLER, SAHI_LOG_CONSOLE_HANDLER_FORMATTER, SAHI_LOG_FILE_HANDLER_FORMATTER,
+            SAHI_LOG_FILE_HANDLER_LIMIT, SAHI_LOG_FILE_HANDLER_COUNT, SAHI_LOG_FILE_HANDLER_PATERN);
 
     @Value("${" + PROXY_HOME_FOLDER + "}")
     private String sahiHomeFolderPropertyValue;

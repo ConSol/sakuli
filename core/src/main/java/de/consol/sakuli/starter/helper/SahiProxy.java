@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.starter.proxy;
+package de.consol.sakuli.starter.helper;
 
 import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
 import de.consol.sakuli.exceptions.SakuliProxyException;
@@ -72,7 +72,8 @@ public class SahiProxy {
 
             //set the custom paths to the sahi environment
             Configuration.init(props.getSahiHomeFolder().toAbsolutePath().toString(), props.getSahiConfigFolder().toAbsolutePath().toString());
-            Configuration.setUnmodifiedTrafficLogging(true);
+            Configuration.setUnmodifiedTrafficLogging(false);
+            Configuration.setModifiedTrafficLogging(false);
             //Starts the sahi proxy as asynchron Thread
             try {
                 sahiProxy.start(asyncron);

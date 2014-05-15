@@ -23,6 +23,7 @@ import de.consol.sakuli.datamodel.actions.LogResult;
 import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BaseActionLoaderImpl;
 import de.consol.sakuli.loader.BeanLoader;
+import net.sf.sahi.report.Report;
 import net.sf.sahi.report.ResultType;
 import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.aspectj.lang.JoinPoint;
@@ -49,7 +50,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 public class RhinoAspect {
 
     public static final String ALREADY_HANDELED = "{{SAKULI_EX}}";
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected final static Logger logger = LoggerFactory.getLogger(RhinoAspect.class);
 
     /**
      * Aspect to fetch the {@link RhinoScriptRunner} at the start of a test case script.
@@ -150,11 +151,16 @@ public class RhinoAspect {
                     break;
             }
             if (logToResult.level().getResultType() != null) {
-                BeanLoader.loadBaseActionLoader().getSahiReport().addResult(
-                        message.toString(),
-                        logToResult.level().getResultType(),
-                        joinPoint.getSignature().getDeclaringTypeName(),
-                        "");
+                Report sahiReport = BeanLoader.loadBaseActionLoader().getSahiReport();
+                if (sahiReport != null) {
+                    sahiReport.addResult(
+                            message.toString(),
+                            logToResult.level().getResultType(),
+                            joinPoint.getSignature().getDeclaringTypeName(),
+                            "");
+                } else {
+                    logger.info(logToResult.message());
+                }
             }
         }
     }
@@ -232,29 +238,4 @@ public class RhinoAspect {
         }
         return builder.append("]").toString();
     }
-
-
-    //    private <A extends Annotation> A retrieveAnnotationFrom(JoinPoint joinPoint, Class<A> classDef) throws NoSuchMethodException {
-//        return retrieveTargetMethodFrom(joinPoint).getAnnotation(classDef);
-//    }
-//
-//    private Method retrieveTargetMethodFrom(JoinPoint joinPoint) throws NoSuchMethodException {
-//        Class targetClass = joinPoint.getTarget().getClass();
-//        return targetClass.getMethod(joinPoint.getSignature().getName(), retrieveArgTypesFrom(joinPoint));
-//    }
-//
-//    private Class[] retrieveArgTypesFrom(JoinPoint joinPoint) {
-//        Class[] argTypes = new Class[joinPoint.getArgs().length];
-//        for (int i = 0; i < argTypes.length; i++) {
-//            argTypes[i] = joinPoint.getArgs()[i].getClass();
-//        }
-//        return argTypes;
-//    }
-
-    //SAMPLE FOR TESTS
-    //    @Before("execution(* de.consol.sakuli.starter.proxy.SahiProxy.startProxy(..))")
-    //    public void doHandleException(JoinPoint joinPoint) {
-    //        Logger logger = getLogger(joinPoint);
-    //        logger.error("NEW ASPECT ACTION fetched");
-    //    }
 }

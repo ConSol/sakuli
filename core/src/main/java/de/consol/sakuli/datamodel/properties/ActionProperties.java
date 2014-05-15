@@ -23,6 +23,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -65,12 +67,19 @@ public class ActionProperties extends AbstractProperties {
     private String screenShotFormat;
 
     @PostConstruct
-    public void initFolders() throws FileNotFoundException {
+    public void initFolders() throws IOException {
         if (takeScreenshots) {
             screenShotFolder = Paths.get(screenShotFolderPropertyValue).normalize();
-            checkFolders(screenShotFolder);
+            try {
+                checkFolders(screenShotFolder);
+            } catch (FileNotFoundException e) {
+                System.out.println(String.format("create sakuli screenshot folder for logging '%s'",
+                        screenShotFolder.toString()));
+                Files.createDirectories(screenShotFolder);
+            }
         }
     }
+
     public boolean isTakeScreenshots() {
         return takeScreenshots;
     }
