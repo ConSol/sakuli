@@ -1,8 +1,7 @@
 Sakuli Api
 ==========
 
-
-Directory - [API Directory][1]
+# Test Case Functions
 
 Functions sakuli.inc  - [sakuli][2]
 
