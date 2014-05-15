@@ -70,7 +70,6 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 
 
 ### Resources
-(Auto-generated documentation of all functions)
 
 [Sakuli API](./docs/sakuli-api.md) - an overview about the most important Sakuli functions. 
 
