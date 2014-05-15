@@ -82,7 +82,7 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
 
     @Override
     public void loadSettingDefaults() {
-        getSettings().setDefaults(BeanLoader.loadBean(ActionProperties.class), BeanLoader.loadBean(SakuliProperties.class));
+        getSettings().setDefaults();
     }
 
     @Override

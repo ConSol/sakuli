@@ -34,10 +34,17 @@ import java.security.InvalidParameterException;
 public class ScreenBasedSettings extends Settings {
 
     private double curMinSimilarity = 0.8f;
+    private ActionProperties props;
+    private SakuliProperties sakuliProps;
 
     @Autowired
+    public ScreenBasedSettings(ActionProperties props, SakuliProperties sakuliProps) {
+        this.props = props;
+        this.sakuliProps = sakuliProps;
+    }
+
     @PostConstruct
-    public void setDefaults(ActionProperties props, SakuliProperties sakuliProps) {
+    public void setDefaults() {
         MinSimilarity = curMinSimilarity;
 
         WaitScanRate = 10f;
