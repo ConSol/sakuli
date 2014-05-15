@@ -2,16 +2,16 @@ Sakuli Api
 ==========
 
 ### Test Case Functions
-Provides features to define and work with test cases. [sakuli.inc][2]
+Provides features to define and work with test cases. [sakuli.md][2]
 
 ### Applications Functions 
-Provides features to use local applications. [sakuli_Application.inc][3]
+Provides features to use local applications. [sakuli_Application.md][3]
 
 ### Environment Functions
-Provides features to work with your environment. [sakuli_Environment.inc][4]
+Provides features to work with your environment. [sakuli_Environment.md][4]
 
 ###Region Functions
-Provides features to use region. [sakuli_Region.inc][5]
+Provides features to use region. [sakuli_Region.md][5]
 
 ###Sahi Api
 All Sahi features are supported by Sakuli. [Sahi API][6]
