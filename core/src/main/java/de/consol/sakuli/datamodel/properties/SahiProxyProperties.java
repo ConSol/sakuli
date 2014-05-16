@@ -92,8 +92,8 @@ public class SahiProxyProperties extends AbstractProperties {
 
     @PostConstruct
     public void initFolders() throws FileNotFoundException {
-        sahiHomeFolder = Paths.get(sahiHomeFolderPropertyValue).normalize();
-        sahiConfigFolder = Paths.get(sahiConfigFolderPropertyValue).normalize();
+        sahiHomeFolder = Paths.get(sahiHomeFolderPropertyValue).normalize().toAbsolutePath();
+        sahiConfigFolder = Paths.get(sahiConfigFolderPropertyValue).normalize().toAbsolutePath();
         checkFolders(sahiHomeFolder, sahiConfigFolder);
     }
 

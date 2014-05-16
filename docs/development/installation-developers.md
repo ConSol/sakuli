@@ -35,8 +35,8 @@ Install Sahi
     java -jar install_sahi_v44_20130429.jar
     ```
 
-* As installation path use `<project-dir>/sahi`. Ensure that the path in the property file
-  `core/src/main/_include/sahi.properties` points to your Sahi installation folder.
+* As installation path use `<project-dir>/sahi`. Ensure that the path in the property 'sahi.proxy.homePath' in file
+  `core/src/main/_include/sakuli.properties` points to your Sahi installation folder.
 
 * As installation packs use only __"Sahi Core", "Tools", "Userdata"__
 
@@ -72,8 +72,7 @@ Development-Environment-Konfiguration
   * __main class:__ `de.consol.sakuli.starter.SakuliStarter`
   * __program arguments:__ 
     ```-run <path to your sakuli test suite folder> <path to your _include folder> <path to your sahi folder>```
-    e.g. for the provided Win7 example use `-run _sakuli_test_suites/example src/main/_include ../sahi`
-  * __VM options:__ `-Dlog4j.configuration=file:src/main/resources/log4j.properties`
+    e.g. for the provided Win7 example use `-run ../sakuli_test_suites/example src/main/_include ../sahi`
 
 
 ___Attention!___

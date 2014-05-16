@@ -7,6 +7,6 @@ REM Execute with admin privileges to safely disconnect the current RDP session
 REM and attach it to the local console. See logoff.vbs for more details. 
 
 echo off
-cscript.exe /NoLogo %SAKULI_HOME%\_include\vb-scripts\logoff.vbs
+cscript.exe /NoLogo %SAKULI_HOME%\scripts\helper\vb_scripts\logoff.vbs
 
 

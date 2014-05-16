@@ -24,6 +24,7 @@ import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliException;
 import net.sf.sahi.util.Utils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -72,6 +73,10 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     public TestSuite(TestSuiteProperties properties) {
         id = properties.getTestSuiteId();
         name = properties.getTestSuiteName();
+        //if name is not set, use the id
+        if (StringUtils.isEmpty(name)) {
+            name = id;
+        }
         warningTime = properties.getWarningTime();
         criticalTime = properties.getCriticalTime();
         testSuiteFolder = properties.getTestSuiteFolder();

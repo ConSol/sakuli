@@ -114,22 +114,13 @@ This chapter includes the installation of Sakuli (which already has Sikuli on bo
 
 Some configuration settings:
 
-_**%SAKULI_HOME%**_\\__include\sahi.properties_ (note the slashes instead of backslashes here!) :
-
-* *sahiproxy.homepath=c:/sakuli/sahi* 
-
-
 _**%SAKULI_HOME%**_\\__include\sakuli.properties_: 
 
 (jump to [encryption of secrets](../docs/sakuli-manual.md) and come back here)
 
 * *sakuli.encryption.interface=eth3*
-
-_**%SAKULI_HOME%**_\\__include\db.properties_: 
-
-
-* comment out the lines below "#local"
-+ uncomment the lines below "#remote" and set
+* *sahiproxy.homepath=c:/sakuli/sahi* 
+* set your database connection information like:
 	* *jdbc.port=3307*
 	* *jdbc.database=sahi*
 	* *jdbc.host=[IPofOMD]*
