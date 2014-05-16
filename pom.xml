@@ -124,9 +124,11 @@
 
     </build>
 
+    <!-- see jolokia sample - https://github.com/rhuss/jolokia/blob/master/pom.xml -->
     <scm>
-        <!-- see jolokia sample - https://github.com/rhuss/jolokia/blob/master/pom.xml -->
-        <developerConnection>scm:git:ssh://git@github.com:ConSol/sakuli.git</developerConnection>
+        <connection>scm:git:git://github.com/ConSol/sakuli.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/ConSol/sakuli.git</developerConnection>
+        <url>git://github.com/ConSol/sakuli.git</url>
     </scm>
 
     <!-- general dependencies -->
