@@ -1,9 +1,31 @@
 # Sakuli Manual
 
 ## Proxy settings
-To define your company's proxy within Sahi, open *%SAKULI_HOME%/sahi/userdata/config/userdata.properties* : 
+To define your company's proxy, edit your proxy information to the property File `%SAKULI_HOME%/_include/sakuli.properties` in the scetion __SAHI-SCRIPT-RUNNER-PROPERTIES__ like in the following example:
 
-For information on how to define the proxy settings, please refer to [Configuring an External Proxy](http://sahi.co.in/w/configuring-an-external-proxy) on the Sahi documentation. 
+```
+### HTTP/HTTPS proxy Settings
+### Set these properties, to enable the test execution behind company proxies
+# Use external proxy server for HTTP
+ext.http.proxy.enable=true
+ext.http.proxy.host=proxy.server.com
+ext.http.proxy.port=8080
+ext.http.proxy.auth.enable=false
+ext.http.proxy.auth.name=user
+ext.http.proxy.auth.password=password
+
+# Use external proxy server for HTTPS
+ext.https.proxy.enable=true
+ext.https.proxy.host=proxy.server.com
+ext.https.proxy.port=8080
+ext.https.proxy.auth.enable=false
+ext.https.proxy.auth.name=user
+ext.https.proxy.auth.password=password
+
+# There is only one bypass list for both secure and insecure.
+ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.verisign.com
+```
+
 
 ## Connecting to Sakuli clients
 
