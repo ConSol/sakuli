@@ -116,17 +116,17 @@
                     <finalName>${project.jar.name}</finalName>
                     <recompressZippedFiles>true</recompressZippedFiles>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <!-- this is used for inheritance merges -->
-                        <phase>install</phase>
-                        <!-- bind to the install phase -->
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <!--<executions>-->
+                <!--<execution>-->
+                <!--<id>make-assembly</id>-->
+                <!--&lt;!&ndash; this is used for inheritance merges &ndash;&gt;-->
+                <!--<phase>install</phase>-->
+                <!--&lt;!&ndash; bind to the install phase &ndash;&gt;-->
+                <!--<goals>-->
+                <!--<goal>single</goal>-->
+                <!--</goals>-->
+                <!--</execution>-->
+                <!--</executions>-->
             </plugin>
         </plugins>
     </build>
