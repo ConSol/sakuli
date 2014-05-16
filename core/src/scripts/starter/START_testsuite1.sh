@@ -3,7 +3,7 @@
 #
 #
 #project folder: default def
-PROJECT_FOLDER=`dirname $0`/../..
+PROJECT_FOLDER=$SAKULI_HOME
 echo project-folder: $PROJECT_FOLDER
 
 #define your test suite folder here:

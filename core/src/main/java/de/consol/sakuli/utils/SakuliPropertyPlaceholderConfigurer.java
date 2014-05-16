@@ -125,9 +125,9 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         if (writePropertiesToSahiConfig) {
             String sahiConfigFolerPath = resolve(props.getProperty(SahiProxyProperties.PROXY_CONFIG_FOLDER), props);
 
-            String sahiPropConfig = Paths.get(sahiConfigFolerPath + SahiProxyProperties.SAHI_PROPERTY_FILE_APPENDER).normalize().toString();
+            String sahiPropConfig = Paths.get(sahiConfigFolerPath + SahiProxyProperties.SAHI_PROPERTY_FILE_APPENDER).normalize().toAbsolutePath().toString();
             modifyPropertiesConfiguration(sahiPropConfig, SahiProxyProperties.userdataPropertyNames, props);
-            String sahiLogPropConfig = Paths.get(sahiConfigFolerPath + SahiProxyProperties.SAHI_LOG_PROPERTY_FILE_APPENDER).normalize().toString();
+            String sahiLogPropConfig = Paths.get(sahiConfigFolerPath + SahiProxyProperties.SAHI_LOG_PROPERTY_FILE_APPENDER).normalize().toAbsolutePath().toString();
             modifyPropertiesConfiguration(sahiLogPropConfig, SahiProxyProperties.logPropertyNames, props);
         }
     }
@@ -167,7 +167,8 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
             }
             logger.debug("modify properties file '{}' with '{}'", propFilePathToConfig, temProps.toString());
         } catch (ConfigurationException e) {
-            throw new RuntimeException("Error by reading the property file '" + propFilePathToConfig + "'", e);
+            logger.error("modify sahi properties went wrong", e);
+//            throw new RuntimeException("Error by reading the property file '" + propFilePathToConfig + "'", e);
         }
 
     }
