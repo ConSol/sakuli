@@ -22,6 +22,7 @@
 <beans>
     <bean id="de.consol.sakuli.app.root" lazy-init="false"
           class="org.springframework.context.support.ClassPathXmlApplicationContext">
-        <constructor-arg value="applicationContext.xml"/>
+        <constructor-arg value="de/consol/sakuli/integration/dao/db-applicationContext.xml"/>
     </bean>
+
 </beans>

@@ -26,6 +26,7 @@ import de.consol.sakuli.integration.ui.app.UiTestApplication;
 import de.consol.sakuli.integration.ui.app.UiTestEvent;
 import de.consol.sakuli.loader.BeanLoader;
 import de.consol.sakuli.loader.ScreenActionLoader;
+import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import javafx.application.Platform;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.rhino.RhinoScriptRunner;
@@ -33,8 +34,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.*;
 
@@ -53,9 +52,9 @@ import static org.mockito.Mockito.when;
  *         Date: 08.05.2014
  */
 @Test(groups = IntegrationTest.GROUP)
-@ContextConfiguration(locations = {"classpath*:ui-applicationContext.xml"})
-public abstract class AbstractUiTestApplicationIT extends AbstractTestNGSpringContextTests {
+public abstract class AbstractUiTestApplicationIT implements IntegrationTest {
 
+    private static final String TEST_CONTEXT_PATH = "ui-beanRefFactory.xml";
     protected static Long DEFAULT_TIME_OUT_SEC = 30L;
     protected static Map<UiTestEvent, Integer> eventCounter;
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -69,6 +68,10 @@ public abstract class AbstractUiTestApplicationIT extends AbstractTestNGSpringCo
     @BeforeSuite
     public void setUp() throws Exception {
         executorService = Executors.newCachedThreadPool();
+        BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
     }
 
     @AfterSuite

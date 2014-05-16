@@ -26,19 +26,20 @@ import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.integration.IntegrationTest;
 import de.consol.sakuli.integration.builder.TestSuiteBuilder;
+import de.consol.sakuli.loader.BeanLoader;
+import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.sql.DataSource;
 
+import static de.consol.sakuli.integration.IntegrationTest.GROUP;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyString;
@@ -47,14 +48,12 @@ import static org.mockito.Mockito.*;
 /**
  * @author tschneck Date: 22.07.13
  */
-@Test(groups = IntegrationTest.GROUP)
-@ContextConfiguration(locations = {"classpath*:db-applicationContext.xml"})
-public abstract class DaoIntegrationTest<D extends Dao> extends AbstractTestNGSpringContextTests {
-
+@Test(groups = GROUP)
+public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTest {
+    public static final String TEST_CONTEXT_PATH = "db-beanRefFactory.xml";
     @InjectMocks
     protected D testling;
 
-    @Autowired
     protected DataSource dataSource;
 
     @Mock
@@ -64,6 +63,14 @@ public abstract class DaoIntegrationTest<D extends Dao> extends AbstractTestNGSp
 
     protected abstract D createTestling() throws SakuliException;
 
+    @BeforeClass
+    public void initTestFolder() {
+        BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
+        dataSource = BeanLoader.loadBean(DataSource.class);
+    }
     @BeforeMethod
     public void init() throws SakuliException {
         testling = createTestling();
