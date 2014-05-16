@@ -26,17 +26,4 @@
             <value>applicationContext.xml</value>
         </constructor-arg>
     </bean>
-
-    <!-- childs of sakuli application context -->
-    <bean id="de.consol.sakuli.app.starter" lazy-init="true"
-          class="org.springframework.context.support.ClassPathXmlApplicationContext">
-        <constructor-arg>
-            <value>starter-applicationContext.xml</value>
-        </constructor-arg>
-        <constructor-arg>
-            <ref bean="de.consol.sakuli.app.root"/>
-        </constructor-arg>
-    </bean>
-
-
 </beans>

@@ -26,7 +26,6 @@ import de.consol.sakuli.datamodel.TestCaseStep;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.state.TestCaseStepState;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
-import de.consol.sakuli.loader.BaseActionLoaderImpl;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -55,8 +54,6 @@ public class TestCaseActionsTest extends BaseTest {
     @Mock
     private TestSuite testSuiteMock;
     @Mock
-    private BaseActionLoaderImpl loaderMock;
-    @Mock
     private DaoTestCase daoTestCaseMock;
     @Mock
     private DaoTestCaseStep daoTestCaseStepMock;
@@ -67,7 +64,7 @@ public class TestCaseActionsTest extends BaseTest {
 
 
     @BeforeMethod
-    public void init() throws Exception {
+    public void initMocks() throws Exception {
         MockitoAnnotations.initMocks(this);
         testCases = new HashMap<>();
         testCases.put(sample.getId(), sample);

@@ -1,20 +1,20 @@
 /*
- * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
- *
- * Copyright 2013 - 2014 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+*
+* Copyright 2013 - 2014 the original author or authors.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 
 package de.consol.sakuli.actions.screenbased;
 
@@ -27,17 +27,17 @@ import org.sikuli.script.FindFailed;
 import org.sikuli.script.Key;
 import org.sikuli.script.Match;
 import org.sikuli.script.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.springframework.util.StringUtils.isEmpty;
 
 /**
- * TODO refacor finds with exists implementation => excpetions wont't appear
- *
  * @author Tobias Schneck
  */
 public class RegionImpl extends org.sikuli.script.Region implements Action {
 
-    private final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final boolean resumeOnException;
     private final ImageLibObject imagePattern;
     private ScreenActionLoader loader;
@@ -202,13 +202,13 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
      */
     public RegionImpl clickMe() {
         RegionImpl baseRegion = findBaseRegion();
-        int ret = 0;
+        int ret;
         try {
             ret = baseRegion.click(this.getCenter());
         } catch (FindFailed findFailed) {
             ret = 0;
         }
-        loader.getSettings().setDefaults();
+        loader.loadSettingDefaults();
         if (ret != 1) {
             loader.getExceptionHandler().handleException("Couldn't click on region " + baseRegion, baseRegion, resumeOnException);
             return null;
@@ -226,13 +226,13 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
      */
     public RegionImpl doubleClickMe() {
         RegionImpl baseRegion = findBaseRegion();
-        int ret = 0;
+        int ret;
         try {
             ret = baseRegion.doubleClick(this.getCenter());
         } catch (FindFailed findFailed) {
             ret = 0;
         }
-        loader.getSettings().setDefaults();
+        loader.loadSettingDefaults();
         if (ret != 1) {
             loader.getExceptionHandler().handleException("Couldn't double click on region " + baseRegion, baseRegion, resumeOnException);
             return null;
@@ -249,13 +249,13 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
      */
     public RegionImpl rightClickMe() {
         RegionImpl baseRegion = findBaseRegion();
-        int ret = 0;
+        int ret;
         try {
             ret = baseRegion.rightClick(this.getCenter());
         } catch (FindFailed findFailed) {
             ret = 0;
         }
-        loader.getSettings().setDefaults();
+        loader.loadSettingDefaults();
         if (ret != 1) {
             loader.getExceptionHandler().handleException("Couldn't right click on region " + baseRegion, baseRegion, resumeOnException);
             return null;
@@ -272,7 +272,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
      */
     public RegionImpl waitForImage(String imageName, int seconds) {
         RegionImpl baseRegion = findBaseRegion();
-        Match match = null;
+        Match match;
         ImageLibObject imageObj = loadImage(imageName);
 
         try {
@@ -291,7 +291,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
      * {@link Region#waitFor(int)}
      */
     public RegionImpl waitFor(int seconds) {
-        Match match = null;
+        Match match;
         try {
             if (imagePattern != null) {
                 match = this.wait(imagePattern.getPattern(), seconds);
@@ -414,7 +414,6 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     protected Pattern loadPattern(String imageName) {
         return loadImage(imageName).getPattern();
     }
-
 
     private RegionImpl toRegion(Match match) {
         if (match != null) {

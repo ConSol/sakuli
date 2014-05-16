@@ -36,6 +36,7 @@
     <modules>
         <module>core</module>
         <module>integration-test</module>
+        <module>docs</module>
     </modules>
 
     <properties>
@@ -45,7 +46,7 @@
         <downloadJavadocs>true</downloadJavadocs>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
-        <dependencies.spring.version>4.0.3.RELEASE</dependencies.spring.version>
+        <dependencies.spring.version>4.0.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.7.4</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
         <test.group.integration>integration</test.group.integration>
@@ -84,30 +85,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.17</version>
-                <executions>
-                    <!-- Config for UNIT-Tests-->
-                    <execution>
-                        <id>default-test</id>
-                        <!-- to override default configuration - in fact: unit tests -->
-                        <configuration>
-                            <skip>false</skip>
-                            <excludedGroups>${test.group.integration}</excludedGroups>
-                        </configuration>
-                    </execution>
-                    <!-- Config for INTEGRATION-Tests-->
-                    <execution>
-                        <id>integration</id>
-                        <phase>integration-test</phase>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <configuration>
-                            <skip>false</skip>
-                            <groups>${test.group.integration}</groups>
-                            <excludedGroups>${test.group.unit}</excludedGroups>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <skip>false</skip>
+                    <excludedGroups>${test.group.integration}</excludedGroups>
+                    <excludes>
+                        <!-- exludes the package de.consol.sakuli.integration-->
+                        <exclude>**/integration/**/*</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
 
 
@@ -160,6 +145,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>${dependencies.spring.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -188,6 +179,7 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
             <version>${dependencies.aspectj.version}</version>
+            <scope>provided</scope>
         </dependency>
 
 
@@ -204,11 +196,17 @@
             <version>10.10.1.1</version>
         </dependency>
 
-        <!-- log4j over maven central -->
+        <!-- LOGGING  over maven central -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.2</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.6</version>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.7.7</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- Command line tools -->
@@ -221,6 +219,11 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>1.8</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.10</version>
         </dependency>
 
 
@@ -278,20 +281,18 @@
 
     </dependencies>
 
-
-
-  <repositories>
-    <repository>
-        <!-- ConSol Labs repository holds Sahi and SikuliX dependencies -->
-        <id>labs-consol</id>
-      <name>ConSol* Labs Repository</name>
-      <url>http://labs.consol.de/maven/repository</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-    </repository>
-  </repositories>
+    <repositories>
+        <repository>
+            <!-- ConSol Labs repository holds Sahi and SikuliX dependencies -->
+            <id>labs-consol</id>
+            <name>ConSol* Labs Repository</name>
+            <url>http://labs.consol.de/maven/repository</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
 </project>

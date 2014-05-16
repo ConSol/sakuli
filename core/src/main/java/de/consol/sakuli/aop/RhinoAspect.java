@@ -20,15 +20,18 @@ package de.consol.sakuli.aop;
 
 import de.consol.sakuli.actions.logging.LogToResult;
 import de.consol.sakuli.datamodel.actions.LogResult;
+import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BaseActionLoaderImpl;
 import de.consol.sakuli.loader.BeanLoader;
+import net.sf.sahi.report.Report;
 import net.sf.sahi.report.ResultType;
 import net.sf.sahi.rhino.RhinoScriptRunner;
-import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -46,9 +49,8 @@ import static org.springframework.util.StringUtils.isEmpty;
 @Component
 public class RhinoAspect {
 
-
     public static final String ALREADY_HANDELED = "{{SAKULI_EX}}";
-
+    protected final static Logger logger = LoggerFactory.getLogger(RhinoAspect.class);
 
     /**
      * Aspect to fetch the {@link RhinoScriptRunner} at the start of a test case script.
@@ -59,9 +61,8 @@ public class RhinoAspect {
      */
     @After("execution(* net.sf.sahi.rhino.RhinoScriptRunner.setReporter*(*))")
     public void getRhinoScriptRunner(JoinPoint joinPoint) {
-        Logger logger = Logger.getLogger(RhinoAspect.class);
         logger.info("Add RhinoScriptRunner to the JavaBackEnd");
-        BaseActionLoaderImpl environmentLoader = BeanLoader.loadBaseActionLoader();
+        BaseActionLoader environmentLoader = BeanLoader.loadBaseActionLoader();
         if (joinPoint.getTarget() instanceof RhinoScriptRunner) {
             environmentLoader.setRhinoScriptRunner((RhinoScriptRunner) joinPoint.getTarget());
         } else {
@@ -150,11 +151,16 @@ public class RhinoAspect {
                     break;
             }
             if (logToResult.level().getResultType() != null) {
-                BeanLoader.loadBaseActionLoader().getSahiReport().addResult(
-                        message.toString(),
-                        logToResult.level().getResultType(),
-                        joinPoint.getSignature().getDeclaringTypeName(),
-                        "");
+                Report sahiReport = BeanLoader.loadBaseActionLoader().getSahiReport();
+                if (sahiReport != null) {
+                    sahiReport.addResult(
+                            message.toString(),
+                            logToResult.level().getResultType(),
+                            joinPoint.getSignature().getDeclaringTypeName(),
+                            "");
+                } else {
+                    logger.info(logToResult.message());
+                }
             }
         }
     }
@@ -167,7 +173,6 @@ public class RhinoAspect {
      */
     @Before("execution(* net.sf.sahi.report.Report.addResult(..))")
     public void doHandleRhinoException(JoinPoint joinPoint) {
-        Logger logger = Logger.getLogger(RhinoAspect.class);
 
         // Read out all args
         Object[] args = joinPoint.getArgs();
@@ -192,7 +197,7 @@ public class RhinoAspect {
             if (ResultType.ERROR.equals(resultType)
                     || ResultType.FAILURE.equals(resultType)) {
 
-                BaseActionLoaderImpl environmentLoader = BeanLoader.loadBaseActionLoader();
+                BaseActionLoader environmentLoader = BeanLoader.loadBaseActionLoader();
                 environmentLoader.getExceptionHandler().handleException(logResult);
             }
             /**
@@ -209,7 +214,7 @@ public class RhinoAspect {
 
 
     private Logger getLogger(JoinPoint joinPoint) {
-        return Logger.getLogger(joinPoint.getSignature().getDeclaringType());
+        return LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringType());
     }
 
     private String printArgs(JoinPoint joinPoint, boolean logArgs) {
@@ -233,29 +238,4 @@ public class RhinoAspect {
         }
         return builder.append("]").toString();
     }
-
-
-    //    private <A extends Annotation> A retrieveAnnotationFrom(JoinPoint joinPoint, Class<A> classDef) throws NoSuchMethodException {
-//        return retrieveTargetMethodFrom(joinPoint).getAnnotation(classDef);
-//    }
-//
-//    private Method retrieveTargetMethodFrom(JoinPoint joinPoint) throws NoSuchMethodException {
-//        Class targetClass = joinPoint.getTarget().getClass();
-//        return targetClass.getMethod(joinPoint.getSignature().getName(), retrieveArgTypesFrom(joinPoint));
-//    }
-//
-//    private Class[] retrieveArgTypesFrom(JoinPoint joinPoint) {
-//        Class[] argTypes = new Class[joinPoint.getArgs().length];
-//        for (int i = 0; i < argTypes.length; i++) {
-//            argTypes[i] = joinPoint.getArgs()[i].getClass();
-//        }
-//        return argTypes;
-//    }
-
-    //SAMPLE FOR TESTS
-    //    @Before("execution(* de.consol.sakuli.starter.proxy.SahiProxy.startProxy(..))")
-    //    public void doHandleException(JoinPoint joinPoint) {
-    //        Logger logger = getLogger(joinPoint);
-    //        logger.error("NEW ASPECT ACTION fetched");
-    //    }
 }

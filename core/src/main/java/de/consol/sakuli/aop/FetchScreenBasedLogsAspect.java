@@ -18,10 +18,11 @@
 
 package de.consol.sakuli.aop;
 
-import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,8 +34,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class FetchScreenBasedLogsAspect {
-
-    private final Logger logger = Logger.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * Aspect to fetch all Exception from the Sahi-Proxy by the methode {@link net.sf.sahi.ant.Report}
@@ -46,15 +46,7 @@ public class FetchScreenBasedLogsAspect {
 //            "args(level, message)")
     @Before("execution(* org.sikuli.basics.Debug.log(..))")
     public void doHandleSikuliLog(JoinPoint pjp) {
-//       logger.info("LEVEL "  + level + ": " + message);
         logger.info("LEVEL " + pjp.getArgs()[0] + ": " + String.format(pjp.getArgs()[1].toString(), pjp.getArgs()[2]));
     }
-////
-////    @Around("execution(*  org.sikuli.basics.Debug.log(..)) &&" +
-////            "args(level, message, args)")
-////    public void doInterceptLoging(ProceedingJoinPoint pjp, int level, String message, Object... args) throws Throwable {
-////        logger.info("AROUND ASPECT LEVEL " + level + ": " + String.format(message, args));
-////        pjp.proceed();
-////    }
 
 }

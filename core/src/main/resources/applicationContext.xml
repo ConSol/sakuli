@@ -26,7 +26,6 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="property-placeholderContext.xml"/>
     <aop:aspectj-autoproxy/>
     <!--<aop:config proxy-target-class="true"/>-->
 
@@ -38,6 +37,14 @@
     <context:component-scan base-package="de.consol.sakuli.loader"/>
     <context:component-scan base-package="de.consol.sakuli.actions"/>
     <context:component-scan base-package="de.consol.sakuli.aop"/>
+    <context:component-scan base-package="de.consol.sakuli.utils"/>
+    <context:component-scan base-package="de.consol.sakuli.starter"/>
+
+    <bean id="propertyResolver"
+          class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="systemPropertiesMode" value="2"/>
+    </bean>
 
     <!--<bean id="rhinoExceptionAspect" class="de.consol.sakuli.aop.FetchRhinoLogAspect"/>-->
 

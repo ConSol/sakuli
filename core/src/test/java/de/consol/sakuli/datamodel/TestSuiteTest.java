@@ -19,9 +19,11 @@
 package de.consol.sakuli.datamodel;
 
 import de.consol.sakuli.dao.DaoTestSuite;
+import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliException;
+import org.apache.commons.lang.time.DateUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -31,7 +33,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,10 +63,10 @@ public class TestSuiteTest {
 
     @Test
     public void testInit() throws Throwable {
+        ts = new TestSuite(getTestProps("valid"));
+
+        MockitoAnnotations.initMocks(this);
         when(tsDaoMock.getTestSuitePrimaryKey()).thenReturn(999);
-        Path folderPath = setTestSuiteFolderAndScreenshotfolder("valid");
-        Assert.assertTrue(Files.exists(folderPath));
-        Assert.assertTrue(Files.isDirectory(folderPath));
 
         ts.init();
         assertEquals(TestSuiteState.RUNNING, ts.getState());
@@ -85,27 +86,23 @@ public class TestSuiteTest {
 
     }
 
-    private Path setTestSuiteFolderAndScreenshotfolder(String resourcePath) throws URISyntaxException {
+    private TestSuiteProperties getTestProps(String resourcePath) throws URISyntaxException {
         Path folderPath = Paths.get(getClass().getResource(resourcePath).toURI());
-
-        ReflectionTestUtils.setField(ts, "folder", folderPath.toString());
-        ReflectionTestUtils.setField(ts, "screenShotFolderPath", folderPath.toString() + File.separator + "_screenshot");
-        return folderPath;
-    }
-
-    @Test(expectedExceptions = FileNotFoundException.class)
-    public void testInitException() throws Throwable {
-        String folder = "datamodelXYZ" + File.separator + "testSuiteNotExist";
-        ReflectionTestUtils.setField(ts, "folder", folder);
-        ReflectionTestUtils.setField(ts, "screenShotFolderPath", folder + File.separator + "_screenshot");
-        ts.init();
-    }
-
-    @Test(expectedExceptions = SakuliException.class, expectedExceptionsMessageRegExp = "test case path \".*\" doesn't exists - check your \"testsuite.suite\" file")
-    public void testInitExceptionForTestCase() throws Throwable {
-        Path folderPath = setTestSuiteFolderAndScreenshotfolder("unvalid");
         Assert.assertTrue(Files.exists(folderPath));
         Assert.assertTrue(Files.isDirectory(folderPath));
+
+        TestSuiteProperties props = new TestSuiteProperties();
+        props.setTestSuiteFolder(folderPath);
+        props.setTestSuiteSuiteFile(Paths.get(folderPath.toString() + TestSuiteProperties.TEST_SUITE_SUITE_FILE_APPENDER));
+        return props;
+    }
+
+    @Test(expectedExceptions = SakuliException.class, expectedExceptionsMessageRegExp = "test case path \".*unValidTestCase.*\" doesn't exists - check your \"testsuite.suite\" file")
+    public void testInitExceptionForTestCase() throws Throwable {
+        ts = new TestSuite(getTestProps("unvalid"));
+
+        MockitoAnnotations.initMocks(this);
+        when(tsDaoMock.getTestSuitePrimaryKey()).thenReturn(999);
 
         ts.init();
     }
@@ -173,7 +170,7 @@ public class TestSuiteTest {
 
         TestSuite ts2 = new TestSuite();
         ReflectionTestUtils.setField(ts2, "id", "001");
-        ReflectionTestUtils.setField(ts2, "startDate", new Date());
+        ReflectionTestUtils.setField(ts2, "startDate", DateUtils.addMilliseconds(new Date(), 1));
         assertNotNull(ts2.getGuid());
 
         assertNotEquals(ts.getGuid(), ts2.getGuid());

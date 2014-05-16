@@ -80,8 +80,8 @@
 
         <!-- copy sample test suites -->
         <fileSet>
-            <directory>${basedir}/_sakuli_test_suites</directory>
-            <outputDirectory>/_sakuli_test_suites</outputDirectory>
+            <directory>${project.parent.basedir}/sakuli_test_suites</directory>
+            <outputDirectory>/sakuli_test_suites</outputDirectory>
             <excludes>
                 <!-- excludes the whole _logs folder -->
                 <exclude>*/_logs/**</exclude>

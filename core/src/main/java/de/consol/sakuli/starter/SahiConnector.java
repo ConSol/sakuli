@@ -19,18 +19,19 @@
 package de.consol.sakuli.starter;
 
 import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliProxyException;
-import de.consol.sakuli.starter.proxy.SahiProxy;
+import de.consol.sakuli.starter.helper.SahiProxy;
 import net.sf.sahi.ant.Report;
 import net.sf.sahi.test.TestRunner;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.ConnectException;
@@ -39,38 +40,26 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class SahiConnector {
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     protected int countConnections = 0;
-    /**
-     * autowired variables **
-     */
+
     @Autowired
     private SahiProxy sahiProxy;
     @Autowired
     private TestSuite testSuite;
-    /**
-     * ** Values from the the property file "sahi.properties" **
-     */
-    @Value("${sahiproxy.maxConnectTries}")
-    protected int maxConnectTries;
-    @Value("${sahiproxy.reconnectSeconds}")
-    private int reconnectSeconds;
-    @Value("${sahiproxy.configurationPath}")
-    private String sahiUserdata;
-    /**
-     * ** Values form the property file "log4j.properties" **
-     */
-    @Value("${log.folder}")
-    private String logFolder;
+    @Autowired
+    private SakuliProperties sakuliProperties;
+    @Autowired
+    private SahiProxyProperties sahiProxyProperties;
+
     @Autowired
     private SakuliExceptionHandler sakuliExceptionHandler;
 
     /**
      * Initialize method to start the sahi proxy thread, if needed
      */
-    @PostConstruct
-    public void init() throws SakuliProxyException, FileNotFoundException {
-        logger.info("Initialize Proxy! ");
+    public void init() throws FileNotFoundException, SakuliProxyException {
+        logger.info("Initialize Sahi Proxy! ");
         sahiProxy.startProxy();
     }
 
@@ -78,12 +67,15 @@ public class SahiConnector {
      * starts a specific sahi test suite in sakuli
      */
     public void startSahiTestSuite() throws SakuliProxyException {
+        logger.info("Start Sakuli-Test-Suite from folder \""
+                + testSuite.getTestSuiteFolder().toAbsolutePath().toString()
+                + "\"");
 
-
+//        ConnectionTester.checkTestCaseInitURL(testSuite);
         //default sahi runner to play the sahi script
         TestRunner runner = getTestRunner();
         //config reporter
-        runner.addReport(new Report("html", logFolder));
+        runner.addReport(new Report("html", sakuliProperties.getLogFolder().toAbsolutePath().toString()));
         //add include folder property
         runner.setInitJS("var $includeFolder = \"" + getIncludeFolderJsPath() + "\";");
 
@@ -134,7 +126,7 @@ public class SahiConnector {
     }
 
     protected String getIncludeFolderJsPath() {
-        String path = testSuite.getIncludeFolderPath() + File.separator + "sakuli.inc";
+        String path = sakuliProperties.getIncludeFolder().toAbsolutePath().toString() + File.separator + "sakuli.inc";
         if (path.contains("\\")) {
             //replace \ with \\
             path = path.replaceAll("\\\\", "\\\\\\\\");
@@ -150,15 +142,15 @@ public class SahiConnector {
      */
     protected void reconnect(Exception e) throws InterruptedException, SakuliException {
         logger.warn("Cannot connect to sahi proxy - start Proxy.main()");
-        if (countConnections <= maxConnectTries) {
+        if (countConnections <= sahiProxyProperties.getMaxConnectTries()) {
             logger.info(
                     "RECONNECT to sahi proxy in "
-                            + reconnectSeconds
+                            + sahiProxyProperties.getReconnectSeconds()
                             + " seconds"
             );
 
             //send thread to sleep
-            Thread.sleep(TimeUnit.SECONDS.toMillis(reconnectSeconds));
+            Thread.sleep(TimeUnit.SECONDS.toMillis(sahiProxyProperties.getReconnectSeconds()));
             this.startSahiTestSuite();
         } else {
             logger.info("Reconnect to sahi proxy unsuccessful - Connection refused");

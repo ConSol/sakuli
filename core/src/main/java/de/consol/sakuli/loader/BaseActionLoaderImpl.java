@@ -22,6 +22,8 @@ import de.consol.sakuli.actions.environment.CipherUtil;
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.ImageLib;
+import de.consol.sakuli.datamodel.properties.ActionProperties;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import net.sf.sahi.report.Report;
@@ -48,7 +50,10 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
     private TestSuite testSuite;
     @Autowired
     private CipherUtil cipherUtil;
-
+    @Autowired
+    private SakuliProperties sakuliProperties;
+    @Autowired
+    private ActionProperties actionProperties;
     /**
      * ** Fields which will be filled at runtime ***
      */
@@ -81,13 +86,18 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
         }
     }
 
-    public void setRhinoScriptRunner(RhinoScriptRunner rhinoScriptRunner) {
-        this.rhinoScriptRunner = rhinoScriptRunner;
-
+    @Override
+    public SakuliProperties getSakuliProperties() {
+        return this.sakuliProperties;
     }
 
-    public void setCurrentTestCase(TestCase currentTestCase) {
-        this.currentTestCase = currentTestCase;
+    @Override
+    public ActionProperties getActionProperties() {
+        return this.actionProperties;
+    }
+
+    public void setActionProperties(ActionProperties actionProperties) {
+        this.actionProperties = actionProperties;
     }
 
     @Override
@@ -95,9 +105,17 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
         return exceptionHandler;
     }
 
+    public void setExceptionHandler(SakuliExceptionHandler exceptionHandler) {
+        this.exceptionHandler = exceptionHandler;
+    }
+
     @Override
     public TestSuite getTestSuite() {
         return testSuite;
+    }
+
+    public void setTestSuite(TestSuite testSuite) {
+        this.testSuite = testSuite;
     }
 
     @Override
@@ -105,9 +123,17 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
         return currentTestCase;
     }
 
+    public void setCurrentTestCase(TestCase currentTestCase) {
+        this.currentTestCase = currentTestCase;
+    }
+
     @Override
     public ImageLib getImageLib() {
         return imageLib;
+    }
+
+    public void setImageLib(ImageLib imageLib) {
+        this.imageLib = imageLib;
     }
 
     @Override
@@ -115,9 +141,14 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
         return rhinoScriptRunner;
     }
 
+    public void setRhinoScriptRunner(RhinoScriptRunner rhinoScriptRunner) {
+        this.rhinoScriptRunner = rhinoScriptRunner;
+
+    }
+
     @Override
     public Report getSahiReport() {
-        return rhinoScriptRunner.getReport();
+        return rhinoScriptRunner == null ? null : rhinoScriptRunner.getReport();
     }
 
     @Override
@@ -125,4 +156,7 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
         return cipherUtil;
     }
 
+    public void setCipherUtil(CipherUtil cipherUtil) {
+        this.cipherUtil = cipherUtil;
+    }
 }

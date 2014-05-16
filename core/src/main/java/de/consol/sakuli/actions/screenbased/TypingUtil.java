@@ -150,7 +150,7 @@ public class TypingUtil<A extends Action> {
          * this is needed because in the methode {@link org.sikuli.script.Region#keyin(Object, String, int)}
          * will be reset the type delay to 0.0.
          * */
-        action.getLoader().getSettings().setDefaults();
+        action.getLoader().loadSettingDefaults();
         if (returnValue == 1) {
             return action;
         }
@@ -168,7 +168,7 @@ public class TypingUtil<A extends Action> {
          * this is needed because in the methode {@link org.sikuli.script.Region#keyin(Object, String, int)}
          * will be reset the type delay to 0.0.
          * */
-        action.getLoader().getSettings().setDefaults();
+        action.getLoader().loadSettingDefaults();
         if (returnValue == 1) {
             return action;
         }
@@ -221,7 +221,7 @@ public class TypingUtil<A extends Action> {
     }
 
     private A mouseWheel(int wheelDirection, int steps) {
-        int ret = 0;
+        int ret;
         try {
             ret = action.getActionRegion().wheel(action, wheelDirection, steps);
         } catch (FindFailed findFailed) {

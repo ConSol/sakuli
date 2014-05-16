@@ -18,20 +18,38 @@
   -->
 
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns="http://www.springframework.org/schema/beans"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="property-placeholderContext.xml"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="de.consol.sakuli.utils"/>
 
-    <bean id="properties" class="de.consol.sakuli.PropertyHolder">
-        <property name="testSuiteFolder" value="${test.suite.folder}"/>
-        <property name="logFile" value="${log4j.appender.sakuli.File}"/>
-        <property name="logFileAll" value="${log4j.appender.generallogs.File}"/>
+    <bean class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
+
+    <bean id="propertyResolver"
+          class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="systemPropertiesMode" value="2"/>
+        <property name="loadSakuliProperties" value="false"/>
+        <property name="loadTestSuiteProperties" value="true"/>
+        <property name="writePropertiesToSahiConfig" value="false"/>
+        <property name="locations">
+            <list>
+                <!-- override the properties from the test-suite folder and so on-->
+                <value>classpath:JUnit-sakuli.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="properties" class="de.consol.sakuli.PropertyHolder" depends-on="propertyResolver">
+        <property name="testSuiteFolder" value="${sakuli.testsuite.folder}"/>
+        <property name="logFile" value="${sakuli.log.folder}/_sakuli.log"/>
+        <property name="logFileAll" value="${sakuli.log.folder}/all.log"/>
         <property name="screenShotFolder" value="${sakuli.screenshot.dir}"/>
     </bean>
 
-    <bean class="org.mockito.Mockito" factory-method="mock">
-        <constructor-arg value="de.consol.sakuli.loader.BaseActionLoaderImpl">
+    <bean id="baseLoader" class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.loader.BaseActionLoader">
         </constructor-arg>
     </bean>
 

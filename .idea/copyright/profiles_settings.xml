@@ -1,7 +1,0 @@
-<component name="CopyrightManager">
-  <settings default="sakuli-copyright">
-    <module2copyright>
-      <element module="Production" copyright="sakuli-copyright" />
-    </module2copyright>
-  </settings>
-</component>

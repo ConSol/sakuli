@@ -20,19 +20,18 @@ package de.consol.sakuli;
 
 import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BeanLoader;
+import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import net.sf.sahi.report.Report;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.access.SingletonBeanFactoryLocator;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeClass;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.spi.FileSystemProvider;
 import java.util.Scanner;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -40,27 +39,32 @@ import static org.mockito.Mockito.when;
  *         Date: 25.07.13
  */
 public abstract class BaseTest {
-    protected static final String TEST_FOLDER_PATH = "." + File.separator + "src" + File.separator + "test" + File.separator +
+
+    public static final String INCLUDE_FOLDER_PATH = "." + File.separator + "src" + File.separator + "main" + File.separator + "_include";
+    public static final String SAHI_FOLDER_PATH = ".." + File.separator + "sahi";
+    public static final String TEST_FOLDER_PATH = "." + File.separator + "src" + File.separator + "test" + File.separator +
             "resources" + File.separator + "_testsuite4JUnit";
-    private static final String TEST_CONTEXT_PATH = "JUnit-beanRefFactory.xml";
+    public static final String TEST_CONTEXT_PATH = "JUnit-beanRefFactory.xml";
 
+    protected BaseActionLoader loaderMock;
 
-    @BeforeSuite
-    public static void setSysProperty() {
-        System.setProperty("test.suite.folder", TEST_FOLDER_PATH);
+    public static void deleteFile(Path logFile) {
+        FileSystemProvider provider = logFile.getFileSystem().provider();
+        try {
+            provider.deleteIfExists(logFile);
+        } catch (IOException e) {
+            //do nothing
+        }
+    }
+
+    @BeforeClass
+    public void setContextProperties() {
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
-        BaseActionLoader loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
-        when(loaderMock.getSahiReport()).thenReturn(Mockito.mock(Report.class));
-    }
-
-    @AfterSuite
-    public static void cleanSysProperty() {
-        System.clearProperty("test.suite.folder");
-    }
-
-
-    protected BeanFactory getStarterContextBeanFactory() {
-        return SingletonBeanFactoryLocator.getInstance(TEST_CONTEXT_PATH).useBeanFactory("de.consol.sakuli.app.starter").getFactory();
+        loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
+        when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
     }
 
     protected String getLastLineWithContent(Path file, String s) throws IOException {

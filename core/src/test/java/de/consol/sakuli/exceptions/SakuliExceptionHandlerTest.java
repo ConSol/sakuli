@@ -22,6 +22,8 @@ import de.consol.sakuli.BaseTest;
 import de.consol.sakuli.actions.screenbased.ScreenshotActions;
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.datamodel.properties.ActionProperties;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.loader.ScreenActionLoader;
@@ -53,6 +55,10 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     private ScreenshotActions screenshotActionsMock;
     @Mock
     private ScreenActionLoader loader;
+    @Mock
+    private SakuliProperties sakuliProperties;
+    @Mock
+    private ActionProperties actionProperties;
 
     @InjectMocks
     private SakuliExceptionHandler testling;
@@ -72,8 +78,10 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         testSuite = new TestSuite();
         testSuite.setState(TestSuiteState.RUNNING);
         ReflectionTestUtils.setField(testSuite, "testCases", testCases);
-        ReflectionTestUtils.setField(testSuite, "screenShotFolderPath", screenShotFolder);
-        ReflectionTestUtils.setField(testSuite, "takeScreenshots", true);
+        when(loader.getActionProperties()).thenReturn(actionProperties);
+        when(actionProperties.isTakeScreenshots()).thenReturn(true);
+        when(loader.getSakuliProperties()).thenReturn(sakuliProperties);
+        when(sakuliProperties.isLogResumOnException()).thenReturn(true);
         when(loader.getTestSuite()).thenReturn(testSuite);
         when(loader.getCurrentTestCase()).thenReturn(testCase);
     }
@@ -118,6 +126,16 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         //test Proxy Exception
         testling.handleException(new SakuliProxyException("FAILURE"));
         Assert.assertNull(testSuite.getException());
+    }
+
+    @Test
+    public void testHandleSakuliProxyExceptionForTestCases() throws Exception {
+        setUp();
+        when(loader.getCurrentTestCase()).thenReturn(null);
+        testling.handleException(new SakuliProxyException(testExcMessage));
+        Assert.assertTrue(testSuite.getException().getCause() instanceof SakuliProxyException);
+        Assert.assertTrue(testSuite.getException().getMessage().contains(testExcMessage));
+        Assert.assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
     }
 
     @Test

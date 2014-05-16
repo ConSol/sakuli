@@ -149,21 +149,17 @@ sub nagios {
 			$c_ref->{msg} =~ s/\|/,/g;
                         $case_total_nagios_out = sprintf($CASE_DBSTATUS_2_TEXT{4}, $c_ref->{name}, $c_ref->{id}, $c_ref->{msg}."\n");
 			if (defined($c_ref->{screenshot})) {
-# Option 2: getimage.pl
+				# Option 1: base64
+				# places the screenshot as base64 encoded image within the service output. 
+				# The screenshot will be visible in the service details!
+				# Does not work with IE8, FF/chrome recommended
+				my $imgb64 = encode_base64($c_ref->{screenshot},"");
+				$case_total_nagios_out .= "<div style=\"width:640px\" id=\"case$casecount\"><img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" src=\"data:image/jpg;base64,$imgb64\"></div>";
 
-#				my $img = $c_ref->{screenshot};
-#				$case_total_nagios_out .= "<div style=\"width:640px\" id=\"case$casecount\"><img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" src=\"http://10.26.0.68/sakuli/thruk/getimage.pl?id=$c_ref->{id}\"></div>";
-#			}
-
-# Option 1: base64
-				#my $imgb64 = encode_base64($c_ref->{screenshot},"");
-				#$case_total_nagios_out .= "<div style=\"width:640px\" id=\"case$casecount\"><img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" src=\"data:image/jpg;base64,$imgb64\"></div>";
-
-#				my $imgb64 = $c_ref->{screenshot};
-#				$case_total_nagios_out .= "<div style=\"width:640px\" id=\"case$casecount\"><img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" src=\"http://xx.xx.xx.xx/sitename/cgi-bin/getimage.pl?id=$c_ref->{id}\"></div>";
-
-				$case_total_nagios_out .= '<a href="http://xx.xx.xx.xx/sitename/cgi-bin/getimage.pl?id=' .
-					$c_ref->{id} . '&tbl=case">(Screenshot Link)</a><br>';
+				# Option 2: getimage.pl
+				# Screenshot image is accessible by a hyperlink within the service output. 
+				#	$case_total_nagios_out .= '<a href="http://xx.xx.xx.xx/sitename/cgi-bin/getimage.pl?id=' .
+				#		$c_ref->{id} . '&tbl=case">(Screenshot Link)</a><br>';
 			}
 		
                 } 

@@ -22,6 +22,8 @@ import de.consol.sakuli.actions.environment.CipherUtil;
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.ImageLib;
+import de.consol.sakuli.datamodel.properties.ActionProperties;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.rhino.RhinoScriptRunner;
@@ -37,12 +39,30 @@ public interface BaseActionLoader {
 
     TestCase getCurrentTestCase();
 
+    /**
+     * Sets the current {@link TestCase} during execution of a {@link TestSuite}.
+     */
+    void setCurrentTestCase(TestCase testCase);
+
     ImageLib getImageLib();
 
     RhinoScriptRunner getRhinoScriptRunner();
+
+    void setRhinoScriptRunner(RhinoScriptRunner scriptRunner);
 
     Report getSahiReport();
 
     CipherUtil getCipherUtil();
 
+    /**
+     * init method to signalise the context that a new {@link TestCase} starts.
+     *
+     * @param testCaseID {@link TestCase#id}
+     * @param imagePaths paths to the located image patterns
+     */
+    void init(String testCaseID, String... imagePaths);
+
+    SakuliProperties getSakuliProperties();
+
+    ActionProperties getActionProperties();
 }

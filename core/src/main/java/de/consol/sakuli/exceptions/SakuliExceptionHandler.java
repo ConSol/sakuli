@@ -23,7 +23,8 @@ import de.consol.sakuli.aop.RhinoAspect;
 import de.consol.sakuli.datamodel.actions.LogResult;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import net.sf.sahi.report.ResultType;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +38,7 @@ import java.nio.file.Path;
 @Component
 public class SakuliExceptionHandler {
 
-    private final Logger logger = Logger.getLogger(this.getClass());
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private ScreenActionLoader loader;
@@ -93,9 +94,10 @@ public class SakuliExceptionHandler {
      */
     public void handleException(Throwable e) {
         //Proxy Exception should only be handled if no other exceptions have been added
-        if (!(e instanceof SakuliProxyException
-                && loader.getTestSuite().getException() == null
-                && loader.getCurrentTestCase().getException() == null)) {
+        if (!(e instanceof SakuliProxyException) ||
+                (loader.getTestSuite().getException() == null
+                        && (loader.getCurrentTestCase() == null
+                        || loader.getCurrentTestCase().getException() == null))) {
             //if the exception have been already handled do no exception handling!
             if (!e.getMessage().contains(RhinoAspect.ALREADY_HANDELED)
                     && !e.getMessage().contains(("Logging exception:"))) {
@@ -104,15 +106,15 @@ public class SakuliExceptionHandler {
 
                 //Do different exception handling for different use cases:
                 if (sakuliException.resumeOnException
-                        && loader.getTestSuite().isByResumOnExceptionLogging()) {
-                    logger.error(sakuliException);
+                        && loader.getSakuliProperties().isLogResumOnException()) {
+                    logger.error(sakuliException.getMessage(), sakuliException);
                     saveException(sakuliException);
                     addExceptionToSahiReport(sakuliException);
                 } else if (sakuliException.resumeOnException &&
-                        !loader.getTestSuite().isByResumOnExceptionLogging()) {
-                    logger.debug(sakuliException, sakuliException);
+                        !loader.getSakuliProperties().isLogResumOnException()) {
+                    logger.debug(sakuliException.getMessage(), sakuliException);
                 } else {
-                    logger.error(sakuliException);
+                    logger.error(sakuliException.getMessage(), sakuliException);
                     saveException(sakuliException);
 
                     /**
@@ -175,7 +177,7 @@ public class SakuliExceptionHandler {
 
     /**
      * transforms any {@link Throwable} to SakuliException.
-     * If the property 'testsuite.takeScreenShots=true' is set, the methods add a Screenshot.
+     * If the property 'sakuli.takeScreenShots.onErrors=true' is set, the methods add a Screenshot.
      *
      * @param e a {@link Throwable}
      * @return <EX>  {@link SakuliException} or any child.
@@ -185,21 +187,21 @@ public class SakuliExceptionHandler {
         if (e instanceof SakuliException) {
             resumeOnException = ((SakuliException) e).resumeOnException;
         }
-        if (loader.getTestSuite().isTakeScreenshots()) {
+        if (loader.getActionProperties().isTakeScreenshots()) {
             //try to get a screenshot
             try {
                 Path screenshot = null;
                 if (e instanceof SakuliActionException) {
                     screenshot = loader.getScreenshotActions().takeScreenshotAndHighlight(
                             e.getMessage(),
-                            loader.getTestSuite().getScreenShotFolderPath(),
+                            loader.getActionProperties().getScreenShotFolder(),
                             ((SakuliActionException) e).getLastRegion()
                     );
                 }
                 if (screenshot == null) {
                     screenshot = loader.getScreenshotActions().takeScreenshot(
                             e.getMessage(),
-                            loader.getTestSuite().getScreenShotFolderPath());
+                            loader.getActionProperties().getScreenShotFolder());
                 }
                 return new SakuliExceptionWithScreenshot(e, screenshot, resumeOnException);
             } catch (IOException e2) {

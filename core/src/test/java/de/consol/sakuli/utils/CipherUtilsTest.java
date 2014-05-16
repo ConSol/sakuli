@@ -19,6 +19,7 @@
 package de.consol.sakuli.utils;
 
 import de.consol.sakuli.actions.environment.CipherUtil;
+import de.consol.sakuli.datamodel.properties.ActionProperties;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import org.mockito.MockitoAnnotations;
 import org.testng.Assert;
@@ -26,8 +27,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.crypto.IllegalBlockSizeException;
-import java.net.NetworkInterface;
-import java.util.Enumeration;
 
 /**
  * @author tschneck
@@ -35,24 +34,15 @@ import java.util.Enumeration;
  */
 public class CipherUtilsTest {
 
-    private CipherUtil testling = new CipherUtil();
+    private CipherUtil testling;
 
     @BeforeMethod
     public void setUp() throws Throwable {
         MockitoAnnotations.initMocks(this);
-        testling.setInterfaceName(determinAValidNetworkInterface());
+        ActionProperties props = new ActionProperties();
+        props.setEncryptionInterfaceTestMode(true);
+        testling = new CipherUtil(props);
         testling.getNetworkInterfaceNames();
-    }
-
-    private String determinAValidNetworkInterface() throws Exception {
-        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-        while (interfaces.hasMoreElements()) {
-            NetworkInterface anInterface = interfaces.nextElement();
-            if (anInterface.getHardwareAddress() != null && anInterface.getHardwareAddress().length == 6) {
-                return anInterface.getName();
-            }
-        }
-        throw new Exception("No network interface with a MAC address is present, please check your os settings!");
     }
 
     @Test
@@ -86,8 +76,10 @@ public class CipherUtilsTest {
     @Test
     public void testChipherException() throws Throwable {
         try {
-            testling = new CipherUtil();
-            testling.setInterfaceName("etNOVALID");
+            ActionProperties props = new ActionProperties();
+            props.setEncryptionInterfaceTestMode(false);
+            props.setEncryptionInterface("etNOVALID");
+            testling = new CipherUtil(props);
             testling.getNetworkInterfaceNames();
             Assert.assertTrue(false, "Error, no exception is thrown");
         } catch (SakuliCipherException e) {

@@ -25,6 +25,8 @@ import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.ImageLib;
 import de.consol.sakuli.datamodel.actions.Screen;
+import de.consol.sakuli.datamodel.properties.ActionProperties;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.rhino.RhinoScriptRunner;
@@ -35,8 +37,7 @@ import org.springframework.stereotype.Component;
 /**
  * Loads all necessary objects for the {@link de.consol.sakuli.actions.screenbased.ScreenshotActions}.
  *
- * @author tschneck
- *         Date: 18.10.13
+ * @author tschneck Date: 18.10.13
  */
 @Component
 public class ScreenActionLoaderImpl implements ScreenActionLoader {
@@ -57,9 +58,31 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
         return screen;
     }
 
+    public void setScreen(Screen screen) {
+        this.screen = screen;
+    }
+
     @Override
     public ScreenshotActions getScreenshotActions() {
         return screenshotActions;
+    }
+
+    public void setScreenshotActions(ScreenshotActions screenshotActions) {
+        this.screenshotActions = screenshotActions;
+    }
+
+    @Override
+    public BaseActionLoader getBaseLoader() {
+        return baseLoader;
+    }
+
+    public void setBaseLoader(BaseActionLoader baseLoader) {
+        this.baseLoader = baseLoader;
+    }
+
+    @Override
+    public void loadSettingDefaults() {
+        getSettings().setDefaults();
     }
 
     @Override
@@ -67,9 +90,28 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
         return settings;
     }
 
+    public void setSettings(ScreenBasedSettings settings) {
+        this.settings = settings;
+    }
+
     @Override
     public CipherUtil getCipherUtil() {
         return baseLoader.getCipherUtil();
+    }
+
+    @Override
+    public void init(String testCaseID, String... imagePaths) {
+        baseLoader.init(testCaseID, imagePaths);
+    }
+
+    @Override
+    public SakuliProperties getSakuliProperties() {
+        return baseLoader.getSakuliProperties();
+    }
+
+    @Override
+    public ActionProperties getActionProperties() {
+        return baseLoader.getActionProperties();
     }
 
     @Override
@@ -88,6 +130,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     }
 
     @Override
+    public void setCurrentTestCase(TestCase testCase) {
+        baseLoader.setCurrentTestCase(testCase);
+    }
+
+    @Override
     public ImageLib getImageLib() {
         return baseLoader.getImageLib();
     }
@@ -95,6 +142,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     @Override
     public RhinoScriptRunner getRhinoScriptRunner() {
         return baseLoader.getRhinoScriptRunner();
+    }
+
+    @Override
+    public void setRhinoScriptRunner(RhinoScriptRunner scriptRunner) {
+        baseLoader.setRhinoScriptRunner(scriptRunner);
     }
 
     @Override

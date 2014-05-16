@@ -27,6 +27,8 @@ import de.consol.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.App;
 import org.sikuli.script.Key;
 import org.sikuli.script.RobotDesktop;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -44,7 +46,8 @@ import java.util.concurrent.TimeUnit;
  * @author Tobias Schneck
  */
 public class Environment implements Action {
-    protected final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(this.getClass());
+
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final boolean resumeOnException;
     private ScreenActionLoader loader;
     private TypingUtil<Environment> typingUtil;
@@ -103,7 +106,7 @@ public class Environment implements Action {
             folderPath = Paths.get(pathName.substring(0, pathName.lastIndexOf(File.separator)));
             message = pathName.substring(pathName.lastIndexOf(File.separator) + 1, pathName.lastIndexOf("."));
         } else {
-            folderPath = loader.getTestSuite().getScreenShotFolderPath();
+            folderPath = loader.getActionProperties().getScreenShotFolder();
             message = pathName.substring(0, pathName.lastIndexOf("."));
         }
 

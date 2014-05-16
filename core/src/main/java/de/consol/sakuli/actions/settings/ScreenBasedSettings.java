@@ -18,9 +18,10 @@
 
 package de.consol.sakuli.actions.settings;
 
-import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.datamodel.properties.ActionProperties;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import org.sikuli.basics.Settings;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -32,18 +33,15 @@ import java.security.InvalidParameterException;
 @Component
 public class ScreenBasedSettings extends Settings {
 
-    @Value("${" + TestSuite.INCLUDE_FOLDER_PROPERTY + "}")
-    private String includeFolderPath;
-    @Value("${" + TestSuite.AUTO_HIGHLIGHT_PROPERTY + "}")
-    private boolean autoHighlightEnabled;
-    @Value("${" + TestSuite.AUTO_HIGHLIGHT_SEC_PROPERTY + "}")
-    private float autoHighlightSeconds;
-    @Value("${" + TestSuite.CLICK_DELAY_PROPERTY + "}")
-    private double defClickDelay;
-    @Value("${" + TestSuite.TYPE_DELAY_PROPERTY + "}")
-    private double defTypeDelay;
-
     private double curMinSimilarity = 0.8f;
+    private ActionProperties props;
+    private SakuliProperties sakuliProps;
+
+    @Autowired
+    public ScreenBasedSettings(ActionProperties props, SakuliProperties sakuliProps) {
+        this.props = props;
+        this.sakuliProps = sakuliProps;
+    }
 
     @PostConstruct
     public void setDefaults() {
@@ -52,22 +50,22 @@ public class ScreenBasedSettings extends Settings {
         WaitScanRate = 10f;
         ObserveScanRate = 10f;
 
-        ClickDelay = defClickDelay;
+        ClickDelay = props.getClickDelay();
 //        AutoWaitTimeout = 0;
-        TypeDelay = defTypeDelay;
+        TypeDelay = props.getTypeDelay();
 
-        OcrDataPath = includeFolderPath;
+        OcrDataPath = sakuliProps.getIncludeFolder().toAbsolutePath().toString();
         OcrTextSearch = true;
         OcrTextRead = true;
 
-        Highlight = autoHighlightEnabled;
-        if (autoHighlightSeconds < 1) {
+        Highlight = props.isAutoHighlightEnabled();
+        if (props.getAutoHighlightSeconds() < 1) {
             /**
              * because of the mehtode {@link org.sikuli.script.ScreenHighlighter#closeAfter(float)}
              * */
-            throw new InvalidParameterException("the property '" + TestSuite.AUTO_HIGHLIGHT_SEC_PROPERTY + "' has to be greater as 1, but was " + autoHighlightSeconds);
+            throw new InvalidParameterException("the property '" + ActionProperties.AUTO_HIGHLIGHT_SEC + "' has to be greater as 1, but was " + props.getAutoHighlightSeconds());
         }
-        DefaultHighlightTime = autoHighlightSeconds;
+        DefaultHighlightTime = props.getAutoHighlightSeconds();
         WaitAfterHighlight = 0.1f;
 
         //Logging

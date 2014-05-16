@@ -18,9 +18,10 @@
 
 package de.consol.sakuli.actions.environment;
 
+import de.consol.sakuli.datamodel.properties.ActionProperties;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -28,7 +29,6 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.util.Enumeration;
 
 import static java.net.NetworkInterface.getNetworkInterfaces;
@@ -41,16 +41,41 @@ import static java.net.NetworkInterface.getNetworkInterfaces;
  */
 @Component
 public class CipherUtil {
-
     private static byte[] keyPart1 =
             {
                     0x63, 0x6f, 0x6e, 0x31, 0x33, 0x53, 0x61, 0x6b, 0x53, 0x6f
             };//"con13SakSo"
     private static String algorithm = "AES/ECB/PKCS5Padding";
-    @Value("${sahi.encryption.interface}")
     private String interfaceName;
+    private boolean testMode;
     private byte[] macOfEncryptionInterface;
     private String interfaceLog = "";
+
+    public CipherUtil() {
+    }
+
+    @Autowired
+    public CipherUtil(ActionProperties cipherProps) {
+        interfaceName = cipherProps.getEncryptionInterface();
+        testMode = cipherProps.isEncryptionInterfaceTestMode();
+    }
+
+    /**
+     * Determines a valid default network interfaces, useful in case of testing.
+     *
+     * @return ethernet interface name
+     * @throws Exception
+     */
+    public static String determineAValidDefaultNetworkInterface() throws Exception {
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        while (interfaces.hasMoreElements()) {
+            NetworkInterface anInterface = interfaces.nextElement();
+            if (anInterface.getHardwareAddress() != null && anInterface.getHardwareAddress().length == 6) {
+                return anInterface.getName();
+            }
+        }
+        throw new Exception("No network interface with a MAC address is present, please check your os settings!");
+    }
 
     /**
      * fetch the local network interfaceLog and reads out the MAC of the chosen encryption interface.
@@ -62,6 +87,7 @@ public class CipherUtil {
     public void getNetworkInterfaceNames() throws SakuliCipherException {
         Enumeration<NetworkInterface> networkInterfaces;
         try {
+            interfaceName = checkEthInterfaceName();
             networkInterfaces = getNetworkInterfaces();
             while (networkInterfaces.hasMoreElements()) {
                 NetworkInterface anInterface = networkInterfaces.nextElement();
@@ -78,11 +104,27 @@ public class CipherUtil {
 
             }
             if (macOfEncryptionInterface == null) {
-                throw new SakuliCipherException("Cannot resolve mac adresse ... please check your config of the property: sahi.encryption.interface=" + interfaceName, interfaceLog);
+                throw new SakuliCipherException("Cannot resolve mac adresse ... please check your config of the property: " + ActionProperties.ENCRYPTION_INTERFACE + "=" + interfaceName, interfaceLog);
             }
-        } catch (SocketException e) {
+        } catch (Exception e) {
             throw new SakuliCipherException(e, interfaceLog);
         }
+    }
+
+    /**
+     * checks if {@link #testMode} is enabled and returns:
+     * <ul>
+     * <li>true: the first valid interface at this computer</li>
+     * <li>false: the interface name defined at the property {@link ActionProperties#ENCRYPTION_INTERFACE}</li>
+     * </ul>
+     *
+     * @return
+     */
+    private String checkEthInterfaceName() throws Exception {
+        if (testMode) {
+            return determineAValidDefaultNetworkInterface();
+        }
+        return interfaceName;
     }
 
     private String formatMAC(byte[] mac) {
@@ -145,12 +187,4 @@ public class CipherUtil {
         return new SecretKeySpec(key, "AES");
     }
 
-    /**
-     * Set the name of the interface to use for the encryption if autowired will not be used, like in {@link de.consol.sakuli.starter.SakuliStarter#main(String[])}.
-     *
-     * @param interfaceName as {@link String}
-     */
-    public void setInterfaceName(String interfaceName) {
-        this.interfaceName = interfaceName;
-    }
 }
