@@ -25,7 +25,20 @@
        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd"
         >
 
-    <import resource="property-placeholderContext.xml"/>
+    <bean id="propertyResolver"
+          class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="systemPropertiesMode" value="2"/>
+        <property name="loadSakuliProperties" value="true"/>
+        <property name="loadTestSuiteProperties" value="true"/>
+        <property name="writePropertiesToSahiConfig" value="false"/>
+        <property name="locations">
+            <list>
+                <!-- override the properties from the test-suite folder and so on-->
+                <value>classpath:integration-test.db.properties</value>
+            </list>
+        </property>
+    </bean>
 
     <!-- defines the init scripts -->
     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">

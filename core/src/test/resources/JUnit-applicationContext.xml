@@ -49,7 +49,7 @@
     </bean>
 
     <bean id="baseLoader" class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.loader.BaseActionLoader">
+        <constructor-arg value="de.consol.sakuli.loader.BaseActionLoaderImpl">
         </constructor-arg>
     </bean>
 

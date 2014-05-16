@@ -25,8 +25,7 @@
          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
         >
 
-    <import resource="property-placeholderContext.xml"/>
-    <import resource="db-applicationContext.xml"/>
+    <import resource="../dao/db-applicationContext.xml"/>
 
     <context:annotation-config/>
     <context:component-scan base-package="de.consol.sakuli.datamodel"/>
@@ -34,4 +33,7 @@
     <context:component-scan base-package="de.consol.sakuli.exceptions"/>
     <context:component-scan base-package="de.consol.sakuli.loader"/>
     <context:component-scan base-package="de.consol.sakuli.actions"/>
+    <context:component-scan base-package="de.consol.sakuli.aop"/>
+    <context:component-scan base-package="de.consol.sakuli.utils"/>
+
 </beans>

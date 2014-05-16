@@ -64,6 +64,7 @@ public class SahiConnectorTest extends BaseTest {
     public void init() {
         MockitoAnnotations.initMocks(this);
         when(sakuliProperties.getLogFolder()).thenReturn(Paths.get(TEST_FOLDER_PATH));
+        when(testSuiteMock.getTestSuiteFolder()).thenReturn(Paths.get(TEST_FOLDER_PATH));
     }
 
 
