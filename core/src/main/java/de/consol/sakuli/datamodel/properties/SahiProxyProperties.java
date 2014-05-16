@@ -45,7 +45,26 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String SAHI_LOG_PROPERTY_FILE_APPENDER = File.separator + "config" + File.separator + "log.properties";
 
     public static final String SAHI_LOG_DIR = "logs.dir";
-    public static final List<String> userdataPropertyNames = Arrays.asList(SAHI_LOG_DIR);
+    public static final String HTTP_PROXY_ENABLED = "ext.http.proxy.enable";
+    public static final String HTTP_PROXY_HOST = "ext.http.proxy.host";
+    public static final String HTTP_PROXY_PORT = "ext.http.proxy.port";
+    public static final String HTTP_PROXY_AUTH_ENABLED = "ext.http.proxy.auth.enable";
+    public static final String HTTP_PROXY_AUTH_NAME = "ext.http.proxy.auth.name";
+    public static final String HTTP_PROXY_AUTH_PASSWORD = "ext.http.proxy.auth.password";
+    public static final String HTTPS_PROXY_ENABLED = "ext.https.proxy.enable";
+    public static final String HTTPS_PROXY_HOST = "ext.https.proxy.host";
+    public static final String HTTPS_PROXY_PORT = "ext.https.proxy.port";
+    public static final String HTTPS_PROXY_AUTH_ENABLED = "ext.https.proxy.auth.enable";
+    public static final String HTTPS_PROXY_AUTH_NAME = "ext.https.proxy.auth.name";
+    public static final String HTTPS_PROXY_AUTH_PASSWORD = "ext.https.proxy.auth.password";
+    public static final String HTTP_HTTPS_BYBASS_HOSTS = "ext.http.both.proxy.bypass_hosts";
+    public static final List<String> userdataPropertyNames = Arrays.asList(SAHI_LOG_DIR,
+            HTTP_PROXY_ENABLED, HTTP_PROXY_HOST, HTTP_PROXY_PORT, HTTP_PROXY_AUTH_ENABLED,
+            HTTP_PROXY_AUTH_NAME, HTTP_PROXY_AUTH_PASSWORD,
+            HTTPS_PROXY_ENABLED, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT, HTTPS_PROXY_AUTH_ENABLED,
+            HTTPS_PROXY_AUTH_NAME, HTTPS_PROXY_AUTH_PASSWORD,
+            HTTP_HTTPS_BYBASS_HOSTS
+    );
     public static final String SAHI_HANLDER = "handlers";
     public static final String SAHI_LOG_CONSOLE_HANLDER_LEVEL = "java.util.logging.ConsoleHandler.level";
     public static final String SAHI_LOG_FILE_HANDLER = "java.util.logging.FileHandler.level";
