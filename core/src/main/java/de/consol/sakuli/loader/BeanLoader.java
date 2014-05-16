@@ -22,6 +22,7 @@ import de.consol.sakuli.actions.TestCaseActions;
 import de.consol.sakuli.actions.environment.Application;
 import de.consol.sakuli.actions.environment.Environment;
 import de.consol.sakuli.actions.screenbased.Region;
+import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -95,6 +96,16 @@ public class BeanLoader {
     private static BeanFactory getBeanFacotry() {
         BeanFactoryLocator bfl = SingletonBeanFactoryLocator.getInstance(CONTEXT_PATH);
         BeanFactoryReference bf = bfl.useBeanFactory("de.consol.sakuli.app.root");
-        return bf.getFactory();
+        return getBeanFacotryReference().getFactory();
+    }
+
+    public static void releaseContext() {
+        loadBean(SakuliPropertyPlaceholderConfigurer.class).restoreProperties();
+        getBeanFacotryReference().release();
+    }
+
+    private static BeanFactoryReference getBeanFacotryReference() {
+        BeanFactoryLocator bfl = SingletonBeanFactoryLocator.getInstance(CONTEXT_PATH);
+        return bfl.useBeanFactory("de.consol.sakuli.app.root");
     }
 }

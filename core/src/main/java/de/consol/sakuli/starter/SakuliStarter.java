@@ -111,8 +111,9 @@ public class SakuliStarter {
                     daoTestSuite.updateTestSuiteResult();
                     daoTestSuite.saveTestSuiteToSahiJobs();
 
-                    //print out the result
-                    TestSuite testSuite = BeanLoader.loadBean(TestSuite.class);
+                    //fina log and shutdown context
+                    final TestSuite testSuite = BeanLoader.loadBean(TestSuite.class);
+                    BeanLoader.releaseContext();
                     logger.info(testSuite.getResultString()
                             + "\n===========  SAKULI Testsuite '" + testSuite.getGuid() + "' execution FINISHED - "
                             + testSuite.getState() + " ======================\n");

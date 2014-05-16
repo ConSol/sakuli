@@ -24,13 +24,14 @@ import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
+import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Overrides the default {@link PropertyPlaceholderConfigurer} to dynamically load the properties files in  the {@link TestSuiteProperties#TEST_SUITE_FOLDER}
@@ -41,12 +42,19 @@ import java.util.Properties;
  */
 public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public static String TEST_SUITE_FOLDER_VALUE;
     public static String INCLUDE_FOLDER_VALUE;
     public static String SAHI_PROXY_HOME_VALUE;
     private boolean loadSakuliProperties = true;
     private boolean loadTestSuiteProperties = true;
     private boolean writePropertiesToSahiConfig = true;
+    private Map<String, Map<String, Object>> modifiedSahiConfigProps;
+
+    public SakuliPropertyPlaceholderConfigurer() {
+        modifiedSahiConfigProps = new HashMap<>();
+    }
 
     @Override
     protected void loadProperties(Properties props) throws IOException {
@@ -67,6 +75,27 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         super.loadProperties(props);
     }
 
+    @PreDestroy
+    public void restoreProperties() {
+        try {
+            for (Map.Entry<String, Map<String, Object>> entry : modifiedSahiConfigProps.entrySet()) {
+                String propFile = entry.getKey();
+                logger.debug("restore properties file '{}' with properties '{}'", propFile, entry.getValue());
+                PropertiesConfiguration propConfig = new PropertiesConfiguration(propFile);
+                propConfig.setAutoSave(true);
+                for (Map.Entry<String, Object> propEntry : entry.getValue().entrySet()) {
+                    String propKey = propEntry.getKey();
+                    if (propConfig.containsKey(propKey)) {
+                        propConfig.clearProperty(propKey);
+                    }
+                    propConfig.addProperty(propKey, propEntry.getValue());
+                }
+            }
+        } catch (ConfigurationException e) {
+            logger.error("Error in restore sahi config properties", e);
+        }
+    }
+
     /**
      * Reads in the properties for a specific file
      *
@@ -76,7 +105,7 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
      */
     protected void addPropertiesFromFile(Properties props, String filePath, boolean active) {
         if (active) {
-            System.out.println("read in properties from '" + filePath + "'");
+            logger.info("read in properties from '{}'", filePath);
             try {
                 PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(filePath);
                 Iterator<String> keyIt = propertiesConfiguration.getKeys();
@@ -124,19 +153,32 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         try {
             PropertiesConfiguration propConfig = new PropertiesConfiguration(propFilePathToConfig);
             propConfig.setAutoSave(true);
+            Properties temProps = new Properties();
             for (String propKey : updateKeys) {
                 String resolve = resolve(resourceProps.getProperty(propKey), resourceProps);
                 if (resolve != null) {
                     if (propConfig.containsKey(propKey)) {
+                        addToModifiedPropertiesMap(propFilePathToConfig, propKey, propConfig.getProperty(propKey));
                         propConfig.clearProperty(propKey);
                     }
+                    temProps.put(propKey, resolve);
                     propConfig.addProperty(propKey, resolve);
                 }
             }
+            logger.debug("modify properties file '{}' with '{}'", propFilePathToConfig, temProps.toString());
         } catch (ConfigurationException e) {
             throw new RuntimeException("Error by reading the property file '" + propFilePathToConfig + "'", e);
         }
 
+    }
+
+    protected void addToModifiedPropertiesMap(String propFilePath, String propKey, Object propertyValue) {
+        Map<String, Object> propMap = modifiedSahiConfigProps.get(propFilePath);
+        if (propMap == null) {
+            propMap = new HashMap<>();
+        }
+        propMap.put(propKey, propertyValue);
+        modifiedSahiConfigProps.put(propFilePath, propMap);
     }
 
     public boolean isLoadSakuliProperties() {
