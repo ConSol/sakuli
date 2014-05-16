@@ -29,6 +29,7 @@
         <fileSet>
             <directory>${parent.basedir}/</directory>
             <includes>
+                <include>changelog.md</include>
                 <include>*.txt</include>
             </includes>
             <outputDirectory>/</outputDirectory>

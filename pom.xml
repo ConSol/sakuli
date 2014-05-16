@@ -107,15 +107,6 @@
                 <version>2.5</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <!-- config with separate branch -->
-                    <!--<preparationGoals>clean scm:branch assembly:single -Dincludes=install/*.zip scm:add-->
-                    <!--</preparationGoals>-->
-                    <!-- config without separate branch -->
-                    <preparationGoals>clean assembly:single
-                        -Dincludes=install/*.zip -Dmessage="build new zipped-release for v${project.version}"
-                        scm:checkin
-                    </preparationGoals>
-                    <goals>package</goals>
                 </configuration>
             </plugin>
 
