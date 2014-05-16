@@ -17,4 +17,4 @@ SAKULI_JARS=$LIB_FOLDER/*:$LIB_FOLDER/lib/resource:$INCLUDE_FOLDER/log4j.propert
 echo jar-file: $SAKULI_JARS
 
 #start the java application
-java -Dsikuli.Home=%LIB_FOLDER% -Dlog4j.configuration=file:$INCLUDE_FOLDER/log4j.properties -classpath $PROJECT_FOLDER/bin/sakuli.jar:$SAKULI_JARS de.consol.sakuli.starter.SakuliStarter -run "$TEST_SUITE_FOLDER" "$INCLUDE_FOLDER"
+java -Dsikuli.Home=%LIB_FOLDER% -classpath $PROJECT_FOLDER/bin/sakuli.jar:$SAKULI_JARS de.consol.sakuli.starter.SakuliStarter -run "$TEST_SUITE_FOLDER" "$INCLUDE_FOLDER"
