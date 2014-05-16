@@ -17,12 +17,13 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.consol.sakuli</groupId>
     <artifactId>root</artifactId>
-    <version>0.4.1-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>sakuli-parent</name>
@@ -128,8 +129,7 @@
         <connection>scm:git:git://github.com/ConSol/sakuli.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/ConSol/sakuli.git</developerConnection>
         <url>git://github.com/ConSol/sakuli.git</url>
-      <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <!-- general dependencies -->
     <dependencies>
