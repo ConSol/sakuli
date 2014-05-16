@@ -29,5 +29,5 @@ These are the nuts and bolts of the files which belong to a test definition:
 		java -Dsikuli.Home=%SAKULI_HOME%\bin\lib -Dlog4j.configuration=file:%SAKULI_HOME%\_include\log4j.properties -classpath %SAKULI_HOME%\bin\sakuli.jar;%SAKULI_JARS% de.consol.sakuli.starter.SakuliStarter -run "%TEST_SUITE_FOLDER%" "%SAKULI_HOME%\_include"
 
 	* The line with ^^^^^^^ signs below it tells Sakuli the **test suite folder** - the place where it should find the test definition.
-	* The line starting with "cscript.exe" calls _killproc.vbs_ to kill all orphaned processes from previous tests (see [Killing orphaned processes](./docs/sakuli-manual.md))
+	* The line starting with "cscript.exe" calls _killproc.vbs_ to kill all orphaned processes from previous tests (see [Killing orphaned processes](./sakuli-manual.md))
 	* Close _**%SAKULI_HOME%**\bin\START_examle_demo_win7.bat_ and double-Click to start it.  
