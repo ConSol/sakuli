@@ -43,6 +43,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("ThrowableResultOfMethodCallIgnored")
 public class SakuliExceptionHandlerTest extends BaseTest {
     private TestSuite testSuite;
     private TestCase testCase;
@@ -124,6 +125,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         Assert.assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
 
         //test Proxy Exception
+        when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new SakuliProxyException("FAILURE"));
         Assert.assertNull(testSuite.getException());
     }

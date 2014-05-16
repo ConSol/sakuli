@@ -20,6 +20,8 @@ package de.consol.sakuli.exceptions;
 
 import de.consol.sakuli.actions.screenbased.RegionImpl;
 import de.consol.sakuli.aop.RhinoAspect;
+import de.consol.sakuli.datamodel.TestCase;
+import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.LogResult;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import net.sf.sahi.report.ResultType;
@@ -27,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -35,6 +38,7 @@ import java.nio.file.Path;
  * @author tschneck
  *         Date: 12.07.13
  */
+@SuppressWarnings("ThrowableResultOfMethodCallIgnored")
 @Component
 public class SakuliExceptionHandler {
 
@@ -95,9 +99,7 @@ public class SakuliExceptionHandler {
     public void handleException(Throwable e) {
         //Proxy Exception should only be handled if no other exceptions have been added
         if (!(e instanceof SakuliProxyException) ||
-                (loader.getTestSuite().getException() == null
-                        && (loader.getCurrentTestCase() == null
-                        || loader.getCurrentTestCase().getException() == null))) {
+                (!containsException(loader.getTestSuite()))) {
             //if the exception have been already handled do no exception handling!
             if (!e.getMessage().contains(RhinoAspect.ALREADY_HANDELED)
                     && !e.getMessage().contains(("Logging exception:"))) {
@@ -129,6 +131,20 @@ public class SakuliExceptionHandler {
                 logger.debug(e.getMessage(), e);
             }
         }
+    }
+
+    private boolean containsException(TestSuite testSuite) {
+        if (testSuite.getException() != null) {
+            return true;
+        }
+        if (!CollectionUtils.isEmpty(testSuite.getTestCases())) {
+            for (TestCase tc : testSuite.getTestCases().values()) {
+                if (tc.getException() != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
