@@ -38,7 +38,7 @@ import static org.testng.AssertJUnit.assertTrue;
 
 
 /**
- * use the default log4j.properties in src/test/resources
+ * use the 'sakuli-log-config.xml' in src/test/resources
  *
  * @author tschneck
  *         Date: 24.07.13

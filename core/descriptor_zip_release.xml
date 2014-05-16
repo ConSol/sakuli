@@ -16,8 +16,8 @@
   ~ limitations under the License.
   -->
 
-<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<assembly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
     <id>${sakuli.zipped.release.prefix}${project.version}</id>
     <formats>
@@ -25,12 +25,11 @@
     </formats>
 
     <fileSets>
-        <!-- copy readme -->
+        <!-- copy txt files -->
         <fileSet>
             <directory>${parent.basedir}/</directory>
             <includes>
                 <include>*.txt</include>
-                <include>*.md</include>
             </includes>
             <outputDirectory>/</outputDirectory>
         </fileSet>
@@ -50,10 +49,10 @@
             <outputDirectory>/setup/nagios</outputDirectory>
         </fileSet>
 
-        <!-- create "bin" folder -->
+        <!-- create "script" folder -->
         <fileSet>
-            <directory>${basedir}/src/bin_scripts</directory>
-            <outputDirectory>/bin</outputDirectory>
+            <directory>${basedir}/src/scripts</directory>
+            <outputDirectory>/scripts</outputDirectory>
         </fileSet>
         <!-- copy compiled jar -->
         <fileSet>
@@ -69,12 +68,20 @@
             <includes>
                 <include>*.xml</include>
             </includes>
+            <excludes>
+                <exclude>
+                    sakuli-log-config.xml
+                </exclude>
+            </excludes>
             <outputDirectory>/bin/lib/resources</outputDirectory>
         </fileSet>
 
         <!-- create "_include" folder-->
         <fileSet>
             <directory>${basedir}/src/main/_include</directory>
+            <excludes>
+                <exclude>conf.json</exclude>
+            </excludes>
             <outputDirectory>/_include</outputDirectory>
         </fileSet>
 

@@ -26,7 +26,6 @@
             </pattern>
         </extension>
         <option name="MAIN_CLASS_NAME" value="de.consol.sakuli.starter.SakuliStarter"/>
-        <option name="VM_PARAMETERS" value="-Dlog4j.configuration=file:src/main/resources/log4j.properties"/>
         <option name="PROGRAM_PARAMETERS" value="-run _dev_test_suites/_test_xp_on_barbone src/main/_include ../sahi"/>
         <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$"/>
         <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false"/>

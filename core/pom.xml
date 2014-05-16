@@ -48,7 +48,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <excludes>
-                    <exclude>log4j.properties</exclude>
+                    <exclude>sakuli-log-config.xml</exclude>
                 </excludes>
             </resource>
         </resources>
