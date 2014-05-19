@@ -85,14 +85,11 @@ The Sakuli team members are reachable on the email address [sakuli@consol.de](ma
 
 The company behind Sakuli: 
 
-*ConSol\* Consulting & Solutions Software GmbH*
+![consol-logo](docs/pics/consol-logo.png)
 
-*Franziskanerstr. 38*
-
+**ConSol* Consulting & Solutions Software GmbH***Franziskanerstr. 38*
 *D-81669 München*
-
 *Tel. +49-89-45841-100*
-
 *Fax +49-89-45841-111*
 
 *Homepage: http://www.consol.de E-Mail: [info@consol.de](info@consol.de)*
