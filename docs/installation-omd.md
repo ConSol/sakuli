@@ -245,4 +245,4 @@ If you want to see CPU and Mem graphs within the Sakuli PNP graphs:
 * Restart the OMD site to unload the *npcdmod.o* module. Nagios will write the performance data into the tmp-files. The perfdata processing commands will rotate them into the spool directory, where NPCD will read them. 
 
 
-Now head over to the Installation of a [Windows](../installation-windows.md) or [Linux](../installation-ubuntu.md) client.  
+Now head over to the Installation of a [Windows](installation-windows.md) or [Linux](installation-ubuntu.md) client.  
