@@ -8,7 +8,8 @@ This chapter handles the configuration of the monitoring core "Nagios"; the sett
 * a running OMD site (here: *sakuli*)
 
 ## Download
-* Create a temporary folder (called *TEMP_FOLDER* in the following) somewhere on the OMD machine and change into it
+
+* Create a temporary folder (called *TEMP_FOLDER* in the following) somewhere on the OMD machine and change into it
 * Download and unzip *sakuli-zipped-release-v0.4.0.zip*:
 
       wget https://raw.github.com/ConSol/sakuli/master/install/sakuli-zipped-release-v0.4.0-SNAPSHOT.zip
@@ -19,7 +20,8 @@ Tell Nagios not to escape HTML tags:
 
 	OMD[sakuli]:~$ vim etc/nagios/cgi.cfg
 		escape_html_tags=0
-## PNP4Nagios
+
+## PNP4Nagios
 ### RRD Storage Type
 Make sure that your RRD files are stored in mode "MULTIPLE". 
 
@@ -243,4 +245,4 @@ If you want to see CPU and Mem graphs within the Sakuli PNP graphs:
 * Restart the OMD site to unload the *npcdmod.o* module. Nagios will write the performance data into the tmp-files. The perfdata processing commands will rotate them into the spool directory, where NPCD will read them. 
 
 
-Now head over to the Installation of a [Windows](./docs/installation-windows.md) or [Linux](./docs/installation-ubuntu.md) client.  
+Now head over to the Installation of a [Windows](../installation-windows.md) or [Linux](../installation-ubuntu.md) client.  
