@@ -87,24 +87,26 @@ This chapter includes the installation of Sakuli (which already has Sikuli on bo
 ### Java JRE
 * Install Java7 JRE. (Make sure that you do **not install ASK toolbar**, which is enabled by default!)
 * Modify PATH: 
-	* From the desktop, right-click *My Computer* and click *Properties*
-	* In *System Properties*, click on *Advanced*
-	* Highlight *Path* in the Systems Variable section and click *Edit*. Add the following line to the very end, apply and reboot: 
+ * From the desktop, right-click *My Computer* and click *Properties*
+ * In *System Properties*, click on *Advanced*
+ * Select the `Path` variable in the Systems Variable section and click *Edit*. Add the following line to the very end, apply and reboot: 
 	
-            %ProgramFiles(x86)%\Java\jre7\bin
+	```
+	%ProgramFiles(x86)%\Java\jre7\bin
+	```
 	
 
 ### Sakuli - Install the sakuli-zipped-release
 * Download [sakuli-zipped-release-v0.4.0.zip](https://raw.github.com/ConSol/sakuli/master/install/sakuli-zipped-release-v0.4.0.zip)
-* Unzip ths downloaded archive to *C:\\* as destination folder (=it will decompress into *C:\sakuli*. 
+* Unzip ths downloaded archive to `C:\\` as destination folder (=it will decompress into `C:\sakuli`). 
 * From the desktop, right-click *My Computer* and click *Properties*
 	* In *System Properties*, click on *Advanced*
 	* Create a new user variable **%SAKULI_HOME%**: 
-		* Name: **SAKULI_HOME**
-		* Value: **C:\sakuli**
+		* Name: `SAKULI_HOME`
+		* Value: `C:\sakuli`
 	* Create a new user variable **%PATH%**: 
-		* Name: **PATH**
-		* Value: **%SAKULI_HOME%\bin\lib\libs**
+		* Name: `PATH`
+		* Value: `%SAKULI_HOME%\bin\lib\libs`
 * Reboot the machine
 
 
@@ -112,9 +114,7 @@ This chapter includes the installation of Sakuli (which already has Sikuli on bo
 
 ## Configuration
 
-Some configuration settings:
-
-__%SAKULI_HOME%\include\sakuli.properties__: 
+Some configuration settings in the file `%SAKULI_HOME%\include\sakuli.properties`: 
 
 * Encryption:
   * To make usage of the sakluli encryption featres, set the encryption interface property like `sakuli.encryption.interface=eth3`. For further informations jump to [encryption of secrets](sakuli-manual.md) and come back here.
@@ -144,8 +144,8 @@ __%SAKULI_HOME%\include\sakuli.properties__:
 ### Sahi
 
 * Download the latest version of Sahi from [http://sourceforge.net/projects/sahi/files/latest/download?source=files](http://sourceforge.net/projects/sahi/files/latest/download?source=files)
-* Unpack the downloaded file and start the installation by double clicking on "install_sahi_v44_20130429.jar". 
-	* Installation path: _**%SAKULI_HOME%**\sahi_
+* Unpack the downloaded file and start the installation by double clicking on `install_sahi_v44_20130429.jar`.
+	* Installation path: `%SAKULI_HOME%\sahi`
 	* select all packages to install
 
 Now it's time to start the Sahi controller for the first time. Open "Start Sahi" from your desktop or from the start menu. 
@@ -170,8 +170,8 @@ Congratulations; Sahi is now installed completely!
 Currently, each Sakuli test will start a browser, even for pure Sikuli GUI tests (=where you don't need any browser). In that case, the headless browser *phantomJS* does the trick. 
 
 * Download the latest version of phantomJS from [http://phantomjs.org](http://phantomjs.org)
-* Open the ZIP file and copy *phantomjs.exe* to _**%SAKULI_HOME%**\phantomjs_ (create that folder)
-* Save [sahi.js](https://github.com/ConSol/sakuli/blob/master/install/3rd-party/phantom/sahi.js) into _**%SAKULI_HOME%**\phantomjs_
+* Open the ZIP file and copy `phantomjs.exe` to `%SAKULI_HOME%\phantomjs` (create that folder)
+* Save [sahi.js](https://github.com/ConSol/sakuli/blob/master/install/3rd-party/phantom/sahi.js) into `%SAKULI_HOME%\phantomjs`
 
 <pre>
 	&lt;browserType&gt; 
