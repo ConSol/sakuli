@@ -17,7 +17,7 @@ Now it's time to test Sakuli and see how Sahi and Sikuli are working together - 
 
 These are the nuts and bolts of the files which belong to a test definition: 
 
-* Change to _**%SAKULI_HOME%**\bin\**_ and open *START_examle_demo_win7.bat* in Notepad. This is the batch file which will start the test case. You can name this file as you like.  
+* Change to `%SAKULI_HOME%\scripts\starter` and open `START_examle_demo_win7.bat` in Notepad. This is the batch file which will start the test case. You can name this file as you like.  
 
 		@echo off
 		set TEST_SUITE_FOLDER=%SAKULI_HOME%\sakuli_test_suites\example
@@ -30,4 +30,4 @@ These are the nuts and bolts of the files which belong to a test definition:
 
 	* The line with ^^^^^^^ signs below it tells Sakuli the **test suite folder** - the place where it should find the test definition.
 	* The line starting with "cscript.exe" calls _killproc.vbs_ to kill all orphaned processes from previous tests (see [Killing orphaned processes](./sakuli-manual.md))
-	* Close _**%SAKULI_HOME%**\bin\START_examle_demo_win7.bat_ and double-Click to start it.  
+	* Close `%SAKULI_HOME%\bin\START_examle_demo_win7.bat` and double-Click to start it.  

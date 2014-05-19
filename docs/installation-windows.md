@@ -1,5 +1,5 @@
 # Installation guide for Sakuli under Windows 7
-You probably came from the page "Introduction" - if not, and if you are nor sure what Sakuli is, please read first [README](./README.md). 
+You probably came from the page "Introduction" - if not, and if you are nor sure what Sakuli is, please read first [README](../README.md). 
 
 ## Prerequisites
 The following installation manual assumes that...
@@ -9,7 +9,7 @@ The following installation manual assumes that...
 * this machine has access to the internet
 * the lcoal firewall is disabled
 * there is a user account "sakuli" with admin rights
-* you have finished the [OMD Preparation](../docs/installation-omd.md) instructions
+* you have finished the [OMD Preparation](installation-omd.md) instructions
 
 We recommend to run Sakuli clients on virtual machines, as they are easy to manage. 
 
@@ -24,11 +24,11 @@ Disable everything which can cause the screen to get locked / changed in its app
 
 ### Change theme and title bar colors
 Windows 7 comes by default with an "aero" theme, which is quite awkward for Sakuli, because there are many transparency effects which cause window elements to change their appearance dependend on the elements below. For that, change the theme to "Windows Classic".
-![classic](.././docs/pics/w_classictheme.jpg)
+![classic](pics/w_classictheme.jpg)
 
 
 Furthermore, change the colors of **active** and **inactive** title bars to **non gradient**: 
-![titlebars](.././docs/pics/w_titlebar.jpg)
+![titlebars](pics/w_titlebar.jpg)
 
 ### Enable Window Activation ###
 Windows does not allow per default to bring an application in the foreground. This must be allowed for Sakuli: 
@@ -54,14 +54,14 @@ ClearType ("antialiasing" / "Font Smoothing"), is a technology that is used to d
 * Performance -> Settings -> Visual Effects -> Custom
 * Disable everything: 
 
-![visualeffects](../docs/pics/w_visualeffects.jpg)
+![visualeffects](pics/w_visualeffects.jpg)
 
 #### RDP related settings ####
 The following steps have only to be done if you are accessing the Sakuli Client with RDP. 
 ##### Disable Clipboard Sharing #####
 The "paste" function of Sakuli uses the clipboard at runtime to decrypt and paste passwords. For this reason, the clipboard exchange of the Sakuli client and the RDP client should be suppressed in the settings tab of your **local Remote Desktop client**:
 
-![clipboard](../docs/pics/w_clipboard.jpg)
+![clipboard](pics/w_clipboard.jpg)
 
 
 This can be set globally in the registry **of your local host**: 
@@ -87,24 +87,26 @@ This chapter includes the installation of Sakuli (which already has Sikuli on bo
 ### Java JRE
 * Install Java7 JRE. (Make sure that you do **not install ASK toolbar**, which is enabled by default!)
 * Modify PATH: 
-	* From the desktop, right-click *My Computer* and click *Properties*
-	* In *System Properties*, click on *Advanced*
-	* Highlight *Path* in the Systems Variable section and click *Edit*. Add the following line to the very end, apply and reboot: 
+ * From the desktop, right-click *My Computer* and click *Properties*
+ * In *System Properties*, click on *Advanced*
+ * Select the `Path` variable in the Systems Variable section and click *Edit*. Add the following line to the very end, apply and reboot: 
 	
-            %ProgramFiles(x86)%\Java\jre7\bin
+	```
+	%ProgramFiles(x86)%\Java\jre7\bin
+	```
 	
 
 ### Sakuli - Install the sakuli-zipped-release
-* Download [sakuli-zipped-release-v0.4.0.zip](https://raw.github.com/ConSol/sakuli/master/install/sakuli-zipped-release-v0.4.0-SNAPSHOT.zip)
-* Unzip ths downloaded archive to *C:\\* as destination folder (=it will decompress into *C:\sakuli*. 
+* Download [sakuli-zipped-release-v0.4.0.zip](https://raw.github.com/ConSol/sakuli/master/install/sakuli-zipped-release-v0.4.0.zip)
+* Unzip ths downloaded archive to `C:\\` as destination folder (=it will decompress into `C:\sakuli`). 
 * From the desktop, right-click *My Computer* and click *Properties*
 	* In *System Properties*, click on *Advanced*
 	* Create a new user variable **%SAKULI_HOME%**: 
-		* Name: **SAKULI_HOME**
-		* Value: **C:\sakuli**
+		* Name: `SAKULI_HOME`
+		* Value: `C:\sakuli`
 	* Create a new user variable **%PATH%**: 
-		* Name: **PATH**
-		* Value: **%SAKULI_HOME%\bin\lib\libs**
+		* Name: `PATH`
+		* Value: `%SAKULI_HOME%\bin\lib\libs`
 * Reboot the machine
 
 
@@ -112,27 +114,38 @@ This chapter includes the installation of Sakuli (which already has Sikuli on bo
 
 ## Configuration
 
-Some configuration settings:
+Some configuration settings in the file `%SAKULI_HOME%\include\sakuli.properties`: 
 
-_**%SAKULI_HOME%**_\\__include\sakuli.properties_: 
+* Encryption:
+  * To make usage of the sakluli encryption featres, set the encryption interface property like `sakuli.encryption.interface=eth3`. For further informations jump to [encryption of secrets](sakuli-manual.md) and come back here.
+  * If there is no need of any encryption feature, set the property like `sakuli.encryption.interface.testmode=true`.
 
-(jump to [encryption of secrets](../docs/sakuli-manual.md) and come back here)
+* Set up your database connection information like:
 
-* *sakuli.encryption.interface=eth3*
-* *sahiproxy.homepath=c:/sakuli/sahi* 
-* set your database connection information like:
-	* *jdbc.port=3307*
-	* *jdbc.database=sahi*
-	* *jdbc.host=[IPofOMD]*
-	* *jdbc.user=sahi*
-	* *jdbc.pw=sahi*
-	* *jdbc.model=sahi*
+	```
+	jdbc.port=3307
+	jdbc.database=sahi
+	jdbc.host=[IPofOMD]
+	jdbc.user=sahi
+	jdbc.pw=sahi
+	jdbc.model=sahi
+	```
+
+* Sahi installation path:
+  * Set the `sahiproxy.homepath` to the expected installation folder of the [Sahi Installation](installation-windows.md#sahi)
+    like for example set it like `sahiproxy.homepath=c:/sakuli/sahi`
+	
+* (optional) Configure your company proxy like described under [Sakuli-Manual - Proxy-Settings](sakuli-manual.md#proxy-settings)
+
+* Some further default configuration can be done, see therefore the comments in [sakuli.properties](../core/src/main/_include/sakuli.properties). This default settings will be valid for all test suites of the Sakuli installation. Each single property can be overridden in the property file `testsuite.properties` of the test suite folders as well, see e.g. [testsuite.properties](../sakuli_test_suites/example/testsuite.properties). These overriding of properties make it possible to configure the behaviour of each test suite as individual as it is needed.
+
+	
 
 ### Sahi
 
 * Download the latest version of Sahi from [http://sourceforge.net/projects/sahi/files/latest/download?source=files](http://sourceforge.net/projects/sahi/files/latest/download?source=files)
-* Unpack the downloaded file and start the installation by double clicking on "install_sahi_v44_20130429.jar". 
-	* Installation path: _**%SAKULI_HOME%**\sahi_
+* Unpack the downloaded file and start the installation by double clicking on `install_sahi_v44_20130429.jar`.
+	* Installation path: `%SAKULI_HOME%\sahi`
 	* select all packages to install
 
 Now it's time to start the Sahi controller for the first time. Open "Start Sahi" from your desktop or from the start menu. 
@@ -157,8 +170,8 @@ Congratulations; Sahi is now installed completely!
 Currently, each Sakuli test will start a browser, even for pure Sikuli GUI tests (=where you don't need any browser). In that case, the headless browser *phantomJS* does the trick. 
 
 * Download the latest version of phantomJS from [http://phantomjs.org](http://phantomjs.org)
-* Open the ZIP file and copy *phantomjs.exe* to _**%SAKULI_HOME%**\phantomjs_ (create that folder)
-* Save [sahi.js](https://github.com/ConSol/sakuli/blob/master/install/3rd-party/phantom/sahi.js) into _**%SAKULI_HOME%**\phantomjs_
+* Open the ZIP file and copy `phantomjs.exe` to `%SAKULI_HOME%\phantomjs` (create that folder)
+* Save [sahi.js](https://github.com/ConSol/sakuli/blob/master/install/3rd-party/phantom/sahi.js) into `%SAKULI_HOME%\phantomjs`
 
 <pre>
 	&lt;browserType&gt; 
