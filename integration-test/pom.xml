@@ -35,7 +35,19 @@
     <description>integration test modul for sakuli</description>
 
     <packaging>jar</packaging>
+    <properties>
+        <sakuli.home>${project.parent.basedir}</sakuli.home>
+    </properties>
 
+    <profiles>
+        <profile>
+            <id>release-build</id>
+            <properties>
+                <!--go back to root folder ignore 'target/checkout' -->
+                <sakuli.home>${project.parent.basedir}/../..</sakuli.home>
+            </properties>
+        </profile>
+    </profiles>
     <build>
         <plugins>
 
@@ -59,7 +71,7 @@
                             <groups>${test.group.integration}</groups>
                             <excludedGroups>${test.group.unit}</excludedGroups>
                             <!-- override the sahi.proxy.homePath property-->
-                            <argLine>-Dsahi.proxy.homePath=${SAKULI_HOME}/sahi</argLine>
+                            <argLine>-Dsahi.proxy.homePath=${sakuli.home}/sahi</argLine>
                         </configuration>
                     </execution>
                 </executions>
