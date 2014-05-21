@@ -10,7 +10,7 @@ This chapter handles the configuration of the monitoring core "Nagios"; the sett
 ## Download
 
 * Create a temporary folder (called *TEMP_FOLDER* in the following) somewhere on the OMD machine and change into it
-* Download the newest version from [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install) and unzip *sakuli-zipped-release-vX.X.X.zip*. For example with wget:
+* Download the newest version from [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install) and unzip   `sakuli-zipped-release-vX.X.X.zip`. For example with wget:
       
       ```
       wget http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.0.zip
