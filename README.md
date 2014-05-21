@@ -1,6 +1,6 @@
 ![sakuli-logo](./docs/pics/sakuli-logo.png) 
 
-*A end-to-end testing tool for web sites and common UIs with full Nagios integration*
+*An end-to-end testing tool for web sites and common UIs with full Nagios integration*
 
 # Introduction
 ## What is Sakuli? 
