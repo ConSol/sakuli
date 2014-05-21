@@ -22,7 +22,7 @@
 
     <groupId>de.consol.sakuli</groupId>
     <artifactId>root</artifactId>
-    <version>0.4.1</version>
+    <version>0.4.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>sakuli-parent</name>
@@ -129,7 +129,7 @@
         <connection>scm:git:git://github.com/ConSol/sakuli.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/ConSol/sakuli.git</developerConnection>
         <url>git://github.com/ConSol/sakuli.git</url>
-        <tag>v0.4.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <!-- general dependencies -->
