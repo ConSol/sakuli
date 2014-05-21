@@ -59,7 +59,7 @@
                             <groups>${test.group.integration}</groups>
                             <excludedGroups>${test.group.unit}</excludedGroups>
                             <!-- override the sahi.proxy.homePath property-->
-                            <argLine>-Dsahi.proxy.homePath=${project.parent.basedir}/sahi</argLine>
+                            <argLine>-Dsahi.proxy.homePath=${SAKULI_HOME}/sahi</argLine>
                         </configuration>
                     </execution>
                 </executions>
