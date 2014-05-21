@@ -2,6 +2,7 @@ target
 core/target
 integration-test/target
 integration-test/temp-db-sahi
+install/*.zip
 **/_logs
 sahi
 .idea
