@@ -127,8 +127,8 @@
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh</artifactId>
-                <version>1.0</version>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>2.3</version>
             </extension>
         </extensions>
     </build>
@@ -180,15 +180,7 @@
 
 
     <distributionManagement>
-        <!-- TODO get access rights -->
-        <!--<repository>-->
-        <!--<id>consol-labs-release</id>-->
-        <!--<url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/repository</url>-->
-        <!--</repository>-->
-        <!--<snapshotRepository>-->
-        <!--<id>consol-labs-snapshots</id>-->
-        <!--<url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/snapshots-repository</url>-->
-        <!--</snapshotRepository>-->
+        <!-- local maven repository for normal builds -->
         <repository>
             <id>local-release</id>
             <url>file:///${user.home}/.m2/repository</url>
@@ -199,6 +191,24 @@
         </snapshotRepository>
     </distributionManagement>
 
+
+    <profiles>
+        <!-- profile for uploading the artifacts and zipped files to labs.consol.de/sakuli-->
+        <profile>
+            <id>upload-release</id>
+            <!-- profile settings to upload the artifacts to the consol labs server -->
+            <distributionManagement>
+                <repository>
+                    <id>labs-consol-sakuli-repository</id>
+                    <url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/repository</url>
+                </repository>
+                <snapshotRepository>
+                    <id>labs-consol-sakuli-repository</id>
+                    <url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/snapshots-repository</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 
     <!-- general dependencies -->
     <dependencies>

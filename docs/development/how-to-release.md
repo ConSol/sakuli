@@ -59,35 +59,11 @@ How to prepare a new release
    
 3. Check your maven settings in `~/.m2/settings.xml`:
    * Ensure that your private key has access rights for user 'sakuli@labs.consol.de'
-   * Proxy Settings: server 'labs.consol.de' must be reachable'
-   
+   * Ensure that your private key is added to ssh-agent:
      ```
-     
-     <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                           http://maven.apache.org/xsd/settings-1.0.0.xsd">
-     <proxies>
-       <proxy>
-           <id>proxy</id>
-           <active>true</active>
-           <protocol>http</protocol>
-           <host>proxy.your-company.com</host>
-           <port>8080</port>
-           <nonProxyHosts>localhost</nonProxyHosts>
-       </proxy>
-     </proxies>
-     
-         <servers>
-             <server>
-                 <id>labs.consol.de</id>
-                 <username>sakuli</username>
-                 <privateKey>${user.home}/.ssh/key</privateKey>
-             </server>
-         </servers>
-     
-     </settings>
-     
+     ssh-add <path-to-key>
      ```
+   * Check proxy settings - server `labs.consol.de` must be reachable'
+   * Ensure that ConSol-Labs server is configured correctly, see [Installation Developers](installation-developers.md#database-setup)
 
 
