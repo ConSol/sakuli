@@ -171,7 +171,7 @@ Currently, each Sakuli test will start a browser, even for pure Sikuli GUI tests
 
 * Download the latest version of phantomJS from [http://phantomjs.org](http://phantomjs.org)
 * Open the ZIP file and copy `phantomjs.exe` to `%SAKULI_HOME%\phantomjs` (create that folder)
-* Save [sahi.js](http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.0.zip/3rd-party/phantom/sahi.js) into `%SAKULI_HOME%\phantomjs`
+* Save [sahi.js](http://labs.consol.de/sakuli/install/3rd-party/phantom/sahi.js) into `%SAKULI_HOME%\phantomjs`
 
 <pre>
 	&lt;browserType&gt; 
