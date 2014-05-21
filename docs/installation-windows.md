@@ -95,7 +95,7 @@ This chapter includes the installation of Sakuli (which already has Sikuli on bo
 	
 
 ### Sakuli - Install the sakuli-zipped-release
-* Download [sakuli-zipped-release-v0.4.0.zip](https://raw.github.com/ConSol/sakuli/master/install/sakuli-zipped-release-v0.4.0-SNAPSHOT.zip)
+* Download [sakuli-zipped-release-v0.4.0.zip](http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.0.zip)
 * Unzip ths downloaded archive to *C:\\* as destination folder (=it will decompress into *C:\sakuli*. 
 * From the desktop, right-click *My Computer* and click *Properties*
 	* In *System Properties*, click on *Advanced*
@@ -132,7 +132,7 @@ _**%SAKULI_HOME%**_\\__include\sakuli.properties_:
 
 * Download the latest version of Sahi from [http://sourceforge.net/projects/sahi/files/latest/download?source=files](http://sourceforge.net/projects/sahi/files/latest/download?source=files)
 * Unpack the downloaded file and start the installation by double clicking on "install_sahi_v44_20130429.jar". 
-	* Installation path: _**%SAKULI_HOME%**\sahi_
+	* Installation path: `%SAKULI_HOME%\sahi`
 	* select all packages to install
 
 Now it's time to start the Sahi controller for the first time. Open "Start Sahi" from your desktop or from the start menu. 
@@ -152,13 +152,13 @@ Congratulations; Sahi is now installed completely!
 
 (Otherwise, see [Troubleshooting](../docs/troubleshooting-sakuli-client.md)  )
 
-### PhantomJS
+### PhantomJS (Optional)
 	
 Currently, each Sakuli test will start a browser, even for pure Sikuli GUI tests (=where you don't need any browser). In that case, the headless browser *phantomJS* does the trick. 
 
 * Download the latest version of phantomJS from [http://phantomjs.org](http://phantomjs.org)
 * Open the ZIP file and copy *phantomjs.exe* to _**%SAKULI_HOME%**\phantomjs_ (create that folder)
-* Save [sahi.js](https://github.com/ConSol/sakuli/blob/master/install/3rd-party/phantom/sahi.js) into _**%SAKULI_HOME%**\phantomjs_
+* Save [sahi.js](http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.0.zip/3rd-party/phantom/sahi.js) into _**%SAKULI_HOME%**\phantomjs_
 
 <pre>
 	&lt;browserType&gt; 

@@ -17,12 +17,13 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.consol.sakuli</groupId>
     <artifactId>root</artifactId>
-    <version>0.4.2-SNAPSHOT</version>
+    <version>0.4.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>sakuli-parent</name>
@@ -50,6 +51,7 @@
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
+        <test.group.ui>ui</test.group.ui>
     </properties>
 
     <!-- Plugin CONFIG -->
@@ -105,10 +107,10 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5</version>
                 <configuration>
-                    <releaseProfiles>release-build</releaseProfiles>
+                    <releaseProfiles>release-build,no-ui-tests,upload-zip-release</releaseProfiles>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <!-- verifies that only the phases until install will be executed-->
-                    <goals>install</goals>
+                    <!--<goals>install</goals>-->
                 </configuration>
             </plugin>
 
@@ -121,11 +123,18 @@
                     <branch>REL_${project.version}</branch>
                 </configuration>
             </plugin>
-
         </plugins>
-
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh</artifactId>
+                <version>1.0</version>
+            </extension>
+        </extensions>
     </build>
 
+
+    <!-- ===========================================================  -->
     <!-- see jolokia sample - https://github.com/rhuss/jolokia/blob/master/pom.xml -->
     <scm>
         <connection>scm:git:git://github.com/ConSol/sakuli.git</connection>
@@ -133,6 +142,63 @@
         <url>git://github.com/ConSol/sakuli.git</url>
         <tag>HEAD</tag>
     </scm>
+
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/ConSol/sakuli/issues/</url>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Tobias Schneck</name>
+            <id>toschneck</id>
+            <email>tobias.schneck@consol.de</email>
+            <organization>ConSol</organization>
+            <roles>
+                <role>Developer, Architect</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>Simon Meggle</name>
+            <id>simonmeggle</id>
+            <email>simon.meggle@consol.de</email>
+            <organization>ConSol</organization>
+            <roles>
+                <role>Developer, Architect</role>
+            </roles>
+        </developer>
+    </developers>
+
+
+    <distributionManagement>
+        <!-- TODO get access rights -->
+        <!--<repository>-->
+        <!--<id>consol-labs-release</id>-->
+        <!--<url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/repository</url>-->
+        <!--</repository>-->
+        <!--<snapshotRepository>-->
+        <!--<id>consol-labs-snapshots</id>-->
+        <!--<url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/snapshots-repository</url>-->
+        <!--</snapshotRepository>-->
+        <repository>
+            <id>local-release</id>
+            <url>file:///${user.home}/.m2/repository</url>
+        </repository>
+        <snapshotRepository>
+            <id>local-snapshots</id>
+            <url>file:///${user.home}/.m2/repository</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 
     <!-- general dependencies -->
     <dependencies>

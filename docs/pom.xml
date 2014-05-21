@@ -23,13 +23,13 @@
     <parent>
         <groupId>de.consol.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.4.2-SNAPSHOT</version>
+        <version>0.4.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>de.consol.sakuli.root</groupId>
     <artifactId>docs</artifactId>
-    <version>0.4.2-SNAPSHOT</version>
+    <version>0.4.1-SNAPSHOT</version>
     <name>docs</name>
     <description>create api docs with jsdoc</description>
 

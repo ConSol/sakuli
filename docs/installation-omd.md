@@ -8,10 +8,13 @@ This chapter handles the configuration of the monitoring core "Nagios"; the sett
 * a running OMD site (here: *sakuli*)
 
 ## Download
-* Create a temporary folder (called *TEMP_FOLDER* in the following) somewhere on the OMD machine and change into it
-* Download and unzip *sakuli-zipped-release-v0.4.0.zip*:
 
-      wget https://raw.github.com/ConSol/sakuli/master/install/sakuli-zipped-release-v0.4.0-SNAPSHOT.zip
+* Create a temporary folder (called *TEMP_FOLDER* in the following) somewhere on the OMD machine and change into it
+* Download the newest version from [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install) and unzip *sakuli-zipped-release-vX.X.X.zip*. For example with wget:
+      
+      ```
+      wget http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.0.zip
+      ```
 
 ## Nagios
 ### 
@@ -19,7 +22,8 @@ Tell Nagios not to escape HTML tags:
 
 	OMD[sakuli]:~$ vim etc/nagios/cgi.cfg
 		escape_html_tags=0
-## PNP4Nagios
+
+## PNP4Nagios
 ### RRD Storage Type
 Make sure that your RRD files are stored in mode "MULTIPLE". 
 

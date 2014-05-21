@@ -2,6 +2,13 @@
 
 - - - 
 
+### Version 0.4.1
+* update release build so that the zipped-release files, will be provided over the site [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install).
+
+* remove zipped-release files from git repository
+
+* update documentation
+
 ### Version 0.4.0
 * Centralise the configuration of properties files to:
  * `_include/sakuli.properties` contains all possible configuration option for Sakuli. The configured value will be used
