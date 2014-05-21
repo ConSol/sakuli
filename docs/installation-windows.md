@@ -97,7 +97,7 @@ This chapter includes the installation of Sakuli (which already has Sikuli on bo
 	
 
 ### Sakuli - Install the sakuli-zipped-release
-* Download [sakuli-zipped-release-v0.4.0.zip](https://raw.github.com/ConSol/sakuli/master/install/sakuli-zipped-release-v0.4.0.zip)
+* Download [sakuli-zipped-release-v0.4.0.zip](http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.0.zip)
 * Unzip ths downloaded archive to `C:\\` as destination folder (=it will decompress into `C:\sakuli`). 
 * From the desktop, right-click *My Computer* and click *Properties*
 	* In *System Properties*, click on *Advanced*
@@ -165,13 +165,13 @@ Congratulations; Sahi is now installed completely!
 
 (Otherwise, see [Troubleshooting](../docs/troubleshooting-sakuli-client.md)  )
 
-### PhantomJS
+### PhantomJS (Optional)
 	
 Currently, each Sakuli test will start a browser, even for pure Sikuli GUI tests (=where you don't need any browser). In that case, the headless browser *phantomJS* does the trick. 
 
 * Download the latest version of phantomJS from [http://phantomjs.org](http://phantomjs.org)
 * Open the ZIP file and copy `phantomjs.exe` to `%SAKULI_HOME%\phantomjs` (create that folder)
-* Save [sahi.js](https://github.com/ConSol/sakuli/blob/master/install/3rd-party/phantom/sahi.js) into `%SAKULI_HOME%\phantomjs`
+* Save [sahi.js](http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.0.zip/3rd-party/phantom/sahi.js) into `%SAKULI_HOME%\phantomjs`
 
 <pre>
 	&lt;browserType&gt; 

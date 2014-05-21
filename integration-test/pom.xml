@@ -34,10 +34,13 @@
     <description>integration test modul for sakuli</description>
 
     <packaging>jar</packaging>
+    <properties>
+        <sakuli.home>${project.parent.basedir}</sakuli.home>
+        <test.excluded.groups>${test.group.unit}</test.excluded.groups>
+    </properties>
 
     <build>
         <plugins>
-
             <!-- Config for the integration tests unit test are skipped -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -56,7 +59,9 @@
                             </includes>
                             <groups>integration</groups>
                             <groups>${test.group.integration}</groups>
-                            <excludedGroups>${test.group.unit}</excludedGroups>
+                            <excludedGroups>${test.excluded.groups}</excludedGroups>
+                            <!-- override the sahi.proxy.homePath property-->
+                            <argLine>-Dsahi.proxy.homePath=${sakuli.home}/sahi</argLine>
                         </configuration>
                     </execution>
                 </executions>
@@ -64,6 +69,24 @@
         </plugins>
     </build>
 
+
+    <profiles>
+        <profile>
+            <id>no-ui-tests</id>
+            <!-- Config that UI-Test test are skipped -->
+            <properties>
+                <test.excluded.groups>${test.group.unit},${test.group.ui}</test.excluded.groups>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>release-build</id>
+            <properties>
+                <!--go back to root folder ignore 'target/checkout' -->
+                <sakuli.home>${project.parent.basedir}/../..</sakuli.home>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
