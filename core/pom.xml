@@ -23,13 +23,13 @@
     <parent>
         <groupId>de.consol.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.4.1</version>
+        <version>0.4.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>de.consol.sakuli.root</groupId>
     <artifactId>core</artifactId>
-    <version>0.4.1</version>
+    <version>0.4.1-SNAPSHOT</version>
     <name>core</name>
 
     <description>core module for all sakuli functionality</description>
