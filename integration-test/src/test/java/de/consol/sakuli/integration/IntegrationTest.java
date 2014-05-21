@@ -33,7 +33,6 @@ import java.io.File;
 public interface IntegrationTest {
     public static final String GROUP = "integration";
     public static final String INCLUDE_FOLDER_PATH = ".." + File.separator + "core" + File.separator + "src" + File.separator + "main" + File.separator + "_include";
-    public static final String SAHI_FOLDER_PATH = ".." + File.separator + "sahi";
     public static final String TEST_FOLDER_PATH = "." + File.separator + "src" + File.separator + "test" + File.separator +
             "resources" + File.separator + "_testsuite4IT";
 

@@ -71,7 +71,6 @@ public abstract class AbstractUiTestApplicationIT implements IntegrationTest {
         BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
     }
 
     @AfterSuite

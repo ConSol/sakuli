@@ -107,6 +107,7 @@
                 <version>2.5</version>
                 <configuration>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <!-- verifies that only the phases until install will be executed-->
                     <goals>install</goals>
                 </configuration>
             </plugin>
