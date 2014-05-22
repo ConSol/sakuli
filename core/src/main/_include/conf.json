@@ -4,7 +4,7 @@
     },
     "source": {
         "include": ["./"],
-        "includePattern": ".+\\.inc?$",
+        "includePattern": ".*\.js",
         "excludePattern": "(^|\\/|\\\\)_"
     },
     "markdown": {

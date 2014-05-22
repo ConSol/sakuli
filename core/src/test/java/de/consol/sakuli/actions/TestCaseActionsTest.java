@@ -85,10 +85,10 @@ public class TestCaseActionsTest extends BaseTest {
                         + File.separator
                         + "1234"
                         + File.separator
-                        + "_tc.sah"
+                        + "_tc.js"
         ));
         Assert.assertEquals(sample.getId(), testling.getIdFromPath(
-                "1234" + File.separator + "_tc.sah"));
+                "1234" + File.separator + "_tc.js"));
 
     }
 

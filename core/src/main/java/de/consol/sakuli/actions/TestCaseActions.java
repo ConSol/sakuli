@@ -63,7 +63,7 @@ public class TestCaseActions {
      *********************/
 
     /**
-     * @param pathToTestCaseFile path to the test case file "_tc.sah"
+     * @param pathToTestCaseFile path to the test case file "_tc.js"
      * @return returns test the currentTestCase Name
      */
     @LogToResult(message = "convert the path of the test case file to a valid test case ID")

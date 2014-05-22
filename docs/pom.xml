@@ -106,7 +106,7 @@
                                     <arguments>
                                         <argument>node_modules/jsdox</argument>
                                         <argument>--output</argument>
-                                        <argument>${project.basedir}/temp-api</argument>
+                                        <argument>${project.basedir}/api</argument>
                                         <argument>${project.parent.basedir}/core/src/main/_include/</argument>
                                     </arguments>
                                 </configuration>

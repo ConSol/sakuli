@@ -53,8 +53,8 @@ public class ImageLibObject {
 
                 logger.info("loaded image " + this.toString());
             }
-            // for .sah files do nothing
-            else if (name.endsWith(".sah")) {
+            // for .js files do nothing
+            else if (name.endsWith(".js")) {
                 logger.debug("internal image library: Ignore Sahi file " + name);
             }
             // for all other files log a warning

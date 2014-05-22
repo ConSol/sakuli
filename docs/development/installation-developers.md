@@ -82,7 +82,6 @@ Install Sahi
 Development-Environment-Konfiguration
 -----------------
 * Execute 'mvn clean verify' to ensure that all is setup correctly
-* Mark `*.inc` and `*.sah` as JavaScript-Files in your IDE
 * Include the license header to your IDE
   * For IntelliJ see [Help](http://www.jetbrains.com/idea/webhelp/generating-and-updating-copyright-notice.html) or our predefined copyright configuration under [intellij/copyright](intellij/copyright).
   * License Header:

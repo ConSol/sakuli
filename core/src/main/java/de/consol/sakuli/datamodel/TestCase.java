@@ -70,7 +70,7 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
     /**
      * transforms a URI folder path and a test suite ID to a test case id.
      *
-     * @param uriPathToTestCaseFile path to the "_tc.sah" file
+     * @param uriPathToTestCaseFile path to the "_tc.js" file
      * @param testSuiteId           id of the parent test suite.
      * @return a fitting testcase id
      */

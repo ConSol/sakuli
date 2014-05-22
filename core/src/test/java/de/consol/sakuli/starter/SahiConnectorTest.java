@@ -125,11 +125,11 @@ public class SahiConnectorTest extends BaseTest {
         if (File.separator.equals("/")) {
             when(pathMock.toString()).thenReturn("/sakuli/src/main/include");
             String result = testling.getIncludeFolderJsPath();
-            Assert.assertEquals("/sakuli/src/main/include/sakuli.inc", result);
+            Assert.assertEquals("/sakuli/src/main/include/sakuli.js", result);
         } else {
             when(pathMock.toString()).thenReturn("D:\\sakuli\\src\\main\\_include");
             String result = testling.getIncludeFolderJsPath();
-            Assert.assertEquals("D:\\\\sakuli\\\\src\\\\main\\\\_include\\\\sakuli.inc", result);
+            Assert.assertEquals("D:\\\\sakuli\\\\src\\\\main\\\\_include\\\\sakuli.js", result);
         }
     }
 
