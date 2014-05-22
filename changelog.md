@@ -16,6 +16,9 @@
 * introduce some maven-profiles for individual usage
   
 * change `.inc` and `.sah` file ending to `.js`
+
+* fix some typos
+
   
 
 ### Version 0.4.0
