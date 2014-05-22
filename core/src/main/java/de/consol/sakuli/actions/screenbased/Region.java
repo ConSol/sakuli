@@ -110,7 +110,7 @@ public class Region implements Action {
      *
      * @return this {@link Region} or null
      */
-    @LogToResult(message = "check if this region is vissible")
+    @LogToResult(message = "check if this region is visible")
     public Region exists() {
         return update(regionImpl.exists());
     }
@@ -120,7 +120,7 @@ public class Region implements Action {
      *
      * @return this {@link Region} or null
      */
-    @LogToResult(message = "check if this image is vissible in this region")
+    @LogToResult(message = "check if this image is visible in this region")
     public Region exists(String imageName) {
         return update(regionImpl.exists(imageName));
     }
@@ -130,7 +130,7 @@ public class Region implements Action {
      *
      * @return this {@link Region} or null
      */
-    @LogToResult(message = "check if this region is vissible")
+    @LogToResult(message = "check if this region is visible")
     public Region exists(String imageName, int seconds) {
         return update(regionImpl.exists(imageName, seconds));
     }

@@ -104,7 +104,7 @@ public class CipherUtil {
 
             }
             if (macOfEncryptionInterface == null) {
-                throw new SakuliCipherException("Cannot resolve mac adresse ... please check your config of the property: " + ActionProperties.ENCRYPTION_INTERFACE + "=" + interfaceName, interfaceLog);
+                throw new SakuliCipherException("Cannot resolve MAC address ... please check your config of the property: " + ActionProperties.ENCRYPTION_INTERFACE + "=" + interfaceName, interfaceLog);
             }
         } catch (Exception e) {
             throw new SakuliCipherException(e, interfaceLog);
