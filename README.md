@@ -87,10 +87,13 @@ The company behind Sakuli:
 
 ![consol-logo](docs/pics/consol-logo.png)
 
-**ConSol* Consulting & Solutions Software GmbH**
-
-*Franziskanerstr. 38, D-81669 München*
-
-*Tel. +49-89-45841-100, Fax +49-89-45841-111*
-
+<table>
+<tr>
+<td>
+**ConSol* Consulting & Solutions Software GmbH** <br/>
+*Franziskanerstr. 38, D-81669 München* <br/>
+*Tel. +49-89-45841-100, Fax +49-89-45841-111*<br/>
 *Homepage: http://www.consol.de E-Mail: [info@consol.de](info@consol.de)*
+</td>
+</tr>
+<table>
