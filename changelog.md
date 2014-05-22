@@ -19,7 +19,7 @@
 
 * fix some typos
 
-* set up jenkins
+* set up jenkins build
   
 
 ### Version 0.4.0
