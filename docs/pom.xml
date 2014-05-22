@@ -40,80 +40,87 @@
         <node.dir>${project.build.directory}/node-mvn</node.dir>
     </properties>
 
-    <build>
-        <!-- TODO TS copy files to a temp dir and rename it to .js files -->
-        <plugins>
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>0.0.14</version>
-
-                <executions>
-
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <configuration>
-                            <nodeVersion>v0.10.18</nodeVersion>
-                            <npmVersion>1.3.8</npmVersion>
-                            <workingDirectory>${node.dir}</workingDirectory>
-                        </configuration>
-                        <phase>generate-resources</phase>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.3</version>
-                <executions>
-                    <execution>
-                        <id>npm-install-jsdox</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>node/node</executable>
-                            <!-- optional -->
-                            <workingDirectory>${node.dir}</workingDirectory>
-                            <arguments>
-                                <argument>node/npm</argument>
-                                <argument>install</argument>
-                                <argument>jsdox</argument>
-                            </arguments>
-                        </configuration>
-                        <phase>prepare-package</phase>
-                    </execution>
-
-                    <execution>
-                        <id>jsdox-generate-md-files</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>node/node</executable>
-                            <!-- optional -->
-                            <workingDirectory>${node.dir}</workingDirectory>
-                            <arguments>
-                                <argument>node_modules/jsdox</argument>
-                                <argument>--output</argument>
-                                <argument>${project.basedir}/temp-api</argument>
-                                <argument>${project.parent.basedir}/core/src/main/_include</argument>
-                            </arguments>
-                        </configuration>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
     <profiles>
         <profile>
-            <id>with-proxy</id>
+            <id>generate-jsdox</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <!-- TODO TS copy files to a temp dir and rename it to .js files -->
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>0.0.14</version>
+
+                        <executions>
+
+                            <execution>
+                                <id>install node and npm</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v0.10.18</nodeVersion>
+                                    <npmVersion>1.3.8</npmVersion>
+                                    <workingDirectory>${node.dir}</workingDirectory>
+                                </configuration>
+                                <phase>generate-resources</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.3</version>
+                        <executions>
+                            <execution>
+                                <id>npm-install-jsdox</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>node/node</executable>
+                                    <!-- optional -->
+                                    <workingDirectory>${node.dir}</workingDirectory>
+                                    <arguments>
+                                        <argument>node/npm</argument>
+                                        <argument>install</argument>
+                                        <argument>jsdox</argument>
+                                    </arguments>
+                                </configuration>
+                                <phase>prepare-package</phase>
+                            </execution>
+
+                            <execution>
+                                <id>jsdox-generate-md-files</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>node/node</executable>
+                                    <!-- optional -->
+                                    <workingDirectory>${node.dir}</workingDirectory>
+                                    <arguments>
+                                        <argument>node_modules/jsdox</argument>
+                                        <argument>--output</argument>
+                                        <argument>${project.basedir}/temp-api</argument>
+                                        <argument>${project.parent.basedir}/core/src/main/_include/</argument>
+                                    </arguments>
+                                </configuration>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+
+        <profile>
+            <id>jsdox-set-proxy</id>
             <build>
                 <plugins>
                     <plugin>
@@ -162,7 +169,6 @@
                                 <phase>process-resources</phase>
                             </execution>
                         </executions>
-
                     </plugin>
                 </plugins>
             </build>
