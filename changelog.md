@@ -19,6 +19,7 @@
 
 * fix some typos
 
+* set up jenkins
   
 
 ### Version 0.4.0
