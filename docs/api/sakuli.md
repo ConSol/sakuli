@@ -101,6 +101,7 @@ id
 
 init()
 ------
+(internal function)
 This function will be called automatically on the startup of TestCase().
 
 

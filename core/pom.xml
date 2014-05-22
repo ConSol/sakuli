@@ -131,8 +131,9 @@
     </build>
 
     <profiles>
+        <!--profil to deploy the zip file to labs.consol.de/sakuli/install-->
         <profile>
-            <id>upload-zip-release</id>
+            <id>upload-release</id>
             <build>
                 <plugins>
                     <!-- wagon plugin to upload the zipped releases to the labs server -->
@@ -141,8 +142,8 @@
                         <artifactId>wagon-maven-plugin</artifactId>
                         <version>1.0-beta-5</version>
                         <configuration>
-                            <serverId>labs.consol.de</serverId>
-                            <url>scp://sakuli@labs.consol.de/</url>
+                            <serverId>labs-consol-sakuli-install</serverId>
+                            <url>scpexe://sakuli@labs.consol.de/</url>
                         </configuration>
                         <executions>
                             <execution>

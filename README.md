@@ -79,6 +79,8 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 
 [How to prepare a new release](./docs/development/how-to-release.md)
 
+[Maven Build Aspects](./docs/development/maven-aspects.md)
+
 ## Help
 In case you have any questions or requests for help, feel free to get in contact with us! 
 The Sakuli team members are reachable on the email address [sakuli@consol.de](mailto:sakuli@consol.de).

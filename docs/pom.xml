@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -33,51 +34,145 @@
     <name>docs</name>
     <description>create api docs with jsdoc</description>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
-    <!--<pluginRepositories>-->
-    <!--<pluginRepository>-->
-    <!--<id>jsdoctk2</id>-->
-    <!--<url>http://jsdoctk-plugin.googlecode.com/svn/repo</url>-->
-    <!--</pluginRepository>-->
-    <!--</pluginRepositories>-->
+    <properties>
+        <node.dir>${project.build.directory}/node-mvn</node.dir>
+    </properties>
 
-    <!--<build>-->
-    <!--<plugins>-->
-    <!--<plugin>-->
-    <!--<groupId>nl.windgazer</groupId>-->
-    <!--<artifactId>jsdoctk-plugin</artifactId>-->
-    <!--<version>2.3.2</version>-->
-    <!--<executions>-->
-                    <!--<execution>-->
-    <!--<id>jsdoc</id>-->
-    <!--<phase>install</phase>-->
-    <!--<goals>-->
-    <!--<goal>jsdoc</goal>-->
-    <!--</goals>-->
-    <!--</execution>-->
-    <!--</executions>-->
-    <!--<configuration>-->
-    <!--<template>jsdoc</template>-->
-    <!--&lt;!&ndash; Alternatives are not pre-installed for version 2.x&ndash;&gt;-->
-    <!--<directory>${project.basedir}/api_temp</directory>-->
-    <!--<recurse>1</recurse>-->
-    <!--&lt;!&ndash;<ext>js</ext>&ndash;&gt;-->
-    <!--&lt;!&ndash;<allfunctions>true</allfunctions>&ndash;&gt;-->
-    <!--&lt;!&ndash;<Allfunctions>false</Allfunctions>&ndash;&gt;-->
-    <!--<privateOption>false</privateOption>-->
-    <!--&lt;!&ndash; If you're using the maven default setup this alternative is sometimes required-->
-    <!--to make the plugin work: ${basedir}/src/main/webapp/ &ndash;&gt;-->
-    <!--&lt;!&ndash;<srcDir>${basedir}/src/main/webapp</srcDir>&ndash;&gt;-->
-    <!--&lt;!&ndash;TODO funktioniert noch nicht, jsdoc muss konfiguriert werden&ndash;&gt;-->
-    <!--<srcDir>${project.parent.basedir}/core/src/main/_include/</srcDir>-->
-    <!--<exclude>&lt;!&ndash; Since jsdoctk 2.3.2 &ndash;&gt;-->
-    <!--<param>regularexpression</param>-->
-    <!--&lt;!&ndash;Multiple param entries allowed&ndash;&gt;-->
-    <!--</exclude>-->
-    <!--</configuration>-->
-    <!--</plugin>-->
-    <!--</plugins>-->
-    <!--</build>-->
+    <profiles>
+        <profile>
+            <id>generate-jsdox</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <!-- TODO TS copy files to a temp dir and rename it to .js files -->
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>0.0.14</version>
+
+                        <executions>
+
+                            <execution>
+                                <id>install node and npm</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v0.10.18</nodeVersion>
+                                    <npmVersion>1.3.8</npmVersion>
+                                    <workingDirectory>${node.dir}</workingDirectory>
+                                </configuration>
+                                <phase>generate-resources</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.3</version>
+                        <executions>
+                            <execution>
+                                <id>npm-install-jsdox</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>node/node</executable>
+                                    <!-- optional -->
+                                    <workingDirectory>${node.dir}</workingDirectory>
+                                    <arguments>
+                                        <argument>node/npm</argument>
+                                        <argument>install</argument>
+                                        <argument>jsdox</argument>
+                                    </arguments>
+                                </configuration>
+                                <phase>prepare-package</phase>
+                            </execution>
+
+                            <execution>
+                                <id>jsdox-generate-md-files</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>node/node</executable>
+                                    <!-- optional -->
+                                    <workingDirectory>${node.dir}</workingDirectory>
+                                    <arguments>
+                                        <argument>node_modules/jsdox</argument>
+                                        <argument>--output</argument>
+                                        <argument>${project.basedir}/api</argument>
+                                        <argument>${project.parent.basedir}/core/src/main/_include/</argument>
+                                    </arguments>
+                                </configuration>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+
+        <profile>
+            <id>jsdox-set-proxy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.3</version>
+                        <executions>
+                            <execution>
+                                <id>set-proxy-http</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>node/node</executable>
+                                    <!-- optional -->
+                                    <workingDirectory>${node.dir}</workingDirectory>
+                                    <arguments>
+                                        <argument>node/npm</argument>
+                                        <argument>config</argument>
+                                        <argument>set</argument>
+                                        <argument>proxy</argument>
+                                        <!--<argument>${env.http_proxy}</argument>-->
+                                        <argument>http://proxy.consol.de:8001</argument>
+                                    </arguments>
+                                </configuration>
+                                <phase>process-resources</phase>
+                            </execution>
+                            <execution>
+                                <id>set-proxy-https</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>node/node</executable>
+                                    <!-- optional -->
+                                    <workingDirectory>${node.dir}</workingDirectory>
+                                    <arguments>
+                                        <argument>node/npm</argument>
+                                        <argument>config</argument>
+                                        <argument>set</argument>
+                                        <argument>https-proxy</argument>
+                                        <!--<argument>${env.https_proxy}</argument>-->
+                                        <argument>http://proxy.consol.de:8001</argument>
+                                    </arguments>
+                                </configuration>
+                                <phase>process-resources</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

@@ -23,10 +23,10 @@
 /*****************************************************************************************************
  * INCLUDE THE ACTIONS
  *****************************************************************************************************/
-_include("sakuli_Application.inc");
-_include("sakuli_Environment.inc");
-_include("sakuli_Key.inc");
-_include("sakuli_Region.inc");
+_include("sakuli_Application.js");
+_include("sakuli_Environment.js");
+_include("sakuli_Key.js");
+_include("sakuli_Region.js");
 
 /*****************************************************************************************************
  * TEST CASE OBJECT
@@ -40,7 +40,6 @@ _include("sakuli_Region.inc");
 function TestCase(warningTime, criticalTime) {
     var defaultImagePath = _resolvePath();
     defaultImagePath = defaultImagePath.substring(0, defaultImagePath.lastIndexOf(Packages.java.io.File.separator));
-    // TODO change to log
     java.lang.System.out.println("set default path for images to the test case folder \"" + defaultImagePath + "\"");
 
     return new TestCaseWithImagePath(warningTime, criticalTime, defaultImagePath);
@@ -160,6 +159,7 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
      *****************************************************************************************************/
 
     /**
+     * (internal function)
      * This function will be called automatically on the startup of TestCase().
      */
     init = function () {

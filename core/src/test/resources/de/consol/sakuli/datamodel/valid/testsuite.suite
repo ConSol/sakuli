@@ -1,3 +1,3 @@
-validTestCase/_tc.sah http://localhost:8080
-//folder/nestedFolder/nestedFolderTestCase/_tc.sah http://localhost:8080
-//uncommentedTestCase/_tc.sah http://localhost:8080
+validTestCase/_tc.js http://localhost:8080
+//folder/nestedFolder/nestedFolderTestCase/_tc.js http://localhost:8080
+//uncommentedTestCase/_tc.js http://localhost:8080

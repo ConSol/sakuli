@@ -12,14 +12,51 @@ Requirements
   * (unfortunately JDK 1.8 is currently not support in case that the aspectj-compiler-plugin won't work with it :-/ )
 
 
-Sakuli setup
+Sakuli Setup
 =========
 Import
 ---------
 * Check out via git
 * Import as maven-project
 
-Database setup
+Maven Settings
+------------------
+* Config your local maven settings `~/.m2/settings.xml` for your environment, like in this example:
+    
+     ```
+     <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                           http://maven.apache.org/xsd/settings-1.0.0.xsd">
+     <proxies>
+       <proxy>
+           <id>proxy</id>
+           <active>true</active>
+           <protocol>http</protocol>
+           <host>proxy.your-company.com</host>
+           <port>8080</port>
+           <nonProxyHosts>localhost</nonProxyHosts>
+       </proxy>
+     </proxies>
+     
+     <server>
+         <id>labs-consol-sakuli-install</id>
+         <username>sakuli</username>
+         <privateKey>${user.home}/.ssh/your-key-file</privateKey>
+     </server>
+ 
+     <server>
+         <id>labs-consol-sakuli-repository</id>
+         <username>maven-repository</username>
+         <privateKey>${user.home}/.ssh/your-key-file</privateKey>
+     </server>
+     
+     </settings>
+     
+     ```
+
+
+Database Setup
 -----------------------
 Setup your local database to save your results of the test case executions. The database won't be needed for running `mvn install`.
 * __User:__ `sahi`
@@ -45,7 +82,6 @@ Install Sahi
 Development-Environment-Konfiguration
 -----------------
 * Execute 'mvn clean verify' to ensure that all is setup correctly
-* Mark `*.inc` and `*.sah` as JavaScript-Files in your IDE
 * Include the license header to your IDE
   * For IntelliJ see [Help](http://www.jetbrains.com/idea/webhelp/generating-and-updating-copyright-notice.html) or our predefined copyright configuration under [intellij/copyright](intellij/copyright).
   * License Header:
