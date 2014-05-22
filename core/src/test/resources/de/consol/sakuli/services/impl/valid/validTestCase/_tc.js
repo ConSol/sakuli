@@ -16,21 +16,3 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.dao;
-
-import de.consol.sakuli.datamodel.TestCase;
-
-import java.io.File;
-
-/**
- * @author tschneck
- *         Date: 17.06.13
- */
-public interface DaoTestCase {
-
-    public void saveTestCaseResult(TestCase testCase);
-
-    public int getCountOfSahiCases();
-
-    public File getScreenShotFromDB(int dbPrimaryKey);
-}

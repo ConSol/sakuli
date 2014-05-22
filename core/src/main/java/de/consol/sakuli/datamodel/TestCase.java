@@ -22,11 +22,9 @@ import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestCaseStepState;
 import de.consol.sakuli.exceptions.SakuliException;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -58,42 +56,6 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
     public TestCase(String name, String testCaseId) {
         this.name = name;
         this.id = testCaseId;
-        /**
-         * needed to be set to -1, so the function {@link de.consol.sakuli.actions.TestCaseActions#addTestCaseStep(String, String, String, String, int)}
-         * can check if the method {@link de.consol.sakuli.actions.TestCaseActions#initTestCaseWarningAndCritical(String, int, int)}
-         * have been called at the beginning of this test case.
-         */
-        warningTime = -1;
-        criticalTime = -1;
-    }
-
-    /**
-     * transforms a URI folder path and a test suite ID to a test case id.
-     *
-     * @param uriPathToTestCaseFile path to the "_tc.js" file
-     * @param testSuiteId           id of the parent test suite.
-     * @return a fitting testcase id
-     */
-    public static String convertTestCaseFileToID(String uriPathToTestCaseFile, String testSuiteId) {
-        return convertFolderPathToName(uriPathToTestCaseFile).replace(" ", "_").toUpperCase() + "_" + testSuiteId;
-    }
-
-    /**
-     * transforms a URI folder path into a test case Name
-     *
-     * @param uriPathToTestCaseFile
-     * @return null if the Path is not valid.
-     */
-    public static String convertFolderPathToName(String uriPathToTestCaseFile) {
-        uriPathToTestCaseFile = uriPathToTestCaseFile.replace(File.separator, "/");
-        if (uriPathToTestCaseFile.lastIndexOf("/") != uriPathToTestCaseFile.indexOf("/")) {
-            uriPathToTestCaseFile = uriPathToTestCaseFile.substring(0, uriPathToTestCaseFile.lastIndexOf('/'));
-            return uriPathToTestCaseFile.substring(uriPathToTestCaseFile.lastIndexOf("/") + 1);
-        } else if (uriPathToTestCaseFile.lastIndexOf("/") == uriPathToTestCaseFile.indexOf("/")) {
-            return uriPathToTestCaseFile.substring(0, uriPathToTestCaseFile.lastIndexOf("/"));
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -183,16 +145,14 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
 
     @Override
     public String toString() {
-        return "id=" + getId()
-                + ", name=" + getName();
-    }
-
-    public void setDbPrimaryKey(int dbPrimaryKey) {
-        this.dbPrimaryKey = dbPrimaryKey;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+        return "TestCase{" +
+                super.toString() +
+                ", id='" + id + '\'' +
+                ", startUrl='" + startUrl + '\'' +
+                ", lastURL='" + lastURL + '\'' +
+                ", steps=" + steps +
+                ", tcFile=" + tcFile +
+                "} ";
     }
 
     public Path getTcFile() {

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.dao.impl;
+package de.consol.sakuli.services.dao.impl;
 
 import de.consol.sakuli.exceptions.SakuliException;
 import org.mockito.Mock;

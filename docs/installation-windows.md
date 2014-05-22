@@ -120,7 +120,15 @@ Some configuration settings in the file `%SAKULI_HOME%\include\sakuli.properties
   * To make usage of the sakluli encryption featres, set the encryption interface property like `sakuli.encryption.interface=eth3`. For further informations jump to [encryption of secrets](sakuli-manual.md) and come back here.
   * If there is no need of any encryption feature, set the property like `sakuli.encryption.interface.testmode=true`.
 
-* Set up your database connection information like:
+* Database Persistence (optional)
+  * Enable the database persistence option:
+    
+    ```
+    # DEFAULT: false
+    sakuli.persistence.database.enabled=false
+    ```
+
+  * Set up your database connection information like:
 
 	```
 	jdbc.port=3307

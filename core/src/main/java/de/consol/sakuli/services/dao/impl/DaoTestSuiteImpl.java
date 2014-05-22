@@ -16,10 +16,10 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.dao.impl;
+package de.consol.sakuli.services.dao.impl;
 
-import de.consol.sakuli.dao.DaoTestSuite;
 import de.consol.sakuli.exceptions.SakuliException;
+import de.consol.sakuli.services.dao.DaoTestSuite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -46,12 +46,10 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
     }
 
     /**
-     * save the current TestSuite into the table sahi_suites and returns the valid primary key from the database
-     *
-     * @return database id (primary key) for this suite
+     * {@inheritDoc}
      */
     @Override
-    public int getTestSuitePrimaryKey() {
+    public int insertInitialTestSuiteData() {
         logger.info("Build SQL query for new primary key in table 'sahi_suites'");
 
         MapSqlParameterSource tcParameters = getInitialDataParameters();

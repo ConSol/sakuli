@@ -21,6 +21,7 @@ package de.consol.sakuli.datamodel;
 import de.consol.sakuli.datamodel.state.SakuliStateInterface;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliExceptionWithScreenshot;
+import de.consol.sakuli.services.InitializingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +44,16 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
     protected E exception;
     protected S state;
     protected String name;
-    protected int dbPrimaryKey;
+    /**
+     * is initial set to -1, if the database persistence is enabled the service call {@link InitializingService#initTestSuite()}
+     * should set the primary key.
+     */
+    protected int dbPrimaryKey = -1;
+    /**
+     * needed to be set to -1, so the function {@link de.consol.sakuli.actions.TestCaseActions#addTestCaseStep(String, String, String, int)}
+     * can check if the method {@link de.consol.sakuli.actions.TestCaseActions#initWarningAndCritical(int, int)}
+     * have been called at the beginning of this test case.
+     */
     protected int warningTime = -1;
     protected int criticalTime = -1;
 
@@ -127,6 +137,10 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
         return dbPrimaryKey;
     }
 
+    public void setDbPrimaryKey(int dbPrimaryKey) {
+        this.dbPrimaryKey = dbPrimaryKey;
+    }
+
     public int getWarningTime() {
         return warningTime;
     }
@@ -203,5 +217,18 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
             return name.compareTo(abstractSakuliTest.getResultString());
         }
         return startDate.compareTo(abstractSakuliTest.getStartDate());
+    }
+
+    @Override
+    public String toString() {
+        return "startDate=" + startDate +
+                ", stopDate=" + stopDate +
+                ", exception=" + exception +
+                ", state=" + state +
+                ", name='" + name + '\'' +
+                ", dbPrimaryKey=" + dbPrimaryKey +
+                ", warningTime=" + warningTime +
+                ", criticalTime=" + criticalTime
+                ;
     }
 }

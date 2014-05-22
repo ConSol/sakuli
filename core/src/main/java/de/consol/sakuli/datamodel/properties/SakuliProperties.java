@@ -38,6 +38,8 @@ public class SakuliProperties extends AbstractProperties {
     public static final String LOG_RESUME_ON_EXCEPTION = "sakuli.log.exception.onResumeOnException";
     public static final String LOG_FOLDER = "sakuli.log.folder";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
+    public static final String PERSIST_DATABASE_ENABLED = "sakuli.persistence.database.enabled";
+    protected static final boolean PERSIST_DATABASE_ENABLED_DEFAULT = false;
 
     @Value("${" + INCLUDE_FOLDER + "}")
     private String includeFolderPropertyValue;
@@ -49,6 +51,8 @@ public class SakuliProperties extends AbstractProperties {
     private Path logFolder;
     @Value("${" + LOG_PATTERN + "}")
     private String logPattern;
+    @Value("${" + PERSIST_DATABASE_ENABLED + ":" + PERSIST_DATABASE_ENABLED_DEFAULT + "}")
+    private boolean persistInDatabaseEnabled;
 
     @PostConstruct
     public void initFolders() throws FileNotFoundException {
@@ -104,5 +108,13 @@ public class SakuliProperties extends AbstractProperties {
 
     public void setLogPattern(String logPattern) {
         this.logPattern = logPattern;
+    }
+
+    public boolean isPersistInDatabaseEnabled() {
+        return persistInDatabaseEnabled;
+    }
+
+    public void setPersistInDatabaseEnabled(boolean persistInDatabaseEnabled) {
+        this.persistInDatabaseEnabled = persistInDatabaseEnabled;
     }
 }

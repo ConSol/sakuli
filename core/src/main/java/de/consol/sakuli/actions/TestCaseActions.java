@@ -19,15 +19,16 @@
 package de.consol.sakuli.actions;
 
 import de.consol.sakuli.actions.logging.LogToResult;
-import de.consol.sakuli.dao.DaoTestCase;
-import de.consol.sakuli.dao.DaoTestCaseStep;
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestCaseStep;
 import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.datamodel.helper.TestCaseHelper;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BaseActionLoaderImpl;
+import de.consol.sakuli.services.dao.DaoTestCase;
+import de.consol.sakuli.services.dao.DaoTestCaseStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class TestCaseActions {
     @LogToResult(message = "convert the path of the test case file to a valid test case ID")
     public String getIdFromPath(String pathToTestCaseFile) {
         logger.info("Return a test-case-id for \"" + pathToTestCaseFile + "\"");
-        String id = TestCase.convertTestCaseFileToID(pathToTestCaseFile, loader.getTestSuite().getId());
+        String id = TestCaseHelper.convertTestCaseFileToID(pathToTestCaseFile, loader.getTestSuite().getId());
         //check id
         if (loader.getTestSuite().checkTestCaseID(id)) {
             logger.info("test-case-id = " + id);

@@ -19,13 +19,13 @@
 package de.consol.sakuli.actions;
 
 import de.consol.sakuli.BaseTest;
-import de.consol.sakuli.dao.DaoTestCase;
-import de.consol.sakuli.dao.DaoTestCaseStep;
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestCaseStep;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.state.TestCaseStepState;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
+import de.consol.sakuli.services.dao.DaoTestCase;
+import de.consol.sakuli.services.dao.DaoTestCaseStep;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

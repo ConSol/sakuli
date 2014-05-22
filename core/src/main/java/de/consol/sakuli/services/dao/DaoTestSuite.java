@@ -16,20 +16,25 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.dao;
-
-import de.consol.sakuli.datamodel.TestCaseStep;
-
-import java.util.List;
+package de.consol.sakuli.services.dao;
 
 /**
  * @author tschneck
  *         Date: 17.06.13
  */
-public interface DaoTestCaseStep {
+public interface DaoTestSuite {
 
-    public void saveTestCaseSteps(List<TestCaseStep> steps, int primaryKeyOfTestCase);
 
-    public int getCountOfSahiSteps();
+    /**
+     * save the initial TestSuite data into the table sahi_suites and returns the valid primary key from the database
+     *
+     * @return database id (primary key) for this suite
+     */
+    public int insertInitialTestSuiteData();
 
+    public void updateTestSuiteResult();
+
+    public int saveTestSuiteToSahiJobs();
+
+    public int getCountOfSahiJobs();
 }

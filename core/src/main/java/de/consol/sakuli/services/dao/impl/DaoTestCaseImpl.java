@@ -16,11 +16,11 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.dao.impl;
+package de.consol.sakuli.services.dao.impl;
 
-import de.consol.sakuli.dao.DaoTestCase;
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.exceptions.SakuliException;
+import de.consol.sakuli.services.dao.DaoTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -120,7 +120,6 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
     @Deprecated
     @Override
     public File getScreenShotFromDB(int dbPrimaryKey) {
-        // TODO Rewrite
         try {
             List l = getJdbcTemplate().query("select id, screenshot from sahi_cases where id=" + dbPrimaryKey,
                     new RowMapper() {

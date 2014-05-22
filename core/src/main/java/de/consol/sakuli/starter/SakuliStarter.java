@@ -19,7 +19,6 @@
 package de.consol.sakuli.starter;
 
 import de.consol.sakuli.actions.environment.CipherUtil;
-import de.consol.sakuli.dao.DaoTestSuite;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.properties.ActionProperties;
 import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
@@ -29,6 +28,8 @@ import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.loader.BeanLoader;
+import de.consol.sakuli.services.InitializingService;
+import de.consol.sakuli.services.dao.DaoTestSuite;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
@@ -89,6 +90,8 @@ public class SakuliStarter {
                 Logger logger = LoggerFactory.getLogger(SakuliStarter.class);
                 logger.debug(tempLogCache);
 
+                // Init the test suite data
+                BeanLoader.loadBean(InitializingService.class).initTestSuite();
 
                 /***
                  * SAKULI Starter to run the test suite with embedded sahi proxy

@@ -32,7 +32,7 @@
     <!-- Schaltet Erkennung von @Autowired an -->
     <context:annotation-config/>
     <context:component-scan base-package="de.consol.sakuli.datamodel"/>
-    <context:component-scan base-package="de.consol.sakuli.dao"/>
+    <context:component-scan base-package="de.consol.sakuli.services"/>
     <context:component-scan base-package="de.consol.sakuli.exceptions"/>
     <context:component-scan base-package="de.consol.sakuli.loader"/>
     <context:component-scan base-package="de.consol.sakuli.actions"/>

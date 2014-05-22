@@ -58,4 +58,11 @@ public class TestCaseStep extends AbstractSakuliTest<SakuliException, TestCaseSt
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
+
+    @Override
+    public String toString() {
+        return "TestCaseStep{"
+                + super.toString()
+                + "}";
+    }
 }
