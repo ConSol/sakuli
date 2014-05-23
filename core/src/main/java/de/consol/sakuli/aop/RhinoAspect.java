@@ -122,7 +122,7 @@ public class RhinoAspect {
         Logger logger = getLogger(joinPoint);
         if (logToResult != null) {
             StringBuilder message = new StringBuilder();
-            if (logToResult.logClassInstance()) {
+            if (logToResult.logClassInstance() && joinPoint.getTarget() != null) {
                 message.append("\"").append(joinPoint.getTarget().toString()).append("\" ");
             }
             message.append(joinPoint.getSignature().getDeclaringType().getSimpleName()).append(".")
