@@ -25,6 +25,7 @@
     <context:component-scan base-package="de.consol.sakuli.aop"/>
     <context:component-scan base-package="de.consol.sakuli.actions.settings"/>
     <context:component-scan base-package="de.consol.sakuli.loader"/>
+    <context:component-scan base-package="de.consol.sakuli.utils"/>
 
     <bean class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
     <bean class="de.consol.sakuli.datamodel.properties.ActionProperties"/>
@@ -67,6 +68,13 @@
     <bean id="de.consol.sakuli.datamodel.actions.Screen" class="de.consol.sakuli.MockitoFactoryBean">
         <constructor-arg value="de.consol.sakuli.datamodel.actions.Screen">
         </constructor-arg>
+    </bean>
+
+    <bean id="properties" class="de.consol.sakuli.PropertyHolder" depends-on="propertyResolver">
+        <property name="testSuiteFolder" value="${sakuli.testsuite.folder}"/>
+        <property name="logFile" value="${sakuli.log.folder}/_sakuli.log"/>
+        <property name="logFileAll" value="${sakuli.log.folder}/all.log"/>
+        <property name="screenShotFolder" value="${sakuli.screenshot.dir}"/>
     </bean>
 
 </beans>

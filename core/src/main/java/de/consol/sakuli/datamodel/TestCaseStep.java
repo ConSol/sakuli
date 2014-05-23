@@ -24,12 +24,11 @@ import de.consol.sakuli.exceptions.SakuliException;
 import java.util.Date;
 
 /**
- * test case step based Exceptions and critical times will be currently not supported in {@link de.consol.sakuli.actions.TestCaseActions}.
+ * test case step based Exceptions and critical times will be currently not supported in {@link de.consol.sakuli.actions.TestCaseAction}.
  *
  * @author tschneck
  *         Date: 18.06.13
  */
-// TODO check if component scan with scope prototyp is possible
 public class TestCaseStep extends AbstractSakuliTest<SakuliException, TestCaseStepState> {
 
     /**

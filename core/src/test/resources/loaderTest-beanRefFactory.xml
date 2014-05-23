@@ -22,9 +22,7 @@
 <beans>
     <bean id="de.consol.sakuli.app.root" lazy-init="false"
           class="org.springframework.context.support.FileSystemXmlApplicationContext">
-        <constructor-arg>
-            <value>src/test/resources/de/consol/sakuli/aop/aopTest-applicationContext.xml</value>
-        </constructor-arg>
+        <constructor-arg value="src/test/resources/de/consol/sakuli/loader/loaderTest-applicationContext.xml"/>
     </bean>
 
 </beans>

@@ -16,6 +16,10 @@
 * introduce some maven-profiles for individual usage
   
 * change `.inc` and `.sah` file ending to `.js`
+
+* fix some typos
+
+* set up jenkins build
   
 
 ### Version 0.4.0

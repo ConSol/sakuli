@@ -48,9 +48,9 @@ import static org.testng.AssertJUnit.assertTrue;
  * @author tschneck
  *         Date: 25.07.13
  */
-public class TestCaseActionsTest extends BaseTest {
+public class TestCaseActionTest extends BaseTest {
     @InjectMocks
-    private TestCaseActions testling = new TestCaseActions();
+    private TestCaseAction testling = new TestCaseAction();
     @Mock
     private TestSuite testSuiteMock;
     @Mock
