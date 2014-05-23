@@ -67,7 +67,7 @@ public abstract class BaseTest {
         when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
     }
 
-    protected String getLastLineWithContent(Path file, String s) throws IOException {
+    public static String getLastLineWithContent(Path file, String s) throws IOException {
 
         Scanner in;
         String lastLine = "";
@@ -83,7 +83,7 @@ public abstract class BaseTest {
 
     }
 
-    protected String getLastLineOfLogFile(Path file) throws IOException {
+    public static String getLastLineOfLogFile(Path file) throws IOException {
         return getLastLineWithContent(file, "");
     }
 

@@ -41,7 +41,7 @@ import java.util.Date;
  *         Date: 19.06.13
  */
 @Component
-public class TestCaseActions {
+public class TestCaseAction {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -122,7 +122,7 @@ public class TestCaseActions {
      * @param stopTime    end time in milliseconds
      * @param lastURL     URL to the last visited page during this test case
      * @param browserInfo detail information about the used browser
-     * @throws de.consol.sakuli.exceptions.SakuliException
+     * @throws SakuliException
      */
     @LogToResult(message = "save the result of the current test case")
     public void saveResult(String testCaseId, String startTime, String stopTime, String lastURL, String browserInfo) throws SakuliException {
@@ -171,7 +171,7 @@ public class TestCaseActions {
      * @param startTime   start time in milliseconds
      * @param stopTime    end time in milliseconds
      * @param warningTime warning threshold in seconds
-     * @throws de.consol.sakuli.exceptions.SakuliException
+     * @throws SakuliException
      */
     @LogToResult(message = "add a step to the current test case")
     public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime) throws SakuliException {
@@ -241,8 +241,8 @@ public class TestCaseActions {
 
     @Override
     public String toString() {
-        if (loader.getCurrentTestCase() != null) {
-            return "test case [" + loader.getCurrentTestCase().toString() + "]";
+        if (loader != null && loader.getCurrentTestCase() != null) {
+            return "test case [" + loader.getCurrentTestCase().getActionValueString() + "]";
         }
         return "test case not initialized";
     }

@@ -42,7 +42,7 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
     private String id;
     private String startUrl;
     /**
-     * will be set with the method {@link de.consol.sakuli.actions.TestCaseActions#saveResult(String, String, String, String, String)}
+     * will be set with the method {@link de.consol.sakuli.actions.TestCaseAction#saveResult(String, String, String, String, String)}
      */
     private String lastURL;
     private List<TestCaseStep> steps;
@@ -59,8 +59,8 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
         this.name = name;
         this.id = testCaseId;
         /**
-         * needed to be set to -1, so the function {@link de.consol.sakuli.actions.TestCaseActions#addTestCaseStep(String, String, String, String, int)}
-         * can check if the method {@link de.consol.sakuli.actions.TestCaseActions#initTestCaseWarningAndCritical(String, int, int)}
+         * needed to be set to -1, so the function {@link de.consol.sakuli.actions.TestCaseAction#addTestCaseStep(String, String, String, String, int)}
+         * can check if the method {@link de.consol.sakuli.actions.TestCaseAction#initTestCaseWarningAndCritical(String, int, int)}
          * have been called at the beginning of this test case.
          */
         warningTime = -1;
@@ -183,6 +183,11 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
 
     @Override
     public String toString() {
+        return "id=" + getId()
+                + ", name=" + getName();
+    }
+
+    public String getActionValueString() {
         return "id=" + getId()
                 + ", name=" + getName();
     }

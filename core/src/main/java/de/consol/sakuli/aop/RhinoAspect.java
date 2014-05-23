@@ -26,6 +26,7 @@ import de.consol.sakuli.loader.BeanLoader;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.report.ResultType;
 import net.sf.sahi.rhino.RhinoScriptRunner;
+import org.apache.commons.lang.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -37,7 +38,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Iterator;
 
-import static org.springframework.util.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
  * Aspect for the External Sahi Libary {@link net.sf.sahi}
@@ -71,12 +72,12 @@ public class RhinoAspect {
     }
 
     /**
-     * Pointcut for the {@link de.consol.sakuli.actions.TestCaseActions} class
+     * Pointcut for the {@link de.consol.sakuli.actions.TestCaseAction} class
      * to do an {@link #addActionLog(org.aspectj.lang.JoinPoint, de.consol.sakuli.actions.logging.LogToResult)}
      */
-    @Before("execution(* de.consol.sakuli.actions.TestCaseActions.*(..)) &&" +
+    @Before("execution(* de.consol.sakuli.actions.TestCaseAction.*(..)) &&" +
             "@annotation(logToResult)")
-    public void doTestCaseActionsLog(JoinPoint joinPoint, LogToResult logToResult) {
+    public void doTestCaseActionLog(JoinPoint joinPoint, LogToResult logToResult) {
         addActionLog(joinPoint, logToResult);
     }
 
@@ -117,7 +118,7 @@ public class RhinoAspect {
      * @param joinPoint   {@link JoinPoint} object of the calling aspect
      * @param logToResult {@link LogToResult} Annotation
      */
-    private void addActionLog(JoinPoint joinPoint, LogToResult logToResult) {
+    protected void addActionLog(JoinPoint joinPoint, LogToResult logToResult) {
         Logger logger = getLogger(joinPoint);
         if (logToResult != null) {
             StringBuilder message = new StringBuilder();
@@ -127,10 +128,10 @@ public class RhinoAspect {
             message.append(joinPoint.getSignature().getDeclaringType().getSimpleName()).append(".")
                     .append(joinPoint.getSignature().getName()).append("()");
 
-            if (!isEmpty(logToResult.message())) {
+            if (isNotEmpty(logToResult.message())) {
                 message.append(" - ").append(logToResult.message());
             }
-            if (joinPoint.getArgs().length > 0) {
+            if (ArrayUtils.isNotEmpty(joinPoint.getArgs())) {
                 message.append(" with arg(s) ").append(printArgs(joinPoint, logToResult.logArgs()));
             }
 
