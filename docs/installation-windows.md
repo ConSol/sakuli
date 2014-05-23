@@ -125,7 +125,7 @@ Some configuration settings in the file `%SAKULI_HOME%\include\sakuli.properties
     
     ```
     # DEFAULT: false
-    sakuli.persistence.database.enabled=false
+    sakuli.results.persistInDatabase.enabled
     ```
 
   * Set up your database connection information like:
@@ -138,6 +138,15 @@ Some configuration settings in the file `%SAKULI_HOME%\include\sakuli.properties
 	jdbc.pw=sahi
 	jdbc.model=sahi
 	```
+* Send To Gearman Queue (optional)
+    
+     ```
+     # En- / Disables if the results should be send to the specified gearman queue.
+     # (This had to defined at the nagios server before)
+     # DEFAULT: false
+     sakuli.results.sendToGearmanQueue.enabled=false
+     ```
+     
 
 * Sahi installation path:
   * Set the `sahiproxy.homepath` to the expected installation folder of the [Sahi Installation](installation-windows.md#sahi)

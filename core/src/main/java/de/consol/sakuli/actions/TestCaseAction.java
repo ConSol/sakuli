@@ -27,8 +27,6 @@ import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BaseActionLoaderImpl;
-import de.consol.sakuli.services.dao.DaoTestCase;
-import de.consol.sakuli.services.dao.DaoTestCaseStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +42,6 @@ import java.util.Date;
 @Component
 public class TestCaseAction {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private DaoTestCase daoTestCase;
-    @Autowired
-    private DaoTestCaseStep daoTestCaseStep;
 
     /**
      * Represents the current running TestCase.
@@ -151,16 +144,6 @@ public class TestCaseAction {
                     + "\n" + e.getMessage());
         }
 
-        //write testcase and steps to DB
-        daoTestCase.saveTestCaseResult(tc);
-
-        logger.info("... now save all test case steps for test case '" + tc.getId() + "'!");
-        if (tc.getSteps() != null) {
-            daoTestCaseStep.saveTestCaseSteps(tc.getSteps(), tc.getDbPrimaryKey());
-            logger.info("all STEPS for '" + tc.getId() + "' saved!");
-        } else {
-            logger.info("no STEPS for '\" + tc.getId() +\"'found => no STEPS saved in DB!");
-        }
         loader.setCurrentTestCase(null);
     }
 

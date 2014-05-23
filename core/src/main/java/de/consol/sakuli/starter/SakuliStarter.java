@@ -29,7 +29,7 @@ import de.consol.sakuli.exceptions.SakuliCipherException;
 import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.loader.BeanLoader;
 import de.consol.sakuli.services.InitializingService;
-import de.consol.sakuli.services.dao.DaoTestSuite;
+import de.consol.sakuli.services.ResultService;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
@@ -109,10 +109,8 @@ public class SakuliStarter {
                     e.printStackTrace();
                     System.exit(99);
                 } finally {
-                    DaoTestSuite daoTestSuite = BeanLoader.loadBean(DaoTestSuite.class);
-                    //after the execution,save the test suite
-                    daoTestSuite.updateTestSuiteResult();
-                    daoTestSuite.saveTestSuiteToSahiJobs();
+                    ResultService resultService = BeanLoader.loadBean(ResultService.class);
+                    resultService.saveAllResults();
 
                     //fina log and shutdown context
                     final TestSuite testSuite = BeanLoader.loadBean(TestSuite.class);

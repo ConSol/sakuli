@@ -38,8 +38,10 @@ public class SakuliProperties extends AbstractProperties {
     public static final String LOG_RESUME_ON_EXCEPTION = "sakuli.log.exception.onResumeOnException";
     public static final String LOG_FOLDER = "sakuli.log.folder";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
-    public static final String PERSIST_DATABASE_ENABLED = "sakuli.persistence.database.enabled";
-    protected static final boolean PERSIST_DATABASE_ENABLED_DEFAULT = false;
+    public static final String RESULTS_PERSIST_IN_DATABASE_ENABLED = "sakuli.results.persistInDatabase.enabled";
+    protected static final boolean PERSIST_IN_DATABASE_DEFAULT = false;
+    public static final String RESULTS_SEND_TO_GEARMAN_QUEUE_ENABLED = "sakuli.results.sendToGearmanQueue.enabled";
+    protected static final boolean SEND_TO_GEARMAN_QUEUE_DEFAULT = false;
 
     @Value("${" + INCLUDE_FOLDER + "}")
     private String includeFolderPropertyValue;
@@ -51,8 +53,10 @@ public class SakuliProperties extends AbstractProperties {
     private Path logFolder;
     @Value("${" + LOG_PATTERN + "}")
     private String logPattern;
-    @Value("${" + PERSIST_DATABASE_ENABLED + ":" + PERSIST_DATABASE_ENABLED_DEFAULT + "}")
+    @Value("${" + RESULTS_PERSIST_IN_DATABASE_ENABLED + ":" + PERSIST_IN_DATABASE_DEFAULT + "}")
     private boolean persistInDatabaseEnabled;
+    @Value("${" + RESULTS_SEND_TO_GEARMAN_QUEUE_ENABLED + ":" + SEND_TO_GEARMAN_QUEUE_DEFAULT + "}")
+    private boolean sendToGearmanQueueEnabled;
 
     @PostConstruct
     public void initFolders() throws FileNotFoundException {
@@ -116,5 +120,13 @@ public class SakuliProperties extends AbstractProperties {
 
     public void setPersistInDatabaseEnabled(boolean persistInDatabaseEnabled) {
         this.persistInDatabaseEnabled = persistInDatabaseEnabled;
+    }
+
+    public boolean isSendToGearmanQueueEnabled() {
+        return sendToGearmanQueueEnabled;
+    }
+
+    public void setSendToGearmanQueueEnabled(boolean sendToGearmanQueueEnabled) {
+        this.sendToGearmanQueueEnabled = sendToGearmanQueueEnabled;
     }
 }

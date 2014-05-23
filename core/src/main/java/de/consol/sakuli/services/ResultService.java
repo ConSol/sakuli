@@ -18,25 +18,17 @@
 
 package de.consol.sakuli.services;
 
-import de.consol.sakuli.datamodel.TestCase;
-import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
-
-import java.io.FileNotFoundException;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
 
 /**
- * Service Interface for all initializing actions.
- *
  * @author tschneck
- *         Date: 22.05.14
+ *         Date: 23.05.14
  */
-public interface InitializingService {
+public interface ResultService {
 
     /**
-     * initialize the test suite object:
-     * <ol>
-     * <li>check {@link TestSuiteProperties#testSuiteSuiteFile}</li>
-     * <li>load the {@link TestCase}s</li>
-     * </ol>
+     * Triggers that all current results will be saved, in consideration of the {@link SakuliProperties}.
      */
-    void initTestSuite() throws FileNotFoundException;
+    void saveAllResults();
+
 }

@@ -18,14 +18,11 @@
 
 package de.consol.sakuli.services.impl;
 
-import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.helper.TestSuiteHelper;
-import de.consol.sakuli.datamodel.properties.SakuliProperties;
-import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.services.InitializingService;
-import de.consol.sakuli.services.dao.DaoTestSuite;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -38,18 +35,8 @@ import java.util.Date;
  *         Date: 22.05.14
  */
 @Service
-public class InitializingServiceImpl implements InitializingService {
-
-    @Autowired
-    private TestSuite testSuite;
-    @Autowired
-    private TestSuiteProperties testSuiteProperties;
-    @Autowired
-    private SakuliProperties sakuliProperties;
-    @Autowired
-    private DaoTestSuite daoTestSuite;
-
-
+public class InitializingServiceImpl extends AbstractServiceImpl implements InitializingService {
+    private static Logger logger = LoggerFactory.getLogger(InitializingService.class);
     /**
      * {@inheritDoc}
      */

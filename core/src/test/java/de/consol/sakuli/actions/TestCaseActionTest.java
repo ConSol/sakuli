@@ -24,8 +24,6 @@ import de.consol.sakuli.datamodel.TestCaseStep;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.state.TestCaseStepState;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
-import de.consol.sakuli.services.dao.DaoTestCase;
-import de.consol.sakuli.services.dao.DaoTestCaseStep;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -53,10 +51,6 @@ public class TestCaseActionTest extends BaseTest {
     private TestCaseAction testling = new TestCaseAction();
     @Mock
     private TestSuite testSuiteMock;
-    @Mock
-    private DaoTestCase daoTestCaseMock;
-    @Mock
-    private DaoTestCaseStep daoTestCaseStepMock;
     @Mock
     private SakuliExceptionHandler exceptionHandlerMock;
     private TestCase sample = new TestCase("testling", "1234_");

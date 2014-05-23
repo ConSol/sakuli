@@ -16,27 +16,20 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services;
+package de.consol.sakuli.services.gearman.impl;
 
-import de.consol.sakuli.datamodel.TestCase;
-import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
-
-import java.io.FileNotFoundException;
+import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.services.gearman.GearmanService;
+import org.springframework.stereotype.Component;
 
 /**
- * Service Interface for all initializing actions.
- *
  * @author tschneck
- *         Date: 22.05.14
+ *         Date: 23.05.14
  */
-public interface InitializingService {
-
-    /**
-     * initialize the test suite object:
-     * <ol>
-     * <li>check {@link TestSuiteProperties#testSuiteSuiteFile}</li>
-     * <li>load the {@link TestCase}s</li>
-     * </ol>
-     */
-    void initTestSuite() throws FileNotFoundException;
+@Component
+public class GearmanServiceImpl implements GearmanService {
+    @Override
+    public void sendToNagios(TestSuite testSuite) {
+        //GearmanClient
+    }
 }
