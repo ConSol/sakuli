@@ -90,7 +90,7 @@ this Environment.
 copyIntoClipboard()
 -------------------
 copy the current selected item or text to the clipboard.
-Will do the same as "STRG + V".
+Will do the same as "STRG + C".
 
 
 

@@ -107,7 +107,7 @@ public class SahiConnector {
         } catch (Throwable e) {
             sakuliExceptionHandler.handleException(e);
         } finally {
-            logger.info("test suite finisched");
+            logger.info("test suite finished");
             //shutdown sahi proxy!
             sahiProxy.shutdown();
         }

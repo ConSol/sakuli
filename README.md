@@ -59,7 +59,9 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 
 ### Manual 
 
-[Sakuli Manual](./docs/sakuli-manual.md) 
+[Sakuli Manual](./docs/sakuli-manual.md)
+ 
+[Change Log](changelog.md)
 
 
 ### Troubleshooting

@@ -19,23 +19,66 @@
 package de.consol.sakuli.aop;
 
 import de.consol.sakuli.BaseTest;
+import de.consol.sakuli.PropertyHolder;
+import de.consol.sakuli.actions.TestCaseAction;
+import de.consol.sakuli.actions.environment.Environment;
+import de.consol.sakuli.actions.logging.LogToResult;
+import de.consol.sakuli.actions.logging.Logger;
+import de.consol.sakuli.actions.screenbased.RegionTestImpl;
+import de.consol.sakuli.datamodel.TestCase;
+import de.consol.sakuli.datamodel.actions.LogLevel;
+import de.consol.sakuli.datamodel.actions.LogResult;
+import de.consol.sakuli.exceptions.SakuliExceptionHandler;
+import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BeanLoader;
+import de.consol.sakuli.loader.ScreenActionLoader;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import net.sf.sahi.playback.SahiScript;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.report.ResultType;
 import net.sf.sahi.report.TestResult;
 import net.sf.sahi.rhino.RhinoScriptRunner;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.Signature;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
 public class RhinoAspectTest {
+
+    private Path logFile;
+
+    @DataProvider(name = "resultTypes")
+    public static Object[][] resultTypes() {
+        return new Object[][]{
+                {ResultType.INFO},
+                {ResultType.ERROR},
+                {ResultType.SKIPPED},
+                {ResultType.SUCCESS}
+        };
+
+    }
+
+    @DataProvider(name = "logLevel")
+    public static Object[][] logLevel() {
+        return new Object[][]{
+                {LogLevel.INFO},
+                {LogLevel.DEBUG},
+                {LogLevel.ERROR},
+                {LogLevel.WARNING},
+        };
+    }
 
     @BeforeMethod
     public void setUp() throws Exception {
@@ -43,53 +86,210 @@ public class RhinoAspectTest {
         SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = BaseTest.INCLUDE_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = BaseTest.SAHI_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = "aopTest-beanRefFactory.xml";
+        logFile = Paths.get(BeanLoader.loadBean(PropertyHolder.class).getLogFileAll());
     }
-
 
     @Test
     public void testGetRhinoScriptRunner() throws Exception {
-
-        SahiScript sahiScriptMock = mock(SahiScript.class);
-        when(sahiScriptMock.jsString()).thenReturn("");
-        new RhinoScriptRunner(sahiScriptMock);
+        initMocks();
 
         /**
          * If the test fails in your IDE, make sure that your compiler use the correct AspectJ-Compiler
          * For IntelliJ you can make a right click on the maven target 'aspectj:compile' and mark it
-         * with the opiton 'Execute After Make'.
+         * with the option 'Execute After Make'.
          */
         assertNotNull(BeanLoader.loadBaseActionLoader().getSahiReport());
-
-
     }
 
-    @Test
-    public void testDoHandleRhinoException() throws Exception {
-
-        SahiScript sahiScriptMock = mock(SahiScript.class);
-        when(sahiScriptMock.jsString()).thenReturn("");
-        new RhinoScriptRunner(sahiScriptMock);
-
+    @Test(dataProvider = "resultTypes")
+    public void testDoHandleRhinoException(ResultType resultTyp) throws Exception {
+        initMocks();
         /**
          * If the test fails in your IDE, make sure that your compiler use the correct AspectJ-Compiler
          * For IntelliJ you can make a right click on the maven target 'aspectj:compile' and mark it
-         * with the opiton 'Execute After Make'.
+         * with the option 'Execute After Make'.
          */
         Report sahiReport = BeanLoader.loadBaseActionLoader().getSahiReport();
         int lisSize = sahiReport.getListResult().size();
         assertNotNull(sahiReport);
-        sahiReport.addResult("TEST-ENTRY", ResultType.INFO, "bla", "TEST-ENTRY");
+        sahiReport.addResult("TEST-ENTRY", resultTyp, "bla", "TEST-ENTRY");
+        verifySahiReport(resultTyp, lisSize);
+    }
 
-        Report sahiReport2 = BeanLoader.loadBaseActionLoader().getSahiReport();
-        int newLisSize = sahiReport2.getListResult().size();
-        assertEquals(newLisSize, lisSize + 1);
-        TestResult testResult = sahiReport2.getListResult().get(newLisSize - 1);
-        assertNotNull(testResult);
+    @Test(dataProvider = "resultTypes")
+    public void testDoHandleRhinoExceptionResultString(ResultType resultTyp) throws Exception {
+        initMocks();
+        /**
+         * If the test fails in your IDE, make sure that your compiler use the correct AspectJ-Compiler
+         * For IntelliJ you can make a right click on the maven target 'aspectj:compile' and mark it
+         * with the option 'Execute After Make'.
+         */
+        Report sahiReport = BeanLoader.loadBaseActionLoader().getSahiReport();
+        int lisSize = sahiReport.getListResult().size();
+        assertNotNull(sahiReport);
+        sahiReport.addResult("TEST-ENTRY", resultTyp.getName(), "bla", "TEST-ENTRY");
+        verifySahiReport(resultTyp, lisSize);
+    }
+
+    private void initMocks() {
+        SakuliExceptionHandler sakuliExceptionHandler = BeanLoader.loadBean(SakuliExceptionHandler.class);
+        reset(sakuliExceptionHandler);
+        SahiScript sahiScriptMock = mock(SahiScript.class);
+        when(sahiScriptMock.jsString()).thenReturn("");
+        new RhinoScriptRunner(sahiScriptMock);
+    }
+
+    private void verifySahiReport(ResultType resultTyp, int initialListSize) {
+        if (resultTyp != null) {
+            Report sahiReport2 = BeanLoader.loadBaseActionLoader().getSahiReport();
+            int newLisSize = sahiReport2.getListResult().size();
+            assertEquals(newLisSize, initialListSize + 1);
+            TestResult testResult = sahiReport2.getListResult().get(newLisSize - 1);
+            assertNotNull(testResult);
+
+            SakuliExceptionHandler sakuliExceptionHandler = BeanLoader.loadBean(SakuliExceptionHandler.class);
+            if (resultTyp.equals(ResultType.ERROR) || resultTyp.equals(ResultType.FAILURE)) {
+                verify(sakuliExceptionHandler).handleException(any(LogResult.class));
+            } else {
+                verify(sakuliExceptionHandler, never()).handleException(any(LogResult.class));
+            }
+        }
+    }
+
+    @Test(dataProvider = "logLevel")
+    public void testAddActionLog(LogLevel logLevel) throws Exception {
+        initMocks();
+        Report sahiReport = BeanLoader.loadBaseActionLoader().getSahiReport();
+        final int lisSize = sahiReport.getListResult().size();
+
+        final String classContent = "Test-Action-Content";
+        final String className = TestCaseAction.class.getSimpleName();
+        final String methodName = "actionMethod";
+        final String sampleMessage = "sample-message-for-log";
+        final String arg1 = "ARG1";
+        final String arg2 = "NULL";
+
+        TestCaseAction testAction = mock(TestCaseAction.class);
+        when(testAction.toString()).thenReturn(classContent);
+
+        JoinPoint jp = mock(JoinPoint.class);
+        when(jp.getTarget()).thenReturn(testAction);
+        Signature signature = mock(Signature.class);
+        when(jp.getSignature()).thenReturn(signature);
+        when(signature.getDeclaringType()).thenReturn(TestCaseAction.class);
+        when(signature.getName()).thenReturn(methodName);
+        when(signature.getDeclaringTypeName()).thenReturn(TestCaseAction.class.getName());
+        when(jp.getArgs()).thenReturn(new Object[]{arg1, null});
+
+
+        LogToResult logToResult = mock(LogToResult.class);
+        when(logToResult.logClassInstance()).thenReturn(true);
+        when(logToResult.message()).thenReturn(sampleMessage);
+        when(logToResult.logArgs()).thenReturn(true);
+        when(logToResult.level()).thenReturn(logLevel);
+        RhinoAspect testling = new RhinoAspect();
+
+        testling.addActionLog(jp, logToResult);
+        assertLastLine(className, logLevel,
+                "\"" + classContent + "\" " + className + "." + methodName + "() - " + sampleMessage +
+                        " with arg(s) [" + arg1 + ", " + arg2 + "]"
+        );
+        verifySahiReport(logLevel.getResultType(), lisSize);
+
+        //hide args
+        when(logToResult.logArgs()).thenReturn(false);
+        testling.addActionLog(jp, logToResult);
+        assertLastLine(className, logLevel,
+                "\"" + classContent + "\" " + className + "." + methodName + "() - " + sampleMessage +
+                        " with arg(s) [****, ****]"
+        );
+
+        //without class values
+        when(logToResult.logClassInstance()).thenReturn(false);
+        testling.addActionLog(jp, logToResult);
+        assertLastLine(className, logLevel,
+                className + "." + methodName + "() - " + sampleMessage +
+                        " with arg(s) [****, ****]"
+        );
+
+        //without args
+        when(jp.getArgs()).thenReturn(null);
+        testling.addActionLog(jp, logToResult);
+        assertLastLine(className, logLevel,
+                className + "." + methodName + "() - " + sampleMessage);
+
+        //without message
+        when(logToResult.message()).thenReturn(null);
+        testling.addActionLog(jp, logToResult);
+        assertLastLine(className, logLevel,
+                className + "." + methodName + "()");
+    }
+
+    private void assertLastLine(String filter, LogLevel logLevel, String expectedMessage) throws IOException {
+        String preFix = null;
+        switch (logLevel) {
+            case ERROR:
+                preFix = "ERROR";
+                break;
+            case INFO:
+                preFix = "INFO ";
+                break;
+            case DEBUG:
+                preFix = "DEBUG";
+                break;
+            case WARNING:
+                preFix = "WARN ";
+                break;
+        }
+        String lastLineOfLogFile = BaseTest.getLastLineWithContent(logFile, filter);
+        assertEquals(lastLineOfLogFile.substring(0, 5), preFix);
+        assertEquals(lastLineOfLogFile.substring(30), expectedMessage);
+    }
+
+
+    @Test
+    public void testDoEnvironmentLog() throws Exception {
+        initMocks();
+        ScreenActionLoader screenActionLoader = mock(ScreenActionLoader.class);
+        Environment testAction = new Environment(false, screenActionLoader);
+        testAction.sleep(1);
+
+        assertLastLine(testAction.getClass().getSimpleName(), LogLevel.INFO, "Environment.sleep() - sleep and do nothing for x seconds with arg(s) [1]");
+    }
+
+    @Test
+    public void testDoLoggingLog() throws Exception {
+        initMocks();
+        Logger.logInfo("INFO-LOG");
+        assertLastLine(Logger.class.getSimpleName(), LogLevel.INFO, "Logger.logInfo() with arg(s) [INFO-LOG]");
+    }
+
+    @Test
+    public void testdoScreenBasedActionLog() throws Exception {
+        initMocks();
+        RegionTestImpl.testLogMethod();
+
+        assertLastLine(RegionTestImpl.class.getSimpleName(), LogLevel.WARNING, "RegionTestImpl.testLogMethod()");
+    }
+
+    @Test
+    public void testDoTestCaseActionLog() throws Exception {
+        initMocks();
+        BaseActionLoader loader = mock(BaseActionLoader.class);
+        TestCase sampleTc = new TestCase("test", "testID");
+        when(loader.getCurrentTestCase()).thenReturn(sampleTc);
+        TestCaseAction testAction = new TestCaseAction();
+        ReflectionTestUtils.setField(testAction, "loader", loader, BaseActionLoader.class);
+        testAction.init("testID", 3, 4, null);
+
+        assertLastLine(testAction.getClass().getSimpleName(), LogLevel.INFO,
+                "\"test case [" + sampleTc.getActionValueString() + "]\" TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, NULL]");
     }
 
     @AfterMethod
     public void tearDown() throws Exception {
         BeanLoader.CONTEXT_PATH = BaseTest.TEST_CONTEXT_PATH;
     }
+
 
 }

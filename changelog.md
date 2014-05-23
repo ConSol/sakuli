@@ -9,6 +9,19 @@
 
 * update documentation
 
+* build automatic sakuli-api doc
+
+* clean up repository
+
+* introduce some maven-profiles for individual usage
+  
+* change `.inc` and `.sah` file ending to `.js`
+
+* fix some typos
+
+* set up jenkins build
+  
+
 ### Version 0.4.0
 * Centralise the configuration of properties files to:
  * `_include/sakuli.properties` contains all possible configuration option for Sakuli. The configured value will be used

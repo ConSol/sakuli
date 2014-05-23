@@ -18,7 +18,7 @@
 
 package de.consol.sakuli.loader;
 
-import de.consol.sakuli.actions.TestCaseActions;
+import de.consol.sakuli.actions.TestCaseAction;
 import de.consol.sakuli.actions.environment.Application;
 import de.consol.sakuli.actions.environment.Environment;
 import de.consol.sakuli.actions.screenbased.Region;
@@ -46,9 +46,9 @@ public class BeanLoader {
         return loadBean(ScreenActionLoader.class);
     }
 
-    public static TestCaseActions loadTestCaseActions() {
+    public static TestCaseAction loadTestCaseAction() {
         logger.debug("create new TestCaseAction object over BeanFactory.");
-        return getBeanFacotry().getBean(TestCaseActions.class);
+        return getBeanFacotry().getBean(TestCaseAction.class);
     }
 
     public static Application loadApplication(String applicationNameOrPath, String resumeOnException) {
@@ -95,7 +95,7 @@ public class BeanLoader {
 
     private static BeanFactory getBeanFacotry() {
         BeanFactoryLocator bfl = SingletonBeanFactoryLocator.getInstance(CONTEXT_PATH);
-        BeanFactoryReference bf = bfl.useBeanFactory("de.consol.sakuli.app.root");
+        bfl.useBeanFactory("de.consol.sakuli.app.root");
         return getBeanFacotryReference().getFactory();
     }
 

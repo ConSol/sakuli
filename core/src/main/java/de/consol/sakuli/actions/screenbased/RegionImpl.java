@@ -164,7 +164,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     }
 
     /**
-     * {@link Region#}
+     * {@link Region#exists(String)}
      */
     public RegionImpl exists(String imageName) {
         if (isEmpty(imageName)) {
