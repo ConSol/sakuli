@@ -24,11 +24,10 @@ import de.consol.sakuli.actions.TestCaseAction;
 import de.consol.sakuli.actions.environment.Environment;
 import de.consol.sakuli.actions.logging.LogToResult;
 import de.consol.sakuli.actions.logging.Logger;
-import de.consol.sakuli.actions.screenbased.Region;
+import de.consol.sakuli.actions.screenbased.RegionTestImpl;
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.actions.LogLevel;
 import de.consol.sakuli.datamodel.actions.LogResult;
-import de.consol.sakuli.datamodel.actions.Screen;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BeanLoader;
@@ -268,14 +267,9 @@ public class RhinoAspectTest {
     @Test
     public void testdoScreenBasedActionLog() throws Exception {
         initMocks();
-        ScreenActionLoader screenActionLoader = mock(ScreenActionLoader.class);
-        Screen screen = new Screen();
-        when(screenActionLoader.getScreen()).thenReturn(screen);
-        Region testAction = new Region(false, screenActionLoader);
-        testAction.getH();
+        RegionTestImpl.testLogMethod();
 
-        assertLastLine(testAction.getClass().getSimpleName(), LogLevel.INFO, "\"R[0,0 " + screen.getW() + "x" +
-                screen.getH() + "]@S(0)\" Region.getH()");
+        assertLastLine(RegionTestImpl.class.getSimpleName(), LogLevel.WARNING, "RegionTestImpl.testLogMethod()");
     }
 
     @Test
@@ -296,5 +290,6 @@ public class RhinoAspectTest {
     public void tearDown() throws Exception {
         BeanLoader.CONTEXT_PATH = BaseTest.TEST_CONTEXT_PATH;
     }
+
 
 }
