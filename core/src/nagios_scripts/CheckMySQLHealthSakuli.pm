@@ -74,7 +74,7 @@ my %SUITE_DBSTATUS_2_TEXT = (
         2       => '%s Sakuli suite "%s" (ID: %d) ran ok (%0.2fs), but contains case(s) with exceeded runtime. (Last suite run: %s)',       
         3       => '%s Sakuli suite "%s" (ID: %d) over runtime (%0.2fs/warn at %ds). (Last suite run: %s)',       
         4       => '%s Sakuli suite "%s" (ID: %d) ran ok (%0.2fs), but contains case(s) with exceeded runtime. (Last suite run: %s)',       
-        5       => '%s Sakuli suite "%s" (ID: %d) over runtime (%0.2fs/crit at %5\$ds). (Last suite run: %s)',       
+        5       => '%s Sakuli suite "%s" (ID: %d) over runtime (%0.2fs/crit at %5$ds). (Last suite run: %s)',       
         6       => '%s Sakuli suite "%s" (ID: %d) EXCEPTION: "%8$s". (Last suite run: %5$s)',       
 );
 
