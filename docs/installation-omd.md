@@ -134,7 +134,7 @@ Set the USER macros in resource.cfg - of course you can choose other values too 
 	  # database password
 	  $USER12$=sahi
 	  # database port
-	  $USER13$=3007
+	  $USER13$=3307
 	  # check_mysql_health dyndir
 	  $USER15$=/opt/omd/sites/sakuli/etc/check_mysql_health/
 	  # database IP
