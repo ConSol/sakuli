@@ -109,7 +109,7 @@ public class TestCaseAction {
      *********************/
 
     /**
-     * save the Result of a test Case into the data base
+     * save the Result of a test Case
      *
      * @param testCaseId  id of the corresponding test case
      * @param startTime   start time in milliseconds
@@ -144,6 +144,7 @@ public class TestCaseAction {
                     + "\n" + e.getMessage());
         }
 
+        //release current test case -> indicates that this case is finished
         loader.setCurrentTestCase(null);
     }
 
