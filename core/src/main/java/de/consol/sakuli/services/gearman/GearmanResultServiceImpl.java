@@ -16,20 +16,29 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.gearman.impl;
+package de.consol.sakuli.services.gearman;
 
 import de.consol.sakuli.datamodel.TestSuite;
-import de.consol.sakuli.services.gearman.GearmanService;
+import de.consol.sakuli.services.ResultService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
  * @author tschneck
  *         Date: 23.05.14
  */
+@Profile("gearman")
 @Component
-public class GearmanServiceImpl implements GearmanService {
+public class GearmanResultServiceImpl implements ResultService {
+    @Autowired
+    private TestSuite testSuite;
     @Override
-    public void sendToNagios(TestSuite testSuite) {
+    public void saveAllResults() {
+        sendToNagios(testSuite);
+    }
+
+    protected void sendToNagios(TestSuite testSuite) {
         //GearmanClient
     }
 }

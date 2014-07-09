@@ -16,11 +16,12 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.dao.impl;
+package de.consol.sakuli.services.database.dao.impl;
 
 import de.consol.sakuli.exceptions.SakuliException;
-import de.consol.sakuli.services.dao.DaoTestSuite;
+import de.consol.sakuli.services.database.dao.DaoTestSuite;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -37,6 +38,7 @@ import java.sql.Types;
  * @author tschneck
  *         Date: 12.07.13
  */
+@Profile("jdbc-db")
 @Component
 public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
 
@@ -73,7 +75,7 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
     }
 
     @Override
-    public void updateTestSuiteResult() {
+    public void saveTestSuiteResult() {
         testSuite.refreshState();
         logger.info("save the results of the test suite to the table 'sahi_suites'");
 

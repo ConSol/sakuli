@@ -16,14 +16,18 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.impl;
+package de.consol.sakuli.services.common;
 
+import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.helper.TestSuiteHelper;
+import de.consol.sakuli.datamodel.properties.SakuliProperties;
+import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.services.InitializingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.net.InetAddress;
@@ -34,9 +38,16 @@ import java.util.Date;
  * @author tschneck
  *         Date: 22.05.14
  */
-@Service
-public class InitializingServiceImpl extends AbstractServiceImpl implements InitializingService {
+@Component
+public class CommonInitializingServiceImpl implements InitializingService {
     private static Logger logger = LoggerFactory.getLogger(InitializingService.class);
+    @Autowired
+    protected TestSuite testSuite;
+    @Autowired
+    protected TestSuiteProperties testSuiteProperties;
+    @Autowired
+    protected SakuliProperties sakuliProperties;
+
     /**
      * {@inheritDoc}
      */
@@ -57,9 +68,6 @@ public class InitializingServiceImpl extends AbstractServiceImpl implements Init
          */
         if (testSuiteProperties.isLoadTestCasesAutomatic()) {
             testSuite.setTestCases(TestSuiteHelper.loadTestCases(testSuiteProperties));
-        }
-        if (sakuliProperties.isPersistInDatabaseEnabled()) {
-            testSuite.setDbPrimaryKey(daoTestSuite.insertInitialTestSuiteData());
         }
         logger.info("test suite with guid '{}' has been initialized!", testSuite.getGuid());
         logger.debug("test suite data after initialization: {}", testSuite.toString());

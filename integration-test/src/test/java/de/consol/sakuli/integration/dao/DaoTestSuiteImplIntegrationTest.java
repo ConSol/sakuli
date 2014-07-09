@@ -21,7 +21,7 @@ package de.consol.sakuli.integration.dao;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.integration.builder.TestSuiteBuilder;
-import de.consol.sakuli.services.dao.impl.DaoTestSuiteImpl;
+import de.consol.sakuli.services.database.dao.impl.DaoTestSuiteImpl;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

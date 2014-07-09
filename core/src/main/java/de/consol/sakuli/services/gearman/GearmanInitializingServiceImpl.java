@@ -16,21 +16,27 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.dao;
+package de.consol.sakuli.services.gearman;
 
-import de.consol.sakuli.datamodel.TestCase;
+import de.consol.sakuli.services.InitializingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 
 /**
  * @author tschneck
- *         Date: 17.06.13
+ *         Date: 09.07.14
  */
-public interface DaoTestCase {
+@Profile("gearman")
+@Component
+public class GearmanInitializingServiceImpl implements InitializingService {
+    private static final Logger logger = LoggerFactory.getLogger(GearmanInitializingServiceImpl.class);
 
-    public void saveTestCaseResult(TestCase testCase);
-
-    public int getCountOfSahiCases();
-
-    public File getScreenShotFromDB(int dbPrimaryKey);
+    @Override
+    public void initTestSuite() throws FileNotFoundException {
+        logger.info("GEARMAN INIT");
+    }
 }

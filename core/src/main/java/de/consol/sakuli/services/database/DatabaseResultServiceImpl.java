@@ -16,55 +16,43 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.impl;
+package de.consol.sakuli.services.database;
 
 import de.consol.sakuli.datamodel.TestCase;
+import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.services.ResultService;
-import de.consol.sakuli.services.dao.DaoTestCase;
-import de.consol.sakuli.services.dao.DaoTestCaseStep;
-import de.consol.sakuli.services.gearman.GearmanService;
+import de.consol.sakuli.services.database.dao.DaoTestCase;
+import de.consol.sakuli.services.database.dao.DaoTestCaseStep;
+import de.consol.sakuli.services.database.dao.DaoTestSuite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-
 /**
  * @author tschneck
- *         Date: 23.05.14
+ *         Date: 09.07.14
  */
+@Profile("jdbc-db")
 @Component
-public class ResultServiceImpl extends AbstractServiceImpl implements ResultService {
-
-    private static Logger logger = LoggerFactory.getLogger(ResultService.class);
+public class DatabaseResultServiceImpl implements ResultService {
+    private static Logger logger = LoggerFactory.getLogger(DatabaseResultServiceImpl.class);
 
     @Autowired
     private DaoTestCase daoTestCase;
     @Autowired
     private DaoTestCaseStep daoTestCaseStep;
-
     @Autowired
-    private GearmanService gearmanService;
+    private DaoTestSuite daoTestSuite;
+    @Autowired
+    private TestSuite testSuite;
 
     @Override
     public void saveAllResults() {
-        //TODO TS write tests,
-        // TODO TS then implement gearman service
-        if (sakuliProperties.isSendToGearmanQueueEnabled()) {
-            gearmanService.sendToNagios(testSuite);
-        }
-        if (sakuliProperties.isPersistInDatabaseEnabled()) {
-            saveResultsInDatabase();
-        }
-    }
-
-    /**
-     * saves all results into the configured database
-     */
-    protected void saveResultsInDatabase() {
-        //after the execution,save the test suite
-        daoTestSuite.updateTestSuiteResult();
+        logger.info("try to save all results to the database");
+        daoTestSuite.saveTestSuiteResult();
         daoTestSuite.saveTestSuiteToSahiJobs();
 
         if (!CollectionUtils.isEmpty(testSuite.getTestCases())) {

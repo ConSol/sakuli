@@ -39,6 +39,7 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 public class SakuliStarter {
 
@@ -90,8 +91,11 @@ public class SakuliStarter {
                 Logger logger = LoggerFactory.getLogger(SakuliStarter.class);
                 logger.debug(tempLogCache);
 
-                // Init the test suite data
-                BeanLoader.loadBean(InitializingService.class).initTestSuite();
+                // Init the test suite data for all available InitializingServices
+                Map<String, InitializingService> initializingServices = BeanLoader.loadMultipleBeans(InitializingService.class);
+                for (InitializingService initializingService : initializingServices.values()) {
+                    initializingService.initTestSuite();
+                }
 
                 /***
                  * SAKULI Starter to run the test suite with embedded sahi proxy
@@ -109,8 +113,11 @@ public class SakuliStarter {
                     e.printStackTrace();
                     System.exit(99);
                 } finally {
-                    ResultService resultService = BeanLoader.loadBean(ResultService.class);
-                    resultService.saveAllResults();
+                    //save results for all active result services
+                    Map<String, ResultService> resultServices = BeanLoader.loadMultipleBeans(ResultService.class);
+                    for (ResultService resultService : resultServices.values()) {
+                        resultService.saveAllResults();
+                    }
 
                     //fina log and shutdown context
                     final TestSuite testSuite = BeanLoader.loadBean(TestSuite.class);

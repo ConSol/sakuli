@@ -16,12 +16,13 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.dao.impl;
+package de.consol.sakuli.services.database.dao.impl;
 
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.exceptions.SakuliException;
-import de.consol.sakuli.services.dao.DaoTestCase;
+import de.consol.sakuli.services.database.dao.DaoTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -47,6 +48,7 @@ import java.util.Map;
  * @author tschneck
  *         Date: 17.06.13
  */
+@Profile("jdbc-db")
 @Component
 public class DaoTestCaseImpl extends Dao implements DaoTestCase {
 

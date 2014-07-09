@@ -49,7 +49,7 @@
         </constructor-arg>
     </bean>
     <bean id="de.consol.sakuli.dao.DaoTestSuite " class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.services.dao.DaoTestSuite ">
+        <constructor-arg value="de.consol.sakuli.services.database.dao.DaoTestSuite ">
         </constructor-arg>
     </bean>
     <bean id="de.consol.sakuli.exceptions.SakuliExceptionHandler" class="de.consol.sakuli.MockitoFactoryBean">

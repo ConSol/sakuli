@@ -16,13 +16,12 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.impl;
+package de.consol.sakuli.services.common;
 
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
-import de.consol.sakuli.services.dao.DaoTestSuite;
 import de.consol.sakuli.utils.TestSuitePropertiesTestUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -33,14 +32,14 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.spy;
 import static org.testng.Assert.*;
 
 /**
  * @author tschneck
  *         Date: 22.05.14
  */
-public class InitializingServiceImplTest {
+public class CommonInitializingServiceImplTest {
 
     @Spy
     private TestSuite ts;
@@ -48,18 +47,14 @@ public class InitializingServiceImplTest {
     private TestSuiteProperties testSuiteProperties;
     @Mock
     private SakuliProperties sakuliProperties;
-    @Mock
-    private DaoTestSuite daoTestSuite;
     @InjectMocks
-    private InitializingServiceImpl testling;
+    private CommonInitializingServiceImpl testling;
 
     @Test
     public void testInit() throws Throwable {
-
         testSuiteProperties = spy(TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "valid", "suite_id"));
         ts = spy(new TestSuite(testSuiteProperties));
         MockitoAnnotations.initMocks(this);
-        when(sakuliProperties.isPersistInDatabaseEnabled()).thenReturn(false);
 
         testling.initTestSuite();
 
@@ -69,7 +64,6 @@ public class InitializingServiceImplTest {
         assertEquals(ts.getDbPrimaryKey(), -1);
         assertEquals(ts.getTestCases().size(), 1);
         assertEquals(ts.getId(), "suite_id");
-        verify(daoTestSuite, never()).insertInitialTestSuiteData();
     }
 
     @Test
@@ -80,7 +74,6 @@ public class InitializingServiceImplTest {
         testSuiteProperties = spy(props);
         ts = spy(new TestSuite(testSuiteProperties));
         MockitoAnnotations.initMocks(this);
-        when(sakuliProperties.isPersistInDatabaseEnabled()).thenReturn(false);
 
         testling.initTestSuite();
 
@@ -90,32 +83,8 @@ public class InitializingServiceImplTest {
         assertEquals(ts.getDbPrimaryKey(), -1);
         assertNull(ts.getTestCases());
         assertEquals(ts.getId(), "suite_id");
-        verify(daoTestSuite, never()).insertInitialTestSuiteData();
     }
 
-    @Test
-    public void testInitWithDaoAction() throws Throwable {
-        TestSuiteProperties props = new TestSuiteProperties();
-        props.setTestSuiteId("suite_id");
-        props.setLoadTestCasesAutomatic(false);
-
-        testSuiteProperties = spy(props);
-        ts = spy(new TestSuite(testSuiteProperties));
-        MockitoAnnotations.initMocks(this);
-        when(sakuliProperties.isPersistInDatabaseEnabled()).thenReturn(true);
-        when(daoTestSuite.insertInitialTestSuiteData()).thenReturn(999);
-
-        testling.initTestSuite();
-
-        verify(daoTestSuite).insertInitialTestSuiteData();
-        assertEquals(ts.getState(), TestSuiteState.RUNNING);
-        assertNotNull(ts.getStartDate());
-        assertNull(ts.getAbsolutePathOfTestSuiteFile());
-        assertEquals(ts.getDbPrimaryKey(), 999);
-        assertNull(ts.getTestCases());
-        assertEquals(ts.getId(), "suite_id");
-
-    }
 
     @Test(expectedExceptions = FileNotFoundException.class, expectedExceptionsMessageRegExp = "test case path \".*unValidTestCase.*\" doesn't exists - check your \"testsuite.suite\" file")
     public void testInitExceptionForTestCase() throws Throwable {

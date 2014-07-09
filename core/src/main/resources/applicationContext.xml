@@ -46,21 +46,24 @@
         <property name="systemPropertiesMode" value="2"/>
     </bean>
 
-    <!--<bean id="rhinoExceptionAspect" class="de.consol.sakuli.aop.FetchRhinoLogAspect"/>-->
+    <!--<bean class="de.consol.sakuli.utils.SakuliContextInitializer"/>-->
 
-    <!-- Definiert die DataSource -->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="${jdbc.driverClass}"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.user}"/>
-        <property name="password" value="${jdbc.pw}"/>
-        <property name="connectionProperties">
-            <props>
-                <prop key="autoCommit">true</prop>
-            </props>
-        </property>
-    </bean>
+    <beans profile="jdbc-db">
+        <!-- Definiert die DataSource -->
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value="${jdbc.driverClass}"/>
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.user}"/>
+            <property name="password" value="${jdbc.pw}"/>
+            <property name="connectionProperties">
+                <props>
+                    <prop key="autoCommit">true</prop>
+                </props>
+            </property>
+        </bean>
 
-    <bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler"/>
+        <bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler"/>
+    </beans>
+
 
 </beans>

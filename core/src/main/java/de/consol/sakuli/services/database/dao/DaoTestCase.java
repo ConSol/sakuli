@@ -16,26 +16,23 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.impl;
+package de.consol.sakuli.services.database.dao;
 
-import de.consol.sakuli.datamodel.TestSuite;
-import de.consol.sakuli.datamodel.properties.SakuliProperties;
-import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
-import de.consol.sakuli.services.dao.DaoTestSuite;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.consol.sakuli.datamodel.TestCase;
+import org.springframework.context.annotation.Profile;
+
+import java.io.File;
 
 /**
  * @author tschneck
- *         Date: 23.05.14
+ *         Date: 17.06.13
  */
-public abstract class AbstractServiceImpl {
-    @Autowired
-    protected TestSuite testSuite;
-    @Autowired
-    protected TestSuiteProperties testSuiteProperties;
-    @Autowired
-    protected SakuliProperties sakuliProperties;
-    @Autowired
-    protected DaoTestSuite daoTestSuite;
+@Profile("jdbc-db")
+public interface DaoTestCase {
 
+    public void saveTestCaseResult(TestCase testCase);
+
+    public int getCountOfSahiCases();
+
+    public File getScreenShotFromDB(int dbPrimaryKey);
 }

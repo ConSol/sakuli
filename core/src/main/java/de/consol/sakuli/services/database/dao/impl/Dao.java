@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.dao.impl;
+package de.consol.sakuli.services.database.dao.impl;
 
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.exceptions.SakuliException;
