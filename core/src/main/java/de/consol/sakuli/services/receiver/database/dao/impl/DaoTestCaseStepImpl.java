@@ -16,15 +16,13 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.database.dao.impl;
+package de.consol.sakuli.services.receiver.database.dao.impl;
 
-import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestCaseStep;
 import de.consol.sakuli.exceptions.SakuliException;
-import de.consol.sakuli.services.database.dao.DaoTestCaseStep;
+import de.consol.sakuli.services.receiver.database.ProfileJdbcDb;
+import de.consol.sakuli.services.receiver.database.dao.DaoTestCaseStep;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
@@ -36,7 +34,7 @@ import java.util.List;
  * @author tschneck
  *         Date: 12.07.13
  */
-@Profile("jdbc-db")
+@ProfileJdbcDb
 @Component
 public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
 
@@ -69,28 +67,15 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
                     .usingGeneratedKeyColumns("id");
 
             //execute the sql-statement and save the primary key
-            try {
-                int dbPrimaryKey = insertStepResults.executeAndReturnKey(stepParameters).intValue();
-                logger.info("test case step '" + step.getName()
-                        + "' has been written to 'sahi_steps' with  primaryKey=" + dbPrimaryKey);
-                step.setDbPrimaryKey(dbPrimaryKey);
-            } catch (DataAccessException e) {
-                TestCase testCase = testSuite.getTestCaseByDBKey(primaryKeyOfTestCase);
-                if (testCase != null) {
-                    exceptionHandler.handleException(e);
-                }
-                exceptionHandler.handleException(e);
-            }
+            int dbPrimaryKey = insertStepResults.executeAndReturnKey(stepParameters).intValue();
+            logger.info("test case step '" + step.getName()
+                    + "' has been written to 'sahi_steps' with  primaryKey=" + dbPrimaryKey);
+            step.setDbPrimaryKey(dbPrimaryKey);
         }
     }
 
     @Override
     public int getCountOfSahiSteps() {
-        try {
-            return this.getJdbcTemplate().queryForObject("select count(*) from sahi_steps", Integer.class);
-        } catch (DataAccessException e) {
-            exceptionHandler.handleException(e);
-        }
-        return -1;
+        return this.getJdbcTemplate().queryForObject("select count(*) from sahi_steps", Integer.class);
     }
 }

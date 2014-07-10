@@ -30,6 +30,7 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.access.BeanFactoryLocator;
 import org.springframework.beans.factory.access.BeanFactoryReference;
 import org.springframework.beans.factory.access.SingletonBeanFactoryLocator;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.Collections;
 import java.util.List;
@@ -111,9 +112,25 @@ public class BeanLoader {
         return getBeanFactoryReference().getFactory();
     }
 
+    /**
+     * Release the context and shuts the hole context down
+     */
     public static void releaseContext() {
         loadBean(SakuliPropertyPlaceholderConfigurer.class).restoreProperties();
-        getBeanFactoryReference().release();
+        BeanFactory beanFactory = getBeanFactory();
+        if (beanFactory instanceof ConfigurableApplicationContext) {
+            ((ConfigurableApplicationContext) beanFactory).close();
+        }
+    }
+
+    /**
+     * Reload the hole context
+     */
+    public static void refreshContext() {
+        BeanFactory beanFactory = getBeanFactory();
+        if (beanFactory instanceof ConfigurableApplicationContext) {
+            ((ConfigurableApplicationContext) beanFactory).refresh();
+        }
     }
 
     private static BeanFactoryReference getBeanFactoryReference() {
@@ -134,4 +151,5 @@ public class BeanLoader {
         }
         return beans != null ? beans : Collections.<String, T>emptyMap();
     }
+
 }

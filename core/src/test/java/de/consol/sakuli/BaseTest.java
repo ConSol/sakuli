@@ -63,6 +63,7 @@ public abstract class BaseTest {
         SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
+        BeanLoader.refreshContext();
         loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
         when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
     }

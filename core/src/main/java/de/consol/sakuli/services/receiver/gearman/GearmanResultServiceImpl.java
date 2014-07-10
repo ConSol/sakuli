@@ -16,27 +16,29 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.gearman;
+package de.consol.sakuli.services.receiver.gearman;
 
-import de.consol.sakuli.services.InitializingService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
+import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.services.ResultService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.FileNotFoundException;
 
 /**
  * @author tschneck
- *         Date: 09.07.14
+ *         Date: 23.05.14
  */
-@Profile("gearman")
+@ProfileGearman
 @Component
-public class GearmanInitializingServiceImpl implements InitializingService {
-    private static final Logger logger = LoggerFactory.getLogger(GearmanInitializingServiceImpl.class);
+public class GearmanResultServiceImpl implements ResultService {
+    @Autowired
+    private TestSuite testSuite;
 
     @Override
-    public void initTestSuite() throws FileNotFoundException {
-        logger.info("GEARMAN INIT");
+    public void saveAllResults() {
+        sendToNagios(testSuite);
+    }
+
+    protected void sendToNagios(TestSuite testSuite) {
+        //GearmanClient
     }
 }

@@ -19,7 +19,7 @@
 package de.consol.sakuli.services.dao.impl;
 
 import de.consol.sakuli.exceptions.SakuliException;
-import de.consol.sakuli.services.database.dao.impl.Dao;
+import de.consol.sakuli.services.receiver.database.dao.impl.Dao;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;

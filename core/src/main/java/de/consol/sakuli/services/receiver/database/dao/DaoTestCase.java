@@ -16,29 +16,23 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.gearman;
+package de.consol.sakuli.services.receiver.database.dao;
 
-import de.consol.sakuli.datamodel.TestSuite;
-import de.consol.sakuli.services.ResultService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
+import de.consol.sakuli.datamodel.TestCase;
+import de.consol.sakuli.services.receiver.database.ProfileJdbcDb;
+
+import java.io.File;
 
 /**
  * @author tschneck
- *         Date: 23.05.14
+ *         Date: 17.06.13
  */
-@Profile("gearman")
-@Component
-public class GearmanResultServiceImpl implements ResultService {
-    @Autowired
-    private TestSuite testSuite;
-    @Override
-    public void saveAllResults() {
-        sendToNagios(testSuite);
-    }
+@ProfileJdbcDb
+public interface DaoTestCase {
 
-    protected void sendToNagios(TestSuite testSuite) {
-        //GearmanClient
-    }
+    public void saveTestCaseResult(TestCase testCase);
+
+    public int getCountOfSahiCases();
+
+    public File getScreenShotFromDB(int dbPrimaryKey);
 }

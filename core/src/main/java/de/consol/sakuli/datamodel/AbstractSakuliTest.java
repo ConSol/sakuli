@@ -45,13 +45,13 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
     protected S state;
     protected String name;
     /**
-     * is initial set to -1, if the database persistence is enabled the service call {@link InitializingService#initTestSuite()}
+     * is initial set to -1, if the database receiver profile is enabled the service call {@link InitializingService#initTestSuite()}
      * should set the primary key.
      */
     protected int dbPrimaryKey = -1;
     /**
-     * needed to be set to -1, so the function {@link de.consol.sakuli.actions.TestCaseActions#addTestCaseStep(String, String, String, int)}
-     * can check if the method {@link de.consol.sakuli.actions.TestCaseActions#initWarningAndCritical(int, int)}
+     * needed to be set to -1, so the function {@link de.consol.sakuli.actions.TestCaseAction#addTestCaseStep(String, String, String, int)}
+     * can check if the method {@link de.consol.sakuli.actions.TestCaseAction#initWarningAndCritical(int, int)}
      * have been called at the beginning of this test case.
      */
     protected int warningTime = -1;

@@ -16,13 +16,12 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.database.dao.impl;
+package de.consol.sakuli.services.receiver.database.dao.impl;
 
 import de.consol.sakuli.exceptions.SakuliException;
-import de.consol.sakuli.services.database.dao.DaoTestSuite;
+import de.consol.sakuli.services.receiver.database.ProfileJdbcDb;
+import de.consol.sakuli.services.receiver.database.dao.DaoTestSuite;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.support.SqlLobValue;
@@ -38,7 +37,7 @@ import java.sql.Types;
  * @author tschneck
  *         Date: 12.07.13
  */
-@Profile("jdbc-db")
+@ProfileJdbcDb
 @Component
 public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
 
@@ -58,20 +57,15 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
         logger.info("write the following values to 'sahi_suites': "
                 + tcParameters.getValues()
                 + " ==>  now execute ....");
-        try {
-            SimpleJdbcInsert insertInitialSuiteData = new SimpleJdbcInsert(getDataSource())
-                    .withTableName("sahi_suites")
-                    .usingGeneratedKeyColumns("id");
+        SimpleJdbcInsert insertInitialSuiteData = new SimpleJdbcInsert(getDataSource())
+                .withTableName("sahi_suites")
+                .usingGeneratedKeyColumns("id");
 
-            int dbPrimaryKey = insertInitialSuiteData.executeAndReturnKey(tcParameters).intValue();
+        int dbPrimaryKey = insertInitialSuiteData.executeAndReturnKey(tcParameters).intValue();
 
-            logger.info("test suite \"" + testSuite.getId()
-                    + "\" has been written to 'sahi_suites' with  primaryKey=" + dbPrimaryKey);
-            return dbPrimaryKey;
-        } catch (DataAccessException e) {
-            exceptionHandler.handleException(e);
-        }
-        return -1;
+        logger.info("test suite \"" + testSuite.getId()
+                + "\" has been written to 'sahi_suites' with  primaryKey=" + dbPrimaryKey);
+        return dbPrimaryKey;
     }
 
     @Override
@@ -90,12 +84,8 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
                         + " where id=:id";
 
         logger.debug("SQL-Statement for update 'sahi_suites': " + sqlStatement);
-        try {
-            int affectedRows = getNamedParameterJdbcTemplate().update(sqlStatement, tcParameters);
-            logger.info("update 'sahi_suites' affected " + affectedRows + " rows");
-        } catch (DataAccessException e) {
-            exceptionHandler.handleException(e);
-        }
+        int affectedRows = getNamedParameterJdbcTemplate().update(sqlStatement, tcParameters);
+        logger.info("update 'sahi_suites' affected " + affectedRows + " rows");
     }
 
     @Override
@@ -106,14 +96,10 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
         logger.info("write the following values to 'sahi_jobs': "
                 + tcParameters.getValues()
                 + " ==>  now execute ....");
-        try {
-            SimpleJdbcInsert insertTS = new SimpleJdbcInsert(getDataSource())
-                    .withTableName("sahi_jobs")
-                    .usingGeneratedKeyColumns("id");
-            testSuite.setDbJobPrimaryKey(insertTS.executeAndReturnKey(tcParameters).intValue());
-        } catch (DataAccessException e) {
-            exceptionHandler.handleException(e);
-        }
+        SimpleJdbcInsert insertTS = new SimpleJdbcInsert(getDataSource())
+                .withTableName("sahi_jobs")
+                .usingGeneratedKeyColumns("id");
+        testSuite.setDbJobPrimaryKey(insertTS.executeAndReturnKey(tcParameters).intValue());
         logger.info("the test suite \"" + testSuite.getId() + "\""
                 + "with the guid \"" + testSuite.getGuid()
                 + "\" has been written to 'sahi_jobs' with  primaryKey=" + testSuite.getDbJobPrimaryKey());
@@ -122,12 +108,7 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
 
     @Override
     public int getCountOfSahiJobs() {
-        try {
-            return this.getJdbcTemplate().queryForObject("select count(*) from sahi_jobs", Integer.class);
-        } catch (DataAccessException e) {
-            exceptionHandler.handleException(e);
-        }
-        return -1;
+        return this.getJdbcTemplate().queryForObject("select count(*) from sahi_jobs", Integer.class);
     }
 
     private MapSqlParameterSource getInitialDataParameters() {
@@ -162,7 +143,7 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
                 tcParameters.addValue("screenshot", new SqlLobValue(blobIs, length, lobHandler), Types.BLOB);
             }
         } catch (IOException e) {
-            exceptionHandler.handleException(e);
+            throw new RuntimeException(e);
         }
         tcParameters.addValue("msg", testSuite.getExceptionMessages());
         return tcParameters;

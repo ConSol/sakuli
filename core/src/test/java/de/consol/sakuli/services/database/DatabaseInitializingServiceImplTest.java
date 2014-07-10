@@ -19,16 +19,21 @@
 package de.consol.sakuli.services.database;
 
 import de.consol.sakuli.datamodel.TestSuite;
-import de.consol.sakuli.services.database.dao.DaoTestSuite;
+import de.consol.sakuli.exceptions.SakuliExceptionHandler;
+import de.consol.sakuli.exceptions.SakuliReceiverException;
+import de.consol.sakuli.services.receiver.database.DatabaseInitializingServiceImpl;
+import de.consol.sakuli.services.receiver.database.dao.DaoTestSuite;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DataAccessException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class DatabaseInitializingServiceImplTest {
 
@@ -36,6 +41,8 @@ public class DatabaseInitializingServiceImplTest {
     private TestSuite testSuite;
     @Mock
     private DaoTestSuite daoTestSuite;
+    @Mock
+    private SakuliExceptionHandler exceptionHandler;
     @InjectMocks
     private DatabaseInitializingServiceImpl testling;
 
@@ -52,4 +59,10 @@ public class DatabaseInitializingServiceImplTest {
         verify(testSuite).setDbPrimaryKey(eq(dbKey));
     }
 
+    @Test
+    public void testSaveResultsInDatabaseHandleException() throws Exception {
+        doThrow(DataAccessException.class).when(daoTestSuite).insertInitialTestSuiteData();
+        testling.initTestSuite();
+        verify(exceptionHandler).handleException(any(SakuliReceiverException.class), anyBoolean());
+    }
 }

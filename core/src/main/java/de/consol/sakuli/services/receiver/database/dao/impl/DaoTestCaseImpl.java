@@ -16,14 +16,13 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.database.dao.impl;
+package de.consol.sakuli.services.receiver.database.dao.impl;
 
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.exceptions.SakuliException;
-import de.consol.sakuli.services.database.dao.DaoTestCase;
+import de.consol.sakuli.services.receiver.database.ProfileJdbcDb;
+import de.consol.sakuli.services.receiver.database.dao.DaoTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -48,7 +47,7 @@ import java.util.Map;
  * @author tschneck
  *         Date: 17.06.13
  */
-@Profile("jdbc-db")
+@ProfileJdbcDb
 @Component
 public class DaoTestCaseImpl extends Dao implements DaoTestCase {
 
@@ -84,7 +83,7 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
                 tcParameters.addValue("screenshot", new SqlLobValue(blobIs, length, lobHandler), Types.BLOB);
             }
         } catch (IOException e) {
-            exceptionHandler.handleException(e);
+            throw new RuntimeException(e);
         }
         tcParameters.addValue("duration", testCase.getDuration());
         tcParameters.addValue("msg", testCase.getExceptionMessages());
@@ -98,25 +97,17 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
         logger.info("write the following values to 'sahi_cases': "
                 + tcParameters.getValues()
                 + " => now execute ....");
-        try {
-            int dbPrimaryKey = insertTCResults.executeAndReturnKey(tcParameters).intValue();
+
+        int dbPrimaryKey = insertTCResults.executeAndReturnKey(tcParameters).intValue();
 
             logger.info("test case '" + testCase.getId()
                     + "' has been written to 'sahi_cases' with  primaryKey=" + dbPrimaryKey);
             testCase.setDbPrimaryKey(dbPrimaryKey);
-        } catch (DataAccessException e) {
-            exceptionHandler.handleException(e);
-        }
     }
 
     @Override
     public int getCountOfSahiCases() {
-        try {
             return this.getJdbcTemplate().queryForObject("select count(*) from sahi_cases", Integer.class);
-        } catch (DataAccessException e) {
-            exceptionHandler.handleException(e);
-        }
-        return -1;
     }
 
     @Deprecated
@@ -143,16 +134,9 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
 
             png.deleteOnExit();
             return png;
-        } catch (DataAccessException e) {
-            TestCase testCase = testSuite.getTestCaseByDBKey(dbPrimaryKey);
-            if (testCase != null) {
-                exceptionHandler.handleException(e);
-            }
-            exceptionHandler.handleException(e);
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
 }

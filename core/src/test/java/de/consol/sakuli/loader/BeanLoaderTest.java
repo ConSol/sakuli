@@ -34,6 +34,7 @@ public class BeanLoaderTest {
         SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = BaseTest.INCLUDE_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = BaseTest.SAHI_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = "loaderTest-beanRefFactory.xml";
+        BeanLoader.refreshContext();
     }
 
     @Test

@@ -16,22 +16,27 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.database.dao;
-
-import de.consol.sakuli.datamodel.TestCaseStep;
-import org.springframework.context.annotation.Profile;
-
-import java.util.List;
+package de.consol.sakuli.exceptions;
 
 /**
- * @author tschneck
- *         Date: 17.06.13
+ * Wrapper for a {@link SakuliException} thrown by the sakuli {@link de.consol.sakuli.services.receiver} services.
+ * For this kind of exception, not error screenshot is necessary
  */
-@Profile("jdbc-db")
-public interface DaoTestCaseStep {
+public class SakuliReceiverException extends SakuliException {
+    public SakuliReceiverException(String message) {
+        super(message);
+    }
 
-    public void saveTestCaseSteps(List<TestCaseStep> steps, int primaryKeyOfTestCase);
+    /**
+     * wraps a {@link Throwable}
+     *
+     * @param e
+     */
+    public SakuliReceiverException(Throwable e) {
+        super(e);
+    }
 
-    public int getCountOfSahiSteps();
-
+    public SakuliReceiverException(Throwable suppressedException, String message) {
+        super(suppressedException, message);
+    }
 }

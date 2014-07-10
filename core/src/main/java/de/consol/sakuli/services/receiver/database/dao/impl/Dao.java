@@ -16,11 +16,10 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.database.dao.impl;
+package de.consol.sakuli.services.receiver.database.dao.impl;
 
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.exceptions.SakuliException;
-import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +38,7 @@ import java.util.Map;
 
 public abstract class Dao extends NamedParameterJdbcDaoSupport {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    protected SakuliExceptionHandler exceptionHandler;
+
     @Autowired
     protected TestSuite testSuite;
     @Autowired
@@ -69,10 +67,6 @@ public abstract class Dao extends NamedParameterJdbcDaoSupport {
         }
 
         return sql.substring(0, sql.lastIndexOf(",")) + " ";
-    }
-
-    public void setExceptionHandler(SakuliExceptionHandler exceptionHandler) {
-        this.exceptionHandler = exceptionHandler;
     }
 
     public void setTestSuite(TestSuite testSuite) {

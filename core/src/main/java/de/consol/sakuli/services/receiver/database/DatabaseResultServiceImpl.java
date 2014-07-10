@@ -16,18 +16,19 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.database;
+package de.consol.sakuli.services.receiver.database;
 
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.exceptions.SakuliExceptionHandler;
+import de.consol.sakuli.exceptions.SakuliReceiverException;
 import de.consol.sakuli.services.ResultService;
-import de.consol.sakuli.services.database.dao.DaoTestCase;
-import de.consol.sakuli.services.database.dao.DaoTestCaseStep;
-import de.consol.sakuli.services.database.dao.DaoTestSuite;
+import de.consol.sakuli.services.receiver.database.dao.DaoTestCase;
+import de.consol.sakuli.services.receiver.database.dao.DaoTestCaseStep;
+import de.consol.sakuli.services.receiver.database.dao.DaoTestSuite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -35,7 +36,7 @@ import org.springframework.util.CollectionUtils;
  * @author tschneck
  *         Date: 09.07.14
  */
-@Profile("jdbc-db")
+@ProfileJdbcDb
 @Component
 public class DatabaseResultServiceImpl implements ResultService {
     private static Logger logger = LoggerFactory.getLogger(DatabaseResultServiceImpl.class);
@@ -48,26 +49,35 @@ public class DatabaseResultServiceImpl implements ResultService {
     private DaoTestSuite daoTestSuite;
     @Autowired
     private TestSuite testSuite;
+    @Autowired
+    private SakuliExceptionHandler exceptionHandler;
 
     @Override
     public void saveAllResults() {
         logger.info("try to save all results to the database");
-        daoTestSuite.saveTestSuiteResult();
-        daoTestSuite.saveTestSuiteToSahiJobs();
+        try {
+            daoTestSuite.saveTestSuiteResult();
+            daoTestSuite.saveTestSuiteToSahiJobs();
 
-        if (!CollectionUtils.isEmpty(testSuite.getTestCases())) {
-            for (TestCase tc : testSuite.getTestCases().values()) {
-                //write testcase and steps to DB
-                daoTestCase.saveTestCaseResult(tc);
+            if (!CollectionUtils.isEmpty(testSuite.getTestCases())) {
+                for (TestCase tc : testSuite.getTestCases().values()) {
+                    //write testcase and steps to DB
+                    daoTestCase.saveTestCaseResult(tc);
 
-                logger.info("... try to save all STEPS for test case '" + tc.getId() + "'!");
-                if (!CollectionUtils.isEmpty(tc.getSteps())) {
-                    daoTestCaseStep.saveTestCaseSteps(tc.getSteps(), tc.getDbPrimaryKey());
-                    logger.info("all STEPS for '" + tc.getId() + "' saved!");
-                } else {
-                    logger.info("no STEPS for '\" + tc.getId() +\"'found => no STEPS saved in DB!");
+                    logger.info("... try to save all STEPS for test case '" + tc.getId() + "'!");
+                    if (!CollectionUtils.isEmpty(tc.getSteps())) {
+                        daoTestCaseStep.saveTestCaseSteps(tc.getSteps(), tc.getDbPrimaryKey());
+                        logger.info("all STEPS for '" + tc.getId() + "' saved!");
+                    } else {
+                        logger.info("no STEPS for '\" + tc.getId() +\"'found => no STEPS saved in DB!");
+                    }
                 }
             }
+        } catch (Throwable e) {
+            exceptionHandler.handleException(
+                    new SakuliReceiverException(e,
+                            String.format("error by saving the results to the database [%s]", testSuite.toString())),
+                    true);
         }
     }
 }

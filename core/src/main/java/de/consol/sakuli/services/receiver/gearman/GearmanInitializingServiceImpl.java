@@ -16,36 +16,26 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.database;
+package de.consol.sakuli.services.receiver.gearman;
 
-import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.services.InitializingService;
-import de.consol.sakuli.services.common.CommonInitializingServiceImpl;
-import de.consol.sakuli.services.database.dao.DaoTestSuite;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 
 /**
- * Additional initializing actions for the database based result saving.
- * The {@link CommonInitializingServiceImpl#initTestSuite()} will be also called.
- *
  * @author tschneck
  *         Date: 09.07.14
  */
-@Profile("jdbc-db")
+@ProfileGearman
 @Component
-public class DatabaseInitializingServiceImpl implements InitializingService {
-    @Autowired
-    private TestSuite testSuite;
-    @Autowired
-    private DaoTestSuite daoTestSuite;
+public class GearmanInitializingServiceImpl implements InitializingService {
+    private static final Logger logger = LoggerFactory.getLogger(GearmanInitializingServiceImpl.class);
 
     @Override
     public void initTestSuite() throws FileNotFoundException {
-        testSuite.setDbPrimaryKey(daoTestSuite.insertInitialTestSuiteData());
+        logger.info("GEARMAN INIT");
     }
-
 }

@@ -21,12 +21,16 @@ package de.consol.sakuli.services.database;
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestCaseStep;
 import de.consol.sakuli.datamodel.TestSuite;
-import de.consol.sakuli.services.database.dao.DaoTestCase;
-import de.consol.sakuli.services.database.dao.DaoTestCaseStep;
-import de.consol.sakuli.services.database.dao.DaoTestSuite;
+import de.consol.sakuli.exceptions.SakuliExceptionHandler;
+import de.consol.sakuli.exceptions.SakuliReceiverException;
+import de.consol.sakuli.services.receiver.database.DatabaseResultServiceImpl;
+import de.consol.sakuli.services.receiver.database.dao.DaoTestCase;
+import de.consol.sakuli.services.receiver.database.dao.DaoTestCaseStep;
+import de.consol.sakuli.services.receiver.database.dao.DaoTestSuite;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DataAccessException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -35,6 +39,7 @@ import java.util.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.*;
 
 public class DatabaseResultServiceImplTest {
@@ -47,6 +52,8 @@ public class DatabaseResultServiceImplTest {
     private DaoTestSuite daoTestSuite;
     @Mock
     private TestSuite testSuite;
+    @Mock
+    private SakuliExceptionHandler exceptionHandler;
     @InjectMocks
     private DatabaseResultServiceImpl testling;
 
@@ -63,6 +70,13 @@ public class DatabaseResultServiceImplTest {
         verify(daoTestSuite).saveTestSuiteToSahiJobs();
         verify(daoTestCase, never()).saveTestCaseResult(any(TestCase.class));
         verify(daoTestCaseStep, never()).saveTestCaseSteps(anyListOf(TestCaseStep.class), anyInt());
+    }
+
+    @Test
+    public void testSaveResultsInDatabaseHandleException() throws Exception {
+        doThrow(DataAccessException.class).when(daoTestSuite).saveTestSuiteResult();
+        testling.saveAllResults();
+        verify(exceptionHandler).handleException(any(SakuliReceiverException.class), anyBoolean());
     }
 
     @Test

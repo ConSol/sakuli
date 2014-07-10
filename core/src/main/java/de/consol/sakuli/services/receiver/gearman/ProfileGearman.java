@@ -16,23 +16,15 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.database.dao;
+package de.consol.sakuli.services.receiver.gearman;
 
-import de.consol.sakuli.datamodel.TestCase;
+import de.consol.sakuli.utils.SpringProfilesInitializer;
 import org.springframework.context.annotation.Profile;
-
-import java.io.File;
 
 /**
  * @author tschneck
- *         Date: 17.06.13
+ *         Date: 09.07.14
  */
-@Profile("jdbc-db")
-public interface DaoTestCase {
-
-    public void saveTestCaseResult(TestCase testCase);
-
-    public int getCountOfSahiCases();
-
-    public File getScreenShotFromDB(int dbPrimaryKey);
+@Profile(SpringProfilesInitializer.GEARMAN)
+public @interface ProfileGearman {
 }

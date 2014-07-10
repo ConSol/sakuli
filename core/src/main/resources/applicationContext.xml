@@ -46,9 +46,7 @@
         <property name="systemPropertiesMode" value="2"/>
     </bean>
 
-    <!--<bean class="de.consol.sakuli.utils.SakuliContextInitializer"/>-->
-
-    <beans profile="jdbc-db">
+    <beans profile="JDBC_DB">
         <!-- Definiert die DataSource -->
         <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
             <property name="driverClassName" value="${jdbc.driverClass}"/>

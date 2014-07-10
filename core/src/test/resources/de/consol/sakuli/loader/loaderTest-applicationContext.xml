@@ -27,6 +27,7 @@
     <context:component-scan base-package="de.consol.sakuli.loader"/>
 
     <bean class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
+    <bean class="de.consol.sakuli.datamodel.properties.ReceiverProperties"/>
     <bean class="de.consol.sakuli.datamodel.properties.ActionProperties"/>
 
     <bean id="propertyResolver"
@@ -49,7 +50,15 @@
         </constructor-arg>
     </bean>
     <bean id="de.consol.sakuli.dao.DaoTestSuite " class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.services.database.dao.DaoTestSuite ">
+        <constructor-arg value="de.consol.sakuli.services.receiver.database.dao.DaoTestSuite ">
+        </constructor-arg>
+    </bean>
+    <bean id="de.consol.sakuli.dao.DaoTestCase " class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.services.receiver.database.dao.DaoTestCase ">
+        </constructor-arg>
+    </bean>
+    <bean id="de.consol.sakuli.dao.DaoTestCaseStep " class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.services.receiver.database.dao.DaoTestCaseStep ">
         </constructor-arg>
     </bean>
     <bean id="de.consol.sakuli.exceptions.SakuliExceptionHandler" class="de.consol.sakuli.MockitoFactoryBean">
@@ -68,5 +77,14 @@
         <constructor-arg value="de.consol.sakuli.datamodel.actions.Screen">
         </constructor-arg>
     </bean>
+
+    <!-- test beans for testing SpringProfilesInitializer -->
+    <!--<bean class="de.consol.sakuli.utils.SpringProfilesInitializer" />-->
+    <beans profile="JDBC_DB">
+        <bean class="de.consol.sakuli.services.receiver.database.DatabaseResultServiceImpl"/>
+    </beans>
+    <beans profile="GEARMAN">
+        <bean class="de.consol.sakuli.services.receiver.gearman.GearmanResultServiceImpl"/>
+    </beans>
 
 </beans>

@@ -16,15 +16,15 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.database.dao;
+package de.consol.sakuli.services.receiver.database.dao;
 
-import org.springframework.context.annotation.Profile;
+import de.consol.sakuli.services.receiver.database.ProfileJdbcDb;
 
 /**
  * @author tschneck
  *         Date: 17.06.13
  */
-@Profile("jdbc-db")
+@ProfileJdbcDb
 public interface DaoTestSuite {
 
 
