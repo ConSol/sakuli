@@ -68,8 +68,8 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
         tcParameters.addValue("result_desc", testCase.getState());
         tcParameters.addValue("name", testCase.getName());
         tcParameters.addValue("guid", testSuite.getGuid());
-        tcParameters.addValue("start", testCase.getStartDateTimeString());
-        tcParameters.addValue("stop", testCase.getStopDateTimeString());
+        tcParameters.addValue("start", testCase.getStartDateAsUnixTimestamp());
+        tcParameters.addValue("stop", testCase.getStopDateAsUnixTimestamp());
         tcParameters.addValue("warning", testCase.getWarningTime());
         tcParameters.addValue("critical", testCase.getCriticalTime());
         tcParameters.addValue("browser", testSuite.getBrowserInfo());

@@ -18,7 +18,7 @@
 
 package de.consol.sakuli.datamodel;
 
-import de.consol.sakuli.datamodel.state.SakuliStateInterface;
+import de.consol.sakuli.datamodel.state.SakuliState;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliExceptionWithScreenshot;
 import de.consol.sakuli.services.InitializingService;
@@ -34,7 +34,7 @@ import java.util.Date;
  * @author tschneck
  *         Date: 12.07.13
  */
-public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliStateInterface> implements Comparable<AbstractSakuliTest> {
+public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliState> implements Comparable<AbstractSakuliTest> {
 
     public final static DateFormat GUID_DATE_FORMATE = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss_SS");
     public final static DateFormat PRINT_DATE_FORMATE = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
@@ -63,7 +63,7 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
      * @param date regular {@link Date} object
      * @return UNIX-Time formatted String
      */
-    protected String createDateTimeString(Date date) {
+    protected String createUnixTimestamp(Date date) {
         if (date == null) {
             return "-1";
         } else {
@@ -101,12 +101,12 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
         this.stopDate = stopDate;
     }
 
-    public String getStartDateTimeString() {
-        return createDateTimeString(startDate);
+    public String getStartDateAsUnixTimestamp() {
+        return createUnixTimestamp(startDate);
     }
 
-    public String getStopDateTimeString() {
-        return createDateTimeString(stopDate);
+    public String getStopDateAsUnixTimestamp() {
+        return createUnixTimestamp(stopDate);
     }
 
     public void addException(E e) {

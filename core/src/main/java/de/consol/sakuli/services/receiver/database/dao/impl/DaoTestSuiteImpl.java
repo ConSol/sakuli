@@ -120,7 +120,7 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
         tcParameters.addValue("name", testSuite.getName());
         tcParameters.addValue("browser", testSuite.getBrowserInfo());
         tcParameters.addValue("host", testSuite.getHost());
-        tcParameters.addValue("start", testSuite.getStartDateTimeString());
+        tcParameters.addValue("start", testSuite.getStartDateAsUnixTimestamp());
         return tcParameters;
     }
 
@@ -131,7 +131,7 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
     private MapSqlParameterSource getCompleteParameters() {
         MapSqlParameterSource tcParameters = getInitialDataParameters();
         tcParameters.addValues(getGuidParameter().getValues());
-        tcParameters.addValue("stop", testSuite.getStopDateTimeString());
+        tcParameters.addValue("stop", testSuite.getStopDateAsUnixTimestamp());
         tcParameters.addValue("warning", testSuite.getWarningTime());
         tcParameters.addValue("critical", testSuite.getCriticalTime());
         tcParameters.addValue("duration", testSuite.getDuration());

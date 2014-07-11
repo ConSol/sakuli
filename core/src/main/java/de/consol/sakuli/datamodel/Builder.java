@@ -16,18 +16,19 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.datamodel.state;
+package de.consol.sakuli.datamodel;
 
 /**
- * common abstract class for all different sakuli states
+ * Marker interface for all builders.
+ *
+ * @author tschneck
+ *         Date: 10.07.14
  */
-public interface SakuliStateInterface {
+public interface Builder<T> {
 
     /**
-     * returns int value of an error state
-     *
-     * @return error code
+     * @return the built object of type T
      */
-    int getErrorCode();
+    T build();
 
 }

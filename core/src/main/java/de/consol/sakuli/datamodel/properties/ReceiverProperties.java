@@ -28,8 +28,8 @@ import org.springframework.stereotype.Component;
 public class ReceiverProperties extends AbstractProperties {
 
     public static final String DATABASE_ENABLED = "sakuli.receiver.database.enabled";
-    protected static final boolean DATABASE_ENABLED_DEFAULT = false;
     public static final String GEARMAN_ENABLED = "sakuli.receiver.gearman.enabled";
+    protected static final boolean DATABASE_ENABLED_DEFAULT = false;
     protected static final boolean GEARMAN_ENABLED_DEFAULT = false;
 
     @Value("${" + DATABASE_ENABLED + ":" + DATABASE_ENABLED_DEFAULT + "}")

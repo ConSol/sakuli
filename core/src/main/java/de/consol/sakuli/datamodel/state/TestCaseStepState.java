@@ -24,24 +24,44 @@ package de.consol.sakuli.datamodel.state;
  * @author tschneck
  *         Date: 21.06.13
  */
-public enum TestCaseStepState implements SakuliStateInterface {
+public enum TestCaseStepState implements SakuliState {
     /**
      * value = 0
      */
-    OK(0),
+    OK(0, "ok"),
 
     /**
      * value = 1
      */
-    WARNING(1);
+    WARNING(1, "warning");
 
     private final int errorCode;
+    private final String stateDescription;
 
-    private TestCaseStepState(int i) {
+    private TestCaseStepState(int i, String stateDescription) {
         this.errorCode = i;
+        this.stateDescription = stateDescription;
     }
 
     public int getErrorCode() {
         return errorCode;
     }
+
+    @Override
+    public int getNagiosErrorCode() {
+        switch (this) {
+            case OK:
+                return 0;
+            case WARNING:
+                return 1;
+        }
+        return 3;
+    }
+
+    @Override
+    public String getNagiosStateDescription() {
+        return stateDescription;
+    }
+
+
 }

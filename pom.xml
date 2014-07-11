@@ -355,11 +355,22 @@
     </dependencies>
 
     <repositories>
+        <!-- ConSol Labs repository holds Sahi and SikuliX dependencies -->
         <repository>
-            <!-- ConSol Labs repository holds Sahi and SikuliX dependencies -->
             <id>labs-consol</id>
             <name>ConSol* Labs Repository</name>
             <url>http://labs.consol.de/maven/repository</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <!-- sonatype for gearman dependencies -->
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/groups/public</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>

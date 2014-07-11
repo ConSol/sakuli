@@ -52,8 +52,8 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
             stepParameters.addValue("result", step.getState().getErrorCode());
             stepParameters.addValue("result_desc", step.getState());
             stepParameters.addValue("name", step.getName());
-            stepParameters.addValue("start", step.getStartDateTimeString());
-            stepParameters.addValue("stop", step.getStopDateTimeString());
+            stepParameters.addValue("start", step.getStartDateAsUnixTimestamp());
+            stepParameters.addValue("stop", step.getStopDateAsUnixTimestamp());
             stepParameters.addValue("warning", step.getWarningTime());
             stepParameters.addValue("duration", step.getDuration());
 
