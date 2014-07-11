@@ -18,7 +18,6 @@
 
 package de.consol.sakuli.services.receiver.gearman;
 
-import de.consol.sakuli.datamodel.properties.ReceiverProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +27,7 @@ import org.springframework.stereotype.Component;
  */
 @ProfileGearman
 @Component
-public class GearmanProperties extends ReceiverProperties {
+public class GearmanProperties {
     public static final String SERVICE_TYPE_DEFAULT = "passive";
     private String serviceType = SERVICE_TYPE_DEFAULT;
     public static final String SERVER_QUEUE_DEFAULT = "check_results";
