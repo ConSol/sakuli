@@ -36,6 +36,8 @@ public class GearmanProperties {
     public static final String SERVER_HOST = "sakuli.receiver.gearman.server.host";
     public static final String SERVER_PORT = "sakuli.receiver.gearman.server.port";
     public static final String NAGIOS_HOSTNAME = "sakuli.receiver.gearman.nagios.hostname";
+    public static final String NAGIOS_CHECK_COMMAND = "sakuli.receiver.gearman.nagios.check_command";
+    public static final String NAGIOS_CHECK_COMMAND_DEFAULT = "check_sakuli_db_suite";
     public static final String NAGIOS_OUTPUT_SUITE_SUMMARY = "sakuli.receiver.gearman.nagios.output.suite.summary";
     public static final String NAGIOS_OUTPUT_SUITE_TABLE = "sakuli.receiver.gearman.nagios.output.suite.table";
     public static final String NAGIOS_OUTPUT_CASE_OK = "sakuli.receiver.gearman.nagios.output.case.ok";
@@ -57,6 +59,8 @@ public class GearmanProperties {
     private int serverPort;
     @Value("${" + NAGIOS_HOSTNAME + ":null}")
     private String nagiosHost;
+    @Value("${" + NAGIOS_CHECK_COMMAND + ":" + NAGIOS_CHECK_COMMAND_DEFAULT + "}")
+    private String nagiosCheckCommand;
     @Value("${" + NAGIOS_OUTPUT_SUITE_SUMMARY + ":" + NAGIOS_OUTPUT_SUITE_SUMMARY_DEFAULT + "}")
     private String outputSuiteSummary;
     @Value("${" + NAGIOS_OUTPUT_SUITE_TABLE + ":" + NAGIOS_OUTPUT_SUITE_TABLE_DEFAULT + "}")
@@ -70,7 +74,6 @@ public class GearmanProperties {
     @Value("${" + NAGIOS_OUTPUT_CASE_ERROR + ":" + NAGIOS_OUTPUT_CASE_ERROR_DEFAULT + "}")
     private String outputCaseError;
 
-    //TODO add checkresult
     //TODO write test with context
     public String getServiceType() {
         return serviceType;
@@ -158,6 +161,14 @@ public class GearmanProperties {
 
     public void setOutputCaseWarning(String outputCaseWarning) {
         this.outputCaseWarning = outputCaseWarning;
+    }
+
+    public String getNagiosCheckCommand() {
+        return nagiosCheckCommand;
+    }
+
+    public void setNagiosCheckCommand(String nagiosCheckCommand) {
+        this.nagiosCheckCommand = nagiosCheckCommand;
     }
 
     public String lookUpOutputString(TestCaseState state) {

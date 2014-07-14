@@ -72,8 +72,8 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
             state = TestCaseState.ERRORS;
         } else {
             boolean stepWarning = false;
-            if (getSteps() != null) {
-                for (TestCaseStep step : getSteps()) {
+            if (steps != null) {
+                for (TestCaseStep step : steps) {
                     step.refreshState();
                     if (TestCaseStepState.WARNING.equals(step.getState())) {
                         stepWarning = true;

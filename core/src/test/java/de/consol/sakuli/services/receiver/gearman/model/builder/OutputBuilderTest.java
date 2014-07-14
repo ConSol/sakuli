@@ -38,9 +38,10 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import static de.consol.sakuli.services.receiver.gearman.TextPlaceholder.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 
 public class OutputBuilderTest {
@@ -61,6 +62,26 @@ public class OutputBuilderTest {
         };
     }
 
+    @DataProvider(name = "performanceDataRows")
+    public static Object[][] performanceDataRows() {
+        return new Object[][]{
+                {null, "name with space", null, null, null, "name_with_space=;;;;"},
+                {"name_with_space=;;;;", " second_name ", "0", "", "", "name_with_space=;;;; second_name=0;;;;"},
+                {" ", " warnIng ", " 15s ", " 10.5s ", " 11.0s ", "warnIng=15s;10.5s;11.0s;;"},
+                {"nam1=;;;; nam2=;;;;", "nam3", "0", "", "", "nam1=;;;; nam2=;;;; nam3=0;;;;"},
+        };
+
+    }
+
+    @DataProvider(name = "performanceDataRowsNonOverview")
+    public static Object[][] performanceDataRowsNonOverview() {
+        return new Object[][]{
+                {null, "name with space", 0f, 0, 0, "name_with_space=0.00s;;;;"},
+                {"name_with_space=;;;;", " second_name ", 12.5f, 10, 14, "name_with_space=;;;; second_name=12.50s;10;14;;"},
+        };
+
+    }
+
     @BeforeMethod
     public void setUp() throws Exception {
         testling = new OutputBuilder();
@@ -79,6 +100,80 @@ public class OutputBuilderTest {
         assertEquals(OutputBuilder.replacePlaceHolder(testMessage, map), expectedMesaage);
     }
 
+    @Test(dataProvider = "performanceDataRows")
+    public void testAddPerformanceDataRow(String currentPerformanceData, String name, String value, String warning, String critical, String expectedData) throws Exception {
+        assertEquals(OutputBuilder.addPerformanceDataRow(currentPerformanceData, name, value, warning, critical), expectedData);
+    }
+
+    @Test(dataProvider = "performanceDataRowsNonOverview")
+    public void testAddPerformanceDataRow(String currentPerformanceData, String name, float duration, int warning, int critical, String expectedData) throws Exception {
+        assertEquals(OutputBuilder.addPerformanceDataRow(currentPerformanceData, name, duration, warning, critical), expectedData);
+    }
+
+    @Test
+    public void testBuild() throws Exception {
+        testling = spy(new OutputBuilder());
+        TestSuite testSuite = mock(TestSuite.class);
+        GearmanProperties gearmanProperties = mock(GearmanProperties.class);
+        doReturn("STATUS").when(testling).getStatusSummary(testSuite, gearmanProperties);
+        doReturn("PERFORMANCE").when(testling).getPerformanceData(testSuite);
+
+        NagiosOutput result = testling.withTestSuite(testSuite, gearmanProperties).build();
+        assertEquals(result.getStatusSummary(), "STATUS");
+        assertEquals(result.getPerformanceData(), "PERFORMANCE");
+    }
+
+    @Test
+    public void testGetPerformanceData() throws Exception {
+        Date startDate = new GregorianCalendar(2014, 14, 7, 13, 0).getTime();
+        TestSuite testSuiteExample = new TestSuiteExampleBuilder()
+                .withId("sakuli-123")
+                .withStartDate(startDate)
+                .withStopDate(DateUtils.addSeconds(startDate, 120))
+                .withWarningTime(100)
+                .withCriticalTime(150)
+                .withTestCases(Arrays.asList(
+                        new TestCaseExampleBuilder().withState(TestCaseState.WARNING_IN_STEP)
+                                .withId("case-warning")
+                                .withStartDate(startDate)
+                                .withStopDate(DateUtils.addSeconds(startDate, 20))
+                                .withWarningTime(19)
+                                .withCriticalTime(25)
+                                .withTestCaseSteps(Arrays.asList(new TestCaseStepExampleBuilder()
+                                                .withName("step1")
+                                                .withState(TestCaseStepState.WARNING)
+                                                .withStartDate(startDate)
+                                                .withStopDate(DateUtils.addSeconds(startDate, 10))
+                                                .withWarningTime(9)
+                                                .buildExample(),
+                                        new TestCaseStepExampleBuilder()
+                                                .withName("step2")
+                                                .withState(TestCaseStepState.OK)
+                                                .withStartDate(DateUtils.addSeconds(startDate, 11))
+                                                .withStopDate(DateUtils.addSeconds(startDate, 19))
+                                                .withWarningTime(10)
+                                                .buildExample()))
+                                .buildExample(),
+                        new TestCaseExampleBuilder().withState(TestCaseState.OK)
+                                .withId("case with no steps")
+                                .withStartDate(DateUtils.addSeconds(startDate, 25))
+                                .withStopDate(DateUtils.addSeconds(startDate, 40))
+                                .withWarningTime(0)
+                                .withCriticalTime(0)
+                                .withTestCaseSteps(null)
+                                .buildExample()))
+                .buildExample();
+        testSuiteExample.refreshState();
+
+        assertEquals(testling.getPerformanceData(testSuiteExample), "suite__state=1;;;; " +
+                "suite_sakuli-123=120.00s;100;150;; " +
+                "c_1__state_case-warning=1;;;; " +
+                "c_1_case-warning=20.00s;19;25;; " +
+                "s_1_1_step1=10.00s;9;;; " +
+                "s_1_2_step2=8.00s;10;;; " +
+                "c_2__state_case_with_no_steps=0;;;; " +
+                "c_2_case_with_no_steps=15.00s;;;;");
+    }
 
     @Test
     public void testFormatTestSuiteStateMessageUnknown() throws Exception {

@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 public class GearmanPropertiesTestHelper {
 
     public static GearmanProperties initMock(GearmanProperties mock) {
+        when(mock.getNagiosCheckCommand()).thenReturn(GearmanProperties.NAGIOS_CHECK_COMMAND_DEFAULT);
         when(mock.getOutputSuiteSummary()).thenReturn(GearmanProperties.NAGIOS_OUTPUT_SUITE_SUMMARY_DEFAULT);
         when(mock.getOutputSuiteTable()).thenReturn(GearmanProperties.NAGIOS_OUTPUT_SUITE_TABLE_DEFAULT);
         when(mock.lookUpOutputString(TestCaseState.OK)).thenReturn(GearmanProperties.NAGIOS_OUTPUT_CASE_OK_DEFAULT);

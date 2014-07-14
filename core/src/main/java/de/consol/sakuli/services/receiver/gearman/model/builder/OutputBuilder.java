@@ -51,6 +51,10 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     private static final String TABLE_FOOTER = "</table>";
     private static final String TABLE_ROW_HEADER = "<tr valign=\"top\"><td class=\"{{TD_CSS_CLASS}}\">";
     private static final String TABLE_ROW_FOOTER = "</td></tr>";
+    /**
+     * name = value; warning; critical
+     */
+    private static final String PERFORMANCE_DATA_TEMPLATE = "%s=%s;%s;%s;;";
     private static Logger logger = LoggerFactory.getLogger(OutputBuilder.class);
     private String statusSummary;
     private String performanceData;
@@ -69,6 +73,37 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         return modifiedString;
     }
 
+    /**
+     * Add to the assigned 'performanceData' a new data set in respect of the template {@link #PERFORMANCE_DATA_TEMPLATE}.
+     */
+    public static String addPerformanceDataRow(String performanceData, String name, String value, String warning, String critical) {
+        performanceData = (performanceData == null) ? "" : performanceData;
+        name = (name == null) ? "" : StringUtils.replace(name.trim(), " ", "_");
+        value = (value == null) ? "" : value.trim();
+        warning = (warning == null) ? "" : warning.trim();
+        critical = (critical == null) ? "" : critical.trim();
+
+        //format string and remove not needed spaces at beginn and ending
+        return performanceData.concat(" ").concat(String.format(PERFORMANCE_DATA_TEMPLATE, name, value, warning, critical)).trim();
+    }
+
+    /**
+     * Small wrapper for non overview data for the {@link #addPerformanceDataRow(String, String, String, String, String)}
+     */
+    public static String addPerformanceDataRow(String performanceData, String name, float duration, int warningTime, int criticalTime) {
+        String warningTimeString = (warningTime == 0) ? "" : String.valueOf(warningTime);
+        String criticalTimeString = (criticalTime == 0) ? "" : String.valueOf(criticalTime);
+        return addPerformanceDataRow(performanceData, name, formatToSec(duration), warningTimeString, criticalTimeString);
+    }
+
+    public static String formatToSec(float duration) {
+        return String.format(Locale.ENGLISH, "%.2fs", duration);
+    }
+
+    public static String formatToSec(int duration) {
+        return duration + "s";
+    }
+
     @Override
     public NagiosOutput build() {
         NagiosOutput output = new NagiosOutput();
@@ -79,14 +114,43 @@ public class OutputBuilder implements Builder<NagiosOutput> {
 
     public OutputBuilder withTestSuite(TestSuite testSuite, GearmanProperties properties) {
         statusSummary = getStatusSummary(testSuite, properties);
-        performanceData = getPerformanceData(testSuite);
+        performanceData = getPerformanceData(testSuite) + " [" + properties.getNagiosCheckCommand() + "]";
         return this;
     }
 
+    /**
+     * Generates the performance data for the nagios server as an {@link String}.
+     *
+     * @param testSuite finshed {@link TestSuite}
+     * @return formatted payload string
+     */
     protected String getPerformanceData(TestSuite testSuite) {
-        return "s_1_1_notepad=12.22s;20;;; s_1_2_project=17.89s;20;;; s_1_3_print_test_client=7.89s;10;;; s_1_4_open_calc=3.01s;5;;; s_1_5_calculate_525_+100=9.95s;20;;; c_1_demo_win7=52.95s;60;70;; c_1state=0;;;; suite_state=0;;;; suite_runtime_sakuli_demo=64.10s;120;140;;";
+        OutputState outputState = OutputState.lookupSakuliState(testSuite.getState());
+        String data = "";
+        data = addPerformanceDataRow(data, "suite__state", String.valueOf(outputState.getErrorCode()), null, null);
+        data = addPerformanceDataRow(data, "suite_" + testSuite.getId(), testSuite.getDuration(), testSuite.getWarningTime(), testSuite.getCriticalTime());
+
+        int i = 1;
+        for (TestCase tc : testSuite.getTestCasesAsSortedSet()) {
+            OutputState tcOutputState = OutputState.lookupSakuliState(tc.getState());
+            data = addPerformanceDataRow(data, "c_" + i + "__state_" + tc.getId(), String.valueOf(tcOutputState.getErrorCode()), null, null);
+            data = addPerformanceDataRow(data, "c_" + i + "_" + tc.getId(), tc.getDuration(), tc.getWarningTime(), tc.getCriticalTime());
+            int j = 1;
+            for (TestCaseStep step : tc.getStepsAsSortedSet()) {
+                data = addPerformanceDataRow(data, "s_" + i + "_" + j + "_" + step.getId(), step.getDuration(), step.getWarningTime(), 0);
+                j++;
+            }
+            i++;
+        }
+        return data;
     }
 
+    /**
+     * Generates the displayed overview data for the nagios server as an {@link String}.
+     *
+     * @param testSuite finshed {@link TestSuite}
+     * @return formatted payload string
+     */
     protected String getStatusSummary(TestSuite testSuite, GearmanProperties properties) {
         OutputState outputState = OutputState.lookupSakuliState(testSuite.getState());
         StringBuilder sb = new StringBuilder();
@@ -156,10 +220,10 @@ public class OutputBuilder implements Builder<NagiosOutput> {
                 sb.append("step \"")
                         .append(step.getName())
                         .append("\" (")
-                        .append(String.format(Locale.ENGLISH, "%.2f", step.getDuration()))
-                        .append("s /warn at ")
-                        .append(step.getWarningTime())
-                        .append("s)");
+                        .append(formatToSec(step.getDuration()))
+                        .append(" /warn at ")
+                        .append(formatToSec(step.getWarningTime()))
+                        .append(")");
             }
             if (it.hasNext()) {
                 sb.append(", ");

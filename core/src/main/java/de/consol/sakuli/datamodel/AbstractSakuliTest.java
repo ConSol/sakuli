@@ -80,7 +80,8 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
      */
     public float getDuration() {
         try {
-            return (float) ((stopDate.getTime() - startDate.getTime()) / 1000.0);
+            float result = (float) ((stopDate.getTime() - startDate.getTime()) / 1000.0);
+            return (result < 0) ? -1 : result;
         } catch (NullPointerException e) {
             return -1;
         }

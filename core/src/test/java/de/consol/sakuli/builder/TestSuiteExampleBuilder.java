@@ -41,6 +41,8 @@ public class TestSuiteExampleBuilder implements ExampleBuilder<TestSuite> {
     private Date startDate;
     private SakuliException exception;
     private List<TestCase> testCases;
+    private int warningTime;
+    private int criticalTime;
 
 
     public TestSuiteExampleBuilder() {
@@ -50,6 +52,8 @@ public class TestSuiteExampleBuilder implements ExampleBuilder<TestSuite> {
         this.stopDate = DateUtils.addMinutes(new Date(), 2);
         this.startDate = new Date();
         this.testCases = Arrays.asList(new TestCaseExampleBuilder().buildExample());
+        this.warningTime = 0;
+        this.criticalTime = 0;
     }
 
     public TestSuite buildExample() {
@@ -58,8 +62,8 @@ public class TestSuiteExampleBuilder implements ExampleBuilder<TestSuite> {
         testSuite.setId(id);
         testSuite.setStartDate(startDate);
         testSuite.setStopDate(stopDate);
-        testSuite.setWarningTime(0);
-        testSuite.setCriticalTime(0);
+        testSuite.setWarningTime(warningTime);
+        testSuite.setCriticalTime(criticalTime);
         testSuite.setState(state);
         testSuite.setHost(host);
         testSuite.setBrowserInfo("Firefox Test Browser");
@@ -102,6 +106,16 @@ public class TestSuiteExampleBuilder implements ExampleBuilder<TestSuite> {
 
     public TestSuiteExampleBuilder withTestCases(List<TestCase> testCases) {
         this.testCases = testCases;
+        return this;
+    }
+
+    public TestSuiteExampleBuilder withWarningTime(int warningTime) {
+        this.warningTime = warningTime;
+        return this;
+    }
+
+    public TestSuiteExampleBuilder withCriticalTime(int criticalTime) {
+        this.criticalTime = criticalTime;
         return this;
     }
 }
