@@ -115,12 +115,13 @@ public class OutputBuilderTest {
         testling = spy(new OutputBuilder());
         TestSuite testSuite = mock(TestSuite.class);
         GearmanProperties gearmanProperties = mock(GearmanProperties.class);
+        GearmanPropertiesTestHelper.initMock(gearmanProperties);
         doReturn("STATUS").when(testling).getStatusSummary(testSuite, gearmanProperties);
         doReturn("PERFORMANCE").when(testling).getPerformanceData(testSuite);
 
         NagiosOutput result = testling.withTestSuite(testSuite, gearmanProperties).build();
         assertEquals(result.getStatusSummary(), "STATUS");
-        assertEquals(result.getPerformanceData(), "PERFORMANCE");
+        assertEquals(result.getPerformanceData(), "PERFORMANCE [check_sakuli_db_suite]");
     }
 
     @Test
