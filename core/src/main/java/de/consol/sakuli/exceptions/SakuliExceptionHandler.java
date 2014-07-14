@@ -25,6 +25,7 @@ import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.LogResult;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import net.sf.sahi.report.ResultType;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +48,21 @@ public class SakuliExceptionHandler {
     @Autowired
     private ScreenActionLoader loader;
 
-    public static String getAllExceptionMessages(Throwable e) {
+    public static String getAllExceptionMessages(Throwable e, boolean flatFormatted) {
         if (e != null) {
             String msg = format(e.getMessage());
             //add suppressed exceptions
             for (Throwable ee : e.getSuppressed()) {
-                msg += "\n\t\t Suppressed EXCEPTION: " + format(ee.getMessage());
+                if (flatFormatted) {
+                    msg += " --  Suppressed EXCEPTION: " + format(ee.getMessage());
+                } else {
+                    msg += "\n\t\t Suppressed EXCEPTION: " + format(ee.getMessage());
+                }
+            }
+            if (flatFormatted) {
+                msg = StringUtils.replace(msg, "\n", " ");
+                msg = StringUtils.replace(msg, "\t", " ");
+                return msg;
             }
             return msg;
         } else {

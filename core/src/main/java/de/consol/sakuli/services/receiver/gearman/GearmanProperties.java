@@ -18,6 +18,7 @@
 
 package de.consol.sakuli.services.receiver.gearman;
 
+import de.consol.sakuli.datamodel.state.TestCaseState;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -35,12 +36,18 @@ public class GearmanProperties {
     public static final String SERVER_HOST = "sakuli.receiver.gearman.server.host";
     public static final String SERVER_PORT = "sakuli.receiver.gearman.server.port";
     public static final String NAGIOS_HOSTNAME = "sakuli.receiver.gearman.nagios.hostname";
-    public static final String NAGIOS_OUTPUT_SUITE = "sakuli.receiver.gearman.nagios.output.suite";
-    public static final String NAGIOS_OUTPUT_CASE = "sakuli.receiver.gearman.nagios.output.case";
-    public static final String NAGIOS_OUTPUT_STEP = "sakuli.receiver.gearman.nagios.output.step";
-    public static final String NAGIOS_OUTPUT_SUITE_DEFAULT = "{{state}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds, {{state_description}}. (Last suite run: {{last_run}})";
-    public static final String NAGIOS_OUTPUT_CASE_DEFAULT = "{{state}} case \"{{id}}\" ran in {{duration}}s ({{state_description}})";
-    public static final String NAGIOS_OUTPUT_STEP_DEFAULT = "{{state}} step \"{{id}}\" ran in {{duration}}s ({{state_description}})";
+    public static final String NAGIOS_OUTPUT_SUITE_SUMMARY = "sakuli.receiver.gearman.nagios.output.suite.summary";
+    public static final String NAGIOS_OUTPUT_SUITE_TABLE = "sakuli.receiver.gearman.nagios.output.suite.table";
+    public static final String NAGIOS_OUTPUT_CASE_OK = "sakuli.receiver.gearman.nagios.output.case.ok";
+    public static final String NAGIOS_OUTPUT_CASE_WARNING = "sakuli.receiver.gearman.nagios.output.case.warning";
+    public static final String NAGIOS_OUTPUT_CASE_CRITICAL = "sakuli.receiver.gearman.nagios.output.case.critical";
+    public static final String NAGIOS_OUTPUT_CASE_ERROR = "sakuli.receiver.gearman.nagios.output.case.error";
+    public static final String NAGIOS_OUTPUT_SUITE_SUMMARY_DEFAULT = "{{state}} - {{state_short}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds - {{state_summary}}. (Last suite run: {{last_run}})";
+    public static final String NAGIOS_OUTPUT_SUITE_TABLE_DEFAULT = "{{state_short}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds - {{state_summary}}. (Last suite run: {{last_run}})";
+    public static final String NAGIOS_OUTPUT_CASE_OK_DEFAULT = "{{state_short}} case \"{{id}}\" ran in {{duration}}s - {{state_description}}";
+    public static final String NAGIOS_OUTPUT_CASE_WARNING_DEFAULT = "{{state_short}} case \"{{id}}\" over runtime ({{duration}}s /{{state_description}} at {{warning_threshold}}s) {{step_information}}";
+    public static final String NAGIOS_OUTPUT_CASE_CRITICAL_DEFAULT = "{{state_short}} case \"{{id}}\" over runtime ({{duration}}s /{{state_description}} at {{critical_threshold}}s) {{step_information}}";
+    public static final String NAGIOS_OUTPUT_CASE_ERROR_DEFAULT = "{{state_short}} case \"{{id}}\" {{state_description}}: {{error_message}}";
 
     @Value("${" + SERVER_QUEUE + ":" + SERVER_QUEUE_DEFAULT + "}")
     private String serverQueue;
@@ -50,13 +57,20 @@ public class GearmanProperties {
     private int serverPort;
     @Value("${" + NAGIOS_HOSTNAME + ":null}")
     private String nagiosHost;
-    @Value("${" + NAGIOS_OUTPUT_SUITE + ":" + NAGIOS_OUTPUT_SUITE_DEFAULT + "}")
-    private String outputSuite;
-    @Value("${" + NAGIOS_OUTPUT_CASE + ":" + NAGIOS_OUTPUT_CASE_DEFAULT + "}")
-    private String outputCase;
-    @Value("${" + NAGIOS_OUTPUT_STEP + ":" + NAGIOS_OUTPUT_STEP_DEFAULT + "}")
-    private String outputStep;
+    @Value("${" + NAGIOS_OUTPUT_SUITE_SUMMARY + ":" + NAGIOS_OUTPUT_SUITE_SUMMARY_DEFAULT + "}")
+    private String outputSuiteSummary;
+    @Value("${" + NAGIOS_OUTPUT_SUITE_TABLE + ":" + NAGIOS_OUTPUT_SUITE_TABLE_DEFAULT + "}")
+    private String outputSuiteTable;
+    @Value("${" + NAGIOS_OUTPUT_CASE_OK + ":" + NAGIOS_OUTPUT_CASE_OK_DEFAULT + "}")
+    private String outputCaseOk;
+    @Value("${" + NAGIOS_OUTPUT_CASE_WARNING + ":" + NAGIOS_OUTPUT_CASE_WARNING_DEFAULT + "}")
+    private String outputCaseWarning;
+    @Value("${" + NAGIOS_OUTPUT_CASE_CRITICAL + ":" + NAGIOS_OUTPUT_CASE_CRITICAL_DEFAULT + "}")
+    private String outputCaseCritical;
+    @Value("${" + NAGIOS_OUTPUT_CASE_ERROR + ":" + NAGIOS_OUTPUT_CASE_ERROR_DEFAULT + "}")
+    private String outputCaseError;
 
+    //TODO add checkresult
     //TODO write test with context
     public String getServiceType() {
         return serviceType;
@@ -98,50 +112,64 @@ public class GearmanProperties {
         this.nagiosHost = nagiosHost;
     }
 
-    public String getOutputSuite() {
-        return outputSuite;
+    public String getOutputSuiteSummary() {
+        return outputSuiteSummary;
     }
 
-    public void setOutputSuite(String outputSuite) {
-        this.outputSuite = outputSuite;
+    public void setOutputSuiteSummary(String outputSuiteSummary) {
+        this.outputSuiteSummary = outputSuiteSummary;
     }
 
-    public String getOutputCase() {
-        return outputCase;
+    public String getOutputSuiteTable() {
+        return outputSuiteTable;
     }
 
-    public void setOutputCase(String outputCase) {
-        this.outputCase = outputCase;
+    public void setOutputSuiteTable(String outputSuiteTable) {
+        this.outputSuiteTable = outputSuiteTable;
     }
 
-    public String getOutputStep() {
-        return outputStep;
+    public String getOutputCaseOk() {
+        return outputCaseOk;
     }
 
-    public void setOutputStep(String outputStep) {
-        this.outputStep = outputStep;
+    public void setOutputCaseOk(String outputCaseOk) {
+        this.outputCaseOk = outputCaseOk;
     }
 
-    public static enum TextPlaceholder {
-        STATE("{{state}}"),
-        STATE_DESC("{{state_description}}"),
-        ID("{{id}}"),
-        DURATION("{{duration}}"),
-        LAST_RUN("{{last_run}}");
+    public String getOutputCaseError() {
+        return outputCaseError;
+    }
 
-        private final String pattern;
+    public void setOutputCaseError(String outputCaseError) {
+        this.outputCaseError = outputCaseError;
+    }
 
-        TextPlaceholder(String pattern) {
-            this.pattern = pattern;
+    public String getOutputCaseCritical() {
+        return outputCaseCritical;
+    }
+
+    public void setOutputCaseCritical(String outputCaseCritical) {
+        this.outputCaseCritical = outputCaseCritical;
+    }
+
+    public String getOutputCaseWarning() {
+        return outputCaseWarning;
+    }
+
+    public void setOutputCaseWarning(String outputCaseWarning) {
+        this.outputCaseWarning = outputCaseWarning;
+    }
+
+    public String lookUpOutputString(TestCaseState state) {
+        if (state.isOk()) {
+            return outputCaseOk;
+        } else if (state.isWarning()) {
+            return outputCaseWarning;
+        } else if (state.isCritical()) {
+            return outputCaseCritical;
+        } else if (state.isError()) {
+            return outputCaseError;
         }
-
-        public String getPattern() {
-            return pattern;
-        }
-
-        @Override
-        public String toString() {
-            return name();
-        }
+        return null;
     }
 }

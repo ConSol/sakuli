@@ -80,15 +80,36 @@ public enum TestSuiteState implements SakuliState {
     }
 
     public int getNagiosErrorCode() {
-        if (getOkCodes().contains(this)) {
+        if (isOk()) {
             return 0;
-        } else if (getWarningCodes().contains(this)) {
+        } else if (isWarning()) {
             return 1;
-        } else if (getCriticalCodes().contains(this)) {
+        } else if (isCritical()) {
             return 2;
         }
         return 3;
     }
+
+    @Override
+    public boolean isOk() {
+        return getOkCodes().contains(this);
+    }
+
+    @Override
+    public boolean isWarning() {
+        return getWarningCodes().contains(this);
+    }
+
+    @Override
+    public boolean isCritical() {
+        return getCriticalCodes().contains(this);
+    }
+
+    @Override
+    public boolean isError() {
+        return this.equals(ERRORS);
+    }
+
 
     @Override
     public String getNagiosStateDescription() {

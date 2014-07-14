@@ -20,6 +20,7 @@ package de.consol.sakuli.datamodel;
 
 import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
+import de.consol.sakuli.exceptions.SakuliException;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.Test;
@@ -106,4 +107,21 @@ public class TestSuiteTest {
 
         assertNotEquals(ts.getGuid(), ts2.getGuid());
     }
+
+    @Test
+    public void testGetExceptionMessage() {
+        TestSuite testSuite = new TestSuite();
+        String message = "suite-exception";
+        testSuite.addException(new SakuliException(message));
+        assertEquals(testSuite.getExceptionMessages(), message);
+        assertEquals(testSuite.getExceptionMessages(true), message);
+
+        TestCase tc1 = new TestCase("case1", "case1");
+        String messageCase = "case-exception";
+        tc1.addException(new SakuliException(messageCase));
+        testSuite.addTestCase(tc1.getId(), tc1);
+        assertEquals(testSuite.getExceptionMessages(), message + "\n" + "CASE '" + tc1.getId() + "': " + messageCase);
+        assertEquals(testSuite.getExceptionMessages(true), message + " - CASE '" + tc1.getId() + "': " + messageCase);
+    }
 }
+

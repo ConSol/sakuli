@@ -68,21 +68,19 @@ public class NagiosCheckResultBuilder implements Builder<NagiosCheckResult> {
         return result;
     }
 
-    public NagiosCheckResultBuilder withGearmanProperties(GearmanProperties gearmanProperties) {
+    public NagiosCheckResultBuilder withTestSuite(TestSuite testSuite, GearmanProperties gearmanProperties) {
+        //fields form properties file
         queueName = gearmanProperties.getServerQueue();
         type = gearmanProperties.getServiceType();
         hostProperties = gearmanProperties.getNagiosHost();
-        return this;
-    }
 
-    public NagiosCheckResultBuilder withTestSuite(TestSuite testSuite) {
         hostSuite = testSuite.getHost();
         uuid = testSuite.getGuid();
         startTime = testSuite.getStartDateAsUnixTimestamp();
         finishTime = testSuite.getStopDateAsUnixTimestamp();
         returnCode = String.valueOf(testSuite.getState().getNagiosErrorCode());
         serviceDesc = testSuite.getId();
-        output = new OutputBuilder().withTestSuite(testSuite).build();
+        output = new OutputBuilder().withTestSuite(testSuite, gearmanProperties).build();
         return this;
     }
 

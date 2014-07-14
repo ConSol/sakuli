@@ -64,4 +64,22 @@ public class TestCaseStep extends AbstractSakuliTest<SakuliException, TestCaseSt
                 + super.toString()
                 + "}";
     }
+
+    /**
+     * Currently the name and the id of a test case step is same value
+     */
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+        super.setId(name);
+    }
+
+    /**
+     * Currently the name and the id of a test case step is same value
+     */
+    @Override
+    public void setId(String id) {
+        super.setId(id);
+        super.setName(id);
+    }
 }

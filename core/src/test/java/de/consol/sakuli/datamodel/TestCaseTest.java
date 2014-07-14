@@ -21,6 +21,7 @@ package de.consol.sakuli.datamodel;
 
 import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestCaseStepState;
+import org.apache.commons.lang.time.DateUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -67,6 +68,9 @@ public class TestCaseTest {
         Assert.assertEquals(TestCaseState.OK, testling.getState());
 
         stepTestling.setState(TestCaseStepState.WARNING);
+        stepTestling.setStartDate(currentDate);
+        stepTestling.setStopDate(DateUtils.addSeconds(currentDate, 5));
+        stepTestling.setWarningTime(4);
         testling.refreshState();
         Assert.assertEquals(TestCaseState.WARNING_IN_STEP, testling.getState());
 

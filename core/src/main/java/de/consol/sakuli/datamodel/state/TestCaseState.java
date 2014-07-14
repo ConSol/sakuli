@@ -81,6 +81,25 @@ public enum TestCaseState implements SakuliState {
         return stateDescription;
     }
 
+    @Override
+    public boolean isOk() {
+        return getOkCodes().contains(this);
+    }
+
+    @Override
+    public boolean isWarning() {
+        return getWarningCodes().contains(this);
+    }
+
+    @Override
+    public boolean isCritical() {
+        return getCriticalCodes().contains(this);
+    }
+
+    @Override
+    public boolean isError() {
+        return this.equals(ERRORS);
+    }
 
     public List<TestCaseState> getWarningCodes() {
         return Arrays.asList(WARNING, WARNING_IN_STEP);

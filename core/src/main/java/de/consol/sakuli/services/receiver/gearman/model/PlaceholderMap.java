@@ -18,34 +18,25 @@
 
 package de.consol.sakuli.services.receiver.gearman.model;
 
+import de.consol.sakuli.services.receiver.gearman.TextPlaceholder;
+
+import java.util.HashMap;
+
 /**
  * @author tschneck
- *         Date: 11.07.14
+ *         Date: 14.07.14
  */
-public class NagiosOutput {
-    public static final String DATA_SEPARATOR = "|";
-    public static final String DETAILS_SEPARATOR = "\\\\n";
-    private String statusSummary;
-    private String performanceData;
+public class PlaceholderMap extends HashMap<TextPlaceholder, String> {
 
-
-    public String getOutputString() {
-        return statusSummary + DATA_SEPARATOR + performanceData;
-    }
-
-    public void setStatusSummary(String statusSummary) {
-        this.statusSummary = statusSummary;
-    }
-
-    public String getStatusSummary() {
-        return statusSummary;
-    }
-
-    public void setPerformanceData(String performanceData) {
-        this.performanceData = performanceData;
-    }
-
-    public String getPerformanceData() {
-        return performanceData;
+    /**
+     * Overrides the normal get, so that a null String will be returned as empty String.
+     */
+    @Override
+    public String get(Object key) {
+        String value = super.get(key);
+        if (value == null) {
+            return "";
+        }
+        return value;
     }
 }

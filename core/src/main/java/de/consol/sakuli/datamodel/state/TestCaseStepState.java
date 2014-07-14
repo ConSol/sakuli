@@ -63,5 +63,24 @@ public enum TestCaseStepState implements SakuliState {
         return stateDescription;
     }
 
+    @Override
+    public boolean isOk() {
+        return this.equals(OK);
+    }
+
+    @Override
+    public boolean isWarning() {
+        return this.equals(WARNING);
+    }
+
+    @Override
+    public boolean isCritical() {
+        return false;
+    }
+
+    @Override
+    public boolean isError() {
+        return false;
+    }
 
 }

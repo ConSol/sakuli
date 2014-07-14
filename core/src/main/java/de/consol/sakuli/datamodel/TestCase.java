@@ -21,11 +21,10 @@ package de.consol.sakuli.datamodel;
 import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestCaseStepState;
 import de.consol.sakuli.exceptions.SakuliException;
+import org.springframework.util.CollectionUtils;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author tschneck
@@ -34,9 +33,9 @@ import java.util.List;
 public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState> {
 
     /**
+     * {@link #id} and {@link # startUrl}
      * will be set with the method {@link de.consol.sakuli.starter.SahiConnector#init()}
      */
-    private String id;
     private String startUrl;
     /**
      * will be set with the method {@link de.consol.sakuli.actions.TestCaseAction#saveResult(String, String, String, String, String)}
@@ -75,6 +74,7 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
             boolean stepWarning = false;
             if (getSteps() != null) {
                 for (TestCaseStep step : getSteps()) {
+                    step.refreshState();
                     if (TestCaseStepState.WARNING.equals(step.getState())) {
                         stepWarning = true;
                     }
@@ -105,8 +105,8 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
                 + "\n\tlast URL: " + this.getLastURL();
 
         //steps
-        if (steps != null && !steps.isEmpty()) {
-            for (TestCaseStep step : this.steps) {
+        if (!CollectionUtils.isEmpty(steps)) {
+            for (TestCaseStep step : getStepsAsSortedSet()) {
                 stout += step.getResultString();
             }
         }
@@ -116,10 +116,6 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
     /**
      * Getter and Setter**
      */
-
-    public String getId() {
-        return id;
-    }
 
     public String getStartUrl() {
         return startUrl;
@@ -139,6 +135,10 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
 
     public List<TestCaseStep> getSteps() {
         return steps;
+    }
+
+    public void setSteps(List<TestCaseStep> steps) {
+        this.steps = steps;
     }
 
     public void addStep(TestCaseStep step) {
@@ -165,12 +165,23 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
         return "id=" + getId()
                 + ", name=" + getName();
     }
-    
+
     public Path getTcFile() {
         return tcFile;
     }
 
     public void setTcFile(Path tcFile) {
         this.tcFile = tcFile;
+    }
+
+
+    /**
+     * @return all {@link TestCaseStep}s as {@link SortedSet} or a empty set if no test case steps are specified.
+     */
+    public SortedSet<TestCaseStep> getStepsAsSortedSet() {
+        if (!CollectionUtils.isEmpty(steps)) {
+            return new TreeSet<>(steps);
+        }
+        return new TreeSet<>();
     }
 }

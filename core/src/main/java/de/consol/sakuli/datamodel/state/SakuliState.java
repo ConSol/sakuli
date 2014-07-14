@@ -32,5 +32,13 @@ public interface SakuliState {
 
     int getNagiosErrorCode();
 
+    boolean isOk();
+
+    boolean isWarning();
+
+    boolean isCritical();
+
+    boolean isError();
+
     String getNagiosStateDescription();
 }

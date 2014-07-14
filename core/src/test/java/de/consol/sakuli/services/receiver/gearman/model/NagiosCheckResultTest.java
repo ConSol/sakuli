@@ -18,7 +18,7 @@
 
 package de.consol.sakuli.services.receiver.gearman.model;
 
-import de.consol.sakuli.builder.TestSuiteBuilder;
+import de.consol.sakuli.builder.TestSuiteExampleBuilder;
 import de.consol.sakuli.services.receiver.gearman.GearmanProperties;
 import de.consol.sakuli.services.receiver.gearman.model.builder.NagiosCheckResultBuilder;
 import org.testng.Assert;
@@ -31,8 +31,7 @@ public class NagiosCheckResultTest {
     @Test
     public void testGetPayload() throws Exception {
         NagiosCheckResult checkResult = new NagiosCheckResultBuilder()
-                .withGearmanProperties(new GearmanProperties())
-                .withTestSuite(new TestSuiteBuilder().buildExample())
+                .withTestSuite(new TestSuiteExampleBuilder().buildExample(), new GearmanProperties())
                 .build();
 
         SortedMap<PayLoadFields, String> map = checkResult.getPayload();
@@ -42,6 +41,16 @@ public class NagiosCheckResultTest {
 
     @Test
     public void testGetPayloadString() throws Exception {
-        //TODO
+        NagiosCheckResult checkResult = new NagiosCheckResultBuilder()
+                .withTestSuite(new TestSuiteExampleBuilder().buildExample(), new GearmanProperties())
+                .build();
+
+        Assert.assertTrue(checkResult.getPayloadString().matches("type=passive\n" +
+                "host_name=localhost\n" +
+                "start_time=.*\n" +
+                "finish_time=.*\n" +
+                "return_code=\\d\n" +
+                "service_description=UnitTest_.*\n" +
+                "output=.*"));
     }
 }

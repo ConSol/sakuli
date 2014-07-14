@@ -58,7 +58,8 @@ public class GearmanResultServiceImpl implements ResultService {
         GearmanClient gearmanClient = new GearmanClientImpl();
         GearmanJobServerConnection connection = new GearmanNIOJobServerConnection(hostname, port);
 
-        NagiosCheckResult checkResult = new NagiosCheckResultBuilder().withGearmanProperties(properties).withTestSuite(testSuite).build();
+        testSuite.refreshState();
+        NagiosCheckResult checkResult = new NagiosCheckResultBuilder().withTestSuite(testSuite, properties).build();
         String message = checkResult.getPayloadString();
 //
 //        String message = "type=passive\n" +
@@ -71,7 +72,7 @@ public class GearmanResultServiceImpl implements ResultService {
 //                "output=OK - [OK] case \"demo_win7\" (52.95s) ok, [OK] Sakuli suite \"sakuli_demo\" (ID: 19) ran in 64.10 seconds. (Last suite run: 14.05. 11:06:57)\\\\n<table style=\"border-collapse: collapse;\"><tr valign=\"top\"><td class=\"serviceOK\">[OK] case \"demo_win7\" (52.95s) ok</td></tr><tr valign=\"top\"><td class=\"serviceOK\">[OK] Sakuli suite \"sakuli_demo\" (ID: 19) ran in 64.10 seconds. (Last suite run: 14.05. 11:06:57)</td></tr></table>|s_1_1_notepad=12.22s;20;;; s_1_2_project=17.89s;20;;; s_1_3_print_test_client=7.89s;10;;; s_1_4_open_calc=3.01s;5;;; s_1_5_calculate_525_+100=9.95s;20;;; c_1_demo_win7=52.95s;60;70;; c_1state=0;;;; suite_state=0;;;; suite_runtime_sakuli_demo=64.10s;120;140;;";
         try {
 
-            logger.debug("MESSAGE for GEARMAN:\n{}", message);
+            logger.info("MESSAGE for GEARMAN:\n{}", message);
             byte[] bytesBase64 = Base64.encodeBase64(message.getBytes());
             gearmanClient.addJobServer(connection);
             GearmanJob job = GearmanJobImpl.createBackgroundJob(checkResult.getQueueName(), bytesBase64, checkResult.getUuid());

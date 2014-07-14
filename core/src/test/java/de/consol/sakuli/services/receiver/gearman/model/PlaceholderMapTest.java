@@ -18,34 +18,20 @@
 
 package de.consol.sakuli.services.receiver.gearman.model;
 
-/**
- * @author tschneck
- *         Date: 11.07.14
- */
-public class NagiosOutput {
-    public static final String DATA_SEPARATOR = "|";
-    public static final String DETAILS_SEPARATOR = "\\\\n";
-    private String statusSummary;
-    private String performanceData;
+import de.consol.sakuli.services.receiver.gearman.TextPlaceholder;
+import org.testng.annotations.Test;
 
+import static org.testng.Assert.assertEquals;
 
-    public String getOutputString() {
-        return statusSummary + DATA_SEPARATOR + performanceData;
-    }
+public class PlaceholderMapTest {
 
-    public void setStatusSummary(String statusSummary) {
-        this.statusSummary = statusSummary;
-    }
+    @Test
+    public void testGet() throws Exception {
+        PlaceholderMap testling = new PlaceholderMap();
+        testling.put(TextPlaceholder.STEP_INFORMATION, "bla");
+        testling.put(TextPlaceholder.DURATION, null);
 
-    public String getStatusSummary() {
-        return statusSummary;
-    }
-
-    public void setPerformanceData(String performanceData) {
-        this.performanceData = performanceData;
-    }
-
-    public String getPerformanceData() {
-        return performanceData;
+        assertEquals(testling.get(TextPlaceholder.STEP_INFORMATION), "bla");
+        assertEquals(testling.get(TextPlaceholder.DURATION), "");
     }
 }

@@ -56,6 +56,7 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
      */
     protected int warningTime = -1;
     protected int criticalTime = -1;
+    protected String id;
 
     /**
      * set the times to the format "time in millisec / 1000"
@@ -122,7 +123,12 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
     }
 
     public String getExceptionMessages() {
-        return SakuliExceptionHandler.getAllExceptionMessages(exception);
+        return getExceptionMessages(false);
+    }
+
+
+    public String getExceptionMessages(boolean flatFormatted) {
+        return SakuliExceptionHandler.getAllExceptionMessages(exception, flatFormatted);
     }
 
     public String getName() {
@@ -155,6 +161,14 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
 
     public void setCriticalTime(int criticalTime) {
         this.criticalTime = criticalTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -210,11 +224,11 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
         if (abstractSakuliTest == null) {
             return 1;
         }
-        if (startDate == null) {
-            if (name == null) {
-                return abstractSakuliTest.getName() != null ? 1 : 0;
+        if (startDate == null || startDate.compareTo(abstractSakuliTest.getStartDate()) == 0) {
+            if (id == null) {
+                return abstractSakuliTest.getId() != null ? 1 : 0;
             }
-            return name.compareTo(abstractSakuliTest.getResultString());
+            return id.compareTo(abstractSakuliTest.id);
         }
         return startDate.compareTo(abstractSakuliTest.getStartDate());
     }
@@ -231,4 +245,5 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
                 ", criticalTime=" + criticalTime
                 ;
     }
+
 }

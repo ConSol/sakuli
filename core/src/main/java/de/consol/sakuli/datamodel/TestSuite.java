@@ -25,10 +25,13 @@ import de.consol.sakuli.exceptions.SakuliException;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * @author tschneck Date: 10.06.13
@@ -36,7 +39,6 @@ import java.util.Map;
 @Component
 public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteState> {
 
-    private String id;
     //browser name where to start the test execution
     private String browserName;
     //additional browser infos from sahi proxy
@@ -121,8 +123,8 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
                 + super.getResultString()
                 + "\ndb primary key of job table: " + this.getDbJobPrimaryKey()
                 + "\nbrowser: " + this.getBrowserInfo();
-        if (testCases != null && !testCases.isEmpty()) {
-            for (TestCase tc : testCases.values()) {
+        if (!CollectionUtils.isEmpty(testCases)) {
+            for (TestCase tc : getTestCasesAsSortedSet()) {
                 stout += tc.getResultString();
             }
         }
@@ -130,25 +132,24 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     }
 
     @Override
-    public String getExceptionMessages() {
-        String errorMessages = super.getExceptionMessages();
+    public String getExceptionMessages(boolean flatFormatted) {
+        String errorMessages = super.getExceptionMessages(flatFormatted);
         if (errorMessages == null) {
             errorMessages = "";
         }
-        for (TestCase testCase : getTestCases().values()) {
-            if (testCase.getExceptionMessages() != null) {
-                errorMessages += "\n" + testCase.getExceptionMessages();
+        if (!CollectionUtils.isEmpty(getTestCases())) {
+            for (TestCase testCase : getTestCasesAsSortedSet()) {
+                if (testCase.getExceptionMessages() != null) {
+                    if (flatFormatted) {
+                        errorMessages += " - ";
+                    } else {
+                        errorMessages += "\n";
+                    }
+                    errorMessages += "CASE '" + testCase.getId() + "': " + testCase.getExceptionMessages();
+                }
             }
         }
         return errorMessages;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getAbsolutePathOfTestSuiteFile() {
@@ -212,6 +213,10 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         this.testCases.put(testCaseId, testCase);
     }
 
+    public void addTestCase(TestCase testCase) {
+        this.addTestCase(testCase.getId(), testCase);
+    }
+
     public TestCase getTestCase(String testCaseId) {
         if (this.getTestCases().containsKey(testCaseId)) {
             return this.getTestCases().get(testCaseId);
@@ -250,5 +255,15 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
                 ", dbJobPrimaryKey=" + dbJobPrimaryKey +
                 ", testCases=" + testCases +
                 '}';
+    }
+
+    /**
+     * @return all {@link TestCase}s as {@link SortedSet} or a empty set if no test cases are specified.
+     */
+    public SortedSet<TestCase> getTestCasesAsSortedSet() {
+        if (!CollectionUtils.isEmpty(testCases)) {
+            return new TreeSet<>(testCases.values());
+        }
+        return new TreeSet<>();
     }
 }
