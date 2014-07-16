@@ -1,30 +1,30 @@
 # Sakuli Manual
 
 ## Proxy settings
-To define your company's proxy, edit your proxy information to the property File `%SAKULI_HOME%/_include/sakuli.properties` in the scetion __SAHI-SCRIPT-RUNNER-PROPERTIES__ like in the following example:
+If web tests with Sakuli should go via your company's proxy, edit the property File `%SAKULI_HOME%/_include/sakuli.properties`, section __SAHI-SCRIPT-RUNNER-PROPERTIES__ for both http and https. `auth.username` and `auth.password` are only used if `auth.enable` is set to `true`. 
+Use the bypass list to exclude certain URLs from being accessed through the proxy.   
 
-```
-### HTTP/HTTPS proxy Settings
-### Set these properties, to enable the test execution behind company proxies
-# Use external proxy server for HTTP
-ext.http.proxy.enable=true
-ext.http.proxy.host=proxy.server.com
-ext.http.proxy.port=8080
-ext.http.proxy.auth.enable=false
-ext.http.proxy.auth.name=user
-ext.http.proxy.auth.password=password
+	### HTTP/HTTPS proxy Settings
+	### Set these properties, to enable the test execution behind company proxies
+	# Use external proxy server for HTTP
+	ext.http.proxy.enable=true
+	ext.http.proxy.host=proxy.yourcompany.com
+	ext.http.proxy.port=8080
+	ext.http.proxy.auth.enable=false
+	ext.http.proxy.auth.name=user
+	ext.http.proxy.auth.password=password
+	
+	# Use external proxy server for HTTPS
+	ext.https.proxy.enable=true
+	ext.https.proxy.host=proxy.server.com
+	ext.https.proxy.port=8080
+	ext.https.proxy.auth.enable=false
+	ext.https.proxy.auth.name=user
+	ext.https.proxy.auth.password=password
+	
+	# There is only one bypass list for both secure and insecure.
+	ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.verisign.com
 
-# Use external proxy server for HTTPS
-ext.https.proxy.enable=true
-ext.https.proxy.host=proxy.server.com
-ext.https.proxy.port=8080
-ext.https.proxy.auth.enable=false
-ext.https.proxy.auth.name=user
-ext.https.proxy.auth.password=password
-
-# There is only one bypass list for both secure and insecure.
-ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.verisign.com
-```
 
 
 ## Connecting to Sakuli clients
@@ -36,6 +36,7 @@ There are a few way to connect to a Sakuli client machine:
 1. VNC
 2. Console of a virtualization platform (ESX, Virtualbox, etc.)
 3. Remote Desktop
+4. (perhaps more…) 
 
 Sakuli does not run (for the moment at least) headless; for that reason it is crucial that there is always a unlocked, "real" screen available. 
 
@@ -70,7 +71,7 @@ FIXME
 
 To ensure that secrets (passwords, PIN, etc) never get logged in plain text, they can be encrypted on the command line; Sakuli then decrypts them on runtime (for more information on how to do this, refer to FIXME) to use them on tests. There is no (quick) way to decrypt secrets again on the command line. This is of course no high-secure encryption mechanism but rather a way to obscure things not everybody should see. 
 
-For the encryption, Sakuli uses among other parameters the MAC address of a given network interface card as a salt. When you set up a new Sakuli client, the interface name has to be defined in _sakuli.properties_.    
+For the encryption, Sakuli uses among other parameters the MAC address of a given network interface card as a encryption salt. When you set up a new Sakuli client, the interface name has to be defined in _sakuli.properties_.    
 
 To determine the correct name of an encryption interface do the following steps on _cmd.exe_ (Windows) or the Unix Shell: 
 
