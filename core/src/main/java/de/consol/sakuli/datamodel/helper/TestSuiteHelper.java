@@ -49,7 +49,6 @@ public class TestSuiteHelper {
     public static HashMap<String, TestCase> loadTestCases(TestSuiteProperties properties) throws FileNotFoundException {
         Path testSuiteFile = properties.getTestSuiteSuiteFile();
         Path testSuiteFolder = properties.getTestSuiteFolder();
-        String testSuiteId = properties.getTestSuiteId();
 
         HashMap<String, TestCase> tcMap = new HashMap<>();
 
@@ -76,7 +75,7 @@ public class TestSuiteHelper {
                 if (Files.exists(tcFile)) {
                     TestCase tc = new TestCase(
                             TestCaseHelper.convertFolderPathToName(tcFileName),
-                            TestCaseHelper.convertTestCaseFileToID(tcFileName, testSuiteId));
+                            TestCaseHelper.convertTestCaseFileToID(tcFileName));
 
                     tc.setStartUrl(startURL);
                     tc.setTcFile(tcFile);

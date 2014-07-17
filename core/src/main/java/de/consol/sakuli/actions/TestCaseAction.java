@@ -63,7 +63,7 @@ public class TestCaseAction {
     @LogToResult(message = "convert the path of the test case file to a valid test case ID")
     public String getIdFromPath(String pathToTestCaseFile) {
         logger.info("Return a test-case-id for \"" + pathToTestCaseFile + "\"");
-        String id = TestCaseHelper.convertTestCaseFileToID(pathToTestCaseFile, loader.getTestSuite().getId());
+        String id = TestCaseHelper.convertTestCaseFileToID(pathToTestCaseFile);
         //check id
         if (loader.getTestSuite().checkTestCaseID(id)) {
             logger.info("test-case-id = " + id);

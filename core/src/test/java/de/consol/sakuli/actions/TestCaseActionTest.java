@@ -39,8 +39,7 @@ import java.util.Map;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.testng.AssertJUnit.assertEquals;
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.AssertJUnit.*;
 
 /**
  * @author tschneck
@@ -48,7 +47,7 @@ import static org.testng.AssertJUnit.assertTrue;
  */
 public class TestCaseActionTest extends BaseTest {
     @InjectMocks
-    private TestCaseAction testling = new TestCaseAction();
+    private TestCaseAction testling;
     @Mock
     private TestSuite testSuiteMock;
     @Mock
@@ -74,15 +73,15 @@ public class TestCaseActionTest extends BaseTest {
 
     @Test
     public void testGetTestCaseId() throws Exception {
-        Assert.assertEquals(sample.getId(), testling.getIdFromPath(
+        Assert.assertEquals(testling.getIdFromPath(
                 "testSuiteFolder"
                         + File.separator
-                        + "1234"
+                        + "1234_"
                         + File.separator
                         + "_tc.js"
-        ));
+        ), sample.getId());
         Assert.assertEquals(sample.getId(), testling.getIdFromPath(
-                "1234" + File.separator + "_tc.js"));
+                "1234_" + File.separator + "_tc.js"));
 
     }
 
@@ -124,7 +123,7 @@ public class TestCaseActionTest extends BaseTest {
                 2 //warning
         );
         TestCaseStep step = testSuiteMock.getTestCases().get(sample.getId()).getSteps().get(0);
-        assertTrue("step is not null", step != null);
+        assertNotNull(step);
         assertEquals(step.getName(), "step_for_JUnit");
         assertTrue("duraion is correct", step.getDuration() > 2.9 && step.getDuration() < 3.1);
         assertEquals(step.getState(), TestCaseStepState.WARNING);
@@ -136,7 +135,7 @@ public class TestCaseActionTest extends BaseTest {
                 5 //no warning
         );
         TestCaseStep step2 = testSuiteMock.getTestCases().get(sample.getId()).getSteps().get(1);
-        assertTrue("step2 is not null", step2 != null);
+        assertNotNull(step2);
         assertEquals(step2.getName(), "step2_for_JUnit");
         assertTrue("duraion is correct", step.getDuration() > 2.9 && step.getDuration() < 3.1);
         assertEquals(step2.getState(), TestCaseStepState.OK);

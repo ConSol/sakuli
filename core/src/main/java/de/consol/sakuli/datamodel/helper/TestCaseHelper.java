@@ -16,7 +16,9 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.datamodel.helper;import java.io.File;
+package de.consol.sakuli.datamodel.helper;
+
+import java.io.File;
 
 /**
  * @author tschneck
@@ -24,20 +26,21 @@ package de.consol.sakuli.datamodel.helper;import java.io.File;
  */
 public class TestCaseHelper {
     /**
-     * transforms a URI folder path and a test suite ID to a test case id.
+     * transforms a URI folder path to a test case id.
+     * It will be generated from the folder name of the test case. Blanks will be replaced with "_".
      *
      * @param uriPathToTestCaseFile path to the "_tc.js" file
-     * @param testSuiteId           id of the parent test suite.
-     * @return a fitting testcase id
+     * @return a fitting test case id or NULL if something went wrong
      */
-    public static String convertTestCaseFileToID(String uriPathToTestCaseFile, String testSuiteId) {
-        return convertFolderPathToName(uriPathToTestCaseFile).replace(" ", "_").toUpperCase() + "_" + testSuiteId;
+    public static String convertTestCaseFileToID(String uriPathToTestCaseFile) {
+        final String foldername = convertFolderPathToName(uriPathToTestCaseFile);
+        return foldername == null ? null : foldername.replace(" ", "_");
     }
 
     /**
      * transforms a URI folder path into a test case Name
      *
-     * @param uriPathToTestCaseFile
+     * @param uriPathToTestCaseFile path to the "_tc.js" file
      * @return null if the Path is not valid.
      */
     public static String convertFolderPathToName(String uriPathToTestCaseFile) {

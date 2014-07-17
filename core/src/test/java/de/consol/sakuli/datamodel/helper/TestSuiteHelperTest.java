@@ -44,7 +44,7 @@ public class TestSuiteHelperTest extends TestSuitePropertiesTestUtils {
         TestCase tc = result.values().iterator().next();
         assertEquals("http://localhost:8080", tc.getStartUrl());
         assertEquals(tc.getName(), "validTestCase");
-        assertEquals(tc.getId(), "VALIDTESTCASE_suite_id_001");
+        assertEquals(tc.getId(), "validTestCase");
         assertEquals(tc.getId(), result.keySet().iterator().next());
     }
 
