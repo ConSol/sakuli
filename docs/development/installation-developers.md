@@ -1,27 +1,24 @@
-Installation guide for Sakuli - Developers
-======================================
+# Installation guide for Sakuli - Developers
 
-Requirements
-==========
-* Access to the issue-tracker project (currently JIRA)
+##Requirements
+For the following guide you need
+
+* Access to the issue-tracker tool (currently JIRA)
 * Git
 * Development environment (we advise IntelliJ IDEA)
 * Java JDK 1.7
   * Please use the original Oracle JDK - OpenJDK unfortunately won't work for the JavaFX based integration test, see [Java FX installation](java_fx_installation). 
   * Ensure that your `JAVA_HOME` system variable links to the correct jdk-version
-  * (unfortunately JDK 1.8 is currently not support in case that the aspectj-compiler-plugin won't work with it :-/ )
+  * (JDK 1.8 is currently not supported in case that the aspectj-compiler-plugin won't work with it :-/ )
 
 
-Sakuli Setup
-=========
-Import
----------
-* Check out via git
-* Import as maven-project
+##Sakuli Setup
+###Import
+* Check out the project via git
+* Import the project as a maven-project
 
-Maven Settings
-------------------
-* Config your local maven settings `~/.m2/settings.xml` for your environment, like in this example:
+###Maven Settings
+* Config the local maven settings `~/.m2/settings.xml` for your environment as follows:
     
      ```
      <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -56,32 +53,33 @@ Maven Settings
      ```
 
 
-Database Setup
------------------------
-Setup your local database to save your results of the test case executions. The database won't be needed for running `mvn install`.
+###Database Setup
+Setup a local MySQL database to save the results of test case executions. The database won't be needed for running `mvn install`.
+
 * __User:__ `sahi`
 * __Password:__ `sahi`
 * __Database:__ `sahi`
 * __SQL-Script:__ [core/src/database_scripts/create_and_drop_database.sql](/core/src/database_scripts/create_and_drop_database.sql)
 
-Install Sahi
-------------
-* Execute in the folder 'install/3rd-party' the sahi JAR:
+###Install Sahi
+* Change into the folder 'install/3rd-party' and execute the sahi JAR:
 
     ```
     java -jar install_sahi_v44_20130429.jar
     ```
 
-* As installation path use `<project-dir>/sahi`. Ensure that the path in the property 'sahi.proxy.homePath' in file
-  `core/src/main/_include/sakuli.properties` points to your Sahi installation folder.
+* Install Sahi into `<project-dir>/sahi`. Ensure that this path is set in `sahi.proxy.homePath` in file
+  `core/src/main/_include/sakuli.properties`.
 
-* As installation packs use only __"Sahi Core", "Tools", "Userdata"__
+* You only need to install the components
+	* Sahi Core
+	* Tools
+	* Userdata
 
 
 
-Development-Environment-Konfiguration
------------------
-* Execute 'mvn clean verify' to ensure that all is setup correctly
+###Development-Environment-Konfiguration
+* Execute `mvn clean verify` to ensure that the setup is correct
 * Include the license header to your IDE
   * For IntelliJ see [Help](http://www.jetbrains.com/idea/webhelp/generating-and-updating-copyright-notice.html) or our predefined copyright configuration under [intellij/copyright](intellij/copyright).
   * License Header:
@@ -102,17 +100,15 @@ Development-Environment-Konfiguration
     See the License for the specific language governing permissions and
     limitations under the License.
     ```
-* Build up you own run configuration, to run your sakuli test cases directly from your IDE. For Intellij see our predefined run configurations under [intellij/runConfigurations](intellij/runConfigurations)
+* In order to run Sakuli test cases directly from the IDE, you need to build up a run configuration. For IntelliJ see the predefined run configurations under [intellij/runConfigurations](intellij/runConfigurations)
   * __classpath of module:__ `sakuli-core`
   * __working directory:__ `$MODULE_DIR$`
   * __main class:__ `de.consol.sakuli.starter.SakuliStarter`
   * __program arguments:__ 
-    ```-run <path to your sakuli test suite folder> <path to your _include folder> <path to your sahi folder>```
+    ```-run <path to your Sakuli test suite folder> <path to your _include folder> <path to your sahi folder>```
     e.g. for the provided Win7 example use `-run ../sakuli_test_suites/example src/main/_include ../sahi`
 
 
-___Attention!___
---------------
-If you run your sakuli test the first time (like the windows example), you might get an native library error.
-In that case sakuli didn't find the correct native library to work with.
-To solve the problem, just log out and log in again to your workstation, so that the modified PATH-Variable will be read.
+###Important note
+If you run your Sakuli test the first time, you might get a native library error, caused by Sikuli, saying that it could not find the correct native library to work with. At the same time, Sikuli already tried to fix the problem by modyfing PATH.  
+Just log out and in again, so that the modified PATH-Variable will be read. Sakuli should start now without any error. 
