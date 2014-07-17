@@ -58,32 +58,10 @@ Some configuration settings in the file `%SAKULI_HOME%\include\sakuli.properties
   * To make usage of the sakluli encryption featres, set the encryption interface property like `sakuli.encryption.interface=eth3`. For further informations jump to [encryption of secrets](sakuli-manual.md) and come back here.
   * If there is no need of any encryption feature, set the property like `sakuli.encryption.interface.testmode=true`.
 
-* Database Receiver (optional)
-  * Enable the database as an receiver for the results of a Sakuli test run:
-    
-    ```
-    # DEFAULT: false
-    sakuli.receiver.database.enabled
-    ```
-
-  * Set up your database connection information like:
-
-	```
-	jdbc.port=3307
-	jdbc.database=sahi
-	jdbc.host=[IPofOMD]
-	jdbc.user=sahi
-	jdbc.pw=sahi
-	jdbc.model=sahi
-	```
-* Send To Gearman Queue (optional)
-   * Enable the defined gearman queue as an receiver for the results of a Sakuli test run: 
-     ```
-     # En- / Disables if the results should be send to the specified gearman queue.
-     # (This had to defined at the nagios server before)
-     # DEFAULT: false
-     sakuli.receiver.gearman.enabled=false
-     ```
+* Receivers:
+  To interpret the results of an test execution, it is possible to configure one or more of the following receivers:  
+  * [Database Receiver](receivers/database.md)
+  * [Gearman Receiver](receivers/gearman.md)
      
 
 * Sahi installation path:
