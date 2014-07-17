@@ -111,7 +111,7 @@
                         <!-- descriptor for the release build -->
                         <descriptor>descriptor_zip_release.xml</descriptor>
                     </descriptors>
-                    <outputDirectory>${project.parent.basedir}/install</outputDirectory>
+                    <outputDirectory>${project.build.directory}/install</outputDirectory>
                     <finalName>${project.jar.name}</finalName>
                     <recompressZippedFiles>true</recompressZippedFiles>
                 </configuration>
@@ -153,7 +153,7 @@
                                     <goal>upload</goal>
                                 </goals>
                                 <configuration>
-                                    <fromDir>${project.parent.basedir}/install</fromDir>
+                                    <fromDir>${project.build.directory}/install</fromDir>
                                     <includes>*.zip</includes>
                                     <toDir>/home/sakuli/htdocs/install</toDir>
                                 </configuration>
