@@ -24,6 +24,7 @@ import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.exceptions.SakuliException;
 import org.apache.commons.lang.time.DateUtils;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +45,9 @@ public class TestCaseExampleBuilder implements ExampleBuilder<TestCase> {
     private int warningTime;
     private int criticalTime;
     private SakuliException exception;
+    private Path testCaseFile;
+    private String lastURL;
+    private String startURL;
 
 
     public TestCaseExampleBuilder() {
@@ -54,6 +58,8 @@ public class TestCaseExampleBuilder implements ExampleBuilder<TestCase> {
         stopDate = DateUtils.addSeconds(startDate, 3);
         warningTime = 4;
         criticalTime = 5;
+        startURL = "http://www.start-url.com";
+        lastURL = "http://www.last-url.com";
         steps = Arrays.asList(new TestCaseStepExampleBuilder().buildExample());
     }
 
@@ -65,8 +71,11 @@ public class TestCaseExampleBuilder implements ExampleBuilder<TestCase> {
         testCase.setStopDate(stopDate);
         testCase.setWarningTime(warningTime);
         testCase.setCriticalTime(criticalTime);
-        testCase.setSteps(steps);
         testCase.addException(exception);
+        testCase.setTcFile(testCaseFile);
+        testCase.setStartUrl(startURL);
+        testCase.setLastURL(lastURL);
+        testCase.setSteps(steps);
         return testCase;
     }
 
@@ -113,6 +122,11 @@ public class TestCaseExampleBuilder implements ExampleBuilder<TestCase> {
 
     public TestCaseExampleBuilder withException(SakuliException exception) {
         this.exception = exception;
+        return this;
+    }
+
+    public TestCaseExampleBuilder withTestCaseFile(Path testCaseFile) {
+        this.testCaseFile = testCaseFile;
         return this;
     }
 }

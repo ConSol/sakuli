@@ -193,20 +193,24 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         return result;
     }
 
-    private PlaceholderMap getTextPlaceholder(TestCase testCase) {
+    protected PlaceholderMap getTextPlaceholder(TestCase testCase) {
         PlaceholderMap placeholderMap = new PlaceholderMap();
         OutputState outputState = OutputState.lookupSakuliState(testCase.getState());
         placeholderMap.put(STATE, outputState.name());
         placeholderMap.put(STATE_SHORT, outputState.getShortState());
         placeholderMap.put(STATE_DESC, testCase.getState().getNagiosStateDescription());
+        placeholderMap.put(NAME, testCase.getName());
         placeholderMap.put(ID, testCase.getId());
         placeholderMap.put(DURATION, String.format(Locale.ENGLISH, "%.2f", testCase.getDuration()));
-        placeholderMap.put(LAST_RUN, (testCase.getStopDate() == null) ? "xx" : dateFormat.format(testCase.getStopDate()));
+        placeholderMap.put(START_DATE, (testCase.getStartDate() == null) ? "xx" : dateFormat.format(testCase.getStartDate()));
+        placeholderMap.put(STOP_DATE, (testCase.getStopDate() == null) ? "xx" : dateFormat.format(testCase.getStopDate()));
         placeholderMap.put(WARN_THRESHOLD, String.valueOf(testCase.getWarningTime()));
         placeholderMap.put(CRITICAL_THRESHOLD, String.valueOf(testCase.getCriticalTime()));
         placeholderMap.put(ERROR_MESSAGE, testCase.getExceptionMessages(true));
         placeholderMap.put(STEP_INFORMATION, generateStepInformation(testCase.getStepsAsSortedSet()));
-
+        placeholderMap.put(CASE_FILE, testCase.getTcFile() != null ? testCase.getTcFile().toString() : null);
+        placeholderMap.put(CASE_START_URL, testCase.getStartUrl());
+        placeholderMap.put(CASE_LAST_URL, testCase.getLastURL());
         placeholderMap.put(TD_CSS_CLASS, "service" + outputState.name());
         return placeholderMap;
     }
@@ -232,19 +236,24 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         return sb.toString();
     }
 
-    private PlaceholderMap getTextPlaceholder(TestSuite testSuite) {
+    protected PlaceholderMap getTextPlaceholder(TestSuite testSuite) {
         PlaceholderMap placeholderMap = new PlaceholderMap();
         OutputState outputState = OutputState.lookupSakuliState(testSuite.getState());
         placeholderMap.put(STATE, outputState.name());
         placeholderMap.put(STATE_SHORT, outputState.getShortState());
         placeholderMap.put(STATE_DESC, testSuite.getState().getNagiosStateDescription());
-        placeholderMap.put(STATE_SUMMARY, generateStateSummary(testSuite.getState()));
+        placeholderMap.put(SUITE_SUMMARY, generateStateSummary(testSuite.getState()));
+        placeholderMap.put(NAME, testSuite.getName());
         placeholderMap.put(ID, testSuite.getId());
         placeholderMap.put(DURATION, String.format(Locale.ENGLISH, "%.2f", testSuite.getDuration()));
-        placeholderMap.put(LAST_RUN, (testSuite.getStopDate() == null) ? "xx" : dateFormat.format(testSuite.getStopDate()));
+        placeholderMap.put(START_DATE, (testSuite.getStartDate() == null) ? "xx" : dateFormat.format(testSuite.getStartDate()));
+        placeholderMap.put(STOP_DATE, (testSuite.getStopDate() == null) ? "xx" : dateFormat.format(testSuite.getStopDate()));
         placeholderMap.put(WARN_THRESHOLD, String.valueOf(testSuite.getWarningTime()));
         placeholderMap.put(CRITICAL_THRESHOLD, String.valueOf(testSuite.getCriticalTime()));
         placeholderMap.put(ERROR_MESSAGE, testSuite.getExceptionMessages(true));
+        placeholderMap.put(SUITE_FOLDER, testSuite.getTestSuiteFolder() != null ? testSuite.getTestSuiteFolder().toString() : null);
+        placeholderMap.put(HOST, testSuite.getHost());
+        placeholderMap.put(BROWSER_INFO, testSuite.getBrowserInfo());
         placeholderMap.put(TD_CSS_CLASS, "service" + outputState.name());
         return placeholderMap;
     }

@@ -44,8 +44,8 @@ public class GearmanProperties {
     public static final String NAGIOS_OUTPUT_CASE_WARNING = "sakuli.receiver.gearman.nagios.output.case.warning";
     public static final String NAGIOS_OUTPUT_CASE_CRITICAL = "sakuli.receiver.gearman.nagios.output.case.critical";
     public static final String NAGIOS_OUTPUT_CASE_ERROR = "sakuli.receiver.gearman.nagios.output.case.error";
-    public static final String NAGIOS_OUTPUT_SUITE_SUMMARY_DEFAULT = "{{state}} - {{state_short}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds - {{state_summary}}. (Last suite run: {{last_run}})";
-    public static final String NAGIOS_OUTPUT_SUITE_TABLE_DEFAULT = "{{state_short}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds - {{state_summary}}. (Last suite run: {{last_run}})";
+    public static final String NAGIOS_OUTPUT_SUITE_SUMMARY_DEFAULT = "{{state}} - {{state_short}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})";
+    public static final String NAGIOS_OUTPUT_SUITE_TABLE_DEFAULT = "{{state_short}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})";
     public static final String NAGIOS_OUTPUT_CASE_OK_DEFAULT = "{{state_short}} case \"{{id}}\" ran in {{duration}}s - {{state_description}}";
     public static final String NAGIOS_OUTPUT_CASE_WARNING_DEFAULT = "{{state_short}} case \"{{id}}\" over runtime ({{duration}}s /{{state_description}} at {{warning_threshold}}s) {{step_information}}";
     public static final String NAGIOS_OUTPUT_CASE_CRITICAL_DEFAULT = "{{state_short}} case \"{{id}}\" over runtime ({{duration}}s /{{state_description}} at {{critical_threshold}}s) {{step_information}}";

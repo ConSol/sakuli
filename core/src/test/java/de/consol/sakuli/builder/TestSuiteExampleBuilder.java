@@ -24,8 +24,10 @@ import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliException;
 import org.apache.commons.lang.time.DateUtils;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -43,17 +45,21 @@ public class TestSuiteExampleBuilder implements ExampleBuilder<TestSuite> {
     private List<TestCase> testCases;
     private int warningTime;
     private int criticalTime;
+    private Path folder;
+    private String browserInfo;
 
 
     public TestSuiteExampleBuilder() {
         this.state = TestSuiteState.RUNNING;
         this.host = "localhost";
         this.id = "UnitTest_" + System.nanoTime();
-        this.stopDate = DateUtils.addMinutes(new Date(), 2);
-        this.startDate = new Date();
+        this.startDate = new GregorianCalendar(2014, 7, 17, 14, 0).getTime();
+        this.stopDate = DateUtils.addMinutes(startDate, 2);
         this.testCases = Arrays.asList(new TestCaseExampleBuilder().buildExample());
         this.warningTime = 0;
         this.criticalTime = 0;
+        this.folder = null;
+        this.browserInfo = "firefox";
     }
 
     public TestSuite buildExample() {
@@ -68,6 +74,8 @@ public class TestSuiteExampleBuilder implements ExampleBuilder<TestSuite> {
         testSuite.setHost(host);
         testSuite.setBrowserInfo("Firefox Test Browser");
         testSuite.addException(exception);
+        testSuite.setTestSuiteFolder(folder);
+        testSuite.setBrowserInfo(browserInfo);
         for (TestCase testCase : testCases) {
             testSuite.addTestCase(testCase.getId(), testCase);
         }
@@ -116,6 +124,11 @@ public class TestSuiteExampleBuilder implements ExampleBuilder<TestSuite> {
 
     public TestSuiteExampleBuilder withCriticalTime(int criticalTime) {
         this.criticalTime = criticalTime;
+        return this;
+    }
+
+    public TestSuiteExampleBuilder withTestSuiteFolder(Path folder) {
+        this.folder = folder;
         return this;
     }
 }

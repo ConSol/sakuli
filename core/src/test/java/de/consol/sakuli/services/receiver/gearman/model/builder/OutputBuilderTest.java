@@ -36,6 +36,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -331,5 +332,67 @@ public class OutputBuilderTest {
         NagiosOutput output = testling.withTestSuite(testSuite, gearmanProperties).build();
         String substringStatusSummary = output.getOutputString().substring(0, output.getOutputString().indexOf("|"));
         assertEquals(substringStatusSummary, expectedHTML);
+    }
+
+    @Test
+    public void testGetTextPlaceHolderTestSuite() throws Exception {
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .withState(TestSuiteState.OK)
+                .withTestSuiteFolder(Paths.get("folder"))
+                .buildExample();
+        final PlaceholderMap textPlaceholder = testling.getTextPlaceholder(testSuite);
+
+        assertEquals(textPlaceholder.get(STATE), "OK");
+        assertEquals(textPlaceholder.get(STATE_SHORT), "[OK]");
+        assertEquals(textPlaceholder.get(STATE_DESC), "ok");
+        assertEquals(textPlaceholder.get(SUITE_SUMMARY), "{{state_description}}");
+        assertEquals(textPlaceholder.get(NAME), testSuite.getName());
+        assertEquals(textPlaceholder.get(ID), testSuite.getId());
+        assertEquals(textPlaceholder.get(DURATION), "120.00");
+        assertEquals(textPlaceholder.get(START_DATE), OutputBuilder.dateFormat.format(testSuite.getStartDate()));
+        assertEquals(textPlaceholder.get(STOP_DATE), OutputBuilder.dateFormat.format(testSuite.getStopDate()));
+        assertEquals(textPlaceholder.get(WARN_THRESHOLD), "0");
+        assertEquals(textPlaceholder.get(CRITICAL_THRESHOLD), "0");
+        assertEquals(textPlaceholder.get(ERROR_MESSAGE), "");
+        assertEquals(textPlaceholder.get(SUITE_FOLDER), "folder");
+        assertEquals(textPlaceholder.get(HOST), "localhost");
+        assertEquals(textPlaceholder.get(BROWSER_INFO), "firefox");
+        assertEquals(textPlaceholder.get(TD_CSS_CLASS), "serviceOK");
+        //assert empty fields
+        assertEquals(textPlaceholder.get(CASE_FILE), "");
+        assertEquals(textPlaceholder.get(CASE_LAST_URL), "");
+        assertEquals(textPlaceholder.get(CASE_START_URL), "");
+        assertEquals(textPlaceholder.get(STEP_INFORMATION), "");
+    }
+
+    @Test
+    public void testGetTextPlaceHolderTestCase() throws Exception {
+        TestCase testCase = new TestCaseExampleBuilder()
+                .withState(TestCaseState.OK)
+                .withTestCaseFile(Paths.get("folder/_tc.js"))
+                .buildExample();
+        final PlaceholderMap textPlaceholder = testling.getTextPlaceholder(testCase);
+
+        assertEquals(textPlaceholder.get(STATE), "OK");
+        assertEquals(textPlaceholder.get(STATE_SHORT), "[OK]");
+        assertEquals(textPlaceholder.get(STATE_DESC), "ok");
+        assertEquals(textPlaceholder.get(NAME), testCase.getName());
+        assertEquals(textPlaceholder.get(ID), testCase.getId());
+        assertEquals(textPlaceholder.get(DURATION), "3.00");
+        assertEquals(textPlaceholder.get(STOP_DATE), OutputBuilder.dateFormat.format(testCase.getStopDate()));
+        assertEquals(textPlaceholder.get(START_DATE), OutputBuilder.dateFormat.format(testCase.getStartDate()));
+        assertEquals(textPlaceholder.get(WARN_THRESHOLD), "4");
+        assertEquals(textPlaceholder.get(CRITICAL_THRESHOLD), "5");
+        assertEquals(textPlaceholder.get(ERROR_MESSAGE), "");
+        assertEquals(textPlaceholder.get(CASE_FILE), "folder/_tc.js");
+        assertEquals(textPlaceholder.get(CASE_LAST_URL), "http://www.last-url.com");
+        assertEquals(textPlaceholder.get(CASE_START_URL), "http://www.start-url.com");
+        assertEquals(textPlaceholder.get(STEP_INFORMATION), "");
+        assertEquals(textPlaceholder.get(TD_CSS_CLASS), "serviceOK");
+        //assert empty fields
+        assertEquals(textPlaceholder.get(SUITE_SUMMARY), "");
+        assertEquals(textPlaceholder.get(SUITE_FOLDER), "");
+        assertEquals(textPlaceholder.get(HOST), "");
+        assertEquals(textPlaceholder.get(BROWSER_INFO), "");
     }
 }

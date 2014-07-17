@@ -156,6 +156,10 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         return testSuiteFile == null ? null : testSuiteFile.toAbsolutePath().toString();
     }
 
+    public void setTestSuiteFolder(Path testSuiteFolder) {
+        this.testSuiteFolder = testSuiteFolder;
+    }
+
     public Path getTestSuiteFolder() {
         return testSuiteFolder;
     }

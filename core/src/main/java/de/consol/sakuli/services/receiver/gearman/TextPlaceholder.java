@@ -28,14 +28,25 @@ public enum TextPlaceholder {
     STATE("{{state}}"),
     STATE_SHORT("{{state_short}}"),
     STATE_DESC("{{state_description}}"),
-    STATE_SUMMARY("{{state_summary}}"),
     ID("{{id}}"),
+    NAME("{{NAME}}"),
     DURATION("{{duration}}"),
-    LAST_RUN("{{last_run}}"),
+    START_DATE("{{start_date}}"),
+    STOP_DATE("{{stop_date}}"),
     ERROR_MESSAGE("{{error_message}}"),
     WARN_THRESHOLD("{{warning_threshold}}"),
     CRITICAL_THRESHOLD("{{critical_threshold}}"),
+    //test suite specific placeholder
+    SUITE_SUMMARY("{{suite_summary}}"),
+    SUITE_FOLDER("{{suite_folder}}"),
+    BROWSER_INFO("{{browser_info}}"),
+    HOST("{{host}}"),
+    //test case specific placeholder
+    CASE_FILE("{{case_file}}"),
+    CASE_START_URL("{{case_start_URL}}"),
+    CASE_LAST_URL("{{case_last_URL}}"),
     STEP_INFORMATION("{{step_information}}"),
+    //just for internal usage
     TD_CSS_CLASS("{{TD_CSS_CLASS}}");
 
     private final String pattern;
