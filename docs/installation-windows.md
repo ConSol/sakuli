@@ -15,7 +15,7 @@ We recommend to run Sakuli clients on virtual machines, as they are easy to mana
 
 ## (Recommended) Preparations
 Before you start with the implementation of Sakuli tests, there are some UI settings, which will be recommended to be done on the operating system
-to ensure stable tests. Please follow the instruction [Disable Windows UI Effects](sakuli-manual#disable-windows-7-effects).
+to ensure stable tests. Please follow the instruction [Disable Windows UI Effects](sakuli-manual.md#disable-windows-7-effects).
 
 #### 
 
