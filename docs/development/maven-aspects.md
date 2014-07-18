@@ -20,10 +20,10 @@
  
 ## Special Maven Profiles
 Profiles cann be added with `-P` parameter, like e.g. `mvn install -P no-ui-tests,upload-release`
- ### `no-ui-tests`
- Disables in the phase `integration-test` the UI based tests.
- 
- ### `upload-release`
+
+#### `no-ui-tests`
+Disables in the phase `integration-test` the UI based tests.
+#### `upload-release`
  Enables the secure copy of the `sakuli-zipped-release-vX.X.X.zip` file and the maven artifacts to the 
  [ConSol Labs](http://labs.consol.de/sakuli/) server. Your private key for the ssh connection have to be configured in
   you maven config file `.m2/settings.xml` like follow:
@@ -44,14 +44,14 @@ Profiles cann be added with `-P` parameter, like e.g. `mvn install -P no-ui-test
 
   ```
  
- ### `generate-jsdox`
+#### `generate-jsdox`
  If this profile will be enabled the module **docs** and generate the markdown files in foler [Sakuli-API](../api).
   
- ### `jsdox-set-proxy`
+#### `jsdox-set-proxy`
  If it is necessary to run the [Sakuli-API](../api) build behind a company proxy, enable this profile and configure your
  proxy in the file [docs/pom.xml](../pom.xml).
   
- ### `release-build` (internal use)
+#### `release-build` (internal use)
  This profile will be only enabled if you perform a release, see [How to Release](how-to-release.md). In this case
  it is necessary to override the path of the sahi installation.
  
