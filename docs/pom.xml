@@ -43,16 +43,12 @@
     <profiles>
         <profile>
             <id>generate-jsdox</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <build>
-                <!-- TODO TS copy files to a temp dir and rename it to .js files -->
                 <plugins>
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
-                        <version>0.0.14</version>
+                        <version>0.0.15</version>
 
                         <executions>
 
@@ -88,12 +84,28 @@
                                     <arguments>
                                         <argument>node/npm</argument>
                                         <argument>install</argument>
+                                        <argument>-g</argument>
                                         <argument>jsdox</argument>
                                     </arguments>
                                 </configuration>
                                 <phase>prepare-package</phase>
                             </execution>
-
+                            <execution>
+                                <id>npm-test</id>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>node/node</executable>
+                                    <!-- optional -->
+                                    <workingDirectory>${node.dir}</workingDirectory>
+                                    <arguments>
+                                        <argument>node/npm</argument>
+                                        <argument>test</argument>
+                                    </arguments>
+                                </configuration>
+                                <phase>prepare-package</phase>
+                            </execution>
                             <execution>
                                 <id>jsdox-generate-md-files</id>
                                 <goals>
@@ -104,7 +116,7 @@
                                     <!-- optional -->
                                     <workingDirectory>${node.dir}</workingDirectory>
                                     <arguments>
-                                        <argument>node_modules/jsdox</argument>
+                                        <argument>bin/jsdox</argument>
                                         <argument>--output</argument>
                                         <argument>${project.basedir}/api</argument>
                                         <argument>${project.parent.basedir}/core/src/main/_include/</argument>
