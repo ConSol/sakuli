@@ -58,7 +58,8 @@ Some configuration settings in the file `%SAKULI_HOME%\include\sakuli.properties
   * To make usage of the sakluli encryption featres, set the encryption interface property like `sakuli.encryption.interface=eth3`. For further informations jump to [encryption of secrets](sakuli-manual.md) and come back here.
   * If there is no need of any encryption feature, set the property like `sakuli.encryption.interface.testmode=true`.
 
-* Receivers:
+* Receivers (optional, disabled per default):
+
   To interpret the results of an test execution, it is possible to configure one or more of the following receivers:  
   * [Database Receiver](receivers/database.md)
   * [Gearman Receiver](receivers/gearman.md)
