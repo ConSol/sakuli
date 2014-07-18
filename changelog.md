@@ -48,3 +48,12 @@ inside of the `sakuli.properties` or the `testsuite.properties`
 * Bugfixing and extended unit tests.
   
 * Update the documentation
+
+### Version 0.4.2
+* Introducing receiver concept: For each receiver the results will be sent. Currently Supported JDBC-Databases and the Gearman
+  receiver.
+
+* Gearman receiver: sent all data directly to your OMD/Nagios distribution. Currently it is missing that the screenshots
+  will also be transferred. This will be fixed in the next version
+  
+* Bufixing in maven build, exception handling, testcase ids and  added some more unit tests
