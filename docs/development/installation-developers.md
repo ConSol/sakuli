@@ -6,6 +6,9 @@ For the following guide you need
 * Access to the issue-tracker tool (currently JIRA)
 * Git
 * Development environment (we advise IntelliJ IDEA)
+* Maven 3 
+
+  __attention for Ubuntu users!!!__ - don't use the default maven version over `apt-get install mvn`
 * Java JDK 1.7
   * Please use the original Oracle JDK - OpenJDK unfortunately won't work for the JavaFX based integration test, see [Java FX installation](java_fx_installation). 
   * Ensure that your `JAVA_HOME` system variable links to the correct jdk-version
@@ -18,6 +21,7 @@ For the following guide you need
 * Import the project as a maven-project
 
 ###Maven Settings
+* Ensure that you have at least installed maven 3, run `mvn --version`
 * Config the local maven settings `~/.m2/settings.xml` for your environment as follows:
     
      ```
@@ -52,15 +56,6 @@ For the following guide you need
      
      ```
 
-
-###Database Setup
-Setup a local MySQL database to save the results of test case executions. The database won't be needed for running `mvn install`.
-
-* __User:__ `sahi`
-* __Password:__ `sahi`
-* __Database:__ `sahi`
-* __SQL-Script:__ [core/src/database_scripts/create_and_drop_database.sql](/core/src/database_scripts/create_and_drop_database.sql)
-
 ###Install Sahi
 * Change into the folder 'install/3rd-party' and execute the sahi JAR:
 
@@ -76,6 +71,13 @@ Setup a local MySQL database to save the results of test case executions. The da
 	* Tools
 	* Userdata
 
+###Database Setup (optional, onyl for DB receiver necessary)
+Setup a local MySQL database to save the results of test case executions. The database won't be needed for running `mvn install`.
+
+* __User:__ `sahi`
+* __Password:__ `sahi`
+* __Database:__ `sahi`
+* __SQL-Script:__ [core/src/database_scripts/create_and_drop_database.sql](/core/src/database_scripts/create_and_drop_database.sql)
 
 
 ###Development-Environment-Konfiguration
