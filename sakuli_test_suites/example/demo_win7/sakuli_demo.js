@@ -112,6 +112,6 @@ try {
     testCase.handleException(e);
 } finally {
     appNotepad.closeApp();
-    appCalc.closeApp(); //TODO Methodennamen unterschiedlich, open() und closeApp()
+    appCalc.closeApp();
     testCase.saveResult();
 }

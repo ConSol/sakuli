@@ -74,9 +74,10 @@ public class SakuliStarter {
                 /**
                  * initialize the property environment
                  */
-                final String testSuiteFolderPath = args[1];
-                final String includeFolderPath = args[2];
-                final String sahiProxyHomePath = args[3];
+                final String testSuiteFolderPath = args.length >= 1 ? args[1] : null;
+                final String includeFolderPath = args.length >= 2 ? args[2] : null;
+                final String sahiProxyHomePath = args.length >= 3 ? args[3] : null;
+
                 TestSuiteState resultState = runTestSuite(testSuiteFolderPath, includeFolderPath, sahiProxyHomePath);
                 //return the state as system exit parameter
                 //return values are corresponding to the error codes in file "sahi_return_codes.txt"
