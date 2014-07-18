@@ -5,7 +5,7 @@
  1. Compiles the sources with the `aspectj-maven-plugin` to weave the source code and the dependencies
  2. Execute all unit tests
  3. Add the built maven artifacts to the local workspace
- 4. Builds the `sakuli-zipped-release-vX.X.X.zip` file locally
+ 4. Builds the `sakuli-zipped-release-vX.X.X.zip` file locally in the folder `target\install`
  5  Execute all integration tests (with UI-Tests)
  6. Deploys the maven artifacts to the local repository
  
@@ -24,11 +24,28 @@ Profiles cann be added with `-P` parameter, like e.g. `mvn install -P no-ui-test
  Disables in the phase `integration-test` the UI based tests.
  
  ### `upload-release`
- Enables the copy of the `sakuli-zipped-release-vX.X.X.zip` file and the maven artifacts to the 
- [ConSol Labs](http://labs.consol.de/sakuli/) server. 
+ Enables the secure copy of the `sakuli-zipped-release-vX.X.X.zip` file and the maven artifacts to the 
+ [ConSol Labs](http://labs.consol.de/sakuli/) server. Your private key for the ssh connection have to be configured in
+  you maven config file `.m2/settings.xml` like follow:
+  ```
+      <servers>
+          <server>
+              <id>labs-consol-sakuli-install</id>
+              <username>sakuli</username>
+              <privateKey>${user.home}/.ssh/id_rsa</privateKey>
+          </server>
+  
+          <server>
+              <id>labs-consol-sakuli-repository</id>
+              <username>maven-repository</username>
+              <privateKey>${user.home}/.ssh/id_rsa</privateKey>
+          </server>
+      </servers>
+
+  ```
  
- ### `generate-jsdox` (default: active)
- If this profile will be disabled the module **docs** won't generate the files in foler [Sakuli-API](../api).
+ ### `generate-jsdox`
+ If this profile will be enabled the module **docs** and generate the markdown files in foler [Sakuli-API](../api).
   
  ### `jsdox-set-proxy`
  If it is necessary to run the [Sakuli-API](../api) build behind a company proxy, enable this profile and configure your
