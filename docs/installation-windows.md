@@ -35,7 +35,7 @@ This chapter includes the installation of Sakuli (which already has Sikuli on bo
 	
 
 ### Sakuli - Install the sakuli-zipped-release
-* Download [sakuli-zipped-release-v0.4.0.zip](http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.0.zip)
+* Download [sakuli-zipped-release-vXXX.zip](http://labs.consol.de/sakuli/install)
 * Unzip ths downloaded archive to `C:\\` as destination folder (=it will decompress into `C:\sakuli`). 
 * From the desktop, right-click *My Computer* and click *Properties*
 	* In *System Properties*, click on *Advanced*
