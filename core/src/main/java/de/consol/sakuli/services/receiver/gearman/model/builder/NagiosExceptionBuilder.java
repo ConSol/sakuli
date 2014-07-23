@@ -31,21 +31,19 @@ import java.nio.charset.Charset;
 public class NagiosExceptionBuilder {
 
 
-    public static SakuliReceiverException buildUnexpectedErrorException(Throwable e, String host, int port, String message) {
+    public static SakuliReceiverException buildUnexpectedErrorException(Throwable e, String host, int port) {
         return new SakuliReceiverException(e,
-                String.format("unexpected error by sending the results to the gearman receiver '%s:'%s':%n%s",
+                String.format("unexpected error by sending the results to the gearman receiver '%s:'%s'",
                         host,
-                        port,
-                        buildMessageForException(message)
+                        port
                 ));
     }
 
-    public static SakuliReceiverException buildTransferException(String host, int port, String message, GearmanJobResult result) {
+    public static SakuliReceiverException buildTransferException(String host, int port, GearmanJobResult result) {
         return new SakuliReceiverException(
-                String.format("something went wrong during the transfer of the results to the gearman receiver '%s:'%s':%n%s%n%s",
+                String.format("something went wrong during the transfer of the results to the gearman receiver '%s:'%s':%n%s",
                         host,
                         port,
-                        buildMessageForException(message),
                         buildExceptionForGearmanResult(result)
                 ));
     }
@@ -65,7 +63,4 @@ public class NagiosExceptionBuilder {
         return new String(exceptions, Charset.forName("UTF-8"));
     }
 
-    private static String buildMessageForException(String message) {
-        return "MESSAGE:\n" + message;
-    }
 }

@@ -30,11 +30,9 @@ public class NagiosExceptionBuilderTest {
 
     @Test
     public void testBuildUnexpectedErrorException() throws Exception {
-        SakuliReceiverException sakuliReceiverException = NagiosExceptionBuilder.buildUnexpectedErrorException(new Exception("TEST"), "localhost", 4370, "output");
+        SakuliReceiverException sakuliReceiverException = NagiosExceptionBuilder.buildUnexpectedErrorException(new Exception("TEST"), "localhost", 4370);
         assertEquals(sakuliReceiverException.getMessage(),
-                "unexpected error by sending the results to the gearman receiver 'localhost:'4370':\n" +
-                        "MESSAGE:\n" +
-                        "output");
+                "unexpected error by sending the results to the gearman receiver 'localhost:'4370'");
     }
 
     @Test
@@ -42,11 +40,9 @@ public class NagiosExceptionBuilderTest {
         GearmanJobResult result = mock(GearmanJobResult.class);
         when(result.getExceptions()).thenReturn("exceptions".getBytes());
         when(result.getWarnings()).thenReturn("warnings".getBytes());
-        SakuliReceiverException sakuliReceiverException = NagiosExceptionBuilder.buildTransferException("localhost", 4370, "output", result);
+        SakuliReceiverException sakuliReceiverException = NagiosExceptionBuilder.buildTransferException("localhost", 4370, result);
         assertEquals(sakuliReceiverException.getMessage(),
                 "something went wrong during the transfer of the results to the gearman receiver 'localhost:'4370':\n" +
-                        "MESSAGE:\n" +
-                        "output\n" +
                         "EXCEPTIONS:\n" +
                         "exceptions\n" +
                         "WARNINGS:\n" +

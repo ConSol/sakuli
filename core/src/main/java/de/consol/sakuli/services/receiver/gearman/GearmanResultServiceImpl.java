@@ -72,18 +72,19 @@ public class GearmanResultServiceImpl extends AbstractResultService {
             GearmanJobResult result = future.get();
             if (result.jobSucceeded()) {
                 gearmanClient.shutdown();
+                logger.info("======= FINISHED: SEND RESULTS TO GEARMAN SERVER ======");
             } else {
                 exceptionHandler.handleException(
-                        NagiosExceptionBuilder.buildTransferException(hostname, port, message, result)
+                        NagiosExceptionBuilder.buildTransferException(hostname, port, result)
                 );
             }
 
         } catch (Throwable e) {
+            logger.error(e.getMessage());
             exceptionHandler.handleException(
-                    NagiosExceptionBuilder.buildUnexpectedErrorException(e, hostname, port, message),
+                    NagiosExceptionBuilder.buildUnexpectedErrorException(e, hostname, port),
                     true);
         }
-        logger.info("======= FINISHED: SEND RESULTS TO GEARMAN SERVER ======");
     }
 
     protected GearmanJob creatJob(NagiosCheckResult checkResult) {
