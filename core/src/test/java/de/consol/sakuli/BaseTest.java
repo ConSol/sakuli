@@ -88,4 +88,29 @@ public abstract class BaseTest {
         return getLastLineWithContent(file, "");
     }
 
+    public static String getLastLineOfLogFile(Path file, int lastLines) throws IOException {
+        Scanner in;
+        StringBuilder result = new StringBuilder();
+
+        in = new Scanner(Files.newInputStream(file));
+        int countOfLines = 0;
+        while (in.hasNextLine()) {
+            countOfLines++;
+            in.nextLine();
+        }
+
+        in = new Scanner(Files.newInputStream(file));
+        int countOfReadInLines = 0;
+        while (in.hasNextLine()) {
+            countOfReadInLines++;
+            String line = in.nextLine();
+            if (countOfLines - countOfReadInLines <= lastLines) {
+                result.append(line).append("\n");
+            }
+        }
+
+
+        return result.toString();
+    }
+
 }

@@ -22,7 +22,7 @@ import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliReceiverException;
-import de.consol.sakuli.services.ResultService;
+import de.consol.sakuli.services.common.AbstractResultService;
 import de.consol.sakuli.services.receiver.database.dao.DaoTestCase;
 import de.consol.sakuli.services.receiver.database.dao.DaoTestCaseStep;
 import de.consol.sakuli.services.receiver.database.dao.DaoTestSuite;
@@ -38,7 +38,7 @@ import org.springframework.util.CollectionUtils;
  */
 @ProfileJdbcDb
 @Component
-public class DatabaseResultServiceImpl implements ResultService {
+public class DatabaseResultServiceImpl extends AbstractResultService {
     private static Logger logger = LoggerFactory.getLogger(DatabaseResultServiceImpl.class);
 
     @Autowired

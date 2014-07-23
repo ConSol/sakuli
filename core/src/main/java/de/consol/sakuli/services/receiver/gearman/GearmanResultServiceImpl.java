@@ -20,7 +20,7 @@ package de.consol.sakuli.services.receiver.gearman;
 
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
-import de.consol.sakuli.services.ResultService;
+import de.consol.sakuli.services.common.AbstractResultService;
 import de.consol.sakuli.services.receiver.gearman.model.NagiosCheckResult;
 import de.consol.sakuli.services.receiver.gearman.model.builder.NagiosCheckResultBuilder;
 import de.consol.sakuli.services.receiver.gearman.model.builder.NagiosExceptionBuilder;
@@ -41,7 +41,7 @@ import java.util.concurrent.Future;
  */
 @ProfileGearman
 @Component
-public class GearmanResultServiceImpl implements ResultService {
+public class GearmanResultServiceImpl extends AbstractResultService {
     private static final Logger logger = LoggerFactory.getLogger(GearmanResultServiceImpl.class);
     @Autowired
     private TestSuite testSuite;

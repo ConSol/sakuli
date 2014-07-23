@@ -16,14 +16,13 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.database;
+package de.consol.sakuli.services.receiver.database;
 
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestCaseStep;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliReceiverException;
-import de.consol.sakuli.services.receiver.database.DatabaseResultServiceImpl;
 import de.consol.sakuli.services.receiver.database.dao.DaoTestCase;
 import de.consol.sakuli.services.receiver.database.dao.DaoTestCaseStep;
 import de.consol.sakuli.services.receiver.database.dao.DaoTestSuite;

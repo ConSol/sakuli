@@ -27,6 +27,11 @@ import de.consol.sakuli.datamodel.properties.SakuliProperties;
 public interface ResultService {
 
     /**
+     * refresh all states in the Sakuli test suite
+     */
+    void refreshStates();
+
+    /**
      * Triggers that all current results will be saved, in consideration of the {@link SakuliProperties}.
      */
     void saveAllResults();

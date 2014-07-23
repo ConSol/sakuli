@@ -48,7 +48,7 @@ public class LoggerTest extends BaseTest {
 
     @Mock
     private TestSuite testSuite;
-    private PropertyHolder properties;
+    protected PropertyHolder properties;
 
     @BeforeMethod
     public void init() {

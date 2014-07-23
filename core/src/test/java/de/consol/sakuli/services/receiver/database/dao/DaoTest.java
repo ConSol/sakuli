@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package de.consol.sakuli.services.dao.impl;
+package de.consol.sakuli.services.receiver.database.dao;
 
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.services.receiver.database.dao.impl.Dao;

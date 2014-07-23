@@ -78,10 +78,10 @@ public class SakuliStarter {
                 final String includeFolderPath = args.length >= 2 ? args[2] : null;
                 final String sahiProxyHomePath = args.length >= 3 ? args[3] : null;
 
-                TestSuiteState resultState = runTestSuite(testSuiteFolderPath, includeFolderPath, sahiProxyHomePath);
+                TestSuite testSuite = runTestSuite(testSuiteFolderPath, includeFolderPath, sahiProxyHomePath);
                 //return the state as system exit parameter
                 //return values are corresponding to the error codes in file "sahi_return_codes.txt"
-                System.exit(resultState.getErrorCode());
+                System.exit(testSuite.getState().getErrorCode());
 
             } else if (cmd.hasOption(encrypt.getOpt())) {
                 final String ethInterface = cmd.getOptionValue("interface");
@@ -105,6 +105,14 @@ public class SakuliStarter {
     }
 
     /**
+     * wrapper for {@link #runTestSuite(String, String, String)} with usage of the default sahi-proxy configured
+     * in the 'sakuli.properties'.
+     */
+    public static TestSuite runTestSuite(String testSuiteFolderPath, String includeFolderPath) throws FileNotFoundException {
+        return runTestSuite(testSuiteFolderPath, includeFolderPath, null);
+    }
+
+    /**
      * Executes a specific Sakuli test suite in the assigend 'testSuiteFolder'.
      * A test suite has to contain as minimum following files:
      * - testsuite.suite  => specifies the testcases
@@ -116,7 +124,7 @@ public class SakuliStarter {
      * @return the {@link TestSuiteState} of the Sakuli test execution.
      * @throws FileNotFoundException
      */
-    public static TestSuiteState runTestSuite(String testSuiteFolderPath, String includeFolderPath, String sahiProxyHomePath) throws FileNotFoundException {
+    public static TestSuite runTestSuite(String testSuiteFolderPath, String includeFolderPath, String sahiProxyHomePath) throws FileNotFoundException {
         String tempLogCache = "";
         //check and set the path to the test suite
         tempLogCache = checkTestSuiteFolderAndSetContextVariables(testSuiteFolderPath, tempLogCache);
@@ -140,6 +148,7 @@ public class SakuliStarter {
             initializingService.initTestSuite();
         }
 
+        TestSuite result = BeanLoader.loadBean(TestSuite.class);
         /***
          * SAKULI Starter to run the test suite with embedded sahi proxy
          */
@@ -159,22 +168,15 @@ public class SakuliStarter {
             //save results for all active result services
             Map<String, ResultService> resultServices = BeanLoader.loadMultipleBeans(ResultService.class);
             for (ResultService resultService : resultServices.values()) {
+                resultService.refreshStates();
                 resultService.saveAllResults();
             }
 
-            //finally log and shutdown context
-            final TestSuite testSuite = BeanLoader.loadBean(TestSuite.class);
+            //finally shutdown context and return the result
+            result = BeanLoader.loadBean(TestSuite.class);
             BeanLoader.releaseContext();
-            logger.info(testSuite.getResultString()
-                    + "\n===========  SAKULI Testsuite '" + testSuite.getGuid() + "' execution FINISHED - "
-                    + testSuite.getState() + " ======================\n");
-            if (testSuite.getState().equals(TestSuiteState.ERRORS)) {
-                String errorMsg = "ERROR-Summary:\n" + testSuite.getExceptionMessages();
-                logger.error(errorMsg + "\n");
-            }
-
-            return testSuite.getState();
         }
+        return result;
     }
 
     /**
