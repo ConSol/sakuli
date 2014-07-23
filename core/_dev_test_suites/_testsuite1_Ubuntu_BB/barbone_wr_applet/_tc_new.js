@@ -64,6 +64,7 @@ try {
 
 
     } finally {
+        //environment.type(Key.ALT + Key.F4);
         editorApp.closeApp();
         new Region().waitForImage("gedit_close_without_saving", 10).click();
         environment.sleep(1);

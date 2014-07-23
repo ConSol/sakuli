@@ -71,7 +71,7 @@ public class SakuliExceptionHandler {
     }
 
     private static String format(String message) {
-        if (message.contains(":")) {
+        if (message != null && message.contains(":")) {
             return message.substring(message.indexOf(":") + 1);
         }
         return message;

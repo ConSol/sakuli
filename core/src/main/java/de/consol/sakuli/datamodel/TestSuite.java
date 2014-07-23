@@ -28,10 +28,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author tschneck Date: 10.06.13
@@ -207,7 +204,8 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
      * @return a unique identifier for each execution of the test suite
      */
     public String getGuid() {
-        return id + "__" + GUID_DATE_FORMATE.format(startDate);
+        Date guidDate = startDate != null ? startDate : new Date();
+        return id + "__" + GUID_DATE_FORMATE.format(guidDate);
     }
 
     public void addTestCase(String testCaseId, TestCase testCase) {
