@@ -74,9 +74,9 @@ public class SakuliStarter {
                 /**
                  * initialize the property environment
                  */
-                final String testSuiteFolderPath = args.length >= 1 ? args[1] : null;
-                final String includeFolderPath = args.length >= 2 ? args[2] : null;
-                final String sahiProxyHomePath = args.length >= 3 ? args[3] : null;
+                final String testSuiteFolderPath = args.length > 1 ? args[1] : null;
+                final String includeFolderPath = args.length > 2 ? args[2] : null;
+                final String sahiProxyHomePath = args.length > 3 ? args[3] : null;
 
                 TestSuite testSuite = runTestSuite(testSuiteFolderPath, includeFolderPath, sahiProxyHomePath);
                 //return the state as system exit parameter
