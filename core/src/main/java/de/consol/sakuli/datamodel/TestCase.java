@@ -21,25 +21,21 @@ package de.consol.sakuli.datamodel;
 import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestCaseStepState;
 import de.consol.sakuli.exceptions.SakuliException;
+import org.springframework.util.CollectionUtils;
 
-import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author tschneck
  *         Date: 17.06.13
  */
-// TODO check if component scan with scope prototyp is possible
 public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState> {
 
     /**
+     * {@link #id} and {@link # startUrl}
      * will be set with the method {@link de.consol.sakuli.starter.SahiConnector#init()}
      */
-    private String id;
     private String startUrl;
     /**
      * will be set with the method {@link de.consol.sakuli.actions.TestCaseAction#saveResult(String, String, String, String, String)}
@@ -68,35 +64,6 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
     }
 
     /**
-     * transforms a URI folder path and a test suite ID to a test case id.
-     *
-     * @param uriPathToTestCaseFile path to the "_tc.js" file
-     * @param testSuiteId           id of the parent test suite.
-     * @return a fitting testcase id
-     */
-    public static String convertTestCaseFileToID(String uriPathToTestCaseFile, String testSuiteId) {
-        return convertFolderPathToName(uriPathToTestCaseFile).replace(" ", "_").toUpperCase() + "_" + testSuiteId;
-    }
-
-    /**
-     * transforms a URI folder path into a test case Name
-     *
-     * @param uriPathToTestCaseFile
-     * @return null if the Path is not valid.
-     */
-    public static String convertFolderPathToName(String uriPathToTestCaseFile) {
-        uriPathToTestCaseFile = uriPathToTestCaseFile.replace(File.separator, "/");
-        if (uriPathToTestCaseFile.lastIndexOf("/") != uriPathToTestCaseFile.indexOf("/")) {
-            uriPathToTestCaseFile = uriPathToTestCaseFile.substring(0, uriPathToTestCaseFile.lastIndexOf('/'));
-            return uriPathToTestCaseFile.substring(uriPathToTestCaseFile.lastIndexOf("/") + 1);
-        } else if (uriPathToTestCaseFile.lastIndexOf("/") == uriPathToTestCaseFile.indexOf("/")) {
-            return uriPathToTestCaseFile.substring(0, uriPathToTestCaseFile.lastIndexOf("/"));
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -105,8 +72,9 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
             state = TestCaseState.ERRORS;
         } else {
             boolean stepWarning = false;
-            if (getSteps() != null) {
-                for (TestCaseStep step : getSteps()) {
+            if (steps != null) {
+                for (TestCaseStep step : steps) {
+                    step.refreshState();
                     if (TestCaseStepState.WARNING.equals(step.getState())) {
                         stepWarning = true;
                     }
@@ -137,8 +105,8 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
                 + "\n\tlast URL: " + this.getLastURL();
 
         //steps
-        if (steps != null && !steps.isEmpty()) {
-            for (TestCaseStep step : this.steps) {
+        if (!CollectionUtils.isEmpty(steps)) {
+            for (TestCaseStep step : getStepsAsSortedSet()) {
                 stout += step.getResultString();
             }
         }
@@ -148,10 +116,6 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
     /**
      * Getter and Setter**
      */
-
-    public String getId() {
-        return id;
-    }
 
     public String getStartUrl() {
         return startUrl;
@@ -173,6 +137,10 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
         return steps;
     }
 
+    public void setSteps(List<TestCaseStep> steps) {
+        this.steps = steps;
+    }
+
     public void addStep(TestCaseStep step) {
         if (steps == null) {
             steps = new ArrayList<>();
@@ -183,21 +151,19 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
 
     @Override
     public String toString() {
-        return "id=" + getId()
-                + ", name=" + getName();
+        return "TestCase{" +
+                super.toString() +
+                ", id='" + id + '\'' +
+                ", startUrl='" + startUrl + '\'' +
+                ", lastURL='" + lastURL + '\'' +
+                ", steps=" + steps +
+                ", tcFile=" + tcFile +
+                "} ";
     }
 
     public String getActionValueString() {
         return "id=" + getId()
                 + ", name=" + getName();
-    }
-
-    public void setDbPrimaryKey(int dbPrimaryKey) {
-        this.dbPrimaryKey = dbPrimaryKey;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
     }
 
     public Path getTcFile() {
@@ -206,5 +172,16 @@ public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState>
 
     public void setTcFile(Path tcFile) {
         this.tcFile = tcFile;
+    }
+
+
+    /**
+     * @return all {@link TestCaseStep}s as {@link SortedSet} or a empty set if no test case steps are specified.
+     */
+    public SortedSet<TestCaseStep> getStepsAsSortedSet() {
+        if (!CollectionUtils.isEmpty(steps)) {
+            return new TreeSet<>(steps);
+        }
+        return new TreeSet<>();
     }
 }

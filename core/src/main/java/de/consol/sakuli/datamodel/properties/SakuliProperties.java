@@ -105,4 +105,5 @@ public class SakuliProperties extends AbstractProperties {
     public void setLogPattern(String logPattern) {
         this.logPattern = logPattern;
     }
+
 }

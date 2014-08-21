@@ -19,7 +19,6 @@
 package de.consol.sakuli.starter;
 
 import de.consol.sakuli.actions.environment.CipherUtil;
-import de.consol.sakuli.dao.DaoTestSuite;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.properties.ActionProperties;
 import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
@@ -29,8 +28,11 @@ import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.loader.BeanLoader;
+import de.consol.sakuli.services.InitializingService;
+import de.consol.sakuli.services.ResultService;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.apache.commons.cli.*;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +40,7 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 public class SakuliStarter {
 
@@ -71,72 +74,19 @@ public class SakuliStarter {
                 /**
                  * initialize the property environment
                  */
-                String tempLogCache = "";
-                if (cmd.hasOption(run.getOpt()) || cmd.hasOption(r.getOpt())) {
-                    //check and set the path to the test suite
-                    tempLogCache = checkTestSuiteFolderAndSetContextVariables(args[1], tempLogCache);
+                final String testSuiteFolderPath = args.length > 1 ? args[1] : null;
+                final String includeFolderPath = args.length > 2 ? args[2] : null;
+                final String sahiProxyHomePath = args.length > 3 ? args[3] : null;
 
-                    //if sahi home have been set override the default
-                    if (args.length > 3) {
-                        tempLogCache = checkSahiProxyHomeAndSetContextVariables(args[3], tempLogCache);
-                    }
-                }
-                //check and set the include folder
-                tempLogCache = checkIncludeFolderAndSetContextVariables(args[2], tempLogCache);
-
-                //because of the property loading strategy, the logger must be initialized through the Spring Context!
-                SahiConnector sahiConnector = BeanLoader.loadBean(SahiConnector.class);
-                Logger logger = LoggerFactory.getLogger(SakuliStarter.class);
-                logger.debug(tempLogCache);
-
-
-                /***
-                 * SAKULI Starter to run the test suite with embedded sahi proxy
-                 */
-                try {
-                    sahiConnector.init();
-
-                    //start the execution of the test suite
-                    logger.debug("start new sakuli test suite");
-                    sahiConnector.startSahiTestSuite();
-                }
-                /**
-                 * will be catched if the Sahi-Proxy could not shutdown;
-                 */ catch (SakuliProxyException e) {
-                    e.printStackTrace();
-                    System.exit(99);
-                } finally {
-                    DaoTestSuite daoTestSuite = BeanLoader.loadBean(DaoTestSuite.class);
-                    //after the execution,save the test suite
-                    daoTestSuite.updateTestSuiteResult();
-                    daoTestSuite.saveTestSuiteToSahiJobs();
-
-                    //fina log and shutdown context
-                    final TestSuite testSuite = BeanLoader.loadBean(TestSuite.class);
-                    BeanLoader.releaseContext();
-                    logger.info(testSuite.getResultString()
-                            + "\n===========  SAKULI Testsuite '" + testSuite.getGuid() + "' execution FINISHED - "
-                            + testSuite.getState() + " ======================\n");
-                    if (testSuite.getState().equals(TestSuiteState.ERRORS)) {
-                        String errorMsg = "ERROR-Summary:\n" + testSuite.getExceptionMessages();
-                        logger.error(errorMsg + "\n");
-                    }
-
-                    //return the state as system exit parameter
-                    //return values are corresponding to the error codes in file "sahi_return_codes.txt"
-                    System.exit(testSuite.getState().getErrorCode());
-                }
-
+                TestSuite testSuite = runTestSuite(testSuiteFolderPath, includeFolderPath, sahiProxyHomePath);
+                //return the state as system exit parameter
+                //return values are corresponding to the error codes in file "sahi_return_codes.txt"
+                System.exit(testSuite.getState().getErrorCode());
 
             } else if (cmd.hasOption(encrypt.getOpt())) {
-                String ethinterface = cmd.getOptionValue("interface");
-                ActionProperties cipherProps = new ActionProperties();
-                cipherProps.setEncryptionInterface(ethinterface);
-                cipherProps.setEncryptionInterfaceTestMode(false);
-                CipherUtil cipher = new CipherUtil(cipherProps);
-                cipher.getNetworkInterfaceNames();
+                final String ethInterface = cmd.getOptionValue("interface");
                 final String strToEncrypt = cmd.getOptionValue("encrypt");
-                final String encryptedStr = cipher.encrypt(strToEncrypt);
+                final String encryptedStr = encryptSecret(ethInterface, strToEncrypt);
                 System.out.println("String to Encrypt : " + strToEncrypt);
                 System.out.println("Encrypted : " + encryptedStr);
                 System.exit(0);
@@ -152,6 +102,98 @@ public class SakuliStarter {
             // TODO: Print out help
             System.exit(-1);
         }
+    }
+
+    /**
+     * wrapper for {@link #runTestSuite(String, String, String)} with usage of the default sahi-proxy configured
+     * in the 'sakuli.properties'.
+     */
+    public static TestSuite runTestSuite(String testSuiteFolderPath, String includeFolderPath) throws FileNotFoundException {
+        return runTestSuite(testSuiteFolderPath, includeFolderPath, null);
+    }
+
+    /**
+     * Executes a specific Sakuli test suite in the assigend 'testSuiteFolder'.
+     * A test suite has to contain as minimum following files:
+     * - testsuite.suite  => specifies the testcases
+     * - testsuite.properties  => specifies the runtime settings like the browser for the test suite.
+     *
+     * @param testSuiteFolderPath path to the Sakuli test suite
+     * @param includeFolderPath   import folder of the 'sakuli.properties' and 'sakuli.js' files
+     * @param sahiProxyHomePath   (optional) specifies a different sahi proxy as in the 'sakuli.properties' file
+     * @return the {@link TestSuiteState} of the Sakuli test execution.
+     * @throws FileNotFoundException
+     */
+    public static TestSuite runTestSuite(String testSuiteFolderPath, String includeFolderPath, String sahiProxyHomePath) throws FileNotFoundException {
+        String tempLogCache = "";
+        //check and set the path to the test suite
+        tempLogCache = checkTestSuiteFolderAndSetContextVariables(testSuiteFolderPath, tempLogCache);
+
+        //if sahi home have been set override the default
+        if (StringUtils.isNotEmpty(sahiProxyHomePath)) {
+            tempLogCache = checkSahiProxyHomeAndSetContextVariables(sahiProxyHomePath, tempLogCache);
+        }
+        //check and set the include folder
+
+        tempLogCache = checkIncludeFolderAndSetContextVariables(includeFolderPath, tempLogCache);
+
+        //because of the property loading strategy, the logger must be initialized through the Spring Context!
+        SahiConnector sahiConnector = BeanLoader.loadBean(SahiConnector.class);
+        Logger logger = LoggerFactory.getLogger(SakuliStarter.class);
+        logger.debug(tempLogCache);
+
+        // Init the test suite data for all available InitializingServices
+        Map<String, InitializingService> initializingServices = BeanLoader.loadMultipleBeans(InitializingService.class);
+        for (InitializingService initializingService : initializingServices.values()) {
+            initializingService.initTestSuite();
+        }
+
+        TestSuite result = BeanLoader.loadBean(TestSuite.class);
+        /***
+         * SAKULI Starter to run the test suite with embedded sahi proxy
+         */
+        try {
+            sahiConnector.init();
+
+            //start the execution of the test suite
+            logger.debug("start new sakuli test suite");
+            sahiConnector.startSahiTestSuite();
+        }
+        /**
+         * will be catched if the Sahi-Proxy could not shutdown;
+         */ catch (SakuliProxyException e) {
+            e.printStackTrace();
+            System.exit(99);
+        } finally {
+            //save results for all active result services
+            Map<String, ResultService> resultServices = BeanLoader.loadMultipleBeans(ResultService.class);
+            for (ResultService resultService : resultServices.values()) {
+                resultService.refreshStates();
+                resultService.saveAllResults();
+            }
+
+            //finally shutdown context and return the result
+            result = BeanLoader.loadBean(TestSuite.class);
+            BeanLoader.releaseContext();
+        }
+        return result;
+    }
+
+    /**
+     * Encrypt a secret based on the assigned interface.
+     *
+     * @param ethInterface name of network interface
+     * @param strToEncrypt secret to encrypt
+     * @return the encrypted secret as string
+     * @throws SakuliCipherException
+     */
+    public static String encryptSecret(String ethInterface, String strToEncrypt) throws SakuliCipherException {
+        ActionProperties cipherProps = new ActionProperties();
+        cipherProps.setEncryptionInterface(ethInterface);
+        cipherProps.setEncryptionInterfaceTestMode(false);
+        CipherUtil cipher = new CipherUtil(cipherProps);
+        cipher.getNetworkInterfaceNames();
+        return cipher.encrypt(strToEncrypt);
     }
 
 

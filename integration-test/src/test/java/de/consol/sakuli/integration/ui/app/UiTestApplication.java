@@ -9,8 +9,10 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -73,9 +75,17 @@ public class UiTestApplication extends Application implements Callable<Long> {
     public void start(Stage primaryStage) {
         try {
             stage = primaryStage;
+            Screen screen = Screen.getPrimary();
+            Rectangle2D bounds = screen.getVisualBounds();
+
+            stage.setX(bounds.getMinX());
+            stage.setY(bounds.getMinY());
+            stage.setWidth(bounds.getWidth());
+            stage.setHeight(bounds.getHeight());
             stage.setTitle("Sakuli Login Sample");
-            stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
-            stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
+
+//            stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
+//            stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
             gotoLogin();
             primaryStage.show();
         } catch (Exception ex) {

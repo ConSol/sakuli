@@ -50,8 +50,8 @@ public class AbstractSakuliTestTest {
     public void testCreateDateTimeString() throws Exception {
         Date aspectedDate = new Date();
         long aspectedLong = aspectedDate.getTime();
-        Assert.assertEquals("-1", testling.createDateTimeString(null));
-        String result = testling.createDateTimeString(aspectedDate);
+        Assert.assertEquals("-1", testling.createUnixTimestamp(null));
+        String result = testling.createUnixTimestamp(aspectedDate);
         Assert.assertEquals(aspectedLong, Long.parseLong(result.replace(".", "")));
         Assert.assertTrue(result.charAt(result.length() - 4) == '.');
     }

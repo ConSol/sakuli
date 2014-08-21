@@ -26,6 +26,71 @@ Use the bypass list to exclude certain URLs from being accessed through the prox
 	ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.verisign.com
 
 
+## Disable-windows-7-effects
+
+### Disable desktop background 
+Set the desktop background to a homogenous color. 
+
+### Disable screen saver and screen locking
+
+Disable everything which can cause the screen to get locked / changed in its appearance.  
+
+### Change theme and title bar colors
+Windows 7 comes by default with an "aero" theme, which is quite awkward for Sakuli, because there are many transparency effects which cause window elements to change their appearance dependend on the elements below. For that, change the theme to "Windows Classic".
+![classic](pics/w_classictheme.jpg)
+
+
+Furthermore, change the colors of **active** and **inactive** title bars to **non gradient**: 
+![titlebars](pics/w_titlebar.jpg)
+
+### Enable Window Activation ###
+Windows does not allow per default to bring an application in the foreground. This must be allowed for Sakuli: 
+
+* Start -> "regedit"
+* [ HKEY_CURRENT_USER\Control Panel\Desktop ]
+* "ForegroundLockTimeout" (DWORD) => "0" (default = 30d40xh)
+### Disable Window Animation ###
+Disable the animation of window minimize/maximize actions: 
+
+* "regedit"
+* [HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics ]
+* "MinAnimate" (String) => "0" 
+### Disable Cleartype ###
+ClearType ("antialiasing" / "Font Smoothing"), is a technology that is used to display computer fonts with clear and with smooth edges. The MS Terminal Services Client (RDP client) enables this feature depending on the available bandwidth, which means that screenshots made within RDP sessions may be taken without ClearType, but during the test execution on the local console, they are compared with the desktop displayed in ClearType. Although we only had problems with RDP and Cleartype, it is a good idea to disable ClearType completely:
+
+* "regedit"
+* [ HKEY_CURRENT_USER\Control Panel\Desktop ]
+* "FontSmoothingType" (DWORD) => "0" 
+
+### Disable all visual effects ###
+* Start -> Control Panel -> System -> Advanced
+* Performance -> Settings -> Visual Effects -> Custom
+* Disable everything: 
+
+![visualeffects](pics/w_visualeffects.jpg)
+
+#### RDP related settings ####
+The following steps have only to be done if you are accessing the Sakuli Client with RDP. 
+##### Disable Clipboard Sharing #####
+The "paste" function of Sakuli uses the clipboard at runtime to decrypt and paste passwords. For this reason, the clipboard exchange of the Sakuli client and the RDP client should be suppressed in the settings tab of your **local Remote Desktop client**:
+
+![clipboard](pics/w_clipboard.jpg)
+
+
+This can be set globally in the registry **of your local host**: 
+
+* "regedit"
+* [ HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client ]
+* "DisableDriveRedirection" (DWORD) => "1" 
+
+##### Disable the "GUI-less" mode #####
+If you minimize the Remote Desktop window (the window that display the remote computer’s desktop), the operating system switches the remote session to a "GUI-less mode" which does not transfer any window data anymore. As a result, Sakuli is unable to interact with the tested application’s GUI, as the whole screen is not visible.
+
+To disable the "GUI-less" mode **on your local host**: 
+
+* "regedit"
+* [ HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client ]
+* "RemoteDesktop_SuppressWhenMinimized" (DWORD) => "2"
 
 ## Connecting to Sakuli clients
 
@@ -57,6 +122,7 @@ As described in the [Windows 7 installation manual](../docs/installation-windows
 In *sakuli\setup\nagios* you can find **check_logon_session.ps1** which can be used as a client-side check to ensure that the Sakuli user is always logged on, either via RDP or on the local console. Instructions for the imeplentation of this check can be found in the script header. 
 
 Define a service dependency of all Sakuli checks to this logon check; this will ensure that a locked session will not raise false alarms. 
+
 
 ### Ubuntu
 

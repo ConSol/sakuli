@@ -27,6 +27,7 @@
     <context:component-scan base-package="de.consol.sakuli.loader"/>
 
     <bean class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
+    <bean class="de.consol.sakuli.datamodel.properties.ReceiverProperties"/>
     <bean class="de.consol.sakuli.datamodel.properties.ActionProperties"/>
 
     <bean id="propertyResolver"
@@ -45,28 +46,41 @@
     </bean>
 
     <bean id="de.consol.sakuli.datamodel.TestSuite" class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.datamodel.TestSuite">
-        </constructor-arg>
+        <constructor-arg value="de.consol.sakuli.datamodel.TestSuite"/>
     </bean>
     <bean id="de.consol.sakuli.dao.DaoTestSuite " class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.dao.DaoTestSuite ">
-        </constructor-arg>
+        <constructor-arg value="de.consol.sakuli.services.receiver.database.dao.DaoTestSuite "/>
+    </bean>
+    <bean id="de.consol.sakuli.dao.DaoTestCase " class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.services.receiver.database.dao.DaoTestCase "/>
+    </bean>
+    <bean id="de.consol.sakuli.dao.DaoTestCaseStep " class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.services.receiver.database.dao.DaoTestCaseStep "/>
     </bean>
     <bean id="de.consol.sakuli.exceptions.SakuliExceptionHandler" class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.exceptions.SakuliExceptionHandler">
-        </constructor-arg>
+        <constructor-arg value="de.consol.sakuli.exceptions.SakuliExceptionHandler"/>
     </bean>
     <bean id="de.consol.sakuli.actions.screenbased.ScreenshotActions" class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.actions.screenbased.ScreenshotActions">
-        </constructor-arg>
+        <constructor-arg value="de.consol.sakuli.actions.screenbased.ScreenshotActions"/>
     </bean>
     <bean id="de.consol.sakuli.actions.environment.CipherUtil" class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.actions.environment.CipherUtil">
-        </constructor-arg>
+        <constructor-arg value="de.consol.sakuli.actions.environment.CipherUtil"/>
     </bean>
     <bean id="de.consol.sakuli.datamodel.actions.Screen" class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.datamodel.actions.Screen">
-        </constructor-arg>
+        <constructor-arg value="de.consol.sakuli.datamodel.actions.Screen"/>
     </bean>
+
+    <!-- test beans for testing SpringProfilesInitializer -->
+    <!--<bean class="de.consol.sakuli.utils.SpringProfilesInitializer" />-->
+    <beans profile="JDBC_DB">
+        <bean class="de.consol.sakuli.services.receiver.database.DatabaseResultServiceImpl"/>
+    </beans>
+    <beans profile="GEARMAN">
+        <bean class="de.consol.sakuli.services.receiver.gearman.GearmanResultServiceImpl"/>
+        <bean id="de.consol.sakuli.services.receiver.gearman.GearmanProperties"
+              class="de.consol.sakuli.MockitoFactoryBean">
+            <constructor-arg value="de.consol.sakuli.services.receiver.gearman.GearmanProperties"/>
+        </bean>
+    </beans>
 
 </beans>

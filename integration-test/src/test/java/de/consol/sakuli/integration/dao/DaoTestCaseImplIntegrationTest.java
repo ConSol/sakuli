@@ -18,9 +18,9 @@
 
 package de.consol.sakuli.integration.dao;
 
-import de.consol.sakuli.dao.impl.DaoTestCaseImpl;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.integration.builder.TestCaseBuilder;
+import de.consol.sakuli.services.receiver.database.dao.impl.DaoTestCaseImpl;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

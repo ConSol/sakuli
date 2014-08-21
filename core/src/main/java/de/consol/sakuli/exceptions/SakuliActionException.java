@@ -28,7 +28,7 @@ import de.consol.sakuli.actions.screenbased.RegionImpl;
  */
 public class SakuliActionException extends SakuliException {
 
-    private RegionImpl lastRegion;
+    protected RegionImpl lastRegion;
 
     public SakuliActionException(String s) {
         super(s);

@@ -18,9 +18,10 @@
 
 package de.consol.sakuli.datamodel;
 
-import de.consol.sakuli.datamodel.state.SakuliStateInterface;
+import de.consol.sakuli.datamodel.state.SakuliState;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliExceptionWithScreenshot;
+import de.consol.sakuli.services.InitializingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +34,7 @@ import java.util.Date;
  * @author tschneck
  *         Date: 12.07.13
  */
-public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliStateInterface> implements Comparable<AbstractSakuliTest> {
+public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliState> implements Comparable<AbstractSakuliTest> {
 
     public final static DateFormat GUID_DATE_FORMATE = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss_SS");
     public final static DateFormat PRINT_DATE_FORMATE = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
@@ -43,9 +44,19 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
     protected E exception;
     protected S state;
     protected String name;
-    protected int dbPrimaryKey;
+    /**
+     * is initial set to -1, if the database receiver profile is enabled the service call {@link InitializingService#initTestSuite()}
+     * should set the primary key.
+     */
+    protected int dbPrimaryKey = -1;
+    /**
+     * needed to be set to -1, so the function {@link de.consol.sakuli.actions.TestCaseAction#addTestCaseStep(String, String, String, int)}
+     * can check if the method {@link de.consol.sakuli.actions.TestCaseAction#initWarningAndCritical(int, int)}
+     * have been called at the beginning of this test case.
+     */
     protected int warningTime = -1;
     protected int criticalTime = -1;
+    protected String id;
 
     /**
      * set the times to the format "time in millisec / 1000"
@@ -53,7 +64,7 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
      * @param date regular {@link Date} object
      * @return UNIX-Time formatted String
      */
-    protected String createDateTimeString(Date date) {
+    protected String createUnixTimestamp(Date date) {
         if (date == null) {
             return "-1";
         } else {
@@ -69,7 +80,8 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
      */
     public float getDuration() {
         try {
-            return (float) ((stopDate.getTime() - startDate.getTime()) / 1000.0);
+            float result = (float) ((stopDate.getTime() - startDate.getTime()) / 1000.0);
+            return (result < 0) ? -1 : result;
         } catch (NullPointerException e) {
             return -1;
         }
@@ -91,12 +103,12 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
         this.stopDate = stopDate;
     }
 
-    public String getStartDateTimeString() {
-        return createDateTimeString(startDate);
+    public String getStartDateAsUnixTimestamp() {
+        return createUnixTimestamp(startDate);
     }
 
-    public String getStopDateTimeString() {
-        return createDateTimeString(stopDate);
+    public String getStopDateAsUnixTimestamp() {
+        return createUnixTimestamp(stopDate);
     }
 
     public void addException(E e) {
@@ -112,7 +124,12 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
     }
 
     public String getExceptionMessages() {
-        return SakuliExceptionHandler.getAllExceptionMessages(exception);
+        return getExceptionMessages(false);
+    }
+
+
+    public String getExceptionMessages(boolean flatFormatted) {
+        return SakuliExceptionHandler.getAllExceptionMessages(exception, flatFormatted);
     }
 
     public String getName() {
@@ -125,6 +142,10 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
 
     public int getDbPrimaryKey() {
         return dbPrimaryKey;
+    }
+
+    public void setDbPrimaryKey(int dbPrimaryKey) {
+        this.dbPrimaryKey = dbPrimaryKey;
     }
 
     public int getWarningTime() {
@@ -141,6 +162,14 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
 
     public void setCriticalTime(int criticalTime) {
         this.criticalTime = criticalTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -196,12 +225,26 @@ public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliSt
         if (abstractSakuliTest == null) {
             return 1;
         }
-        if (startDate == null) {
-            if (name == null) {
-                return abstractSakuliTest.getName() != null ? 1 : 0;
+        if (startDate == null || startDate.compareTo(abstractSakuliTest.getStartDate()) == 0) {
+            if (id == null) {
+                return abstractSakuliTest.getId() != null ? 1 : 0;
             }
-            return name.compareTo(abstractSakuliTest.getResultString());
+            return id.compareTo(abstractSakuliTest.id);
         }
         return startDate.compareTo(abstractSakuliTest.getStartDate());
     }
+
+    @Override
+    public String toString() {
+        return "startDate=" + startDate +
+                ", stopDate=" + stopDate +
+                ", exception=" + exception +
+                ", state=" + state +
+                ", name='" + name + '\'' +
+                ", dbPrimaryKey=" + dbPrimaryKey +
+                ", warningTime=" + warningTime +
+                ", criticalTime=" + criticalTime
+                ;
+    }
+
 }

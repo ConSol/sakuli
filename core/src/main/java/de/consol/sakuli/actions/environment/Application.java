@@ -114,7 +114,12 @@ public class Application extends App {
     @LogToResult
     public Application closeApp() {
         logger.info("Close application with name or path \"" + getName() + "\".");
-        int retValue = super.close();
+        int retValue = -1;
+        try {
+            retValue = super.close();
+        } catch (Throwable e) {
+            logger.error("ERROR in closing Application", e);
+        }
         sleep(sleepMillis);
         if (retValue < 0) {
             loader.getExceptionHandler().handleException("Application '" + getName() + " could not be closed! ... Please check if the application has been opened before!", resumeOnException);

@@ -12,9 +12,8 @@ echo suite-folder: $TEST_SUITE_FOLDER
 
 #internal folders for application logic
 INCLUDE_FOLDER=$PROJECT_FOLDER/_include
-LIB_FOLDER=$PROJECT_FOLDER/bin/lib
-SAKULI_JARS=$LIB_FOLDER/*:$LIB_FOLDER/lib/resource
+SAKULI_JARS=$PROJECT_FOLDER/bin/lib/*
 echo jar-file: $SAKULI_JARS
 
 #start the java application
-java -Dsikuli.Home=%LIB_FOLDER% -classpath $PROJECT_FOLDER/bin/sakuli.jar:$SAKULI_JARS de.consol.sakuli.starter.SakuliStarter -run "$TEST_SUITE_FOLDER" "$INCLUDE_FOLDER"
+java -classpath $PROJECT_FOLDER/bin/sakuli.jar:$SAKULI_JARS de.consol.sakuli.starter.SakuliStarter -run "$TEST_SUITE_FOLDER" "$INCLUDE_FOLDER"

@@ -18,28 +18,17 @@
 
 package de.consol.sakuli.datamodel;
 
-import de.consol.sakuli.dao.DaoTestSuite;
 import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliException;
-import net.sf.sahi.util.Utils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author tschneck Date: 10.06.13
@@ -47,14 +36,6 @@ import java.util.Map;
 @Component
 public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteState> {
 
-    //Property names
-
-
-
-    @Autowired
-    private DaoTestSuite dao;
-
-    private String id;
     //browser name where to start the test execution
     private String browserName;
     //additional browser infos from sahi proxy
@@ -62,9 +43,8 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     private String host;
     private Path testSuiteFolder;
     private Path testSuiteFile;
-    private int dbJobPrimaryKey;
+    private int dbJobPrimaryKey = -1;
     private Map<String, TestCase> testCases;
-    private boolean loadTestCasesAutomatic;
 
     public TestSuite() {
     }
@@ -82,27 +62,8 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         testSuiteFolder = properties.getTestSuiteFolder();
         testSuiteFile = properties.getTestSuiteSuiteFile();
         browserName = properties.getBrowserName();
-        loadTestCasesAutomatic = properties.isLoadTestCasesAutomatic();
     }
 
-    /**
-     * initialize the test suite object 1. set and check .suite file 2. set the id from the db 3. load the testcases
-     */
-    @PostConstruct
-    public void init() throws IOException, SakuliException {
-        logger.info("Initialize test suite");
-        state = TestSuiteState.RUNNING;
-
-        testCases = loadTestCases();
-        startDate = new Date();
-        dbPrimaryKey = dao.getTestSuitePrimaryKey();
-        try {
-            host = InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            host = "UNKNOWN HOST";
-        }
-        logger.info("test suite \"" + id + "\" has been initialzied");
-    }
 
     /**
      * {@inheritDoc}
@@ -159,8 +120,8 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
                 + super.getResultString()
                 + "\ndb primary key of job table: " + this.getDbJobPrimaryKey()
                 + "\nbrowser: " + this.getBrowserInfo();
-        if (testCases != null && !testCases.isEmpty()) {
-            for (TestCase tc : testCases.values()) {
+        if (!CollectionUtils.isEmpty(testCases)) {
+            for (TestCase tc : getTestCasesAsSortedSet()) {
                 stout += tc.getResultString();
             }
         }
@@ -168,73 +129,32 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     }
 
     @Override
-    public String getExceptionMessages() {
-        String errorMessages = super.getExceptionMessages();
+    public String getExceptionMessages(boolean flatFormatted) {
+        String errorMessages = super.getExceptionMessages(flatFormatted);
         if (errorMessages == null) {
             errorMessages = "";
         }
-        for (TestCase testCase : getTestCases().values()) {
-            if (testCase.getExceptionMessages() != null) {
-                errorMessages += "\n" + testCase.getExceptionMessages();
+        if (!CollectionUtils.isEmpty(getTestCases())) {
+            for (TestCase testCase : getTestCasesAsSortedSet()) {
+                if (testCase.getExceptionMessages() != null) {
+                    if (flatFormatted) {
+                        errorMessages += " - ";
+                    } else {
+                        errorMessages += "\n";
+                    }
+                    errorMessages += "CASE '" + testCase.getId() + "': " + testCase.getExceptionMessages();
+                }
             }
         }
         return errorMessages;
     }
 
-    /**
-     * read out the .suite file and create the corresponding test cases
-     */
-    private HashMap<String, TestCase> loadTestCases() throws SakuliException, IOException {
-        HashMap<String, TestCase> tcMap = new HashMap<>();
-        if (loadTestCasesAutomatic) {
-            if (!Files.exists(testSuiteFile)) {
-                throw new FileNotFoundException("Can not find specified " + TestSuiteProperties.TEST_SUITE_SUITE_FILE_NAME + " file at \"" + testSuiteFolder.toString() + "\"");
-            }
-            String testSuiteString = Utils.readFileAsString(testSuiteFile.toFile());
-            logger.info(
-                    "\n--- TestSuite initialization: read test suite information of file \"" + testSuiteFile.toAbsolutePath().toString() + "\" ----\n"
-                            + testSuiteString
-                            + "\n --- End of File \"" + testSuiteFile.toAbsolutePath().toString() + "\" ---"
-            );
-
-            //handle each line of the .suite file
-            String regExLineSep = System.getProperty("line.separator") + "|\n";
-            for (String line : testSuiteString.split(regExLineSep)) {
-                if (!line.startsWith("//") && !(line.isEmpty())) {
-                    //get the start URL from suite
-                    String startURL = line.substring(line.lastIndexOf(' ') + 1);
-
-                    //extract tc file name name and generate new test case
-                    String tcFileName = line.substring(0, line.lastIndexOf(' '));  // get tc file name
-                    Path tcFile = Paths.get(testSuiteFolder.toFile().getCanonicalPath() + File.separator + tcFileName.replace("/", File.separator));
-                    if (Files.exists(tcFile)) {
-                        TestCase tc = new TestCase(
-                                TestCase.convertFolderPathToName(tcFileName),
-                                TestCase.convertTestCaseFileToID(tcFileName, id));
-
-                        tc.setStartUrl(startURL);
-                        tc.setTcFile(tcFile);
-                        //set the Map with the test case id as key
-                        tcMap.put(tc.getId(), tc);
-                    } else {
-                        throw new SakuliException("test case path \"" + tcFile.toAbsolutePath().toString() + "\" doesn't exists - check your \"" + TestSuiteProperties.TEST_SUITE_SUITE_FILE_NAME + "\" file");
-                    }
-                }
-            }
-        }
-        return tcMap;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getAbsolutePathOfTestSuiteFile() {
-        return testSuiteFile.toAbsolutePath().toString();
+        return testSuiteFile == null ? null : testSuiteFile.toAbsolutePath().toString();
+    }
+
+    public void setTestSuiteFolder(Path testSuiteFolder) {
+        this.testSuiteFolder = testSuiteFolder;
     }
 
     public Path getTestSuiteFolder() {
@@ -249,8 +169,16 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         return host;
     }
 
+    public void setHost(String host) {
+        this.host = host;
+    }
+
     public Map<String, TestCase> getTestCases() {
         return testCases;
+    }
+
+    public void setTestCases(Map<String, TestCase> testCases) {
+        this.testCases = testCases;
     }
 
     public int getDbJobPrimaryKey() {
@@ -276,7 +204,8 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
      * @return a unique identifier for each execution of the test suite
      */
     public String getGuid() {
-        return id + "__" + GUID_DATE_FORMATE.format(startDate);
+        Date guidDate = startDate != null ? startDate : new Date();
+        return id + "__" + GUID_DATE_FORMATE.format(guidDate);
     }
 
     public void addTestCase(String testCaseId, TestCase testCase) {
@@ -284,6 +213,10 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
             this.testCases = new HashMap<>();
         }
         this.testCases.put(testCaseId, testCase);
+    }
+
+    public void addTestCase(TestCase testCase) {
+        this.addTestCase(testCase.getId(), testCase);
     }
 
     public TestCase getTestCase(String testCaseId) {
@@ -309,5 +242,30 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "TestSuite{" +
+                super.toString() +
+                ", id='" + id + '\'' +
+                ", browserName='" + browserName + '\'' +
+                ", browserInfo='" + browserInfo + '\'' +
+                ", host='" + host + '\'' +
+                ", testSuiteFolder=" + testSuiteFolder +
+                ", testSuiteFile=" + testSuiteFile +
+                ", dbJobPrimaryKey=" + dbJobPrimaryKey +
+                ", testCases=" + testCases +
+                '}';
+    }
+
+    /**
+     * @return all {@link TestCase}s as {@link SortedSet} or a empty set if no test cases are specified.
+     */
+    public SortedSet<TestCase> getTestCasesAsSortedSet() {
+        if (!CollectionUtils.isEmpty(testCases)) {
+            return new TreeSet<>(testCases.values());
+        }
+        return new TreeSet<>();
     }
 }

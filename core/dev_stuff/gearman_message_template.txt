@@ -1,0 +1,18 @@
+ssh sakuli@99.99.99.20
+
+type=passive
+host_name=win7sakuli
+start_time=1400764193.60269
+finish_time=1400764193.60269
+latency=0.0
+return_code=2
+service_description=sakuli_demo
+output=OK - [OK] case "demo_win7" (52.95s) ok, [OK] Sakuli suite "sakuli_demo" (ID: 19) ran in 64.10 seconds. (Last suite run: 14.05. 11:06:57)\\n<table style="border-collapse: collapse;"><tr valign="top"><td class="serviceOK">[OK] case "demo_win7" (52.95s) ok</td></tr><tr valign="top"><td class="serviceOK">[OK] Sakuli suite "sakuli_demo" (ID: 19) ran in 64.10 seconds. (Last suite run: 14.05. 11:06:57)</td></tr></table>|s_1_1_notepad=12.22s;20;;; s_1_2_project=17.89s;20;;; s_1_3_print_test_client=7.89s;10;;; s_1_4_open_calc=3.01s;5;;; s_1_5_calculate_525_+100=9.95s;20;;; c_1_demo_win7=52.95s;60;70;; c_1state=0;;;; suite_state=0;;;; suite_runtime_sakuli_demo=64.10s;120;140;;
+
+omd status	
+
+
+
+send_gearman --server=localhost --encryption=no --host=win7sakuli --service=sakuli_demo --returncode=2 --message='OK - [OK] case "demo_win7" (52.95s) ok, [OK] Sakuli suite "sakuli_demo" (ID: 19) ran in 64.10 seconds. (Last suite run: 14.05. 11:06:57)\n<table style="border-collapse: collapse;"><tr valign="top"><td class="serviceOK">[OK] case "demo_win7" (52.95s) ok</td></tr><tr valign="top"><td class="serviceOK">[OK] Sakuli suite "sakuli_demo" (ID: 19) ran in 64.10 seconds. (Last suite run: 14.05. 11:06:57)</td></tr></table>|s_1_1_notepad=12.22s;20;;; s_1_2_project=17.89s;20;;; s_1_3_print_test_client=7.89s;10;;; s_1_4_open_calc=3.01s;5;;; s_1_5_calculate_525_+100=9.95s;20;;; c_1_demo_win7=52.95s;60;70;; c_1state=0;;;; suite_state=0;;;; suite_runtime_sakuli_demo=64.10s;120;140;;'
+
+

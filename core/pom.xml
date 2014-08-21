@@ -17,20 +17,19 @@
   ~ limitations under the License.
   -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>de.consol.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.4.1-SNAPSHOT</version>
+        <version>0.4.4-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>de.consol.sakuli.root</groupId>
     <artifactId>core</artifactId>
-    <version>0.4.1-SNAPSHOT</version>
+    <version>0.4.4-SNAPSHOT</version>
     <name>core</name>
 
     <description>core module for all sakuli functionality</description>
@@ -57,7 +56,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>aspectj-maven-plugin</artifactId>
-                <version>1.6</version>
                 <executions>
                     <execution>
                         <goals>
@@ -96,7 +94,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
                 <configuration>
                     <finalName>${project.jar.name}</finalName>
                 </configuration>
@@ -111,7 +108,7 @@
                         <!-- descriptor for the release build -->
                         <descriptor>descriptor_zip_release.xml</descriptor>
                     </descriptors>
-                    <outputDirectory>${project.parent.basedir}/install</outputDirectory>
+                    <outputDirectory>${project.build.directory}/install</outputDirectory>
                     <finalName>${project.jar.name}</finalName>
                     <recompressZippedFiles>true</recompressZippedFiles>
                 </configuration>
@@ -140,7 +137,6 @@
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>wagon-maven-plugin</artifactId>
-                        <version>1.0-beta-5</version>
                         <configuration>
                             <serverId>labs-consol-sakuli-install</serverId>
                             <url>scpexe://sakuli@labs.consol.de/</url>
@@ -153,7 +149,7 @@
                                     <goal>upload</goal>
                                 </goals>
                                 <configuration>
-                                    <fromDir>${project.parent.basedir}/install</fromDir>
+                                    <fromDir>${project.build.directory}/install</fromDir>
                                     <includes>*.zip</includes>
                                     <toDir>/home/sakuli/htdocs/install</toDir>
                                 </configuration>
@@ -164,5 +160,20 @@
             </build>
         </profile>
     </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.gearman</groupId>
+            <artifactId>gearman-java</artifactId>
+            <version>0.6</version>
+            <!-- exclude log4j to use sakuli logger -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
 
 </project>

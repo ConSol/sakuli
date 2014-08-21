@@ -13,7 +13,7 @@ This chapter handles the configuration of the monitoring core "Nagios"; the sett
 * Download the newest version from [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install) and unzip   `sakuli-zipped-release-vX.X.X.zip`. For example with wget:
       
       ```
-      wget http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.0.zip
+      wget http://labs.consol.de/sakuli/install/sakuli-zipped-release-vXXX.zip
       ```
 
 ## Nagios

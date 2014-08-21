@@ -24,13 +24,31 @@ Profiles can be added with option `-P`, followed by a parameter, e.g.
 	mvn install -P no-ui-tests,upload-release
 
 * `no-ui-tests` Disables the UI based test in phase **integration-test**
-* `upload-release` Copies the generated `sakuli-zipped-release-vX.X.X.zip` file and maven artifacts to the [ConSol Labs](http://labs.consol.de/sakuli/) server. 
-<!--FIXME: wenn default active, wie deaktiviert man das? -->
+* `upload-release` Copies the generated `sakuli-zipped-release-vX.X.X.zip` file and maven artifacts to the [ConSol Labs](http://labs.consol.de/sakuli/) server. Your private key for the ssh connection have to be configured in maven config file `.m2/settings.xml`, see below 
 * `generate-jsdox` (default: active) If this profile will be disabled the module **docs** won't generate the files in folder [Sakuli-API](../api).
-<!--FIXME: unklar-->
 * `jsdox-set-proxy` If it is necessary to run the [Sakuli-API](../api) build behind a company proxy, enable this profile and configure your
  proxy in the file [docs/pom.xml](../pom.xml).
 * `release-build` (internal use)
  This profile will be only enabled if you perform a release, see [How to Release](how-to-release.md). In this case it is necessary to override the path of the sahi installation.
+
+Example of Maven config file `.m2/settings.xml`:
+
+  ```
+      <servers>
+          <server>
+              <id>labs-consol-sakuli-install</id>
+              <username>sakuli</username>
+              <privateKey>${user.home}/.ssh/id_rsa</privateKey>
+          </server>
+  
+          <server>
+              <id>labs-consol-sakuli-repository</id>
+              <username>maven-repository</username>
+              <privateKey>${user.home}/.ssh/id_rsa</privateKey>
+          </server>
+      </servers>
+
+  ```
+ 
  
                                                                    

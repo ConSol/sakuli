@@ -63,6 +63,7 @@ public abstract class BaseTest {
         SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
+        BeanLoader.refreshContext();
         loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
         when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
     }
@@ -85,6 +86,31 @@ public abstract class BaseTest {
 
     public static String getLastLineOfLogFile(Path file) throws IOException {
         return getLastLineWithContent(file, "");
+    }
+
+    public static String getLastLineOfLogFile(Path file, int lastLines) throws IOException {
+        Scanner in;
+        StringBuilder result = new StringBuilder();
+
+        in = new Scanner(Files.newInputStream(file));
+        int countOfLines = 0;
+        while (in.hasNextLine()) {
+            countOfLines++;
+            in.nextLine();
+        }
+
+        in = new Scanner(Files.newInputStream(file));
+        int countOfReadInLines = 0;
+        while (in.hasNextLine()) {
+            countOfReadInLines++;
+            String line = in.nextLine();
+            if (countOfLines - countOfReadInLines <= lastLines) {
+                result.append(line).append("\n");
+            }
+        }
+
+
+        return result.toString();
     }
 
 }

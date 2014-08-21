@@ -4,6 +4,7 @@
 To Download the current version of sakuli as a zip file see [ConSol Labs - Sakuli - Install](http://labs.consol.de/sakuli/install):
 
 * [sakuli-zipped-release-v0.4.0.zip](http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.0.zip)
+* [sakuli-zipped-release-v0.4.3.zip](http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.3.zip)
 
 ### 3rd-Party-Tools
 * [Sahi v44](http://labs.consol.de/sakuli/install/3rd-party/install_sahi_v44_20130429.jar)

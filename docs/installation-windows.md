@@ -16,8 +16,6 @@ We recommend to run Sakuli clients on virtual machines, as they are easy to mana
 ## Preparations
 The steps in [Sakuli Client Troubleshooting ("How to make tests more reliable")](./docs/troubleshooting-sakuli-client.md) are optional (Sakuli will run even without doing them), but will improve the check quality/reliability. 
 
-
-
 ## Installation of Sakuli
 This chapter includes the installation of Sakuli (which already has Sikuli on board) as well as the installation of Sahi. 
 ### Java JRE
@@ -84,6 +82,13 @@ Set up your database connection information like:
 	jdbc.url=jdbc:mysql://${jdbc.host}:${jdbc.port}/${jdbc.database}
 
 ##### Gearman receiver
+=======
+* Receivers (optional, disabled per default):
+
+  To interpret the results of an test execution, it is possible to configure one or more of the following receivers:  
+  * [Database Receiver](receivers/database.md)
+  * [Gearman Receiver](receivers/gearman.md)
+     
 
 	sakuli.receiver.gearman.enabled=true
 	sakuli.receiver.gearman.server.host=gearman-server-host

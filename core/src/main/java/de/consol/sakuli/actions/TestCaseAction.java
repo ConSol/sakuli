@@ -19,11 +19,10 @@
 package de.consol.sakuli.actions;
 
 import de.consol.sakuli.actions.logging.LogToResult;
-import de.consol.sakuli.dao.DaoTestCase;
-import de.consol.sakuli.dao.DaoTestCaseStep;
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestCaseStep;
 import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.datamodel.helper.TestCaseHelper;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.loader.BaseActionLoader;
@@ -43,11 +42,6 @@ import java.util.Date;
 @Component
 public class TestCaseAction {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private DaoTestCase daoTestCase;
-    @Autowired
-    private DaoTestCaseStep daoTestCaseStep;
 
     /**
      * Represents the current running TestCase.
@@ -69,7 +63,7 @@ public class TestCaseAction {
     @LogToResult(message = "convert the path of the test case file to a valid test case ID")
     public String getIdFromPath(String pathToTestCaseFile) {
         logger.info("Return a test-case-id for \"" + pathToTestCaseFile + "\"");
-        String id = TestCase.convertTestCaseFileToID(pathToTestCaseFile, loader.getTestSuite().getId());
+        String id = TestCaseHelper.convertTestCaseFileToID(pathToTestCaseFile);
         //check id
         if (loader.getTestSuite().checkTestCaseID(id)) {
             logger.info("test-case-id = " + id);
@@ -115,7 +109,7 @@ public class TestCaseAction {
      *********************/
 
     /**
-     * save the Result of a test Case into the data base
+     * save the Result of a test Case
      *
      * @param testCaseId  id of the corresponding test case
      * @param startTime   start time in milliseconds
@@ -150,16 +144,7 @@ public class TestCaseAction {
                     + "\n" + e.getMessage());
         }
 
-        //write testcase and steps to DB
-        daoTestCase.saveTestCaseResult(tc);
-
-        logger.info("... now save all test case steps for test case '" + tc.getId() + "'!");
-        if (tc.getSteps() != null) {
-            daoTestCaseStep.saveTestCaseSteps(tc.getSteps(), tc.getDbPrimaryKey());
-            logger.info("all STEPS for '" + tc.getId() + "' saved!");
-        } else {
-            logger.info("no STEPS for '\" + tc.getId() +\"'found => no STEPS saved in DB!");
-        }
+        //release current test case -> indicates that this case is finished
         loader.setCurrentTestCase(null);
     }
 

@@ -25,6 +25,7 @@ import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.LogResult;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import net.sf.sahi.report.ResultType;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +48,21 @@ public class SakuliExceptionHandler {
     @Autowired
     private ScreenActionLoader loader;
 
-    public static String getAllExceptionMessages(Throwable e) {
+    public static String getAllExceptionMessages(Throwable e, boolean flatFormatted) {
         if (e != null) {
             String msg = format(e.getMessage());
             //add suppressed exceptions
             for (Throwable ee : e.getSuppressed()) {
-                msg += "\n\t\t Suppressed EXCEPTION: " + format(ee.getMessage());
+                if (flatFormatted) {
+                    msg += " --  Suppressed EXCEPTION: " + format(ee.getMessage());
+                } else {
+                    msg += "\n\t\t Suppressed EXCEPTION: " + format(ee.getMessage());
+                }
+            }
+            if (flatFormatted) {
+                msg = StringUtils.replace(msg, "\n", " ");
+                msg = StringUtils.replace(msg, "\t", " ");
+                return msg;
             }
             return msg;
         } else {
@@ -61,7 +71,7 @@ public class SakuliExceptionHandler {
     }
 
     private static String format(String message) {
-        if (message.contains(":")) {
+        if (message != null && message.contains(":")) {
             return message.substring(message.indexOf(":") + 1);
         }
         return message;
@@ -168,11 +178,13 @@ public class SakuliExceptionHandler {
      * @param e any {@link SakuliException}
      */
     private void addExceptionToSahiReport(SakuliException e) {
-        loader.getSahiReport().addResult(
-                e.getMessage(),
-                ResultType.ERROR,
-                e.getStackTrace().toString(),
-                e.getMessage() + RhinoAspect.ALREADY_HANDELED);
+        if (loader.getSahiReport() != null) {
+            loader.getSahiReport().addResult(
+                    e.getMessage(),
+                    ResultType.ERROR,
+                    e.getStackTrace().toString(),
+                    e.getMessage() + RhinoAspect.ALREADY_HANDELED);
+        }
     }
 
     /**
@@ -203,7 +215,8 @@ public class SakuliExceptionHandler {
         if (e instanceof SakuliException) {
             resumeOnException = ((SakuliException) e).resumeOnException;
         }
-        if (loader.getActionProperties().isTakeScreenshots()) {
+        if (loader.getActionProperties().isTakeScreenshots() &&
+                !(e instanceof SakuliReceiverException)) {
             //try to get a screenshot
             try {
                 Path screenshot = null;
@@ -225,12 +238,12 @@ public class SakuliExceptionHandler {
                 e.addSuppressed(e2);
             }
         }
-        return new SakuliException(e, resumeOnException);
+        return (e instanceof SakuliException) ? (SakuliException) e : new SakuliException(e, resumeOnException);
     }
 
 
     public void handleException(Throwable e, boolean resumeOnException) {
-        handleException(new SakuliException(e, resumeOnException));
+        handleException(setResumeOnException(e, resumeOnException));
     }
 
     public void handleException(String exceptionMessage, boolean resumeOnException) {
@@ -242,10 +255,29 @@ public class SakuliExceptionHandler {
     }
 
     public void handleException(Throwable e, RegionImpl lastRegion, boolean resumeOnException) {
-        handleException(new SakuliActionException(e, lastRegion, resumeOnException));
+        handleException(setResumeOnException(e, lastRegion, resumeOnException));
     }
 
     public void handleException(LogResult logResult) {
         handleException(new SahiActionException(logResult));
+    }
+
+    private SakuliException setResumeOnException(Throwable e, boolean resumeOnException) {
+        if (e instanceof SakuliException) {
+            SakuliException sakuliException = (SakuliException) e;
+            sakuliException.resumeOnException = resumeOnException;
+            return sakuliException;
+        }
+        return new SakuliException(e, resumeOnException);
+    }
+
+    private SakuliActionException setResumeOnException(Throwable e, RegionImpl lastRegion, boolean resumeOnException) {
+        if (e instanceof SakuliActionException) {
+            SakuliActionException actionException = (SakuliActionException) e;
+            actionException.resumeOnException = resumeOnException;
+            actionException.lastRegion = lastRegion;
+            return actionException;
+        }
+        return new SakuliActionException(e, lastRegion, resumeOnException);
     }
 }

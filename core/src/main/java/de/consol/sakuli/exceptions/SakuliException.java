@@ -45,6 +45,17 @@ public class SakuliException extends Throwable {
     }
 
     /**
+     * wraps a {@link Throwable} to a {@link SakuliException}
+     * @param suppressedException
+     * @param message
+     *
+     */
+    public SakuliException(Throwable suppressedException, String message) {
+        super(message);
+        this.addSuppressed(suppressedException);
+    }
+
+    /**
      * creates a new {@link SakuliException} from type {@link Throwable}
      *
      * @param message message of the exception

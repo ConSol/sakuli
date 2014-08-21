@@ -23,8 +23,19 @@
 * Extended logging with more configuration possibilities (SLF4J with underlying logback-Logging)
 * Consolidation of the applicationContext files
 * Remove the program-based setting of system properties. 
-<!--unklar-->
 * The possibility to disable the "encryption interface" with new property `sakuli.encryption.interface.testmode=true` 
 * Added a separate module for integration testing
 * Bugfixing and extended unit tests
 * documentation update
+* Added a separate module for integration testing.
+* Bugfixing and extended unit tests.
+* Update the documentation
+
+### Version 0.4.2
+* Introducing receiver concept: For each receiver the results will be sent. Currently Supported JDBC-Databases and the Gearman
+  receiver.
+
+* Gearman receiver: sent all data directly to your OMD/Nagios distribution. Currently it is missing that the screenshots
+  will also be transferred. This will be fixed in the next version
+  
+* Bufixing in maven build, exception handling, testcase ids and  added some more unit tests

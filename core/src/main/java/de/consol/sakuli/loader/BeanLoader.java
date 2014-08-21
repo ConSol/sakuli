@@ -26,9 +26,15 @@ import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.access.BeanFactoryLocator;
 import org.springframework.beans.factory.access.BeanFactoryReference;
 import org.springframework.beans.factory.access.SingletonBeanFactoryLocator;
+import org.springframework.context.ConfigurableApplicationContext;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author tschneck
@@ -48,7 +54,7 @@ public class BeanLoader {
 
     public static TestCaseAction loadTestCaseAction() {
         logger.debug("create new TestCaseAction object over BeanFactory.");
-        return getBeanFacotry().getBean(TestCaseAction.class);
+        return getBeanFactory().getBean(TestCaseAction.class);
     }
 
     public static Application loadApplication(String applicationNameOrPath, String resumeOnException) {
@@ -77,35 +83,73 @@ public class BeanLoader {
         return new Region(imageName, Boolean.valueOf(resumeOnException), loadScreenActionLoader());
     }
 
-
+    /**
+     * @param classDef class definition of the expected bean
+     * @param <T>      generic type of the returned bean.
+     * @return an singleton bean of type {@code <T>} or null
+     */
     public static <T> T loadBean(Class<T> classDef) {
         try {
             logger.debug("load bean '{}' from application context", classDef.getSimpleName());
-            return getBeanFacotry().getBean(classDef);
+            return getBeanFactory().getBean(classDef);
         } catch (Throwable e) {
             logger.error("error in BeanLoader", e);
             throw e;
         }
     }
 
+    /**
+     * load a singleton bean like {@link #loadBean(Class)}, but with an additional qualifier.
+     */
     public static <T> T loadBean(String qualifier, Class<T> classDef) {
         logger.debug("load Bean '{}' with qualifier '{}' from application context", classDef.getSimpleName(), qualifier);
-        return getBeanFacotry().getBean(qualifier, classDef);
+        return getBeanFactory().getBean(qualifier, classDef);
     }
 
-    private static BeanFactory getBeanFacotry() {
+    private static BeanFactory getBeanFactory() {
         BeanFactoryLocator bfl = SingletonBeanFactoryLocator.getInstance(CONTEXT_PATH);
         bfl.useBeanFactory("de.consol.sakuli.app.root");
-        return getBeanFacotryReference().getFactory();
+        return getBeanFactoryReference().getFactory();
     }
 
+    /**
+     * Release the context and shuts the hole context down
+     */
     public static void releaseContext() {
         loadBean(SakuliPropertyPlaceholderConfigurer.class).restoreProperties();
-        getBeanFacotryReference().release();
+        BeanFactory beanFactory = getBeanFactory();
+        if (beanFactory instanceof ConfigurableApplicationContext) {
+            ((ConfigurableApplicationContext) beanFactory).close();
+        }
     }
 
-    private static BeanFactoryReference getBeanFacotryReference() {
+    /**
+     * Reload the hole context
+     */
+    public static void refreshContext() {
+        BeanFactory beanFactory = getBeanFactory();
+        if (beanFactory instanceof ConfigurableApplicationContext) {
+            ((ConfigurableApplicationContext) beanFactory).refresh();
+        }
+    }
+
+    private static BeanFactoryReference getBeanFactoryReference() {
         BeanFactoryLocator bfl = SingletonBeanFactoryLocator.getInstance(CONTEXT_PATH);
         return bfl.useBeanFactory("de.consol.sakuli.app.root");
     }
+
+    /**
+     * @param classDef class definition of the expected beans
+     * @param <T>      generic type of the returned {@link List}.
+     * @return all available beans of type {@code <T>}. If no beans are available, the method returns an empty List.
+     */
+    public static <T> java.util.Map<String, T> loadMultipleBeans(Class<T> classDef) {
+        BeanFactory beanFactory = getBeanFactory();
+        Map<String, T> beans = null;
+        if (beanFactory instanceof ListableBeanFactory) {
+            beans = ((ListableBeanFactory) beanFactory).getBeansOfType(classDef);
+        }
+        return beans != null ? beans : Collections.<String, T>emptyMap();
+    }
+
 }

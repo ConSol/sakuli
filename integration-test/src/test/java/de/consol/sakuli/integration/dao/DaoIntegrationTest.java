@@ -19,7 +19,6 @@
 package de.consol.sakuli.integration.dao;
 
 import de.consol.sakuli.actions.screenbased.RegionImpl;
-import de.consol.sakuli.dao.impl.Dao;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.LogResult;
 import de.consol.sakuli.exceptions.SakuliException;
@@ -27,6 +26,7 @@ import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.integration.IntegrationTest;
 import de.consol.sakuli.integration.builder.TestSuiteBuilder;
 import de.consol.sakuli.loader.BeanLoader;
+import de.consol.sakuli.services.receiver.database.dao.impl.Dao;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
