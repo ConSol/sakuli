@@ -48,35 +48,60 @@ This chapter includes the installation of Sakuli (which already has Sikuli on bo
 
 **Alternative download:** Create a local Sakuli repository by cloning from [https://github.com/ConSol/sakuli/](https://github.com/ConSol/sakuli/).
 
-## Configuration
+### Configuration
 
 Some configuration settings in the file `%SAKULI_HOME%\_include\sakuli.properties`: 
 
-* Encryption:
-  * To make usage of the sakluli encryption featres, set the encryption interface property like `sakuli.encryption.interface=eth3`. For further informations jump to [encryption of secrets](sakuli-manual.md) and come back here.
-  * If there is no need of any encryption feature, set the property like `sakuli.encryption.interface.testmode=true`.
+#### Encryption:
+  * To make usage of the Sakuli encryption feature, set the encryption interface property like `sakuli.encryption.interface=eth3`. For further informations jump to [encryption of secrets](sakuli-manual.md) and come back here.
+  * If there is no need of any encryption feature, set the property `sakuli.encryption.interface.testmode=true`.
 
-* Set up your database connection information like:
+#### Receivers
 
-	```
-	jdbc.port=3307
+Sakuli can send test result to "Receivers", which can be currently GearmanD servers (such as Nagios monitoring systems with mod-gearman) and JDBC databases. If no receiver is defined, a result summary is printed out in the end of a suite. 
+
+Depending on your environment, you probably want to set up on of these two possible receiver types. 
+
+![sakuli_receivers](../docs/pics/sakuli-receivers.png)
+
+##### Database receiver
+Set up your database connection information like:
+
+	jdbc.driverClass=com.mysql.jdbc.Driver
+	# host for the JDBC database
+	jdbc.host=localhost
+	# JDBC-Database port:
+	jdbc.port=3306
+	## name of the database
 	jdbc.database=sahi
-	jdbc.host=[IPofOMD]
+	## database username
 	jdbc.user=sahi
+	## database password
 	jdbc.pw=sahi
+	## schema of database
 	jdbc.model=sahi
-	```
+	## pattern for JDBC database connection URL
+	jdbc.url=jdbc:mysql://${jdbc.host}:${jdbc.port}/${jdbc.database}
 
-* Sahi installation path:
-  * Set the `sahiproxy.homepath` to the expected installation folder of the [Sahi Installation](installation-windows.md#sahi)
-    like for example set it like `sahiproxy.homepath=c:/sakuli/sahi`
+##### Gearman receiver
+
+	sakuli.receiver.gearman.enabled=true
+	sakuli.receiver.gearman.server.host=gearman-server-host
+	sakuli.receiver.gearman.server.port=4730
+	sakuli.receiver.gearman.server.queue=check_results
+	sakuli.receiver.gearman.nagios.hostname=sakuli-test-client
+	sakuli.receiver.gearman.nagios.check_command=check_sakuli_db_suite
 	
-* (optional) Configure your company proxy like described under [Sakuli-Manual - Proxy-Settings](sakuli-manual.md#proxy-settings)
+	sakuli.receiver.gearman.nagios.output.suite.summary= 
 
-* Some further default configuration can be done, see therefore the comments in [sakuli.properties](../core/src/main/_include/sakuli.properties). This default settings will be valid for all test suites of the Sakuli installation. Each single property can be overridden in the property file `testsuite.properties` of the test suite folders as well, see e.g. [testsuite.properties](../sakuli_test_suites/example/testsuite.properties). These overriding of properties make it possible to configure the behaviour of each test suite as individual as it is needed.
+
+#### Company proxy	
+(optional) Configure your company proxy like described under [Sakuli-Manual - Proxy-Settings](sakuli-manual.md#proxy-settings)
+
+#### Others 
+Some further default configuration can be done, see therefore the comments in [sakuli.properties](../core/src/main/_include/sakuli.properties). This default settings will be valid for all test suites of the Sakuli installation. Each single property can be overridden in the property file `testsuite.properties` of the test suite folders as well, see e.g. [testsuite.properties](../sakuli_test_suites/example/testsuite.properties). Overriding of properties makes it possible to configure the behaviour of each test suite individually.
 
 	
-
 ### Sahi
 
 * Download the latest version of Sahi from [http://sourceforge.net/projects/sahi/files/latest/download?source=files](http://sourceforge.net/projects/sahi/files/latest/download?source=files)

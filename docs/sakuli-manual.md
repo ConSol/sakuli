@@ -1,7 +1,7 @@
 # Sakuli Manual
 
 ## Proxy settings
-If web tests with Sakuli should go via your company's proxy, edit the property File `%SAKULI_HOME%/_include/sakuli.properties`, section __SAHI-SCRIPT-RUNNER-PROPERTIES__ for both http and https. `auth.username` and `auth.password` are only used if `auth.enable` is set to `true`. 
+If web tests with Sakuli should go through your company's proxy, edit the property file `%SAKULI_HOME%/_include/sakuli.properties`, section __SAHI-SCRIPT-RUNNER-PROPERTIES__ for both http and https. `auth.username` and `auth.password` are only used if `auth.enable` is set to `true`. 
 Use the bypass list to exclude certain URLs from being accessed through the proxy.   
 
 	### HTTP/HTTPS proxy Settings
