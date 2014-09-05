@@ -26,6 +26,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.Test;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -106,6 +107,13 @@ public class TestSuiteTest {
         assertNotNull(ts2.getGuid());
 
         assertNotEquals(ts.getGuid(), ts2.getGuid());
+
+
+        ts2.setStartDate(new GregorianCalendar(2014, 9, 5, 13, 15, 10).getTime());
+        ts.setStartDate(new GregorianCalendar(2014, 9, 5, 1, 15, 10).getTime());
+        assertNotEquals(ts.getGuid(), ts2.getGuid());
+        assertEquals(ts2.getGuid(), "001__2014_10_05_13_15_10_00");
+        assertEquals(ts.getGuid(), "001__2014_10_05_01_15_10_00");
     }
 
     @Test

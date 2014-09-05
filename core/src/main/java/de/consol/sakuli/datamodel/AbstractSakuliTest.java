@@ -36,8 +36,8 @@ import java.util.Date;
  */
 public abstract class AbstractSakuliTest<E extends Throwable, S extends SakuliState> implements Comparable<AbstractSakuliTest> {
 
-    public final static DateFormat GUID_DATE_FORMATE = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss_SS");
-    public final static DateFormat PRINT_DATE_FORMATE = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+    public final static DateFormat GUID_DATE_FORMATE = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_SS");
+    public final static DateFormat PRINT_DATE_FORMATE = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     protected Date startDate;
     protected Date stopDate;
