@@ -45,11 +45,13 @@ public class GearmanProperties {
     public static final String NAGIOS_OUTPUT_CASE_CRITICAL = "sakuli.receiver.gearman.nagios.output.case.critical";
     public static final String NAGIOS_OUTPUT_CASE_ERROR = "sakuli.receiver.gearman.nagios.output.case.error";
     public static final String NAGIOS_OUTPUT_SUITE_SUMMARY_DEFAULT = "{{state}} - {{state_short}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})";
-    public static final String NAGIOS_OUTPUT_SUITE_TABLE_DEFAULT = "{{state_short}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})";
+    public static final String NAGIOS_OUTPUT_SUITE_TABLE_DEFAULT = "{{state_short}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}}){{error_screenshot}}";
     public static final String NAGIOS_OUTPUT_CASE_OK_DEFAULT = "{{state_short}} case \"{{id}}\" ran in {{duration}}s - {{state_description}}";
     public static final String NAGIOS_OUTPUT_CASE_WARNING_DEFAULT = "{{state_short}} case \"{{id}}\" over runtime ({{duration}}s /{{state_description}} at {{warning_threshold}}s) {{step_information}}";
     public static final String NAGIOS_OUTPUT_CASE_CRITICAL_DEFAULT = "{{state_short}} case \"{{id}}\" over runtime ({{duration}}s /{{state_description}} at {{critical_threshold}}s) {{step_information}}";
-    public static final String NAGIOS_OUTPUT_CASE_ERROR_DEFAULT = "{{state_short}} case \"{{id}}\" {{state_description}}: {{error_message}}";
+    public static final String NAGIOS_OUTPUT_CASE_ERROR_DEFAULT = "{{state_short}} case \"{{id}}\" {{state_description}}: {{error_message}}{{error_screenshot}}";
+    public static final String NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH = "sakuli.receiver.gearman.nagios.output.screenshotDivWidth";
+    public static final String NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH_DEFAULT = "640px";
 
     @Value("${" + SERVER_QUEUE + ":" + SERVER_QUEUE_DEFAULT + "}")
     private String serverQueue;
@@ -73,6 +75,8 @@ public class GearmanProperties {
     private String outputCaseCritical;
     @Value("${" + NAGIOS_OUTPUT_CASE_ERROR + ":" + NAGIOS_OUTPUT_CASE_ERROR_DEFAULT + "}")
     private String outputCaseError;
+    @Value("${" + NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH + ":" + NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH_DEFAULT)
+    private String outputScreenshotDivWidth;
 
     //TODO write test with context
     public String getServiceType() {
@@ -169,6 +173,14 @@ public class GearmanProperties {
 
     public void setNagiosCheckCommand(String nagiosCheckCommand) {
         this.nagiosCheckCommand = nagiosCheckCommand;
+    }
+
+    public String getOutputScreenshotDivWidth() {
+        return outputScreenshotDivWidth;
+    }
+
+    public void setOutputScreenshotDivWidth(String outputScreenshotDivWidth) {
+        this.outputScreenshotDivWidth = outputScreenshotDivWidth;
     }
 
     public String lookUpOutputString(TestCaseState state) {

@@ -34,6 +34,7 @@ public enum TextPlaceholder {
     START_DATE("{{start_date}}"),
     STOP_DATE("{{stop_date}}"),
     ERROR_MESSAGE("{{error_message}}"),
+    ERROR_SCREENSHOT("{{error_screenshot}}"),
     WARN_THRESHOLD("{{warning_threshold}}"),
     CRITICAL_THRESHOLD("{{critical_threshold}}"),
     //test suite specific placeholder

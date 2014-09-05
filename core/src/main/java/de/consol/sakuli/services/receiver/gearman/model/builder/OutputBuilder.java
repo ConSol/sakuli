@@ -25,18 +25,21 @@ import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.state.TestCaseStepState;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.services.receiver.gearman.GearmanProperties;
+import de.consol.sakuli.services.receiver.gearman.ProfileGearman;
 import de.consol.sakuli.services.receiver.gearman.TextPlaceholder;
 import de.consol.sakuli.services.receiver.gearman.model.NagiosOutput;
 import de.consol.sakuli.services.receiver.gearman.model.OutputState;
 import de.consol.sakuli.services.receiver.gearman.model.PlaceholderMap;
+import de.consol.sakuli.services.receiver.gearman.model.ScreenshotDiv;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 import java.util.SortedSet;
 
 import static de.consol.sakuli.services.receiver.gearman.TextPlaceholder.*;
@@ -45,6 +48,8 @@ import static de.consol.sakuli.services.receiver.gearman.TextPlaceholder.*;
  * @author tschneck
  *         Date: 11.07.14
  */
+@ProfileGearman
+@Component
 public class OutputBuilder implements Builder<NagiosOutput> {
     public final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm:ss");
     private static final String TABLE_HEADER = "<table style=\"border-collapse: collapse;\">";
@@ -59,10 +64,17 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     private String statusSummary;
     private String performanceData;
 
+    @Autowired
+    private ScreenshotDivConverter screenshotDivConverter;
+    @Autowired
+    private TestSuite testSuite;
+    @Autowired
+    private GearmanProperties gearmanProperties;
+
     public static String replacePlaceHolder(String message, PlaceholderMap placeholderStringMap) {
         String modifiedString = message;
-        for (Map.Entry<TextPlaceholder, String> entry : placeholderStringMap.entrySet()) {
-            modifiedString = StringUtils.replace(modifiedString, entry.getKey().getPattern(), entry.getValue());
+        for (TextPlaceholder key : placeholderStringMap.keySet()) {
+            modifiedString = StringUtils.replace(modifiedString, key.getPattern(), placeholderStringMap.get(key));
         }
         //check if still placeholders can be resolved
         for (TextPlaceholder placeholder : placeholderStringMap.keySet()) {
@@ -106,16 +118,16 @@ public class OutputBuilder implements Builder<NagiosOutput> {
 
     @Override
     public NagiosOutput build() {
+        extractData(testSuite, gearmanProperties);
         NagiosOutput output = new NagiosOutput();
         output.setStatusSummary(statusSummary);
         output.setPerformanceData(performanceData);
         return output;
     }
 
-    public OutputBuilder withTestSuite(TestSuite testSuite, GearmanProperties properties) {
+    protected void extractData(TestSuite testSuite, GearmanProperties properties) {
         statusSummary = getStatusSummary(testSuite, properties);
         performanceData = getPerformanceData(testSuite) + " [" + properties.getNagiosCheckCommand() + "]";
-        return this;
     }
 
     /**
@@ -196,6 +208,7 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     protected PlaceholderMap getTextPlaceholder(TestCase testCase) {
         PlaceholderMap placeholderMap = new PlaceholderMap();
         OutputState outputState = OutputState.lookupSakuliState(testCase.getState());
+        ScreenshotDiv screenshotDiv = screenshotDivConverter.convert(testCase.getException());
         placeholderMap.put(STATE, outputState.name());
         placeholderMap.put(STATE_SHORT, outputState.getShortState());
         placeholderMap.put(STATE_DESC, testCase.getState().getNagiosStateDescription());
@@ -207,6 +220,7 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         placeholderMap.put(WARN_THRESHOLD, String.valueOf(testCase.getWarningTime()));
         placeholderMap.put(CRITICAL_THRESHOLD, String.valueOf(testCase.getCriticalTime()));
         placeholderMap.put(ERROR_MESSAGE, testCase.getExceptionMessages(true));
+        placeholderMap.put(ERROR_SCREENSHOT, screenshotDiv != null ? screenshotDiv.getPayloadString() : null);
         placeholderMap.put(STEP_INFORMATION, generateStepInformation(testCase.getStepsAsSortedSet()));
         placeholderMap.put(CASE_FILE, testCase.getTcFile() != null ? testCase.getTcFile().toString() : null);
         placeholderMap.put(CASE_START_URL, testCase.getStartUrl());
@@ -239,6 +253,7 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     protected PlaceholderMap getTextPlaceholder(TestSuite testSuite) {
         PlaceholderMap placeholderMap = new PlaceholderMap();
         OutputState outputState = OutputState.lookupSakuliState(testSuite.getState());
+        ScreenshotDiv screenshotDiv = screenshotDivConverter.convert(testSuite.getException());
         placeholderMap.put(STATE, outputState.name());
         placeholderMap.put(STATE_SHORT, outputState.getShortState());
         placeholderMap.put(STATE_DESC, testSuite.getState().getNagiosStateDescription());
@@ -250,6 +265,7 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         placeholderMap.put(STOP_DATE, (testSuite.getStopDate() == null) ? "xx" : dateFormat.format(testSuite.getStopDate()));
         placeholderMap.put(WARN_THRESHOLD, String.valueOf(testSuite.getWarningTime()));
         placeholderMap.put(CRITICAL_THRESHOLD, String.valueOf(testSuite.getCriticalTime()));
+        placeholderMap.put(ERROR_SCREENSHOT, screenshotDiv != null ? screenshotDiv.getPayloadString() : null);
         placeholderMap.put(ERROR_MESSAGE, testSuite.getExceptionMessages(true));
         placeholderMap.put(SUITE_FOLDER, testSuite.getTestSuiteFolder() != null ? testSuite.getTestSuiteFolder().toString() : null);
         placeholderMap.put(HOST, testSuite.getHost());

@@ -27,27 +27,42 @@ import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestCaseStepState;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliException;
+import de.consol.sakuli.exceptions.SakuliExceptionWithScreenshot;
 import de.consol.sakuli.services.receiver.gearman.GearmanProperties;
 import de.consol.sakuli.services.receiver.gearman.GearmanPropertiesTestHelper;
 import de.consol.sakuli.services.receiver.gearman.model.NagiosOutput;
 import de.consol.sakuli.services.receiver.gearman.model.PlaceholderMap;
 import org.apache.commons.lang.time.DateUtils;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static de.consol.sakuli.services.receiver.gearman.TextPlaceholder.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.testng.Assert.assertEquals;
 
 public class OutputBuilderTest {
-
-
+    @Mock
+    private TestSuite testSuite;
+    @Mock
+    private GearmanProperties gearmanProperties;
+    @Spy
+    @InjectMocks
+    private ScreenshotDivConverter screenshotDivConverter;
+    @Spy
+    @InjectMocks
     private OutputBuilder testling;
 
     @DataProvider(name = "placeholder")
@@ -85,7 +100,8 @@ public class OutputBuilderTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
-        testling = new OutputBuilder();
+        MockitoAnnotations.initMocks(this);
+        ReflectionTestUtils.setField(testling, "screenshotDivConverter", screenshotDivConverter);
     }
 
     @Test(dataProvider = "placeholder")
@@ -113,14 +129,11 @@ public class OutputBuilderTest {
 
     @Test
     public void testBuild() throws Exception {
-        testling = spy(new OutputBuilder());
-        TestSuite testSuite = mock(TestSuite.class);
-        GearmanProperties gearmanProperties = mock(GearmanProperties.class);
         GearmanPropertiesTestHelper.initMock(gearmanProperties);
         doReturn("STATUS").when(testling).getStatusSummary(testSuite, gearmanProperties);
         doReturn("PERFORMANCE").when(testling).getPerformanceData(testSuite);
 
-        NagiosOutput result = testling.withTestSuite(testSuite, gearmanProperties).build();
+        NagiosOutput result = testling.build();
         assertEquals(result.getStatusSummary(), "STATUS");
         assertEquals(result.getPerformanceData(), "PERFORMANCE [check_sakuli_db_suite]");
     }
@@ -242,6 +255,35 @@ public class OutputBuilderTest {
     }
 
     @Test
+    public void testFormatTestSuiteTableExceptionWithScreenshot() throws Exception {
+        GearmanPropertiesTestHelper.initMock(gearmanProperties);
+        Path screenshotPath = Paths.get(OutputBuilder.class.getResource("computer.png").toURI());
+        Date startDate = new Date();
+        TestSuite testSuiteExample = new TestSuiteExampleBuilder()
+                .withId("sakuli-123")
+                .withState(TestSuiteState.ERRORS)
+                .withStartDate(startDate)
+                .withException(new SakuliExceptionWithScreenshot("TEST-ERROR", screenshotPath))
+                .withStopDate(DateUtils.addSeconds(startDate, 120))
+                .buildExample();
+
+        String result = testling.formatTestSuiteTableStateMessage(testSuiteExample, gearmanProperties);
+        String lastRun = OutputBuilder.dateFormat.format(testSuiteExample.getStopDate());
+
+        final String separator = "<div";
+        assertEquals(result.substring(0, result.indexOf(separator)), "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli-123\" ran" +
+                " in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")");
+
+        String start = "<div style=\"width:640px\" id=\"sakuli_screenshot\">" +
+                "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" " +
+                "src=\"data:image/jpg;base64,";
+        String end = "\"></div></td></tr>";
+        String substring = result.substring(result.indexOf(separator));
+        assertEquals(substring.substring(0, start.length()), start);
+        assertEquals(substring.substring(substring.length() - end.length()), end);
+    }
+
+    @Test
     public void testFormatTestCaseTableStateMessage() throws Exception {
         String htmlTemplate = "<tr valign=\"top\"><td class=\"%s\">%s</td></tr>";
         GearmanProperties properties = GearmanPropertiesTestHelper.initMock(mock(GearmanProperties.class));
@@ -329,7 +371,9 @@ public class OutputBuilderTest {
         String statusSummary = testling.getStatusSummary(testSuite, gearmanProperties);
         assertEquals(statusSummary, expectedHTML);
 
-        NagiosOutput output = testling.withTestSuite(testSuite, gearmanProperties).build();
+        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
+        ReflectionTestUtils.setField(testling, "gearmanProperties", gearmanProperties);
+        NagiosOutput output = testling.build();
         String substringStatusSummary = output.getOutputString().substring(0, output.getOutputString().indexOf("|"));
         assertEquals(substringStatusSummary, expectedHTML);
     }
