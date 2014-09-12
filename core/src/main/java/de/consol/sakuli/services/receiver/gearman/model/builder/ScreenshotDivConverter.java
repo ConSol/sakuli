@@ -5,6 +5,7 @@ import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.exceptions.SakuliExceptionWithScreenshot;
 import de.consol.sakuli.exceptions.SakuliReceiverException;
 import de.consol.sakuli.services.receiver.gearman.GearmanProperties;
+import de.consol.sakuli.services.receiver.gearman.ProfileGearman;
 import de.consol.sakuli.services.receiver.gearman.model.ScreenshotDiv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.nio.file.Path;
  * @author tschneck
  *         Date: 05.09.14
  */
+@ProfileGearman
 @Component
 public class ScreenshotDivConverter implements Converter<ScreenshotDiv, Throwable> {
 

@@ -81,6 +81,10 @@
               class="de.consol.sakuli.MockitoFactoryBean">
             <constructor-arg value="de.consol.sakuli.services.receiver.gearman.GearmanProperties"/>
         </bean>
+        <bean id="de.consol.sakuli.services.receiver.gearman.model.builder.NagiosCheckResultBuilder"
+              class="de.consol.sakuli.MockitoFactoryBean">
+            <constructor-arg value="de.consol.sakuli.services.receiver.gearman.model.builder.NagiosCheckResultBuilder"/>
+        </bean>
     </beans>
 
 </beans>
