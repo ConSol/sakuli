@@ -121,7 +121,6 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
     }
 
     protected void modifySahiProperties(Properties props) {
-        //TODO TS write unit test!
         if (writePropertiesToSahiConfig) {
             String sahiConfigFolerPath = resolve(props.getProperty(SahiProxyProperties.PROXY_CONFIG_FOLDER), props);
 
