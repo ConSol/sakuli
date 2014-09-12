@@ -42,6 +42,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -428,7 +429,7 @@ public class OutputBuilderTest {
         assertEquals(textPlaceholder.get(WARN_THRESHOLD), "4");
         assertEquals(textPlaceholder.get(CRITICAL_THRESHOLD), "5");
         assertEquals(textPlaceholder.get(ERROR_MESSAGE), "");
-        assertEquals(textPlaceholder.get(CASE_FILE), "folder/_tc.js");
+        assertEquals(textPlaceholder.get(CASE_FILE), String.format("folder%s_tc.js", File.separator));
         assertEquals(textPlaceholder.get(CASE_LAST_URL), "http://www.last-url.com");
         assertEquals(textPlaceholder.get(CASE_START_URL), "http://www.start-url.com");
         assertEquals(textPlaceholder.get(STEP_INFORMATION), "");

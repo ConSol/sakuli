@@ -41,7 +41,7 @@ public class NagiosExceptionBuilder {
 
     public static SakuliReceiverException buildTransferException(String host, int port, GearmanJobResult result) {
         return new SakuliReceiverException(
-                String.format("something went wrong during the transfer of the results to the gearman receiver '%s:'%s':%n%s",
+                String.format("something went wrong during the transfer of the results to the gearman receiver '%s:'%s':\n%s",
                         host,
                         port,
                         buildExceptionForGearmanResult(result)
