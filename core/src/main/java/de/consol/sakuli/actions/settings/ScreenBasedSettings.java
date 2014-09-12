@@ -54,7 +54,8 @@ public class ScreenBasedSettings extends Settings {
 //        AutoWaitTimeout = 0;
         TypeDelay = props.getTypeDelay();
 
-        OcrDataPath = sakuliProps.getIncludeFolder().toAbsolutePath().toString();
+// TODO remove if no longer needed
+// OcrDataPath = sakuliProps.getIncludeFolder().toAbsolutePath().toString();
         OcrTextSearch = true;
         OcrTextRead = true;
 

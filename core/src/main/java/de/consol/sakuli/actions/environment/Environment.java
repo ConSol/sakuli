@@ -25,14 +25,11 @@ import de.consol.sakuli.actions.screenbased.RegionImpl;
 import de.consol.sakuli.actions.screenbased.TypingUtil;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.App;
+import org.sikuli.script.IRobot;
 import org.sikuli.script.Key;
-import org.sikuli.script.RobotDesktop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -141,18 +138,7 @@ public class Environment implements Action {
      */
     @LogToResult(message = "get string from system clipboard", logClassInstance = false)
     public String getClipboard() {
-        Transferable content = Clipboard.getSystemClipboard().getContents(null);
-        try {
-            if (content.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                String value = (String) content.getTransferData(DataFlavor.stringFlavor);
-                logger.info("String from system clipboard = \"" + value + "\"");
-                return value;
-            }
-        } catch (UnsupportedFlavorException | IOException e) {
-            loader.getExceptionHandler().handleException("getClipboard() went wrong, please check your settings", resumeOnException);
-            loader.getExceptionHandler().handleException(e);
-        }
-        return null;
+        return App.getClipboard();
     }
 
     /**
@@ -163,8 +149,7 @@ public class Environment implements Action {
      */
     @LogToResult(message = "put to clipboard", logClassInstance = false)
     public Environment setClipboard(String text) {
-        Clipboard.putText(Clipboard.PLAIN, Clipboard.UTF8,
-                Clipboard.BYTE_BUFFER, text);
+        App.setClipboard(text);
         return this;
     }
 
@@ -177,7 +162,7 @@ public class Environment implements Action {
     @LogToResult(message = "paste the current clipboard into the focus", logClassInstance = false)
     public Environment pasteClipboard() {
         int mod = Key.getHotkeyModifier();
-        RobotDesktop r = loader.getScreen().getRobot();
+        IRobot r = loader.getScreen().getRobot();
         r.keyDown(mod);
         r.keyDown(KeyEvent.VK_V);
         r.keyUp(KeyEvent.VK_V);
@@ -194,7 +179,7 @@ public class Environment implements Action {
     @LogToResult(message = "copy the current selection to the clipboard", logClassInstance = false)
     public Environment copyIntoClipboard() {
         int mod = Key.getHotkeyModifier();
-        RobotDesktop r = loader.getScreen().getRobot();
+        IRobot r = loader.getScreen().getRobot();
         r.keyDown(mod);
         r.keyDown(KeyEvent.VK_C);
         r.keyUp(KeyEvent.VK_C);

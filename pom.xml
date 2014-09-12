@@ -17,7 +17,9 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.consol.sakuli</groupId>
@@ -51,6 +53,8 @@
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
         <test.group.ui>ui</test.group.ui>
+        <!-- change this later to latest stable version-->
+        <sikulixapi.version>1.1.0-Beta4</sikulixapi.version>
     </properties>
 
     <!-- Plugin CONFIG -->
@@ -371,11 +375,20 @@
 
         <!-- SikuliX-Java Library (FULL LIBRARY) - is part of the  sikuli-setup.jar-->
         <!-- well be needed for Functions like App() and so on...-->
-        <!-- local libaries, included with 'install_local_lib.sh' ... the are still not available over maven central -->
         <dependency>
-            <groupId>org.sikuli</groupId>
-            <artifactId>SikuliX-API</artifactId>
-            <version>1.0.1</version>
+            <groupId>com.sikulix</groupId>
+            <artifactId>sikulixapi</artifactId>
+            <version>${sikulixapi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sikulix</groupId>
+            <artifactId>sikulixlibs</artifactId>
+            <version>${sikulixapi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sikulix</groupId>
+            <artifactId>sikulixlibsvision</artifactId>
+            <version>${sikulixapi.version}</version>
         </dependency>
 
         <!-- Testing frameworks -->
@@ -427,15 +440,17 @@
                 <enabled>true</enabled>
             </releases>
         </repository>
-        <!-- sonatype for gearman dependencies -->
+        <!-- sonatype for gearman dependencies & sikuliX-2014 -->
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
             </snapshots>
             <releases>
                 <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
             </releases>
         </repository>
     </repositories>
