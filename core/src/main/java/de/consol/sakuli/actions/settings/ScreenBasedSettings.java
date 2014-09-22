@@ -69,11 +69,11 @@ public class ScreenBasedSettings extends Settings {
         DefaultHighlightTime = props.getAutoHighlightSeconds();
         WaitAfterHighlight = 0.1f;
 
-        //Logging
-        ActionLogs = false;
-        DebugLogs = false;
-        InfoLogs = false;
-        ProfileLogs = false;
+        //Logging TODO make configurable
+        ActionLogs = true;
+        DebugLogs = true;
+        InfoLogs = true;
+        ProfileLogs = true;
 
     }
 

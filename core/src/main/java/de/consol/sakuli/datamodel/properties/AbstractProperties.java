@@ -28,11 +28,33 @@ import java.nio.file.Path;
  */
 public abstract class AbstractProperties {
 
+    /**
+     * checks all assigned folders, if they are existing
+     *
+     * @param folders {@link Path} array or vararg
+     * @throws FileNotFoundException
+     */
     protected void checkFolders(Path... folders) throws FileNotFoundException {
         if (folders != null) {
             for (Path folder : folders) {
                 if (!Files.exists(folder)) {
                     throw new FileNotFoundException("necessary Folder '" + folder.toString() + "' does not exists!");
+                }
+            }
+        }
+    }
+
+    /**
+     * checks all assigned files, if they are existing
+     *
+     * @param files {@link Path} array or vararg
+     * @throws FileNotFoundException
+     */
+    protected void checkFiles(Path... files) throws FileNotFoundException {
+        if (files != null) {
+            for (Path folder : files) {
+                if (!Files.exists(folder)) {
+                    throw new FileNotFoundException("necessary File '" + folder.toString() + "' does not exists!");
                 }
             }
         }

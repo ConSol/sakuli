@@ -33,6 +33,7 @@ import java.util.List;
  * @author tschneck Date: 14.05.14
  */
 @Component
+@SuppressWarnings("unused")
 public class SahiProxyProperties extends AbstractProperties {
 
     public static final String PROXY_HOME_FOLDER = "sahi.proxy.homePath";
@@ -43,6 +44,7 @@ public class SahiProxyProperties extends AbstractProperties {
 
     public static final String SAHI_PROPERTY_FILE_APPENDER = File.separator + "config" + File.separator + "userdata.properties";
     public static final String SAHI_LOG_PROPERTY_FILE_APPENDER = File.separator + "config" + File.separator + "log.properties";
+    public static final String SAHI_INJECT_FILE_APPENDER = File.separator + "config" + File.separator + "inject_top.txt";
 
     public static final String SAHI_LOG_DIR = "logs.dir";
     public static final String HTTP_PROXY_ENABLED = "ext.http.proxy.enable";
@@ -89,12 +91,15 @@ public class SahiProxyProperties extends AbstractProperties {
     private Integer reconnectSeconds;
     @Value("${" + MAX_CONNECT_TRIES + "}")
     private Integer maxConnectTries;
+    private Path sahiInjectFile;
 
     @PostConstruct
     public void initFolders() throws FileNotFoundException {
         sahiHomeFolder = Paths.get(sahiHomeFolderPropertyValue).normalize().toAbsolutePath();
         sahiConfigFolder = Paths.get(sahiConfigFolderPropertyValue).normalize().toAbsolutePath();
         checkFolders(sahiHomeFolder, sahiConfigFolder);
+        sahiInjectFile = Paths.get(sahiHomeFolder.toString() + SAHI_INJECT_FILE_APPENDER);
+        checkFiles(sahiInjectFile);
     }
 
     public String getSahiHomeFolderPropertyValue() {
@@ -151,5 +156,13 @@ public class SahiProxyProperties extends AbstractProperties {
 
     public void setMaxConnectTries(Integer maxConnectTries) {
         this.maxConnectTries = maxConnectTries;
+    }
+
+    public Path getSahiInjectFile() {
+        return sahiInjectFile;
+    }
+
+    public void setSahiInjectFile(Path sahiInjectFile) {
+        this.sahiInjectFile = sahiInjectFile;
     }
 }
