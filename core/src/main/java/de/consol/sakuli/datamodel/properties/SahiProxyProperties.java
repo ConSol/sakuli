@@ -18,12 +18,14 @@
 
 package de.consol.sakuli.datamodel.properties;
 
+import de.consol.sakuli.starter.helper.SahiProxy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -44,7 +46,11 @@ public class SahiProxyProperties extends AbstractProperties {
 
     public static final String SAHI_PROPERTY_FILE_APPENDER = File.separator + "config" + File.separator + "userdata.properties";
     public static final String SAHI_LOG_PROPERTY_FILE_APPENDER = File.separator + "config" + File.separator + "log.properties";
-    public static final String SAHI_INJECT_FILE_APPENDER = File.separator + "config" + File.separator + "inject_top.txt";
+
+    public static final String SAHI_JS_INJECT_CODE_FILENAME = "inject.js";
+    public static final String SAHI_JS_INJECT_CONFIG_FILE_APPENDER = File.separator + "config" + File.separator + "inject_top.txt";
+    public static final String SAHI_JS_INJECT_TARGET_FOLDER_APPENDER = File.separator + "htdocs" + File.separator + "spr" + File.separator + "sakuli";
+    public static final String SAHI_JS_INJECT_TARGET_FILE_APPENDER = SAHI_JS_INJECT_TARGET_FOLDER_APPENDER + File.separator + SAHI_JS_INJECT_CODE_FILENAME;
 
     public static final String SAHI_LOG_DIR = "logs.dir";
     public static final String HTTP_PROXY_ENABLED = "ext.http.proxy.enable";
@@ -91,15 +97,36 @@ public class SahiProxyProperties extends AbstractProperties {
     private Integer reconnectSeconds;
     @Value("${" + MAX_CONNECT_TRIES + "}")
     private Integer maxConnectTries;
-    private Path sahiInjectFile;
+    private Path sahiJSInjectConfigFile;
+    private Path sahiJSInjectSourceFile;
+    private Path sahiJSInjectTargetFile;
+    private Path sahiJSInjectTargetFolder;
 
     @PostConstruct
     public void initFolders() throws FileNotFoundException {
         sahiHomeFolder = Paths.get(sahiHomeFolderPropertyValue).normalize().toAbsolutePath();
         sahiConfigFolder = Paths.get(sahiConfigFolderPropertyValue).normalize().toAbsolutePath();
         checkFolders(sahiHomeFolder, sahiConfigFolder);
-        sahiInjectFile = Paths.get(sahiHomeFolder.toString() + SAHI_INJECT_FILE_APPENDER);
-        checkFiles(sahiInjectFile);
+        loadSahiInjectFiles();
+    }
+
+    /**
+     * Loads the paths for all custom Sahi inject files, which will be needed for {@link SahiProxy#injectCustomJavaScriptFiles()}
+     *
+     * @throws FileNotFoundException
+     */
+    protected void loadSahiInjectFiles() throws FileNotFoundException {
+        sahiJSInjectConfigFile = Paths.get(sahiHomeFolder.toString() + SAHI_JS_INJECT_CONFIG_FILE_APPENDER);
+        try {
+            sahiJSInjectSourceFile = Paths.get(SahiProxy.class.getResource(SAHI_JS_INJECT_CODE_FILENAME).toURI());
+        } catch (URISyntaxException e) {
+            throw new FileNotFoundException(String.format("can't resolve resource '%s' for class '%s'", SAHI_JS_INJECT_CODE_FILENAME, SahiProxy.class.getName()));
+        }
+        checkFiles(sahiJSInjectConfigFile, sahiJSInjectSourceFile);
+
+        //don't check files and folders => will be created during runtime
+        sahiJSInjectTargetFolder = Paths.get(sahiHomeFolder.toString() + SAHI_JS_INJECT_TARGET_FOLDER_APPENDER);
+        sahiJSInjectTargetFile = Paths.get(sahiHomeFolder.toString() + SAHI_JS_INJECT_TARGET_FILE_APPENDER);
     }
 
     public String getSahiHomeFolderPropertyValue() {
@@ -158,11 +185,35 @@ public class SahiProxyProperties extends AbstractProperties {
         this.maxConnectTries = maxConnectTries;
     }
 
-    public Path getSahiInjectFile() {
-        return sahiInjectFile;
+    public Path getSahiJSInjectConfigFile() {
+        return sahiJSInjectConfigFile;
     }
 
-    public void setSahiInjectFile(Path sahiInjectFile) {
-        this.sahiInjectFile = sahiInjectFile;
+    public void setSahiJSInjectConfigFile(Path sahiJSInjectConfigFile) {
+        this.sahiJSInjectConfigFile = sahiJSInjectConfigFile;
+    }
+
+    public Path getSahiJSInjectSourceFile() {
+        return sahiJSInjectSourceFile;
+    }
+
+    public void setSahiJSInjectSourceFile(Path sahiJSInjectSourceFile) {
+        this.sahiJSInjectSourceFile = sahiJSInjectSourceFile;
+    }
+
+    public Path getSahiJSInjectTargetFile() {
+        return sahiJSInjectTargetFile;
+    }
+
+    public void setSahiJSInjectTargetFile(Path sahiJSInjectTargetFile) {
+        this.sahiJSInjectTargetFile = sahiJSInjectTargetFile;
+    }
+
+    public Path getSahiJSInjectTargetFolder() {
+        return sahiJSInjectTargetFolder;
+    }
+
+    public void setSahiJSInjectTargetFolder(Path sahiJSInjectTargetFolder) {
+        this.sahiJSInjectTargetFolder = sahiJSInjectTargetFolder;
     }
 }

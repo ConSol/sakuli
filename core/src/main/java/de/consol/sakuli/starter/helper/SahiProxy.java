@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 
 /**
@@ -102,15 +103,26 @@ public class SahiProxy {
     }
 
     protected void injectCustomJavaScriptFiles() throws IOException {
-        File injectFile = props.getSahiInjectFile().toFile();
+        // TODO writ unit test
+        File injectFile = props.getSahiJSInjectConfigFile().toFile();
         String injectFileString = FileUtils.readFileToString(injectFile, Charsets.UTF_8);
         if (!injectFileString.contains(SAKULI_INJECT_SCRIPT_TAG)) {
             injectFileString = StringUtils.replace(injectFileString, SAHI_INJECT_END, SAKULI_INJECT_SCRIPT_TAG + "\r\n" + SAHI_INJECT_END);
             FileUtils.writeStringToFile(injectFile, injectFileString, Charsets.UTF_8);
-            logger.info("added '{}' to Sahi inject config file '{}'", SAKULI_INJECT_SCRIPT_TAG, props.getSahiInjectFile().toString());
+            logger.info("added '{}' to Sahi inject config file '{}'", SAKULI_INJECT_SCRIPT_TAG, props.getSahiJSInjectConfigFile().toString());
         }
-// TODO copy file to sahi\htdocs\spr\sakuli\inject.js  & write unit test
-//        FileSystemUtils.copyRecursively();
+
+        Path source = props.getSahiJSInjectSourceFile();
+        Path target = props.getSahiJSInjectTargetFile();
+        if (isNewer(source, target)) {
+            FileUtils.copyFile(source.toFile(), target.toFile(), false);
+            logger.info("copied file '{}' to target '{}'", source.toString(), target.toString());
+        }
+    }
+
+    private boolean isNewer(Path source, Path target) {
+        return !Files.exists(target)
+                || FileUtils.isFileNewer(source.toFile(), target.toFile());
     }
 
     public void shutdown() throws SakuliProxyException {
