@@ -48,7 +48,7 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
  */
 @Aspect
 @Component
-public class RhinoAspect {
+public class RhinoAspect extends BaseSakuliAspect {
 
     public static final String ALREADY_HANDELED = "{{SAKULI_EX}}";
     protected final static Logger logger = LoggerFactory.getLogger(RhinoAspect.class);
@@ -125,8 +125,7 @@ public class RhinoAspect {
             if (logToResult.logClassInstance() && joinPoint.getTarget() != null) {
                 message.append("\"").append(joinPoint.getTarget().toString()).append("\" ");
             }
-            message.append(joinPoint.getSignature().getDeclaringType().getSimpleName()).append(".")
-                    .append(joinPoint.getSignature().getName()).append("()");
+            message.append(getClassAndMethodAsString(joinPoint));
 
             if (isNotEmpty(logToResult.message())) {
                 message.append(" - ").append(logToResult.message());
@@ -211,11 +210,6 @@ public class RhinoAspect {
             }
         }
 
-    }
-
-
-    private Logger getLogger(JoinPoint joinPoint) {
-        return LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringType());
     }
 
     private String printArgs(JoinPoint joinPoint, boolean logArgs) {

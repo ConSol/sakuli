@@ -19,6 +19,7 @@
 package de.consol.sakuli.actions.screenbased;
 
 import de.consol.sakuli.actions.Action;
+import de.consol.sakuli.actions.ModifySahiTimer;
 import de.consol.sakuli.actions.logging.LogToResult;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.Screen;
@@ -144,6 +145,7 @@ public class Region implements Action {
      *
      * @return the {@link Region} or NULL on errors.
      */
+    @ModifySahiTimer
     @LogToResult
     public Region click() {
         return update(regionImpl.clickMe());
@@ -159,6 +161,7 @@ public class Region implements Action {
      *
      * @return the {@link Region} or NULL on errors.
      */
+    @ModifySahiTimer
     @LogToResult
     public Region doubleClick() {
         return update(regionImpl.doubleClickMe());
@@ -174,6 +177,7 @@ public class Region implements Action {
      *
      * @return the {@link Region} or NULL on errors.
      */
+    @ModifySahiTimer
     @LogToResult
     public Region rightClick() {
         return update(regionImpl.rightClickMe());
@@ -222,6 +226,7 @@ public class Region implements Action {
     /**
      * {@link TypingUtil#paste(String)}.
      */
+    @ModifySahiTimer
     @LogToResult(logClassInstance = false)
     public Region paste(String text) {
         return typingUtil.paste(text);
@@ -230,6 +235,7 @@ public class Region implements Action {
     /**
      * {@link TypingUtil#pasteMasked(String)}.
      */
+    @ModifySahiTimer
     @LogToResult(logClassInstance = false, logArgs = false)
     public Region pasteMasked(String text) {
         return typingUtil.pasteMasked(text);
@@ -238,6 +244,7 @@ public class Region implements Action {
     /**
      * {@link TypingUtil#pasteAndDecrypt(String)}.
      */
+    @ModifySahiTimer
     @LogToResult(logClassInstance = false, logArgs = false)
     public Region pasteAndDecrypt(String text) {
         return typingUtil.pasteAndDecrypt(text);
@@ -251,6 +258,7 @@ public class Region implements Action {
     /**
      * See {@link TypingUtil#type(String, String)}.
      */
+    @ModifySahiTimer
     @LogToResult(message = "type over system keyboard", logClassInstance = false)
     public Region type(String text) {
         return typingUtil.type(text, null);
@@ -259,6 +267,7 @@ public class Region implements Action {
     /**
      * See {@link TypingUtil#type(String, String)}.
      */
+    @ModifySahiTimer
     @LogToResult(message = "type with pressed modifiers", logClassInstance = false)
     public Region type(String text, String optModifiers) {
         return typingUtil.type(text, optModifiers);
@@ -267,6 +276,7 @@ public class Region implements Action {
     /**
      * See {@link TypingUtil#typeMasked(String, String)}.
      */
+    @ModifySahiTimer
     @LogToResult(message = "type over system keyboard", logClassInstance = false, logArgs = false)
     public Region typeMasked(String text) {
         return typingUtil.typeMasked(text, null);
@@ -275,6 +285,7 @@ public class Region implements Action {
     /**
      * See {@link TypingUtil#typeMasked(String, String)}.
      */
+    @ModifySahiTimer
     @LogToResult(message = "type with pressed modifiers", logClassInstance = false, logArgs = false)
     public Region typeMasked(String text, String optModifiers) {
         return typingUtil.typeMasked(text, optModifiers);
@@ -283,6 +294,7 @@ public class Region implements Action {
     /**
      * See {@link TypingUtil#typeAndDecrypt(String, String)} .
      */
+    @ModifySahiTimer
     @LogToResult(message = "decrypt and type over system keyboard", logClassInstance = false, logArgs = false)
     public Region typeAndDecrypt(String text) {
         return typingUtil.typeAndDecrypt(text, null);
@@ -291,6 +303,7 @@ public class Region implements Action {
     /**
      * See {@link TypingUtil#typeAndDecrypt(String, String)} .
      */
+    @ModifySahiTimer
     @LogToResult(message = "decrypt and type with pressed modifiers", logClassInstance = false, logArgs = false)
     public Region typeAndDecrypt(String text, String optModifiers) {
         return typingUtil.typeAndDecrypt(text, optModifiers);
@@ -302,6 +315,7 @@ public class Region implements Action {
      * @param amountOfChars number of chars to delete
      * @return this {@link Region} or null on errors
      */
+    @ModifySahiTimer
     @LogToResult
     public Region deleteChars(int amountOfChars) {
         return update(regionImpl.deleteChars(amountOfChars));

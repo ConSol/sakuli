@@ -18,8 +18,6 @@
 
 package de.consol.sakuli.aop;
 
-import de.consol.sakuli.BaseTest;
-import de.consol.sakuli.PropertyHolder;
 import de.consol.sakuli.actions.TestCaseAction;
 import de.consol.sakuli.actions.environment.Environment;
 import de.consol.sakuli.actions.logging.LogToResult;
@@ -32,7 +30,6 @@ import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BeanLoader;
 import de.consol.sakuli.loader.ScreenActionLoader;
-import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import net.sf.sahi.playback.SahiScript;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.report.ResultType;
@@ -41,23 +38,15 @@ import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
-public class RhinoAspectTest {
-
-    private Path logFile;
+public class RhinoAspectTest extends AopBaseTest {
 
     @DataProvider(name = "resultTypes")
     public static Object[][] resultTypes() {
@@ -78,15 +67,6 @@ public class RhinoAspectTest {
                 {LogLevel.ERROR},
                 {LogLevel.WARNING},
         };
-    }
-
-    @BeforeMethod
-    public void setUp() throws Exception {
-        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = BaseTest.TEST_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = BaseTest.INCLUDE_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = BaseTest.SAHI_FOLDER_PATH;
-        BeanLoader.CONTEXT_PATH = "aopTest-beanRefFactory.xml";
-        logFile = Paths.get(BeanLoader.loadBean(PropertyHolder.class).getLogFileAll());
     }
 
     @Test
@@ -225,27 +205,6 @@ public class RhinoAspectTest {
                 className + "." + methodName + "()");
     }
 
-    private void assertLastLine(String filter, LogLevel logLevel, String expectedMessage) throws IOException {
-        String preFix = null;
-        switch (logLevel) {
-            case ERROR:
-                preFix = "ERROR";
-                break;
-            case INFO:
-                preFix = "INFO ";
-                break;
-            case DEBUG:
-                preFix = "DEBUG";
-                break;
-            case WARNING:
-                preFix = "WARN ";
-                break;
-        }
-        String lastLineOfLogFile = BaseTest.getLastLineWithContent(logFile, filter);
-        assertEquals(lastLineOfLogFile.substring(0, 5), preFix);
-        assertEquals(lastLineOfLogFile.substring(30), expectedMessage);
-    }
-
 
     @Test
     public void testDoEnvironmentLog() throws Exception {
@@ -284,11 +243,6 @@ public class RhinoAspectTest {
 
         assertLastLine(testAction.getClass().getSimpleName(), LogLevel.INFO,
                 "\"test case [" + sampleTc.getActionValueString() + "]\" TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, NULL]");
-    }
-
-    @AfterMethod
-    public void tearDown() throws Exception {
-        BeanLoader.CONTEXT_PATH = BaseTest.TEST_CONTEXT_PATH;
     }
 
 

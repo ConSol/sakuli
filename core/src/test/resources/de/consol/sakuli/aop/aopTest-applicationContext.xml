@@ -30,7 +30,6 @@
     <bean class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
     <bean class="de.consol.sakuli.datamodel.properties.ReceiverProperties"/>
     <bean class="de.consol.sakuli.datamodel.properties.ActionProperties"/>
-    <bean class="de.consol.sakuli.datamodel.properties.SahiProxyProperties"/>
 
     <bean id="propertyResolver"
           class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
@@ -69,6 +68,10 @@
     </bean>
     <bean id="de.consol.sakuli.datamodel.actions.Screen" class="de.consol.sakuli.MockitoFactoryBean">
         <constructor-arg value="de.consol.sakuli.datamodel.actions.Screen">
+        </constructor-arg>
+    </bean>
+    <bean id="de.consol.sakuli.datamodel.properties.SahiProxyProperties" class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.datamodel.properties.SahiProxyProperties">
         </constructor-arg>
     </bean>
 
