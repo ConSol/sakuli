@@ -103,7 +103,6 @@ public class SahiProxy {
     }
 
     protected void injectCustomJavaScriptFiles() throws IOException {
-        // TODO writ unit test
         File injectFile = props.getSahiJSInjectConfigFile().toFile();
         String injectFileString = FileUtils.readFileToString(injectFile, Charsets.UTF_8);
         if (!injectFileString.contains(SAKULI_INJECT_SCRIPT_TAG)) {

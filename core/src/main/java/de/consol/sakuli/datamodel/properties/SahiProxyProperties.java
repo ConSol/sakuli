@@ -100,7 +100,6 @@ public class SahiProxyProperties extends AbstractProperties {
     private Path sahiJSInjectConfigFile;
     private Path sahiJSInjectSourceFile;
     private Path sahiJSInjectTargetFile;
-    private Path sahiJSInjectTargetFolder;
 
     @PostConstruct
     public void initFolders() throws FileNotFoundException {
@@ -125,7 +124,6 @@ public class SahiProxyProperties extends AbstractProperties {
         checkFiles(sahiJSInjectConfigFile, sahiJSInjectSourceFile);
 
         //don't check files and folders => will be created during runtime
-        sahiJSInjectTargetFolder = Paths.get(sahiHomeFolder.toString() + SAHI_JS_INJECT_TARGET_FOLDER_APPENDER);
         sahiJSInjectTargetFile = Paths.get(sahiHomeFolder.toString() + SAHI_JS_INJECT_TARGET_FILE_APPENDER);
     }
 
@@ -209,11 +207,4 @@ public class SahiProxyProperties extends AbstractProperties {
         this.sahiJSInjectTargetFile = sahiJSInjectTargetFile;
     }
 
-    public Path getSahiJSInjectTargetFolder() {
-        return sahiJSInjectTargetFolder;
-    }
-
-    public void setSahiJSInjectTargetFolder(Path sahiJSInjectTargetFolder) {
-        this.sahiJSInjectTargetFolder = sahiJSInjectTargetFolder;
-    }
 }
