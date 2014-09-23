@@ -52,8 +52,8 @@
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
         <test.group.ui>ui</test.group.ui>
-        <!-- change this later to latest stable version-->
-        <sikulixapi.version>1.1.0-sakuli-SNAPSHOT</sikulixapi.version>
+        <!-- special sakuli-version 99x - change this later to latest stable version-->
+        <sikulixapi.version>1.1.990</sikulixapi.version>
     </properties>
 
     <!-- Plugin CONFIG -->
@@ -428,7 +428,7 @@
             <name>ConSol* Labs Repository</name>
             <url>http://labs.consol.de/maven/repository</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
             <releases>
                 <enabled>true</enabled>
