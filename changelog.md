@@ -2,6 +2,19 @@
 
 - - - 
 
+### Version 0.4.5
+* add method to set an delay for the sahi-status-requests, so that no key or click events will be lost by the JavaScript engine of the Browser, see new entry in `sakuli.properties`:
+    ```
+     # Specifies the interval in milliseconds, what should be applied when sikuli based input
+     # (like typing or clicking) is interacting with a Browser website.
+     # This setting only make sense, if your test does NOT use Sahi functions for controlling the
+     # testing website. This setting will prevent the test for losing some key or click events
+     # in case of blocking, synchronous sahi-interal state requests.
+     #
+     #sahi.proxy.requestDelayOnSikuliInput=500
+    ```
+
+
 ### Version 0.4.1
 * update release build so that the zipped-release files can be downloaded from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install).
 * remove zipped-release files from git repository
