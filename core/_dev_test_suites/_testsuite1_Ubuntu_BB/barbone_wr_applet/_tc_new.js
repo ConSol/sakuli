@@ -62,6 +62,8 @@ try {
         var newNotpadRegion = new RegionImage("gedit_doc_logo").grow(500, 300);
         newNotpadRegion.click().paste("BLA BAL BAL");
 
+        var extractText = new RegionImage("gedit_doc_logo").find().move(-5, 20).grow(50, 0).extractText();
+        newNotpadRegion.typeMasked(extractText);
 
     } finally {
         //environment.type(Key.ALT + Key.F4);
