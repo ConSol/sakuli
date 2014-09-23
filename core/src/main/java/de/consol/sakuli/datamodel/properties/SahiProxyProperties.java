@@ -19,13 +19,14 @@
 package de.consol.sakuli.datamodel.properties;
 
 import de.consol.sakuli.starter.helper.SahiProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -54,6 +55,7 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String SAHI_REQUEST_DELAY_ACTIVE_VAR = "sakuli-delay-active";
     public static final String SAHI_REQUEST_DELAY_TIME_VAR = "sakuli-delay-time";
     public static final String SAHI_JS_INJECT_CODE_FILENAME = "inject.js";
+    public static final String SAHI_JS_INJECT_CODE_FILENAME_APPENDER = File.separator + "internal" + File.separator + SAHI_JS_INJECT_CODE_FILENAME;
     public static final String SAHI_JS_INJECT_CONFIG_FILE_APPENDER = File.separator + "config" + File.separator + "inject_top.txt";
     public static final String SAHI_JS_INJECT_TARGET_FOLDER_APPENDER = File.separator + "htdocs" + File.separator + "spr" + File.separator + "sakuli";
     public static final String SAHI_JS_INJECT_TARGET_FILE_APPENDER = SAHI_JS_INJECT_TARGET_FOLDER_APPENDER + File.separator + SAHI_JS_INJECT_CODE_FILENAME;
@@ -90,8 +92,10 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final List<String> logPropertyNames = Arrays.asList(SAHI_HANLDER, SAHI_LOG_CONSOLE_HANLDER_LEVEL,
             SAHI_LOG_FILE_HANDLER, SAHI_LOG_CONSOLE_HANDLER_FORMATTER, SAHI_LOG_FILE_HANDLER_FORMATTER,
             SAHI_LOG_FILE_HANDLER_LIMIT, SAHI_LOG_FILE_HANDLER_COUNT, SAHI_LOG_FILE_HANDLER_PATERN);
+    public static final Logger LOGGER = LoggerFactory.getLogger(SahiProxyProperties.class);
 
-
+    @Value("${" + SakuliProperties.INCLUDE_FOLDER + "}")
+    private String includeFolderPropertyValue;
     @Value("${" + PROXY_HOME_FOLDER + "}")
     private String sahiHomeFolderPropertyValue;
     private Path sahiHomeFolder;
@@ -129,11 +133,7 @@ public class SahiProxyProperties extends AbstractProperties {
      */
     protected void loadSahiInjectFiles() throws FileNotFoundException {
         sahiJSInjectConfigFile = Paths.get(sahiHomeFolder.toString() + SAHI_JS_INJECT_CONFIG_FILE_APPENDER);
-        try {
-            sahiJSInjectSourceFile = Paths.get(SahiProxy.class.getResource(SAHI_JS_INJECT_CODE_FILENAME).toURI());
-        } catch (URISyntaxException e) {
-            throw new FileNotFoundException(String.format("can't resolve resource '%s' for class '%s'", SAHI_JS_INJECT_CODE_FILENAME, SahiProxy.class.getName()));
-        }
+        sahiJSInjectSourceFile = Paths.get(includeFolderPropertyValue + SAHI_JS_INJECT_CODE_FILENAME_APPENDER);
         checkFiles(sahiJSInjectConfigFile, sahiJSInjectSourceFile);
 
         //don't check files and folders => will be created during runtime

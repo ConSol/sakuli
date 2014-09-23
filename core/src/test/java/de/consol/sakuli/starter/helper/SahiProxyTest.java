@@ -34,7 +34,7 @@ public class SahiProxyTest {
         Path configOrig = Paths.get(this.getClass().getResource("mock-files/inject_top.txt").toURI());
         Path config = Paths.get(configOrig.getParent().toString() + File.separator + "inject_top_temp.txt");
         Path target = Paths.get(configOrig.getParent().toString() + File.separator + "inject.js");
-        Path source = Paths.get(SahiProxy.class.getResource("inject.js").toURI());
+        Path source = Paths.get(SahiProxy.class.getResource("inject_source.js").toURI());
         FileUtils.copyFile(configOrig.toFile(), config.toFile());
 
         when(props.getSahiJSInjectConfigFile()).thenReturn(config);
@@ -62,7 +62,7 @@ public class SahiProxyTest {
         FileUtils.copyFile(targetOrig.toFile(), target.toFile());
 
         Files.setLastModifiedTime(target, FileTime.fromMillis(DateTime.now().minusYears(10).getMillis()));
-        Path source = Paths.get(SahiProxy.class.getResource("inject.js").toURI());
+        Path source = Paths.get(SahiProxy.class.getResource("inject_source.js").toURI());
 
         when(props.getSahiJSInjectConfigFile()).thenReturn(config);
         when(props.getSahiJSInjectTargetFile()).thenReturn(target);
