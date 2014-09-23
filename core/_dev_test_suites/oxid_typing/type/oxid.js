@@ -28,16 +28,12 @@ try {
 //    app.open().getRegion().click();
     _focus(_textbox("invadr[oxuser__oxfname]"));
     _setValue(_textbox("invadr[oxuser__oxfname]"), "ddd");
-//    this._sahi.pause();
-    env.sleep(9);
-    env.sleep(10);
-    env.sleep(5);
+
+    env.sleep(3);
     _setValue(_textbox("invadr[oxuser__oxfname]"), "DONE");
-    for (i = 0; i < 1000; i++) {
+    for (i = 0; i < 15; i++) {
         var pw = env.decryptSecret("UDdZoQj+O3X3Fb2znTZr6w==");
         env.logInfo("Try " + i + " start --------------");
-//	    env.type(pw + "\n");
-        env.sleep(10);
 
         _focus(_textbox("invadr[oxuser__oxfname]"));
         //env.pasteMasked(pw);
@@ -81,7 +77,6 @@ try {
         _setValue(_textbox("invadr[oxuser__oxcompany]"), "");
         _setValue(_textbox("invadr[oxuser__oxaddinfo]"), "");
         _setValue(_textbox("invadr[oxuser__oxstreet]"), "");
-        env.sleep(11);
         env.sleep(1);
     }
 

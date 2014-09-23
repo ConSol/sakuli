@@ -36,7 +36,7 @@ Sahi.prototype.ex = function (isStep) {
         var delayTime = this.getServerVar("sakuli-delay-time");
         if (delayTime != undefined && delayTime > 0) {
             this.interval = delayTime;
-            console.log("set sahi-request-delay to " + delayTime);
+//            console.log("set sahi-request-delay to " + delayTime);
         } else {
             this.interval = this.INTERVAL;
         }

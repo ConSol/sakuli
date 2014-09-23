@@ -147,13 +147,6 @@ public class TypingUtil<A extends Action> {
     }
 
     private A typeImpl(String text, boolean logging) {
-        try {
-            //TODO sleep only if sakuli-sahi action is active
-            LOGGER.info("sleep type - 1000!");
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         int returnValue = action.getActionRegion().type(text);
         /**
          * this is needed because in the methode {@link org.sikuli.script.Region#keyin(Object, String, int)}

@@ -125,22 +125,7 @@ public class Environment implements Action {
      */
     @LogToResult(message = "sleep and do nothing for x seconds", logClassInstance = false)
     public Environment sleep(Integer seconds) {
-
         try {
-//            // TODO move to separate action
-//            int trigger = 10;
-//            Session session = loader.getRhinoScriptRunner().getSession();
-//            if (seconds == trigger && session != null) {
-//                session.setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_TIME_VAR, "500");
-//                logger.info("PAUSE SAHI-PROXY!");
-//                return this;
-//            }
-//            if (seconds == trigger + 1 && session != null) {
-//                logger.info("NOW UNPAUSE SAHI-PROXY!");
-//                session.setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_TIME_VAR,null);
-//                return this;
-//            }
-
             TimeUnit.SECONDS.sleep(seconds);
         } catch (InterruptedException e) {
             loader.getExceptionHandler().handleException(e, true);
