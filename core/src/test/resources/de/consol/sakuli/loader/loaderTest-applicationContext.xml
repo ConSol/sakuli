@@ -69,6 +69,9 @@
     <bean id="de.consol.sakuli.datamodel.actions.Screen" class="de.consol.sakuli.MockitoFactoryBean">
         <constructor-arg value="de.consol.sakuli.datamodel.actions.Screen"/>
     </bean>
+    <bean id="de.consol.sakuli.datamodel.properties.SahiProxyProperties" class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.datamodel.properties.SahiProxyProperties"/>
+    </bean>
 
     <!-- test beans for testing SpringProfilesInitializer -->
     <!--<bean class="de.consol.sakuli.utils.SpringProfilesInitializer" />-->

@@ -26,6 +26,7 @@ import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.ImageLib;
 import de.consol.sakuli.datamodel.actions.Screen;
 import de.consol.sakuli.datamodel.properties.ActionProperties;
+import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import net.sf.sahi.report.Report;
@@ -112,6 +113,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     @Override
     public ActionProperties getActionProperties() {
         return baseLoader.getActionProperties();
+    }
+
+    @Override
+    public SahiProxyProperties getSahiProxyProperties() {
+        return baseLoader.getSahiProxyProperties();
     }
 
     @Override

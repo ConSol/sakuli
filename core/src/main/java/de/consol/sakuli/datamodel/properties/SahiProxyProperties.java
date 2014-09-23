@@ -43,10 +43,16 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String PROXY_PORT = "sahi.proxy.port";
     public static final String MAX_CONNECT_TRIES = "sahi.proxy.maxConnectTries";
     public static final String RECONNECT_SECONDS = "sahi.proxy.reconnectSeconds";
+    public static final String REQUEST_DELAY_MS = "sahi.proxy.requestDelayOnSikuliInput";
+    public static final String DEFAULT_PROXY_PORT = "9999";
+    public static final String DEFAULT_RECONNECT_SECONDS = "5";
+    public static final String DEFAULT_MAX_CONNECT_TRIES = "5";
 
     public static final String SAHI_PROPERTY_FILE_APPENDER = File.separator + "config" + File.separator + "userdata.properties";
     public static final String SAHI_LOG_PROPERTY_FILE_APPENDER = File.separator + "config" + File.separator + "log.properties";
 
+    public static final String SAHI_REQUEST_DELAY_ACTIVE_VAR = "sakuli-delay-active";
+    public static final String SAHI_REQUEST_DELAY_TIME_VAR = "sakuli-delay-time";
     public static final String SAHI_JS_INJECT_CODE_FILENAME = "inject.js";
     public static final String SAHI_JS_INJECT_CONFIG_FILE_APPENDER = File.separator + "config" + File.separator + "inject_top.txt";
     public static final String SAHI_JS_INJECT_TARGET_FOLDER_APPENDER = File.separator + "htdocs" + File.separator + "spr" + File.separator + "sakuli";
@@ -85,18 +91,25 @@ public class SahiProxyProperties extends AbstractProperties {
             SAHI_LOG_FILE_HANDLER, SAHI_LOG_CONSOLE_HANDLER_FORMATTER, SAHI_LOG_FILE_HANDLER_FORMATTER,
             SAHI_LOG_FILE_HANDLER_LIMIT, SAHI_LOG_FILE_HANDLER_COUNT, SAHI_LOG_FILE_HANDLER_PATERN);
 
+
     @Value("${" + PROXY_HOME_FOLDER + "}")
     private String sahiHomeFolderPropertyValue;
     private Path sahiHomeFolder;
     @Value("${" + PROXY_CONFIG_FOLDER + "}")
     private String sahiConfigFolderPropertyValue;
     private Path sahiConfigFolder;
-    @Value("${" + PROXY_PORT + "}")
+    @Value("${" + PROXY_PORT + ":" + DEFAULT_PROXY_PORT + "}")
     private Integer proxyPort;
-    @Value("${" + RECONNECT_SECONDS + "}")
+    @Value("${" + RECONNECT_SECONDS + ":" + DEFAULT_RECONNECT_SECONDS + "}")
     private Integer reconnectSeconds;
-    @Value("${" + MAX_CONNECT_TRIES + "}")
+    @Value("${" + MAX_CONNECT_TRIES + ":" + DEFAULT_MAX_CONNECT_TRIES + "}")
     private Integer maxConnectTries;
+    /**
+     * Specifies the default delay for one event, which should be used to prevent
+     * blocking Request during sikuli based actions in a sahi controlled proxy
+     */
+    @Value("${" + REQUEST_DELAY_MS + ":}")
+    private Integer requestDelayMs;
     private Path sahiJSInjectConfigFile;
     private Path sahiJSInjectSourceFile;
     private Path sahiJSInjectTargetFile;
@@ -207,4 +220,15 @@ public class SahiProxyProperties extends AbstractProperties {
         this.sahiJSInjectTargetFile = sahiJSInjectTargetFile;
     }
 
+    public Integer getRequestDelayMs() {
+        return requestDelayMs;
+    }
+
+    public void setRequestDelayMs(Integer requestDelayMs) {
+        this.requestDelayMs = requestDelayMs;
+    }
+
+    public boolean isRequestDelayActive() {
+        return requestDelayMs != null && requestDelayMs > 0;
+    }
 }

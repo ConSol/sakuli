@@ -30,6 +30,7 @@
     <bean class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
     <bean class="de.consol.sakuli.datamodel.properties.ReceiverProperties"/>
     <bean class="de.consol.sakuli.datamodel.properties.ActionProperties"/>
+    <bean class="de.consol.sakuli.datamodel.properties.SahiProxyProperties"/>
 
     <bean id="propertyResolver"
           class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">

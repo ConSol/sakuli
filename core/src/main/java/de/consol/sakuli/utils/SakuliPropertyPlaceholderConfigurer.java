@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 
 import javax.annotation.PreDestroy;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.*;
@@ -70,6 +71,7 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         //override if set sahi proxy home
         if (StringUtils.isNotEmpty(SAHI_PROXY_HOME_VALUE)) {
             props.setProperty(SahiProxyProperties.PROXY_HOME_FOLDER, SAHI_PROXY_HOME_VALUE);
+            props.setProperty(SahiProxyProperties.PROXY_CONFIG_FOLDER, SAHI_PROXY_HOME_VALUE + File.separator + "userdata");
         }
         modifySahiProperties(props);
         super.loadProperties(props);

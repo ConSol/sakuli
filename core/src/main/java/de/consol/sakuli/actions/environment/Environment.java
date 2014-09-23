@@ -24,7 +24,6 @@ import de.consol.sakuli.actions.screenbased.Region;
 import de.consol.sakuli.actions.screenbased.RegionImpl;
 import de.consol.sakuli.actions.screenbased.TypingUtil;
 import de.consol.sakuli.loader.ScreenActionLoader;
-import net.sf.sahi.session.Session;
 import org.sikuli.script.App;
 import org.sikuli.script.IRobot;
 import org.sikuli.script.Key;
@@ -127,32 +126,19 @@ public class Environment implements Action {
     public Environment sleep(Integer seconds) {
 
         try {
-            // TODO move to separate action
-            int trigger = 10;
-            Session session = loader.getRhinoScriptRunner().getSession();
-            if (seconds == trigger && session != null) {
-                session.setVariable("sakuli_action", "1");
-//                    String sahi_paused = session.getScriptRunner().getVariable("sahi_paused");
-//                    Browser b =new Browser();
-//                    b.setSessionId(session.id());
-//                    b.restartPlayback();
-//                    b.open();
-//                    logger.info("SAHI-PAUSED!");
-//                    session.getScriptRunner().setVariable("sahi_paused", "1");
-//                    session.getScriptRunner();
-//                    String sahi_paused = session.getSuite().getVariable("sahi_paused");
-//                    Browser b = new Browser("");
-//                    b.set
-                logger.info("PAUSE SAHI-PROXY!");
-//                    session.setVariable("sahi_paused", "1");
-//                    session.setIsPlaying(false);
-                return this;
-            }
-            if (seconds == trigger + 1 && session != null) {
-                logger.info("NOW UNPAUSE SAHI-PROXY!");
-                session.setVariable("sakuli_action", "0");
-                return this;
-            }
+//            // TODO move to separate action
+//            int trigger = 10;
+//            Session session = loader.getRhinoScriptRunner().getSession();
+//            if (seconds == trigger && session != null) {
+//                session.setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_TIME_VAR, "500");
+//                logger.info("PAUSE SAHI-PROXY!");
+//                return this;
+//            }
+//            if (seconds == trigger + 1 && session != null) {
+//                logger.info("NOW UNPAUSE SAHI-PROXY!");
+//                session.setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_TIME_VAR,null);
+//                return this;
+//            }
 
             TimeUnit.SECONDS.sleep(seconds);
         } catch (InterruptedException e) {

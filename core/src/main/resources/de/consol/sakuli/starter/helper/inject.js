@@ -19,12 +19,29 @@
 Sahi.prototype.originalEx = Sahi.prototype.ex;
 
 Sahi.prototype.ex = function (isStep) {
-    console.log("custom sakuli");
-    var sakuliAction = this.getServerVar("sakuli_action") == 1;
-    if (sakuliAction) {
-        this.interval = 2000;
-    } else {
-        this.interval = this.INTERVAL;
+    //console.log("init sakuli func!");
+
+    //determine if custom delay is active
+    if (this.isSakuliDelayActive == undefined) {
+        var sakuliDelayActive = this.getServerVar("sakuli-delay-active");
+        if (sakuliDelayActive != undefined) {
+            this.isSakuliDelayActive = sakuliDelayActive;
+            console.log("set isSakuliDelayActive = " + this.isSakuliDelayActive);
+        }
     }
+
+    if (this.isSakuliDelayActive == true) {
+        //check delay
+        //console.log("custom sakuli delay");
+        var delayTime = this.getServerVar("sakuli-delay-time");
+        if (delayTime != undefined && delayTime > 0) {
+            this.interval = delayTime;
+            console.log("set sahi-request-delay to " + delayTime);
+        } else {
+            this.interval = this.INTERVAL;
+        }
+    }
+
+    //console.log("execute orig ex");
     return this.originalEx(isStep);
 };

@@ -51,14 +51,18 @@ public class SahiProxyTest {
         ));
 
     }
+
     @Test
     public void testInjectCustomJavaScriptFilesOverridingNewer() throws Exception {
         Path configOrig = Paths.get(this.getClass().getResource("mock-files/inject_top.txt").toURI());
         Path config = Paths.get(configOrig.getParent().toString() + File.separator + "inject_top_temp.txt");
-        Path target = Paths.get(this.getClass().getResource("mock-old-js/inject.js").toURI());
+        Path targetOrig = Paths.get(this.getClass().getResource("mock-old-js/inject.js").toURI());
+        Path target = Paths.get(targetOrig.getParent().toString() + File.separator + "inject_temp.js");
+        FileUtils.copyFile(configOrig.toFile(), config.toFile());
+        FileUtils.copyFile(targetOrig.toFile(), target.toFile());
+
         Files.setLastModifiedTime(target, FileTime.fromMillis(DateTime.now().minusYears(10).getMillis()));
         Path source = Paths.get(SahiProxy.class.getResource("inject.js").toURI());
-        FileUtils.copyFile(configOrig.toFile(), config.toFile());
 
         when(props.getSahiJSInjectConfigFile()).thenReturn(config);
         when(props.getSahiJSInjectTargetFile()).thenReturn(target);
