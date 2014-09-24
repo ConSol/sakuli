@@ -17,12 +17,13 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.consol.sakuli</groupId>
     <artifactId>root</artifactId>
-    <version>0.4.4-SNAPSHOT</version>
+    <version>0.4.6-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>sakuli-parent</name>
@@ -51,6 +52,8 @@
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
         <test.group.ui>ui</test.group.ui>
+        <!-- special sakuli-version 99x - change this later to latest stable version-->
+        <sikulixapi.version>1.1.990</sikulixapi.version>
     </properties>
 
     <!-- Plugin CONFIG -->
@@ -330,7 +333,7 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Command line tools -->
+        <!-- Command line tool & some common libraries -->
         <dependency>
             <groupId>commons-cli</groupId>
             <artifactId>commons-cli</artifactId>
@@ -339,12 +342,22 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.8</version>
+            <version>1.9</version>
         </dependency>
         <dependency>
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>
             <version>1.10</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.4</version>
         </dependency>
 
 
@@ -371,11 +384,10 @@
 
         <!-- SikuliX-Java Library (FULL LIBRARY) - is part of the  sikuli-setup.jar-->
         <!-- well be needed for Functions like App() and so on...-->
-        <!-- local libaries, included with 'install_local_lib.sh' ... the are still not available over maven central -->
         <dependency>
-            <groupId>org.sikuli</groupId>
-            <artifactId>SikuliX-API</artifactId>
-            <version>1.0.1</version>
+            <groupId>com.sikulix</groupId>
+            <artifactId>sikulixapi-complete</artifactId>
+            <version>${sikulixapi.version}</version>
         </dependency>
 
         <!-- Testing frameworks -->
@@ -421,21 +433,23 @@
             <name>ConSol* Labs Repository</name>
             <url>http://labs.consol.de/maven/repository</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
             <releases>
                 <enabled>true</enabled>
             </releases>
         </repository>
-        <!-- sonatype for gearman dependencies -->
+        <!-- sonatype for gearman dependencies & sikuliX-2014 -->
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
             </snapshots>
             <releases>
                 <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
             </releases>
         </repository>
     </repositories>

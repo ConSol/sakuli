@@ -53,6 +53,7 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
     public int insertInitialTestSuiteData() {
         logger.info("Build SQL query for new primary key in table 'sahi_suites'");
 
+        testSuite.refreshState();
         MapSqlParameterSource tcParameters = getInitialDataParameters();
         logger.info("write the following values to 'sahi_suites': "
                 + tcParameters.getValues()
@@ -115,8 +116,10 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
         MapSqlParameterSource tcParameters = getGuidParameter();
         tcParameters.addValue("id", testSuite.getDbPrimaryKey());
         tcParameters.addValue("suiteID", testSuite.getId());
-        tcParameters.addValue("result", testSuite.getState().getErrorCode());
-        tcParameters.addValue("result_desc", testSuite.getState().toString());
+        if (testSuite.getState() != null) {
+            tcParameters.addValue("result", testSuite.getState().getErrorCode());
+            tcParameters.addValue("result_desc", testSuite.getState().toString());
+        }
         tcParameters.addValue("name", testSuite.getName());
         tcParameters.addValue("browser", testSuite.getBrowserInfo());
         tcParameters.addValue("host", testSuite.getHost());

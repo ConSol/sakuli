@@ -18,6 +18,8 @@
 
 package de.consol.sakuli.datamodel.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,15 +30,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Screen extends org.sikuli.script.Screen {
-    public Screen(int id) throws Exception {
-        super(id);
-    }
-
-    public Screen(boolean isScreenUnion) {
-        super(isScreenUnion);
-    }
+    Logger logger = LoggerFactory.getLogger(Screen.class);
 
     public Screen() {
         super();
+        logger.info("sucessfully init sikuli-X screen!");
     }
 }

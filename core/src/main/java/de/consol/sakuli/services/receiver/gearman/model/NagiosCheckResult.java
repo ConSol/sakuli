@@ -27,7 +27,7 @@ import java.util.TreeMap;
  * @author tschneck
  *         Date: 10.07.14
  */
-public class NagiosCheckResult {
+public class NagiosCheckResult implements NagiosPayloadString {
 
     private final String uuid;
     private final String queueName;
@@ -55,6 +55,7 @@ public class NagiosCheckResult {
         this.payload = payload;
     }
 
+    @Override
     public String getPayloadString() {
         StringBuilder sb = new StringBuilder();
         Iterator<Map.Entry<PayLoadFields, String>> entryIterator = payload.entrySet().iterator();

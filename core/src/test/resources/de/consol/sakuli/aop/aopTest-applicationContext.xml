@@ -23,13 +23,10 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="de.consol.sakuli.aop"/>
-    <context:component-scan base-package="de.consol.sakuli.actions.settings"/>
-    <context:component-scan base-package="de.consol.sakuli.loader"/>
     <context:component-scan base-package="de.consol.sakuli.utils"/>
 
     <bean class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
-    <bean class="de.consol.sakuli.datamodel.properties.ReceiverProperties"/>
-    <bean class="de.consol.sakuli.datamodel.properties.ActionProperties"/>
+    <bean class="de.consol.sakuli.loader.BaseActionLoaderImpl"/>
 
     <bean id="propertyResolver"
           class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
@@ -46,6 +43,7 @@
         </property>
     </bean>
 
+    <!-- Mocked Beans -->
     <bean id="de.consol.sakuli.datamodel.TestSuite" class="de.consol.sakuli.MockitoFactoryBean">
         <constructor-arg value="de.consol.sakuli.datamodel.TestSuite">
         </constructor-arg>
@@ -66,10 +64,27 @@
         <constructor-arg value="de.consol.sakuli.actions.environment.CipherUtil">
         </constructor-arg>
     </bean>
-    <bean id="de.consol.sakuli.datamodel.actions.Screen" class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.datamodel.actions.Screen">
+    <bean id="de.consol.sakuli.actions.settings.ScreenBasedSettings" class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.actions.settings.ScreenBasedSettings">
         </constructor-arg>
     </bean>
+    <bean id="de.consol.sakuli.datamodel.properties.SahiProxyProperties" class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.datamodel.properties.SahiProxyProperties">
+        </constructor-arg>
+    </bean>
+    <bean id="de.consol.sakuli.datamodel.properties.ReceiverProperties" class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.datamodel.properties.ReceiverProperties">
+        </constructor-arg>
+    </bean>
+    <bean id="de.consol.sakuli.datamodel.properties.ActionProperties" class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.datamodel.properties.ActionProperties">
+        </constructor-arg>
+    </bean>
+    <bean id="de.consol.sakuli.loader.ScreenActionLoaderImpl" class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.loader.ScreenActionLoaderImpl">
+        </constructor-arg>
+    </bean>
+
 
     <bean id="properties" class="de.consol.sakuli.PropertyHolder" depends-on="propertyResolver">
         <property name="testSuiteFolder" value="${sakuli.testsuite.folder}"/>

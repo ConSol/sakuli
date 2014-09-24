@@ -10,10 +10,13 @@ Open _**%SAKULI_HOME%**\sahi\userdata\bin\start_dashboard.bat_ insert a new line
 
 ### No browsers in Dashboard
 _**When I open the Sahi dashboard, no browsers are shown.**_
-![nobrowser](../docs/pics/w_sahi_no_browser.jpg) 
 
-Open _**SAKULI_HOME**\sahi\userdata\config\browser_types.xml_. Each browser is defined within a **browserType** block. #### Check variable ProgramFiles
-"path" probably contains the variable **"$ProgramFiles (x86)…"**, which is wrong. *$ProgramFiles* itself resolves already to the right folder, hence you should delete the " (x86)" part. Restart the Sahi dashboard and try again.	
+![nobrowser](../docs/pics/w_sahi_no_browser.jpg) 
+
+Open _**SAKULI_HOME**\sahi\userdata\config\browser_types.xml_. Each browser is defined within a **browserType** block. 
+#### Check variable ProgramFiles
+"path" probably contains the variable **"$ProgramFiles (x86)…"**, which is wrong. *$ProgramFiles* itself resolves already to the right folder, hence you should delete the " (x86)" part. Restart the Sahi dashboard and try again.
+	
 
 
 ## Sakuli
@@ -111,3 +114,22 @@ FIXME
 
 
 FIXME
+
+### Missing keys on `type("...")` or not successful `paste("...")`
+It is possible if you use inside of the browser the typing and paste funktion of sakuli, which simulates real keyboard 
+interaction, that they sometimes won't work as you expect. The reason for this is, that in the backend running
+Sahi proxy communicates with your browser over synchronous POST-requests. If you actually hit such a POST-request timeslot,
+it is possible that your Browser engine will lost the key events.
+
+__Solution:__ Set the property `sahi.proxy.requestDelayOnSikuliInput` in your `sakuli.properties` or `testsuite.properties` which modify the request interval 
+of the sahi proxy so that the keyboard interaction won't be in conflict with some synchronous POST-requests. See:
+
+ ```
+ # Specifies the interval in milliseconds, what should be applied when sikuli based input
+ # (like typing or clicking) is interacting with a Browser website.
+ # This setting only make sense, if your test does NOT use Sahi functions for controlling the
+ # testing website. This setting will prevent the test for losing some key or click events
+ # in case of blocking, synchronous sahi-interal status requests.
+ #
+ sahi.proxy.requestDelayOnSikuliInput=500
+ ```

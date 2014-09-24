@@ -23,6 +23,7 @@ import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.ImageLib;
 import de.consol.sakuli.datamodel.properties.ActionProperties;
+import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import net.sf.sahi.report.Report;
@@ -65,4 +66,6 @@ public interface BaseActionLoader {
     SakuliProperties getSakuliProperties();
 
     ActionProperties getActionProperties();
+
+    SahiProxyProperties getSahiProxyProperties();
 }

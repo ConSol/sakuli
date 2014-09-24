@@ -20,11 +20,16 @@ package de.consol.sakuli.loader;
 
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
+import net.sf.sahi.rhino.RhinoScriptRunner;
+import net.sf.sahi.session.Session;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -38,6 +43,12 @@ import static org.mockito.Mockito.*;
  */
 public class BaseActionEnvironmentLoaderTest {
     @Mock
+    private RhinoScriptRunner rhinoScriptRunner;
+    @Mock
+    private Session session;
+    @Mock
+    private SahiProxyProperties sahiProxyProperties;
+    @Mock
     private TestSuite testSuite;
     @Mock
     private SakuliExceptionHandler exceptionHandler;
@@ -48,14 +59,41 @@ public class BaseActionEnvironmentLoaderTest {
     @BeforeMethod
     public void init() {
         MockitoAnnotations.initMocks(this);
+        when(rhinoScriptRunner.getSession()).thenReturn(session);
     }
 
     @Test
     public void testInit() throws Exception {
         String testCaseId = "xyz";
         when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("Test", testCaseId));
+        when(sahiProxyProperties.isRequestDelayActive()).thenReturn(true);
         testling.init(testCaseId, ".");
         verify(exceptionHandler, never()).handleException(any(Exception.class));
+        verify(session).setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, "true");
+    }
+
+    @Test
+    public void testInitNoSahiDelay() throws Exception {
+        String testCaseId = "xyz";
+        when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("Test", testCaseId));
+        when(sahiProxyProperties.isRequestDelayActive()).thenReturn(false);
+        testling.init(testCaseId, ".");
+        verify(exceptionHandler, never()).handleException(any(Exception.class));
+        verify(session).setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, "false");
+    }
+
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+    @Test
+    public void testInitNoSahiSession() throws Exception {
+        String testCaseId = "xyz";
+        when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("Test", testCaseId));
+        when(rhinoScriptRunner.getSession()).thenReturn(null);
+
+        ArgumentCaptor<SakuliException> ac = ArgumentCaptor.forClass(SakuliException.class);
+        testling.init(testCaseId, ".");
+        verify(exceptionHandler).handleException(ac.capture());
+        Assert.assertEquals(ac.getValue().getMessage(), "cannot init rhino script runner with sakuli custom delay variable 'sakuli-delay-active'");
+        verify(session, never()).setVariable(anyString(), anyString());
     }
 
     @Test

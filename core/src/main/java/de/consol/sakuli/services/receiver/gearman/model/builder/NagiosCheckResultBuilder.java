@@ -21,9 +21,12 @@ package de.consol.sakuli.services.receiver.gearman.model.builder;
 import de.consol.sakuli.datamodel.Builder;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.services.receiver.gearman.GearmanProperties;
+import de.consol.sakuli.services.receiver.gearman.ProfileGearman;
 import de.consol.sakuli.services.receiver.gearman.model.NagiosCheckResult;
 import de.consol.sakuli.services.receiver.gearman.model.NagiosOutput;
 import de.consol.sakuli.services.receiver.gearman.model.PayLoadFields;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -34,6 +37,8 @@ import static de.consol.sakuli.services.receiver.gearman.model.PayLoadFields.*;
  * @author tschneck
  *         Date: 10.07.14
  */
+@ProfileGearman
+@Component
 public class NagiosCheckResultBuilder implements Builder<NagiosCheckResult> {
 
     private String queueName;
@@ -46,10 +51,17 @@ public class NagiosCheckResultBuilder implements Builder<NagiosCheckResult> {
     private NagiosOutput output;
     private String hostSuite;
     private String hostProperties;
+    @Autowired
+    private TestSuite testSuite;
+    @Autowired
+    private GearmanProperties gearmanProperties;
+    @Autowired
+    private OutputBuilder outputBuilder;
 
 
     @Override
     public NagiosCheckResult build() {
+        extractData(testSuite, gearmanProperties);
         NagiosCheckResult result = new NagiosCheckResult(queueName, uuid);
         SortedMap<PayLoadFields, String> payload = new TreeMap<>();
         payload.put(TYPE, type);
@@ -68,7 +80,7 @@ public class NagiosCheckResultBuilder implements Builder<NagiosCheckResult> {
         return result;
     }
 
-    public NagiosCheckResultBuilder withTestSuite(TestSuite testSuite, GearmanProperties gearmanProperties) {
+    protected void extractData(TestSuite testSuite, GearmanProperties gearmanProperties) {
         //fields form properties file
         queueName = gearmanProperties.getServerQueue();
         type = gearmanProperties.getServiceType();
@@ -80,8 +92,7 @@ public class NagiosCheckResultBuilder implements Builder<NagiosCheckResult> {
         finishTime = testSuite.getStopDateAsUnixTimestamp();
         returnCode = String.valueOf(testSuite.getState().getNagiosErrorCode());
         serviceDesc = testSuite.getId();
-        output = new OutputBuilder().withTestSuite(testSuite, gearmanProperties).build();
-        return this;
+        output = outputBuilder.build();
     }
 
 

@@ -25,6 +25,8 @@ import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.loader.BeanLoader;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.mockito.ArgumentCaptor;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.testng.annotations.BeforeMethod;
@@ -34,6 +36,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import static org.mockito.Mockito.*;
@@ -127,5 +131,51 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         assertTrue(properties.getIncludeFolder().toString().contains(INCLUDE_FOLDER_PATH.substring(2)));
 
         assertNotNull(properties.getLogPattern());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testModifySahiProperties() throws Exception {
+        Properties props = new Properties();
+        doNothing().when(testling).modifyPropertiesConfiguration(anyString(), anyListOf(String.class), any(Properties.class));
+        testling.setWritePropertiesToSahiConfig(true);
+        testling.modifySahiProperties(props);
+
+        ArgumentCaptor<List> argumentCaptorSahiProp = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<List> argumentCaptorLogProp = ArgumentCaptor.forClass(List.class);
+        verify(testling).modifyPropertiesConfiguration(contains(SahiProxyProperties.SAHI_PROPERTY_FILE_APPENDER), argumentCaptorSahiProp.capture(), eq(props));
+        verify(testling).modifyPropertiesConfiguration(contains(SahiProxyProperties.SAHI_LOG_PROPERTY_FILE_APPENDER), argumentCaptorLogProp.capture(), eq(props));
+
+        assertTrue(argumentCaptorSahiProp.getValue().containsAll(
+                        Arrays.asList("logs.dir", "ext.http.proxy.enable", "ext.http.proxy.host", "ext.http.proxy.port",
+                                "ext.http.proxy.auth.enable", "ext.http.proxy.auth.name", "ext.http.proxy.auth.password",
+                                "ext.https.proxy.enable", "ext.https.proxy.host", "ext.https.proxy.port",
+                                "ext.https.proxy.auth.enable", "ext.https.proxy.auth.name", "ext.https.proxy.auth.password",
+                                "ext.http.both.proxy.bypass_hosts")),
+                "currently contains: " + argumentCaptorSahiProp.getValue().toString());
+        assertTrue(argumentCaptorLogProp.getValue().containsAll(
+                        Arrays.asList("handlers", "java.util.logging.ConsoleHandler.level", "java.util.logging.FileHandler.level",
+                                "java.util.logging.ConsoleHandler.formatter", "java.util.logging.FileHandler.formatter",
+                                "java.util.logging.FileHandler.limit", "java.util.logging.FileHandler.count",
+                                "java.util.logging.FileHandler.pattern")),
+                "currently contains: " + argumentCaptorLogProp.getValue().toString());
+    }
+
+    @Test
+    public void testModifyPropertyFile() throws Exception {
+        Path targetProps = Paths.get(this.getClass().getResource("properties-test/target.properties").toURI());
+
+        Properties basicProps = new Properties();
+        basicProps.put("test.prop.1", "test-value-1");
+        basicProps.put("test.prop.2", "test-value-2");
+        testling.modifyPropertiesConfiguration(targetProps.toAbsolutePath().toString(), Arrays.asList("test.prop.1", "test.prop.2"), basicProps);
+        PropertiesConfiguration targetProfConf = new PropertiesConfiguration(targetProps.toFile());
+        assertEquals(targetProfConf.getString("test.prop.1"), "test-value-1");
+        assertEquals(targetProfConf.getString("test.prop.2"), "test-value-2");
+
+        testling.restoreProperties();
+        targetProfConf = new PropertiesConfiguration(targetProps.toFile());
+        assertEquals(targetProfConf.getString("test.prop.1"), "xyz");
+        assertEquals(targetProfConf.getString("test.prop.2"), "zyx");
     }
 }

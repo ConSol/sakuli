@@ -23,11 +23,14 @@ import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.ImageLib;
 import de.consol.sakuli.datamodel.properties.ActionProperties;
+import de.consol.sakuli.datamodel.properties.SahiProxyProperties;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.rhino.RhinoScriptRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -42,6 +45,7 @@ import java.io.IOException;
 public class BaseActionLoaderImpl implements BaseActionLoader {
 
     public final static String QUALIFIER = "baseLoader";
+    public static final Logger LOGGER = LoggerFactory.getLogger(BaseActionLoader.class);
 
 
     @Autowired
@@ -54,6 +58,9 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
     private SakuliProperties sakuliProperties;
     @Autowired
     private ActionProperties actionProperties;
+    @Autowired
+    private SahiProxyProperties sahiProxyProperties;
+
     /**
      * ** Fields which will be filled at runtime ***
      */
@@ -70,17 +77,28 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
      */
     public void init(String testCaseID, String... imagePaths) {
         try {
-            if (testSuite.getTestCase(testCaseID) != null) {
-                this.currentTestCase = testSuite.getTestCase(testCaseID);
-            } else {
+            //set the current test case
+            if (testSuite.getTestCase(testCaseID) == null) {
                 throw new SakuliException("Can't identify current test case in function init() in class SakuliBasedAction");
             }
-            if (imagePaths != null && imagePaths.length > 0) {
-                this.imageLib = new ImageLib();
-                imageLib.addImagesFromFolder(imagePaths);
-            } else {
+            this.currentTestCase = testSuite.getTestCase(testCaseID);
+
+            //load the images for the screenbased actions
+            if (imagePaths == null || imagePaths.length <= 0) {
                 throw new SakuliException("To init the internal image library, the imagePaths have to be not null and have at least one file path!");
             }
+            this.imageLib = new ImageLib();
+            imageLib.addImagesFromFolder(imagePaths);
+
+            //add the "sakuli-delay-active" var to the script runner context
+            if (rhinoScriptRunner == null || rhinoScriptRunner.getSession() == null) {
+                throw new SakuliException(String.format("cannot init rhino script runner with sakuli custom delay variable '%s'",
+                        SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR));
+            }
+            String isRequestDelayActive = String.valueOf(sahiProxyProperties.isRequestDelayActive());
+            rhinoScriptRunner.getSession().setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, isRequestDelayActive);
+            LOGGER.info("set isRequestDelayActive={}", isRequestDelayActive);
+
         } catch (SakuliException | IOException e) {
             exceptionHandler.handleException(e);
         }
@@ -91,6 +109,10 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
         return this.sakuliProperties;
     }
 
+    public void setSakuliProperties(SakuliProperties sakuliProperties) {
+        this.sakuliProperties = sakuliProperties;
+    }
+
     @Override
     public ActionProperties getActionProperties() {
         return this.actionProperties;
@@ -98,6 +120,15 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
 
     public void setActionProperties(ActionProperties actionProperties) {
         this.actionProperties = actionProperties;
+    }
+
+    @Override
+    public SahiProxyProperties getSahiProxyProperties() {
+        return this.sahiProxyProperties;
+    }
+
+    public void setSahiProxyProperties(SahiProxyProperties sahiProxyProperties) {
+        this.sahiProxyProperties = sahiProxyProperties;
     }
 
     @Override

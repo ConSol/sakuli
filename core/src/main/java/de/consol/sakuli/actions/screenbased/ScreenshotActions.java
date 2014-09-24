@@ -21,7 +21,6 @@ package de.consol.sakuli.actions.screenbased;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.actions.Screen;
 import de.consol.sakuli.datamodel.properties.ActionProperties;
-import org.sikuli.script.ScreenHighlighter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +41,7 @@ import java.util.Date;
 public class ScreenshotActions {
     private static final int MAX_FILENAME_LENGTH = 50;
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final float autohighlightSeconds;
 
     private String screenShotFormat;
     private Screen screen;
@@ -50,6 +50,7 @@ public class ScreenshotActions {
     public ScreenshotActions(Screen screen, ActionProperties props) {
         this.screen = screen;
         screenShotFormat = props.getScreenShotFormat();
+        autohighlightSeconds = props.getAutoHighlightSeconds();
     }
 
     /**
@@ -62,20 +63,14 @@ public class ScreenshotActions {
      * @throws java.io.IOException
      */
     public Path takeScreenshotAndHighlight(String message, Path folderPath, RegionImpl region) throws IOException {
-        ScreenHighlighter screenHighlighter = null;
 
         //highlight if an valid region parameter is set
         if (region != null) {
-            screenHighlighter = new ScreenHighlighter(screen);
-            screenHighlighter.highlight(region);
+            region.highlight(autohighlightSeconds);
         }
 
         Path pictureFromBufferedImage = createPictureFromBufferedImage(message, folderPath, screen.capture().getImage());
 
-        // close Highlighter
-        if (screenHighlighter != null) {
-            screenHighlighter.close();
-        }
         return pictureFromBufferedImage;
     }
 

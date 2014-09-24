@@ -19,20 +19,18 @@
 package de.consol.sakuli.actions.environment;
 
 import de.consol.sakuli.actions.Action;
+import de.consol.sakuli.actions.ModifySahiTimer;
 import de.consol.sakuli.actions.logging.LogToResult;
 import de.consol.sakuli.actions.screenbased.Region;
 import de.consol.sakuli.actions.screenbased.RegionImpl;
 import de.consol.sakuli.actions.screenbased.TypingUtil;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.App;
+import org.sikuli.script.IRobot;
 import org.sikuli.script.Key;
-import org.sikuli.script.RobotDesktop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -56,7 +54,7 @@ public class Environment implements Action {
     public Environment(boolean resumeOnException, ScreenActionLoader Loader) {
         this.resumeOnException = resumeOnException;
         this.loader = Loader;
-        this.typingUtil = new TypingUtil(this);
+        this.typingUtil = new TypingUtil<>(this);
     }
 
     /**
@@ -141,18 +139,7 @@ public class Environment implements Action {
      */
     @LogToResult(message = "get string from system clipboard", logClassInstance = false)
     public String getClipboard() {
-        Transferable content = Clipboard.getSystemClipboard().getContents(null);
-        try {
-            if (content.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                String value = (String) content.getTransferData(DataFlavor.stringFlavor);
-                logger.info("String from system clipboard = \"" + value + "\"");
-                return value;
-            }
-        } catch (UnsupportedFlavorException | IOException e) {
-            loader.getExceptionHandler().handleException("getClipboard() went wrong, please check your settings", resumeOnException);
-            loader.getExceptionHandler().handleException(e);
-        }
-        return null;
+        return App.getClipboard();
     }
 
     /**
@@ -163,8 +150,7 @@ public class Environment implements Action {
      */
     @LogToResult(message = "put to clipboard", logClassInstance = false)
     public Environment setClipboard(String text) {
-        Clipboard.putText(Clipboard.PLAIN, Clipboard.UTF8,
-                Clipboard.BYTE_BUFFER, text);
+        App.setClipboard(text);
         return this;
     }
 
@@ -174,10 +160,11 @@ public class Environment implements Action {
      *
      * @return this {@link Environment}.
      */
+    @ModifySahiTimer
     @LogToResult(message = "paste the current clipboard into the focus", logClassInstance = false)
     public Environment pasteClipboard() {
         int mod = Key.getHotkeyModifier();
-        RobotDesktop r = loader.getScreen().getRobot();
+        IRobot r = loader.getScreen().getRobot();
         r.keyDown(mod);
         r.keyDown(KeyEvent.VK_V);
         r.keyUp(KeyEvent.VK_V);
@@ -191,10 +178,11 @@ public class Environment implements Action {
      *
      * @return this {@link Environment}.
      */
+    @ModifySahiTimer
     @LogToResult(message = "copy the current selection to the clipboard", logClassInstance = false)
     public Environment copyIntoClipboard() {
         int mod = Key.getHotkeyModifier();
-        RobotDesktop r = loader.getScreen().getRobot();
+        IRobot r = loader.getScreen().getRobot();
         r.keyDown(mod);
         r.keyDown(KeyEvent.VK_C);
         r.keyUp(KeyEvent.VK_C);
@@ -210,6 +198,7 @@ public class Environment implements Action {
     /**
      * {@link de.consol.sakuli.actions.screenbased.TypingUtil#paste(String)}.
      */
+    @ModifySahiTimer
     @LogToResult(logClassInstance = false)
     public Environment paste(String text) {
         return typingUtil.paste(text);
@@ -218,6 +207,7 @@ public class Environment implements Action {
     /**
      * {@link de.consol.sakuli.actions.screenbased.TypingUtil#pasteMasked(String)}.
      */
+    @ModifySahiTimer
     @LogToResult(logClassInstance = false, logArgs = false)
     public Environment pasteMasked(String text) {
         return typingUtil.pasteMasked(text);
@@ -226,6 +216,7 @@ public class Environment implements Action {
     /**
      * {@link de.consol.sakuli.actions.screenbased.TypingUtil#pasteAndDecrypt(String)}.
      */
+    @ModifySahiTimer
     @LogToResult(logClassInstance = false, logArgs = false)
     public Environment pasteAndDecrypt(String text) {
         return typingUtil.pasteAndDecrypt(text);
@@ -239,6 +230,7 @@ public class Environment implements Action {
     /**
      * See {@link de.consol.sakuli.actions.screenbased.TypingUtil#type(String, String)}.
      */
+    @ModifySahiTimer
     @LogToResult(message = "type over system keyboard", logClassInstance = false)
     public Environment type(String text) {
         return typingUtil.type(text, null);
@@ -247,6 +239,7 @@ public class Environment implements Action {
     /**
      * See {@link de.consol.sakuli.actions.screenbased.TypingUtil#type(String, String)}.
      */
+    @ModifySahiTimer
     @LogToResult(message = "type with pressed modifiers", logClassInstance = false)
     public Environment type(String text, String optModifiers) {
         return typingUtil.type(text, optModifiers);
@@ -255,6 +248,7 @@ public class Environment implements Action {
     /**
      * See {@link de.consol.sakuli.actions.screenbased.TypingUtil#typeMasked(String, String)}.
      */
+    @ModifySahiTimer
     @LogToResult(message = "type over system keyboard", logClassInstance = false, logArgs = false)
     public Environment typeMasked(String text) {
         return typingUtil.typeMasked(text, null);
@@ -263,6 +257,7 @@ public class Environment implements Action {
     /**
      * See {@link de.consol.sakuli.actions.screenbased.TypingUtil#typeMasked(String, String)}.
      */
+    @ModifySahiTimer
     @LogToResult(message = "type with pressed modifiers", logClassInstance = false, logArgs = false)
     public Environment typeMasked(String text, String optModifiers) {
         return typingUtil.typeMasked(text, optModifiers);
@@ -271,6 +266,7 @@ public class Environment implements Action {
     /**
      * See {@link de.consol.sakuli.actions.screenbased.TypingUtil#typeAndDecrypt(String, String)} .
      */
+    @ModifySahiTimer
     @LogToResult(message = "decrypt and type over system keyboard", logClassInstance = false, logArgs = false)
     public Environment typeAndDecrypt(String text) {
         return typingUtil.typeAndDecrypt(text, null);
@@ -279,6 +275,7 @@ public class Environment implements Action {
     /**
      * See {@link de.consol.sakuli.actions.screenbased.TypingUtil#typeAndDecrypt(String, String)} .
      */
+    @ModifySahiTimer
     @LogToResult(message = "decrypt and type with pressed modifiers", logClassInstance = false, logArgs = false)
     public Environment typeAndDecrypt(String text, String optModifiers) {
         return typingUtil.typeAndDecrypt(text, optModifiers);

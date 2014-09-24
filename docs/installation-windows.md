@@ -76,8 +76,6 @@ Set up your database connection information like:
 	jdbc.user=sahi
 	## database password
 	jdbc.pw=sahi
-	## schema of database
-	jdbc.model=sahi
 	## pattern for JDBC database connection URL
 	jdbc.url=jdbc:mysql://${jdbc.host}:${jdbc.port}/${jdbc.database}
 

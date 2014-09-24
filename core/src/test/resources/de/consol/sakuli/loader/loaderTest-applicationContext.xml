@@ -24,11 +24,11 @@
     <context:annotation-config/>
     <context:component-scan base-package="de.consol.sakuli.utils"/>
     <context:component-scan base-package="de.consol.sakuli.actions.settings"/>
-    <context:component-scan base-package="de.consol.sakuli.loader"/>
 
     <bean class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
     <bean class="de.consol.sakuli.datamodel.properties.ReceiverProperties"/>
     <bean class="de.consol.sakuli.datamodel.properties.ActionProperties"/>
+    <bean class="de.consol.sakuli.loader.BaseActionLoaderImpl"/>
 
     <bean id="propertyResolver"
           class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
@@ -66,8 +66,12 @@
     <bean id="de.consol.sakuli.actions.environment.CipherUtil" class="de.consol.sakuli.MockitoFactoryBean">
         <constructor-arg value="de.consol.sakuli.actions.environment.CipherUtil"/>
     </bean>
-    <bean id="de.consol.sakuli.datamodel.actions.Screen" class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.datamodel.actions.Screen"/>
+    <bean id="de.consol.sakuli.datamodel.properties.SahiProxyProperties" class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.datamodel.properties.SahiProxyProperties"/>
+    </bean>
+    <bean id="de.consol.sakuli.loader.ScreenActionLoaderImpl" class="de.consol.sakuli.MockitoFactoryBean">
+        <constructor-arg value="de.consol.sakuli.loader.ScreenActionLoaderImpl">
+        </constructor-arg>
     </bean>
 
     <!-- test beans for testing SpringProfilesInitializer -->
@@ -80,6 +84,10 @@
         <bean id="de.consol.sakuli.services.receiver.gearman.GearmanProperties"
               class="de.consol.sakuli.MockitoFactoryBean">
             <constructor-arg value="de.consol.sakuli.services.receiver.gearman.GearmanProperties"/>
+        </bean>
+        <bean id="de.consol.sakuli.services.receiver.gearman.model.builder.NagiosCheckResultBuilder"
+              class="de.consol.sakuli.MockitoFactoryBean">
+            <constructor-arg value="de.consol.sakuli.services.receiver.gearman.model.builder.NagiosCheckResultBuilder"/>
         </bean>
     </beans>
 

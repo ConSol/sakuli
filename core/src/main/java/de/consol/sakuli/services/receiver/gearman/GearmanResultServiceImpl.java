@@ -49,6 +49,8 @@ public class GearmanResultServiceImpl extends AbstractResultService {
     private SakuliExceptionHandler exceptionHandler;
     @Autowired
     private GearmanProperties properties;
+    @Autowired
+    private NagiosCheckResultBuilder nagiosCheckResultBuilder;
 
     @Override
     public void saveAllResults() {
@@ -59,7 +61,7 @@ public class GearmanResultServiceImpl extends AbstractResultService {
         GearmanJobServerConnection connection = getGearmanConnection(hostname, port);
 
         testSuite.refreshState();
-        NagiosCheckResult checkResult = new NagiosCheckResultBuilder().withTestSuite(testSuite, properties).build();
+        NagiosCheckResult checkResult = nagiosCheckResultBuilder.build();
 
         String message = checkResult.getPayloadString();
         logger.info("MESSAGE for GEARMAN:\n{}", message);

@@ -37,6 +37,8 @@ public class GearmanPropertiesTestHelper {
         when(mock.lookUpOutputString(TestCaseState.WARNING_IN_STEP)).thenReturn(GearmanProperties.NAGIOS_OUTPUT_CASE_WARNING_DEFAULT);
         when(mock.lookUpOutputString(TestCaseState.CRITICAL)).thenReturn(GearmanProperties.NAGIOS_OUTPUT_CASE_CRITICAL_DEFAULT);
         when(mock.lookUpOutputString(TestCaseState.ERRORS)).thenReturn(GearmanProperties.NAGIOS_OUTPUT_CASE_ERROR_DEFAULT);
+        when(mock.getOutputScreenshotDivWidth()).thenReturn(GearmanProperties.NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH_DEFAULT);
+        when(mock.getServiceType()).thenReturn(GearmanProperties.SERVICE_TYPE_DEFAULT);
         return mock;
     }
 }

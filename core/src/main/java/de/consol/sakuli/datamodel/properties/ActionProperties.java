@@ -104,6 +104,11 @@ public class ActionProperties extends AbstractProperties {
         this.autoHighlightSeconds = autoHighlightSeconds;
     }
 
+    /**
+     * Specify a delay between the mouse down and up in seconds as 0.nnn. This
+     * only applies to the next click action and is then reset to 0 again. A value
+     * &gt; 1 is cut to 1.0 (max delay of 1 second)
+     */
     public double getClickDelay() {
         return clickDelay;
     }
@@ -112,6 +117,11 @@ public class ActionProperties extends AbstractProperties {
         this.clickDelay = clickDelay;
     }
 
+    /**
+     * Specify a delay between the key presses in seconds as 0.nnn. This only
+     * applies to the next type and is then reset to 0 again. A value &gt; 1 is cut
+     * to 1.0 (max delay of 1 second)
+     */
     public double getTypeDelay() {
         return typeDelay;
     }

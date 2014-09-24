@@ -15,5 +15,4 @@
 	jdbc.host=[IPofOMD]
 	jdbc.user=sahi
 	jdbc.pw=sahi
-	jdbc.model=sahi
 	```

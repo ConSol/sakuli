@@ -34,14 +34,16 @@ The result of a Sakuli test will be printed out in the __"Status Information"__ 
 small overview HTML table with the most important information in it. Therefore you configure the bellow mentioned message properties:
  
   ```
-  # message.type=output-message-template
-  sakuli.receiver.gearman.nagios.output.suite.summary= {{state}} - {{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})
-  sakuli.receiver.gearman.nagios.output.suite.table={{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})
-  sakuli.receiver.gearman.nagios.output.case.ok={{state_short}} case "{{id}}" ran in {{duration}}s - {{state_description}}
-  sakuli.receiver.gearman.nagios.output.case.warning={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{warning_threshold}}s) {{step_information}}
-  sakuli.receiver.gearman.nagios.output.case.critical={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{critical_threshold}}s) {{step_information}}
-  sakuli.receiver.gearman.nagios.output.case.error={{state_short}} case "{{id}}" {{state_description}}: {{error_message}}
-  ```
+ sakuli.receiver.gearman.nagios.output.suite.summary= {{state}} - {{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})
+ sakuli.receiver.gearman.nagios.output.suite.table={{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}}){{error_screenshot}}
+ sakuli.receiver.gearman.nagios.output.case.ok={{state_short}} case "{{id}}" ran in {{duration}}s - {{state_description}}
+ sakuli.receiver.gearman.nagios.output.case.warning={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{warning_threshold}}s) {{step_information}}
+ sakuli.receiver.gearman.nagios.output.case.critical={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{critical_threshold}}s) {{step_information}}
+ sakuli.receiver.gearman.nagios.output.case.error={{state_short}} case "{{id}}" {{state_description}}: {{error_message}}{{error_screenshot}}
+ #
+ ## configure the appearance of the gearman output
+ sakuli.receiver.gearman.nagios.output.screenshotDivWidth=640px
+ ```
  
 The HTML table in status information field will be generated after following structure:
  
@@ -67,6 +69,7 @@ To customize these messages you can use a set of placeholders with the pattern `
     * `{{start_date}}` date when execution started, formated as string `dd.MM HH:mm:ss` 
     * `{{stop_date}}` date when execution stopped, formated as string `dd.MM HH:mm:ss` 
     * `{{error_message}}` exception message log 
+    * `{{error_screenshot}}` screenshot of the screen when the exception occurs 
     * `{{warning_threshold}}` warning threshold of the runtime in seconds 
     * `{{critical_threshold}}` critical threshold of the runtime in seconds 
 * __suite specific placeholders__  -  will be only filled by `sakuli.receiver.gearman.nagios.output.suite.XXX` messages:
