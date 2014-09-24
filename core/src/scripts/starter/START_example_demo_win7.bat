@@ -1,6 +1,8 @@
 @echo off
 
-set TEST_SUITE_FOLDER=%SAKULI_HOME%\sakuli_test_suites\example
+set SUITE=example
+
+set TEST_SUITE_FOLDER=%SAKULI_HOME%\sakuli_test_suites\%SUITE%
 
 set SAKULI_JARS=%SAKULI_HOME%\bin\lib\*;%SAKULI_HOME%\bin\lib\resource;
 

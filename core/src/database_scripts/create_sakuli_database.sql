@@ -2,15 +2,15 @@ SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
 SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = 'TRADITIONAL';
 
-DROP SCHEMA IF EXISTS `sahi`;
-CREATE SCHEMA IF NOT EXISTS `sahi`
+DROP SCHEMA IF EXISTS `sakuli`;
+CREATE SCHEMA IF NOT EXISTS `sakuli`
   DEFAULT CHARACTER SET utf8;
-USE `sahi`;
+USE `sakuli`;
 
 -- -----------------------------------------------------
--- Table `sahi`.`sahi_suites`
+-- Table `sakuli`.`sahi_suites`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sahi`.`sahi_suites` (
+CREATE TABLE IF NOT EXISTS `sakuli`.`sahi_suites` (
   `id`          INT(11)       NOT NULL AUTO_INCREMENT,
   `suiteID`     VARCHAR(255)  NOT NULL,
   `result`      INT(11)       NOT NULL,
@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS `sahi`.`sahi_suites` (
 
 
 -- -----------------------------------------------------
--- Table `sahi`.`sahi_cases`
+-- Table `sakuli`.`sahi_cases`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sahi`.`sahi_cases` (
+CREATE TABLE IF NOT EXISTS `sakuli`.`sahi_cases` (
   `id`             INT(11)       NOT NULL AUTO_INCREMENT,
   `sahi_suites_id` INT(11)       NOT NULL,
   `caseID`         VARCHAR(255)  NOT NULL,
@@ -62,9 +62,9 @@ CREATE TABLE IF NOT EXISTS `sahi`.`sahi_cases` (
 
 
 -- -----------------------------------------------------
--- Table `sahi`.`sahi_jobs`
+-- Table `sakuli`.`sahi_jobs`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sahi`.`sahi_jobs` (
+CREATE TABLE IF NOT EXISTS `sakuli`.`sahi_jobs` (
   `id`   INT(11)      NOT NULL AUTO_INCREMENT,
   `guid` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
@@ -74,9 +74,9 @@ CREATE TABLE IF NOT EXISTS `sahi`.`sahi_jobs` (
 
 
 -- -----------------------------------------------------
--- Table `sahi`.`sahi_steps`
+-- Table `sakuli`.`sahi_steps`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sahi`.`sahi_steps` (
+CREATE TABLE IF NOT EXISTS `sakuli`.`sahi_steps` (
   `id`            INT(11)      NOT NULL AUTO_INCREMENT,
   `sahi_cases_id` INT(11)      NOT NULL,
   `result`        INT(11)      NOT NULL,
