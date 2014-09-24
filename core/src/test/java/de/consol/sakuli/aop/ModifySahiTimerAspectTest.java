@@ -5,8 +5,11 @@ import de.consol.sakuli.actions.screenbased.Region;
 import de.consol.sakuli.actions.screenbased.TypingUtil;
 import de.consol.sakuli.datamodel.actions.LogLevel;
 import de.consol.sakuli.loader.ScreenActionLoader;
+import org.sikuli.script.IScreen;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.Test;
+
+import java.awt.*;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -35,8 +38,15 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         ScreenActionLoader loaderMock = mock(ScreenActionLoader.class);
         TypingUtil typingUtil = mock(TypingUtil.class);
         when(typingUtil.type(anyString(), anyString())).thenReturn(null);
-        Region region = new Region(mock(org.sikuli.script.Region.class), false, loaderMock);
+
+        org.sikuli.script.Region sikuliRegionMock = mock(org.sikuli.script.Region.class);
+        IScreen iScreen = mock(IScreen.class);
+        when(iScreen.getRect()).thenReturn(new Rectangle());
+        when(sikuliRegionMock.getScreen()).thenReturn(iScreen);
+
+        Region region = new Region(sikuliRegionMock, false, loaderMock);
         ReflectionTestUtils.setField(region, "typingUtil", typingUtil);
+
         region.type("BLA");
         assertLastLine("SAHI-TIMER", LogLevel.DEBUG, "MODIFY SAHI-TIMER for Region.type()");
     }
