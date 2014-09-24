@@ -7,10 +7,8 @@
 
 Dim process, strComputer, fso, procfile, objShell, file_procstokill
 
-' CONFIGURE!
-file_procstokill = "C:\sakuli\procs_to_kill.txt"
-
-
+' default
+file_procstokill = "C:\sakuli\scripts\helper\vb_scripts\procs_to_kill.txt"
 
 strComputer = "."
 Set objWMIService = GetObject("winmgmts:" _
@@ -19,9 +17,9 @@ Set objWMIService = GetObject("winmgmts:" _
 
 WScript.echo "--------------------------------"
 if WScript.Arguments(0) = "-f" Then
-	procfile = WScript.Arguments(1)
+	file_procstokill = WScript.Arguments(1)
 	
-	Wscript.echo "Killing all processes with path pattern named in " & procfile & "..."
+	Wscript.echo "Killing all processes with path pattern named in " & file_procstokill & "..."
 	set fso = CreateObject("Scripting.FileSystemObject")
 	set procfile = fso.OpenTextFile(file_procstokill)
 	Dim continue
