@@ -43,7 +43,7 @@ public class TestSuiteTest {
     public void testRefreshState() throws Exception {
         TestSuite testling = new TestSuite();
         testling.refreshState();
-        assertEquals(TestSuiteState.ERRORS, testling.getState());
+        assertEquals(testling.getState(), TestSuiteState.RUNNING);
 
         testling = new TestSuite();
         testling.setState(TestSuiteState.RUNNING);
@@ -55,23 +55,23 @@ public class TestSuiteTest {
         testCaseMap.put(tcTestling.getId(), tcTestling);
         ReflectionTestUtils.setField(testling, "testCases", testCaseMap);
         testling.refreshState();
-        assertEquals(TestSuiteState.OK, testling.getState());
+        assertEquals(testling.getState(), TestSuiteState.OK);
 
         tcTestling.setState(TestCaseState.WARNING_IN_STEP);
         testling.refreshState();
-        assertEquals(TestSuiteState.WARNING_IN_STEP, testling.getState());
+        assertEquals(testling.getState(), TestSuiteState.WARNING_IN_STEP);
 
         tcTestling.setState(TestCaseState.WARNING);
         testling.refreshState();
-        assertEquals(TestSuiteState.WARNING_IN_CASE, testling.getState());
+        assertEquals(testling.getState(), TestSuiteState.WARNING_IN_CASE);
 
         tcTestling.setState(TestCaseState.CRITICAL);
         testling.refreshState();
-        assertEquals(TestSuiteState.CRITICAL_IN_CASE, testling.getState());
+        assertEquals(testling.getState(), TestSuiteState.CRITICAL_IN_CASE);
 
         tcTestling.setState(TestCaseState.ERRORS);
         testling.refreshState();
-        assertEquals(TestSuiteState.ERRORS, testling.getState());
+        assertEquals(testling.getState(), TestSuiteState.ERRORS);
 
         //prepare dates for warning and critical test
         testling.setState(TestSuiteState.RUNNING);
@@ -83,15 +83,15 @@ public class TestSuiteTest {
         testling.setCriticalTime(10);
         testling.setWarningTime(8);
         testling.refreshState();
-        assertEquals(TestSuiteState.OK, testling.getState());
+        assertEquals(testling.getState(), TestSuiteState.OK);
 
         testling.setWarningTime(4);
         testling.refreshState();
-        assertEquals(TestSuiteState.WARNING_IN_SUITE, testling.getState());
+        assertEquals(testling.getState(), TestSuiteState.WARNING_IN_SUITE);
 
         testling.setCriticalTime(4);
         testling.refreshState();
-        assertEquals(TestSuiteState.CRITICAL_IN_SUITE, testling.getState());
+        assertEquals(testling.getState(), TestSuiteState.CRITICAL_IN_SUITE);
     }
 
     @Test

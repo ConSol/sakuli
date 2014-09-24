@@ -70,11 +70,10 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
      */
     @Override
     public void refreshState() {
-        if (testCases == null) {
-            addException(new SakuliException("NO TEST CASES FOUND !!!"));
+        if (exception != null) {
             state = TestSuiteState.ERRORS;
-        } else if (exception != null) {
-            state = TestSuiteState.ERRORS;
+        } else if (testCases == null) {
+            state = TestSuiteState.RUNNING;
         } else {
             for (TestCase tc : testCases.values()) {
 
