@@ -5,6 +5,8 @@ import de.consol.sakuli.actions.screenbased.Region;
 import de.consol.sakuli.actions.screenbased.RegionImpl;
 import de.consol.sakuli.actions.screenbased.TypingUtil;
 import de.consol.sakuli.datamodel.actions.LogLevel;
+import de.consol.sakuli.loader.BaseActionLoader;
+import de.consol.sakuli.loader.BeanLoader;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.Test;
@@ -37,16 +39,17 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         TypingUtil typingUtil = mock(TypingUtil.class);
         when(typingUtil.type(anyString(), anyString())).thenReturn(null);
 
-        Region region = new Region(new RegionMocker(), false, loaderMock);
+        Region region = new Region(mock(RegionImpl.class), false, loaderMock);
         ReflectionTestUtils.setField(region, "typingUtil", typingUtil);
         region.type("BLA");
         assertLastLine("SAHI-TIMER", LogLevel.DEBUG, "MODIFY SAHI-TIMER for Region.type()");
     }
 
+    @Test
+    public void testModifySahiTimer() throws Exception {
+        BaseActionLoader baseActionLoader = BeanLoader.loadBaseActionLoader();
 
-    private static class RegionMocker extends RegionImpl {
-        public RegionMocker() {
-            super();
-        }
+
     }
+
 }

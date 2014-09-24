@@ -65,6 +65,14 @@ public class Region implements Action {
         typingUtil = new TypingUtil<>(this);
     }
 
+    /**
+     * Wrapper for the {@link org.sikuli.script.Region} objects.
+     */
+    public Region(RegionImpl regionImpl, boolean resumeOnException, ScreenActionLoader loader) {
+        this.regionImpl = regionImpl;
+        typingUtil = new TypingUtil<>(this);
+    }
+
     /**********************
      * FIND FUNCTIONS
      **********************/
