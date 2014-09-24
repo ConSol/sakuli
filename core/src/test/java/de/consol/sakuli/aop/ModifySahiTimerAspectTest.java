@@ -12,6 +12,7 @@ import de.consol.sakuli.loader.ScreenActionLoader;
 import net.sf.sahi.rhino.RhinoScriptRunner;
 import net.sf.sahi.session.Session;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.Signature;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import org.testng.annotations.Test;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.testng.Assert.assertEquals;
 
 public class ModifySahiTimerAspectTest extends AopBaseTest {
 
@@ -70,7 +72,7 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         BaseActionLoader baseActionLoader = BeanLoader.loadBaseActionLoader();
         baseActionLoader.setRhinoScriptRunner(runner);
         when(baseActionLoader.getSahiProxyProperties().isRequestDelayActive()).thenReturn(true);
-        when(baseActionLoader.getSahiProxyProperties().getRequestDelayMs()).thenReturn(1000);
+        doReturn(1000).when(testling).determineDelay(any(JoinPoint.class), any(BaseActionLoader.class));
 
         doReturn(LoggerFactory.getLogger(this.getClass())).when(testling).getLogger(any(JoinPoint.class));
         doReturn("sig.method()").when(testling).getClassAndMethodAsString(any(JoinPoint.class));
@@ -115,4 +117,24 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         verify(baseActionLoader.getExceptionHandler(), never()).handleException(any(Throwable.class));
     }
 
+
+    @Test
+    public void testDetermineDelay() throws Exception {
+        BaseActionLoader loader = BeanLoader.loadBaseActionLoader();
+        when(loader.getSahiProxyProperties().getRequestDelayMs()).thenReturn(500);
+        when(loader.getActionProperties().getTypeDelay()).thenReturn(0.05);
+
+        JoinPoint joinPoint = mock(JoinPoint.class);
+        Signature signature = mock(Signature.class);
+        when(joinPoint.getSignature()).thenReturn(signature);
+        when(signature.getName()).thenReturn("pasteSomething");
+        assertEquals(testling.determineDelay(joinPoint, loader).intValue(), 500);
+
+        when(signature.getName()).thenReturn("typeMasked");
+        when(joinPoint.getArgs()).thenReturn(new String[]{"1", "MOD"});
+        assertEquals(testling.determineDelay(joinPoint, loader).intValue(), 550);
+
+        when(joinPoint.getArgs()).thenReturn(new String[]{"12characters", "MOD"});
+        assertEquals(testling.determineDelay(joinPoint, loader).intValue(), 12 * 550);
+    }
 }

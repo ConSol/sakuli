@@ -43,6 +43,7 @@ import org.springframework.stereotype.Component;
 public class ModifySahiTimerAspect extends BaseSakuliAspect {
 
     protected final static Logger logger = LoggerFactory.getLogger(ModifySahiTimerAspect.class);
+    public static final int SAHI_REFRESH_TIME = 500;
 
     /**
      * Before Pointcut for the {@link de.consol.sakuli.actions.environment} class
@@ -86,7 +87,6 @@ public class ModifySahiTimerAspect extends BaseSakuliAspect {
 
     void modifySahiTimer(JoinPoint joinPoint, boolean beforeMethod) {
         getLogger(joinPoint).debug("MODIFY SAHI-TIMER for {}", getClassAndMethodAsString(joinPoint));
-        //TODO write unit tests
 
         BaseActionLoader loader = BeanLoader.loadBaseActionLoader();
         SahiProxyProperties sahiProxyProperties = loader.getSahiProxyProperties();
@@ -97,16 +97,16 @@ public class ModifySahiTimerAspect extends BaseSakuliAspect {
             if (rhinoScriptRunner != null && rhinoScriptRunner.getSession() != null) {
                 Session session = rhinoScriptRunner.getSession();
                 if (beforeMethod) {
-                    String delay = String.valueOf(sahiProxyProperties.getRequestDelayMs());
-                    session.setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_TIME_VAR, delay);
+                    Integer delay = determineDelay(joinPoint, loader);
+                    session.setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_TIME_VAR, delay.toString());
 
                     //short sleep to ensure that browser context can read out the value
                     try {
-                        Thread.sleep(sahiProxyProperties.getRequestDelayMs() / 4);
+                        Thread.sleep(SAHI_REFRESH_TIME);
                     } catch (InterruptedException e) {
                         BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(e);
                     }
-                    logger.info("sahi-proxy-timer modified to {} ms", delay);
+                    logger.info("sahi-proxy-timer modified to {} ms", delay.toString());
 
                 } else {
                     logger.info("reset sahi-proxy-timer");
@@ -114,6 +114,20 @@ public class ModifySahiTimerAspect extends BaseSakuliAspect {
                 }
             }
         }
+    }
+
+    protected Integer determineDelay(JoinPoint joinPoint, BaseActionLoader loader) {
+        Integer deleay = loader.getSahiProxyProperties().getRequestDelayMs();
+        if (joinPoint.getSignature().getName().startsWith("type")) {
+            Object text = joinPoint.getArgs()[0];
+            if (text instanceof String) {
+                int length = ((String) text).length();
+                int typeDelayMs = new Double(loader.getActionProperties().getTypeDelay() * 1000).intValue();
+
+                return length * (typeDelayMs + deleay);
+            }
+        }
+        return deleay;
     }
 
 }
