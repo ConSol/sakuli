@@ -1,0 +1,30 @@
+## Log how to use the sikulix-supplemenatal package:
+
+The new build 'libVisionProxy.so' is already included in the fork [toschneck/SikuliX-2014](https://github.com/toschneck/SikuliX-2014) and the following maven dependency:
+
+```
+ <dependency>
+     <groupId>com.sikulix</groupId>
+     <artifactId>sikulixapi-complete</artifactId>
+     <version>1.1.990/version>
+ </dependency>
+```
+  
+---
+
+* Download under [SikuliX-2014/Libslux](https://github.com/RaiMan/SikuliX-2014/tree/master/Libslux)
+
+* Unzip and read included README
+
+* Do the following steps.
+  
+  ```
+  sudo apt-get install libcv-dev
+  
+  sudo apt-get install libtesseract-dev
+  
+  ./ubuntu14_openCV_symbolic_links.sh
+  
+  ./makeVisionProxy 
+  
+  ```
