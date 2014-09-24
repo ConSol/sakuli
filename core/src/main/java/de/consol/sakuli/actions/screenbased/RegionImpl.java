@@ -84,6 +84,15 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         this.loader = loader;
     }
 
+    /**
+     * Propagation of the constructor {@link org.sikuli.script.Region#Region()}.
+     */
+    protected RegionImpl() {
+        super();
+        imagePattern = null;
+        resumeOnException = false;
+    }
+
     /**********************
      * FIND FUNCTIONS
      **********************/
