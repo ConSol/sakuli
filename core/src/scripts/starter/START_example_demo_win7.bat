@@ -10,3 +10,5 @@ cscript.exe %SAKULI_HOME%\scripts\helper\vb_scripts\killproc.vbs -f %SAKULI_HOME
 
 echo jar-file: %SAKULI_JARS%
 java -Dsikuli.Home=%SAKULI_HOME%\bin\lib -classpath %SAKULI_HOME%\bin\sakuli.jar;%SAKULI_JARS% de.consol.sakuli.starter.SakuliStarter -run "%TEST_SUITE_FOLDER%" "%SAKULI_HOME%\_include"
+
+exit
