@@ -20,9 +20,14 @@ package de.consol.sakuli.actions.settings;
 
 import de.consol.sakuli.datamodel.properties.ActionProperties;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
+import org.sikuli.basics.Debug;
 import org.sikuli.basics.Settings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.org.lidalia.sysoutslf4j.context.LogLevel;
+import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 import javax.annotation.PostConstruct;
 import java.security.InvalidParameterException;
@@ -67,12 +72,19 @@ public class ScreenBasedSettings extends Settings {
         DefaultHighlightTime = props.getAutoHighlightSeconds();
         WaitAfterHighlight = 0.1f;
 
-        //Logging TODO make configurable
-        ActionLogs = true;
-        DebugLogs = true;
-        InfoLogs = true;
-        ProfileLogs = true;
-
+        /***
+         * Logging for sikuliX => {@link SysOutOverSLF4J} will send the logs to SLF4J
+         */
+        Logger sikuliLogger = LoggerFactory.getLogger(Debug.class);
+        if (sikuliLogger.isInfoEnabled()) {
+            ActionLogs = true;
+            InfoLogs = true;
+            ProfileLogs = true;
+        }
+        if (sikuliLogger.isDebugEnabled()) {
+            DebugLogs = true;
+        }
+        SysOutOverSLF4J.sendSystemOutAndErrToSLF4J(LogLevel.INFO, LogLevel.ERROR);
     }
 
     public void setMinSimilarity(double minSimilarity) {

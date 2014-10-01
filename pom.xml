@@ -17,7 +17,7 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -46,8 +46,8 @@
         <downloadJavadocs>true</downloadJavadocs>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
-        <dependencies.spring.version>4.0.4.RELEASE</dependencies.spring.version>
-        <dependencies.aspectj.version>1.7.4</dependencies.aspectj.version>
+        <dependencies.spring.version>4.1.0.RELEASE</dependencies.spring.version>
+        <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
@@ -120,7 +120,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>aspectj-maven-plugin</artifactId>
-                    <version>1.6</version>
+                    <version>1.7</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -332,6 +332,13 @@
             <version>1.7.7</version>
             <scope>runtime</scope>
         </dependency>
+        <!-- will rout the system out from sikulX to logging over slf4j -->
+        <dependency>
+            <groupId>uk.org.lidalia</groupId>
+            <artifactId>sysout-over-slf4j</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
 
         <!-- Command line tool & some common libraries -->
         <dependency>

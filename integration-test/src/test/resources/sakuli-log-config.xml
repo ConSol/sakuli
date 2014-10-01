@@ -56,6 +56,10 @@
         <appender-ref ref="sakuli"/>
         <!--<appender-ref ref="stdout"/>-->
     </logger>
+    <logger name="org.sikuli" level="DEBUG">
+        <appender-ref ref="sakuli"/>
+        <!--<appender-ref ref="stdout"/>-->
+    </logger>
     <root level="DEBUG">
         <appender-ref ref="stdout"/>
         <appender-ref ref="alllogs"/>

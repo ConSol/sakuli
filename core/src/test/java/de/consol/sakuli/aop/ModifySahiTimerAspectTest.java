@@ -37,9 +37,8 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
     }
 
     /**
-     * If the test fails in your IDE, make sure that your compiler use the correct AspectJ-Compiler
-     * For IntelliJ you can make a right click on the maven target 'aspectj:compile' and mark it
-     * with the option 'Execute After Make'.
+     * If the test fails in your IDE, make sure that your compiler use the correct AspectJ-Compiler For IntelliJ you can
+     * make a right click on the maven target 'aspectj:compile' and mark it with the option 'Execute After Make'.
      */
     @Test
     public void testCallEnvironmentMethod() throws Exception {
@@ -122,7 +121,7 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
     public void testDetermineDelay() throws Exception {
         BaseActionLoader loader = BeanLoader.loadBaseActionLoader();
         when(loader.getSahiProxyProperties().getRequestDelayMs()).thenReturn(500);
-        when(loader.getActionProperties().getTypeDelay()).thenReturn(0.05);
+        loader.getActionProperties().setTypeDelay(0.05);
 
         JoinPoint joinPoint = mock(JoinPoint.class);
         Signature signature = mock(Signature.class);

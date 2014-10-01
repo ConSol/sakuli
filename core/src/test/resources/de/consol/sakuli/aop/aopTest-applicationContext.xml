@@ -18,16 +18,22 @@
   -->
 
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <aop:aspectj-autoproxy/>
     <context:annotation-config/>
     <context:component-scan base-package="de.consol.sakuli.aop"/>
     <context:component-scan base-package="de.consol.sakuli.utils"/>
 
-    <bean class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
+    <bean id="de.consol.sakuli.datamodel.properties.SakuliProperties"
+          class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
     <bean class="de.consol.sakuli.loader.BaseActionLoaderImpl"/>
-
     <bean id="propertyResolver"
           class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
         <property name="fileEncoding" value="UTF-8"/>
@@ -64,10 +70,6 @@
         <constructor-arg value="de.consol.sakuli.actions.environment.CipherUtil">
         </constructor-arg>
     </bean>
-    <bean id="de.consol.sakuli.actions.settings.ScreenBasedSettings" class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.actions.settings.ScreenBasedSettings">
-        </constructor-arg>
-    </bean>
     <bean id="de.consol.sakuli.datamodel.properties.SahiProxyProperties" class="de.consol.sakuli.MockitoFactoryBean">
         <constructor-arg value="de.consol.sakuli.datamodel.properties.SahiProxyProperties">
         </constructor-arg>
@@ -76,15 +78,19 @@
         <constructor-arg value="de.consol.sakuli.datamodel.properties.ReceiverProperties">
         </constructor-arg>
     </bean>
-    <bean id="de.consol.sakuli.datamodel.properties.ActionProperties" class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.datamodel.properties.ActionProperties">
-        </constructor-arg>
-    </bean>
+
     <bean id="de.consol.sakuli.loader.ScreenActionLoaderImpl" class="de.consol.sakuli.MockitoFactoryBean">
         <constructor-arg value="de.consol.sakuli.loader.ScreenActionLoaderImpl">
         </constructor-arg>
     </bean>
 
+    <bean id="de.consol.sakuli.datamodel.properties.ActionProperties"
+          class="de.consol.sakuli.datamodel.properties.ActionProperties"/>
+
+    <bean class="de.consol.sakuli.actions.settings.ScreenBasedSettings">
+        <constructor-arg index="0" ref="de.consol.sakuli.datamodel.properties.ActionProperties"/>
+        <constructor-arg index="1" ref="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
+    </bean>
 
     <bean id="properties" class="de.consol.sakuli.PropertyHolder" depends-on="propertyResolver">
         <property name="testSuiteFolder" value="${sakuli.testsuite.folder}"/>
