@@ -37,20 +37,20 @@ public class ActionProperties extends AbstractProperties {
     public static final String TAKE_SCREENSHOTS = "sakuli.takeScreenShots.onErrors";
     public static final String AUTO_HIGHLIGHT_ENABLED = "sakuli.autoHighlight.enabled";
     public static final String AUTO_HIGHLIGHT_SEC = "sakuli.autoHighlight.seconds";
+    public static final String AUTO_HIGHLIGHT_SEC_DEFAULT = "1.1f";
     public static final String TYPE_DELAY_PROPERTY = "sakuli.screenbased.typeDelay";
     public static final String CLICK_DELAY_PROPERTY = "sakuli.screenbased.clickDelay";
     public static final String ENCRYPTION_INTERFACE = "sakuli.encryption.interface";
-    protected static final String ENCRYPTION_INTERFACE_DEFAULT = "null";
     public static final String ENCRYPTION_INTERFACE_TEST_MODE = "sakuli.encryption.interface.testmode";
-    protected static final String ENCRYPTION_INTERFACE_TEST_MODE_DEFAULT = "false";
     public static final String SCREENSHOT_FOLDER_PROPERTY = "sakuli.screenshot.dir";
     public static final String SCREENSHOT_FORMAT_PROPERTY = "sakuli.screenshot.format";
-
+    protected static final String ENCRYPTION_INTERFACE_DEFAULT = "null";
+    protected static final String ENCRYPTION_INTERFACE_TEST_MODE_DEFAULT = "false";
     @Value("${" + TAKE_SCREENSHOTS + "}")
     private boolean takeScreenshots;
     @Value("${" + AUTO_HIGHLIGHT_ENABLED + "}")
     private boolean autoHighlightEnabled;
-    @Value("${" + AUTO_HIGHLIGHT_SEC + "}")
+    @Value("${" + AUTO_HIGHLIGHT_SEC + ":" + AUTO_HIGHLIGHT_SEC_DEFAULT + "}")
     private float autoHighlightSeconds;
     @Value("${" + CLICK_DELAY_PROPERTY + "}")
     private double clickDelay;
