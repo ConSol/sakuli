@@ -25,6 +25,7 @@ Use the bypass list to exclude certain URLs from being accessed through the prox
 	
 	# There is only one bypass list for both secure and insecure.
 	ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.verisign.com
+    
     ```
 
 - - -
@@ -34,42 +35,45 @@ To customize the logging logic for your purpose, there are to two places to conf
 #### Properties-Files `sakuli.properties` 
  Set here the common logging settings for sakuli.
 
-  ```
-  # If you use the feature resumeOnException, for example with 'new Region("foo",true), then you can config
-  # the exception logging like following: If
-  #   true  = Exception will appear in the log and on the test suite result
-  #   false = Exception will NOT appear in the log file and in the test suite result. In that case you
-  #           have to handle it by yourself in the test case, like in this example:
-  #            try{
-                var foo = fooRegion.find("image.png");
-                if (foo == null){
-                    throw "your custom exception message";
-                }
-              } catch (e) {
-                handleYourSelf(e);
-              }
-  
-   DEFAULT: true
-  akuli.log.exception.onResumeOnException=true
-     Log pattern for the logging output.
-  
-   Log pattern for development with java classes:
-   sakuli.log.pattern=%-5level %d{YYYY-MM-dd HH:mm:ss} [%thread]  %logger{36} - %msg%n
-  akuli.log.pattern= %-5level [%d{YYYY-MM-dd HH:mm:ss}] - %msg%n
-     Sets the output folder for the log files
-  akuli.log.folder=${sakuli.testsuite.folder}/_logs
-     Sets the output folder for the error screenshots (if activated)
-  akuli.screenshot.dir=${sakuli.log.folder}/_screenshots
-   Output format for the take screenshots.
-   Possible values: jpg, png
-  akuli.screenshot.format=jpg
-  sakuli.screenshot.format=png
-  ```
+    ```
+    # If you use the feature resumeOnException, for example with 'new Region("foo",true), then you can config
+    # the exception logging like following: If
+    #   true  = Exception will appear in the log and on the test suite result
+    #   false = Exception will NOT appear in the log file and in the test suite result. In that case you
+    #           have to handle it by yourself in the test case, like in this example:
+    #            try{
+    #              var foo = fooRegion.find("image.png");
+    #              if (foo == null){
+    #                  throw "your custom exception message";
+    #              }
+    #            } catch (e) {
+    #              handleYourSelf(e);
+    #            }
+    #
+    # DEFAULT: true
+    sakuli.log.exception.onResumeOnException=true
+    
+    # Log pattern for the logging output.
+    #
+    # Log pattern for development with java classes:
+    # sakuli.log.pattern=%-5level %d{YYYY-MM-dd HH:mm:ss} [%thread]  %logger{36} - %msg%n
+    sakuli.log.pattern= %-5level [%d{YYYY-MM-dd HH:mm:ss}] - %msg%n
+    
+    # Sets the output folder for the log files
+    sakuli.log.folder=${sakuli.testsuite.folder}/_logs
+    
+    # Sets the output folder for the error screenshots (if activated)
+    sakuli.screenshot.dir=${sakuli.log.folder}/_screenshots
+    # Output format for the take screenshots.
+    # Possible values: jpg, png
+    sakuli.screenshot.format=jpg
+    #sakuli.screenshot.format=png
+    ```
   
 ### SLF4J Configuration `sakuli-log-config.xml`
 Alo in the include folder you will find a file named `sakuli-log-config.xml`.  
 Thre you configure more details in the [Logback](http://logback.qos.ch/) syntax logic. For more detailed information, see
-[Lgback configuration](http://logback.qos.ch/manual/configuration.html). 
+[Logback configuration](http://logback.qos.ch/manual/configuration.html). 
 
 - - -
 
