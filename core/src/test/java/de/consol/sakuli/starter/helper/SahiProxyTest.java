@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 
+import static de.consol.sakuli.BaseTest.assertContains;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.*;
 
@@ -44,12 +45,10 @@ public class SahiProxyTest {
 
         testling.injectCustomJavaScriptFiles();
         assertTrue(FileUtils.readFileToString(config.toFile()).contains(SahiProxy.SAKULI_INJECT_SCRIPT_TAG));
-        assertTrue(FileUtils.readFileToString(target.toFile()).contains(
-                "Sahi.prototype.originalEx = Sahi.prototype.ex;\n" +
-                        "\n" +
-                        "Sahi.prototype.ex = function (isStep) {"
-        ));
-
+        assertContains(FileUtils.readFileToString(target.toFile()),
+                "Sahi.prototype.originalEx = Sahi.prototype.ex;");
+        assertContains(FileUtils.readFileToString(target.toFile()),
+                "Sahi.prototype.ex = function (isStep) {");
     }
 
     @Test
@@ -72,11 +71,10 @@ public class SahiProxyTest {
 
         testling.injectCustomJavaScriptFiles();
         assertTrue(FileUtils.readFileToString(config.toFile()).contains(SahiProxy.SAKULI_INJECT_SCRIPT_TAG));
-        assertTrue(FileUtils.readFileToString(target.toFile()).contains(
-                "Sahi.prototype.originalEx = Sahi.prototype.ex;\n" +
-                        "\n" +
-                        "Sahi.prototype.ex = function (isStep) {"
-        ));
+        assertContains(FileUtils.readFileToString(target.toFile()),
+                "Sahi.prototype.originalEx = Sahi.prototype.ex;");
+        assertContains(FileUtils.readFileToString(target.toFile()),
+                "Sahi.prototype.ex = function (isStep) {");
 
     }
 }

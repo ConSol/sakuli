@@ -33,10 +33,10 @@ import java.util.Scanner;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertTrue;
 
 /**
- * @author tschneck
- *         Date: 25.07.13
+ * @author tschneck Date: 25.07.13
  */
 public abstract class BaseTest {
 
@@ -57,15 +57,15 @@ public abstract class BaseTest {
         }
     }
 
-    @BeforeClass
-    public void setContextProperties() {
-        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
-        BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
-        BeanLoader.refreshContext();
-        loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
-        when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
+
+    public static void assertRegExMatch(String string, String regex) {
+        assertTrue(string.matches(regex),
+                String.format("string '%s' won't match to regex '%s'", string, regex));
+    }
+
+    public static void assertContains(String string, String contains) {
+        assertTrue(string.contains(contains),
+                String.format("string '%s' won't contain '%s'", string, contains));
     }
 
     public static String getLastLineWithContent(Path file, String s) throws IOException {
@@ -111,6 +111,17 @@ public abstract class BaseTest {
 
 
         return result.toString();
+    }
+
+    @BeforeClass
+    public void setContextProperties() {
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
+        BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
+        BeanLoader.refreshContext();
+        loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
+        when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
     }
 
 }
