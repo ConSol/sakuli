@@ -28,7 +28,7 @@
 
 /**
  * CONSTRUCTOR: Region - Represents a region.
- * @param {Boolean} `optResumeOnException` if this parameter is undefined, it will be false.
+ * @param {Boolean} `optResumeOnException` if true, the test execution won't stop on an occurring error. Default: false.
  */
 function Region(optResumeOnException) {
     if (undefined == optResumeOnException) {
@@ -39,7 +39,7 @@ function Region(optResumeOnException) {
 
 /**
  * CONSTRUCTOR: Region - Represents a region.
- * @param {Boolean} `optResumeOnException` if this parameter is undefined, it will be false.
+ * @param {Boolean} `optResumeOnException` if true, the test execution won't stop on an occurring error. Default: false.
  * @param {String} `imageName` name of the image pattern
  */
 function RegionImage(imageName, optResumeOnException) {
@@ -51,11 +51,11 @@ function RegionImage(imageName, optResumeOnException) {
 
 /**
  * CONSTRUCTOR: Region - Represents a region.
- * @param {Boolean} `optResumeOnException` if this parameter is undefined, it will be false.
- * @param {Integer} `x` – x position of a rectangle.
- * @param {Integer} `y` – y position of a rectangle.
- * @param {Integer} `w` – height of a rectangle.
- * @param {Integer} `h` – width of a rectangle.
+ * @param {Boolean} `optResumeOnException` if true, the test execution won't stop on an occurring error. Default: false.
+ * @param {Integer} `x` – x position of a rectangle on the screen.
+ * @param {Integer} `y` – y position of a rectangle on the screen.
+ * @param {Integer} `w` – width of a rectangle.
+ * @param {Integer} `h` – height of a rectangle.
  */
 function RegionRectangle(x, y, w, h, optResumeOnException) {
     if (undefined == optResumeOnException) {

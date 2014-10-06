@@ -41,8 +41,8 @@ public class Region implements Action {
     }
 
     /**
-     * Creates a Region object with underlying pattern.
-     * This pattern will be used then internal for the find functions an so on.
+     * Creates a Region object with underlying pattern. This pattern will be used then internal for the find functions
+     * an so on.
      */
     public Region(String imageName, boolean resumeOnException, ScreenActionLoader loader) {
         this.regionImpl = new RegionImpl(imageName, resumeOnException, loader);
@@ -50,7 +50,7 @@ public class Region implements Action {
     }
 
     /**
-     * Creates a new Region from the position paramters
+     * Creates a new Region from the position parameters
      */
     public Region(int x, int y, int w, int h, boolean resumeOnException, ScreenActionLoader loader) {
         this.regionImpl = new RegionImpl(x, y, w, h, resumeOnException, loader);
@@ -197,13 +197,13 @@ public class Region implements Action {
      ***************************/
 
     /**
-     * Blocks and waits until a target which is specified by the optImageName is found in the hole
-     * {@link Screen} within a given time period in seconds.
+     * Blocks and waits until a target which is specified by the optImageName is found in the hole {@link Screen} within
+     * a given time period in seconds.
      *
      * @param imageName name of the image pattern
      * @param seconds   the maximum time to waitFor in seconds
-     * @return a {@link Region} object representing the region occupied by the found target,
-     * or null if the target can not be found within the given time.
+     * @return a {@link Region} object representing the region occupied by the found target, or null if the target can
+     * not be found within the given time.
      */
     @LogToResult(message = "wait for image for x seconds")
     public Region waitForImage(String imageName, int seconds) {
@@ -214,8 +214,8 @@ public class Region implements Action {
      * same function as {@link #waitForImage(String, int)}, just waiting for the predefined pattern.
      *
      * @param seconds the maximum time to waitFor in seconds
-     * @return a {@link Region} object representing the region occupied by the found target,
-     * or null if the target can not be found within the given time.
+     * @return a {@link Region} object representing the region occupied by the found target, or null if the target can
+     * not be found within the given time.
      */
     @LogToResult(message = "wait for this region for x seconds")
     public Region waitFor(int seconds) {
@@ -357,9 +357,9 @@ public class Region implements Action {
 
 
     /**
-     * Set a offset to a specific {@link Region} and returns the new {@link Region} object.
-     * The offset function will move the Region's rectangle with x to the right and with y to the left.
-     * The size of the rectangle will be the same.
+     * Set a offset to a specific {@link Region} and returns the new {@link Region} object. The offset function will
+     * move the Region's rectangle with x to the right and with y to the left. The size of the rectangle will be the
+     * same.
      *
      * @param offsetX x-value for the offset action
      * @param offsetY y-value for the offset action
@@ -394,8 +394,8 @@ public class Region implements Action {
     }
 
     /**
-     * @return a new {@link Region} that is defined above the current region’s top border
-     * with a height of range number of pixels.
+     * @return a new {@link Region} that is defined above the current region’s top border with a height of range number
+     * of pixels.
      */
     @LogToResult()
     public Region above(int range) {
@@ -403,8 +403,8 @@ public class Region implements Action {
     }
 
     /**
-     * @return a new {@link Region} that is defined below the current region’s top border
-     * with a height of range number of pixels.
+     * @return a new {@link Region} that is defined below the current region’s top border with a height of range number
+     * of pixels.
      */
     @LogToResult()
     public Region below(int range) {
@@ -412,8 +412,8 @@ public class Region implements Action {
     }
 
     /**
-     * @return a new {@link Region} that is defined on the left the current region’s top border
-     * with a height of range number of pixels.
+     * @return a new {@link Region} that is defined on the left the current region’s top border with a height of range
+     * number of pixels.
      */
     @LogToResult()
     public Region left(int range) {
@@ -422,14 +422,21 @@ public class Region implements Action {
 
 
     /**
-     * @return a new {@link Region} that is defined on the right the current region’s top border
-     * with a height of range number of pixels.
+     * @return a new {@link Region} that is defined on the right the current region’s top border with a height of range
+     * number of pixels.
      */
     @LogToResult()
     public Region right(int range) {
         return update(regionImpl.right(range));
     }
 
+    /**
+     * @return height as int value
+     */
+    @LogToResult
+    public int getH() {
+        return regionImpl.getH();
+    }
 
     /**
      * set the height, based form the upper left corner downsides
@@ -441,11 +448,11 @@ public class Region implements Action {
     }
 
     /**
-     * @return height as int value
+     * @return width as int value
      */
     @LogToResult
-    public int getH() {
-        return regionImpl.getH();
+    public int getW() {
+        return regionImpl.getW();
     }
 
     /**
@@ -458,13 +465,12 @@ public class Region implements Action {
     }
 
     /**
-     * @return width as int value
+     * @return X coordinate of the upper left corner
      */
     @LogToResult
-    public int getW() {
-        return regionImpl.getW();
+    public int getX() {
+        return regionImpl.getX();
     }
-
 
     /**
      * set the X coordinate of the upper left corner.
@@ -476,13 +482,12 @@ public class Region implements Action {
     }
 
     /**
-     * @return X coordinate of the upper left corner
+     * @return Y coordinate of the upper left corner
      */
     @LogToResult
-    public int getX() {
-        return regionImpl.getX();
+    public int getY() {
+        return regionImpl.getY();
     }
-
 
     /**
      * set the Y coordinate of the upper left corner.
@@ -491,14 +496,6 @@ public class Region implements Action {
     public Region setY(int y) {
         this.regionImpl.setY(y);
         return this;
-    }
-
-    /**
-     * @return Y coordinate of the upper left corner
-     */
-    @LogToResult
-    public int getY() {
-        return regionImpl.getY();
     }
 
     /**
@@ -528,9 +525,7 @@ public class Region implements Action {
     }
 
     /**
-     * *********************
-     * INTERNAL FUNCTIONS
-     * ********************
+     * ********************* INTERNAL FUNCTIONS ********************
      */
 
     @Override

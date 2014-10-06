@@ -29,16 +29,16 @@
     </parent>
 
     <groupId>de.consol.sakuli.root</groupId>
-    <artifactId>integration-test</artifactId>
+    <artifactId>java-dsl</artifactId>
     <version>0.4.7-SNAPSHOT</version>
-    <name>integration-test</name>
-    <description>integration test modul for sakuli</description>
+    <name>Java DSL</name>
+    <description>Specific Java-DSL for using Sakuli directly over Java</description>
 
     <packaging>jar</packaging>
     <properties>
         <sakuli.home>${project.parent.basedir}</sakuli.home>
-        <test.included.groups>${test.group.integration}</test.included.groups>
-        <test.excluded.groups>${test.group.unit},${test.group.ui}</test.excluded.groups>
+        <test.excluded.groups>${test.group.unit},${test.group.sakuli}</test.excluded.groups>
+        <test.included.groups/>
     </properties>
 
     <build>
@@ -60,31 +60,28 @@
                             </includes>
                             <groups>${test.included.groups}</groups>
                             <excludedGroups>${test.excluded.groups}</excludedGroups>
-                            <!-- override the sahi.proxy.homePath property-->
-                            <argLine>-Dsahi.proxy.homePath=${sakuli.home}/sahi</argLine>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <includeEmptyDirs>true</includeEmptyDirs>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 
     <profiles>
         <profile>
             <id>ui-tests</id>
             <!-- Config that the example sakuli tests are skipped -->
             <properties>
-                <test.included.groups>${test.group.integration},${test.group.ui}</test.included.groups>
+                <test.included.groups>${test.group.sakuli}</test.included.groups>
                 <test.excluded.groups>${test.group.unit}</test.excluded.groups>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>release-build</id>
-            <properties>
-                <!--go back to root folder ignore 'target/checkout' -->
-                <sakuli.home>${project.parent.basedir}/../..</sakuli.home>
             </properties>
         </profile>
     </profiles>
@@ -96,13 +93,5 @@
             <version>${project.parent.version}</version>
         </dependency>
 
-        <!-- JAVA FX - unfortunately only over this way possible yet -->
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>javafx</artifactId>
-            <version>2.2</version>
-            <systemPath>${java.home}/lib/jfxrt.jar</systemPath>
-            <scope>system</scope>
-        </dependency>
     </dependencies>
 </project>

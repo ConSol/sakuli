@@ -45,6 +45,7 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     private Path testSuiteFile;
     private int dbJobPrimaryKey = -1;
     private Map<String, TestCase> testCases;
+    private boolean uiTest = false;
 
     public TestSuite() {
     }
@@ -152,12 +153,12 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         return testSuiteFile == null ? null : testSuiteFile.toAbsolutePath().toString();
     }
 
-    public void setTestSuiteFolder(Path testSuiteFolder) {
-        this.testSuiteFolder = testSuiteFolder;
-    }
-
     public Path getTestSuiteFolder() {
         return testSuiteFolder;
+    }
+
+    public void setTestSuiteFolder(Path testSuiteFolder) {
+        this.testSuiteFolder = testSuiteFolder;
     }
 
     public String getBrowserName() {
@@ -266,5 +267,13 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
             return new TreeSet<>(testCases.values());
         }
         return new TreeSet<>();
+    }
+
+    public boolean isUiTest() {
+        return uiTest;
+    }
+
+    public void setUiTest(boolean uiTest) {
+        this.uiTest = uiTest;
     }
 }

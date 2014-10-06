@@ -41,6 +41,7 @@ import org.testng.annotations.Test;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -204,5 +205,16 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         ex.setScreenshot(null);
         ex.addSuppressed(new SakuliExceptionWithScreenshot(testExcMessage, expectedScreenShotFolder2));
         assertEquals(SakuliExceptionHandler.getScreenshotFile(ex), expectedScreenShotFolder2);
+    }
+
+    @Test
+    public void testGetAllExceptions() throws Exception {
+        TestSuite ts = new TestSuite();
+        ts.addException(new SakuliException("bla"));
+        TestCase tc = new TestCase(null, null);
+        tc.addException(new SakuliException("bla2"));
+        ts.addTestCase(tc);
+        List<Throwable> allExceptions = SakuliExceptionHandler.getAllExceptions(ts);
+        assertEquals(allExceptions.size(), 2);
     }
 }

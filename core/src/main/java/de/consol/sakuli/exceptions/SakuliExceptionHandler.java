@@ -34,10 +34,11 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @author tschneck
- *         Date: 12.07.13
+ * @author tschneck Date: 12.07.13
  */
 @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
 @Component
@@ -68,6 +69,25 @@ public class SakuliExceptionHandler {
         } else {
             return null;
         }
+    }
+
+    /**
+     * @return all exceptions from the test suite and there underlying test cases.
+     */
+    public static List<Throwable> getAllExceptions(TestSuite testSuite) {
+        List<Throwable> result = new ArrayList<>();
+        if (testSuite.getException() != null) {
+            result.add(testSuite.getException());
+        }
+        if (testSuite.getTestCases() != null) {
+            for (TestCase tc : testSuite.getTestCases().values()) {
+                if (tc.getException() != null) {
+                    result.add(tc.getException());
+                }
+            }
+        }
+
+        return result;
     }
 
     private static String format(String message) {
@@ -101,8 +121,8 @@ public class SakuliExceptionHandler {
     }
 
     /**
-     * handleException methode for Eception, where no testcase could be identified;
-     * The default value for non {@link SakuliException} is there that the Execution of the tescase will stop!
+     * handleException methode for Eception, where no testcase could be identified; The default value for non {@link
+     * SakuliException} is there that the Execution of the tescase will stop!
      *
      * @param e any Throwable
      */
@@ -158,8 +178,8 @@ public class SakuliExceptionHandler {
     }
 
     /**
-     * save the exception to the current testcase.
-     * If the current testcase is not reachale, then the exception will be saved to the test suite.
+     * save the exception to the current testcase. If the current testcase is not reachale, then the exception will be
+     * saved to the test suite.
      *
      * @param e any {@link SakuliException}
      */
@@ -188,7 +208,8 @@ public class SakuliExceptionHandler {
     }
 
     /**
-     * stops the execution of the current test case and add the exception to the sahi report (HTML Report in the log folder).
+     * stops the execution of the current test case and add the exception to the sahi report (HTML Report in the log
+     * folder).
      *
      * @param e any {@link SakuliException}
      */
@@ -204,8 +225,8 @@ public class SakuliExceptionHandler {
 
 
     /**
-     * transforms any {@link Throwable} to SakuliException.
-     * If the property 'sakuli.takeScreenShots.onErrors=true' is set, the methods add a Screenshot.
+     * transforms any {@link Throwable} to SakuliException. If the property 'sakuli.takeScreenShots.onErrors=true' is
+     * set, the methods add a Screenshot.
      *
      * @param e a {@link Throwable}
      * @return <EX>  {@link SakuliException} or any child.

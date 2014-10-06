@@ -28,8 +28,8 @@ import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.loader.BeanLoader;
-import de.consol.sakuli.services.InitializingService;
-import de.consol.sakuli.services.ResultService;
+import de.consol.sakuli.services.InitializingServiceHelper;
+import de.consol.sakuli.services.ResultServiceHelper;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.apache.commons.cli.*;
 import org.apache.commons.lang.StringUtils;
@@ -40,16 +40,14 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 
 public class SakuliStarter {
 
 
     /**
-     * The Sakuli-Starter executes a specific sakuli-testsuite.
-     * A test suite has to contain as minimum following files:
-     * - testsuite.suite  => specifies the testcases
-     * - testsuite.properties  => specifies the runtime settings like the browser for the test suite.
+     * The Sakuli-Starter executes a specific sakuli-testsuite. A test suite has to contain as minimum following files:
+     * - testsuite.suite  => specifies the testcases - testsuite.properties  => specifies the runtime settings like the
+     * browser for the test suite.
      *
      * @param args relative or absolute path to the folder of your test suite
      */
@@ -105,18 +103,17 @@ public class SakuliStarter {
     }
 
     /**
-     * wrapper for {@link #runTestSuite(String, String, String)} with usage of the default sahi-proxy configured
-     * in the 'sakuli.properties'.
+     * wrapper for {@link #runTestSuite(String, String, String)} with usage of the default sahi-proxy configured in the
+     * 'sakuli.properties'.
      */
     public static TestSuite runTestSuite(String testSuiteFolderPath, String includeFolderPath) throws FileNotFoundException {
         return runTestSuite(testSuiteFolderPath, includeFolderPath, null);
     }
 
     /**
-     * Executes a specific Sakuli test suite in the assigend 'testSuiteFolder'.
-     * A test suite has to contain as minimum following files:
-     * - testsuite.suite  => specifies the testcases
-     * - testsuite.properties  => specifies the runtime settings like the browser for the test suite.
+     * Executes a specific Sakuli test suite in the assigend 'testSuiteFolder'. A test suite has to contain as minimum
+     * following files: - testsuite.suite  => specifies the testcases - testsuite.properties  => specifies the runtime
+     * settings like the browser for the test suite.
      *
      * @param testSuiteFolderPath path to the Sakuli test suite
      * @param includeFolderPath   import folder of the 'sakuli.properties' and 'sakuli.js' files
@@ -142,12 +139,8 @@ public class SakuliStarter {
         Logger logger = LoggerFactory.getLogger(SakuliStarter.class);
         logger.debug(tempLogCache);
 
-        // Init the test suite data for all available InitializingServices
-        Map<String, InitializingService> initializingServices = BeanLoader.loadMultipleBeans(InitializingService.class);
-        for (InitializingService initializingService : initializingServices.values()) {
-            initializingService.initTestSuite();
-        }
-
+        //Call init services
+        InitializingServiceHelper.invokeInitializingServcies();
         TestSuite result = BeanLoader.loadBean(TestSuite.class);
         /***
          * SAKULI Starter to run the test suite with embedded sahi proxy
@@ -165,12 +158,7 @@ public class SakuliStarter {
             e.printStackTrace();
             System.exit(99);
         } finally {
-            //save results for all active result services
-            Map<String, ResultService> resultServices = BeanLoader.loadMultipleBeans(ResultService.class);
-            for (ResultService resultService : resultServices.values()) {
-                resultService.refreshStates();
-                resultService.saveAllResults();
-            }
+            ResultServiceHelper.invokeResultServices();
 
             //finally shutdown context and return the result
             result = BeanLoader.loadBean(TestSuite.class);
@@ -198,12 +186,9 @@ public class SakuliStarter {
 
 
     /**
-     * Validates the path to the test suite folder and ensure that it contains the files:
-     * <ul>
-     * <li>testsuite.properties</li>
-     * <li>testsuite.suite</li>
-     * </ul>
-     * After all checks were succefull,the values will be set to the {@link SakuliPropertyPlaceholderConfigurer}.
+     * Validates the path to the test suite folder and ensure that it contains the files: <ul>
+     * <li>testsuite.properties</li> <li>testsuite.suite</li> </ul> After all checks were succefull,the values will be
+     * set to the {@link SakuliPropertyPlaceholderConfigurer}.
      *
      * @param testSuiteFolderPath path to test suite folder
      * @param tempLogCache        temporary string for later logging
