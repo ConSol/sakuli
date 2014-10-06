@@ -71,7 +71,7 @@ try {
     _highlight(_link($cl_projekte));
     _click(_link($cl_projekte));
     env.sleep(5);
-    env.takeScreenshot("C:\\sakuli\\testscreenshot.png");
+    env.takeScreenshot("testscreenshot.png");    //will be saved in the test suite folder
     _highlight(_link($cl_c_mysql_h));
     _click(_link($cl_c_mysql_h));
     _highlight(_link($cl_c_oracle_h));
