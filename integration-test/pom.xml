@@ -72,6 +72,9 @@
 
     <profiles>
         <profile>
+            <activation>
+              <activeByDefault>true</activeByDefault>
+            </activation>
             <id>no-ui-tests</id>
             <!-- Config that UI-Test test are skipped -->
             <properties>
