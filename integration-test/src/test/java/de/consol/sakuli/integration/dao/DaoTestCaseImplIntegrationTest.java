@@ -24,10 +24,13 @@ import de.consol.sakuli.services.receiver.database.dao.impl.DaoTestCaseImpl;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static de.consol.sakuli.integration.IntegrationTest.GROUP;
+
 /**
  * @author tschneck
  *         Date: 25.07.13
  */
+@Test(groups = GROUP)
 public class DaoTestCaseImplIntegrationTest extends DaoIntegrationTest<DaoTestCaseImpl> {
 
 

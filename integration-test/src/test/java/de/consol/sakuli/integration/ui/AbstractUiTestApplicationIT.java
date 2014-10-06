@@ -51,7 +51,7 @@ import static org.mockito.Mockito.when;
  * @author tschneck
  *         Date: 08.05.2014
  */
-@Test(groups = {IntegrationTest.GROUP, IntegrationTest.GROUP_UI})
+@Test(groups = IntegrationTest.GROUP_UI)
 public abstract class AbstractUiTestApplicationIT implements IntegrationTest {
 
     private static final String TEST_CONTEXT_PATH = "ui-beanRefFactory.xml";

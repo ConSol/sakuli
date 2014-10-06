@@ -27,12 +27,14 @@ import org.testng.annotations.Test;
 
 import java.util.Date;
 
+import static de.consol.sakuli.integration.IntegrationTest.GROUP;
 import static org.mockito.Mockito.when;
 
 /**
  * @author tschneck
  *         Date: 25.07.13
  */
+@Test(groups = GROUP)
 public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestSuiteImpl> {
 
     @Override

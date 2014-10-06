@@ -36,7 +36,7 @@ import static org.testng.Assert.assertTrue;
  * @author tschneck
  *         Date: 09.04.14
  */
-@Test(groups = IntegrationTest.GROUP)
+@Test(groups = IntegrationTest.GROUP_UI)
 public class ClickActionIT extends AbstractUiTestApplicationIT {
 
     @Override
