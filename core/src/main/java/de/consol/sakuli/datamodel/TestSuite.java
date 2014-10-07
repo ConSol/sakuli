@@ -34,7 +34,7 @@ import java.util.*;
  * @author tschneck Date: 10.06.13
  */
 @Component
-public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteState> {
+public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuiteState> {
 
     //browser name where to start the test execution
     private String browserName;
@@ -233,15 +233,6 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
      */
     public boolean checkTestCaseID(String testCaseID) {
         return testCaseID != null && this.getTestCases() != null && this.getTestCases().containsKey(testCaseID);
-    }
-
-    public TestCase getTestCaseByDBKey(int primaryKeyOfTestCase) {
-        for (TestCase testCase : testCases.values()) {
-            if (testCase.getDbPrimaryKey() == primaryKeyOfTestCase) {
-                return testCase;
-            }
-        }
-        return null;
     }
 
     @Override

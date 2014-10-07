@@ -27,18 +27,17 @@ import java.nio.file.Path;
 import java.util.*;
 
 /**
- * @author tschneck
- *         Date: 17.06.13
+ * @author tschneck Date: 17.06.13
  */
-public class TestCase extends AbstractSakuliTest<SakuliException, TestCaseState> {
+public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseState> {
 
     /**
-     * {@link #id} and {@link # startUrl}
-     * will be set with the method {@link de.consol.sakuli.starter.SahiConnector#init()}
+     * {@link #id} and {@link # startUrl} will be set with the method {@link de.consol.sakuli.starter.SahiConnector#init()}
      */
     private String startUrl;
     /**
-     * will be set with the method {@link de.consol.sakuli.actions.TestCaseAction#saveResult(String, String, String, String, String)}
+     * will be set with the method {@link de.consol.sakuli.actions.TestCaseAction#saveResult(String, String, String,
+     * String, String)}
      */
     private String lastURL;
     private List<TestCaseStep> steps;
