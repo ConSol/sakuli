@@ -28,7 +28,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>de.consol.sakuli.root</groupId>
     <artifactId>core</artifactId>
     <version>0.4.7-SNAPSHOT</version>
     <name>core</name>
