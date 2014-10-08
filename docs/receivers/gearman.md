@@ -1,64 +1,132 @@
-# Configuration of the Gearman Receiver
-This Receiver will be used for an __direct communication__ with an gearman daemon aware Nagios installation.
-The technique behind this is to sent the results of a finished Sakuli test packed as an gearman message to the configured
-gearman queue. Afterwards the nagios server will interpret the message and add the results to the corresponding
-Nagios service check. The configured `testsuite.id` in the `testsuite.properties` file, will be used as __service name__.
+# Gearman Receiver
+This page describes how Sakuli can be configured to transmit its test results directly into the *Gearman queue* of the monitoring system. 
+
+![sakuli-db-receiver](../pics/sakuli-gearman.png)
+
+FIXME Nagios service check. The configured `testsuite.id` in the `testsuite.properties` file, will be used as __service name__.
 The results (ok and not ok results) will be available in the __"Status Information"__ of the service check.  
 
-To enable the gearman receiver on the ___Sakuli client___ and on the ___Nagios server___ side
-please follow the bellow configuration guide.
- 
-## Configure the `sakuli.properties` file
-### Enable the gearman receiver and configure the gearman connection
- 
-  ```
-  ##### GEARMAN - RECEIVER
-  # DEFAULT: false
-  sakuli.receiver.gearman.enabled=true
-  ## gearman connection settings
-  sakuli.receiver.gearman.server.host=gearman-server-host
-  sakuli.receiver.gearman.server.port=4730
-  sakuli.receiver.gearman.server.queue=check_results
-  ```
+## OMD Configuration
 
-### Set the nagios __host name__ and the __check_command__ to add the results to corresponding nagios environment
+### Enable the site's mod-gearman server
 
-  ```
-  ## settings for the nagios check
-  #sakuli.receiver.gearman.nagios.hostname=sakuli-test-client
-  #sakuli.receiver.gearman.nagios.check_command=check_sakuli_db_suite
-  ```
+Stop the OMD site:
 
-### (Optional) Customize your nagios output message templates 
-The result of a Sakuli test will be printed out in the __"Status Information"__ of the corresponding service check as a
-small overview HTML table with the most important information in it. Therefore you configure the bellow mentioned message properties:
+	OMD[sakuli]:~$ omd stop
+
+Start the OMD configuration menu
+
+	OMD[sakuli]:~$ omd config
+	
+Select *Distributed Monitoring* and
+
+* *-> MOD_GEARMAN -> ON* 
+* *-> GEARMAND_PORT -> [IP of OMD]:[4730 / or choose any other free port]* 
+* *-> GEARMAN_WORKER -> OFF*
+
+Unless you make already use of mod-gearman (and *only* then), the following settings should be set in *~/etc/mod-gearman/server.cfg*: 
+
+	eventhandler=no
+	services=no
+	hosts=no
+	do_hostchecks=no
+	encryption=yes FIXME
+	
+FIXME encryption
+
+	  
+#### Nagios service
+
+FIXME Create a check_command, which will be executed only if Nagios did not receive a Sakuli result within the last 30 minutes. This ensures that you get a notification even if no passive check results arrive in Nagios at all:   
+
+	vim ~/etc/nagios/conf.d/commands.cfg
+	
+	define command {
+	  command_name                   check_dummy
+	  command_line                   $USER1$/check_dummy $ARG1$ $ARG2$
+	}
+
+
+Create a host object for the host on which Sakuli checks will be executed: 
+
+	vim ~/etc/nagios/conf.d/hosts.cfg
+	
+	define host {
+	  host_name                      win7sakuli
+	  alias                          Windows 7 Sakuli
+	  address                        [IP]
+	  use                            generic-host
+	}
+
+Create the following service object for the first test case: 
+
+	vim ~/etc/nagios/conf.d/services.cfg
+	
+	define service {
+	  service_description            sakuli_demo
+	  host_name                      win7sakuli
+	  use                            generic-service,srv-pnp
+	  active_checks_enabled          0
+	  check_command                  check_dummy!3!'Did not receive any Sakuli result within 30 minutes.'
+	  check_freshness                1
+	  freshness_threshold            1800
+	  passive_checks_enabled         1
+	}
+	
+Reload OMD:
+
+	omd reload
+	
+Now open Thruk; you should see now the Sakuli host with one service attached: 
+
+![omd_pending2](../pics/omd-pending2.png)
+
+The check is waiting now for check results from Sakuli clients. 
+
+
+
+
+
+## Sakuli Configuration
+Open `%SAKULI_HOME\_include\sakuli.properties` on the Sakuli client: 
+
+### Gearman parameters
+
+	sakuli.receiver.gearman.enabled=true
+	sakuli.receiver.gearman.server.host=[IPofOMD]
+	sakuli.receiver.gearman.server.port=[Gearman Port defined in "omd config"]
+	sakuli.receiver.gearman.server.queue=check_results
+	
+	# Nagios check settings
+	# default nagios host_name (can be overwritten in testsuite.properties) 
+	sakuli.receiver.gearman.nagios.hostname=win7sakuli
+	# gets appended to the performance data in order to set the name of PNP4nagios template
+	sakuli.receiver.gearman.nagios.check_command=check_sakuli
+	
+### (Optional) Customize nagios output message templates 
+
+ Check results submitted via gearman are built upon the following macros: 
+
+	suite.summary 							-> status summary of the test suite
+	<HTML table> 
+	 |- suite.table 						-> status summary (short) of the test suite
+	 |- case.(ok|warning|critical|error) 	-> status summary of case 1
+	 |- case.(ok|warning|critical|error) 	-> status summary of case 2
+	 |- case.(ok|warning|critical|error) 	-> status summary of case n
+	</HTML table>
+
+Each of the six macros above is set by default to the following: 
+
+	#sakuli.receiver.gearman.nagios.output.suite.summary= {{state}} - {{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})
+	#sakuli.receiver.gearman.nagios.output.suite.table={{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})
+	#sakuli.receiver.gearman.nagios.output.case.ok={{state_short}} case "{{id}}" ran in {{duration}}s - {{state_description}}
+	#sakuli.receiver.gearman.nagios.output.case.warning={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{warning_threshold}}s) {{step_information}}
+	#sakuli.receiver.gearman.nagios.output.case.critical={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{critical_threshold}}s) {{step_information}}
+	#sakuli.receiver.gearman.nagios.output.case.error={{state_short}} case "{{id}}" {{state_description}}: {{error_message}}
+
  
-  ```
- sakuli.receiver.gearman.nagios.output.suite.summary= {{state}} - {{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})
- sakuli.receiver.gearman.nagios.output.suite.table={{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}}){{error_screenshot}}
- sakuli.receiver.gearman.nagios.output.case.ok={{state_short}} case "{{id}}" ran in {{duration}}s - {{state_description}}
- sakuli.receiver.gearman.nagios.output.case.warning={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{warning_threshold}}s) {{step_information}}
- sakuli.receiver.gearman.nagios.output.case.critical={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{critical_threshold}}s) {{step_information}}
- sakuli.receiver.gearman.nagios.output.case.error={{state_short}} case "{{id}}" {{state_description}}: {{error_message}}{{error_screenshot}}
- #
- ## configure the appearance of the gearman output
- sakuli.receiver.gearman.nagios.output.screenshotDivWidth=640px
- ```
- 
-The HTML table in status information field will be generated after following structure:
- 
- ```
- sakuli.receiver.gearman.nagios.output.suite.summary <->  complete status summary for the hole suite
- 
- HTML-Table:
- |- sakuli.receiver.gearman.nagios.output.suite.table <-> short state description of the suite
- |
- |--- sakuli.receiver.gearman.nagios.output.case.ok || .case.warning || .case.critical || .case.error
-      <-> 
-      status info for each case in dependency of his state (ok, warning, critical, error)
- ```
- 
-To customize these messages you can use a set of placeholders with the pattern `{{placeholder_name}}`. The placeholders will be filled with current information of the Sakuli test suite execution. If any of the infromation is not available the value will be an empty String. The following placeholders are currently usable:
+To change the text of one or more macro, you can use variables in the format `{{variable_name}}`. In this way, Sakuli notifications can be formatted as flexible as possible. Notice that not every variable gets filled in every situation; if not, they are empty. The following variables are available:
+
 * __scope based placeholders__  -  will be filled with the information from the test suite or from the case in dependency of the message type:
     * `{{state}}` state in uppercase like __OK__ or __WARNING__   
     * `{{state_short}}` short marker for the state like __[OK]__ or __[WARN]__  
@@ -83,7 +151,3 @@ To customize these messages you can use a set of placeholders with the pattern `
     * `{{case_last_URL}}` URL of the last visited website at the case 
     * `{{step_information}}` information about the executed steps with warnings (steps inside of there warning threshold, won't be added) 
 
-## Configure the nagios server
-TODO Simon
-### Install the sakuli plugin
-### Add an passive service check for each test suite

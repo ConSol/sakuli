@@ -23,8 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * @author tschneck
- *         Date: 10.07.14
+ * @author tschneck Date: 10.07.14
  */
 @ProfileGearman
 @Component
@@ -184,14 +183,14 @@ public class GearmanProperties {
     }
 
     public String lookUpOutputString(TestCaseState state) {
-        if (state.isOk()) {
+        if (state == null || state.isError()) {
+            return outputCaseError;
+        } else if (state.isOk()) {
             return outputCaseOk;
         } else if (state.isWarning()) {
             return outputCaseWarning;
         } else if (state.isCritical()) {
             return outputCaseCritical;
-        } else if (state.isError()) {
-            return outputCaseError;
         }
         return null;
     }

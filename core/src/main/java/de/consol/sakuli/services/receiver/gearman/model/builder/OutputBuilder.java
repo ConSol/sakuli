@@ -22,6 +22,7 @@ import de.consol.sakuli.datamodel.Builder;
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestCaseStep;
 import de.consol.sakuli.datamodel.TestSuite;
+import de.consol.sakuli.datamodel.state.TestCaseState;
 import de.consol.sakuli.datamodel.state.TestCaseStepState;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.services.receiver.gearman.GearmanProperties;
@@ -45,8 +46,7 @@ import java.util.SortedSet;
 import static de.consol.sakuli.services.receiver.gearman.TextPlaceholder.*;
 
 /**
- * @author tschneck
- *         Date: 11.07.14
+ * @author tschneck Date: 11.07.14
  */
 @ProfileGearman
 @Component
@@ -86,7 +86,8 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     }
 
     /**
-     * Add to the assigned 'performanceData' a new data set in respect of the template {@link #PERFORMANCE_DATA_TEMPLATE}.
+     * Add to the assigned 'performanceData' a new data set in respect of the template {@link
+     * #PERFORMANCE_DATA_TEMPLATE}.
      */
     public static String addPerformanceDataRow(String performanceData, String name, String value, String warning, String critical) {
         performanceData = (performanceData == null) ? "" : performanceData;
@@ -100,7 +101,8 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     }
 
     /**
-     * Small wrapper for non overview data for the {@link #addPerformanceDataRow(String, String, String, String, String)}
+     * Small wrapper for non overview data for the {@link #addPerformanceDataRow(String, String, String, String,
+     * String)}
      */
     public static String addPerformanceDataRow(String performanceData, String name, float duration, int warningTime, int criticalTime) {
         String warningTimeString = (warningTime == 0) ? "" : String.valueOf(warningTime);
@@ -168,10 +170,10 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         StringBuilder sb = new StringBuilder();
         sb.append(outputState.name())
                 .append(" - ")
-                .append(formatTestSuiteSummaryStateMessage(testSuite, properties))
+                .append(StringUtils.remove(formatTestSuiteSummaryStateMessage(testSuite, properties), "\n"))
                 .append(NagiosOutput.DETAILS_SEPARATOR)
                 .append(TABLE_HEADER)
-                .append(formatTestSuiteTableStateMessage(testSuite, properties));
+                .append(StringUtils.remove(formatTestSuiteTableStateMessage(testSuite, properties), "\n"));
 
         for (TestCase tc : testSuite.getTestCasesAsSortedSet()) {
             sb.append(formatTestCaseTableStateMessage(tc, properties));
@@ -209,9 +211,12 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         PlaceholderMap placeholderMap = new PlaceholderMap();
         OutputState outputState = OutputState.lookupSakuliState(testCase.getState());
         ScreenshotDiv screenshotDiv = screenshotDivConverter.convert(testCase.getException());
+        screenshotDiv = null; // TODO TS remove when finally tested!
         placeholderMap.put(STATE, outputState.name());
         placeholderMap.put(STATE_SHORT, outputState.getShortState());
-        placeholderMap.put(STATE_DESC, testCase.getState().getNagiosStateDescription());
+        placeholderMap.put(STATE_DESC, (testCase.getState() == null)
+                ? TestCaseState.ERRORS.getNagiosStateDescription()
+                : testCase.getState().getNagiosStateDescription());
         placeholderMap.put(NAME, testCase.getName());
         placeholderMap.put(ID, testCase.getId());
         placeholderMap.put(DURATION, String.format(Locale.ENGLISH, "%.2f", testCase.getDuration()));
@@ -254,6 +259,7 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         PlaceholderMap placeholderMap = new PlaceholderMap();
         OutputState outputState = OutputState.lookupSakuliState(testSuite.getState());
         ScreenshotDiv screenshotDiv = screenshotDivConverter.convert(testSuite.getException());
+        screenshotDiv = null; // TODO TS remove when finally tested!
         placeholderMap.put(STATE, outputState.name());
         placeholderMap.put(STATE_SHORT, outputState.getShortState());
         placeholderMap.put(STATE_DESC, testSuite.getState().getNagiosStateDescription());
