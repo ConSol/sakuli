@@ -133,3 +133,4 @@ of the sahi proxy so that the keyboard interaction won't be in conflict with som
  #
  sahi.proxy.requestDelayOnSikuliInput.delayTime=500
  ```
+=======

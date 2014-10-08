@@ -4,30 +4,31 @@ You probably came from the page "Introduction" - if not, and if you are nor sure
 ## Prerequisites
 The following installation manual assumes that...
 
-* you have a fresh installed Windows 7 (no matter if Home/Professional/whatever) machine in front of you. 
-* all OS updates are installed
+* you have a fresh installed Windows 7 (Home/Professional/whatever) machine in front of you. 
+* all OS updates and drivers are installed
 * this machine has access to the internet
 * the local firewall is disabled
-* there is a user account "sakuli" with admin rights
+* there is a user account (e.g. "sakuli") with admin rights; if possible, disable any mechanism which can lock the account after x false login attempts. 
+* for best results, there is no service/application running which could show dialogues which could disturbe e2e checks (e.g. messages indicating a scheduled antivirus scan, custom software installation procedures, ...)
 * you have finished the [OMD Preparation](installation-omd.md) instructions
 
 We recommend to run Sakuli clients on virtual machines, as they are easy to manage. 
 
 ## Preparations
-The steps in [Sakuli Client Troubleshooting ("How to make tests more reliable")](./docs/troubleshooting-sakuli-client.md) are optional (Sakuli will run even without doing them), but will improve the check quality/reliability. 
+The steps in [Sakuli Client Troubleshooting ("How to make tests more reliable")](troubleshooting-sakuli-client.md) are optional (Sakuli will run even without doing them), but will improve the check quality/reliability. We recommend to do this first and then come back here. 
 
 ## Installation of Sakuli
-This chapter includes the installation of Sakuli (which already has Sikuli on board) as well as the installation of Sahi. 
+This chapter includes the installation of Sakuli (which already has Sikuli on board) as well as the manual installation of Sahi. 
+
 ### Java JRE
 * Install Java7 JRE. (Make sure that you do **not install ASK toolbar**, which is enabled by default!)
 * Modify PATH: 
- * From the desktop, right-click *My Computer* and click *Properties*
- * In *System Properties*, click on *Advanced*
- * Select the `Path` variable in the Systems Variable section and click *Edit*. Add the following line to the very end, apply and reboot: 
-	
-	```
-	%ProgramFiles(x86)%\Java\jre7\bin
-	```
+	* From the desktop, right-click *My Computer* and click *Properties*
+	* In *System Properties*, click on *Advanced*
+	* Select the `Path` variable in the Systems Variable section and click *Edit*. Depending on the "Program Files" folder Java is installid in, add one of the following lines to the very end of the string (including the semicolon), apply and reboot: 
+
+			;C:\Program Files\Java\jre7\bin
+			;C:\Program Files (x86)\Java\jre7\bin
 	
 
 ### Sakuli - Install the sakuli-zipped-release
@@ -41,7 +42,6 @@ This chapter includes the installation of Sakuli (which already has Sikuli on bo
 	* Create a new user variable **%PATH%**: 
 		* Name: `PATH`
 		* Value: `%SAKULI_HOME%\bin\lib\libs`
-* Reboot the machine
 
 
 **Alternative download:** Create a local Sakuli repository by cloning from [https://github.com/ConSol/sakuli/](https://github.com/ConSol/sakuli/).
@@ -57,46 +57,21 @@ Some configuration settings in the file `%SAKULI_HOME%\_include\sakuli.propertie
 #### Receivers
 
 Sakuli can send test result to "Receivers", which can be currently GearmanD servers (such as Nagios monitoring systems with mod-gearman) and JDBC databases. If no receiver is defined, a result summary is printed out in the end of a suite. 
+  
+![sakuli_receivers](../docs/pics/sakuli-receivers.png)
+
+For the configuration of receivers on the OMD server side, see [Receivers in OMD](installation-omd.md#receivers)
 
 Depending on your environment, you probably want to set up on of these two possible receiver types. 
 
-![sakuli_receivers](../docs/pics/sakuli-receivers.png)
+  * [Setting up Sakuli to send results to the Database](receivers/database.md#sakuli-configuration)
+  * [Setting up Sakuli to submit results to the Gearman Receiver](receivers/gearman.md#sakuli-configuration)
 
-##### Database receiver
-Set up your database connection information like:
-
-	jdbc.driverClass=com.mysql.jdbc.Driver
-	# host for the JDBC database
-	jdbc.host=localhost
-	# JDBC-Database port:
-	jdbc.port=3306
-	## name of the database
-	jdbc.database=sahi
-	## database username
-	jdbc.user=sahi
-	## database password
-	jdbc.pw=sahi
-	## pattern for JDBC database connection URL
-	jdbc.url=jdbc:mysql://${jdbc.host}:${jdbc.port}/${jdbc.database}
-
-##### Gearman receiver
-=======
 * Receivers (optional, disabled per default):
 
   To interpret the results of an test execution, it is possible to configure one or more of the following receivers:  
   * [Database Receiver](receivers/database.md)
   * [Gearman Receiver](receivers/gearman.md)
-     
-
-	sakuli.receiver.gearman.enabled=true
-	sakuli.receiver.gearman.server.host=gearman-server-host
-	sakuli.receiver.gearman.server.port=4730
-	sakuli.receiver.gearman.server.queue=check_results
-	sakuli.receiver.gearman.nagios.hostname=sakuli-test-client
-	sakuli.receiver.gearman.nagios.check_command=check_sakuli_db_suite
-	
-	sakuli.receiver.gearman.nagios.output.suite.summary= 
-
 
 #### Company proxy	
 (optional) Configure your company proxy like described under [Sakuli-Manual - Proxy-Settings](sakuli-manual.md#proxy-settings)
