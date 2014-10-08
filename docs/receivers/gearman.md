@@ -1,5 +1,6 @@
 # Gearman Receiver
 This page describes how Sakuli can be configured to transmit its test results directly into the *Gearman queue* of the monitoring system. 
+
 ![sakuli-db-receiver](../pics/sakuli-gearman.png)
 
 FIXME Nagios service check. The configured `testsuite.id` in the `testsuite.properties` file, will be used as __service name__.
