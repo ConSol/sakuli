@@ -239,7 +239,7 @@ public class RhinoAspectTest extends AopBaseTest {
         when(loader.getCurrentTestCase()).thenReturn(sampleTc);
         TestCaseAction testAction = new TestCaseAction();
         ReflectionTestUtils.setField(testAction, "loader", loader, BaseActionLoader.class);
-        testAction.init("testID", 3, 4, null);
+        testAction.init("testID", 3, 4, new String[]{});
 
         assertLastLine(testAction.getClass().getSimpleName(), LogLevel.INFO,
                 "\"test case [" + sampleTc.getActionValueString() + "]\" TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, NULL]");
