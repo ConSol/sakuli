@@ -44,7 +44,8 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String PROXY_PORT = "sahi.proxy.port";
     public static final String MAX_CONNECT_TRIES = "sahi.proxy.maxConnectTries";
     public static final String RECONNECT_SECONDS = "sahi.proxy.reconnectSeconds";
-    public static final String REQUEST_DELAY_MS = "sahi.proxy.requestDelayOnSikuliInput";
+    public static final String REQUEST_DELAY_MS = "sahi.proxy.requestDelayOnSikuliInput.delayTime";
+    public static final String REQUEST_DELAY_REFRESH_MS = "sahi.proxy.requestDelayOnSikuliInput.refreshTime";
     public static final String DEFAULT_PROXY_PORT = "9999";
     public static final String DEFAULT_RECONNECT_SECONDS = "5";
     public static final String DEFAULT_MAX_CONNECT_TRIES = "5";
@@ -114,6 +115,8 @@ public class SahiProxyProperties extends AbstractProperties {
      */
     @Value("${" + REQUEST_DELAY_MS + ":}")
     private Integer requestDelayMs;
+    @Value("${" + REQUEST_DELAY_REFRESH_MS + ":500}")
+    private Integer requestDelayRefreshMs;
     private Path sahiJSInjectConfigFile;
     private Path sahiJSInjectSourceFile;
     private Path sahiJSInjectTargetFile;
@@ -230,5 +233,13 @@ public class SahiProxyProperties extends AbstractProperties {
 
     public boolean isRequestDelayActive() {
         return requestDelayMs != null && requestDelayMs > 0;
+    }
+
+    public Integer getRequestDelayRefreshMs() {
+        return requestDelayRefreshMs;
+    }
+
+    public void setRequestDelayRefreshMs(Integer requestDelayRefreshMs) {
+        this.requestDelayRefreshMs = requestDelayRefreshMs;
     }
 }

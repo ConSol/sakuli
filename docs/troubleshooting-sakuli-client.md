@@ -121,7 +121,7 @@ interaction, that they sometimes won't work as you expect. The reason for this i
 Sahi proxy communicates with your browser over synchronous POST-requests. If you actually hit such a POST-request timeslot,
 it is possible that your Browser engine will lost the key events.
 
-__Solution:__ Set the property `sahi.proxy.requestDelayOnSikuliInput` in your `sakuli.properties` or `testsuite.properties` which modify the request interval 
+__Solution:__ Set the property `sahi.proxy.requestDelayOnSikuliInput.delayTime` in your `sakuli.properties` or `testsuite.properties` which modify the request interval 
 of the sahi proxy so that the keyboard interaction won't be in conflict with some synchronous POST-requests. See:
 
  ```
@@ -131,5 +131,5 @@ of the sahi proxy so that the keyboard interaction won't be in conflict with som
  # testing website. This setting will prevent the test for losing some key or click events
  # in case of blocking, synchronous sahi-interal status requests.
  #
- sahi.proxy.requestDelayOnSikuliInput=500
+ sahi.proxy.requestDelayOnSikuliInput.delayTime=500
  ```

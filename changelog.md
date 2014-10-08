@@ -11,7 +11,10 @@
      # testing website. This setting will prevent the test for losing some key or click events
      # in case of blocking, synchronous sahi-interal state requests.
      #
-     #sahi.proxy.requestDelayOnSikuliInput=500
+     #sahi.proxy.requestDelayOnSikuliInput.delayTime=500
+     #
+     ### refresh time for the sahi proxy to set the delay time
+     #sahi.proxy.requestDelayOnSikuliInput.refreshTime
     ```
 
 
