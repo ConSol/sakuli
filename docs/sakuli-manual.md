@@ -56,8 +56,8 @@ To customize the logging logic for your purpose, there are to two places to conf
     # Log pattern for the logging output.
     #
     # Log pattern for development with java classes:
-    # sakuli.log.pattern=%-5level %d{YYYY-MM-dd HH:mm:ss} [%thread]  %logger{36} - %msg%n
-    sakuli.log.pattern= %-5level [%d{YYYY-MM-dd HH:mm:ss}] - %msg%n
+    # sakuli.log.pattern=%-5level %d{YYYY-MM-dd HH:mm:ss.SSS} [%thread]  %logger{36} - %msg%n
+    sakuli.log.pattern= %-5level [%d{YYYY-MM-dd HH:mm:ss.SSS}] - %msg%n
     
     # Sets the output folder for the log files
     sakuli.log.folder=${sakuli.testsuite.folder}/_logs

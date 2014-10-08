@@ -43,7 +43,6 @@ import org.springframework.stereotype.Component;
 public class ModifySahiTimerAspect extends BaseSakuliAspect {
 
     protected final static Logger logger = LoggerFactory.getLogger(ModifySahiTimerAspect.class);
-    public static final int SAHI_REFRESH_TIME = 500;
 
     /**
      * Before Pointcut for the {@link de.consol.sakuli.actions.environment} class
@@ -102,7 +101,8 @@ public class ModifySahiTimerAspect extends BaseSakuliAspect {
 
                     //short sleep to ensure that browser context can read out the value
                     try {
-                        Thread.sleep(SAHI_REFRESH_TIME);
+                        logger.info("wait {}ms for sahi refresh", sahiProxyProperties.getRequestDelayRefreshMs());
+                        Thread.sleep(sahiProxyProperties.getRequestDelayRefreshMs());
                     } catch (InterruptedException e) {
                         BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(e);
                     }
