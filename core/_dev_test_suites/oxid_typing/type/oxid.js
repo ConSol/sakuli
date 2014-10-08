@@ -32,7 +32,7 @@ try {
     env.sleep(3);
     _setValue(_textbox("invadr[oxuser__oxfname]"), "DONE");
     for (i = 0; i < 15; i++) {
-        var pw = env.decryptSecret("UDdZoQj+O3X3Fb2znTZr6w==");
+        var pw = "adkajld()!";
         env.logInfo("Try " + i + " start --------------");
 
         _focus(_textbox("invadr[oxuser__oxfname]"));
