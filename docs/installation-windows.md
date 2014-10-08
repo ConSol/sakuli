@@ -67,12 +67,6 @@ Depending on your environment, you probably want to set up on of these two possi
   * [Setting up Sakuli to send results to the Database](receivers/database.md#sakuli-configuration)
   * [Setting up Sakuli to submit results to the Gearman Receiver](receivers/gearman.md#sakuli-configuration)
 
-* Receivers (optional, disabled per default):
-
-  To interpret the results of an test execution, it is possible to configure one or more of the following receivers:  
-  * [Database Receiver](receivers/database.md)
-  * [Gearman Receiver](receivers/gearman.md)
-
 #### Company proxy	
 (optional) Configure your company proxy like described under [Sakuli-Manual - Proxy-Settings](sakuli-manual.md#proxy-settings)
 
