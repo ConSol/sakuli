@@ -127,6 +127,11 @@ public class SakuliExceptionHandler {
      * @param e any Throwable
      */
     public void handleException(Throwable e) {
+        //avoid nullpointer for missing messages
+        if (e.getMessage() == null) {
+            e = new SakuliException(e, e.getClass().getSimpleName());
+        }
+
         //Proxy Exception should only be handled if no other exceptions have been added
         if (!(e instanceof SakuliProxyException) ||
                 (!containsException(loader.getTestSuite()))) {

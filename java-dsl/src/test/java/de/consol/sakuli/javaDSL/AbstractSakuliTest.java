@@ -91,7 +91,7 @@ public abstract class AbstractSakuliTest {
         startTime = DateTime.now();
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void saveTcStep() throws Throwable {
         testCaseAction.addTestCaseStep("step " + counter,
                 String.valueOf(startTime.getMillis()),
@@ -104,12 +104,12 @@ public abstract class AbstractSakuliTest {
                 logger.error("Sakuli-Exception:", e);
             }
             //return the first
-            throw exceptions.iterator().next();
+//            throw exceptions.iterator().next();
         }
 
     }
 
-    @AfterClass
+    @AfterClass(alwaysRun = true)
     public void stopTC() throws Throwable {
         executorService.awaitTermination(1, TimeUnit.MILLISECONDS);
         String testCaseName = this.getClass().getSimpleName();
@@ -141,7 +141,7 @@ public abstract class AbstractSakuliTest {
     }
 
 
-    @AfterSuite
+    @AfterSuite(alwaysRun = true)
     public void tearDown() throws Exception {
         ResultServiceHelper.invokeResultServices();
         executorService.shutdownNow();

@@ -75,4 +75,7 @@ public class Region extends de.consol.sakuli.actions.screenbased.Region {
         super(x, y, w, h, resumeOnException, BeanLoader.loadScreenActionLoader());
     }
 
+    public Region(de.consol.sakuli.actions.screenbased.Region region) {
+        super(region.getRegionImpl(), region.getResumeOnException(), BeanLoader.loadScreenActionLoader());
+    }
 }
