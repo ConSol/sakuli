@@ -48,7 +48,7 @@ public abstract class AopBaseTest {
         }
         String lastLineOfLogFile = BaseTest.getLastLineWithContent(logFile, filter);
         assertEquals(lastLineOfLogFile.substring(0, 5), preFix);
-        assertEquals(lastLineOfLogFile.substring(30), expectedMessage);
+        assertEquals(lastLineOfLogFile.substring(lastLineOfLogFile.indexOf("]") + 4), expectedMessage);
     }
 
     @AfterMethod
