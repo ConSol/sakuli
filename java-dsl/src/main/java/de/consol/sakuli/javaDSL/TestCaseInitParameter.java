@@ -6,13 +6,14 @@
  */
 package de.consol.sakuli.javaDSL;
 
+import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.exceptions.SakuliException;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tobias Schneck
@@ -20,26 +21,41 @@ import java.util.Map;
 public class TestCaseInitParameter {
 
     private String testCaseId;
-    private Path testCaseFolderPath;
+    private String testCaseFolderName;
     private int warningTime;
     private int criticalTime;
-    private Map<String, Path> imagePaths;
+    private List<Path> imagePaths;
 
-    public TestCaseInitParameter(String testCaseId, String testCaseFolder) throws SakuliException {
-        this.testCaseId = testCaseId;
-        warningTime = 0;
-        criticalTime = 0;
-        imagePaths = new HashMap<>();
-        testCaseFolderPath = checkTestCaseFolder(testCaseFolder);
-        imagePaths.put(testCaseFolderPath.toString(), testCaseFolderPath);
+    /**
+     * Configures the init parameters so that the testCaseId is equal to the testCaseFolderName. Warning and critical
+     * time will be 0 per default.
+     *
+     * @param testCaseId identifier of a {@link TestCase}
+     */
+    public TestCaseInitParameter(String testCaseId) {
+        this(testCaseId, testCaseId);
     }
 
-    protected static Path checkTestCaseFolder(String path) throws SakuliException {
+    /**
+     * Configures the init parameters with testCaseId and the testCaseFolderName. Warning and critical time will be 0
+     * per default.
+     *
+     * @param testCaseId identifier of a {@link TestCase}
+     */
+    public TestCaseInitParameter(String testCaseId, String testCaseFolderName) {
+        this.testCaseId = testCaseId;
+        this.testCaseFolderName = testCaseFolderName;
+        warningTime = 0;
+        criticalTime = 0;
+        imagePaths = new ArrayList<>();
+    }
+
+    public static Path checkFolder(String path) throws SakuliException {
         Path folder = Paths.get(path);
         if (Files.exists(folder)) {
             return folder;
         }
-        throw new SakuliException(String.format("Test case folder '%s' does not exist!", path));
+        throw new SakuliException(String.format("The required folder '%s' does not exist!", folder.toAbsolutePath().toString()));
     }
 
     public TestCaseInitParameter withWarningTime(int warningTime) {
@@ -55,8 +71,7 @@ public class TestCaseInitParameter {
     public TestCaseInitParameter addImagePath(String... imagePaths) throws SakuliException {
         if (imagePaths != null) {
             for (String imagePath : imagePaths) {
-                Path imageFolder = checkTestCaseFolder(imagePath);
-                this.imagePaths.put(imageFolder.toString(), imageFolder);
+                this.imagePaths.add(checkFolder(imagePath));
             }
         }
         return this;
@@ -66,12 +81,8 @@ public class TestCaseInitParameter {
         return testCaseId;
     }
 
-    public String getTestCaseFolder() {
-        return testCaseFolderPath.toString();
-    }
-
-    public Path getTestCaseFolderPath() {
-        return testCaseFolderPath;
+    public String getTestCaseFolderName() {
+        return testCaseFolderName;
     }
 
     public int getWarningTime() {
@@ -82,7 +93,7 @@ public class TestCaseInitParameter {
         return criticalTime;
     }
 
-    public Map<String, Path> getImagePaths() {
+    public List<Path> getImagePaths() {
         return imagePaths;
     }
 }

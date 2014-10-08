@@ -24,9 +24,9 @@ import org.testng.annotations.*;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -71,11 +71,15 @@ public abstract class AbstractSakuliTest {
         testSuite.addTestCase(new TestCaseBuilder(this.getClass().getSimpleName(), initParameter.getTestCaseId()).build());
         testSuite.setUiTest(true);
         testCaseAction = BeanLoader.loadTestCaseAction();
-        Set<String> imageFolders = initParameter.getImagePaths().keySet();
+
+        //init the image folders and test case times
+        initParameter.addImagePath(getTestCaseFolder().toString());
+        List<Path> imagePaths = initParameter.getImagePaths();
         testCaseAction.init(initParameter.getTestCaseId(),
                 initParameter.getWarningTime(),
                 initParameter.getCriticalTime(),
-                imageFolders.toArray(new String[imageFolders.size()]));
+                imagePaths.toArray(new Path[imagePaths.size()])
+        );
         logger.info("............................START TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
         counter = 0;
         startTimeCase = DateTime.now();
@@ -109,9 +113,8 @@ public abstract class AbstractSakuliTest {
     public void initStop() throws Throwable {
         executorService.awaitTermination(1, TimeUnit.MILLISECONDS);
         String testCaseName = this.getClass().getSimpleName();
-        TestCaseInitParameter initParam = getTestCaseInitParameter();
-        logger.info("............................ STOP TEST-CASE '{}' - {}", initParam.getTestCaseId(), testCaseName);
-        testCaseAction.saveResult(initParam.getTestCaseId(),
+        logger.info("............................ STOP TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
+        testCaseAction.saveResult(initParameter.getTestCaseId(),
                 String.valueOf(startTimeCase.getMillis()),
                 String.valueOf(DateTime.now().getMillis()),
                 null,
@@ -128,14 +131,15 @@ public abstract class AbstractSakuliTest {
         }
     }
 
+    protected Path getTestCaseFolder() {
+        return Paths.get(getTestSuiteFolder() + File.separator + initParameter.getTestCaseFolderName());
+    }
+
     //TODO make separate maven module and centralize the default properties
     protected String getIncludeFolder() {
         return ".." + File.separator + "core" + File.separator + "src" + File.separator + "main" + File.separator + "_include";
     }
 
-    protected String getTestCaseFolder() {
-        return initParameter.getTestCaseFolder();
-    }
 
     @AfterSuite
     public void tearDown() throws Exception {

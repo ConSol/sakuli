@@ -10,6 +10,7 @@ import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 
@@ -23,7 +24,9 @@ public class SakuliJavaPropertyPlaceholderConfigurer extends SakuliPropertyPlace
     protected void loadCommonSakuliProperties(Properties props) {
         super.loadCommonSakuliProperties(props);
         String sakuliJavaProperties = Paths.get(JAVA_TEST_SUITE_FOLDER).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER;
-        addPropertiesFromFile(props, sakuliJavaProperties, loadSakuliProperties);
+        if (Files.exists(Paths.get(sakuliJavaProperties))) {
+            addPropertiesFromFile(props, sakuliJavaProperties, loadSakuliProperties);
+        }
         props.put(TestSuiteProperties.LOAD_TEST_CASES_AUTOMATIC_PROPERTY, "false");
     }
 }

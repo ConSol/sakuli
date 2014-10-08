@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Path;
 import java.util.Date;
 
 /**
@@ -84,6 +85,20 @@ public class TestCaseAction {
      */
     @LogToResult(message = "init a new test case")
     public void init(String testCaseID, int warningTime, int criticalTime, String... imagePaths) {
+        loader.init(testCaseID, imagePaths);
+        initWarningAndCritical(warningTime, criticalTime);
+    }
+
+    /**
+     * Set the warning and critical Time to the specific test case.
+     *
+     * @param testCaseID   current ID of the test case
+     * @param warningTime  warning threshold in seconds
+     * @param criticalTime critical threshold in seconds
+     * @param imagePaths   multiple paths to images
+     */
+    @LogToResult(message = "init a new test case")
+    public void init(String testCaseID, int warningTime, int criticalTime, Path... imagePaths) {
         loader.init(testCaseID, imagePaths);
         initWarningAndCritical(warningTime, criticalTime);
     }
