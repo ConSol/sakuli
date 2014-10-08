@@ -110,7 +110,7 @@ public abstract class AbstractSakuliTest {
     }
 
     @AfterClass
-    public void initStop() throws Throwable {
+    public void stopTC() throws Throwable {
         executorService.awaitTermination(1, TimeUnit.MILLISECONDS);
         String testCaseName = this.getClass().getSimpleName();
         logger.info("............................ STOP TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
