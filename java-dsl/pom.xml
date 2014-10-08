@@ -38,10 +38,18 @@
         <sakuli.home>${project.parent.basedir}</sakuli.home>
         <test.excluded.groups>${test.group.unit},${test.group.sakuli}</test.excluded.groups>
         <test.included.groups/>
+        <maven-failsafe-plugin.skip>true</maven-failsafe-plugin.skip>
     </properties>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludedGroups>${test.excluded.groups}</excludedGroups>
+                </configuration>
+            </plugin>
             <!-- Config for the integration tests unit test are skipped -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -53,7 +61,7 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <skip>false</skip>
+                            <skip>${maven-failsafe-plugin.skip}</skip>
                             <includes>
                                 <include>**/*.class</include>
                             </includes>
@@ -93,6 +101,7 @@
             <properties>
                 <test.included.groups>${test.group.sakuli}</test.included.groups>
                 <test.excluded.groups>${test.group.unit}</test.excluded.groups>
+                <maven-failsafe-plugin.skip>false</maven-failsafe-plugin.skip>
             </properties>
         </profile>
     </profiles>

@@ -15,7 +15,7 @@ import java.io.File;
  * @author Tobias Schneck
  */
 @Test(groups = AbstractSakuliTest.SAKULI_TEST)
-public class ExampleTest extends AbstractSakuliTest {
+public class Example extends AbstractSakuliTest {
 
 
     @Override
@@ -33,7 +33,7 @@ public class ExampleTest extends AbstractSakuliTest {
     }
 
     @Test
-    public void test1() throws Exception {
+    public void example1() throws Exception {
         new Region().highlight();
 
     }
