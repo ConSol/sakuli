@@ -65,37 +65,34 @@ $unkn_tick_opacity = "FF";
 
 sort($this->DS);
 
-
-# fixme: nur einmal
-	#$rrdopts_mem = "--right-axis \"1:0\" --right-axis-label \"CPU Usage %\" ";
-if ( ( $this->MACRO['E2ECPUHOST'] != '$_HOSTE2E_CPU_HOST$') and ( $this->MACRO['E2ECPUSVC'] != '$_HOSTE2E_CPU_SVC$')) {
-	$graph_cpu = true;
-	$rrddef_cpu = rrd::def("cpu_usage", OMD_SITE_ROOT . "/var/pnp4nagios/perfdata/" .  
-		$this->MACRO['E2ECPUHOST'] . "/" . 
-		$this->MACRO['E2ECPUSVC'] . "_1.rrd",1,"AVERAGE");
-	$rrddef_cpu .= rrd::line1("cpu_usage", $col_cpu, "CPU Usage");
-	$rrddef_cpu .= rrd::gprint("cpu_usage", "MAX", "%3.2lf%% MAX");
-	$rrddef_cpu .= rrd::gprint("cpu_usage", "AVERAGE", "%3.2lf%% AVERAGE");
-	$rrddef_cpu .= rrd::gprint("cpu_usage", "LAST", "%3.2lf%% LAST \j");
+# show CPU/MEM graphs only if Macros are set properly. For more information, see
+# https://github.com/ConSol/sakuli/blob/master/docs/installation-omd.md#include-cpumem-graphs-in-sakuli-graphs-optional
+if ( ( (array_key_exists('E2ECPUHOST', $this->MACRO)) and ($this->MACRO['E2ECPUHOST'] != '$_HOSTE2E_CPU_HOST$')) and ( ((array_key_exists('E2ECPUSVC', $this->MACRO))) and ($this->MACRO['E2ECPUSVC'] != '$_HOSTE2E_CPU_SVC$'))) {
+        $graph_cpu = true;
+        $rrddef_cpu = rrd::def("cpu_usage", OMD_SITE_ROOT . "/var/pnp4nagios/perfdata/" .
+                $this->MACRO['E2ECPUHOST'] . "/" .
+                $this->MACRO['E2ECPUSVC'] . "_1.rrd",1,"AVERAGE");
+        $rrddef_cpu .= rrd::line1("cpu_usage", $col_cpu, "CPU Usage");
+        $rrddef_cpu .= rrd::gprint("cpu_usage", "MAX", "%3.2lf%% MAX");
+        $rrddef_cpu .= rrd::gprint("cpu_usage", "AVERAGE", "%3.2lf%% AVERAGE");
+        $rrddef_cpu .= rrd::gprint("cpu_usage", "LAST", "%3.2lf%% LAST \j");
 } else {
-	$graph_cpu = false;
-	$rrdopts_cpu = "";
+        $graph_cpu = false;
+        $rrdopts_cpu = "";
 }
-if ( ( $this->MACRO['E2EMEMHOST'] != '$_HOSTE2E_MEM_HOST$') and ( $this->MACRO['E2EMEMSVC'] != '$_HOSTE2E_MEM_SVC$')) {
-	$graph_mem = true;
-	$rrddef_mem = rrd::def("mem_usage", OMD_SITE_ROOT ."/var/pnp4nagios/perfdata/" .  
-		$this->MACRO['E2EMEMHOST'] . "/" . 
-		$this->MACRO['E2EMEMSVC'] . "_physical_memory_%.rrd",1,"AVERAGE");
-	$rrddef_mem .= rrd::line1("mem_usage", $col_mem, "phys. Memory Usage");
-	$rrddef_mem .= rrd::gprint("mem_usage", "MAX", "%3.2lf%% MAX");
-	$rrddef_mem .= rrd::gprint("mem_usage", "AVERAGE", "%3.2lf%% AVERAGE");
-	$rrddef_mem .= rrd::gprint("mem_usage", "LAST", "%3.2lf%% LAST \j");
+if ( ( (array_key_exists('E2EMEMHOST', $this->MACRO)) and ($this->MACRO['E2EMEMHOST'] != '$_HOSTE2E_MEM_HOST$')) and ( ((array_key_exists('E2EMEMSVC', $this->MACRO))) and ($this->MACRO['E2EMEMSVC'] != '$_HOSTE2E_MEM_SVC$'))) {
+        $graph_mem = true;
+        $rrddef_mem = rrd::def("mem_usage", OMD_SITE_ROOT ."/var/pnp4nagios/perfdata/" .
+                $this->MACRO['E2EMEMHOST'] . "/" .
+                $this->MACRO['E2EMEMSVC'] . "_physical_memory_%.rrd",1,"AVERAGE");
+        $rrddef_mem .= rrd::line1("mem_usage", $col_mem, "phys. Memory Usage");
+        $rrddef_mem .= rrd::gprint("mem_usage", "MAX", "%3.2lf%% MAX");
+        $rrddef_mem .= rrd::gprint("mem_usage", "AVERAGE", "%3.2lf%% AVERAGE");
+        $rrddef_mem .= rrd::gprint("mem_usage", "LAST", "%3.2lf%% LAST \j");
 } else {
-	$graph_mem = false;	
-	$rrdopts_mem = "";
+        $graph_mem = false;
+        $rrdopts_mem = "";
 }
-
-
 
 ## SUITE Graph  #############################################################
 $suitename = preg_replace('/^suite_(.*)$/', '$1', $NAME[$perf_pos_suite_runtime]);
