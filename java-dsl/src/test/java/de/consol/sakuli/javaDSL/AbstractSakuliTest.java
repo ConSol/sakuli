@@ -75,7 +75,7 @@ public abstract class AbstractSakuliTest {
         //init the image folders and test case times
         initParameter.addImagePath(getTestCaseFolder().toString());
         List<Path> imagePaths = initParameter.getImagePaths();
-        testCaseAction.init(initParameter.getTestCaseId(),
+        testCaseAction.initWithPaths(initParameter.getTestCaseId(),
                 initParameter.getWarningTime(),
                 initParameter.getCriticalTime(),
                 imagePaths.toArray(new Path[imagePaths.size()])
@@ -143,6 +143,7 @@ public abstract class AbstractSakuliTest {
 
     @AfterSuite(alwaysRun = true)
     public void tearDown() throws Exception {
+        testSuite.setStopDate(DateTime.now().toDate());
         ResultServiceHelper.invokeResultServices();
         executorService.shutdownNow();
     }

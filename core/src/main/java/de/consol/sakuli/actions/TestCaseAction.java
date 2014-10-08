@@ -98,7 +98,7 @@ public class TestCaseAction {
      * @param imagePaths   multiple paths to images
      */
     @LogToResult(message = "init a new test case")
-    public void init(String testCaseID, int warningTime, int criticalTime, Path... imagePaths) {
+    public void initWithPaths(String testCaseID, int warningTime, int criticalTime, Path... imagePaths) {
         loader.init(testCaseID, imagePaths);
         initWarningAndCritical(warningTime, criticalTime);
     }
