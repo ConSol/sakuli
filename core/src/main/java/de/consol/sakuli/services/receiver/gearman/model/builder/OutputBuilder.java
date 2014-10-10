@@ -211,7 +211,6 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         PlaceholderMap placeholderMap = new PlaceholderMap();
         OutputState outputState = OutputState.lookupSakuliState(testCase.getState());
         ScreenshotDiv screenshotDiv = screenshotDivConverter.convert(testCase.getException());
-        screenshotDiv = null; // TODO TS remove when finally tested!
         placeholderMap.put(STATE, outputState.name());
         placeholderMap.put(STATE_SHORT, outputState.getShortState());
         placeholderMap.put(STATE_DESC, (testCase.getState() == null)
@@ -259,7 +258,6 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         PlaceholderMap placeholderMap = new PlaceholderMap();
         OutputState outputState = OutputState.lookupSakuliState(testSuite.getState());
         ScreenshotDiv screenshotDiv = screenshotDivConverter.convert(testSuite.getException());
-        screenshotDiv = null; // TODO TS remove when finally tested!
         placeholderMap.put(STATE, outputState.name());
         placeholderMap.put(STATE_SHORT, outputState.getShortState());
         placeholderMap.put(STATE_DESC, testSuite.getState().getNagiosStateDescription());

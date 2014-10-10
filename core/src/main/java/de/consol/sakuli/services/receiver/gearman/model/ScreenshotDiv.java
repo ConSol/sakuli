@@ -10,8 +10,7 @@ public class ScreenshotDiv implements NagiosPayloadString {
     public static final String DEFAULT_SAKULI_SCREENSHOT_DIV_ID = "sakuli_screenshot";
     private static final String DIV_HEADER = "<div style=\"width:%s\" id=\"%s\">";
     private static final String DIV_FOOTER = "</div>";
-    private static final String IMG_TAG_HEADER = "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" src=\"data:image/jpg;base64,";
-    private static final String IMG_TAG_FOOTER = "\">";
+    private static final String IMG_TAG = "<img style=\"width:98%%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" src=\"data:image/%s;base64,%s\" >";
 
     /**
      * Width of HTML DIV tag, e.g. "640px"
@@ -25,6 +24,10 @@ public class ScreenshotDiv implements NagiosPayloadString {
      * BASE64 encoded screenshot
      */
     private String base64screenshot;
+    /**
+     * File format of the bas64 encoded image
+     */
+    private String format;
 
     public String getWidth() {
         return width;
@@ -50,12 +53,19 @@ public class ScreenshotDiv implements NagiosPayloadString {
         this.base64screenshot = base64screenshot;
     }
 
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
     @Override
     public String getPayloadString() {
         return String.format(DIV_HEADER, width, id)
-                + IMG_TAG_HEADER
-                + base64screenshot
-                + IMG_TAG_FOOTER
+                + String.format(IMG_TAG, format, base64screenshot)
                 + DIV_FOOTER;
     }
+
 }
