@@ -20,7 +20,6 @@ package de.consol.sakuli.actions.screenbased;
 
 import de.consol.sakuli.actions.Action;
 import de.consol.sakuli.datamodel.actions.ImageLibObject;
-import de.consol.sakuli.datamodel.actions.Screen;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import org.sikuli.basics.Settings;
@@ -118,8 +117,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         }
         Match match;
         try {
-            //TODO TS check if you can get sreen from the context
-            match = new Screen().find(imagePattern.getPattern());
+            match = loader.getScreen().find(imagePattern.getPattern());
         } catch (FindFailed findFailed) {
             match = null;
         }
@@ -162,8 +160,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         if (imagePattern == null) {
             return this.findBaseRegion();
         }
-        //TODO TS check if you can get sreen from the context
-        return toRegion(new Screen().exists(imagePattern.getPattern()));
+        return toRegion(loader.getScreen().exists(imagePattern.getPattern()));
     }
 
     /**

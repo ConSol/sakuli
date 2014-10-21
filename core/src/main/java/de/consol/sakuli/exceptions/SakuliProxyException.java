@@ -34,4 +34,7 @@ public class SakuliProxyException extends SakuliException {
     public SakuliProxyException(Throwable e) {
         super(e);
     }
+    public SakuliProxyException(Throwable e, String message) {
+        super(e, message);
+    }
 }

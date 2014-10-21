@@ -24,13 +24,14 @@ import de.consol.sakuli.utils.TestSuitePropertiesTestUtils;
 import org.testng.annotations.Test;
 
 import java.io.FileNotFoundException;
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 /**
- * @author tschneck
- *         Date: 17.07.13
+ * @author tschneck Date: 17.07.13
  */
 public class TestSuiteHelperTest extends TestSuitePropertiesTestUtils {
 
@@ -54,4 +55,39 @@ public class TestSuiteHelperTest extends TestSuitePropertiesTestUtils {
         TestSuiteHelper.loadTestCases(testProps);
     }
 
+    @Test
+    public void testRelpaceEmptyLines() throws Exception {
+        assertNull(TestSuiteHelper.replaceEmptyLines(null, "//"));
+
+        String source = "line1\n\nbla\n";
+        assertEquals(TestSuiteHelper.replaceEmptyLines(source, "//"),
+                "line1\n//\nbla\n");
+
+        source = "line1\n\n\nbla\n";
+        assertEquals(TestSuiteHelper.replaceEmptyLines(source, "//"),
+                "line1\n//\n//\nbla\n");
+    }
+
+    @Test
+    public void testRelpaceEmptyLinesCR() throws Exception {
+        String source = "line1\r\n\r\nbla\r\n";
+        assertEquals(TestSuiteHelper.replaceEmptyLines(source, "//"),
+                "line1\r\n//\r\nbla\r\n");
+
+        source = "line1\r\n\r\n\r\nbla\r\n";
+        assertEquals(TestSuiteHelper.replaceEmptyLines(source, "//"),
+                "line1\r\n//\r\n//\r\nbla\r\n");
+    }
+
+    @Test(expectedExceptions = InvalidParameterException.class)
+    public void testRelpaceEmptyLinesWorstCase() throws Exception {
+        String source = "line1\n\n\nbla\n";
+      TestSuiteHelper.replaceEmptyLines(source, "//\n\n");
+    }
+
+    @Test(expectedExceptions = InvalidParameterException.class)
+    public void testRelpaceEmptyLinesWorstCase2() throws Exception {
+        String source = "line1\n\n\nbla\n";
+        TestSuiteHelper.replaceEmptyLines(source, "");
+    }
 }

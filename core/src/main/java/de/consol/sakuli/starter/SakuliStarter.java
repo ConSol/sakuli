@@ -46,10 +46,11 @@ public class SakuliStarter {
 
 
     /**
-     * The Sakuli-Starter executes a specific sakuli-testsuite.
-     * A test suite has to contain as minimum following files:
-     * - testsuite.suite  => specifies the testcases
-     * - testsuite.properties  => specifies the runtime settings like the browser for the test suite.
+     * The Sakuli-Starter executes a specific sakuli-testsuite. A test suite has to contain as minimum following files:
+     * <ul>
+     *     <li>testsuite.suite  => specifies the testcases</li>
+     *     <li>testsuite.properties  => specifies the runtime settings like the browser for the test suite.</li>
+     * </ul>
      *
      * @param args relative or absolute path to the folder of your test suite
      */
@@ -105,18 +106,20 @@ public class SakuliStarter {
     }
 
     /**
-     * wrapper for {@link #runTestSuite(String, String, String)} with usage of the default sahi-proxy configured
-     * in the 'sakuli.properties'.
+     * wrapper for {@link #runTestSuite(String, String, String)} with usage of the default sahi-proxy configured in the
+     * 'sakuli.properties'.
      */
     public static TestSuite runTestSuite(String testSuiteFolderPath, String includeFolderPath) throws FileNotFoundException {
         return runTestSuite(testSuiteFolderPath, includeFolderPath, null);
     }
 
     /**
-     * Executes a specific Sakuli test suite in the assigend 'testSuiteFolder'.
-     * A test suite has to contain as minimum following files:
-     * - testsuite.suite  => specifies the testcases
-     * - testsuite.properties  => specifies the runtime settings like the browser for the test suite.
+     * Executes a specific Sakuli test suite in the assigend 'testSuiteFolder'. A test suite has to contain as minimum
+     * following files:
+     * <ul>
+     *     <li>testsuite.suite  => specifies the testcases</li>
+     *     <li>testsuite.properties  => specifies the runtime settings like the browser for the test suite.</li>
+     * </ul>
      *
      * @param testSuiteFolderPath path to the Sakuli test suite
      * @param includeFolderPath   import folder of the 'sakuli.properties' and 'sakuli.js' files
@@ -143,16 +146,17 @@ public class SakuliStarter {
         logger.debug(tempLogCache);
 
         // Init the test suite data for all available InitializingServices
-        Map<String, InitializingService> initializingServices = BeanLoader.loadMultipleBeans(InitializingService.class);
-        for (InitializingService initializingService : initializingServices.values()) {
-            initializingService.initTestSuite();
-        }
-
-        TestSuite result = BeanLoader.loadBean(TestSuite.class);
-        /***
-         * SAKULI Starter to run the test suite with embedded sahi proxy
-         */
+        TestSuite result;
         try {
+            Map<String, InitializingService> initializingServices = BeanLoader.loadMultipleBeans(InitializingService.class);
+            for (InitializingService initializingService : initializingServices.values()) {
+                initializingService.initTestSuite();
+            }
+
+            /***
+             * SAKULI Starter to run the test suite with embedded sahi proxy
+             */
+
             sahiConnector.init();
 
             //start the execution of the test suite
@@ -162,7 +166,7 @@ public class SakuliStarter {
         /**
          * will be catched if the Sahi-Proxy could not shutdown;
          */ catch (SakuliProxyException e) {
-            e.printStackTrace();
+            logger.error("Unexpected error occurred:", e);
             System.exit(99);
         } finally {
             //save results for all active result services
