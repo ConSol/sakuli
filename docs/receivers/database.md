@@ -36,7 +36,8 @@ Create the system tables for the new database and start OMD afterwards. You shou
 	 Starting rrdcached...OK
 	 Starting npcd...OK
 	 Starting nagios...OK
-	 Initializing Crontab...OK
+	 Initializing Crontab...
+	 
 
 ### create Sakuli DB and user
 
@@ -83,8 +84,8 @@ Set USER macros for static vars in *resource.cfg*, which makes it easy to use th
 	  $USER13$=3307
 	  # check_mysql_health dyndir
 	  $USER15$=/opt/omd/sites/sakuli/etc/check_mysql_health/
-	  # database IP
-	  $USER16$=[IP]   # IP of OMD host
+	  # database=OMD IP
+	  $USER16$=[IP]  
 	  
 ##### Nagios configuration
 Create a new check_command: 
