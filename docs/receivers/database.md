@@ -81,7 +81,7 @@ Set USER macros for static vars in *resource.cfg*, which makes it easy to use th
 	  # database password
 	  $USER12$=sakuli
 	  # database port
-	  $USER13$=3307
+	  $USER13$=3007
 	  # check_mysql_health dyndir
 	  $USER15$=/opt/omd/sites/sakuli/etc/check_mysql_health/
 	  # database=OMD IP

@@ -23,20 +23,20 @@ import de.consol.sakuli.datamodel.helper.TestSuiteHelper;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
+import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.services.InitializingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 
 /**
- * @author tschneck
- *         Date: 22.05.14
+ * @author tschneck Date: 22.05.14
  */
 @Component
 public class CommonInitializingServiceImpl implements InitializingService {
@@ -52,7 +52,7 @@ public class CommonInitializingServiceImpl implements InitializingService {
      * {@inheritDoc}
      */
     @Override
-    public void initTestSuite() throws FileNotFoundException {
+    public void initTestSuite() throws SakuliProxyException {
         logger.info("initialize test suite with id '{}'", testSuite.getId());
         testSuite.setState(TestSuiteState.RUNNING);
         testSuite.setStartDate(new Date());
@@ -67,7 +67,11 @@ public class CommonInitializingServiceImpl implements InitializingService {
          * Optional init actions
          */
         if (testSuiteProperties.isLoadTestCasesAutomatic()) {
-            testSuite.setTestCases(TestSuiteHelper.loadTestCases(testSuiteProperties));
+            try {
+                testSuite.setTestCases(TestSuiteHelper.loadTestCases(testSuiteProperties));
+            } catch (IOException e) {
+                throw new SakuliProxyException(e, String.format("Cannot read testsuite.suite '%s' file", testSuiteProperties.getTestSuiteSuiteFile().toString()));
+            }
         }
         logger.info("test suite with guid '{}' has been initialized!", testSuite.getGuid());
         logger.debug("test suite data after initialization: {}", testSuite.toString());

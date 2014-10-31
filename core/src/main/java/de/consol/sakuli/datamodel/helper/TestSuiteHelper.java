@@ -21,20 +21,23 @@ package de.consol.sakuli.datamodel.helper;
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
-import net.sf.sahi.util.Utils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.InvalidParameterException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * @author tschneck
- *         Date: 22.05.14
+ * @author tschneck Date: 22.05.14
  */
 public class TestSuiteHelper {
     private static Logger logger = LoggerFactory.getLogger(TestSuiteHelper.class);
@@ -46,7 +49,7 @@ public class TestSuiteHelper {
      * @return a map of {@link TestCase}s with her {@link TestCase#id} as key.
      * @throws FileNotFoundException if files are not reachable
      */
-    public static HashMap<String, TestCase> loadTestCases(TestSuiteProperties properties) throws FileNotFoundException {
+    public static HashMap<String, TestCase> loadTestCases(TestSuiteProperties properties) throws IOException {
         Path testSuiteFile = properties.getTestSuiteSuiteFile();
         Path testSuiteFolder = properties.getTestSuiteFolder();
 
@@ -55,7 +58,8 @@ public class TestSuiteHelper {
         if (!Files.exists(testSuiteFile)) {
             throw new FileNotFoundException("Can not find specified " + TestSuiteProperties.TEST_SUITE_SUITE_FILE_NAME + " file at \"" + testSuiteFolder.toString() + "\"");
         }
-        String testSuiteString = Utils.readFileAsString(testSuiteFile.toFile());
+
+        String testSuiteString = prepareTestSuiteFile(testSuiteFile);
         logger.info(
                 "\n--- TestSuite initialization: read test suite information of file \"" + testSuiteFile.toAbsolutePath().toString() + "\" ----\n"
                         + testSuiteString
@@ -87,5 +91,38 @@ public class TestSuiteHelper {
             }
         }
         return tcMap;
+    }
+
+    /**
+     * Modifies the testsuite.suite file so that no empty lines are included.
+     */
+    private static String prepareTestSuiteFile(Path testSuiteFile) throws IOException {
+        String suiteFile = FileUtils.readFileToString(testSuiteFile.toFile());
+        suiteFile = replaceEmptyLines(suiteFile, "//");
+        FileUtils.writeStringToFile(testSuiteFile.toFile(), suiteFile);
+        return suiteFile;
+    }
+
+    /**
+     * Replace an string like: <ul> <li>replaceEmptyLines("bla\n\nbla", "123")   =>   "bla\n123\nbla"</li>
+     * <li>replaceEmptyLines("bla\r\n\r\nbla", "123")   =>   "bla\r\n123\r\nbla"</li> </ul>
+     *
+     * @param source        source String
+     * @param replaceString replace String without double new line
+     * @return
+     */
+    protected static String replaceEmptyLines(String source, String replaceString) {
+        if (source != null) {
+            for (String newlineChars : Arrays.asList("\n", "\r\n")) {
+                String doubleNewLine = newlineChars + newlineChars;
+                if (replaceString.contains(doubleNewLine) || StringUtils.isEmpty(replaceString)) {
+                    throw new InvalidParameterException("The assigned replace pattern contains the not allowed chars '" + doubleNewLine + "'!");
+                }
+                while (source.contains(doubleNewLine)) {
+                    source = source.replace(doubleNewLine, newlineChars + replaceString + newlineChars);
+                }
+            }
+        }
+        return source;
     }
 }
