@@ -4,7 +4,7 @@
 ### Apparmor prevention 
 (openSUSE and Ubuntu Linux)
 
-**Possible error 1:** *mysql_install_db fails: 
+**Possible error 1:** mysql_install_db fails: 
 
 	141021 16:40:03 [Warning] Can't create test file /omd/sites/sakuli/var/mysql/omd2.lower-test
 	ERROR: 1005  Can't create table 'db' (errno: 13)
