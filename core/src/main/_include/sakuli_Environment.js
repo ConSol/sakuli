@@ -66,7 +66,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * Takes a screenshot of the current screen and saves it to the overgiven path.
      * If there ist just a file name, the screenshot will be saved in your testsuite log folder.
      *
-     * @param {String} `pathName` "pathname/filname.format" or just "filename.format"<br>
+     * @param {String} `pathName` "pathname/filname.format" or just "filename.format"<br/>
      *                 for example "test.png".
      */
     that.takeScreenshot = function (pathName) {
@@ -224,6 +224,54 @@ function loadEnvironment(javaObject, resumeOnException) {
     that.decryptSecret = function (text) {
         return that.javaObject.decryptSecret(text);
     };
+
+    /**
+     * Press and hold the given keys including modifier keys <br/>
+     * use the key constants defined in class Key, <br/>
+     * which only provides a subset of a US-QWERTY PC keyboard layout <br/>
+     * might be mixed with simple characters<br/>
+     * use + to concatenate Key constants
+     *
+     * @param {String} `keys` valid keys
+     * @return this Environment or NULL on errors.
+     */
+    that.keyDown = function (keys) {
+        return update(that.javaObject.keyDown(keys));
+    };
+
+    /**
+     * release the given keys (see Environment.keyDown(...)).
+     *
+     * @param {String} `keys` valid keys
+     * @return this Environment or NULL on errors.
+     */
+    that.keyUp = function (keys) {
+        return update(that.javaObject.keyUp(keys));
+    };
+
+    /**
+     * Compact alternative for type() with more options <br/>
+     * - special keys and options are coded as #XN. or #X+ or #X- <br/>
+     * where X is a refrence for a special key and N is an optional repeat factor <br/>
+     * A modifier key as #X. modifies the next following key<br/>
+     * the trailing . ends the special key, the + (press and hold) or - (release) does the same, <br/>
+     * but signals press-and-hold or release additionally.<br/>
+     * except #W / #w all special keys are not case-sensitive<br/>
+     * a #wn. inserts a wait of n millisecs or n secs if n less than 60 <br/>
+     * a #Wn. sets the type delay for the following keys (must be &gt; 60 and denotes millisecs)
+     * - otherwise taken as normal wait<br/>
+     * Example: wait 2 secs then type CMD/CTRL - N then wait 1 sec then type DOWN 3 times<br/>
+     * Windows/Linux: write("#w2.#C.n#W1.#d3.")<br/>
+     * Mac: write("#w2.#M.n#W1.#D3.")<br/>
+     * for more details about the special key codes and examples consult the sikuliX docs <br/>
+     *
+     * @param {String} `text` a coded text interpreted as a series of key actions (press/hold/release)
+     * @return this Environment or NULL on errors.
+     */
+    that.write = function (text) {
+        return update(that.javaObject.write(text));
+    };
+
 
     /*********************
      * MOUSE WHEEL FUNCTIONS

@@ -22,15 +22,14 @@ import de.consol.sakuli.actions.Action;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import org.sikuli.script.Button;
 import org.sikuli.script.FindFailed;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Tobias Schneck
  */
 public class TypingUtil<A extends Action> {
-    public static final Logger LOGGER = LoggerFactory.getLogger(TypingUtil.class);
     private A action;
 
     public TypingUtil(A action) {
@@ -182,6 +181,64 @@ public class TypingUtil<A extends Action> {
 
     }
 
+    /**
+     * press and hold the given keys including modifier keys <br>use the key constants defined in class Key, <br>which
+     * only provides a subset of a US-QWERTY PC keyboard layout <br>might be mixed with simple characters
+     * <br>use + to concatenate Key constants
+     *
+     * @param keys valid keys
+     */
+    public A keyDown(String keys) {
+        try {
+            action.getActionRegion().keyDown(keys);
+        } catch (Exception e) {
+            action.getLoader().getExceptionHandler().handleException(e, action.getActionRegion(), action.getResumeOnException());
+        }
+        return action;
+    }
+
+    /**
+     * release the given keys (see {@link TypingUtil#keyDown(String)}).
+     *
+     * @param keys valid keys
+     */
+    public A keyUp(String keys) {
+        try {
+            action.getActionRegion().keyUp(keys);
+        } catch (Exception e) {
+            action.getLoader().getExceptionHandler().handleException(e, action.getActionRegion(), action.getResumeOnException());
+        }
+        return action;
+    }
+
+    /**
+     * Compact alternative for type() with more options <br>
+     * - special keys and options are coded as #XN. or #X+ or #X- <br>
+     * where X is a refrence for a special key and N is an optional repeat factor <br>
+     * A modifier key as #X. modifies the next following key<br>
+     * the trailing . ends the special key, the + (press and hold) or - (release) does the same, <br>
+     * but signals press-and-hold or release additionally.<br>
+     * except #W / #w all special keys are not case-sensitive<br>
+     * a #wn. inserts a wait of n millisecs or n secs if n less than 60 <br>
+     * a #Wn. sets the type delay for the following keys (must be &gt; 60 and denotes millisecs)
+     * - otherwise taken as normal wait<br>
+     * Example: wait 2 secs then type CMD/CTRL - N then wait 1 sec then type DOWN 3 times<br>
+     * Windows/Linux: write("#w2.#C.n#W1.#d3.")<br>
+     * Mac: write("#w2.#M.n#W1.#D3.")<br>
+     * for more details about the special key codes and examples consult the docs <br>
+     *
+     * @param text a coded text interpreted as a series of key actions (press/hold/release)
+     */
+    public A write(String text) {
+        try {
+            action.getActionRegion().write(text);
+            // will needed because sikuli write method will modify the type delay settings.
+            action.getLoader().loadSettingDefaults();
+        } catch (Exception e) {
+            action.getLoader().getExceptionHandler().handleException(e, action.getActionRegion(), action.getResumeOnException());
+        }
+        return action;
+    }
 
     /*
      *Decrypt a encrypted secret and returns the value at runtime.
@@ -231,6 +288,22 @@ public class TypingUtil<A extends Action> {
         }
         if (ret != 1) {
             action.getLoader().getExceptionHandler().handleException("could not interact with the mouse wheel in this region", action.getActionRegion(), action.getResumeOnException());
+            return null;
+        }
+        return action;
+    }
+
+    /**
+     * Blocks the current testcase execution for x seconds
+     *
+     * @param seconds to sleep
+     * @return this {@link A} or NULL on errors.
+     */
+    public A sleep(Integer seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException e) {
+            action.getLoader().getExceptionHandler().handleException(e, true);
             return null;
         }
         return action;
