@@ -22,6 +22,7 @@ import de.consol.sakuli.datamodel.TestSuite;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
 import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
 import de.consol.sakuli.datamodel.state.TestSuiteState;
+import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.utils.TestSuitePropertiesTestUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -30,7 +31,6 @@ import org.mockito.Spy;
 import org.testng.annotations.Test;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import static org.mockito.Mockito.spy;
 import static org.testng.Assert.*;
@@ -86,7 +86,7 @@ public class CommonInitializingServiceImplTest {
     }
 
 
-    @Test(expectedExceptions = FileNotFoundException.class, expectedExceptionsMessageRegExp = "test case path \".*unValidTestCase.*\" doesn't exists - check your \"testsuite.suite\" file")
+    @Test(expectedExceptions = SakuliProxyException.class, expectedExceptionsMessageRegExp = "Cannot read testsuite.suite.*")
     public void testInitExceptionForTestCase() throws Throwable {
         testSuiteProperties = spy(TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "unvalid", ""));
         ts = spy(new TestSuite(testSuiteProperties));

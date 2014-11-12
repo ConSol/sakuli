@@ -37,17 +37,15 @@ import java.nio.file.Path;
 import java.util.Date;
 
 /**
- * @author tschneck
- *         Date: 19.06.13
+ * @author tschneck Date: 19.06.13
  */
 @Component
 public class TestCaseAction {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * Represents the current running TestCase.
-     * The object will be set at {@link #init(String, int, int, String...)}
-     * and releases at {@link #saveResult(String, String, String, String, String)}
+     * Represents the current running TestCase. The object will be set at {@link #init(String, int, int, String...)} and
+     * releases at {@link #saveResult(String, String, String, String, String)}
      */
     @Autowired
     @Qualifier(BaseActionLoaderImpl.QUALIFIER)
@@ -56,24 +54,6 @@ public class TestCaseAction {
     /****************
      * Init functions for the java script engine.
      *********************/
-
-    /**
-     * @param pathToTestCaseFile path to the test case file "_tc.js"
-     * @return returns test the currentTestCase Name
-     */
-    @LogToResult(message = "convert the path of the test case file to a valid test case ID")
-    public String getIdFromPath(String pathToTestCaseFile) {
-        logger.info("Return a test-case-id for \"" + pathToTestCaseFile + "\"");
-        String id = TestCaseHelper.convertTestCaseFileToID(pathToTestCaseFile);
-        //check id
-        if (loader.getTestSuite().checkTestCaseID(id)) {
-            logger.info("test-case-id = " + id);
-            return id;
-        } else {
-            handleException("cannot identify testcase for pathToTestCaseFile=" + pathToTestCaseFile);
-            return null;
-        }
-    }
 
     /**
      * Set the warning and critical Time to the specific test case.
@@ -102,7 +82,6 @@ public class TestCaseAction {
         loader.init(testCaseID, imagePaths);
         initWarningAndCritical(warningTime, criticalTime);
     }
-
 
     private void initWarningAndCritical(int warningTime, int criticalTime) {
         //check some stuff then set the times
@@ -164,8 +143,8 @@ public class TestCaseAction {
     }
 
     /**
-     * Save a new step to a existing test case.
-     * Must be called before {@link #saveResult(String, String, String, String, String)}
+     * Save a new step to a existing test case. Must be called before {@link #saveResult(String, String, String, String,
+     * String)}
      *
      * @param stepName    name of this step
      * @param startTime   start time in milliseconds
@@ -216,10 +195,9 @@ public class TestCaseAction {
                 + "\"");
     }
 
-
-    /**
-     * ******** EXCEPTION HANDLING ******************
-     */
+    /****************
+     * EXCEPTION HANDLING
+     *********************/
 
     /**
      * calls the method {@link SakuliExceptionHandler#handleException(Throwable)}
@@ -245,5 +223,44 @@ public class TestCaseAction {
             return "test case [" + loader.getCurrentTestCase().getActionValueString() + "]";
         }
         return "test case not initialized";
+    }
+
+    /****************
+     * TEST CASE INFO FUNCTIONS
+     *********************/
+    /**
+     * @param pathToTestCaseFile path to the test case file "_tc.js"
+     * @return returns test the currentTestCase Name
+     */
+    @LogToResult(message = "convert the path of the test case file to a valid test case ID")
+    public String getIdFromPath(String pathToTestCaseFile) {
+        logger.info("Return a test-case-id for \"" + pathToTestCaseFile + "\"");
+        String id = TestCaseHelper.convertTestCaseFileToID(pathToTestCaseFile);
+        //check id
+        if (loader.getTestSuite().checkTestCaseID(id)) {
+            logger.info("test-case-id = " + id);
+            return id;
+        } else {
+            handleException("cannot identify testcase for pathToTestCaseFile=" + pathToTestCaseFile);
+            return null;
+        }
+    }
+
+    /**
+     * @return String value of the last URL
+     */
+    @LogToResult(message = "return 'lastURL'")
+    public String getLastURL() {
+        return loader.getCurrentTestCase().getLastURL();
+    }
+
+    /**
+     * Set a new URL to the current TestCase as last visited URL.
+     *
+     * @param lastURL String value of the last URL
+     */
+    @LogToResult(message = "set 'lastURL' to new value")
+    public void setLastURL(String lastURL) {
+        loader.getCurrentTestCase().setLastURL(lastURL);
     }
 }

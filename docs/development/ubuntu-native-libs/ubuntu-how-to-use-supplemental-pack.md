@@ -12,7 +12,7 @@ The new build 'libVisionProxy.so' is already included in the fork [toschneck/Sik
   
 ---
 
-* Download under [SikuliX-2014/Libslux](https://github.com/RaiMan/SikuliX-2014/tree/master/Libslux)
+* Download under [SikuliX-2014/Setup/SikuliX-1.1.0-Beta-Supplemental-Linux.zip](https://github.com/RaiMan/SikuliX-2014/blob/master/Setup/src/main/resources/SikuliX-1.1.0-Beta-Supplemental-Linux.zip)
 
 * Unzip and read included README
 
@@ -28,3 +28,4 @@ The new build 'libVisionProxy.so' is already included in the fork [toschneck/Sik
   ./makeVisionProxy 
   
   ```
+* replace the 'libVisionProxy.so' file

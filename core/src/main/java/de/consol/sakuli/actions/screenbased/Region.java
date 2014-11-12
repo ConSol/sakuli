@@ -318,6 +318,33 @@ public class Region implements Action {
     }
 
     /**
+     * See {@link TypingUtil#keyDown(String)}.
+     */
+    @ModifySahiTimer
+    @LogToResult(message = "press key down", logClassInstance = false)
+    public Region keyDown(String keys) {
+        return typingUtil.keyDown(keys);
+    }
+
+    /**
+     * See {@link TypingUtil#keyUp(String)}.
+     */
+    @ModifySahiTimer
+    @LogToResult(message = "press key up", logClassInstance = false)
+    public Region keyUp(String keys) {
+        return typingUtil.keyUp(keys);
+    }
+
+    /**
+     * See {@link TypingUtil#write(String)}.
+     */
+    @ModifySahiTimer
+    @LogToResult(message = "interpret and write the following expresion", logClassInstance = false)
+    public Region write(String text) {
+        return typingUtil.write(text);
+    }
+
+    /**
      * delete a amount of chars in a field
      *
      * @param amountOfChars number of chars to delete
@@ -514,6 +541,17 @@ public class Region implements Action {
     public Region highlight() {
         regionImpl.highlight(getLoader().getSettings().DefaultHighlightTime);
         return this;
+    }
+
+    /**
+     * Blocks the current testcase execution for x seconds
+     *
+     * @param seconds to sleep
+     * @return this {@link Region} or NULL on errors.
+     */
+    @LogToResult(message = "sleep and do nothing for x seconds", logClassInstance = false)
+    public Region sleep(Integer seconds) {
+        return typingUtil.sleep(seconds);
     }
 
     /**

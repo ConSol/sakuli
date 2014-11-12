@@ -66,7 +66,7 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 
 ### Troubleshooting
 
-[Nagios Troubleshooting](./docs/troubleshooting-nagios.md) 
+[OMD/Nagios Troubleshooting](./docs/troubleshooting-omd.md) 
 
 [Sakuli Client Troubleshooting](./docs/troubleshooting-sakuli-client.md) 
 

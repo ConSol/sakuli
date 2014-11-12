@@ -36,7 +36,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This is a Singeton because the Function should be stateless
@@ -125,13 +124,7 @@ public class Environment implements Action {
      */
     @LogToResult(message = "sleep and do nothing for x seconds", logClassInstance = false)
     public Environment sleep(Integer seconds) {
-        try {
-            TimeUnit.SECONDS.sleep(seconds);
-        } catch (InterruptedException e) {
-            loader.getExceptionHandler().handleException(e, true);
-            return null;
-        }
-        return this;
+        return typingUtil.sleep(seconds);
     }
 
     /**
@@ -279,6 +272,33 @@ public class Environment implements Action {
     @LogToResult(message = "decrypt and type with pressed modifiers", logClassInstance = false, logArgs = false)
     public Environment typeAndDecrypt(String text, String optModifiers) {
         return typingUtil.typeAndDecrypt(text, optModifiers);
+    }
+
+    /**
+     * See {@link TypingUtil#keyDown(String)}.
+     */
+    @ModifySahiTimer
+    @LogToResult(message = "press key down", logClassInstance = false)
+    public Environment keyDown(String keys) {
+        return typingUtil.keyDown(keys);
+    }
+
+    /**
+     * See {@link TypingUtil#keyUp(String)}.
+     */
+    @ModifySahiTimer
+    @LogToResult(message = "press key up", logClassInstance = false)
+    public Environment keyUp(String keys) {
+        return typingUtil.keyUp(keys);
+    }
+
+    /**
+     * See {@link TypingUtil#write(String)}.
+     */
+    @ModifySahiTimer
+    @LogToResult(message = "interpret and write the following expresion", logClassInstance = false)
+    public Environment write(String text) {
+        return typingUtil.write(text);
     }
 
     /*********************
