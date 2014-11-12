@@ -6,6 +6,7 @@
  */
 package de.consol.sakuli.services;
 
+import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.loader.BeanLoader;
 
 import java.io.FileNotFoundException;
@@ -23,7 +24,11 @@ public class InitializingServiceHelper {
     public static void invokeInitializingServcies() throws FileNotFoundException {
         Map<String, InitializingService> initializingServices = BeanLoader.loadMultipleBeans(InitializingService.class);
         for (InitializingService initializingService : initializingServices.values()) {
-            initializingService.initTestSuite();
+            try {
+                initializingService.initTestSuite();
+            } catch (SakuliProxyException e) {
+                BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(e);
+            }
         }
     }
 }
