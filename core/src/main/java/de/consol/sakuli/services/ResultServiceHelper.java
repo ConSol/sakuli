@@ -9,6 +9,8 @@ package de.consol.sakuli.services;
 import de.consol.sakuli.loader.BeanLoader;
 
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * @author Tobias Schneck
@@ -19,7 +21,9 @@ public class ResultServiceHelper {
      */
     public static void invokeResultServices() {
         Map<String, ResultService> resultServices = BeanLoader.loadMultipleBeans(ResultService.class);
-        for (ResultService resultService : resultServices.values()) {
+        SortedSet<ResultService> services = new TreeSet<>(new PrioritizedServiceComparator<ResultService>());
+        services.addAll(resultServices.values());
+        for (ResultService resultService : services) {
             resultService.refreshStates();
             resultService.saveAllResults();
         }

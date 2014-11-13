@@ -11,6 +11,8 @@ import de.consol.sakuli.loader.BeanLoader;
 
 import java.io.FileNotFoundException;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * @author Tobias Schneck
@@ -23,7 +25,9 @@ public class InitializingServiceHelper {
      */
     public static void invokeInitializingServcies() throws FileNotFoundException {
         Map<String, InitializingService> initializingServices = BeanLoader.loadMultipleBeans(InitializingService.class);
-        for (InitializingService initializingService : initializingServices.values()) {
+        SortedSet<InitializingService> services = new TreeSet<>(new PrioritizedServiceComparator<InitializingService>());
+        services.addAll(initializingServices.values());
+        for (InitializingService initializingService : services) {
             try {
                 initializingService.initTestSuite();
             } catch (SakuliProxyException e) {
