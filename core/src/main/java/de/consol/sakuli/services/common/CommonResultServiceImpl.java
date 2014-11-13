@@ -20,6 +20,11 @@ public class CommonResultServiceImpl extends AbstractResultService {
     private static Logger logger = LoggerFactory.getLogger(CommonResultServiceImpl.class);
 
     @Override
+    public int getServicePriority() {
+        return 0;
+    }
+
+    @Override
     public void saveAllResults() {
         logger.info(testSuite.getResultString()
                 + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "

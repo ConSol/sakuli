@@ -191,9 +191,12 @@ public class SakuliStarter {
 
 
     /**
-     * Validates the path to the test suite folder and ensure that it contains the files: <ul>
-     * <li>testsuite.properties</li> <li>testsuite.suite</li> </ul> After all checks were succefull,the values will be
-     * set to the {@link SakuliPropertyPlaceholderConfigurer}.
+     * Validates the path to the test suite folder and ensure that it contains the files:
+     * <ul>
+     * <li>testsuite.properties</li>
+     * <li>testsuite.suite</li>
+     * </ul>
+     * After all checks were succefull,the values will be set to the {@link SakuliPropertyPlaceholderConfigurer}.
      *
      * @param testSuiteFolderPath path to test suite folder
      * @param tempLogCache        temporary string for later logging

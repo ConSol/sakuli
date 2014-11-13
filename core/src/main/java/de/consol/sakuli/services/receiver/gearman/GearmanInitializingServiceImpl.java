@@ -33,6 +33,11 @@ public class GearmanInitializingServiceImpl implements InitializingService {
     private static final Logger logger = LoggerFactory.getLogger(GearmanInitializingServiceImpl.class);
 
     @Override
+    public int getServicePriority() {
+        return 0;
+    }
+
+    @Override
     public void initTestSuite(){
         logger.info("GEARMAN INIT");
     }

@@ -28,7 +28,7 @@ import de.consol.sakuli.exceptions.SakuliProxyException;
  * @author tschneck
  *         Date: 22.05.14
  */
-public interface InitializingService {
+public interface InitializingService extends PrioritizedService {
 
     /**
      * initialize the test suite object:

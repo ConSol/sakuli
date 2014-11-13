@@ -53,6 +53,11 @@ public class GearmanResultServiceImpl extends AbstractResultService {
     private NagiosCheckResultBuilder nagiosCheckResultBuilder;
 
     @Override
+    public int getServicePriority() {
+        return 10;
+    }
+
+    @Override
     public void saveAllResults() {
         logger.info("======= SEND RESULTS TO GEARMAN SERVER ======");
         String hostname = properties.getServerHost();
@@ -98,9 +103,8 @@ public class GearmanResultServiceImpl extends AbstractResultService {
         return new GearmanNIOJobServerConnection(hostname, port);
     }
 
+
     protected GearmanClient getGearmanClient() {
         return new GearmanClientImpl();
     }
-
-
 }

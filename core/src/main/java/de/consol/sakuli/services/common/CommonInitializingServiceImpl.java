@@ -48,6 +48,11 @@ public class CommonInitializingServiceImpl implements InitializingService {
     @Autowired
     protected SakuliProperties sakuliProperties;
 
+    @Override
+    public int getServicePriority() {
+        return 100;
+    }
+
     /**
      * {@inheritDoc}
      */
