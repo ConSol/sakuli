@@ -21,10 +21,9 @@ package de.consol.sakuli.services;
 import de.consol.sakuli.datamodel.properties.SakuliProperties;
 
 /**
- * @author tschneck
- *         Date: 23.05.14
+ * @author tschneck Date: 23.05.14
  */
-public interface ResultService {
+public interface ResultService extends PrioritizedService {
 
     /**
      * refresh all states in the Sakuli test suite

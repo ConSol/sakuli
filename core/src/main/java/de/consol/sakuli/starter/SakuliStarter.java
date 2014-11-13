@@ -29,6 +29,7 @@ import de.consol.sakuli.exceptions.SakuliCipherException;
 import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.loader.BeanLoader;
 import de.consol.sakuli.services.InitializingService;
+import de.consol.sakuli.services.PrioritizedServiceComparator;
 import de.consol.sakuli.services.ResultService;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.apache.commons.cli.*;
@@ -41,6 +42,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class SakuliStarter {
 
@@ -149,7 +152,9 @@ public class SakuliStarter {
         TestSuite result;
         try {
             Map<String, InitializingService> initializingServices = BeanLoader.loadMultipleBeans(InitializingService.class);
-            for (InitializingService initializingService : initializingServices.values()) {
+            SortedSet<InitializingService> services = new TreeSet<>(new PrioritizedServiceComparator<InitializingService>());
+            services.addAll(initializingServices.values());
+            for (InitializingService initializingService : services) {
                 initializingService.initTestSuite();
             }
 
@@ -171,7 +176,9 @@ public class SakuliStarter {
         } finally {
             //save results for all active result services
             Map<String, ResultService> resultServices = BeanLoader.loadMultipleBeans(ResultService.class);
-            for (ResultService resultService : resultServices.values()) {
+            SortedSet<ResultService> services = new TreeSet<>(new PrioritizedServiceComparator<ResultService>());
+            services.addAll(resultServices.values());
+            for (ResultService resultService : services) {
                 resultService.refreshStates();
                 resultService.saveAllResults();
             }

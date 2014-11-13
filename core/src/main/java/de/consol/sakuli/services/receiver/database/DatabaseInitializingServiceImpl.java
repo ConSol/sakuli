@@ -45,6 +45,11 @@ public class DatabaseInitializingServiceImpl implements InitializingService {
     private SakuliExceptionHandler exceptionHandler;
 
     @Override
+    public int getServicePriority() {
+        return 0;
+    }
+
+    @Override
     public void initTestSuite() {
         try {
             testSuite.setDbPrimaryKey(daoTestSuite.insertInitialTestSuiteData());
@@ -52,5 +57,4 @@ public class DatabaseInitializingServiceImpl implements InitializingService {
             exceptionHandler.handleException(new SakuliReceiverException(e, "error at the initializing of the database"), true);
         }
     }
-
 }
