@@ -45,6 +45,15 @@ my %CASE_DBSTATUS_2_TEXT = (
 );
 
 
+# Perfdata Hash
+# The order of perfdata labels is important for PNP4Nagios to parse the suite name. 
+# Hence, we fill a perfdata hash with ordered/unordered items.
+
+my %perfdata = (
+	'ordered'	=> {},
+	'unordered'	=> []
+);
+
 # maps CASE state in th DB into Nagios states
 my %CASE_DBSTATUS_2_NAGIOSSTATUS = (
         0       => 0, 
@@ -180,21 +189,21 @@ sub nagios {
 				$case_total_nagios_result = $CASE_DBSTATUS_2_NAGIOSSTATUS{worststate($case_duration_db_result,1)};
 			}
 			if ($case_stale or $case_exception) {
-				$self->add_perfdata(sprintf("s_%d_%d_%s=%s;;;;",$casecount,$stepcount,$s_ref->{name}, "U"));
+				store_perfdata(sprintf("s_%d_%d_%s=%s;;;;",$casecount,$stepcount,$s_ref->{name}, "U"));
 			} else {
-				$self->add_perfdata(sprintf("s_%d_%d_%s=%0.2fs;%d;;;",$casecount,$stepcount,$s_ref->{name}, $s_ref->{duration}, $s_ref->{warning}));
+				store_perfdata(sprintf("s_%d_%d_%s=%0.2fs;%d;;;",$casecount,$stepcount,$s_ref->{name}, $s_ref->{duration}, $s_ref->{warning}));
 			}
 		}
                 # final case result
                 $self->add_nagios($case_total_nagios_result, sprintf("%s %s", $STATELABELS{$case_total_nagios_result}, $case_total_nagios_out));
 		# Don't print out perfdata if exception
 		if ($case_exception) {
-	                $self->add_perfdata(sprintf("c_%d_%s=%ss;;;;",$casecount,$c_ref->{name},"U"));
+	                store_perfdata(sprintf("c_%d_%s=%ss;;;;",$casecount,$c_ref->{name},"U"));
 		} else {
-	                $self->add_perfdata(sprintf("c_%d_%s=%0.2fs;%d;%d;;",$casecount,$c_ref->{name},$c_ref->{duration},$c_ref->{warning},$c_ref->{critical}));
+	                store_perfdata(sprintf("c_%d_%s=%0.2fs;%d;%d;;",$casecount,$c_ref->{name},$c_ref->{duration},$c_ref->{warning},$c_ref->{critical}));
 		}
 		# add perfdata which only contains the state of this case result. 
-	        $self->add_perfdata(sprintf("c_%dstate=%d;;;;",$casecount, $case_total_nagios_result));
+	        store_perfdata(sprintf("c_%dstate=%d;;;;",$casecount, $case_total_nagios_result));
         }
 	# determine the worst state of all cases 
 #	my $worst_suite;
@@ -204,7 +213,7 @@ sub nagios {
 #		}
 #	}
 	my $suite_nagios_result = $SUITE_DBSTATUS_2_NAGIOSSTATUS{ $self->{suite}{result} };
-	$self->add_perfdata(sprintf("suite_state=%d;;;;",$suite_nagios_result ));
+	store_perfdata(sprintf("suite__state=%d;;;;",$suite_nagios_result ),1);
 	
 	if (($self->{dbnow}) - ($self->{suite}{time}) > $params{name2}) {
 		$self->add_nagios(
@@ -216,7 +225,7 @@ sub nagios {
 				strftime("%d.%m. %H:%M:%S", localtime($self->{suite}{time}))
 			)
 		);
-		$self->add_perfdata(sprintf("suite_runtime_%s=%s;;;;",$params{name},"U"));
+		store_perfdata(sprintf("suite_%s=%s;;;;",$params{name},"U"),2);
 	} else {
 		my $suite_exception = ($self->{suite}{result} == 6);
 		$self->{suite}{msg} =~ s/\|/,/g;
@@ -240,8 +249,9 @@ sub nagios {
 		$self->add_nagios(
 			$suite_nagios_result,sprintf ($suite_nagios_out,$STATELABELS{$suite_nagios_result},$params{name}, $self->{suite}{duration})
 		);
-		$self->add_perfdata(sprintf("suite_runtime_%s=%0.2fs;%d;%d;;",$params{name},$self->{suite}{duration},$self->{suite}{warning}, $self->{suite}{critical}));
+		store_perfdata(sprintf("suite_%s=%0.2fs;%d;%d;;",$params{name},$self->{suite}{duration},$self->{suite}{warning}, $self->{suite}{critical}),2);
 	}
+	write_perfdata($self);
 
 }
 
@@ -320,8 +330,26 @@ sub worststate {
         return ($val1 > $val2 ? $val1 : $val2);
 }
 
+sub store_perfdata {
+	# arg1 = perfdata string 
+	# arg2 = order number (optional)
+	my $data = shift; 
+	if (@_) {
+		$perfdata{'ordered'}->{shift @_} = $data; 
+	} else {
+		push @{$perfdata{'unordered'}}, $data;
+	}
+}
 
-
-
-
-				
+sub write_perfdata {
+	my $_self = shift; 
+	$DB::single = 1;
+	# first, write ordered perfdata
+	foreach (sort keys %{$perfdata{'ordered'}}) {	
+		$_self->add_perfdata($perfdata{'ordered'}->{$_});
+	}	
+	# then write unordered perfdata
+	foreach (@{$perfdata{'unordered'}}) {
+		$_self->add_perfdata($_);
+	}
+}
