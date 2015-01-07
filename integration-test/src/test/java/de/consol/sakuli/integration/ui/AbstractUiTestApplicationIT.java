@@ -18,31 +18,21 @@
 
 package de.consol.sakuli.integration.ui;
 
-import de.consol.sakuli.actions.environment.Environment;
-import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.integration.IntegrationTest;
-import de.consol.sakuli.integration.builder.TestCaseBuilder;
 import de.consol.sakuli.integration.ui.app.UiTestApplication;
 import de.consol.sakuli.integration.ui.app.UiTestEvent;
-import de.consol.sakuli.loader.BeanLoader;
-import de.consol.sakuli.loader.ScreenActionLoader;
-import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
+import de.consol.sakuli.javaDSL.AbstractSakuliTest;
+import de.consol.sakuli.javaDSL.actions.Environment;
 import javafx.application.Platform;
-import net.sf.sahi.report.Report;
-import net.sf.sahi.rhino.RhinoScriptRunner;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import javafx.embed.swing.JFXPanel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeMethod;
 
-import java.io.File;
 import java.util.Map;
-import java.util.concurrent.*;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Represents an abstract representation of UI (user interface) integration test for Sakuli.
@@ -51,88 +41,51 @@ import static org.mockito.Mockito.when;
  * @author tschneck
  *         Date: 08.05.2014
  */
-@Test(groups = IntegrationTest.GROUP_UI)
-public abstract class AbstractUiTestApplicationIT implements IntegrationTest {
+public abstract class AbstractUiTestApplicationIT extends AbstractSakuliTest implements IntegrationTest {
 
-    private static final String TEST_CONTEXT_PATH = "ui-beanRefFactory.xml";
-    protected static Long DEFAULT_TIME_OUT_SEC = 30L;
+    public static final String IMAGE_LIB_FOLDER_NAME = "image_lib";
+    protected static Long DEFAULT_TIME_OUT_SEC = 5L;
     protected static Map<UiTestEvent, Integer> eventCounter;
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-    protected ExecutorService executorService;
-    protected UiTestApplication uiTestApplication;
     protected Environment env;
-    private ScreenActionLoader screenActionLoader;
-    @Mock
-    private RhinoScriptRunner rhinoScriptRunner;
 
-    @BeforeSuite
-    public void setUp() throws Exception {
-        executorService = Executors.newCachedThreadPool();
-        BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
-        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
+    @Override
+    protected String getIncludeFolder() {
+        return INCLUDE_FOLDER_PATH;
     }
 
-    @AfterSuite
-    public void tearDown() throws Exception {
-        executorService.shutdownNow();
+    @Override
+    protected String getTestSuiteFolder() {
+        return getTestSuiteRootFolder() + TEST_FOLDER_PATH;
     }
 
-    @BeforeMethod
-    public void init() throws Exception {
-        MockitoAnnotations.initMocks(this);
-
-        //generate a new empty test case for each IT
-        TestCase emptyTestCase = TestCaseBuilder.createEmptyTestCase("Integration Test for " + getUniqueTestCaseId(), getUniqueTestCaseId());
-        screenActionLoader = BeanLoader.loadScreenActionLoader();
-        screenActionLoader.getTestSuite().addTestCase(emptyTestCase.getId(), emptyTestCase);
-        screenActionLoader.init(emptyTestCase.getId(), getImagePaths());
-        screenActionLoader = initMocks(screenActionLoader);
-
-        //load environment variable
-        env = new Environment(false, screenActionLoader);
-
-        //prepare the ui test application
-        UiTestApplication.cleanAllEvents();
-        eventCounter = new ConcurrentHashMap<>();
-        uiTestApplication = new UiTestApplication();
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(TimeUnit.SECONDS.toMillis(DEFAULT_TIME_OUT_SEC));
-                    logger.error("!!! DEFAULT TIMEOUT REACHED (" + DEFAULT_TIME_OUT_SEC + " sec) !!!");
-                    Platform.exit();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+    @BeforeMethod(alwaysRun = true)
+    @Override
+    public void initTcStep() throws Exception {
+        super.initTcStep();
+        env = new Environment();
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void initStop() throws Throwable {
         executorService.awaitTermination(1, TimeUnit.MILLISECONDS);
-        logger.info("............................STOP");
-        Throwable e = screenActionLoader.getTestSuite().getException();
-        if (e != null) {
-            throw e;
-        }
+        stopUiApplication();
     }
 
-    private ScreenActionLoader initMocks(ScreenActionLoader screenActionLoader) {
-        ReflectionTestUtils.setField(screenActionLoader.getBaseLoader(), "rhinoScriptRunner", rhinoScriptRunner, RhinoScriptRunner.class);
-        when(rhinoScriptRunner.getReport()).thenReturn(mock(Report.class));
-        return screenActionLoader;
+    @AfterSuite(alwaysRun = true)
+    @Override
+    public void tearDown() throws Exception {
+        Platform.exit();
+        super.tearDown();
     }
 
-    /**
-     * @return the path as string to the pattern images.
-     */
-    protected String[] getImagePaths() {
-        return new String[]{
-                screenActionLoader.getTestSuite().getTestSuiteFolder().toString() + File.separator + "image_lib"
-        };
+    protected void stopUiApplication() {
+        logger.info("............................STOP UI-App");
+        //TODO TS go on here
+//        if(UiTestApplication.stage.isShowing()) {
+//            UiTestApplication.stage.hide();
+//        }
+//        Platform.exit();
     }
 
     /**
@@ -149,12 +102,28 @@ public abstract class AbstractUiTestApplicationIT implements IntegrationTest {
 
     /**
      * Starts the example {@link UiTestApplication}
-     *
-     * @return
      */
-    protected Future<Long> startUiTestApplication() {
+    protected void startUiApplication() {
         logger.info("............................START");
-        return executorService.submit(uiTestApplication);
+        final UiTestApplication uiTestApplication = new UiTestApplication();
+        new JFXPanel();
+        Platform.runLater(uiTestApplication);
+
+        //TODO TS remove
+//        Application.launch(UiTestApplication.class, (String[]) null);
+//        executorService.submit(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(TimeUnit.SECONDS.toMillis(DEFAULT_TIME_OUT_SEC));
+//                    logger.error("!!! DEFAULT TIMEOUT REACHED (" + DEFAULT_TIME_OUT_SEC + " sec) !!!");
+//                    Platform.exit();
+//                } catch (InterruptedException e) {
+//                    throw new RuntimeException(e);
+//                }
+//            }
+//        });
+//        return executorService.submit(uiTestApplication);
     }
 
     /**
@@ -178,9 +147,5 @@ public abstract class AbstractUiTestApplicationIT implements IntegrationTest {
             return eventCounter.get(testEvent);
         }
         return 0;
-    }
-
-    protected ScreenActionLoader getScreenActionLoader() {
-        return screenActionLoader;
     }
 }

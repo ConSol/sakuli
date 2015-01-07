@@ -85,15 +85,14 @@ public class ModifySahiTimerAspect extends BaseSakuliAspect {
     }
 
     void modifySahiTimer(JoinPoint joinPoint, boolean beforeMethod) {
-        getLogger(joinPoint).debug("MODIFY SAHI-TIMER for {}", getClassAndMethodAsString(joinPoint));
-
         BaseActionLoader loader = BeanLoader.loadBaseActionLoader();
         SahiProxyProperties sahiProxyProperties = loader.getSahiProxyProperties();
         if (sahiProxyProperties != null
                 && sahiProxyProperties.isRequestDelayActive()) {
-
             RhinoScriptRunner rhinoScriptRunner = loader.getRhinoScriptRunner();
+
             if (rhinoScriptRunner != null && rhinoScriptRunner.getSession() != null) {
+                getLogger(joinPoint).debug("MODIFY SAHI-TIMER for {}", getClassAndMethodAsString(joinPoint));
                 Session session = rhinoScriptRunner.getSession();
                 if (beforeMethod) {
                     Integer delay = determineDelay(joinPoint, loader);

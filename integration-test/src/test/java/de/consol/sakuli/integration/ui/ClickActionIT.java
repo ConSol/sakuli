@@ -18,19 +18,18 @@
 
 package de.consol.sakuli.integration.ui;
 
-import de.consol.sakuli.actions.screenbased.Region;
 import de.consol.sakuli.integration.IntegrationTest;
 import de.consol.sakuli.integration.ui.app.UiTestApplication;
-import javafx.application.Platform;
+import de.consol.sakuli.javaDSL.TestCaseInitParameter;
+import de.consol.sakuli.javaDSL.actions.Region;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import org.testng.annotations.Test;
 
-import java.util.concurrent.Future;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static de.consol.sakuli.integration.ui.app.UiTestEvent.LOGIN_BT;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 /**
  * @author tschneck
@@ -44,40 +43,71 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
         return "Click_Action_Test";
     }
 
-    @Test
-    public void testClickAction() throws Exception {
-        final int expectedCount = 2;
-        //set click event handler
-        UiTestApplication.addLoginControllEvent(LOGIN_BT, MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                logger.info("mouse event triggered");
-                countEvent(LOGIN_BT);
-                if (getEventCount(LOGIN_BT) >= expectedCount) {
-                    Platform.exit();
-                }
-            }
-        });
-        Future<Long> future = startUiTestApplication();
+    @Override
+    protected TestCaseInitParameter getTestCaseInitParameter() throws Throwable {
+        return new TestCaseInitParameter(getUniqueTestCaseId(), IMAGE_LIB_FOLDER_NAME);
+    }
 
+    public void testClickAction() throws Exception {
+        final int expectedClickCount = 3;
+        startUiApplication();
         /**
          * SAKULI ACTIONS
          */
         env.sleep(2);
-        env.setSimilarity(0.4);
 
         //opt 1
-        new Region("login_bt", false, getScreenActionLoader()).find().click();
-        Region region = new Region(false, getScreenActionLoader());
-        region.find("login_bt.png").click().highlight();
+        Region region = new Region();
+        region.find("login_bt.png").click();
+        env.sleep(2);
         //opt 2
-        new Region("login_bt", false, getScreenActionLoader()).click();
-        //opt3
+        new Region("login_bt").click();
+        env.sleep(2);
 
-        //assert that the runtime of the application fits
-        assertTrue(future.get() > 0);
+        new Region("login_bt.png").find().click();
         //assert the count of button clicks
-        assertEquals(getEventCount(LOGIN_BT), expectedCount);
-
+        assertEquals(getEventCount(LOGIN_BT), expectedClickCount);
     }
+
+    @Test
+    public void testWaitForClickAction() throws Exception {
+        final int expectedClickCount = 2;
+        startUiApplication();
+        /**
+         * SAKULI ACTIONS
+         */
+        env.sleep(2);
+
+        //opt 1
+        Region region = new Region();
+        region.waitForImage("login_bt.png", 3).doubleClick();
+
+        //assert the count of button clicks
+        assertEquals(getEventCount(LOGIN_BT), expectedClickCount);
+    }
+
+    protected void startUiApplication() {
+        UiTestApplication.cleanAllEvents();
+        UiTestApplication.addLoginControllEvent(LOGIN_BT, MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                logger.info("mouse event triggered");
+                countEvent(LOGIN_BT);
+                //TODO TS remove
+//                if (getEventCount(LOGIN_BT) >= expectedClickCount) {
+//                    stopUiApplication();
+//                    UiTestApplication.stage.close();
+//                }
+//                try {
+//                    Thread.sleep(5000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                executorService.submit(new UiTestApplication());
+            }
+        });
+        eventCounter = new ConcurrentHashMap<>();
+        super.startUiApplication();
+    }
+
 }

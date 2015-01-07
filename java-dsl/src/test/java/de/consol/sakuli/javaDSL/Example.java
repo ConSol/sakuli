@@ -14,7 +14,6 @@ import java.io.File;
 /**
  * @author Tobias Schneck
  */
-@Test(groups = AbstractSakuliTest.SAKULI_TEST)
 public class Example extends AbstractSakuliTest {
 
 

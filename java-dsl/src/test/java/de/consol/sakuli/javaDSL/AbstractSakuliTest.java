@@ -34,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Tobias Schneck
  */
-@Test(groups = AbstractSakuliTest.SAKULI_TEST)
 public abstract class AbstractSakuliTest {
     public static final String SAKULI_TEST = "sakuli-test";
     protected static final Logger logger = LoggerFactory.getLogger(AbstractSakuliTest.class);
@@ -50,7 +49,7 @@ public abstract class AbstractSakuliTest {
 
     protected abstract String getTestSuiteFolder();
 
-    @BeforeSuite
+    @BeforeSuite(alwaysRun = true)
     public void setUp() throws Exception {
         executorService = Executors.newCachedThreadPool();
         BeanLoader.CONTEXT_PATH = "java-dsl-beanRefFactory.xml";
@@ -60,7 +59,7 @@ public abstract class AbstractSakuliTest {
         InitializingServiceHelper.invokeInitializingServcies();
     }
 
-    @BeforeClass
+    @BeforeClass(alwaysRun = true)
     public void initTC() throws Throwable {
         String testCaseName = this.getClass().getSimpleName();
         initParameter = getTestCaseInitParameter();
@@ -68,8 +67,8 @@ public abstract class AbstractSakuliTest {
             throw new SakuliException("init parameter have to be set!");
         }
         testSuite = BeanLoader.loadBean(TestSuite.class);
-        testSuite.addTestCase(new TestCaseBuilder(this.getClass().getSimpleName(), initParameter.getTestCaseId()).build());
         testSuite.setUiTest(true);
+        testSuite.addTestCase(new TestCaseBuilder(testCaseName, initParameter.getTestCaseId()).build());
         testCaseAction = BeanLoader.loadTestCaseAction();
 
         //init the image folders and test case times
@@ -85,7 +84,7 @@ public abstract class AbstractSakuliTest {
         startTimeCase = DateTime.now();
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void initTcStep() throws Exception {
         counter++;
         startTime = DateTime.now();
@@ -143,8 +142,12 @@ public abstract class AbstractSakuliTest {
 
     @AfterSuite(alwaysRun = true)
     public void tearDown() throws Exception {
-        testSuite.setStopDate(DateTime.now().toDate());
-        ResultServiceHelper.invokeResultServices();
-        executorService.shutdownNow();
+        if (testSuite != null) {
+            testSuite.setStopDate(DateTime.now().toDate());
+            ResultServiceHelper.invokeResultServices();
+        }
+        if (executorService != null) {
+            executorService.shutdownNow();
+        }
     }
 }

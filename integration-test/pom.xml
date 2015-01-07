@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -36,7 +37,7 @@
     <properties>
         <sakuli.home>${project.parent.basedir}</sakuli.home>
         <test.included.groups>${test.group.integration}</test.included.groups>
-        <test.excluded.groups>${test.group.unit},${test.group.ui}</test.excluded.groups>
+        <test.excluded.groups>${test.group.unit},${test.group.ui},${test.group.sakuliDSL}</test.excluded.groups>
     </properties>
 
     <build>
@@ -90,8 +91,17 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>java-dsl</artifactId>
             <version>${project.parent.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>java-dsl</artifactId>
+            <version>${project.parent.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
 
         <!-- JAVA FX - unfortunately only over this way possible yet -->

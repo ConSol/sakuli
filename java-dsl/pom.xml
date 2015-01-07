@@ -17,7 +17,7 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -36,7 +36,7 @@
     <packaging>jar</packaging>
     <properties>
         <sakuli.home>${project.parent.basedir}</sakuli.home>
-        <test.excluded.groups>${test.group.unit},${test.group.sakuli}</test.excluded.groups>
+        <test.excluded.groups>${test.group.unit},${test.group.sakuliDSL}</test.excluded.groups>
         <test.included.groups/>
         <maven-failsafe-plugin.skip>true</maven-failsafe-plugin.skip>
     </properties>
@@ -93,18 +93,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>ui-tests</id>
-            <!-- Config that the example sakuli tests are skipped -->
-            <properties>
-                <test.included.groups>${test.group.sakuli}</test.included.groups>
-                <test.excluded.groups>${test.group.unit}</test.excluded.groups>
-                <maven-failsafe-plugin.skip>false</maven-failsafe-plugin.skip>
-            </properties>
-        </profile>
-    </profiles>
 
     <dependencies>
         <dependency>

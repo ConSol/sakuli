@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.consol.sakuli</groupId>
@@ -52,7 +53,7 @@
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
         <test.group.ui>ui</test.group.ui>
-        <test.group.sakuli>sakuli-test</test.group.sakuli>
+        <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
         <!-- special sakuli-version 99x - change this later to latest stable version-->
         <sikulixapi.version>1.1.990</sikulixapi.version>
     </properties>
@@ -82,7 +83,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <skip>false</skip>
-                    <excludedGroups>${test.group.integration},${test.group.sakuli}</excludedGroups>
+                    <excludedGroups>${test.group.integration},${test.group.sakuliDSL}</excludedGroups>
                     <excludes>
                         <!-- exludes the package de.consol.sakuli.integration-->
                         <exclude>**/integration/**/*</exclude>

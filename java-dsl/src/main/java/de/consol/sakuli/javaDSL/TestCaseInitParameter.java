@@ -40,7 +40,8 @@ public class TestCaseInitParameter {
      * Configures the init parameters with testCaseId and the testCaseFolderName. Warning and critical time will be 0
      * per default.
      *
-     * @param testCaseId identifier of a {@link TestCase}
+     * @param testCaseId         identifier of a {@link TestCase}
+     * @param testCaseFolderName name of the test case folder, which contains the set of images for the test case execution
      */
     public TestCaseInitParameter(String testCaseId, String testCaseFolderName) {
         this.testCaseId = testCaseId;
