@@ -65,17 +65,31 @@ $unkn_tick_opacity = "FF";
 
 sort($this->DS);
 
+
 # show CPU/MEM graphs only if Macros are set properly. For more information, see
 # https://github.com/ConSol/sakuli/blob/master/docs/installation-omd.md#include-cpumem-graphs-in-sakuli-graphs-optional
 if ( ( (array_key_exists('E2ECPUHOST', $this->MACRO)) and ($this->MACRO['E2ECPUHOST'] != '$_HOSTE2E_CPU_HOST$')) and ( ((array_key_exists('E2ECPUSVC', $this->MACRO))) and ($this->MACRO['E2ECPUSVC'] != '$_HOSTE2E_CPU_SVC$'))) {
-        $graph_cpu = true;
-        $rrddef_cpu = rrd::def("cpu_usage", OMD_SITE_ROOT . "/var/pnp4nagios/perfdata/" .
-                $this->MACRO['E2ECPUHOST'] . "/" .
-                $this->MACRO['E2ECPUSVC'] . "_1.rrd",1,"AVERAGE");
-        $rrddef_cpu .= rrd::line1("cpu_usage", $col_cpu, "CPU Usage");
-        $rrddef_cpu .= rrd::gprint("cpu_usage", "MAX", "%3.2lf%% MAX");
-        $rrddef_cpu .= rrd::gprint("cpu_usage", "AVERAGE", "%3.2lf%% AVERAGE");
-        $rrddef_cpu .= rrd::gprint("cpu_usage", "LAST", "%3.2lf%% LAST \j");
+	if (preg_match('/usage/i', $this->MACRO['E2ECPUSVC'])) {
+        	$graph_cpu = "%";
+	        $rrddef_cpu = rrd::def("cpu_usage", OMD_SITE_ROOT . "/var/pnp4nagios/perfdata/" .
+	                $this->MACRO['E2ECPUHOST'] . "/" .
+	                $this->MACRO['E2ECPUSVC'] . ".rrd",1,"AVERAGE");
+	        $rrddef_cpu .= rrd::line1("cpu_usage", $col_cpu, "CPU Usage");
+	        $rrddef_cpu .= rrd::gprint("cpu_usage", "MAX", "%3.2lf%% MAX");
+	        $rrddef_cpu .= rrd::gprint("cpu_usage", "AVERAGE", "%3.2lf%% AVERAGE");
+	        $rrddef_cpu .= rrd::gprint("cpu_usage", "LAST", "%3.2lf%% LAST \j");
+	} else if (preg_match('/load/i', $this->MACRO['E2ECPUSVC'])) {
+        	$graph_cpu = "load";
+                $rrddef_cpu = rrd::def("cpu_load", OMD_SITE_ROOT . "/var/pnp4nagios/perfdata/" .
+                        $this->MACRO['E2ECPUHOST'] . "/" .
+                        $this->MACRO['E2ECPUSVC'] . ".rrd",1,"AVERAGE");
+		# Load is usually a much lower value than usage (%) -> multiply by 10 and scale right axis
+		$rrddef_cpu .= rrd::cdef("cpu_load10", "cpu_load,10,*");
+                $rrddef_cpu .= rrd::line1("cpu_load10", $col_cpu, "CPU Load");
+                $rrddef_cpu .= rrd::gprint("cpu_load10", "MAX", "%3.2lf MAX");
+                $rrddef_cpu .= rrd::gprint("cpu_load10", "AVERAGE", "%3.2lf AVERAGE");
+                $rrddef_cpu .= rrd::gprint("cpu_load10", "LAST", "%3.2lf LAST \j");
+	}
 } else {
         $graph_cpu = false;
         $rrdopts_cpu = "";
@@ -200,7 +214,12 @@ $def[0] .= "VRULE:".$NAGIOS_TIMET."#000000:\"Last Service Check \\n\" ";
 if ($graph_cpu or $graph_mem) {
 	$def[0] .= rrd::comment(" \\n");
 	$def[0] .= rrd::comment("Host Statistics\:\\n");
-	$opt[0] .= " --right-axis \"1:0\" --right-axis-label \"%\" ";
+	if ($graph_cpu == "load" ) {
+		# Load is usually a much lower value than usage (%) -> scale the right axis with factor 10
+		$opt[0] .= " --right-axis \"0.1:0\" --right-axis-label \"CPU Load\" ";
+	} else {
+		$opt[0] .= " --right-axis \"1:0\" --right-axis-label \"CPU Usage\" ";
+	}
 }
 if ( $graph_cpu ) {
 	$def[0] .= $rrddef_cpu;	
@@ -310,7 +329,13 @@ foreach ($this->DS as $KEY=>$VAL) {
                 if ($graph_cpu or $graph_mem) {
                         $def[$casecount] .= rrd::comment(" \\n");
                         $def[$casecount] .= rrd::comment("Host Statistics\:\\n");
-                        $opt[$casecount] .= " --right-axis \"1:0\" --right-axis-label \"%\" ";
+
+		        if ($graph_cpu == "load" ) {
+				# Load is usually a much lower value than usage (%) -> scale the right axis with factor 10
+		                $opt[$casecount] .= " --right-axis \"0.1:0\" --right-axis-label \"CPU Load\" ";
+		        } else {
+		                $opt[$casecount] .= " --right-axis \"1:0\" --right-axis-label \"CPU Usage\" ";
+		        }
                 }
 		if ( $graph_cpu ) {
 			$def[$casecount] .= $rrddef_cpu;	
