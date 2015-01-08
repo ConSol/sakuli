@@ -24,6 +24,7 @@ import de.consol.sakuli.javaDSL.TestCaseInitParameter;
 import de.consol.sakuli.javaDSL.actions.Region;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.testng.annotations.Test;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,66 +49,65 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
         return new TestCaseInitParameter(getUniqueTestCaseId(), IMAGE_LIB_FOLDER_NAME);
     }
 
-    public void testClickAction() throws Exception {
-        final int expectedClickCount = 3;
-        startUiApplication();
-        /**
-         * SAKULI ACTIONS
-         */
-        env.sleep(2);
-
-        //opt 1
-        Region region = new Region();
-        region.find("login_bt.png").click();
-        env.sleep(2);
-        //opt 2
-        new Region("login_bt").click();
-        env.sleep(2);
-
-        new Region("login_bt.png").find().click();
-        //assert the count of button clicks
-        assertEquals(getEventCount(LOGIN_BT), expectedClickCount);
-    }
-
-    @Test
     public void testWaitForClickAction() throws Exception {
         final int expectedClickCount = 2;
-        startUiApplication();
+        Stage stage = startUiApplication();
         /**
          * SAKULI ACTIONS
          */
-        env.sleep(2);
+//        env.sleep(2);
 
         //opt 1
         Region region = new Region();
         region.waitForImage("login_bt.png", 3).doubleClick();
 
         //assert the count of button clicks
+        stopUiApplication(stage);
         assertEquals(getEventCount(LOGIN_BT), expectedClickCount);
     }
 
-    protected void startUiApplication() {
+    @Test
+    public void testClickAction() throws Exception {
+        final int expectedClickCount = 3;
+//        env.setSimilarity(0.85);
+        Stage stage = startUiApplication();
+        /**
+         * SAKULI ACTIONS
+         */
+
+        //opt 1
+//        env.sleep(9999);
+        de.consol.sakuli.actions.screenbased.Region region = new Region().exists("login_bt.png", 5);
+        region.find().click();
+//        assertEquals(getEventCount(LOGIN_BT), 1);
+        //opt 2
+        new Region().find("username").doubleClick().type("demo");
+        new Region().find("login_bt").click();
+//        new Region().find("password").doubleClick().type("demo");
+        new Region("password").doubleClick().type("demo");
+        new Region("login_bt").click().sleep(2);
+//        new Region().find("login_bt").click().sleep(2);
+//        assertEquals(getEventCount(LOGIN_BT), 2);
+        assertEquals(getEventCount(LOGIN_BT), 3);
+//        env.sleep(2);
+
+//        new Region("login_bt.png").find().click();
+//        env.sleep(2);
+        //assert the count of button clicks
+        stopUiApplication(stage);
+    }
+
+    protected Stage startUiApplication() {
         UiTestApplication.cleanAllEvents();
+        eventCounter = new ConcurrentHashMap<>();
         UiTestApplication.addLoginControllEvent(LOGIN_BT, MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                logger.info("mouse event triggered");
+                logger.info("---> MOUSE EVENT triggered");
                 countEvent(LOGIN_BT);
-                //TODO TS remove
-//                if (getEventCount(LOGIN_BT) >= expectedClickCount) {
-//                    stopUiApplication();
-//                    UiTestApplication.stage.close();
-//                }
-//                try {
-//                    Thread.sleep(5000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                executorService.submit(new UiTestApplication());
             }
         });
-        eventCounter = new ConcurrentHashMap<>();
-        super.startUiApplication();
+        return super.startUiApplication();
     }
 
 }

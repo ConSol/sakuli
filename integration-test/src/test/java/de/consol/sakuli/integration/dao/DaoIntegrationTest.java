@@ -38,6 +38,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.sql.DataSource;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 
 import static de.consol.sakuli.integration.IntegrationTest.GROUP;
 import static org.mockito.Matchers.any;
@@ -66,9 +69,18 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
     @BeforeClass
     public void initTestFolder() {
         BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
-        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = getTestSuiteFolder();
         SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
         dataSource = BeanLoader.loadBean(DataSource.class);
+    }
+
+    private String getTestSuiteFolder() {
+        URL test_suites = this.getClass().getResource("/test_suites");
+        try {
+            return Paths.get(test_suites.toURI()).toString() + TEST_FOLDER_PATH;
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Can't load test_suites folder:", e);
+        }
     }
 
     @BeforeMethod

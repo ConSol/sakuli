@@ -24,7 +24,10 @@ import de.consol.sakuli.integration.ui.app.UiTestEvent;
 import de.consol.sakuli.javaDSL.AbstractSakuliTest;
 import de.consol.sakuli.javaDSL.actions.Environment;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.embed.swing.JFXPanel;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterMethod;
@@ -44,7 +47,6 @@ import java.util.concurrent.TimeUnit;
 public abstract class AbstractUiTestApplicationIT extends AbstractSakuliTest implements IntegrationTest {
 
     public static final String IMAGE_LIB_FOLDER_NAME = "image_lib";
-    protected static Long DEFAULT_TIME_OUT_SEC = 5L;
     protected static Map<UiTestEvent, Integer> eventCounter;
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     protected Environment env;
@@ -69,7 +71,6 @@ public abstract class AbstractUiTestApplicationIT extends AbstractSakuliTest imp
     @AfterMethod(alwaysRun = true)
     public void initStop() throws Throwable {
         executorService.awaitTermination(1, TimeUnit.MILLISECONDS);
-        stopUiApplication();
     }
 
     @AfterSuite(alwaysRun = true)
@@ -79,13 +80,20 @@ public abstract class AbstractUiTestApplicationIT extends AbstractSakuliTest imp
         super.tearDown();
     }
 
-    protected void stopUiApplication() {
+    protected void stopUiApplication(final Stage stage) {
         logger.info("............................STOP UI-App");
-        //TODO TS go on here
-//        if(UiTestApplication.stage.isShowing()) {
-//            UiTestApplication.stage.hide();
-//        }
-//        Platform.exit();
+        Platform.runLater(new Task<Boolean>() {
+            @Override
+            protected Boolean call() throws Exception {
+                if (Platform.isFxApplicationThread()) {
+                    logger.info("fire WINDOW_CLOSE_REQUEST to FX-THREAD!");
+                    fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
+                    return true;
+                }
+                logger.error("cloud not close - NO FX-THREAD!");
+                return false;
+            }
+        });
     }
 
     /**
@@ -103,27 +111,12 @@ public abstract class AbstractUiTestApplicationIT extends AbstractSakuliTest imp
     /**
      * Starts the example {@link UiTestApplication}
      */
-    protected void startUiApplication() {
+    protected Stage startUiApplication() {
         logger.info("............................START");
         final UiTestApplication uiTestApplication = new UiTestApplication();
         new JFXPanel();
         Platform.runLater(uiTestApplication);
-
-        //TODO TS remove
-//        Application.launch(UiTestApplication.class, (String[]) null);
-//        executorService.submit(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(TimeUnit.SECONDS.toMillis(DEFAULT_TIME_OUT_SEC));
-//                    logger.error("!!! DEFAULT TIMEOUT REACHED (" + DEFAULT_TIME_OUT_SEC + " sec) !!!");
-//                    Platform.exit();
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
-//        return executorService.submit(uiTestApplication);
+        return UiTestApplication.stage;
     }
 
     /**
@@ -131,18 +124,19 @@ public abstract class AbstractUiTestApplicationIT extends AbstractSakuliTest imp
      *
      * @param testEvent test event to count
      */
-    protected void countEvent(UiTestEvent testEvent) {
+    synchronized protected void countEvent(UiTestEvent testEvent) {
         Integer count = 1;
         if (eventCounter.containsKey(testEvent)) {
             count = eventCounter.get(testEvent) + 1;
         }
+        logger.info("set CLICK-COUNT to {}", count);
         eventCounter.put(testEvent, count);
     }
 
     /**
      * @return the counter of the assigned {@link UiTestEvent}.
      */
-    protected int getEventCount(UiTestEvent testEvent) {
+    synchronized protected int getEventCount(UiTestEvent testEvent) {
         if (eventCounter.containsKey(testEvent)) {
             return eventCounter.get(testEvent);
         }

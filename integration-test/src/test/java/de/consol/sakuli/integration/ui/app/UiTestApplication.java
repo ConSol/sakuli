@@ -4,6 +4,7 @@
 package de.consol.sakuli.integration.ui.app;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -14,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageBuilder;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -65,11 +67,10 @@ public class UiTestApplication extends Application implements Runnable {
     public void run() {
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
-
         //create Login scene
         Scene loginScene = gotoLogin();
-        //final double height = bounds.getHeight() - 500;
-        final double height = bounds.getHeight();
+        final double height = bounds.getHeight() - 100;
+//        final double height = bounds.getHeight();
 
         Stage stage = StageBuilder.create()
                 .x(0).y(0)
@@ -77,10 +78,11 @@ public class UiTestApplication extends Application implements Runnable {
                 .height(height)
                 .title("Sakuli Login Sample")
                 .scene(loginScene)
-                .onCloseRequest(new EventHandler<javafx.stage.WindowEvent>() {
+                .onCloseRequest(new EventHandler<WindowEvent>() {
                     @Override
-                    public void handle(javafx.stage.WindowEvent windowEvent) {
-                        System.exit(0);
+                    public void handle(WindowEvent windowEvent) {
+                        LOGGER.info("PLATFORM exit!");
+                        Platform.exit();
                     }
                 }).build();
         start(stage);

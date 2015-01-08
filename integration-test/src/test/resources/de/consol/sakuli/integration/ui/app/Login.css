@@ -32,9 +32,8 @@
 
 .label {
     -fx-font-family: "Arial";
-    -fx-font-size: 14;
-    -fx-text-fill: rgb(255, 255, 255, 0.4);
-    -fx-effect: dropshadow(one-pass-box, rgb(0, 0, 0, 0.6), 0, 0.0, 0, 1);
+    -fx-font-size: 16;
+    -fx-text-fill: darkblue;
 }
 
 .profileTitle {
@@ -78,7 +77,7 @@
     -fx-background-insets: 0 0 -1 0, 0, 1.5;
     -fx-background-radius: 6, 5, 4;
     -fx-padding: 6 10 4 10;
-    -fx-effect: innershadow(gaussian, rgb(0, 0, 0, 0.8), 5, 0, 0, 2);
+    -fx-text-fill: #000000;
     -fx-font-family: "Arial";
 }
 
