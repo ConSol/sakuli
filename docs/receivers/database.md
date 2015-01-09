@@ -21,24 +21,23 @@ Open *~/.my.cnf* and set the following values:
 
 	OMD[sakuli]:~$ vim .my.cnf
 	# make sure to choose a free port
-	 port = 3007  
+	port = 3007  
 	# bind on all interfaces
-	 bind-address = 0.0.0.0 
+	bind-address = 0.0.0.0 
 	# enable network access
-	 #skip-networking
+	#skip-networking
 
 Create the system tables for the new database and start OMD afterwards. You should see now OMD coming up with a dedicated MySQL instance: 
 
 	OMD[sakuli]:~$ mysql_install_db 
 	OMD[sakuli]:~$ omd start
-	 Starting dedicated Apache for site sakuli...OK
-  	 Starting MySQL... .OK.
-	 Starting rrdcached...OK
-	 Starting npcd...OK
-	 Starting nagios...OK
-	 Initializing Crontab...
+	Starting dedicated Apache for site sakuli...OK
+	Starting MySQL... .OK.
+	Starting rrdcached...OK
+	Starting npcd...OK
+	Starting nagios...OK
+	Initializing Crontab...
 	 
-
 ### create Sakuli DB and user
 
 Create the Sakuli database using the SQL script within the repository: 
@@ -63,7 +62,7 @@ To fetch Sakuli's check results from the database, Nagios uses the plugin [check
 
 #### CheckMySQLHealthSakuli.pm
 
-The Perl module *CheckMySQLHealthSakuli.pm*  enhances the functionality of *check_mysql_health* by introducing the mode *--my-sakuli-suite*. 
+The Perl module *CheckMySQLHealthSakuli.pm*  enhances the functionality of *check_mysql_health* by introducing the mode *--my-sakuli-suite*. This mode allows to read out the last result for a given Sakuli suite. 
 
 Create the *etc* directory for *check_mysql_health* and copy the module there: 
 
