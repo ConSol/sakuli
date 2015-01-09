@@ -191,7 +191,7 @@
     <!-- ===========================================================  -->
     <!-- see jolokia sample - https://github.com/rhuss/jolokia/blob/master/pom.xml -->
     <scm>
-        <connection>scm:git:git://github.com/ConSol/sakuli.git</connection>
+        <connection>scm:git:ssh://github.com/ConSol/sakuli.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/ConSol/sakuli.git</developerConnection>
         <url>git://github.com/ConSol/sakuli.git</url>
         <tag>HEAD</tag>
