@@ -117,12 +117,12 @@ Open `%SAKULI_HOME\_include\sakuli.properties` on the Sakuli client:
 
 Each of the six macros above is set by default to the following: 
 
-	#sakuli.receiver.gearman.nagios.output.suite.summary= {{state}} - {{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})
-	#sakuli.receiver.gearman.nagios.output.suite.table={{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})
-	#sakuli.receiver.gearman.nagios.output.case.ok={{state_short}} case "{{id}}" ran in {{duration}}s - {{state_description}}
-	#sakuli.receiver.gearman.nagios.output.case.warning={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{warning_threshold}}s) {{step_information}}
-	#sakuli.receiver.gearman.nagios.output.case.critical={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{critical_threshold}}s) {{step_information}}
-	#sakuli.receiver.gearman.nagios.output.case.error={{state_short}} case "{{id}}" {{state_description}}: {{error_message}}
+	sakuli.receiver.gearman.nagios.output.suite.summary= {{state}} - {{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})
+    sakuli.receiver.gearman.nagios.output.suite.table={{state_short}} Sakuli suite "{{id}}" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}}){{error_screenshot}}
+    sakuli.receiver.gearman.nagios.output.case.ok={{state_short}} case "{{id}}" ran in {{duration}}s - {{state_description}}
+    sakuli.receiver.gearman.nagios.output.case.warning={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{warning_threshold}}s) {{step_information}}
+    sakuli.receiver.gearman.nagios.output.case.critical={{state_short}} case "{{id}}" over runtime ({{duration}}s /{{state_description}} at {{critical_threshold}}s) {{step_information}}
+    sakuli.receiver.gearman.nagios.output.case.error={{state_short}} case "{{id}}" {{state_description}}: {{error_message}}{{error_screenshot}}
 
  
 To change the text of one or more macro, you can use variables in the format `{{variable_name}}`. In this way, Sakuli notifications can be formatted as flexible as possible. Notice that not every variable gets filled in every situation; if not, they are empty. The following variables are available:

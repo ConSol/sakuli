@@ -13,9 +13,32 @@ _**When I open the Sahi dashboard, no browsers are shown.**_
 
 ![nobrowser](../docs/pics/w_sahi_no_browser.jpg) 
 
-Open _**SAKULI_HOME**\sahi\userdata\config\browser_types.xml_. Each browser is defined within a **browserType** block. 
-#### Check variable ProgramFiles
-"path" probably contains the variable **"$ProgramFiles (x86)…"**, which is wrong. *$ProgramFiles* itself resolves already to the right folder, hence you should delete the " (x86)" part. Restart the Sahi dashboard and try again.
+Open _**SAKULI_HOME**\sahi\userdata\config\browser_types.xml_. Each browser is defined within a **browserType** block. "path" probably contains the variable **"$ProgramFiles (x86)…"**, which is wrong. *$ProgramFiles* itself resolves already to the right folder, hence you should delete the " (x86)" part. Restart the Sahi dashboard and try again.
+
+This are exemplary entries for Mozilla Firefox and Google Chrome: 
+
+	
+
+            <browserType>
+                    <name>firefox</name>
+                    <displayName>Firefox</displayName>
+                    <icon>firefox.png</icon>
+                    <path>C:\Program Files (x86)\Mozilla Firefox\firefox.exe</path>  
+                    <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>  
+                    <processName>firefox.exe</processName>
+                    <capacity>5</capacity>  
+            </browserType>
+     
+            <browserType>
+                    <name>chrome</name>
+                    <displayName>Chrome</displayName>
+                    <icon>chrome.png</icon>
+                    <path>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</path>  
+                    <options>--user-data-dir=$userDir\browser\chrome\profiles\sahi$threadNo --proxy-server=localhost:9999 --disable-popup-blocking --always-authorize-plugins</options>  
+                    <processName>chrome.exe</processName>
+                    <capacity>5</capacity>  
+            </browserType>
+
 	
 
 

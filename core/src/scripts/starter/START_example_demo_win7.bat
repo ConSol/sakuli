@@ -2,6 +2,8 @@
 
 set SUITE=example
 
+REM START /min ..\helper\record.bat %SUITE% 120
+
 set TEST_SUITE_FOLDER=%SAKULI_HOME%\sakuli_test_suites\%SUITE%
 
 set SAKULI_JARS=%SAKULI_HOME%\bin\lib\*;%SAKULI_HOME%\bin\lib\resource;

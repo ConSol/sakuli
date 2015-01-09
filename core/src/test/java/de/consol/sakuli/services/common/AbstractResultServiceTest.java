@@ -16,6 +16,11 @@ public class AbstractResultServiceTest {
     @InjectMocks
     private AbstractResultService testling = new AbstractResultService() {
         @Override
+        public int getServicePriority() {
+            return 0;
+        }
+
+        @Override
         public void saveAllResults() {
         }
     };

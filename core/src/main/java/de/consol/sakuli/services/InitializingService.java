@@ -20,8 +20,7 @@ package de.consol.sakuli.services;
 
 import de.consol.sakuli.datamodel.TestCase;
 import de.consol.sakuli.datamodel.properties.TestSuiteProperties;
-
-import java.io.FileNotFoundException;
+import de.consol.sakuli.exceptions.SakuliProxyException;
 
 /**
  * Service Interface for all initializing actions.
@@ -29,7 +28,7 @@ import java.io.FileNotFoundException;
  * @author tschneck
  *         Date: 22.05.14
  */
-public interface InitializingService {
+public interface InitializingService extends PrioritizedService {
 
     /**
      * initialize the test suite object:
@@ -38,5 +37,5 @@ public interface InitializingService {
      * <li>load the {@link TestCase}s</li>
      * </ol>
      */
-    void initTestSuite() throws FileNotFoundException;
+    void initTestSuite() throws SakuliProxyException;
 }

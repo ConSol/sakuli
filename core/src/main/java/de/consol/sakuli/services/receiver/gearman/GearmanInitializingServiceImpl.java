@@ -23,8 +23,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
-
 /**
  * @author tschneck
  *         Date: 09.07.14
@@ -35,7 +33,12 @@ public class GearmanInitializingServiceImpl implements InitializingService {
     private static final Logger logger = LoggerFactory.getLogger(GearmanInitializingServiceImpl.class);
 
     @Override
-    public void initTestSuite() throws FileNotFoundException {
+    public int getServicePriority() {
+        return 0;
+    }
+
+    @Override
+    public void initTestSuite(){
         logger.info("GEARMAN INIT");
     }
 }

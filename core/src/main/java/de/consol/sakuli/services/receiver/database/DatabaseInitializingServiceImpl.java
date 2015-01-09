@@ -27,8 +27,6 @@ import de.consol.sakuli.services.receiver.database.dao.DaoTestSuite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.FileNotFoundException;
-
 /**
  * Additional initializing actions for the database based result saving.
  * The {@link CommonInitializingServiceImpl#initTestSuite()} will be also called.
@@ -47,12 +45,16 @@ public class DatabaseInitializingServiceImpl implements InitializingService {
     private SakuliExceptionHandler exceptionHandler;
 
     @Override
-    public void initTestSuite() throws FileNotFoundException {
+    public int getServicePriority() {
+        return 0;
+    }
+
+    @Override
+    public void initTestSuite() {
         try {
             testSuite.setDbPrimaryKey(daoTestSuite.insertInitialTestSuiteData());
         } catch (Throwable e) {
             exceptionHandler.handleException(new SakuliReceiverException(e, "error at the initializing of the database"), true);
         }
     }
-
 }

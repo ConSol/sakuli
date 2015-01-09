@@ -119,12 +119,15 @@ public class ModifySahiTimerAspect extends BaseSakuliAspect {
     protected Integer determineDelay(JoinPoint joinPoint, BaseActionLoader loader) {
         Integer deleay = loader.getSahiProxyProperties().getRequestDelayMs();
         if (joinPoint.getSignature().getName().startsWith("type")) {
-            Object text = joinPoint.getArgs()[0];
-            if (text instanceof String) {
-                int length = ((String) text).length();
-                int typeDelayMs = new Double(loader.getActionProperties().getTypeDelay() * 1000).intValue();
+            Object[] args = joinPoint.getArgs();
+            if (args != null && args.length > 0) {
+                Object text = args[0];
+                if (text instanceof String) {
+                    int length = ((String) text).length();
+                    int typeDelayMs = new Double(loader.getActionProperties().getTypeDelay() * 1000).intValue();
 
-                return length * (typeDelayMs + deleay);
+                    return length * (typeDelayMs + deleay);
+                }
             }
         }
         return deleay;

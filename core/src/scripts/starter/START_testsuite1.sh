@@ -1,19 +1,8 @@
 #!/bin/sh
-#Starter script for the sakuli application
-#
-#
-#project folder: default def
-PROJECT_FOLDER=$SAKULI_HOME
-echo project-folder: $PROJECT_FOLDER
 
-#define your test suite folder here:
-TEST_SUITE_FOLDER=$PROJECT_FOLDER/sakuli_test_suites/example
-echo suite-folder: $TEST_SUITE_FOLDER
+SUITE=example
 
-#internal folders for application logic
-INCLUDE_FOLDER=$PROJECT_FOLDER/_include
-SAKULI_JARS=$PROJECT_FOLDER/bin/lib/*
-echo jar-file: $SAKULI_JARS
+INCLUDE_FOLDER=$SAKULI_HOME/_include
+SAKULI_JARS=$SAKULI_HOME/bin/lib/*
 
-#start the java application
-java -classpath $PROJECT_FOLDER/bin/sakuli.jar:$SAKULI_JARS de.consol.sakuli.starter.SakuliStarter -run "$TEST_SUITE_FOLDER" "$INCLUDE_FOLDER"
+java -classpath $SAKULI_HOME/bin/sakuli.jar:$SAKULI_JARS de.consol.sakuli.starter.SakuliStarter -run "$SAKULI_HOME/sakuli_test_suites/$SUITE" "$INCLUDE_FOLDER"

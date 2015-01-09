@@ -1,6 +1,14 @@
 ## Change Log of Sakuli Releases
 
-- - - 
+- - -
+
+### Version 0.4.7
+* add function `getLastUrl()` to the `TestCase` functions, to enable URL based test case handling.
+* uncomment some receiver properties in `sakuli.properties` to make the property overriding more generic.
+
+### Version 0.4.6
+* add `sleep()` method to Region
+* `keyUp(...)`, `keyDown(...)` and `write(...)` method to the Region and Environment functions to have more control over the typing.
 
 ### Version 0.4.5
 * add method to set an delay for the sahi-status-requests, so that no key or click events will be lost by the JavaScript engine of the Browser, see new entry in `sakuli.properties`:

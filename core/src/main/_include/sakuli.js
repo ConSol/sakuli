@@ -33,7 +33,8 @@ _include("sakuli_Region.js");
  *****************************************************************************************************/
 
 /**
- * CONSTRUCTOR: TestCase - Sets the current test case folder as default folder and calls TestCaseWithImagePathArray(...).
+ * CONSTRUCTOR: TestCase - Sets the current test case folder as default folder and calls
+ * TestCaseWithImagePathArray(...).
  * @param {Integer} `warningTime` threshold in seconds
  * @param {Integer} `criticalTime` threshold in seconds
  */
@@ -46,7 +47,8 @@ function TestCase(warningTime, criticalTime) {
 }
 
 /**
- * CONSTRUCTOR: TestCase - This function initializes the Sakuli object and sets the warning and critical time for this test case.
+ * CONSTRUCTOR: TestCase - This function initializes the Sakuli object and sets the warning and critical time for this
+ * test case.
  * @param {Integer} `warningTime` threshold in seconds
  * @param {Integer} `criticalTime` threshold in seconds
  * @param {String} `picPath` Path to the folder containing the pictures for these test cases.
@@ -78,9 +80,10 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
      *****************************************************************************************************/
 
     /**
-     * A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its particular runtime.
-     * Together with the test Case, a special "step" timer is started. Each time endOfStep is called, the current timer value is read out,
-     * stored with the step name (first parameter) and gets resetted . If the runtime exceeds the step threshold (second parameter), the step is saved with state "WARNING".
+     * A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
+     * particular runtime. Together with the test Case, a special "step" timer is started. Each time endOfStep is
+     * called, the current timer value is read out, stored with the step name (first parameter) and gets resetted . If
+     * the runtime exceeds the step threshold (second parameter), the step is saved with state "WARNING".
      * @param {String} `stepName`
      * @param {Integer} `warningTime` threshold in seconds
      */
@@ -94,7 +97,8 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
 
 
     /**
-     * Handles any Exception or Error. The handleException function calls the Java backend and stores the Exception to the database.
+     * Handles any Exception or Error. The handleException function calls the Java backend and stores the Exception to
+     * the database.
      *
      * Use it at the end of a catch-block. Example:
      *        try {
@@ -152,6 +156,17 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
      */
     that.getID = function () {
         return that.tcID;
+    };
+
+    /**
+     * Updates and returns the URL of the last visited URL
+     * @returns {String} last visited URL
+     */
+    that.getLastURL = function () {
+        var lastURL = "";
+        _set(lastURL, window.document.location.href);
+        that.javaObject.setLastURL(lastURL);
+        return that.javaObject.getLastURL();
     };
 
     /*****************************************************************************************************

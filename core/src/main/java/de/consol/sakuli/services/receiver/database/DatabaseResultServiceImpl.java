@@ -53,6 +53,11 @@ public class DatabaseResultServiceImpl extends AbstractResultService {
     private SakuliExceptionHandler exceptionHandler;
 
     @Override
+    public int getServicePriority() {
+        return 10;
+    }
+
+    @Override
     public void saveAllResults() {
         logger.info("try to save all results to the database");
         try {

@@ -20,14 +20,10 @@ package de.consol.sakuli.actions.screenbased;
 
 import de.consol.sakuli.actions.Action;
 import de.consol.sakuli.datamodel.actions.ImageLibObject;
-import de.consol.sakuli.datamodel.actions.Screen;
 import de.consol.sakuli.exceptions.SakuliException;
 import de.consol.sakuli.loader.ScreenActionLoader;
 import org.sikuli.basics.Settings;
-import org.sikuli.script.FindFailed;
-import org.sikuli.script.Key;
-import org.sikuli.script.Match;
-import org.sikuli.script.Pattern;
+import org.sikuli.script.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -118,8 +114,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         }
         Match match;
         try {
-            //TODO TS check if you can get sreen from the context
-            match = new Screen().find(imagePattern.getPattern());
+            match = loader.getScreen().find(imagePattern.getPattern());
         } catch (FindFailed findFailed) {
             match = null;
         }
@@ -162,8 +157,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         if (imagePattern == null) {
             return this.findBaseRegion();
         }
-        //TODO TS check if you can get sreen from the context
-        return toRegion(new Screen().exists(imagePattern.getPattern()));
+        return toRegion(loader.getScreen().exists(imagePattern.getPattern()));
     }
 
     /**
@@ -205,9 +199,14 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
      */
     public RegionImpl clickMe() {
         RegionImpl baseRegion = findBaseRegion();
+        if (baseRegion == null) {
+            //exception is already thrown and handled method findBaseRegion()!
+            return null;
+        }
         int ret;
         try {
-            ret = baseRegion.click(this.getCenter());
+            Location center = baseRegion.getCenter();
+            ret = baseRegion.click(center);
         } catch (FindFailed findFailed) {
             ret = 0;
         }
@@ -229,9 +228,14 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
      */
     public RegionImpl doubleClickMe() {
         RegionImpl baseRegion = findBaseRegion();
+        if (baseRegion == null) {
+            //exception is already thrown and handled method findBaseRegion()!
+            return null;
+        }
         int ret;
         try {
-            ret = baseRegion.doubleClick(this.getCenter());
+            Location center = baseRegion.getCenter();
+            ret = baseRegion.doubleClick(center);
         } catch (FindFailed findFailed) {
             ret = 0;
         }
@@ -252,9 +256,14 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
      */
     public RegionImpl rightClickMe() {
         RegionImpl baseRegion = findBaseRegion();
+        if (baseRegion == null) {
+            //exception is already thrown and handled method findBaseRegion()!
+            return null;
+        }
         int ret;
         try {
-            ret = baseRegion.rightClick(this.getCenter());
+            Location center = baseRegion.getCenter();
+            ret = baseRegion.rightClick(center);
         } catch (FindFailed findFailed) {
             ret = 0;
         }
@@ -420,8 +429,8 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     @Override
     public String toString() {
         String ret = "";
-        if (imagePattern != null) {
-            ret = "\"" + imagePattern.getId() + "\" - ";
+        if (imagePattern != null && imagePattern.getImageFile() != null) {
+            ret = "Pattern [" + imagePattern.getImageFile().getFileName().toString() + "] - ";
         }
 
         if (getLastMatch() != null) {

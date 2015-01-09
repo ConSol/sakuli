@@ -53,6 +53,14 @@ try {
 
         var notepadRegion = editorApp.getRegion();
 
+        notepadRegion.keyDown(Key.ALT).type(Key.NUM0 + Key.NUM9 + Key.NUM2).keyUp(Key.ALT);
+        notepadRegion.keyDown(Key.SHIFT).type("keydown").keyUp(Key.SHIFT);
+        notepadRegion.write("#w2.#C.n#W1.#d3.").sleep(2).write("bla");
+
+        environment.keyDown(Key.ALT).type(Key.NUM0 + Key.NUM9 + Key.NUM2).keyUp(Key.ALT);
+        environment.keyDown(Key.SHIFT).type("keydown").keyUp(Key.SHIFT);
+        environment.write("#w2.#C.n#W1.#d3.").sleep(2).write("bla");
+
         notepadRegion.paste("foobar(),.-;:");
         notepadRegion.paste(editorApp.getName());
 

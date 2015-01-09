@@ -32,7 +32,7 @@ This chapter includes the installation of Sakuli (which already has Sikuli on bo
 	
 
 ### Sakuli - Install the sakuli-zipped-release
-* Download [sakuli-zipped-release-v0.4.2.zip](http://labs.consol.de/sakuli/install/sakuli-zipped-release-v0.4.2.zip)
+* Download the latest version of Sakuli from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
 * Unzip the downloaded archive to `C:\\` as destination folder (=it will decompress into `C:\sakuli`). 
 * From the desktop, right-click *My Computer* and click *Properties*
 	* In *System Properties*, click on *Advanced*
@@ -85,7 +85,7 @@ Now it's time to start the Sahi controller for the first time. Open "Start Sahi"
 
 ![startsahi](../docs/pics/w_startsahi.jpg) 	
 
-The Dashboard should list now all available browsers on this system: 
+The Dashboard should list now all available browsers on this system (if not, go to [No browsers in Dashboard](../docs/troubleshooting-sakuli-client.md#no-browsers-in-dashboard): 
 
 ![db_browsers](../docs/pics/w_sahi_dashboard_browsers.jpg) 	
 Click on any browser you like; Sahi will start it and present the default start page: 
@@ -94,9 +94,8 @@ Click on any browser you like; Sahi will start it and present the default start 
 
 If neccessary, define now your company's proxy within Sahi: [Proxy settings](../docs/sakuli-manual.md)
 
-Congratulations; Sahi is now installed completely!
+Sahi is now installed completely.
 
-(Otherwise, see [Troubleshooting](../docs/troubleshooting-sakuli-client.md)  )
 
 ### PhantomJS (Optional)
 	
@@ -123,7 +122,9 @@ Now it's time to setup the first Sakuli check: go to [First steps on Windows 7](
 
 ## Additional tools
 ### Browser 
-Install any of your desired browsers (Firefox, Chrome, Opera, …). To implement the sakuli_demo test case, install at least firefox. 
+Install any of your desired browsers (Firefox, Chrome, Opera, …) and configure them in `browser_types.xml` as described in the [troubleshooting section](../docs/troubleshooting-sakuli-client.md#no-browsers-in-dashboard).
+
+It is recommended to install at least Mozilla Firefox. 
 ### Greenshot 
 To take screenshots which should be used by Sikuli, you need a handy screenshot capturing tool. We highly recommend the installation of [Greenshot](http://www.getgreenshot.org), but any other tool which is able to save screenshots as JPG/PNG is possible, too. 
 ### Notepad++
