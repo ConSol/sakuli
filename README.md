@@ -32,17 +32,30 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 * Hardly one of these tools brings the ability to integrate into Nagios. Sakuli is prepared for the integration into every Nagios-compatible monitoring system: Nagios itself, Naemon, Shinken, Icinga, op5 Monitor... 
 
 # Resources
+
+## Demo
+
+![d](./docs/pics/appliance_collage.jpg)
+
+Use this demo Appliance to see all the features of Sakuli in action. *sakulidemo* contains OMD/Nagios with two Sakuli checks.  
+
+* **OVA**: Download the .ova file from [http://labs.consol.de/sakuli/demo](http://labs.consol.de/sakuli/demo) and import this machine into Virtualbox. 
+* **Vagrant**: If you are familar with [Vagrant](https://www.vagrantup.com/), you can *vagrant up* our Sakuli box FIXME.  
+
+User accounts are kept simple: *root/root* and *sakuli/sakuli*. Don't use this in production. 
+ 
 ## Use Sakuli: 
 ### Installation 
+
 **OMD**
 
 [OMD Preparation](./docs/installation-omd.md) - How to configure [OMD](http://www.omdistro.org) (containing **Nagios/Icinga/Shinken**) to monitor Sakuli
 
 **Sakuli Client**
 
-[Installation (Windows 7)](./docs/installation-windows.md) - Hot to set up a Windows Sakuli Client on Windows 7
-
-[Installation (Ubuntu)](./docs/installation-ubuntu.md) - How to set up a Ubuntu Sakuli Client (Ubuntu Desktop 14.04 LTS)
+- [Installation](./docs/installation-client.md) - OS independent instructions
+	- [Installation (Windows 7)](./docs/installation-windows.md) - additional installation steps for Windows 7
+	- [Installation (Ubuntu)](./docs/installation-ubuntu.md) - additional installation steps for Ubuntu Desktop 14.04 LTS
 
 
 ### Get started: Example

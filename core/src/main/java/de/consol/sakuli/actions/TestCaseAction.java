@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Path;
 import java.util.Date;
 
 /**
@@ -40,6 +41,7 @@ import java.util.Date;
  */
 @Component
 public class TestCaseAction {
+    public static final String ERROR_NOT_SET_THRESHOLD_VARIABLE = "the %s threshold have to be set! If the %s threshold should NOT be considered, please set it to 0!";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
@@ -68,19 +70,54 @@ public class TestCaseAction {
         initWarningAndCritical(warningTime, criticalTime);
     }
 
+    /**
+     * Set the warning and critical Time to the specific test case.
+     *
+     * @param testCaseID   current ID of the test case
+     * @param warningTime  warning threshold in seconds
+     * @param criticalTime critical threshold in seconds
+     * @param imagePaths   multiple paths to images
+     */
+    @LogToResult(message = "init a new test case")
+    public void initWithPaths(String testCaseID, int warningTime, int criticalTime, Path... imagePaths) {
+        loader.init(testCaseID, imagePaths);
+        initWarningAndCritical(warningTime, criticalTime);
+    }
+
     private void initWarningAndCritical(int warningTime, int criticalTime) {
-        //check some stuff then set the times
-        if (warningTime <= 0 || criticalTime <= 0) {
-            handleException("waring time and critical time must be greater then 0!");
+        if (checkWarningAndCrititicalTime(warningTime, criticalTime)) {
+            //if everything is ok set the times
+            loader.getCurrentTestCase().setWarningTime(warningTime);
+            loader.getCurrentTestCase().setCriticalTime(criticalTime);
+        }
+    }
+
+    /**
+     * Check if the warning time is set correctly:
+     * <ul>
+     * <li>Greater or equal then 0</li>
+     * <li>warning time > critical time</li>
+     * </ul>
+     *
+     * @return true on success, on error - call {@link #handleException(String)} and return false!
+     */
+    private boolean checkWarningAndCrititicalTime(int warningTime, int criticalTime) {
+        if (criticalTime < 0) {
+            handleException(getErrorNotSetTimeVariableMessage("critical"));
+        } else if (warningTime < 0) {
+            handleException(getErrorNotSetTimeVariableMessage("warning"));
         } else {
             if (warningTime > criticalTime) {
                 handleException("warning threshold must be less than critical threshold!");
             } else {
-                //if everything is ok set the times
-                loader.getCurrentTestCase().setWarningTime(warningTime);
-                loader.getCurrentTestCase().setCriticalTime(criticalTime);
+                return true;
             }
         }
+        return false;
+    }
+
+    private String getErrorNotSetTimeVariableMessage(String thersholdName) {
+        return String.format(ERROR_NOT_SET_THRESHOLD_VARIABLE, thersholdName, thersholdName);
     }
 
     /****************
@@ -116,8 +153,7 @@ public class TestCaseAction {
             tc.refreshState();
         } catch (NumberFormatException | NullPointerException e) {
             handleException("Duration could not be calculated! " +
-                    "Check if method \"backend.initializeNagios(warningTime, criticalTime)\"" +
-                    " have been called in your test case.  " +
+                    "Check if the warning and critical threshold is set correctly in your test case!  " +
                     "=> START date: " + startTime
                     + "\tSTOP date: " + stopTime
                     + "\n" + e.getMessage());
@@ -140,17 +176,7 @@ public class TestCaseAction {
     @LogToResult(message = "add a step to the current test case")
     public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime) throws SakuliException {
 
-        /***
-         * check if {@link #initTestCaseWarningAndCritical(String, int, int)}  has been executed
-         *
-         */
-        if (loader.getCurrentTestCase().getWarningTime() < 0
-                || loader.getCurrentTestCase().getCriticalTime() < 0) {
-            handleException("warning and critical time have not been set!!! " +
-                    "Please add the function \"initializeNagios(warningTime,criticalTime)\" to your test case !!!" +
-                    "\t If warning and critical times should be  NOT considered, please set it to 0");
-        }
-
+        checkWarningAndCrititicalTime(loader.getCurrentTestCase().getWarningTime(), loader.getCurrentTestCase().getCriticalTime());
         if (stepName.isEmpty() || stepName.equals("undefined")) {
             handleException("Please set a Name - all values of the test case step need to be set!");
         }

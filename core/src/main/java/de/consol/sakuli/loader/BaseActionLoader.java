@@ -29,6 +29,8 @@ import de.consol.sakuli.exceptions.SakuliExceptionHandler;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.rhino.RhinoScriptRunner;
 
+import java.nio.file.Path;
+
 /**
  * @author Tobias Schneck
  */
@@ -62,6 +64,14 @@ public interface BaseActionLoader {
      * @param imagePaths paths to the located image patterns
      */
     void init(String testCaseID, String... imagePaths);
+
+    /**
+     * init method to signalise the context that a new {@link TestCase} starts.
+     *
+     * @param testCaseID {@link TestCase#id}
+     * @param imagePaths paths to the located image patterns
+     */
+    void init(String testCaseID, Path... imagePaths);
 
     SakuliProperties getSakuliProperties();
 

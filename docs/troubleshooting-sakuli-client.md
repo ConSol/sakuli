@@ -42,20 +42,42 @@ This are exemplary entries for Mozilla Firefox and Google Chrome:
 	
 
 
-## Sakuli
-### How to make tests more reliable
+## Desktop preparation
 These steps are optional, but will improve the check quality/reliability. 
 
-#### Windows 
-##### Disable desktop background 
+### Ubuntu / Windows
+
+#### Disable desktop background 
 Set the desktop background to a homogenous color. 
 
-
-##### Disable screen saver and screen locking
+#### Disable screen saver and screen locking
 
 Disable everything which can cause the screen to get locked / changed in its appearance.  
 
-##### Change theme and title bar colors
+### Ubuntu 
+#### Disable desktop background 
+Set the desktop background to a homogenous color. 
+
+#### Change Ubuntu desktop theme
+Change the theme by installing [gnome-session-fallback](https://apps.ubuntu.com/cat/applications/gnome-session-fallback/):  
+
+ `sudo apt-get install gnome-session-fallback`
+
+After the installation, relogin and select the desktop envirionment __GNOME Flashback (Metacity)__:
+![fallback](.././docs/pics/u_theme_select.jpg)
+
+![flashback](.././docs/pics/u_flashback.jpg)
+
+The Ubuntu menu bar should have changed now to the "classical" one: 
+
+![menu](.././docs/pics/u_menu.jpg)
+
+All other steps can be done similar to [Installation Windows7 - Install Sakuli](installation-windows.md#installation-of-sakuli)
+
+
+### Windows 
+
+#### Change Windows theme and title bar colors
 Windows 7 comes by default with an "aero" theme, which is quite awkward for Sakuli, because there are many transparency effects which cause window elements to change their appearance dependend on the elements below. For that, change the theme to "Windows Classic".
 ![classic](pics/w_classictheme.jpg)
 
@@ -63,37 +85,37 @@ Windows 7 comes by default with an "aero" theme, which is quite awkward for Saku
 Furthermore, change the colors of **active** and **inactive** title bars to **non gradient**: 
 ![titlebars](pics/w_titlebar.jpg)
 
-##### Enable Window Activation
+#### Enable Window Activation
 Windows does not allow per default to bring an application in the foreground. This must be allowed for Sakuli: 
 
 * Start -> "regedit"
 * [ HKEY_CURRENT_USER\Control Panel\Desktop ]
 * "ForegroundLockTimeout" (DWORD) => "0" (default = 30d40xh)
 
-##### Disable Window Animation
+#### Disable Window Animation
 Disable the animation of window minimize/maximize actions: 
 
 * "regedit"
 * [HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics ]
 * "MinAnimate" (String) => "0" 
 
-##### Disable Cleartype
+#### Disable Cleartype
 ClearType ("antialiasing" / "Font Smoothing"), is a technology that is used to display computer fonts with clear and with smooth edges. The MS Terminal Services Client (RDP client) enables this feature depending on the available bandwidth, which means that screenshots made within RDP sessions may be taken without ClearType, but during the test execution on the local console, they are compared with the desktop displayed in ClearType. Although we only had problems with RDP and Cleartype, it is a good idea to disable ClearType completely:
 
 * "regedit"
 * [ HKEY_CURRENT_USER\Control Panel\Desktop ]
 * "FontSmoothingType" (DWORD) => "0" 
 
-##### Disable all visual effects
+#### Disable all visual effects
 * Start -> Control Panel -> System -> Advanced
 * Performance -> Settings -> Visual Effects -> Custom
 * Disable everything: 
 
 ![visualeffects](pics/w_visualeffects.jpg)
 
-##### RDP related settings
+#### RDP related settings
 The following steps have only to be done if you are accessing the Sakuli Client with RDP. 
-###### Disable Clipboard Sharing
+##### Disable Clipboard Sharing
 The "paste" function of Sakuli uses the clipboard at runtime to decrypt and paste passwords. For this reason, the clipboard exchange of the Sakuli client and the RDP client should be suppressed in the settings tab of your **local Remote Desktop client**:
 
 ![clipboard](pics/w_clipboard.jpg)
@@ -104,7 +126,7 @@ This can be set globally in the registry **of your local host**:
 * [ HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client ]
 * "DisableDriveRedirection" (DWORD) => "1" 
 
-##### Disable Firefox' Plugin Container
+#### Disable Firefox' Plugin Container
 Plugins Container is a technique of Mozilla Firefox to run browser add-ons in a separate process than firefox.exe. This should ensure that a hanging add-on does not affect the browser process. But sometimes "Plugins Container" itself makes problems. Sakuli (better: Sahi) does not need any browser plugins - so, if you don't, disable Plugin Container: 
 
 * Start -> Control Panel -> System -> Advanced system settings
@@ -112,7 +134,7 @@ Plugins Container is a technique of Mozilla Firefox to run browser add-ons in a 
 	* Variable name: MOZ_DISABLE_OOP_PLUGINS
 	* Value: 1
  
-###### Disable the "GUI-less" mode
+##### Disable the "GUI-less" mode
 If you minimize the Remote Desktop window (the window that display the remote computer’s desktop), the operating system switches the remote session to a "GUI-less mode" which does not transfer any window data anymore. As a result, Sakuli is unable to interact with the tested application’s GUI, as the whole screen is not visible.
 
 To disable the "GUI-less" mode **on your local host**: 
@@ -121,13 +143,13 @@ To disable the "GUI-less" mode **on your local host**:
 * [ HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client ]
 * "RemoteDesktop_SuppressWhenMinimized" (DWORD) => "2"
 
-##### Disable Error reporting service
+#### Disable Error reporting service
 Error reporting is enabled by default - you should turn off this service because it can display messages (about crashes applications, e.g. when Sakuli kills an application in the end of a test), which remain on the screen until somebody clicks them away. 
 * Start -> Control Panel -> System and Security -> Action center
 * Change Action Center settings -> Problem reporting settings
 * Set "Never check for solutions"  
 
-### cannot resolve mac address
+## cannot resolve mac address
 
 FIXME
 
@@ -139,6 +161,9 @@ FIXME
 FIXME
 
 ### Missing keys on `type("...")` or not successful `paste("...")`
+
+FIXME
+
 It is possible if you use inside of the browser the typing and paste funktion of sakuli, which simulates real keyboard 
 interaction, that they sometimes won't work as you expect. The reason for this is, that in the backend running
 Sahi proxy communicates with your browser over synchronous POST-requests. If you actually hit such a POST-request timeslot,

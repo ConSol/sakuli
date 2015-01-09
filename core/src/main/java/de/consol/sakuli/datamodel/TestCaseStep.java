@@ -24,12 +24,12 @@ import de.consol.sakuli.exceptions.SakuliException;
 import java.util.Date;
 
 /**
- * test case step based Exceptions and critical times will be currently not supported in {@link de.consol.sakuli.actions.TestCaseAction}.
+ * test case step based Exceptions and critical times will be currently not supported in {@link
+ * de.consol.sakuli.actions.TestCaseAction}.
  *
- * @author tschneck
- *         Date: 18.06.13
+ * @author tschneck Date: 18.06.13
  */
-public class TestCaseStep extends AbstractSakuliTest<SakuliException, TestCaseStepState> {
+public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCaseStepState> {
 
     /**
      * {@inheritDoc}

@@ -32,13 +32,13 @@ import javax.annotation.PostConstruct;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * @author tschneck
- *         Date: 09.05.14
+ * @author tschneck Date: 09.05.14
  */
 @Component
 public class LoggerInitializer {
@@ -89,7 +89,7 @@ public class LoggerInitializer {
         if (classPathConfigURL != null) {
             try {
                 return Paths.get(classPathConfigURL.toURI()).toAbsolutePath().toString();
-            } catch (URISyntaxException e) {
+            } catch (FileSystemNotFoundException | URISyntaxException e) {
                 logger.error("unexpected error by resolving the '" + LOG_CONFIG_FILE_NAME + "' from classpath, now try to resolve it from the include folder.");
             }
         }

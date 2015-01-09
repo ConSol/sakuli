@@ -21,10 +21,10 @@
 ## Special maven profiles
 Profiles can be added with option `-P`, followed by a parameter, e.g. 
 
-	mvn install -P no-ui-tests,upload-release
+	mvn install -P upload-release
 
-* `no-ui-tests` Disables the UI based test in phase **integration-test**
 * `upload-release` Copies the generated `sakuli-zipped-release-vX.X.X.zip` file and maven artifacts to the [ConSol Labs](http://labs.consol.de/sakuli/) server. Your private key for the ssh connection have to be configured in maven config file `.m2/settings.xml`, see below 
+* `ui-tests` Enables the UI based test in phase **integration-test** in the modul `integration-test` and `java-dsl`.
 * `generate-jsdox` (default: active) If this profile will be disabled the module **docs** won't generate the files in folder [Sakuli-API](../api).
 * `jsdox-set-proxy` If it is necessary to run the [Sakuli-API](../api) build behind a company proxy, enable this profile and configure your
  proxy in the file [docs/pom.xml](../pom.xml).

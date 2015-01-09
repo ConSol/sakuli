@@ -108,7 +108,7 @@ public class BaseActionEnvironmentLoaderTest {
     public void testInitImagePathNull() throws Exception {
         String testCaseId = "xyz";
         when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("test", testCaseId));
-        testling.init(testCaseId);
+        testling.init(testCaseId, new String[]{});
         verify(exceptionHandler, times(1)).handleException(any(IOException.class));
     }
 

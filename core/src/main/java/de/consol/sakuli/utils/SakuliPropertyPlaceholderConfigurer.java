@@ -35,22 +35,20 @@ import java.nio.file.Paths;
 import java.util.*;
 
 /**
- * Overrides the default {@link PropertyPlaceholderConfigurer} to dynamically load the properties files in  the {@link TestSuiteProperties#TEST_SUITE_FOLDER}
- * and {@link SakuliProperties#INCLUDE_FOLDER}.
+ * Overrides the default {@link PropertyPlaceholderConfigurer} to dynamically load the properties files in  the {@link
+ * TestSuiteProperties#TEST_SUITE_FOLDER} and {@link SakuliProperties#INCLUDE_FOLDER}.
  *
- * @author tschneck
- *         Date: 11.05.14
+ * @author tschneck Date: 11.05.14
  */
 public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public static String TEST_SUITE_FOLDER_VALUE;
     public static String INCLUDE_FOLDER_VALUE;
     public static String SAHI_PROXY_HOME_VALUE;
-    private boolean loadSakuliProperties = true;
-    private boolean loadTestSuiteProperties = true;
-    private boolean writePropertiesToSahiConfig = true;
+    protected boolean loadSakuliProperties = true;
+    protected boolean loadTestSuiteProperties = true;
+    protected boolean writePropertiesToSahiConfig = true;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private Map<String, Map<String, Object>> modifiedSahiConfigProps;
 
     public SakuliPropertyPlaceholderConfigurer() {
@@ -64,10 +62,8 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         props.put(SakuliProperties.INCLUDE_FOLDER, INCLUDE_FOLDER_VALUE);
 
         //load common sakuli properties
-        String sakuliProperties = Paths.get(INCLUDE_FOLDER_VALUE).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER;
-        addPropertiesFromFile(props, sakuliProperties, loadSakuliProperties);
-        String testSuitePropFile = Paths.get(TEST_SUITE_FOLDER_VALUE).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER;
-        addPropertiesFromFile(props, testSuitePropFile, loadTestSuiteProperties);
+        loadCommonSakuliProperties(props);
+        loadTestSuiteProperties(props);
         //override if set sahi proxy home
         if (StringUtils.isNotEmpty(SAHI_PROXY_HOME_VALUE)) {
             props.setProperty(SahiProxyProperties.PROXY_HOME_FOLDER, SAHI_PROXY_HOME_VALUE);
@@ -75,6 +71,16 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         }
         modifySahiProperties(props);
         super.loadProperties(props);
+    }
+
+    protected void loadTestSuiteProperties(Properties props) {
+        String testSuitePropFile = Paths.get(TEST_SUITE_FOLDER_VALUE).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER;
+        addPropertiesFromFile(props, testSuitePropFile, loadTestSuiteProperties);
+    }
+
+    protected void loadCommonSakuliProperties(Properties props) {
+        String sakuliProperties = Paths.get(INCLUDE_FOLDER_VALUE).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER;
+        addPropertiesFromFile(props, sakuliProperties, loadSakuliProperties);
     }
 
     @PreDestroy

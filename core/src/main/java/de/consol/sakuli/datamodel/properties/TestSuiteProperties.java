@@ -64,7 +64,7 @@ public class TestSuiteProperties {
     @Value("${" + BROWSER_NAME + "}")
     private String browserName;
     @Value("${" + LOAD_TEST_CASES_AUTOMATIC_PROPERTY + ":true}") //default = TRUE
-    private boolean loadTestCasesAutomatic = true;
+    private boolean loadTestCasesAutomatic;
 
     @PostConstruct
     public void initFolders() {

@@ -26,15 +26,14 @@ import org.testng.annotations.Test;
 import java.util.Date;
 
 /**
- * @author tschneck
- *         Date: 19.07.13
+ * @author tschneck Date: 19.07.13
  */
-public class AbstractSakuliTestTest {
-    private AbstractSakuliTest testling;
+public class AbstractTestDataEntityTest {
+    private AbstractTestDataEntity testling;
 
     @BeforeMethod
     public void init() throws Exception {
-        testling = new AbstractSakuliTest() {
+        testling = new AbstractTestDataEntity() {
             @Override
             public void refreshState() {
             }
@@ -56,6 +55,7 @@ public class AbstractSakuliTestTest {
         Assert.assertTrue(result.charAt(result.length() - 4) == '.');
     }
 
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     @Test
     public void testAddException() throws Exception {
         testling.addException(new Exception("test"));

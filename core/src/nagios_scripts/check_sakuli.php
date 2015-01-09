@@ -65,17 +65,46 @@ $unkn_tick_opacity = "FF";
 
 sort($this->DS);
 
+$suitename = preg_replace('/^suite_(.*)$/', '$1', $NAME[$perf_pos_suite_runtime]);
+
+## Determine length of all labels ############################################
+$label_max_length = 0;
+$labels = array();
+
+# Loop over case names
+foreach($this->DS as $k=>$v) {
+        if (preg_match('/(c|s)_(\d+)_(\d+_)?([a-zA-Z0-9].*)/', $v["LABEL"], $matches)) {
+		array_push($labels, strlen($matches[4]));
+	}
+}
+array_push($labels, strlen($suitename));
+$label_max_length = max($labels);
+
+## CPU/MEMORY GRAPHS ###########################################################
 # show CPU/MEM graphs only if Macros are set properly. For more information, see
 # https://github.com/ConSol/sakuli/blob/master/docs/installation-omd.md#include-cpumem-graphs-in-sakuli-graphs-optional
 if ( ( (array_key_exists('E2ECPUHOST', $this->MACRO)) and ($this->MACRO['E2ECPUHOST'] != '$_HOSTE2E_CPU_HOST$')) and ( ((array_key_exists('E2ECPUSVC', $this->MACRO))) and ($this->MACRO['E2ECPUSVC'] != '$_HOSTE2E_CPU_SVC$'))) {
-        $graph_cpu = true;
-        $rrddef_cpu = rrd::def("cpu_usage", OMD_SITE_ROOT . "/var/pnp4nagios/perfdata/" .
-                $this->MACRO['E2ECPUHOST'] . "/" .
-                $this->MACRO['E2ECPUSVC'] . "_1.rrd",1,"AVERAGE");
-        $rrddef_cpu .= rrd::line1("cpu_usage", $col_cpu, "CPU Usage");
-        $rrddef_cpu .= rrd::gprint("cpu_usage", "MAX", "%3.2lf%% MAX");
-        $rrddef_cpu .= rrd::gprint("cpu_usage", "AVERAGE", "%3.2lf%% AVERAGE");
-        $rrddef_cpu .= rrd::gprint("cpu_usage", "LAST", "%3.2lf%% LAST \j");
+	if (preg_match('/usage/i', $this->MACRO['E2ECPUSVC'])) {
+        	$graph_cpu = "%";
+	        $rrddef_cpu = rrd::def("cpu_usage", OMD_SITE_ROOT . "/var/pnp4nagios/perfdata/" .
+	                $this->MACRO['E2ECPUHOST'] . "/" .
+	                $this->MACRO['E2ECPUSVC'] . ".rrd",1,"AVERAGE");
+	        $rrddef_cpu .= rrd::line1("cpu_usage", $col_cpu, pad("CPU Usage", $label_max_length));
+	        $rrddef_cpu .= rrd::gprint("cpu_usage", "MAX", "%3.2lf%%  MAX ");
+	        $rrddef_cpu .= rrd::gprint("cpu_usage", "AVERAGE", "%3.2lf%%  AVG ");
+	        $rrddef_cpu .= rrd::gprint("cpu_usage", "LAST", "%3.2lf%%  LAST \j");
+	} else if (preg_match('/load/i', $this->MACRO['E2ECPUSVC'])) {
+        	$graph_cpu = "load";
+                $rrddef_cpu = rrd::def("cpu_load", OMD_SITE_ROOT . "/var/pnp4nagios/perfdata/" .
+                        $this->MACRO['E2ECPUHOST'] . "/" .
+                        $this->MACRO['E2ECPUSVC'] . ".rrd",1,"AVERAGE");
+		# Load is usually a much lower value than usage (%) -> multiply by 10 and scale right axis
+		$rrddef_cpu .= rrd::cdef("cpu_load10", "cpu_load,10,*");
+                $rrddef_cpu .= rrd::line1("cpu_load10", $col_cpu, pad("CPU Load", $label_max_length));
+                $rrddef_cpu .= rrd::gprint("cpu_load", "MAX", "%3.2lf MAX ");
+                $rrddef_cpu .= rrd::gprint("cpu_load", "AVERAGE", "%3.2lf AVG ");
+                $rrddef_cpu .= rrd::gprint("cpu_load", "LAST", "%3.2lf LAST \j");
+	}
 } else {
         $graph_cpu = false;
         $rrdopts_cpu = "";
@@ -86,8 +115,8 @@ if ( ( (array_key_exists('E2EMEMHOST', $this->MACRO)) and ($this->MACRO['E2EMEMH
                 $this->MACRO['E2EMEMHOST'] . "/" .
                 $this->MACRO['E2EMEMSVC'] . "_physical_memory_%.rrd",1,"AVERAGE");
         $rrddef_mem .= rrd::line1("mem_usage", $col_mem, "phys. Memory Usage");
-        $rrddef_mem .= rrd::gprint("mem_usage", "MAX", "%3.2lf%% MAX");
-        $rrddef_mem .= rrd::gprint("mem_usage", "AVERAGE", "%3.2lf%% AVERAGE");
+        $rrddef_mem .= rrd::gprint("mem_usage", "MAX", "%3.2lf%% MAX ");
+        $rrddef_mem .= rrd::gprint("mem_usage", "AVERAGE", "%3.2lf%% AVG ");
         $rrddef_mem .= rrd::gprint("mem_usage", "LAST", "%3.2lf%% LAST \j");
 } else {
         $graph_mem = false;
@@ -95,7 +124,6 @@ if ( ( (array_key_exists('E2EMEMHOST', $this->MACRO)) and ($this->MACRO['E2EMEMH
 }
 
 ## SUITE Graph  #############################################################
-$suitename = preg_replace('/^suite_(.*)$/', '$1', $NAME[$perf_pos_suite_runtime]);
 
 $ds_name[0] = "Sakuli Suite '" . $suitename . "'";
 $opt[0] = "--vertical-label \"seconds\"  -l 0 --slope-mode --title \"$servicedesc (Sakuli Suite $suitename) on $hostname\" ";
@@ -111,7 +139,7 @@ foreach($this->DS as $k=>$v) {
 		if ($casecount == "1") {
 			$def[0] .= rrd::comment("Sakuli Cases\: \\n");
 			$def[0] .= rrd::cdef("c_area_stackbase$casecount", "c_area$casecount,1,*");
-			$def[0] .= rrd::area("c_area$casecount", $col_case_area[$casecount].$col_case_area_opacity, $casename, 0);
+			$def[0] .= rrd::area("c_area$casecount", $col_case_area[$casecount].$col_case_area_opacity, pad($casename, $label_max_length), 0);
 		} else {
 			# invisible line to stack upon
 			$def[0] .= rrd::line1("c_area_stackbase".($casecount-1),"#00000000");
@@ -120,9 +148,9 @@ foreach($this->DS as $k=>$v) {
 			$def[0] .= rrd::cdef("c_area_stackbase$casecount", "c_area_stackbase".($casecount-1).",c_area$casecount,+");
 		}
 
-		$def[0] .= rrd::gprint("c_area$casecount", "LAST", "%3.2lf $UNIT[$casecount] LAST");
-		$def[0] .= rrd::gprint("c_area$casecount", "MAX", "%3.2lf $UNIT[$casecount] MAX ");
-		$def[0] .= rrd::gprint("c_area$casecount", "AVERAGE", "%3.2lf $UNIT[$casecount] AVERAGE \j");
+		$def[0] .= rrd::gprint("c_area$casecount", "LAST", "%3.2lf s LAST");
+		$def[0] .= rrd::gprint("c_area$casecount", "MAX", "%3.2lf s MAX ");
+		$def[0] .= rrd::gprint("c_area$casecount", "AVERAGE", "%3.2lf s AVG \j");
 
 	}
 }
@@ -168,7 +196,7 @@ if ($c_last_index != "") {
 	$def[0] .= rrd::cdef("suite_diff", "suite,c_line_stackbase".$c_last_index.",UN,0,c_line_stackbase".$c_last_index.",IF,-");
 	# invisible line to stack upon
 	$def[0] .= rrd::line1("c_line_stackbase".($c_last_index),"#00000000");
-	$def[0] .= rrd::area("suite_diff", $col_suite_runtime_area,$suitename,1 );
+	$def[0] .= rrd::area("suite_diff", $col_suite_runtime_area,pad($suitename, $label_max_length),1 );
 	# invisible line to stack upon
 	$def[0] .= rrd::line1("c_line_stackbase".($c_last_index),"#00000000");
 	$def[0] .= rrd::line1("suite_diff", $col_suite_runtime_line, "",1 );
@@ -179,8 +207,10 @@ if ($c_last_index != "") {
 }
 
 $def[0] .= rrd::gprint("suite", "LAST", "%3.2lf ".$UNIT[$perf_pos_suite_runtime]." LAST");
-$def[0] .= rrd::gprint("suite", "MAX", "%3.2lf ".$UNIT[$perf_pos_suite_runtime]." MAX");
-$def[0] .= rrd::gprint("suite", "AVERAGE", "%3.2lf ".$UNIT[$perf_pos_suite_runtime]." AVERAGE \j");
+$def[0] .= rrd::gprint("suite", "MAX", "%3.2lf ".$UNIT[$perf_pos_suite_runtime]." MAX ");
+$def[0] .= rrd::gprint("suite", "AVERAGE", "%3.2lf ".$UNIT[$perf_pos_suite_runtime]." AVG \j");
+
+$def[0] .= rrd::comment(" \\n");
 # invisible line above maximum (for space between MAX and TICKER) -------------------------------------	
 $def[0] .= rrd::def("suite_max", $RRDFILE[$perf_pos_suite_runtime], $DS[$perf_pos_suite_runtime], "MAX") ;
 $def[0] .= rrd::cdef("suite_maxplus", "suite_max,".$ticker_dist_factor.",*");
@@ -200,7 +230,12 @@ $def[0] .= "VRULE:".$NAGIOS_TIMET."#000000:\"Last Service Check \\n\" ";
 if ($graph_cpu or $graph_mem) {
 	$def[0] .= rrd::comment(" \\n");
 	$def[0] .= rrd::comment("Host Statistics\:\\n");
-	$opt[0] .= " --right-axis \"1:0\" --right-axis-label \"%\" ";
+	if ($graph_cpu == "load" ) {
+		# Load is usually a much lower value than usage (%) -> scale the right axis with factor 10
+		$opt[0] .= " --right-axis \"0.1:0\" --right-axis-label \"CPU Load\" ";
+	} else {
+		$opt[0] .= " --right-axis \"1:0\" --right-axis-label \"CPU Usage\" ";
+	}
 }
 if ( $graph_cpu ) {
 	$def[0] .= $rrddef_cpu;	
@@ -224,19 +259,20 @@ foreach ($this->DS as $KEY=>$VAL) {
 				$stepname = $s_matches[2];
 				$def[$casecount] .= rrd::def("s_area$stepcount", $v['RRDFILE'], $v['DS'], "AVERAGE");
 				if ($stepcount == "1"){
+					# first step
 					$def[$casecount] .= rrd::comment("Steps\: \\n");
 					$def[$casecount] .= rrd::cdef("s_area_stackbase$stepcount", "s_area$stepcount,1,*");
-	        			$def[$casecount] .= rrd::area("s_area$stepcount", $col_step_area[$stepcount].$col_step_area_opacity,$stepname, 0 );
+	        			$def[$casecount] .= rrd::area("s_area$stepcount", $col_step_area[$stepcount].$col_step_area_opacity,pad($stepname, $label_max_length), 0 );
 				} else {
-					# invisible line to stack upon
+					# all areas >1 are stacked upon a invisible line 
 					$def[$casecount] .= rrd::line1("s_area_stackbase".($stepcount-1),"#00000000");	
-					$def[$casecount] .= rrd::area("s_area$stepcount", $col_step_area[$stepcount].$col_step_area_opacity,$stepname, 1 );
+					$def[$casecount] .= rrd::area("s_area$stepcount", $col_step_area[$stepcount].$col_step_area_opacity,pad($stepname, $label_max_length), 1 );
 					# add value to s_area_stackbase
 					$def[$casecount] .= rrd::cdef("s_area_stackbase$stepcount", "s_area_stackbase".($stepcount-1).",s_area$stepcount,+");
 				}
-				$def[$casecount] .= rrd::gprint("s_area$stepcount", "LAST", "%3.2lf $UNIT[$stepcount] LAST");
-				$def[$casecount] .= rrd::gprint("s_area$stepcount", "MAX", "%3.2lf $UNIT[$stepcount] MAX ");
-				$def[$casecount] .= rrd::gprint("s_area$stepcount", "AVERAGE", "%3.2lf $UNIT[$stepcount] AVERAGE \j");
+				$def[$casecount] .= rrd::gprint("s_area$stepcount", "LAST", "%3.2lf s LAST");
+				$def[$casecount] .= rrd::gprint("s_area$stepcount", "MAX", "%3.2lf s MAX ");
+				$def[$casecount] .= rrd::gprint("s_area$stepcount", "AVERAGE", "%3.2lf s AVG \j");
 			}
 		}
 		# invisible line above maximum (for space between MAX and TICKER) ---------------	
@@ -281,7 +317,7 @@ foreach ($this->DS as $KEY=>$VAL) {
 			$def[$casecount] .= rrd::cdef("case_diff$casecount","case$casecount,s_line_stackbase$s_last_index,-");
 			# invisible line to stack upon
 			$def[$casecount] .= rrd::line1("s_line_stackbase$s_last_index","#00000000");	
-			$def[$casecount] .= rrd::area   ("case_diff$casecount", $col_case_area[$casecount].$col_case_area_opacity, $casename,1 );
+			$def[$casecount] .= rrd::area   ("case_diff$casecount", $col_case_area[$casecount].$col_case_area_opacity, pad($casename,$label_max_length),1 );
 			# invisible line to stack upon
 			$def[$casecount] .= rrd::line1("s_line_stackbase$s_last_index","#00000000");	
 			$def[$casecount] .= rrd::line1   ("case_diff$casecount", $col_case_line[$casecount],"",1);
@@ -290,9 +326,10 @@ foreach ($this->DS as $KEY=>$VAL) {
 			$def[$casecount] .= rrd::area   ("case$casecount", $col_case_area[$casecount].$col_case_area_opacity, $casename );
 			$def[$casecount] .= rrd::line1   ("case$casecount", $col_case_line[$casecount],"");
 		}
-		$def[$casecount] .= rrd::gprint ("case$casecount", "LAST", "%3.2lf $UNIT[$casecount] LAST");
-		$def[$casecount] .= rrd::gprint ("case$casecount", "MAX", "%3.2lf $UNIT[$casecount] MAX");
-		$def[$casecount] .= rrd::gprint ("case$casecount", "AVERAGE", "%3.2lf $UNIT[$casecount] AVERAGE \j");
+		$def[$casecount] .= rrd::gprint ("case$casecount", "LAST", "%3.2lf s LAST");
+		$def[$casecount] .= rrd::gprint ("case$casecount", "MAX", "%3.2lf s MAX ");
+		$def[$casecount] .= rrd::gprint ("case$casecount", "AVERAGE", "%3.2lf s AVG \j");
+		$def[$casecount] .= rrd::comment(" \\n");
 		# TICKS ---------------------------------------------------------------------
 		foreach ($this->DS as $k=>$v) {
 			if(preg_match('/^c_'.$casecount.'__state/', $v['LABEL'], $state_matches)) {
@@ -310,7 +347,13 @@ foreach ($this->DS as $KEY=>$VAL) {
                 if ($graph_cpu or $graph_mem) {
                         $def[$casecount] .= rrd::comment(" \\n");
                         $def[$casecount] .= rrd::comment("Host Statistics\:\\n");
-                        $opt[$casecount] .= " --right-axis \"1:0\" --right-axis-label \"%\" ";
+
+		        if ($graph_cpu == "load" ) {
+				# Load is usually a much lower value than usage (%) -> scale the right axis with factor 10
+		                $opt[$casecount] .= " --right-axis \"0.1:0\" --right-axis-label \"CPU Load\" ";
+		        } else {
+		                $opt[$casecount] .= " --right-axis \"1:0\" --right-axis-label \"CPU Usage\" ";
+		        }
                 }
 		if ( $graph_cpu ) {
 			$def[$casecount] .= $rrddef_cpu;	
@@ -321,6 +364,13 @@ foreach ($this->DS as $KEY=>$VAL) {
 
 	}
 }
+
+# Pad the string with spaces to ensure column alignment
+function pad ($str, $len) {
+	$padding = $len - strlen($str);
+	return $str . str_repeat(" ", $padding);
+}
+
 
 
 if ( $DEBUG == 1 ) {

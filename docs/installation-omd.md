@@ -61,10 +61,27 @@ Depending on your environment, you probably want to set up on of these two possi
 ## Include CPU/Mem graphs in Sakuli graphs (optional) 
 
 If Sakuli reports a long check runtime, you should first have a look on the CPU/Memory graphs on the Sakuli client machine, because performance bottlenecks on this machine affect e2e tests, too. 
-The following optional enhancement imports the CPU/Memory graph lines of the Sakuli test client into the suite/case graph. This is tested only for Windows until now - if you have another Nagios agent and/or OS, you wil have to alter the PNP4nagios template by yourself.  
+The following optional enhancement imports the CPU/Memory graph lines of the Sakuli test client into the suite/case graph. 
 
-FIXME graph zeigen
-### add CPU/Mem check 
+![PNP graph](./pics/pnp_graph.png) 
+
+### add CPU load check (Linux)
+
+Add this service to Nagios: 
+
+	define service {
+	  service_description            CPU_Load
+	  hostgroup_name                 sakulihost
+	  use                            generic-service,srv-pnp
+	  check_command                  check_local_load!2.5,1.5,1!5,3.5,2
+	}
+
+Add this host macro to every Nagios host where Sakuli checks are defined: 
+	
+	_E2E_CPU_HOST                  sakulihost
+	_E2E_CPU_SVC                   CPU_Load_load5
+
+### add CPU/Mem usage check (Windows)
 If not yet done, install NSClient++ on all Sakuli Windows clients. 
 
 Add the command check_nrpe_arg:
@@ -91,12 +108,14 @@ Then add these services to Nagios:
 		  check_command                check_nrpe_arg!CheckMem!MaxWarn=80% MaxCrit=90% ShowAll type=page type=paged type=physical type=virtual
 		}
  
-* Add these host macros to win7sakuli: 
+Add these host macros to every Nagios host where Sakuli checks are defined: 
 
 		_E2E_CPU_HOST                   win7sakuli
-		_E2E_CPU_SVC                   CPU_Usage
+		_E2E_CPU_SVC                   CPU_Usage_5
 		_E2E_MEM_HOST                   win7sakuli
 		_E2E_MEM_SVC                   Mem_Usage
+		
+Note: The value of `_E2E_CPU_SVC` and `_E2E_MEM_SVC` represent the file name of the corresponding RRD file. `CPU_Usage_5` for example means to load the CPU usage data from `$OMD_ROOT/var/pnp4nagios/perfdata/[_E2E_CPU_HOST]/CPU_Usage_5.rrd`. 
 
 ### Change PNP working mode
 
@@ -106,40 +125,41 @@ OMD runs PNP by default in [Bulk Mode with NPCD and npcdmod.o](http://docs.pnp4n
 
 In [Bulk mode with npcdmod.o](http://docs.pnp4nagios.org/pnp-0.6/modes#bulk_mode_with_npcd) the format of performance data written by the core to the spool directory can be freely defined with `service_perfdata_file_template`. In the following code block you can see that the four variables were added to the template. Perfdata spool files are then moved to *var/spool/perfdata* every 15 seconds. Remember to use the correct OMD site name:
 
-		vim ~/etc/nagios/nagios.d/pnp4nagios.cfg
-		
-		process_performance_data=1
-		
-		# this line has to be disabled; otherwise you will get duplicate perfdata
-		# broker_module=/omd/sites/[OMD_SITE]/lib/npcdmod.o config_file=/omd/sites/[OMD_SITE]/etc/pnp4nagios/npcd.cfg
-		
-		# services
-		service_perfdata_file=/omd/sites/[OMD_SITE]/var/pnp4nagios/service-perfdata
-		service_perfdata_file_template=DATATYPE::SERVICEPERFDATA\tTIMET::$TIMET$\tHOSTNAME::$HOSTNAME$\tSERVICEDESC::$SERVICEDESC$\tSERVICEPERFDATA::$SERVICEPERFDATA$\tSERVICECHECKCOMMAND::$SERVICECHECKCOMMAND$\tHOSTSTATE::$HOSTSTATE$\tHOSTSTATETYPE::$HOSTSTATETYPE$\tSERVICESTATE::$SERVICESTATE$\tSERVICESTATETYPE::$SERVICESTATETYPE$\tE2ECPUHOST::$_HOSTE2E_CPU_HOST$\tE2ECPUSVC::$_HOSTE2E_CPU_SVC$\tE2EMEMHOST::$_HOSTE2E_MEM_HOST$\tE2EMEMSVC::$_HOSTE2E_MEM_SVC$
-		service_perfdata_file_mode=a
-		service_perfdata_file_processing_interval=15
-		service_perfdata_file_processing_command=omd-process-service-perfdata-file
-		
-		# hosts
-		host_perfdata_file=/omd/sites/[OMD_SITE]/var/pnp4nagios/host-perfdata
-		host_perfdata_file_template=DATATYPE::HOSTPERFDATA\tTIMET::$TIMET$\tHOSTNAME::$HOSTNAME$\tHOSTPERFDATA::$HOSTPERFDATA$\tHOSTCHECKCOMMAND::$HOSTCHECKCOMMAND$\tHOSTSTATE::$HOSTSTATE$\tHOSTSTATETYPE::$HOSTSTATETYPE$
-		host_perfdata_file_mode=a
-		host_perfdata_file_processing_interval=15
-		host_perfdata_file_processing_command=omd-process-host-perfdata-file
+	vim ~/etc/nagios/nagios.d/pnp4nagios.cfg
 
-* Check the perfdata processing commands (should be present already; watch for the OMD site name!)
+	process_performance_data=1
+		
+	# this line has to be disabled; otherwise you will get duplicate perfdata
+	# broker_module=/omd/sites/[OMD_SITE]/lib/npcdmod.o config_file=/omd/sites/[OMD_SITE]/etc/pnp4nagios/npcd.cfg
+	
+	# services
+	service_perfdata_file=/omd/sites/[OMD_SITE]/var/pnp4nagios/service-perfdata
+	service_perfdata_file_template=DATATYPE::SERVICEPERFDATA\tTIMET::$TIMET$\tHOSTNAME::$HOSTNAME$\tSERVICEDESC::$SERVICEDESC$\tSERVICEPERFDATA::$SERVICEPERFDATA$\tSERVICECHECKCOMMAND::$SERVICECHECKCOMMAND$\tHOSTSTATE::$HOSTSTATE$\tHOSTSTATETYPE::$HOSTSTATETYPE$\tSERVICESTATE::$SERVICESTATE$\tSERVICESTATETYPE::$SERVICESTATETYPE$\tE2ECPUHOST::$_HOSTE2E_CPU_HOST$\tE2ECPUSVC::$_HOSTE2E_CPU_SVC$\tE2EMEMHOST::$_HOSTE2E_MEM_HOST$\tE2EMEMSVC::$_HOSTE2E_MEM_SVC$
+	service_perfdata_file_mode=a
+	service_perfdata_file_processing_interval=15
+	service_perfdata_file_processing_command=omd-process-service-perfdata-file
+		
+	# hosts
+	host_perfdata_file=/omd/sites/[OMD_SITE]/var/pnp4nagios/host-perfdata
+	host_perfdata_file_template=DATATYPE::HOSTPERFDATA\tTIMET::$TIMET$\tHOSTNAME::$HOSTNAME$\tHOSTPERFDATA::$HOSTPERFDATA$\tHOSTCHECKCOMMAND::$HOSTCHECKCOMMAND$\tHOSTSTATE::$HOSTSTATE$\tHOSTSTATETYPE::$HOSTSTATETYPE$
+	host_perfdata_file_mode=a
+	host_perfdata_file_processing_interval=15
+	host_perfdata_file_processing_command=omd-process-host-perfdata-file
 
-		# ~/etc/nagios/conf.d/pnp4nagios.cfg
-		define command{
-          command_name    omd-process-service-perfdata-file
-          command_line    /bin/mv /omd/sites/[OMD_SITE]/var/pnp4nagios/service-perfdata /omd/sites/[OMD_SITE]/var/pnp4nagios/spool/service-perfdata.$TIMET$
-        }
+Check the perfdata processing commands (should be present already; watch for the OMD site name!)
+
+	vim ~/etc/nagios/conf.d/pnp4nagios.cfg
+
+	define command{
+		command_name    omd-process-service-perfdata-file
+		command_line    /bin/mv /omd/sites/[OMD_SITE]/var/pnp4nagios/service-perfdata /omd/sites/[OMD_SITE]/var/pnp4nagios/spool/service-perfdata.$TIMET$
+	}
  
-		define command{
-          command_name    omd-process-host-perfdata-file
-          command_line    /bin/mv /omd/sites/[OMD_SITE]/var/pnp4nagios/host-perfdata /omd/sites/[OMD_SITE]/var/pnp4nagios/spool/host-perfdata.$TIMET$
-		}
+	define command{
+		command_name    omd-process-host-perfdata-file
+		command_line    /bin/mv /omd/sites/[OMD_SITE]/var/pnp4nagios/host-perfdata /omd/sites/[OMD_SITE]/var/pnp4nagios/spool/host-perfdata.$TIMET$
+	}
 
-* Restart the OMD site to unload the *npcdmod.o* module. 
+Restart the OMD site to unload the *npcdmod.o* module. 
 
 Now head over to the Installation of a [Windows](installation-windows.md) or [Linux](installation-ubuntu.md) client.  

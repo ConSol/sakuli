@@ -35,6 +35,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Path;
+
 /**
  * Loads all necessary objects for the {@link de.consol.sakuli.actions.screenbased.ScreenshotActions}.
  *
@@ -102,6 +104,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
 
     @Override
     public void init(String testCaseID, String... imagePaths) {
+        baseLoader.init(testCaseID, imagePaths);
+    }
+
+    @Override
+    public void init(String testCaseID, Path... imagePaths) {
         baseLoader.init(testCaseID, imagePaths);
     }
 

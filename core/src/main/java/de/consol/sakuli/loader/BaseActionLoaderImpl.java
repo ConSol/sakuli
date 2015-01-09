@@ -36,6 +36,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tobias Schneck
@@ -68,6 +72,16 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
     private RhinoScriptRunner rhinoScriptRunner;
     private ImageLib imageLib;
 
+    @Override
+    public void init(String testCaseID, String... imagePaths) {
+        List<Path> pathList = new ArrayList<>();
+        if (imagePaths != null) {
+            for (String imagePath : imagePaths) {
+                pathList.add(Paths.get(imagePath));
+            }
+        }
+        init(testCaseID, pathList.toArray(new Path[pathList.size()]));
+    }
 
     /**
      * init function, which should be called on the beginning of every test case.
@@ -75,7 +89,8 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
      * @param imagePaths paths to relevant pictures
      * @param testCaseID id of the corresponding test case
      */
-    public void init(String testCaseID, String... imagePaths) {
+    @Override
+    public void init(String testCaseID, Path... imagePaths) {
         try {
             //set the current test case
             if (testSuite.getTestCase(testCaseID) == null) {
@@ -90,15 +105,16 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
             this.imageLib = new ImageLib();
             imageLib.addImagesFromFolder(imagePaths);
 
-            //add the "sakuli-delay-active" var to the script runner context
-            if (rhinoScriptRunner == null || rhinoScriptRunner.getSession() == null) {
-                throw new SakuliException(String.format("cannot init rhino script runner with sakuli custom delay variable '%s'",
-                        SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR));
+            if (!testSuite.isUiTest()) {
+                //add the "sakuli-delay-active" var to the script runner context
+                if (rhinoScriptRunner == null || rhinoScriptRunner.getSession() == null) {
+                    throw new SakuliException(String.format("cannot init rhino script runner with sakuli custom delay variable '%s'",
+                            SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR));
+                }
+                String isRequestDelayActive = String.valueOf(sahiProxyProperties.isRequestDelayActive());
+                rhinoScriptRunner.getSession().setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, isRequestDelayActive);
+                LOGGER.info("set isRequestDelayActive={}", isRequestDelayActive);
             }
-            String isRequestDelayActive = String.valueOf(sahiProxyProperties.isRequestDelayActive());
-            rhinoScriptRunner.getSession().setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, isRequestDelayActive);
-            LOGGER.info("set isRequestDelayActive={}", isRequestDelayActive);
-
         } catch (SakuliException | IOException e) {
             exceptionHandler.handleException(e);
         }
