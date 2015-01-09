@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -46,10 +45,10 @@ public class ImageLib extends HashMap<String, ImageLibObject> {
      *
      * @param paths multiple path to image folders
      */
-    public void addImagesFromFolder(String... paths) throws IOException {
-        for (String path : paths) {
-            logger.info("load all pics from \"" + path + "\" in picLib");
-            DirectoryStream<Path> directory = Files.newDirectoryStream(FileSystems.getDefault().getPath(path));
+    public void addImagesFromFolder(Path... paths) throws IOException {
+        for (Path path : paths) {
+            logger.info("load all pics from \"" + path.toString() + "\" in picLib");
+            DirectoryStream<Path> directory = Files.newDirectoryStream(path);
             for (Path file : directory) {
                 if (!Files.isDirectory(file)) {
                     try {

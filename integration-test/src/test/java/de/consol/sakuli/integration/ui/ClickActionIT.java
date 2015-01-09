@@ -18,15 +18,16 @@
 
 package de.consol.sakuli.integration.ui;
 
-import de.consol.sakuli.actions.screenbased.Region;
 import de.consol.sakuli.integration.IntegrationTest;
 import de.consol.sakuli.integration.ui.app.UiTestApplication;
-import javafx.application.Platform;
+import de.consol.sakuli.javaDSL.TestCaseInitParameter;
+import de.consol.sakuli.javaDSL.actions.Region;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.testng.annotations.Test;
 
-import java.util.concurrent.Future;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static de.consol.sakuli.integration.ui.app.UiTestEvent.LOGIN_BT;
 import static org.testng.Assert.assertEquals;
@@ -44,40 +45,78 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
         return "Click_Action_Test";
     }
 
-    @Test
-    public void testClickAction() throws Exception {
-        final int expectedCount = 2;
-        //set click event handler
-        UiTestApplication.addLoginControllEvent(LOGIN_BT, MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                logger.info("mouse event triggered");
-                countEvent(LOGIN_BT);
-                if (getEventCount(LOGIN_BT) >= expectedCount) {
-                    Platform.exit();
-                }
-            }
-        });
-        Future<Long> future = startUiTestApplication();
+    @Override
+    protected TestCaseInitParameter getTestCaseInitParameter() throws Throwable {
+        return new TestCaseInitParameter(getUniqueTestCaseId(), IMAGE_LIB_FOLDER_NAME);
+    }
 
+    @Test
+    public void testWaitForDoubleClickAction() throws Exception {
+        final int expectedClickCount = 4;
+        Stage stage = startUiApplication();
         /**
          * SAKULI ACTIONS
          */
-        env.sleep(2);
-        env.setSimilarity(0.4);
+//        env.sleep(2);
 
         //opt 1
-        new Region("login_bt", false, getScreenActionLoader()).find().click();
-        Region region = new Region(false, getScreenActionLoader());
-        region.find("login_bt.png").click().highlight();
-        //opt 2
-        new Region("login_bt", false, getScreenActionLoader()).click();
-        //opt3
+        Region region = new Region();
+        region.waitForImage("login_bt.png", 3).doubleClick();
 
-        //assert that the runtime of the application fits
-        assertTrue(future.get() > 0);
+        //opt2
+        new Region("login_bt.png").waitFor(3).doubleClick().sleep(2);
+
         //assert the count of button clicks
-        assertEquals(getEventCount(LOGIN_BT), expectedCount);
-
+        stopUiApplication(stage);
+        assertEquals(getEventCount(LOGIN_BT), expectedClickCount);
     }
+
+    @Test
+    public void testClickAction() throws Exception {
+        final int expectedClickCount = 3;
+        Stage stage = startUiApplication();
+        /**
+         * SAKULI ACTIONS
+         */
+
+        //opt 1
+        de.consol.sakuli.actions.screenbased.Region region = new Region().exists("login_bt.png", 5);
+        region.find().click();
+        //opt 2
+        new Region().find("login_bt").click();
+        new Region("login_bt").click().sleep(2).rightClick().sleep(2);
+        //assert the count of button clicks
+        assertEquals(getEventCount(LOGIN_BT), 4);
+        stopUiApplication(stage);
+    }
+
+    @Test
+    public void testLoginAction() throws Exception {
+        Stage stage = startUiApplication();
+        new Region().exists("login_bt.png", 5).click();
+        assertEquals(getEventCount(LOGIN_BT), 1);
+        //opt 2
+        new Region().find("username").click().type("demo");
+        new Region().find("login_bt").click();
+        assertEquals(getEventCount(LOGIN_BT), 2);
+        new Region("password").click().type("demo");
+        new Region("login_bt").click();
+        assertTrue(new Region("profil").exists() != null);
+        assertEquals(getEventCount(LOGIN_BT), 3);
+        stopUiApplication(stage);
+    }
+
+    protected Stage startUiApplication() {
+        UiTestApplication.cleanAllEvents();
+        eventCounter = new ConcurrentHashMap<>();
+        UiTestApplication.addLoginControllEvent(LOGIN_BT, MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                logger.info("---> MOUSE EVENT triggered");
+                countEvent(LOGIN_BT);
+            }
+        });
+        return super.startUiApplication();
+    }
+
 }

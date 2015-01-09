@@ -34,7 +34,7 @@ import java.util.*;
  * @author tschneck Date: 10.06.13
  */
 @Component
-public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteState> {
+public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuiteState> {
 
     //browser name where to start the test execution
     private String browserName;
@@ -45,6 +45,7 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
     private Path testSuiteFile;
     private int dbJobPrimaryKey = -1;
     private Map<String, TestCase> testCases;
+    private boolean uiTest = false;
 
     public TestSuite() {
     }
@@ -152,12 +153,12 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         return testSuiteFile == null ? null : testSuiteFile.toAbsolutePath().toString();
     }
 
-    public void setTestSuiteFolder(Path testSuiteFolder) {
-        this.testSuiteFolder = testSuiteFolder;
-    }
-
     public Path getTestSuiteFolder() {
         return testSuiteFolder;
+    }
+
+    public void setTestSuiteFolder(Path testSuiteFolder) {
+        this.testSuiteFolder = testSuiteFolder;
     }
 
     public String getBrowserName() {
@@ -234,15 +235,6 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
         return testCaseID != null && this.getTestCases() != null && this.getTestCases().containsKey(testCaseID);
     }
 
-    public TestCase getTestCaseByDBKey(int primaryKeyOfTestCase) {
-        for (TestCase testCase : testCases.values()) {
-            if (testCase.getDbPrimaryKey() == primaryKeyOfTestCase) {
-                return testCase;
-            }
-        }
-        return null;
-    }
-
     @Override
     public String toString() {
         return "TestSuite{" +
@@ -266,5 +258,13 @@ public class TestSuite extends AbstractSakuliTest<SakuliException, TestSuiteStat
             return new TreeSet<>(testCases.values());
         }
         return new TreeSet<>();
+    }
+
+    public boolean isUiTest() {
+        return uiTest;
+    }
+
+    public void setUiTest(boolean uiTest) {
+        this.uiTest = uiTest;
     }
 }

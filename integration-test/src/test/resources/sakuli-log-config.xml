@@ -52,16 +52,16 @@
             <MaxFileSize>10000KB</MaxFileSize>
         </triggeringPolicy>
     </appender>
-    <logger name="de.consol.sakuli" level="DEBUG">
+    <logger name="de.consol.sakuli" level="INFO">
         <appender-ref ref="sakuli"/>
-        <!--<appender-ref ref="stdout"/>-->
+        <appender-ref ref="stdout"/>
     </logger>
-    <logger name="org.sikuli" level="DEBUG">
+    <logger name="org.sikuli" level="WARN">
         <appender-ref ref="sakuli"/>
-        <!--<appender-ref ref="stdout"/>-->
+        <appender-ref ref="stdout"/>
     </logger>
     <root level="DEBUG">
-        <appender-ref ref="stdout"/>
+        <!--<appender-ref ref="stdout"/>-->
         <appender-ref ref="alllogs"/>
     </root>
 </configuration>

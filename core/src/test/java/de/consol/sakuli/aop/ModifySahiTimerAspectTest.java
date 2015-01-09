@@ -48,7 +48,7 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         Environment env = new Environment(false, loaderMock);
         ReflectionTestUtils.setField(env, "typingUtil", typingUtil);
         env.type("BLA");
-        assertLastLine("SAHI-TIMER", LogLevel.DEBUG, "MODIFY SAHI-TIMER for Environment.type()");
+        assertLastLine("Environment", LogLevel.INFO, "Environment.type() - type over system keyboard with arg(s) [BLA]");
     }
 
     @Test
@@ -60,7 +60,7 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         Region region = new Region(mock(RegionImpl.class), false, loaderMock);
         ReflectionTestUtils.setField(region, "typingUtil", typingUtil);
         region.type("BLA");
-        assertLastLine("SAHI-TIMER", LogLevel.DEBUG, "MODIFY SAHI-TIMER for Region.type()");
+        assertLastLine("Environment", LogLevel.INFO, "Environment.type() - type over system keyboard with arg(s) [BLA]");
     }
 
     @Test

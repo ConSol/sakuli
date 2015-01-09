@@ -4,22 +4,23 @@
 package de.consol.sakuli.integration.ui.app;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageBuilder;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,13 +28,12 @@ import java.util.logging.Logger;
 /**
  * UiTestApplication Application. This class handles navigation and user session.
  */
-public class UiTestApplication extends Application implements Callable<Long> {
+public class UiTestApplication extends Application implements Runnable {
 
-    private static final double MINIMUM_WINDOW_WIDTH = 390.0;
-    private static final double MINIMUM_WINDOW_HEIGHT = 500.0;
+    public static final Logger LOGGER = Logger.getLogger(UiTestApplication.class.getName());
+    public static Stage stage;
     protected static Map<UiTestEvent, Map<EventType<? extends Event>, EventHandler<? super Event>>> loginControllerEvents;
     protected static Map<UiTestEvent, Map<EventType<? extends Event>, EventHandler<? super Event>>> profileControllerEvents;
-    private Stage stage;
     private User loggedUser;
 
     public static void cleanAllEvents() {
@@ -64,30 +64,43 @@ public class UiTestApplication extends Application implements Callable<Long> {
         profileControllerEvents = updateEventMap(loginControllerEvents, testEvent, eventType, eventHandler);
     }
 
+    public static void main(String[] args) {
+        LOGGER.info("............................START");
+        final UiTestApplication uiTestApplication = new UiTestApplication();
+        new JFXPanel();
+        Platform.runLater(uiTestApplication);
+    }
+
     @Override
-    public Long call() throws Exception {
-        Date startDate = new Date();
-        Application.launch(UiTestApplication.class, (String[]) null);
-        return (new Date().getTime() - startDate.getTime()) / 1000;
+    public void run() {
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getVisualBounds();
+        //create Login scene
+        Scene loginScene = gotoLogin();
+        final double height = bounds.getHeight() - 100;
+//        final double height = bounds.getHeight();
+
+        Stage stage = StageBuilder.create()
+                .x(0).y(0)
+                .width(bounds.getWidth())
+                .height(height)
+                .title("Sakuli Login Sample")
+                .scene(loginScene)
+                .onCloseRequest(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent windowEvent) {
+                        LOGGER.info("PLATFORM exit!");
+                        Platform.exit();
+                    }
+                }).build();
+        start(stage);
     }
 
     @Override
     public void start(Stage primaryStage) {
         try {
             stage = primaryStage;
-            Screen screen = Screen.getPrimary();
-            Rectangle2D bounds = screen.getVisualBounds();
-
-            stage.setX(bounds.getMinX());
-            stage.setY(bounds.getMinY());
-            stage.setWidth(bounds.getWidth());
-            stage.setHeight(bounds.getHeight());
-            stage.setTitle("Sakuli Login Sample");
-
-//            stage.setMinWidth(MINIMUM_WINDOW_WIDTH);
-//            stage.setMinHeight(MINIMUM_WINDOW_HEIGHT);
-            gotoLogin();
-            primaryStage.show();
+            primaryStage.showAndWait();
         } catch (Exception ex) {
             Logger.getLogger(UiTestApplication.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -112,35 +125,40 @@ public class UiTestApplication extends Application implements Callable<Long> {
         gotoLogin();
     }
 
-    private void gotoProfile() {
+    private Scene gotoProfile() {
         try {
-            ProfileController profileController = (ProfileController) getController("Profile.fxml");
-            profileController.setApp(this, profileControllerEvents);
+            LOGGER.info("GO TO PROFILE PAGE!");
+            return getFxmlScene("Profile.fxml", profileControllerEvents);
         } catch (Exception ex) {
-            Logger.getLogger(UiTestApplication.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
-    private void gotoLogin() {
+    private Scene gotoLogin() {
         try {
-            LoginController loginController = (LoginController) getController("Login.fxml");
-            loginController.setApp(this, loginControllerEvents);
+            LOGGER.info("GO TO LOGIN PAGE!");
+            return getFxmlScene("Login.fxml", loginControllerEvents);
         } catch (Exception ex) {
-            Logger.getLogger(UiTestApplication.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
-    private Initializable getController(String fxml) throws IOException {
+    private Scene getFxmlScene(String fxml, Map<UiTestEvent, Map<EventType<? extends Event>, EventHandler<? super Event>>> controllerEvents) throws IOException {
         URL resourceURl = getClass().getResource(fxml);
         FXMLLoader loader = new FXMLLoader(resourceURl);
         //load defined page
         AnchorPane page = (AnchorPane) loader.load();
         //add page to stage
         Scene scene = new Scene(page, 800, 600);
-        stage.setScene(scene);
-        stage.sizeToScene();
-        //return the corresponding controller
-        return loader.getController();
-    }
+        if (stage != null) {
+            stage.setScene(scene);
+            stage.sizeToScene();
+        }
 
+        //return the corresponding controller
+        ((AbstractUiTestPane) loader.getController()).setApp(this, controllerEvents);
+        return scene;
+    }
 }

@@ -17,25 +17,27 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>de.consol.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.4.7-SNAPSHOT</version>
+        <version>0.4.8-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>integration-test</artifactId>
-    <version>0.4.7-SNAPSHOT</version>
+    <version>0.4.8-SNAPSHOT</version>
     <name>integration-test</name>
     <description>integration test modul for sakuli</description>
 
     <packaging>jar</packaging>
     <properties>
         <sakuli.home>${project.parent.basedir}</sakuli.home>
-        <test.excluded.groups>${test.group.unit}</test.excluded.groups>
+        <test.included.groups>${test.group.integration}</test.included.groups>
+        <test.excluded.groups>${test.group.unit},${test.group.ui},${test.group.sakuliDSL}</test.excluded.groups>
     </properties>
 
     <build>
@@ -55,8 +57,7 @@
                             <includes>
                                 <include>**/*.class</include>
                             </includes>
-                            <groups>integration</groups>
-                            <groups>${test.group.integration}</groups>
+                            <groups>${test.included.groups}</groups>
                             <excludedGroups>${test.excluded.groups}</excludedGroups>
                             <!-- override the sahi.proxy.homePath property-->
                             <argLine>-Dsahi.proxy.homePath=${sakuli.home}/sahi</argLine>
@@ -70,13 +71,11 @@
 
     <profiles>
         <profile>
-            <activation>
-              <activeByDefault>true</activeByDefault>
-            </activation>
-            <id>no-ui-tests</id>
-            <!-- Config that UI-Test test are skipped -->
+            <id>ui-tests</id>
+            <!-- Config that the example sakuli tests are skipped -->
             <properties>
-                <test.excluded.groups>${test.group.unit},${test.group.ui}</test.excluded.groups>
+                <test.included.groups>${test.group.integration},${test.group.ui}</test.included.groups>
+                <test.excluded.groups>${test.group.unit}</test.excluded.groups>
             </properties>
         </profile>
 
@@ -92,8 +91,17 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>java-dsl</artifactId>
             <version>${project.parent.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>java-dsl</artifactId>
+            <version>${project.parent.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
 
         <!-- JAVA FX - unfortunately only over this way possible yet -->

@@ -28,8 +28,7 @@ import java.nio.file.Paths;
 import static org.testng.Assert.assertTrue;
 
 /**
- * @author tschneck
- *         Date: 22.05.14
+ * @author tschneck Date: 22.05.14
  */
 public abstract class TestSuitePropertiesTestUtils {
 
@@ -42,6 +41,7 @@ public abstract class TestSuitePropertiesTestUtils {
         props.setTestSuiteFolder(folderPath);
         props.setTestSuiteSuiteFile(Paths.get(folderPath.toString() + TestSuiteProperties.TEST_SUITE_SUITE_FILE_APPENDER));
         props.setTestSuiteId(suiteId);
+        props.setLoadTestCasesAutomatic(true);
         return props;
     }
 }

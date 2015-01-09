@@ -28,9 +28,8 @@ import de.consol.sakuli.datamodel.state.TestSuiteState;
 import de.consol.sakuli.exceptions.SakuliCipherException;
 import de.consol.sakuli.exceptions.SakuliProxyException;
 import de.consol.sakuli.loader.BeanLoader;
-import de.consol.sakuli.services.InitializingService;
-import de.consol.sakuli.services.PrioritizedServiceComparator;
-import de.consol.sakuli.services.ResultService;
+import de.consol.sakuli.services.InitializingServiceHelper;
+import de.consol.sakuli.services.ResultServiceHelper;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.apache.commons.cli.*;
 import org.apache.commons.lang.StringUtils;
@@ -41,9 +40,6 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class SakuliStarter {
 
@@ -148,20 +144,13 @@ public class SakuliStarter {
         Logger logger = LoggerFactory.getLogger(SakuliStarter.class);
         logger.debug(tempLogCache);
 
-        // Init the test suite data for all available InitializingServices
-        TestSuite result;
+        //Call init services
+        InitializingServiceHelper.invokeInitializingServcies();
+        TestSuite result = BeanLoader.loadBean(TestSuite.class);
+        /***
+         * SAKULI Starter to run the test suite with embedded sahi proxy
+         */
         try {
-            Map<String, InitializingService> initializingServices = BeanLoader.loadMultipleBeans(InitializingService.class);
-            SortedSet<InitializingService> services = new TreeSet<>(new PrioritizedServiceComparator<InitializingService>());
-            services.addAll(initializingServices.values());
-            for (InitializingService initializingService : services) {
-                initializingService.initTestSuite();
-            }
-
-            /***
-             * SAKULI Starter to run the test suite with embedded sahi proxy
-             */
-
             sahiConnector.init();
 
             //start the execution of the test suite
@@ -174,14 +163,7 @@ public class SakuliStarter {
             logger.error("Unexpected error occurred:", e);
             System.exit(99);
         } finally {
-            //save results for all active result services
-            Map<String, ResultService> resultServices = BeanLoader.loadMultipleBeans(ResultService.class);
-            SortedSet<ResultService> services = new TreeSet<>(new PrioritizedServiceComparator<ResultService>());
-            services.addAll(resultServices.values());
-            for (ResultService resultService : services) {
-                resultService.refreshStates();
-                resultService.saveAllResults();
-            }
+            ResultServiceHelper.invokeResultServices();
 
             //finally shutdown context and return the result
             result = BeanLoader.loadBean(TestSuite.class);

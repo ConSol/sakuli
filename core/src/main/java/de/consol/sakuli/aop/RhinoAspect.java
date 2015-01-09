@@ -43,8 +43,7 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
 /**
  * Aspect for the External Sahi Libary {@link net.sf.sahi}
  *
- * @author tschneck
- *         Date: 17.10.13
+ * @author tschneck Date: 17.10.13
  */
 @Aspect
 @Component
@@ -54,9 +53,8 @@ public class RhinoAspect extends BaseSakuliAspect {
     protected final static Logger logger = LoggerFactory.getLogger(RhinoAspect.class);
 
     /**
-     * Aspect to fetch the {@link RhinoScriptRunner} at the start of a test case script.
-     * The {@link RhinoScriptRunner} will then saved in the {@link BaseActionLoaderImpl}
-     * for forther usage.
+     * Aspect to fetch the {@link RhinoScriptRunner} at the start of a test case script. The {@link RhinoScriptRunner}
+     * will then saved in the {@link BaseActionLoaderImpl} for forther usage.
      *
      * @param joinPoint
      */
@@ -72,8 +70,8 @@ public class RhinoAspect extends BaseSakuliAspect {
     }
 
     /**
-     * Pointcut for the {@link de.consol.sakuli.actions.TestCaseAction} class
-     * to do an {@link #addActionLog(org.aspectj.lang.JoinPoint, de.consol.sakuli.actions.logging.LogToResult)}
+     * Pointcut for the {@link de.consol.sakuli.actions.TestCaseAction} class to do an {@link
+     * #addActionLog(org.aspectj.lang.JoinPoint, de.consol.sakuli.actions.logging.LogToResult)}
      */
     @Before("execution(* de.consol.sakuli.actions.TestCaseAction.*(..)) &&" +
             "@annotation(logToResult)")
@@ -82,8 +80,8 @@ public class RhinoAspect extends BaseSakuliAspect {
     }
 
     /**
-     * Pointcut for the {@link de.consol.sakuli.actions.environment} classes
-     * to do an {@link #addActionLog(org.aspectj.lang.JoinPoint, de.consol.sakuli.actions.logging.LogToResult)}
+     * Pointcut for the {@link de.consol.sakuli.actions.environment} classes to do an {@link
+     * #addActionLog(org.aspectj.lang.JoinPoint, de.consol.sakuli.actions.logging.LogToResult)}
      */
     @Before("execution(* de.consol.sakuli.actions.screenbased.*.*(..)) &&" +
             "@annotation(logToResult)")
@@ -92,8 +90,8 @@ public class RhinoAspect extends BaseSakuliAspect {
     }
 
     /**
-     * Pointcut for the {@link de.consol.sakuli.actions.environment} classes
-     * to do an {@link #addActionLog(org.aspectj.lang.JoinPoint, de.consol.sakuli.actions.logging.LogToResult)}
+     * Pointcut for the {@link de.consol.sakuli.actions.environment} classes to do an {@link
+     * #addActionLog(org.aspectj.lang.JoinPoint, de.consol.sakuli.actions.logging.LogToResult)}
      */
     @Before("execution(* de.consol.sakuli.actions.environment.*.*(..)) &&" +
             "@annotation(logToResult)")
@@ -102,8 +100,8 @@ public class RhinoAspect extends BaseSakuliAspect {
     }
 
     /**
-     * Pointcut for the {@link de.consol.sakuli.actions.logging} classes
-     * to do an {@link #addActionLog(org.aspectj.lang.JoinPoint, de.consol.sakuli.actions.logging.LogToResult)}
+     * Pointcut for the {@link de.consol.sakuli.actions.logging} classes to do an {@link
+     * #addActionLog(org.aspectj.lang.JoinPoint, de.consol.sakuli.actions.logging.LogToResult)}
      */
     @Before("execution(* de.consol.sakuli.actions.logging.*.*(..)) &&" +
             "@annotation(logToResult)")
@@ -164,8 +162,8 @@ public class RhinoAspect extends BaseSakuliAspect {
     }
 
     /**
-     * Aspect to fetch all Logs from the Sahi-Proxy by the methode {@link net.sf.sahi.ant.Report}
-     * and do an trusty exception handling on top of that.
+     * Aspect to fetch all Logs from the Sahi-Proxy by the methode {@link net.sf.sahi.ant.Report} and do an trusty
+     * exception handling on top of that.
      *
      * @param joinPoint
      */
@@ -218,7 +216,11 @@ public class RhinoAspect extends BaseSakuliAspect {
             Object o = iterator.next();
             if (logArgs) {
                 if (o != null) {
-                    builder.append(o.toString());
+                    if (o instanceof Object[]) {
+                        builder.append(printArray((Object[]) o));
+                    } else {
+                        builder.append(o.toString());
+                    }
                 } else {
                     builder.append("NULL");
                 }
@@ -230,5 +232,17 @@ public class RhinoAspect extends BaseSakuliAspect {
             }
         }
         return builder.append("]").toString();
+    }
+
+    private String printArray(Object[] objects) {
+        StringBuilder sb = new StringBuilder("[");
+        for (Object o : objects) {
+            if (sb.toString().length() > 1) {
+                sb.append(", ");
+            }
+            sb.append(o.toString());
+        }
+        sb.append("]");
+        return sb.toString();
     }
 }
