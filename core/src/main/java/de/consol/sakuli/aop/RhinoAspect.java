@@ -158,8 +158,6 @@ public class RhinoAspect extends BaseSakuliAspect {
                             logToResult.level().getResultType(),
                             joinPoint.getSignature().getDeclaringTypeName(),
                             "");
-                } else {
-                    logger.info(logToResult.message());
                 }
             }
         }
