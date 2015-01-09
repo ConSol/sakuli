@@ -67,8 +67,8 @@
     -fx-background-color: darkgrey;
     -fx-font-family: "Arial";
     -fx-text-fill: darkblue;
-    -fx-font-size: 45;
-    -fx-padding: 10 20 10 20;
+    -fx-font-size: 35;
+    -fx-padding: 4;
 }
 
 .text-field, .text-area {

@@ -22,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 import org.testng.annotations.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -49,8 +50,13 @@ public abstract class AbstractSakuliTest {
 
     protected abstract String getTestSuiteFolder();
 
-    @BeforeSuite(alwaysRun = true)
-    public void setUp() throws Exception {
+    /**
+     * Initialize the Spring context of the Sakuli test suite and invokes all configured Initializing Services.
+     *
+     * @throws FileNotFoundException
+     */
+    protected void initTestSuiteParameter() throws FileNotFoundException {
+        logger.info("............................INITIALIZE SAKULI-CONTEXT");
         executorService = Executors.newCachedThreadPool();
         BeanLoader.CONTEXT_PATH = "java-dsl-beanRefFactory.xml";
         SakuliJavaPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = getTestSuiteFolder();
@@ -61,6 +67,10 @@ public abstract class AbstractSakuliTest {
 
     @BeforeClass(alwaysRun = true)
     public void initTC() throws Throwable {
+        if (testSuite == null) {
+            initTestSuiteParameter();
+        }
+        logger.info("............................INITIALIZE TEST-CASE with {}", initParameter);
         String testCaseName = this.getClass().getSimpleName();
         initParameter = getTestCaseInitParameter();
         if (initParameter == null) {
@@ -99,20 +109,19 @@ public abstract class AbstractSakuliTest {
         );
         List<Throwable> exceptions = SakuliExceptionHandler.getAllExceptions(testSuite);
         if (!CollectionUtils.isEmpty(exceptions)) {
-            for (Throwable e : exceptions) {
-                logger.error("Sakuli-Exception:", e);
-            }
             //return the first
-//            throw exceptions.iterator().next();
+            throw exceptions.iterator().next();
         }
 
     }
 
     @AfterClass(alwaysRun = true)
     public void stopTC() throws Throwable {
-        executorService.awaitTermination(1, TimeUnit.MILLISECONDS);
+        if (executorService != null) {
+            executorService.awaitTermination(1, TimeUnit.MILLISECONDS);
+        }
         String testCaseName = this.getClass().getSimpleName();
-        logger.info("............................ STOP TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
+        logger.info("............................ SAVE RESULTS OF TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
         testCaseAction.saveResult(initParameter.getTestCaseId(),
                 String.valueOf(startTimeCase.getMillis()),
                 String.valueOf(DateTime.now().getMillis()),
@@ -143,6 +152,7 @@ public abstract class AbstractSakuliTest {
     @AfterSuite(alwaysRun = true)
     public void tearDown() throws Exception {
         if (testSuite != null) {
+            logger.info("............................ TEAR-DOWN SAKULI TEST SUITE '{}'", testSuite.getId());
             testSuite.setStopDate(DateTime.now().toDate());
             ResultServiceHelper.invokeResultServices();
         }

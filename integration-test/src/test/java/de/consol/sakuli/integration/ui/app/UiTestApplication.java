@@ -5,6 +5,7 @@ package de.consol.sakuli.integration.ui.app;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -61,6 +62,13 @@ public class UiTestApplication extends Application implements Runnable {
 
     public static void addProfileControllEvent(UiTestEvent testEvent, EventType<? extends Event> eventType, EventHandler<? extends Event> eventHandler) {
         profileControllerEvents = updateEventMap(loginControllerEvents, testEvent, eventType, eventHandler);
+    }
+
+    public static void main(String[] args) {
+        LOGGER.info("............................START");
+        final UiTestApplication uiTestApplication = new UiTestApplication();
+        new JFXPanel();
+        Platform.runLater(uiTestApplication);
     }
 
     @Override

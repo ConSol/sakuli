@@ -97,4 +97,15 @@ public class TestCaseInitParameter {
     public List<Path> getImagePaths() {
         return imagePaths;
     }
+
+    @Override
+    public String toString() {
+        return "TestCaseInitParameter{" +
+                "testCaseId='" + testCaseId + '\'' +
+                ", testCaseFolderName='" + testCaseFolderName + '\'' +
+                ", warningTime=" + warningTime +
+                ", criticalTime=" + criticalTime +
+                ", imagePaths=" + imagePaths +
+                '}';
+    }
 }

@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static de.consol.sakuli.integration.ui.app.UiTestEvent.LOGIN_BT;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  * @author tschneck
@@ -49,8 +50,9 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
         return new TestCaseInitParameter(getUniqueTestCaseId(), IMAGE_LIB_FOLDER_NAME);
     }
 
-    public void testWaitForClickAction() throws Exception {
-        final int expectedClickCount = 2;
+    @Test
+    public void testWaitForDoubleClickAction() throws Exception {
+        final int expectedClickCount = 4;
         Stage stage = startUiApplication();
         /**
          * SAKULI ACTIONS
@@ -61,6 +63,9 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
         Region region = new Region();
         region.waitForImage("login_bt.png", 3).doubleClick();
 
+        //opt2
+        new Region("login_bt.png").waitFor(3).doubleClick().sleep(2);
+
         //assert the count of button clicks
         stopUiApplication(stage);
         assertEquals(getEventCount(LOGIN_BT), expectedClickCount);
@@ -69,31 +74,35 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
     @Test
     public void testClickAction() throws Exception {
         final int expectedClickCount = 3;
-//        env.setSimilarity(0.85);
         Stage stage = startUiApplication();
         /**
          * SAKULI ACTIONS
          */
 
         //opt 1
-//        env.sleep(9999);
         de.consol.sakuli.actions.screenbased.Region region = new Region().exists("login_bt.png", 5);
         region.find().click();
-//        assertEquals(getEventCount(LOGIN_BT), 1);
         //opt 2
-        new Region().find("username").doubleClick().type("demo");
         new Region().find("login_bt").click();
-//        new Region().find("password").doubleClick().type("demo");
-        new Region("password").doubleClick().type("demo");
-        new Region("login_bt").click().sleep(2);
-//        new Region().find("login_bt").click().sleep(2);
-//        assertEquals(getEventCount(LOGIN_BT), 2);
-        assertEquals(getEventCount(LOGIN_BT), 3);
-//        env.sleep(2);
-
-//        new Region("login_bt.png").find().click();
-//        env.sleep(2);
+        new Region("login_bt").click().sleep(2).rightClick().sleep(2);
         //assert the count of button clicks
+        assertEquals(getEventCount(LOGIN_BT), 4);
+        stopUiApplication(stage);
+    }
+
+    @Test
+    public void testLoginAction() throws Exception {
+        Stage stage = startUiApplication();
+        new Region().exists("login_bt.png", 5).click();
+        assertEquals(getEventCount(LOGIN_BT), 1);
+        //opt 2
+        new Region().find("username").click().type("demo");
+        new Region().find("login_bt").click();
+        assertEquals(getEventCount(LOGIN_BT), 2);
+        new Region("password").click().type("demo");
+        new Region("login_bt").click();
+        assertTrue(new Region("profil").exists() != null);
+        assertEquals(getEventCount(LOGIN_BT), 3);
         stopUiApplication(stage);
     }
 

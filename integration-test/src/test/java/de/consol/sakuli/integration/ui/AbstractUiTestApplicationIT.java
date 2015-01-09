@@ -30,12 +30,10 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Represents an abstract representation of UI (user interface) integration test for Sakuli.
@@ -66,11 +64,6 @@ public abstract class AbstractUiTestApplicationIT extends AbstractSakuliTest imp
     public void initTcStep() throws Exception {
         super.initTcStep();
         env = new Environment();
-    }
-
-    @AfterMethod(alwaysRun = true)
-    public void initStop() throws Throwable {
-        executorService.awaitTermination(1, TimeUnit.MILLISECONDS);
     }
 
     @AfterSuite(alwaysRun = true)
