@@ -74,6 +74,7 @@ public class TypeActionIT extends AbstractUiTestApplicationIT {
         assertNull(new Region().exists("profil"));
         assertNotNull(new Region("login_bt").find());
 
+        //
         //TODO assert click event SAVE
         stopUiApplication(stage);
     }
