@@ -55,6 +55,12 @@ public class TestSuiteTest {
         testCaseMap.put(tcTestling.getId(), tcTestling);
         ReflectionTestUtils.setField(testling, "testCases", testCaseMap);
         testling.refreshState();
+        //as long as stop date is not set at every case the suite is still running
+        assertEquals(testling.getState(), TestSuiteState.RUNNING);
+
+        //no errors, stop date is set
+        tcTestling.setStopDate(new Date());
+        testling.refreshState();
         assertEquals(testling.getState(), TestSuiteState.OK);
 
         tcTestling.setState(TestCaseState.WARNING_IN_STEP);

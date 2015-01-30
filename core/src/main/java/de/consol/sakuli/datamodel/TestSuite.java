@@ -77,6 +77,11 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
             state = TestSuiteState.RUNNING;
         } else {
             for (TestCase tc : testCases.values()) {
+                //if at least on test case has no finished, test suite is still running!
+                if (tc.getStopDate() == null) {
+                    state = TestSuiteState.RUNNING;
+                    return;
+                }
 
                 tc.refreshState();
                 if (tc.getState() == null) {

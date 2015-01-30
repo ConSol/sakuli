@@ -51,7 +51,14 @@ public enum TestCaseState implements SakuliState {
     /**
      * value = 4
      */
-    ERRORS(4, "EXCEPTION");
+    ERRORS(4, "EXCEPTION"),
+
+    /**
+     * state before the execution
+     */
+    INIT(-1, "initialized");
+
+
     private final int errorCode;
     private final String stateDescription;
 

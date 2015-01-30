@@ -1,10 +1,14 @@
 ## Change Log of Sakuli Releases
 
 - - -
+### Version 0.4.8
+* fix bug: test suite has stat 'OK' instead of 'RUNNING' during the execution
 
 ### Version 0.4.7
 * add function `getLastUrl()` to the `TestCase` functions, to enable URL based test case handling.
 * uncomment some receiver properties in `sakuli.properties` to make the property overriding more generic.
+* fix bug that `new Region("image_pattern.png").click();` always clicks on the center of the screen
+* introduce experimental JAVA-DSL as new module
 
 ### Version 0.4.6
 * add `sleep()` method to Region
