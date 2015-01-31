@@ -27,6 +27,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.org.lidalia.sysoutslf4j.context.LogLevel;
+import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -51,6 +53,9 @@ public class LoggerInitializer {
 
     @PostConstruct
     public void initLoggerContext() throws JoranException, URISyntaxException, SakuliException {
+        //start sysout forwarding to slf4j
+        SysOutOverSLF4J.sendSystemOutAndErrToSLF4J(LogLevel.INFO, LogLevel.ERROR);
+
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         JoranConfigurator jc = new JoranConfigurator();
         jc.setContext(context);
@@ -71,9 +76,9 @@ public class LoggerInitializer {
         jc.doConfigure(configFilePath);
 
         //log all properties after logger is configured
+        logger.info("set logback configuration file '{}'", configFilePath);
         logger.info("set '{}' to '{}'", SakuliProperties.LOG_FOLDER, sakuliProperties.getLogFolder().toAbsolutePath().toString());
         logger.info("set '{}' to '{}''", SakuliProperties.LOG_PATTERN, sakuliProperties.getLogPattern());
-        logger.info("set logback configuration file '{}'", configFilePath);
     }
 
     protected String getConfigFileFromIncludeFolder() throws SakuliException {

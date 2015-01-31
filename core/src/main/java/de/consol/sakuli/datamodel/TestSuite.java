@@ -124,7 +124,7 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
 
     @Override
     public String getResultString() {
-        String stout = "\n=========== test suite \"" + getId() + "\" ended with " + getState() + " ================="
+        String stout = "\n=========== RESULT of SAKULI Testsuite \"" + getId() + "\" - " + getState() + " ================="
                 + "\ntest suite id: " + this.getId()
                 + "\nguid: " + this.getGuid()
                 + super.getResultString()

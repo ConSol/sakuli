@@ -72,10 +72,9 @@ public class SahiProxy {
         sahiProxy = new Proxy(props.getProxyPort());
 
         if (Files.exists(props.getSahiHomeFolder()) && Files.exists(props.getSahiConfigFolder())) {
-            logger.info("START Sahi-PROXY:\nSahi-Home folder: "
-                            + props.getSahiHomeFolder().toAbsolutePath().toString()
-                            + "\nSahi-Configuration folder: "
-                            + props.getSahiConfigFolder().toAbsolutePath().toString()
+            logger.info("START Sahi-PROXY: Sahi-Home folder '{}', Sahi-Configuration folder '{}'",
+                    props.getSahiHomeFolder().toAbsolutePath().toString(),
+                    props.getSahiConfigFolder().toAbsolutePath().toString()
             );
 
             try {

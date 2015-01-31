@@ -27,7 +27,6 @@ package de.consol.sakuli;
 public class PropertyHolder {
 
     private String logFile;
-    private String logFileAll;
     private String testSuiteFolder;
     private String screenShotFolder;
 
@@ -55,11 +54,4 @@ public class PropertyHolder {
         this.screenShotFolder = screenShotFolder;
     }
 
-    public String getLogFileAll() {
-        return logFileAll;
-    }
-
-    public void setLogFileAll(String logFileAll) {
-        this.logFileAll = logFileAll;
-    }
 }

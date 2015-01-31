@@ -26,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.org.lidalia.sysoutslf4j.context.LogLevel;
 import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 import javax.annotation.PostConstruct;
@@ -84,7 +83,6 @@ public class ScreenBasedSettings extends Settings {
         if (sikuliLogger.isDebugEnabled()) {
             DebugLogs = true;
         }
-        SysOutOverSLF4J.sendSystemOutAndErrToSLF4J(LogLevel.INFO, LogLevel.ERROR);
     }
 
     public void setMinSimilarity(double minSimilarity) {

@@ -22,6 +22,7 @@ import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BeanLoader;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import net.sf.sahi.report.Report;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import java.io.File;
@@ -113,8 +114,35 @@ public abstract class BaseTest {
         return result.toString();
     }
 
-    @BeforeClass
+    public static void setSystemProperty(String value, String key) {
+        if (value != null) {
+            System.setProperty(key, value);
+        } else {
+            System.clearProperty(key);
+        }
+    }
+
+    /**
+     * Set the property 'log-level-sakuli' for the file 'sakuli-log-config.xml'.
+     *
+     * @param logLevel as String e.g. 'DEBUG'
+     */
+    public static void setSakuliLogLevel(String logLevel) {
+        setSystemProperty(logLevel, "log-level-sakuli");
+    }
+
+    /**
+     * Set the property 'log-level-sikuli' for the file 'sakuli-log-config.xml'.
+     *
+     * @param logLevel as String e.g. 'DEBUG'
+     */
+    public static void setSikuliLogLevel(String logLevel) {
+        setSystemProperty(logLevel, "log-level-sikuli");
+    }
+
+    @BeforeClass(alwaysRun = true)
     public void setContextProperties() {
+        setSakuliLogLevel("DEBUG");
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
@@ -122,6 +150,11 @@ public abstract class BaseTest {
         BeanLoader.refreshContext();
         loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
         when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void tearDown() throws Exception {
+        setSakuliLogLevel(null);
     }
 
 }
