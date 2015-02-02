@@ -170,7 +170,7 @@ public class RhinoAspectTest extends AopBaseTest {
         RhinoAspect testling = new RhinoAspect();
 
         testling.addActionLog(jp, logToResult);
-        assertLastLine(className, logLevel,
+        assertLastLine(logFile, className, logLevel,
                 "\"" + classContent + "\" " + className + "." + methodName + "() - " + sampleMessage +
                         " with arg(s) [" + arg1 + ", " + arg2 + "]"
         );
@@ -179,7 +179,7 @@ public class RhinoAspectTest extends AopBaseTest {
         //hide args
         when(logToResult.logArgs()).thenReturn(false);
         testling.addActionLog(jp, logToResult);
-        assertLastLine(className, logLevel,
+        assertLastLine(logFile, className, logLevel,
                 "\"" + classContent + "\" " + className + "." + methodName + "() - " + sampleMessage +
                         " with arg(s) [****, ****]"
         );
@@ -187,7 +187,7 @@ public class RhinoAspectTest extends AopBaseTest {
         //without class values
         when(logToResult.logClassInstance()).thenReturn(false);
         testling.addActionLog(jp, logToResult);
-        assertLastLine(className, logLevel,
+        assertLastLine(logFile, className, logLevel,
                 className + "." + methodName + "() - " + sampleMessage +
                         " with arg(s) [****, ****]"
         );
@@ -195,13 +195,13 @@ public class RhinoAspectTest extends AopBaseTest {
         //without args
         when(jp.getArgs()).thenReturn(null);
         testling.addActionLog(jp, logToResult);
-        assertLastLine(className, logLevel,
+        assertLastLine(logFile, className, logLevel,
                 className + "." + methodName + "() - " + sampleMessage);
 
         //without message
         when(logToResult.message()).thenReturn(null);
         testling.addActionLog(jp, logToResult);
-        assertLastLine(className, logLevel,
+        assertLastLine(logFile, className, logLevel,
                 className + "." + methodName + "()");
     }
 
@@ -213,14 +213,14 @@ public class RhinoAspectTest extends AopBaseTest {
         Environment testAction = new Environment(false, screenActionLoader);
         testAction.sleep(1);
 
-        assertLastLine(testAction.getClass().getSimpleName(), LogLevel.INFO, "Environment.sleep() - sleep and do nothing for x seconds with arg(s) [1]");
+        assertLastLine(logFile, testAction.getClass().getSimpleName(), LogLevel.INFO, "Environment.sleep() - sleep and do nothing for x seconds with arg(s) [1]");
     }
 
     @Test
     public void testDoLoggingLog() throws Exception {
         initMocks();
         Logger.logInfo("INFO-LOG");
-        assertLastLine(Logger.class.getSimpleName(), LogLevel.INFO, "Logger.logInfo() with arg(s) [INFO-LOG]");
+        assertLastLine(logFile, Logger.class.getSimpleName(), LogLevel.INFO, "Logger.logInfo() with arg(s) [INFO-LOG]");
     }
 
     @Test
@@ -228,7 +228,7 @@ public class RhinoAspectTest extends AopBaseTest {
         initMocks();
         RegionTestImpl.testLogMethod();
 
-        assertLastLine(RegionTestImpl.class.getSimpleName(), LogLevel.WARNING, "RegionTestImpl.testLogMethod()");
+        assertLastLine(logFile, RegionTestImpl.class.getSimpleName(), LogLevel.WARNING, "RegionTestImpl.testLogMethod()");
     }
 
     @Test
@@ -241,7 +241,7 @@ public class RhinoAspectTest extends AopBaseTest {
         ReflectionTestUtils.setField(testAction, "loader", loader, BaseActionLoader.class);
         testAction.init("testID", 3, 4, "imagefolder1", "imagefolder2");
 
-        assertLastLine(testAction.getClass().getSimpleName(), LogLevel.INFO,
+        assertLastLine(logFile, testAction.getClass().getSimpleName(), LogLevel.INFO,
                 "\"test case [" + sampleTc.getActionValueString() + "]\" TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
     }
 

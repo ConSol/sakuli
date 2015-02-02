@@ -33,18 +33,18 @@ public class ScreenBasedSettingsSikuliLogSystemOutTest extends AopBaseTest {
         testling.setDefaults();
         //errors
         Debug.error("SAKULI-ERROR-message");
-        assertLastLine("SAKULI-", LogLevel.INFO, "[error] SAKULI-ERROR-message");
+        assertLastLine(logFile, "SAKULI-", LogLevel.INFO, "[error] SAKULI-ERROR-message");
 
         //enter message like for typing
         Debug.enter("SAKULI-ENTER-message");
-        assertLastLine("SAKULI-", LogLevel.INFO, "[profile] entering: SAKULI-ENTER-message");
+        assertLastLine(logFile, "SAKULI-", LogLevel.INFO, "[profile] entering: SAKULI-ENTER-message");
 
         //info messages
         Debug.info("SAKULI-INFO-message");
-        assertLastLine("SAKULI-", LogLevel.INFO, "[info] SAKULI-INFO-message");
+        assertLastLine(logFile, "SAKULI-", LogLevel.INFO, "[info] SAKULI-INFO-message");
 
         //debug messages
         Debug.log(-3, "SAKULI-DEBUG-message");
-        assertLastLine("SAKULI-", LogLevel.INFO, "[debug] SAKULI-DEBUG-message");
+        assertLastLine(logFile, "SAKULI-", LogLevel.INFO, "[debug] SAKULI-DEBUG-message");
     }
 }

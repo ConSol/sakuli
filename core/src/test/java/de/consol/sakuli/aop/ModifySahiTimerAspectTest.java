@@ -48,7 +48,7 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         Environment env = new Environment(false, loaderMock);
         ReflectionTestUtils.setField(env, "typingUtil", typingUtil);
         env.type("BLA");
-        assertLastLine("Environment", LogLevel.INFO, "Environment.type() - type over system keyboard with arg(s) [BLA]");
+        assertLastLine(logFile, "Environment", LogLevel.INFO, "Environment.type() - type over system keyboard with arg(s) [BLA]");
     }
 
     @Test
@@ -60,7 +60,7 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         Region region = new Region(mock(RegionImpl.class), false, loaderMock);
         ReflectionTestUtils.setField(region, "typingUtil", typingUtil);
         region.type("BLA");
-        assertLastLine("Environment", LogLevel.INFO, "Environment.type() - type over system keyboard with arg(s) [BLA]");
+        assertLastLine(logFile, "Environment", LogLevel.INFO, "Environment.type() - type over system keyboard with arg(s) [BLA]");
     }
 
     @Test
@@ -80,13 +80,13 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         testling.modifySahiTimer(mock(JoinPoint.class), true);
         verify(session).setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_TIME_VAR, "1000");
         verify(baseActionLoader.getExceptionHandler(), never()).handleException(any(Throwable.class));
-        assertLastLine("sahi-proxy-timer", LogLevel.INFO, "sahi-proxy-timer modified to 1000 ms");
+        assertLastLine(logFile, "sahi-proxy-timer", LogLevel.INFO, "sahi-proxy-timer modified to 1000 ms");
 
         //test reset timer
         testling.modifySahiTimer(mock(JoinPoint.class), false);
         verify(session).setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_TIME_VAR, null);
         verify(baseActionLoader.getExceptionHandler(), never()).handleException(any(Throwable.class));
-        assertLastLine("sahi-proxy-timer", LogLevel.INFO, "reset sahi-proxy-timer");
+        assertLastLine(logFile, "sahi-proxy-timer", LogLevel.INFO, "reset sahi-proxy-timer");
     }
 
     @Test
