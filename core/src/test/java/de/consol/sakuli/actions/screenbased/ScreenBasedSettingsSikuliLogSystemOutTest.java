@@ -22,16 +22,18 @@ import de.consol.sakuli.actions.settings.ScreenBasedSettings;
 import de.consol.sakuli.aop.AopBaseTest;
 import de.consol.sakuli.datamodel.actions.LogLevel;
 import de.consol.sakuli.loader.BeanLoader;
+import de.consol.sakuli.utils.LoggerInitializer;
 import org.sikuli.basics.Debug;
 import org.testng.annotations.Test;
 
 public class ScreenBasedSettingsSikuliLogSystemOutTest extends AopBaseTest {
 
     @Test
-    public void testDoHandleSikuliLog() throws Exception {
+    public void testDoHandleSikuliLog() throws Throwable {
         ScreenBasedSettings testling = BeanLoader.loadBean(ScreenBasedSettings.class);
         testling.setDefaults();
-        BeanLoader.refreshContext();
+        BeanLoader.loadBean(LoggerInitializer.class).initLoggerContext();
+        System.out.println("LOG-FOLDER: " + logFile);
 
         //errors
         Debug.error("SAKULI-ERROR-message");
