@@ -65,7 +65,6 @@ public class LoggerInitializerTest extends BaseTest {
         //revert to default config
         BeanLoader.loadBean(LoggerInitializer.class).initLoggerContext();
         deleteFile(Paths.get(logFolder + File.separator + "_sakuli.log"));
-        deleteFile(Paths.get(logFolder + File.separator + "all.log"));
         deleteFile(Paths.get(logFolder));
     }
 
@@ -95,6 +94,7 @@ public class LoggerInitializerTest extends BaseTest {
         stdout = root.getAppender("stdout");
         sakuliAppender = root.getAppender("sakuli");
         Assert.assertNotNull(stdout);
+        Assert.assertNotNull(sakuliLogger);
         Assert.assertNotNull(sakuliAppender);
         Assert.assertNotNull(sakuliAppender);
     }

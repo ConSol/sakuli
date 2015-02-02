@@ -22,13 +22,17 @@ import de.consol.sakuli.loader.BaseActionLoader;
 import de.consol.sakuli.loader.BeanLoader;
 import de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import net.sf.sahi.report.Report;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.spi.FileSystemProvider;
 import java.util.Scanner;
 
@@ -43,11 +47,19 @@ public abstract class BaseTest {
 
     public static final String INCLUDE_FOLDER_PATH = "." + File.separator + "src" + File.separator + "main" + File.separator + "_include";
     public static final String SAHI_FOLDER_PATH = ".." + File.separator + "sahi";
-    public static final String TEST_FOLDER_PATH = "." + File.separator + "src" + File.separator + "test" + File.separator +
-            "resources" + File.separator + "_testsuite4JUnit";
+    public static final String TEST_FOLDER_PATH = getResource("/_testsuite4JUnit");
     public static final String TEST_CONTEXT_PATH = "JUnit-beanRefFactory.xml";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
     protected BaseActionLoader loaderMock;
+
+    public static String getResource(String resourceName) {
+        try {
+            return Paths.get(BaseTest.class.getResource(resourceName).toURI()).toString();
+        } catch (URISyntaxException e) {
+            LOGGER.error("could not resolve Testsuite from classpath resource '{}'", resourceName, e);
+            return null;
+        }
+    }
 
     public static void deleteFile(Path logFile) {
         FileSystemProvider provider = logFile.getFileSystem().provider();
