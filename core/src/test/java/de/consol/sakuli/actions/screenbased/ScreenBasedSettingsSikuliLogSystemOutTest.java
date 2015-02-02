@@ -31,6 +31,8 @@ public class ScreenBasedSettingsSikuliLogSystemOutTest extends AopBaseTest {
     public void testDoHandleSikuliLog() throws Exception {
         ScreenBasedSettings testling = BeanLoader.loadBean(ScreenBasedSettings.class);
         testling.setDefaults();
+        BeanLoader.refreshContext();
+
         //errors
         Debug.error("SAKULI-ERROR-message");
         assertLastLine(logFile, "SAKULI-", LogLevel.INFO, "[error] SAKULI-ERROR-message");

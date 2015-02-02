@@ -36,7 +36,7 @@ import java.security.InvalidParameterException;
  */
 @Component
 public class ScreenBasedSettings extends Settings {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScreenBasedSettings.class);
     private double curMinSimilarity = 0.8f;
     private ActionProperties props;
     private SakuliProperties sakuliProps;
@@ -76,11 +76,13 @@ public class ScreenBasedSettings extends Settings {
          */
         Logger sikuliLogger = LoggerFactory.getLogger(Debug.class);
         if (sikuliLogger.isInfoEnabled()) {
+            LOGGER.debug("sikuli log level INFO enabled");
             ActionLogs = true;
             InfoLogs = true;
             ProfileLogs = true;
         }
         if (sikuliLogger.isDebugEnabled()) {
+            LOGGER.debug("sikuli log level DEBUG enabled");
             DebugLogs = true;
         }
     }
