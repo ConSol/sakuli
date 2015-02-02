@@ -52,7 +52,7 @@ Use the bypass list to exclude certain URLs from being accessed through the prox
 	```
 	    ...
 		<!-- default level INFO; -->
-	    <logger name="de.consol.sakuli" level="${log-level-sakuli:-INFO}"/>
+	    <logger name="de.consol.sakuli" level="${log-level-sakuli:-DEBUG}"/>
 	    ...
     ```
 
