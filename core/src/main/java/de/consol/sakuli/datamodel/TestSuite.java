@@ -77,14 +77,22 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
             state = TestSuiteState.RUNNING;
         } else {
             for (TestCase tc : testCases.values()) {
-
                 tc.refreshState();
+
+                //if errors are found suite state is always error!
                 if (tc.getState() == null) {
                     tc.addException(new SakuliException("ERROR: NO RESULT STATE SET"));
                     state = TestSuiteState.ERRORS;
                 } else if (tc.getState().equals(TestCaseState.ERRORS)) {
                     state = TestSuiteState.ERRORS;
-                } else if (tc.getState().equals(TestCaseState.CRITICAL)
+                }
+                //if at least on test case has not finished, test suite is still running!
+                else if (tc.getStopDate() == null) {
+                    state = TestSuiteState.RUNNING;
+                    return;
+                }
+                //now check if thresholds didn't exceed
+                else if (tc.getState().equals(TestCaseState.CRITICAL)
                         && state.getErrorCode() < TestSuiteState.CRITICAL_IN_CASE.getErrorCode()) {
                     state = TestSuiteState.CRITICAL_IN_CASE;
                 } else if (tc.getState().equals(TestCaseState.WARNING)
@@ -93,7 +101,9 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
                 } else if (tc.getState().equals(TestCaseState.WARNING_IN_STEP)
                         && state.getErrorCode() < TestSuiteState.WARNING_IN_STEP.getErrorCode()) {
                     state = TestSuiteState.WARNING_IN_STEP;
-                } else if (tc.getState().equals(TestCaseState.OK)
+                }
+                //all thresholds ok, no errors, case finished
+                else if (tc.getState().equals(TestCaseState.OK)
                         && state.getErrorCode() < TestSuiteState.OK.getErrorCode()) {
                     state = TestSuiteState.OK;
                 }
@@ -114,7 +124,7 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
 
     @Override
     public String getResultString() {
-        String stout = "\n=========== test suite \"" + getId() + "\" ended with " + getState() + " ================="
+        String stout = "\n=========== RESULT of SAKULI Testsuite \"" + getId() + "\" - " + getState() + " ================="
                 + "\ntest suite id: " + this.getId()
                 + "\nguid: " + this.getGuid()
                 + super.getResultString()

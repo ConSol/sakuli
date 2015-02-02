@@ -26,7 +26,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uk.org.lidalia.sysoutslf4j.context.LogLevel;
 import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 import javax.annotation.PostConstruct;
@@ -37,7 +36,7 @@ import java.security.InvalidParameterException;
  */
 @Component
 public class ScreenBasedSettings extends Settings {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScreenBasedSettings.class);
     private double curMinSimilarity = 0.8f;
     private ActionProperties props;
     private SakuliProperties sakuliProps;
@@ -77,14 +76,15 @@ public class ScreenBasedSettings extends Settings {
          */
         Logger sikuliLogger = LoggerFactory.getLogger(Debug.class);
         if (sikuliLogger.isInfoEnabled()) {
+            LOGGER.debug("sikuli log level INFO enabled");
             ActionLogs = true;
             InfoLogs = true;
             ProfileLogs = true;
         }
         if (sikuliLogger.isDebugEnabled()) {
+            LOGGER.debug("sikuli log level DEBUG enabled");
             DebugLogs = true;
         }
-        SysOutOverSLF4J.sendSystemOutAndErrToSLF4J(LogLevel.INFO, LogLevel.ERROR);
     }
 
     public void setMinSimilarity(double minSimilarity) {

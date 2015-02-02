@@ -45,10 +45,9 @@ import static org.testng.AssertJUnit.assertTrue;
  */
 public class LoggerTest extends BaseTest {
     protected static Logger logger = LoggerFactory.getLogger(LoggerTest.class);
-
+    protected PropertyHolder properties;
     @Mock
     private TestSuite testSuite;
-    protected PropertyHolder properties;
 
     @BeforeMethod
     public void init() {
@@ -60,29 +59,15 @@ public class LoggerTest extends BaseTest {
     @AfterClass
     public void clean() throws IOException {
         Path logFile = Paths.get(properties.getLogFile());
-        Path logFileAll = Paths.get(properties.getLogFileAll());
         deleteFile(logFile);
-        deleteFile(logFileAll);
-        deleteFile(logFileAll.getParent());
+        deleteFile(logFile.getParent());
     }
 
     @Test
     public void testLoggerSakuli() throws Exception {
-        Path sakuliLog = Paths.get(properties.getLogFile());
-        System.out.println("SAKULI_LOG_PATH: " + sakuliLog.toFile().getAbsolutePath());
+        Path logFile = Paths.get(properties.getLogFile());
+        System.out.println("SAKULI_LOG_PATH: " + logFile.toFile().getAbsolutePath());
 
-        assertLogging(sakuliLog);
-    }
-
-    @Test
-    public void testLoggerAll() throws Exception {
-        Path all = Paths.get(properties.getLogFileAll());
-        System.out.println("ALL_LOG_PATH: " + all.toFile().getAbsolutePath());
-
-        assertLogging(all);
-    }
-
-    private void assertLogging(Path logFile) throws IOException {
         String logMessage = "INFO-LOG-MESSAGE FOR " + testSuite.getId();
         logger.info(logMessage);
 

@@ -33,22 +33,47 @@ Use the bypass list to exclude certain URLs from being accessed through the prox
 
 ## Logging properties
 
+###1. Change the logging Level
+*  Set the logging levele over __system properties__
+  
+	  Add to your strater script e. g. `START_testsuite.sh` at the call 
+	  ```
+	  java -classpath ... de.consol.sakuli.starter.SakuliStarter -run "$SAKULI_HOME/sakuli_test_suites/$SUITE" "$INCLUDE_FOLDER"
+	  ```
+	  one of the following Parameter:
+	  * `-Dlog-level-sakuli=DEBUG` 	- logging level for the common Sakuli output                  
+      * `-Dlog-level-sikuli=INFO` 	- logging level for the underlying Sikuli output 
+      * `-Dlog-level-sahi=INFO`     - logging level for the underlying Sahi output 
+      * `-Dlog-level-spring=INFO`   - logging level for the internal used spring-framework
+      * `-Dlog-level-root=DEBUG`    - logging level for all other Java classes and libraries
+                         	 
+*  To change the logging level constantly for all test executions, modify the file `%SAKULI_HOME%/_include/sakuli-log-config.xml`:
+
+	```
+	    ...
+		<!-- default level INFO; -->
+	    <logger name="de.consol.sakuli" level="${log-level-sakuli:-DEBUG}"/>
+	    ...
+    ```
+
+###2. Change the logging configuration
 There are two places to configure the logging format/verbosity of Sakuli: 
 
-`%SAKULI_HOME%/_include/sakuli.properties` contains the common logging settings for sakuli: 
+* `%SAKULI_HOME%/_include/sakuli.properties` contains the common logging settings for sakuli: 
+	
+		sakuli.log.exception.onResumeOnException=true
+		
+		# Log pattern for the logging output.
+		#
+		# Log pattern for development with java classes:
+		# sakuli.log.pattern=%-5level %d{YYYY-MM-dd HH:mm:ss.SSS} [%thread]  %logger{36} - %msg%n
+		sakuli.log.pattern= %-5level [%d{YYYY-MM-dd HH:mm:ss.SSS}] - %msg%n
+		
+		# Sets the output folder for the log files
+		sakuli.log.folder=${sakuli.testsuite.folder}/_logs
+	
 
-    sakuli.log.exception.onResumeOnException=true
-    
-    # Log pattern for the logging output.
-    #
-    # Log pattern for development with java classes:
-    # sakuli.log.pattern=%-5level %d{YYYY-MM-dd HH:mm:ss.SSS} [%thread]  %logger{36} - %msg%n
-    sakuli.log.pattern= %-5level [%d{YYYY-MM-dd HH:mm:ss.SSS}] - %msg%n
-    
-    # Sets the output folder for the log files
-    sakuli.log.folder=${sakuli.testsuite.folder}/_logs
-    
-`%SAKULI_HOME%/_include/sakuli-log-config.xml` allows more detailled configuration of the logging format in [Logback](http://logback.qos.ch/) syntax. For more detailed information, see
+* `%SAKULI_HOME%/_include/sakuli-log-config.xml` allows more detailled configuration of the logging format in [Logback](http://logback.qos.ch/) syntax. For more detailed information, see
 [Logback configuration](http://logback.qos.ch/manual/configuration.html). 
 
 

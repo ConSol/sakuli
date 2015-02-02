@@ -65,40 +65,7 @@ public class LoggerInitializerTest extends BaseTest {
         //revert to default config
         BeanLoader.loadBean(LoggerInitializer.class).initLoggerContext();
         deleteFile(Paths.get(logFolder + File.separator + "_sakuli.log"));
-        deleteFile(Paths.get(logFolder + File.separator + "all.log"));
         deleteFile(Paths.get(logFolder));
-    }
-
-    @Test
-    public void testInitLoggerContextFromClasspath() throws Throwable {
-        LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-        Logger root = context.getLogger("root");
-        Logger sakuliLogger = context.getLogger("de.consol.sakuli");
-        Appender<ILoggingEvent> alllogs = root.getAppender("alllogs");
-        Appender<ILoggingEvent> stdout = root.getAppender("stdout");
-        Appender<ILoggingEvent> stdoutSakuli = sakuliLogger.getAppender("stdout");
-        Appender<ILoggingEvent> sakuliAppender = sakuliLogger.getAppender("sakuli");
-        Assert.assertNull(alllogs);
-        Assert.assertNull(stdout);
-        Assert.assertNull(sakuliAppender);
-        Assert.assertNull(stdoutSakuli);
-
-        testling.initLoggerContext();
-        verify(testling).getConfigFileFromClasspath();
-        verify(testling, never()).getConfigFileFromIncludeFolder();
-
-        //verify root logger
-        context = (LoggerContext) LoggerFactory.getILoggerFactory();
-        root = context.getLogger("root");
-        sakuliLogger = context.getLogger("de.consol.sakuli");
-        alllogs = root.getAppender("alllogs");
-        stdout = root.getAppender("stdout");
-        stdoutSakuli = sakuliLogger.getAppender("stdout");
-        sakuliAppender = sakuliLogger.getAppender("sakuli");
-        Assert.assertNotNull(alllogs);
-        Assert.assertNotNull(stdout);
-        Assert.assertNull(stdoutSakuli);
-        Assert.assertNotNull(sakuliAppender);
     }
 
     @Test
@@ -106,16 +73,14 @@ public class LoggerInitializerTest extends BaseTest {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         Logger root = context.getLogger("root");
         Logger sakuliLogger = context.getLogger("de.consol.sakuli");
-        Appender<ILoggingEvent> alllogs = root.getAppender("alllogs");
         Appender<ILoggingEvent> stdout = root.getAppender("stdout");
-        Appender<ILoggingEvent> stdoutSakuli = sakuliLogger.getAppender("stdout");
-        Appender<ILoggingEvent> sakuliAppender = sakuliLogger.getAppender("sakuli");
-        Assert.assertNull(alllogs);
+        Appender<ILoggingEvent> sakuliAppender = root.getAppender("sakuli");
+        //no log config in classpath
         Assert.assertNull(stdout);
         Assert.assertNull(sakuliAppender);
-        Assert.assertNull(stdoutSakuli);
+        Assert.assertNotNull(sakuliLogger);
+        Assert.assertNotNull(root);
 
-        doReturn(null).when(testling).getConfigFileFromClasspath();
         when(sakuliProperties.getIncludeFolder()).thenReturn(Paths.get(BaseTest.INCLUDE_FOLDER_PATH));
 
         testling.initLoggerContext();
@@ -126,13 +91,11 @@ public class LoggerInitializerTest extends BaseTest {
         context = (LoggerContext) LoggerFactory.getILoggerFactory();
         root = context.getLogger("root");
         sakuliLogger = context.getLogger("de.consol.sakuli");
-        alllogs = root.getAppender("alllogs");
         stdout = root.getAppender("stdout");
-        stdoutSakuli = sakuliLogger.getAppender("stdout");
-        sakuliAppender = sakuliLogger.getAppender("sakuli");
-        Assert.assertNotNull(alllogs);
-        Assert.assertNull(stdout);
-        Assert.assertNotNull(stdoutSakuli);
+        sakuliAppender = root.getAppender("sakuli");
+        Assert.assertNotNull(stdout);
+        Assert.assertNotNull(sakuliLogger);
+        Assert.assertNotNull(sakuliAppender);
         Assert.assertNotNull(sakuliAppender);
     }
 
@@ -147,8 +110,7 @@ public class LoggerInitializerTest extends BaseTest {
     @Test
     public void testGetConfigFileFromClasspath() throws Exception {
         String configFileFromClasspath = testling.getConfigFileFromClasspath();
-        Assert.assertNotNull(configFileFromClasspath);
-        Assert.assertTrue(Files.exists(Paths.get(configFileFromClasspath)));
+        Assert.assertNull(configFileFromClasspath);
     }
 
     @Test

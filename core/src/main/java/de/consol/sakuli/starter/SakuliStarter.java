@@ -44,11 +44,13 @@ import java.nio.file.Paths;
 public class SakuliStarter {
 
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(SakuliStarter.class);
+
     /**
      * The Sakuli-Starter executes a specific sakuli-testsuite. A test suite has to contain as minimum following files:
      * <ul>
-     *     <li>testsuite.suite  => specifies the testcases</li>
-     *     <li>testsuite.properties  => specifies the runtime settings like the browser for the test suite.</li>
+     * <li>testsuite.suite  => specifies the testcases</li>
+     * <li>testsuite.properties  => specifies the runtime settings like the browser for the test suite.</li>
      * </ul>
      *
      * @param args relative or absolute path to the folder of your test suite
@@ -116,8 +118,8 @@ public class SakuliStarter {
      * Executes a specific Sakuli test suite in the assigend 'testSuiteFolder'. A test suite has to contain as minimum
      * following files:
      * <ul>
-     *     <li>testsuite.suite  => specifies the testcases</li>
-     *     <li>testsuite.properties  => specifies the runtime settings like the browser for the test suite.</li>
+     * <li>testsuite.suite  => specifies the testcases</li>
+     * <li>testsuite.properties  => specifies the runtime settings like the browser for the test suite.</li>
      * </ul>
      *
      * @param testSuiteFolderPath path to the Sakuli test suite
@@ -127,6 +129,9 @@ public class SakuliStarter {
      * @throws FileNotFoundException
      */
     public static TestSuite runTestSuite(String testSuiteFolderPath, String includeFolderPath, String sahiProxyHomePath) throws FileNotFoundException {
+        LOGGER.info(String.format("\n\n=========== START new SAKULI Testsuite from '%s' =================", testSuiteFolderPath));
+
+        //temp log cache for init stuff -> should be in the log file
         String tempLogCache = "";
         //check and set the path to the test suite
         tempLogCache = checkTestSuiteFolderAndSetContextVariables(testSuiteFolderPath, tempLogCache);
@@ -141,8 +146,7 @@ public class SakuliStarter {
 
         //because of the property loading strategy, the logger must be initialized through the Spring Context!
         SahiConnector sahiConnector = BeanLoader.loadBean(SahiConnector.class);
-        Logger logger = LoggerFactory.getLogger(SakuliStarter.class);
-        logger.debug(tempLogCache);
+        LOGGER.debug(tempLogCache);
 
         //Call init services
         InitializingServiceHelper.invokeInitializingServcies();
@@ -154,13 +158,13 @@ public class SakuliStarter {
             sahiConnector.init();
 
             //start the execution of the test suite
-            logger.debug("start new sakuli test suite");
+            LOGGER.debug("start new sakuli test suite");
             sahiConnector.startSahiTestSuite();
         }
         /**
          * will be catched if the Sahi-Proxy could not shutdown;
          */ catch (SakuliProxyException e) {
-            logger.error("Unexpected error occurred:", e);
+            LOGGER.error("Unexpected error occurred:", e);
             System.exit(99);
         } finally {
             ResultServiceHelper.invokeResultServices();
