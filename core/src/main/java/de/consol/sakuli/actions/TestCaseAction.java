@@ -274,4 +274,35 @@ public class TestCaseAction {
     public void setLastURL(String lastURL) {
         loader.getCurrentTestCase().setLastURL(lastURL);
     }
+
+    /**
+     * @return the folder path of the current testcase as {@link String}.
+     */
+    @LogToResult
+    public String getTestCaseFolderPath() {
+        try {
+            return loader.getCurrentTestCase().getTcFile().getParent().toAbsolutePath().toString();
+        } catch (Exception e) {
+            handleException(new SakuliException(e,
+                    String.format("cannot resolve the folder path of the current testcase '%s'",
+                            loader.getCurrentTestCase())));
+            return null;
+        }
+    }
+
+    /**
+     * @return the folder path of the current testsuite as {@link String}.
+     */
+    @LogToResult
+    public String getTestSuiteFolderPath() {
+        try {
+            return loader.getTestSuite().getTestSuiteFolder().toAbsolutePath().toString();
+        } catch (Exception e) {
+            handleException(new SakuliException(e,
+                    String.format("cannot resolve the folder path of the current testsuite '%s'",
+                            loader.getTestSuite())));
+            return null;
+        }
+    }
+
 }
