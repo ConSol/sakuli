@@ -1,4 +1,4 @@
-![sakuli-logo](./docs/pics/sakuli-logo.png) 
+![sakuli-logo](./docs/pics/sakuli_logo_small.png) 
 
 *An end-to-end testing tool for web sites and common UIs with full Nagios integration*
 
