@@ -23,12 +23,12 @@
     <parent>
         <groupId>de.consol.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.4.8-SNAPSHOT</version>
+        <version>0.4.8-gearman-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>integration-test</artifactId>
-    <version>0.4.8-SNAPSHOT</version>
+    <version>0.4.8-gearman-SNAPSHOT</version>
     <name>integration-test</name>
     <description>integration test modul for sakuli</description>
 
