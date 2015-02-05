@@ -33,6 +33,7 @@ import sun.misc.BASE64Encoder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 /**
  * @author tschneck Date: 05.09.14
@@ -71,7 +72,10 @@ public class ScreenshotDivConverter implements Converter<ScreenshotDiv, Throwabl
                 try {
                     byte[] binaryScreenshot = Files.readAllBytes(screenshotPath);
                     String base64String = new BASE64Encoder().encode(binaryScreenshot);
-                    return StringUtils.remove(base64String, "\n");
+                    for (String newLine: Arrays.asList("\n", "\r")){
+                         base64String = StringUtils.remove(base64String,newLine );
+                    }
+                    return base64String;
                 } catch (IOException e) {
                     exceptionHandler.handleException(new SakuliReceiverException(e,
                             String.format("error during the BASE64 encoding of the screenshot '%s'", screenshotPath.toString())));
