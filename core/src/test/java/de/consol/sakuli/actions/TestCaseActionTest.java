@@ -33,17 +33,20 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.testng.AssertJUnit.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.AssertJUnit.assertNotNull;
+import static org.testng.AssertJUnit.assertTrue;
 
 /**
- * @author tschneck
- *         Date: 25.07.13
+ * @author tschneck Date: 25.07.13
  */
 public class TestCaseActionTest extends BaseTest {
     @InjectMocks
@@ -68,6 +71,7 @@ public class TestCaseActionTest extends BaseTest {
         when(testSuiteMock.getTestCases()).thenReturn(testCases);
         when(testSuiteMock.getTestCase(sample.getId())).thenReturn(sample);
         when(testSuiteMock.checkTestCaseID(sample.getId())).thenReturn(true);
+        when(testSuiteMock.getTestSuiteFolder()).thenReturn(Paths.get(TEST_FOLDER_PATH));
     }
 
 
@@ -174,4 +178,19 @@ public class TestCaseActionTest extends BaseTest {
         verify(exceptionHandlerMock, times(1)).handleException(eq(tcExcMessage), anyBoolean());
     }
 
+    @Test
+    public void testGetTestCaseFolderPath() throws Exception {
+        String folderName = "test_case_folder";
+        Path folderpath = Paths.get(TEST_FOLDER_PATH + File.separator + folderName + File.separator + "tc.js");
+        sample.setTcFile(folderpath);
+
+        assertEquals(testling.getTestCaseFolderPath(),
+                Paths.get(TEST_FOLDER_PATH + File.separator + folderName).toAbsolutePath().toString());
+    }
+
+    @Test
+    public void testGetTestSuiteFolderPath() throws Exception {
+        String expectedPath = Paths.get(TEST_FOLDER_PATH).toAbsolutePath().toString();
+        assertEquals(testling.getTestSuiteFolderPath(), expectedPath);
+    }
 }

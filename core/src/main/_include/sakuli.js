@@ -169,6 +169,20 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
         return that.javaObject.getLastURL();
     };
 
+    /**
+     * @return the folder path of the current testcase as {String}.
+     */
+    that.getTestCaseFolderPath = function () {
+        return that.javaObject.getTestCaseFolderPath();
+    }
+
+    /**
+     * @return the folder path of the current testcase as {String}.
+     */
+    that.getTestSuiteFolderPath = function () {
+        return that.javaObject.getTestSuiteFolderPath();
+    }
+
     /*****************************************************************************************************
      * INTERNAL CLASS FUNCTIONS - NOT REACHABLE IN THE TEST CASE EXECUTION
      *****************************************************************************************************/
