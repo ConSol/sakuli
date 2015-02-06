@@ -54,7 +54,7 @@ public class DatabaseInitializingServiceImpl implements InitializingService {
         try {
             testSuite.setDbPrimaryKey(daoTestSuite.insertInitialTestSuiteData());
         } catch (Throwable e) {
-            exceptionHandler.handleException(new SakuliReceiverException(e, "error at the initializing of the database"), true);
+            exceptionHandler.handleException(new SakuliReceiverException(e, "error at database initialization!"), true);
         }
     }
 }
