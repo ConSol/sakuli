@@ -45,10 +45,10 @@
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
         <downloadSources>true</downloadSources>
         <downloadJavadocs>true</downloadJavadocs>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <dependencies.spring.version>4.1.0.RELEASE</dependencies.spring.version>
-        <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
+        <dependencies.aspectj.version>1.8.5</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
@@ -117,7 +117,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>3.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
@@ -298,6 +298,11 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
+            <version>${dependencies.aspectj.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
             <version>${dependencies.aspectj.version}</version>
         </dependency>
         <!-- JavaConfig need this library -->
