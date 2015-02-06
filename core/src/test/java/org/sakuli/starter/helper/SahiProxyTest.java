@@ -35,7 +35,8 @@ import java.nio.file.attribute.FileTime;
 
 import static org.mockito.Mockito.when;
 import static org.sakuli.BaseTest.assertContains;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 public class SahiProxyTest {
     @Mock
@@ -85,7 +86,7 @@ public class SahiProxyTest {
         when(props.getSahiJSInjectTargetFile()).thenReturn(target);
         when(props.getSahiJSInjectSourceFile()).thenReturn(source);
         assertFalse(FileUtils.readFileToString(config.toFile()).contains(SahiProxy.SAKULI_INJECT_SCRIPT_TAG));
-        assertEquals(FileUtils.readFileToString(target.toFile()), "//old inject.js");
+        assertContains(FileUtils.readFileToString(target.toFile()), "//old inject.js");
 
         testling.injectCustomJavaScriptFiles();
         assertTrue(FileUtils.readFileToString(config.toFile()).contains(SahiProxy.SAKULI_INJECT_SCRIPT_TAG));
