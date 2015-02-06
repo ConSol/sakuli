@@ -44,12 +44,7 @@
     -fx-font-family: "Arial";
     -fx-font-size: 18;
     -fx-text-fill: #000000;
-    -fx-effect: dropshadow(one-pass-box, rgb(0, 0, 0, 0.6), 0, 0.0, 0, 1);
     -fx-border-width: 0;
-}
-
-.hyperlink:focused {
-    -fx-text-fill: rgb(255, 255, 255, 0.6);
 }
 
 .check-box .box {

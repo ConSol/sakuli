@@ -394,7 +394,7 @@ public class Region implements Action {
      */
     @LogToResult(message = "move this region")
     public Region move(int offsetX, int offsetY) {
-        return update(regionImpl.move(offsetX, offsetY));
+        return update(regionImpl.findBaseRegion().move(offsetX, offsetY));
     }
 
     /**
@@ -405,7 +405,7 @@ public class Region implements Action {
      */
     @LogToResult(message = "grow on each side")
     public Region grow(int range) {
-        return update(regionImpl.grow(range));
+        return update(regionImpl.findBaseRegion().grow(range));
     }
 
     /**
@@ -417,7 +417,7 @@ public class Region implements Action {
      */
     @LogToResult(message = "grow on each side with width and height")
     public Region grow(int width, int height) {
-        return update(regionImpl.grow(width, height));
+        return update(regionImpl.findBaseRegion().grow(width, height));
     }
 
     /**
@@ -426,7 +426,7 @@ public class Region implements Action {
      */
     @LogToResult()
     public Region above(int range) {
-        return update(regionImpl.above(range));
+        return update(regionImpl.findBaseRegion().above(range));
     }
 
     /**
@@ -435,7 +435,7 @@ public class Region implements Action {
      */
     @LogToResult()
     public Region below(int range) {
-        return update(regionImpl.below(range));
+        return update(regionImpl.findBaseRegion().below(range));
     }
 
     /**
@@ -444,7 +444,7 @@ public class Region implements Action {
      */
     @LogToResult()
     public Region left(int range) {
-        return update(regionImpl.left(range));
+        return update(regionImpl.findBaseRegion().left(range));
     }
 
 
@@ -454,7 +454,7 @@ public class Region implements Action {
      */
     @LogToResult()
     public Region right(int range) {
-        return update(regionImpl.right(range));
+        return update(regionImpl.findBaseRegion().right(range));
     }
 
     /**
@@ -462,7 +462,7 @@ public class Region implements Action {
      */
     @LogToResult
     public int getH() {
-        return regionImpl.getH();
+        return regionImpl.findBaseRegion().getH();
     }
 
     /**
@@ -479,7 +479,7 @@ public class Region implements Action {
      */
     @LogToResult
     public int getW() {
-        return regionImpl.getW();
+        return regionImpl.findBaseRegion().getW();
     }
 
     /**
@@ -496,7 +496,7 @@ public class Region implements Action {
      */
     @LogToResult
     public int getX() {
-        return regionImpl.getX();
+        return regionImpl.findBaseRegion().getX();
     }
 
     /**
@@ -513,7 +513,7 @@ public class Region implements Action {
      */
     @LogToResult
     public int getY() {
-        return regionImpl.getY();
+        return regionImpl.findBaseRegion().getY();
     }
 
     /**
@@ -530,7 +530,7 @@ public class Region implements Action {
      */
     @LogToResult
     public Region highlight(int seconds) {
-        regionImpl.highlight(seconds);
+        regionImpl.findBaseRegion().highlight(seconds);
         return this;
     }
 
@@ -539,7 +539,7 @@ public class Region implements Action {
      */
     @LogToResult
     public Region highlight() {
-        regionImpl.highlight(getLoader().getSettings().DefaultHighlightTime);
+        regionImpl.findBaseRegion().highlight(getLoader().getSettings().DefaultHighlightTime);
         return this;
     }
 

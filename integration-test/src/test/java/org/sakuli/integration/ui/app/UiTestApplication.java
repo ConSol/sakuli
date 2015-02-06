@@ -16,25 +16,27 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageBuilder;
-import javafx.stage.WindowEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * UiTestApplication Application. This class handles navigation and user session.
  */
 public class UiTestApplication extends Application implements Runnable {
 
-    public static final Logger LOGGER = Logger.getLogger(UiTestApplication.class.getName());
+    public static final Logger LOGGER = LoggerFactory.getLogger(UiTestApplication.class.getName());
+    public static final double HEIGHT_PERCENTAGE = 0.9;
     public static Stage stage;
     protected static Map<UiTestEvent, Map<EventType<? extends Event>, EventHandler<? super Event>>> loginControllerEvents;
     protected static Map<UiTestEvent, Map<EventType<? extends Event>, EventHandler<? super Event>>> profileControllerEvents;
     private User loggedUser;
+    private double width;
+    private double height;
 
     public static void cleanAllEvents() {
         loginControllerEvents = null;
@@ -73,26 +75,19 @@ public class UiTestApplication extends Application implements Runnable {
 
     @Override
     public void run() {
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
+        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         //create Login scene
         Scene loginScene = gotoLogin();
-        final double height = bounds.getHeight() - 100;
-//        final double height = bounds.getHeight();
-
+        width = bounds.getWidth();
+        height = bounds.getHeight() * HEIGHT_PERCENTAGE;
         Stage stage = StageBuilder.create()
                 .x(0).y(0)
-                .width(bounds.getWidth())
+                .width(width)
                 .height(height)
                 .title("Sakuli Login Sample")
                 .scene(loginScene)
-                .onCloseRequest(new EventHandler<WindowEvent>() {
-                    @Override
-                    public void handle(WindowEvent windowEvent) {
-                        LOGGER.info("PLATFORM exit!");
-                        Platform.exit();
-                    }
-                }).build();
+                .onCloseRequest(c -> LOGGER.info("PLATFORM exit!")).build();
+        LOGGER.info("set width '{}' and height '{}'", width, height);
         start(stage);
     }
 
@@ -100,9 +95,10 @@ public class UiTestApplication extends Application implements Runnable {
     public void start(Stage primaryStage) {
         try {
             stage = primaryStage;
-            primaryStage.showAndWait();
+            stage.show();
+//            primaryStage.showAndWait();
         } catch (Exception ex) {
-            Logger.getLogger(UiTestApplication.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.error("start up error", ex);
         }
     }
 
@@ -128,9 +124,11 @@ public class UiTestApplication extends Application implements Runnable {
     private Scene gotoProfile() {
         try {
             LOGGER.info("GO TO PROFILE PAGE!");
-            return getFxmlScene("Profile.fxml", profileControllerEvents);
+            Scene fxmlScene = getFxmlScene("Profile.fxml", profileControllerEvents);
+            updateStageSize();
+            return fxmlScene;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            LOGGER.error("error in profile scene", ex);
         }
         return null;
     }
@@ -138,11 +136,21 @@ public class UiTestApplication extends Application implements Runnable {
     private Scene gotoLogin() {
         try {
             LOGGER.info("GO TO LOGIN PAGE!");
-            return getFxmlScene("Login.fxml", loginControllerEvents);
+            Scene fxmlScene = getFxmlScene("Login.fxml", loginControllerEvents);
+            updateStageSize();
+            return fxmlScene;
         } catch (Exception ex) {
-            LOGGER.log(Level.SEVERE, null, ex);
+            LOGGER.error("error in login page scene", ex);
         }
         return null;
+    }
+
+    private void updateStageSize() {
+        if (stage != null) {
+            stage.setWidth(width);
+            stage.setHeight(height);
+            LOGGER.info("set width '{}' and height '{}'", width, height);
+        }
     }
 
     private Scene getFxmlScene(String fxml, Map<UiTestEvent, Map<EventType<? extends Event>, EventHandler<? super Event>>> controllerEvents) throws IOException {

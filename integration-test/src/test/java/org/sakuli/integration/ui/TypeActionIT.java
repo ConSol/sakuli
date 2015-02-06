@@ -27,7 +27,8 @@ import org.testng.annotations.Test;
 
 import java.util.Arrays;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 /**
  * @author tschneck
@@ -48,7 +49,9 @@ public class TypeActionIT extends AbstractUiTestApplicationIT {
 
     @Test
     public void testLoginAction() throws Exception {
+        env.setSimilarity(0.7);
         Stage stage = startUiApplication();
+        new Region("app_logo").waitFor(10);
         new Region("username").click().type("demo");
         new Region("password").click().typeMasked("demo");
         assertNotNull(new Region("username_filled").find());
@@ -58,24 +61,24 @@ public class TypeActionIT extends AbstractUiTestApplicationIT {
         new Region("login_bt").click();
         assertTrue(new Region("profil").exists() != null);
 
-        env.type(Key.TAB).paste("test@sakuli.de");
+        new Region("email").right(50).click().paste("test@sakuli.de");
         env.type(Key.TAB + "089-123456");
         env.type(Key.TAB).typeMasked("capital letters", Key.SHIFT);
 
         new Region("subscribe_newsletter").find("checkbox").click();
-        for (String filledRegionPattern : Arrays.asList("email_filled", "phone_filled", "subscribe_newsletter_filled")) {
-            assertNotNull(new Region().exists(filledRegionPattern));
-        }
+        Arrays.asList("email_filled", "phone_filled", "subscribe_newsletter_filled", "address_filled")
+                .forEach(pic -> {
+                    logger.info("check pic '{}'", pic);
+                    assertNotNull(new Region().exists(pic));
+                });
         new Region("save").click();
 
         assertNotNull(new Region().exists("successfull_updated"));
         new Region("logout").click();
 
-        assertNull(new Region().exists("profil"));
+        assertNotNull(new Region().exists("app_logo"));
         assertNotNull(new Region("login_bt").find());
 
-        //
-        //TODO assert click event SAVE
         stopUiApplication(stage);
     }
 
