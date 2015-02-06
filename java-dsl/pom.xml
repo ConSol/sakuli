@@ -24,12 +24,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.4.8-gearman-SNAPSHOT</version>
+        <version>0.4.8-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>java-dsl</artifactId>
-    <version>0.4.8-gearman-SNAPSHOT</version>
+    <version>0.4.8-SNAPSHOT</version>
     <name>Java DSL</name>
     <description>Specific Java-DSL for using Sakuli directly over Java</description>
 
