@@ -34,7 +34,7 @@ function Region(optResumeOnException) {
     if (undefined == optResumeOnException) {
         optResumeOnException = new Boolean(false);
     }
-    return loadRegion(Packages.de.consol.sakuli.loader.BeanLoader.loadRegion(optResumeOnException), optResumeOnException);
+    return loadRegion(Packages.org.sakuli.loader.BeanLoader.loadRegion(optResumeOnException), optResumeOnException);
 }
 
 /**
@@ -46,7 +46,7 @@ function RegionImage(imageName, optResumeOnException) {
     if (undefined == optResumeOnException) {
         optResumeOnException = new Boolean(false);
     }
-    return loadRegion(Packages.de.consol.sakuli.loader.BeanLoader.loadRegionImage(imageName, optResumeOnException), optResumeOnException);
+    return loadRegion(Packages.org.sakuli.loader.BeanLoader.loadRegionImage(imageName, optResumeOnException), optResumeOnException);
 };
 
 /**
@@ -61,7 +61,7 @@ function RegionRectangle(x, y, w, h, optResumeOnException) {
     if (undefined == optResumeOnException) {
         optResumeOnException = new Boolean(false);
     }
-    return loadRegion(Packages.de.consol.sakuli.loader.BeanLoader.loadRegionRectangle(x, y, w, h, optResumeOnException), optResumeOnException);
+    return loadRegion(Packages.org.sakuli.loader.BeanLoader.loadRegionRectangle(x, y, w, h, optResumeOnException), optResumeOnException);
 };
 
 function loadRegion(javaObject, resumeOnException) {

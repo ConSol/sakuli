@@ -38,7 +38,7 @@ Use the bypass list to exclude certain URLs from being accessed through the prox
   
 	  Add to your strater script e. g. `START_testsuite.sh` at the call 
 	  ```
-	  java -classpath ... de.consol.sakuli.starter.SakuliStarter -run "$SAKULI_HOME/sakuli_test_suites/$SUITE" "$INCLUDE_FOLDER"
+	  java -classpath ... org.sakuli.starter.SakuliStarter -run "$SAKULI_HOME/sakuli_test_suites/$SUITE" "$INCLUDE_FOLDER"
 	  ```
 	  one of the following Parameter:
 	  * `-Dlog-level-sakuli=DEBUG` 	- logging level for the common Sakuli output                  
@@ -52,7 +52,7 @@ Use the bypass list to exclude certain URLs from being accessed through the prox
 	```
 	    ...
 		<!-- default level INFO; -->
-	    <logger name="de.consol.sakuli" level="${log-level-sakuli:-DEBUG}"/>
+	    <logger name="org.sakuli" level="${log-level-sakuli:-DEBUG}"/>
 	    ...
     ```
 
@@ -151,7 +151,7 @@ To determine the correct name of an encryption interface do the following steps 
 
 * Linux:
 
-		java -classpath sakuli.jar:lib/* de.consol.sakuli.starter.SakuliStarter -encrypt yourSecrect -interface eth0
+		java -classpath sakuli.jar:lib/* org.sakuli.starter.SakuliStarter -encrypt yourSecrect -interface eth0
 
 If you came here during the [Installation on Windows 7](../docs/installation-windows.md) or [on Ubuntu](../docs/installation-ubuntu.md), go back there now. 
 

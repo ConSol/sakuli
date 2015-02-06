@@ -45,7 +45,7 @@
 
 
     <!-- default level INFO; to set the logging level over command line add e.g. '-Dlog-level-sakuli=DEBUG' -->
-    <logger name="de.consol.sakuli" level="${log-level-sakuli:-INFO}"/>
+    <logger name="org.sakuli" level="${log-level-sakuli:-INFO}"/>
 
     <!-- default level WARN; to set the logging level over command line add e.g. '-Dlog-level-sikuli=INFO' -->
     <logger name="org.sikuli" level="${log-level-sikuli:-WARN}"/>

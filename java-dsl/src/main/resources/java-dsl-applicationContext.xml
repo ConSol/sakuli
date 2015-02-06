@@ -24,7 +24,7 @@
 
     <import resource="applicationContext.xml"/>
     <bean id="propertyResolver"
-          class="de.consol.sakuli.javaDSL.utils.SakuliJavaPropertyPlaceholderConfigurer">
+          class="org.sakuli.javaDSL.utils.SakuliJavaPropertyPlaceholderConfigurer">
         <property name="fileEncoding" value="UTF-8"/>
         <property name="systemPropertiesMode" value="2"/>
     </bean>

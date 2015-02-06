@@ -35,7 +35,7 @@ function Application(applicationNameOrPath, optResumeOnException) {
     if (undefined == optResumeOnException) {
         optResumeOnException = new Boolean(false);
     }
-    return loadApplication(Packages.de.consol.sakuli.loader.BeanLoader.loadApplication(applicationNameOrPath, optResumeOnException), optResumeOnException);
+    return loadApplication(Packages.org.sakuli.loader.BeanLoader.loadApplication(applicationNameOrPath, optResumeOnException), optResumeOnException);
 }
 
 function loadApplication(javaObject, resumeOnException) {

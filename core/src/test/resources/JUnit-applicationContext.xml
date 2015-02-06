@@ -22,13 +22,13 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:annotation-config/>
-    <context:component-scan base-package="de.consol.sakuli.utils"/>
+    <context:component-scan base-package="org.sakuli.utils"/>
 
-    <bean class="de.consol.sakuli.datamodel.properties.SakuliProperties"/>
-    <bean class="de.consol.sakuli.datamodel.properties.ReceiverProperties"/>
+    <bean class="org.sakuli.datamodel.properties.SakuliProperties"/>
+    <bean class="org.sakuli.datamodel.properties.ReceiverProperties"/>
 
     <bean id="propertyResolver"
-          class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
+          class="org.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
         <property name="fileEncoding" value="UTF-8"/>
         <property name="systemPropertiesMode" value="2"/>
         <property name="loadSakuliProperties" value="false"/>
@@ -42,14 +42,14 @@
         </property>
     </bean>
 
-    <bean id="properties" class="de.consol.sakuli.PropertyHolder" depends-on="propertyResolver">
+    <bean id="properties" class="org.sakuli.PropertyHolder" depends-on="propertyResolver">
         <property name="testSuiteFolder" value="${sakuli.testsuite.folder}"/>
         <property name="logFile" value="${sakuli.log.folder}/_sakuli.log"/>
         <property name="screenShotFolder" value="${sakuli.screenshot.dir}"/>
     </bean>
 
-    <bean id="baseLoader" class="de.consol.sakuli.MockitoFactoryBean">
-        <constructor-arg value="de.consol.sakuli.loader.BaseActionLoaderImpl">
+    <bean id="baseLoader" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.loader.BaseActionLoaderImpl">
         </constructor-arg>
     </bean>
 

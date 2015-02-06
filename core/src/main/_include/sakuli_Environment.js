@@ -34,7 +34,7 @@ function Environment(optResumeOnException) {
     if (undefined == optResumeOnException) {
         optResumeOnException = new Boolean(false);
     }
-    return loadEnvironment(Packages.de.consol.sakuli.loader.BeanLoader.loadEnvironment(optResumeOnException), optResumeOnException);
+    return loadEnvironment(Packages.org.sakuli.loader.BeanLoader.loadEnvironment(optResumeOnException), optResumeOnException);
 }
 
 function loadEnvironment(javaObject, resumeOnException) {
@@ -308,7 +308,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * @param {String} `message` as a String
      */
     that.logError = function (message) {
-        Packages.de.consol.sakuli.actions.logging.Logger.logError(message);
+        Packages.org.sakuli.actions.logging.Logger.logError(message);
         return that;
     };
 
@@ -319,7 +319,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * @param {String} `message` as a String
      */
     that.logWarning = function (message) {
-        Packages.de.consol.sakuli.actions.logging.Logger.logWarning(message);
+        Packages.org.sakuli.actions.logging.Logger.logWarning(message);
         return that;
     };
 
@@ -330,7 +330,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * @param {String} `message` as a String
      */
     that.logInfo = function (message) {
-        Packages.de.consol.sakuli.actions.logging.Logger.logInfo(message);
+        Packages.org.sakuli.actions.logging.Logger.logInfo(message);
         return that;
     };
     /**
@@ -340,7 +340,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * @param {String} `message` as a String
      */
     that.logDebug = function (message) {
-        Packages.de.consol.sakuli.actions.logging.Logger.logDebug(message);
+        Packages.org.sakuli.actions.logging.Logger.logDebug(message);
         return that;
     };
 

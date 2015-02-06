@@ -17,10 +17,10 @@
   ~ limitations under the License.
   -->
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
@@ -31,17 +31,17 @@
 
     <!-- Schaltet Erkennung von @Autowired an -->
     <context:annotation-config/>
-    <context:component-scan base-package="de.consol.sakuli.datamodel"/>
-    <context:component-scan base-package="de.consol.sakuli.services"/>
-    <context:component-scan base-package="de.consol.sakuli.exceptions"/>
-    <context:component-scan base-package="de.consol.sakuli.loader"/>
-    <context:component-scan base-package="de.consol.sakuli.actions"/>
-    <context:component-scan base-package="de.consol.sakuli.aop"/>
-    <context:component-scan base-package="de.consol.sakuli.utils"/>
-    <context:component-scan base-package="de.consol.sakuli.starter"/>
+    <context:component-scan base-package="org.sakuli.datamodel"/>
+    <context:component-scan base-package="org.sakuli.services"/>
+    <context:component-scan base-package="org.sakuli.exceptions"/>
+    <context:component-scan base-package="org.sakuli.loader"/>
+    <context:component-scan base-package="org.sakuli.actions"/>
+    <context:component-scan base-package="org.sakuli.aop"/>
+    <context:component-scan base-package="org.sakuli.utils"/>
+    <context:component-scan base-package="org.sakuli.starter"/>
 
     <bean id="propertyResolver"
-          class="de.consol.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
+          class="org.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
         <property name="fileEncoding" value="UTF-8"/>
         <property name="systemPropertiesMode" value="2"/>
     </bean>

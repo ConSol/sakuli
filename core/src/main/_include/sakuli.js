@@ -201,7 +201,7 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
          * init the java backed
          */
         env.logDebug("get Backend - step 1 (load backend)");
-        that.javaObject = Packages.de.consol.sakuli.loader.BeanLoader.loadTestCaseAction();
+        that.javaObject = Packages.org.sakuli.loader.BeanLoader.loadTestCaseAction();
         env.logDebug("get Backend - step 2 (get the test case id)");
         that.tcID = that.javaObject.getIdFromPath(_resolvePath());
 

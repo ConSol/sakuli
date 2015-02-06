@@ -105,7 +105,7 @@ Setup a local MySQL database to save the results of test case executions. The da
 * In order to run Sakuli test cases directly from the IDE, you need to build up a run configuration. For IntelliJ see the predefined run configurations under [intellij/runConfigurations](intellij/runConfigurations)
   * __classpath of module:__ `sakuli-core`
   * __working directory:__ `$MODULE_DIR$`
-  * __main class:__ `de.consol.sakuli.starter.SakuliStarter`
+  * __main class:__ `org.sakuli.starter.SakuliStarter`
   * __program arguments:__ 
     ```-run <path to your Sakuli test suite folder> <path to your _include folder> <path to your sahi folder>```
     e.g. for the provided Win7 example use `-run ../sakuli_test_suites/example src/main/_include ../sahi`
