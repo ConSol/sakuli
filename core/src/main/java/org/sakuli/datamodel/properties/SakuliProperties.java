@@ -35,15 +35,15 @@ public class SakuliProperties extends AbstractProperties {
 
     public static final String SAKULI_PROPERTIES_FILE_APPENDER = File.separator + "sakuli.properties";
     public static final String INCLUDE_FOLDER = "sakuli.include.folder";
-    public static final String LOG_RESUME_ON_EXCEPTION = "sakuli.log.exception.onResumeOnException";
+    public static final String SUPPRESS_RESUMED_EXCEPTIONS = "sakuli.exception.suppressResumedExceptions";
     public static final String LOG_FOLDER = "sakuli.log.folder";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
-
+    private static final boolean SUPPRESS_RESUMED_EXCEPTIONS_DEFAULT = false;
     @Value("${" + INCLUDE_FOLDER + "}")
     private String includeFolderPropertyValue;
     private Path includeFolder;
-    @Value("${" + LOG_RESUME_ON_EXCEPTION + "}")
-    private boolean logResumOnException;
+    @Value("${" + SUPPRESS_RESUMED_EXCEPTIONS + ":" + SUPPRESS_RESUMED_EXCEPTIONS_DEFAULT + "}")
+    private boolean suppressResumedExceptions;
     @Value("${" + LOG_FOLDER + "}")
     private String logFolderPropertyValue;
     private Path logFolder;
@@ -74,12 +74,12 @@ public class SakuliProperties extends AbstractProperties {
         this.includeFolder = includeFolder;
     }
 
-    public boolean isLogResumOnException() {
-        return logResumOnException;
+    public boolean isSuppressResumedExceptions() {
+        return suppressResumedExceptions;
     }
 
-    public void setLogResumOnException(boolean logResumOnException) {
-        this.logResumOnException = logResumOnException;
+    public void setSuppressResumedExceptions(boolean suppressResumedExceptions) {
+        this.suppressResumedExceptions = suppressResumedExceptions;
     }
 
     public String getLogFolderPropertyValue() {

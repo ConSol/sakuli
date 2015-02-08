@@ -143,12 +143,12 @@ public class SakuliExceptionHandler {
 
                 //Do different exception handling for different use cases:
                 if (sakuliException.resumeOnException
-                        && loader.getSakuliProperties().isLogResumOnException()) {
+                        && !loader.getSakuliProperties().isSuppressResumedExceptions()) {
                     logger.error(sakuliException.getMessage(), sakuliException);
                     saveException(sakuliException);
                     addExceptionToSahiReport(sakuliException);
-                } else if (sakuliException.resumeOnException &&
-                        !loader.getSakuliProperties().isLogResumOnException()) {
+                } else if (sakuliException.resumeOnException) {
+                    //if suppressResumedExceptions == true
                     logger.debug(sakuliException.getMessage(), sakuliException);
                 } else {
                     logger.error(sakuliException.getMessage(), sakuliException);

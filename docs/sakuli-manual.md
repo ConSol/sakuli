@@ -61,8 +61,6 @@ There are two places to configure the logging format/verbosity of Sakuli:
 
 * `%SAKULI_HOME%/_include/sakuli.properties` contains the common logging settings for sakuli:
 
-		sakuli.log.exception.onResumeOnException=true
-
 		# Log pattern for the logging output.
 		#
 		# Log pattern for development with java classes:

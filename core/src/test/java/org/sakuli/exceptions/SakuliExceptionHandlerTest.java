@@ -90,7 +90,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(loader.getActionProperties()).thenReturn(actionProperties);
         when(actionProperties.isTakeScreenshots()).thenReturn(true);
         when(loader.getSakuliProperties()).thenReturn(sakuliProperties);
-        when(sakuliProperties.isLogResumOnException()).thenReturn(true);
+        when(sakuliProperties.isSuppressResumedExceptions()).thenReturn(false);
         when(loader.getSahiReport()).thenReturn(sahiReport);
         when(loader.getTestSuite()).thenReturn(testSuite);
         when(loader.getCurrentTestCase()).thenReturn(testCase);
