@@ -14,7 +14,7 @@ Sakuli accesses both tools via its Java API and makes it possible to use them al
 
 ![sakuli-api](./docs/pics/sakuli_api.jpg) 
 
-## Backgrund: the history of Sakuli
+## Backgrund: the history of Sakuli 
 First we only wanted to have the possibility to integrate Sahi web tests into Nagios. This was done with a simple VBscript wrapper (thus, only Windows...), which called Sahi with the correct parameters, and sent the results to Nagios via [NSCA](http://exchange.nagios.org/directory/Addons/Passive-Checks/NSCA--2D-Nagios-Service-Check-Acceptor/details). This brought Sahi tests into the well-known format of OK/WARNING/CRITICAL states in Nagios, including performance data of the test runtimes, which could be feeded into PNP4Nagios. 
 
 But soon it became clear to us that there is more than only "web content". Flash and Java Applets are content which appears in the Document Object Model ([DOM](http://de.wikipedia.org/wiki/Document_Object_Model)) as a "black box", which can't be accessed by Sahi. 
@@ -39,8 +39,7 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 
 Use this demo Appliance to see all the features of Sakuli in action. *sakulidemo* contains OMD/Nagios with two Sakuli checks.  
 
-* **OVA**: Download the .ova file from [http://labs.consol.de/sakuli/demo](http://labs.consol.de/sakuli/demo) and import this machine into Virtualbox. 
-* **Vagrant**: If you are familar with [Vagrant](https://www.vagrantup.com/), you can *vagrant up* our Sakuli box FIXME.  
+* **OVA**: Download the .ova file from [http://labs.consol.de/sakuli/demo](http://labs.consol.de/sakuli/demo) and import this machine into Virtualbox.
 
 User accounts are kept simple: *root/root* and *sakuli/sakuli*. Don't use this in production. 
  
