@@ -39,9 +39,19 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 
 Use this demo Appliance to see all the features of Sakuli in action. *sakulidemo* contains OMD/Nagios with two Sakuli checks.  
 
-* **OVA**: Download the .ova file from [http://labs.consol.de/sakuli/demo](http://labs.consol.de/sakuli/demo) and import this machine into Virtualbox.
+* **sakulidemo.ova v0.2**: Download the .ova file from [http://labs.consol.de/sakuli/demo](http://labs.consol.de/sakuli/demo) and import this machine into Virtualbox.
 
 User accounts are kept simple: *root/root* and *sakuli/sakuli*. Don't use this in production. 
+
+## Media
+
+Episode 9 of the ***ConSol Monitoring Minutes*** shows the main features of Sakuli in 15 minutes. The machine used in this video is an instance of our demo appliance (see above).   
+
+[End2End Monitoring mit Sakuli und Nagios - ConSol* Monitoring Minutes 9](https://www.youtube.com/watch?v=S6NROEOYF6w)
+
+![youtube](./docs/pics/monitoring_minutes_sakuli_300.png)
+
+
  
 ## Use Sakuli: 
 ### Installation 
