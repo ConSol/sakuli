@@ -102,7 +102,7 @@ function loadEnvironment(javaObject, resumeOnException) {
 
     /**
      * pastes the current clipboard content into the focused area.
-     * Will do the same as "STRG + C".
+     * Will do the same as "STRG + V".
      *
      * @return this Environment.
      */
