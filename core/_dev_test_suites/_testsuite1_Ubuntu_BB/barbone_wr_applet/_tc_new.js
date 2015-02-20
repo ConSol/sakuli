@@ -32,10 +32,10 @@ var testCase = new TestCase(80, 100);
  ******************************/
 try {
 
-    var environment = new Environment(false).setSimilarity(0.5);
+    var env = new Environment(false).setSimilarity(0.5);
 
-    environment.setClipboard("TEST");
-    var testString = environment.getClipboard();
+    env.setClipboard("TEST");
+    var testString = env.getClipboard();
     if (testString != "TEST") {
         throw "NOT EQUAL " + testString + " to TEST";
     }
@@ -57,27 +57,30 @@ try {
         notepadRegion.keyDown(Key.SHIFT).type("keydown").keyUp(Key.SHIFT);
         notepadRegion.write("#w2.#C.n#W1.#d3.").sleep(2).write("bla");
 
-        environment.keyDown(Key.ALT).type(Key.NUM0 + Key.NUM9 + Key.NUM2).keyUp(Key.ALT);
-        environment.keyDown(Key.SHIFT).type("keydown").keyUp(Key.SHIFT);
-        environment.write("#w2.#C.n#W1.#d3.").sleep(2).write("bla");
+        env.keyDown(Key.ALT).type(Key.NUM0 + Key.NUM9 + Key.NUM2).keyUp(Key.ALT);
+        env.keyDown(Key.SHIFT).type("keydown").keyUp(Key.SHIFT);
+        //env.write("#w2.#C.n#W1.#d3.").sleep(2).write("bla");
 
         notepadRegion.paste("foobar(),.-;:");
         notepadRegion.paste(editorApp.getName());
 
         notepadRegion.highlight(2);
 
-
+        env.setClipboard("clipboard");
         var newNotpadRegion = new RegionImage("gedit_doc_logo").grow(500, 300);
+        newNotpadRegion.click();
+        env.pasteClipboard().cleanClipboard().pasteClipboard();
         newNotpadRegion.click().paste("BLA BAL BAL");
 
-        var extractText = new RegionImage("gedit_doc_logo").find().move(-5, 20).grow(50, 0).extractText();
-        newNotpadRegion.typeMasked(extractText);
+
+        //var extractText = new RegionImage("gedit_doc_logo").find().move(-5, 20).grow(50, 0).extractText();
+        //newNotpadRegion.typeMasked(extractText);
 
     } finally {
-        //environment.type(Key.ALT + Key.F4);
+        //env.type(Key.ALT + Key.F4);
         editorApp.closeApp();
         new Region().waitForImage("gedit_close_without_saving", 10).click();
-        environment.sleep(1);
+        env.sleep(1);
         testCase.endOfStep("external Application test", 25);
     }
 
@@ -120,10 +123,11 @@ try {
 
 //    //click OK-Button
 //    testCase.click("4_ok_button");
-    environment.logInfo("Sahi wait for 2 seconds!!!");
+    env.logInfo("Sahi wait for 2 seconds!!!");
     _wait(2000);
     testCase.endOfStep("Type into amount 500", 20);
 
+    env.setClipboard("TEEEEEST");
 
 //    /***
 //     * NEW STEP

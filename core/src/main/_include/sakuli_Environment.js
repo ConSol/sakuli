@@ -121,6 +121,13 @@ function loadEnvironment(javaObject, resumeOnException) {
         return update(that.javaObject.copyIntoClipboard());
     };
 
+    /**
+     * Clean the content of the clipboard.
+     */
+    that.cleanClipboard = function () {
+        return update(that.javaObject.cleanClipboard());
+    };
+
 
     /**
      * pastes the text at the current position of the focus/carret <br/>using the

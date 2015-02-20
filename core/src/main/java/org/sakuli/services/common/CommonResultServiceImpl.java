@@ -18,6 +18,7 @@
 
 package org.sakuli.services.common;
 
+import org.sakuli.actions.environment.Application;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.slf4j.Logger;
@@ -44,6 +45,7 @@ public class CommonResultServiceImpl extends AbstractResultService {
 
     @Override
     public void saveAllResults() {
+        cleanClipboard();
         logger.info(testSuite.getResultString()
                 + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
                 + testSuite.getState() + " ======================\n");
@@ -51,5 +53,9 @@ public class CommonResultServiceImpl extends AbstractResultService {
             String errorMsg = "ERROR-Summary:\n" + testSuite.getExceptionMessages();
             logger.error(errorMsg + "\n");
         }
+    }
+
+    private void cleanClipboard() {
+        Application.setClipboard(" ");
     }
 }

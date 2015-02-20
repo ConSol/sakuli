@@ -147,6 +147,16 @@ public class Environment implements Action {
         return this;
     }
 
+
+    /**
+     * Clean the content of the clipboard.
+     */
+    @LogToResult(logClassInstance = false)
+    public Environment cleanClipboard() {
+        Application.setClipboard(" ");
+        return this;
+    }
+
     /**
      * pastes the current clipboard content into the focused area.
      * Will do the same as "STRG + C".
@@ -183,11 +193,6 @@ public class Environment implements Action {
         return this;
     }
 
-    /********************************************************
-     * PASTE FUNCTIONS
-     *******************************************************/
-
-
     /**
      * {@link org.sakuli.actions.screenbased.TypingUtil#paste(String)}.
      */
@@ -214,11 +219,6 @@ public class Environment implements Action {
     public Environment pasteAndDecrypt(String text) {
         return typingUtil.pasteAndDecrypt(text);
     }
-
-
-    /********************************************************
-     * TYPE FUNCTIONS
-     *******************************************************/
 
     /**
      * See {@link org.sakuli.actions.screenbased.TypingUtil#type(String, String)}.
@@ -301,10 +301,6 @@ public class Environment implements Action {
         return typingUtil.write(text);
     }
 
-    /*********************
-     * MOUSE WHEEL FUNCTIONS
-     *********************/
-
     /**
      * {@link TypingUtil#mouseWheelDown(int)}
      */
@@ -320,7 +316,6 @@ public class Environment implements Action {
     public Environment mouseWheelUp(int steps) {
         return typingUtil.mouseWheelUp(steps);
     }
-
 
     /**
      * {@link org.sakuli.actions.screenbased.TypingUtil#decryptSecret(String)}
