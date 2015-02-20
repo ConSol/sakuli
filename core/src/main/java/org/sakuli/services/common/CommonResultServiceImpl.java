@@ -55,7 +55,7 @@ public class CommonResultServiceImpl extends AbstractResultService {
         }
     }
 
-    private void cleanClipboard() {
+    protected void cleanClipboard() {
         Application.setClipboard(" ");
     }
 }

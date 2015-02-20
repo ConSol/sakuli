@@ -36,9 +36,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
+
 public class CommonResultServiceImplTest extends LoggerTest {
 
-    private CommonResultServiceImpl testling = new CommonResultServiceImpl();
+    private CommonResultServiceImpl testling = spy(new CommonResultServiceImpl());
     private TestSuite testSuite;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -46,6 +49,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
     @BeforeMethod
     public void init() {
         super.init();
+        doNothing().when(testling).cleanClipboard();
         testSuite = new TestSuiteExampleBuilder()
                 .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS).withException(new SakuliException("TEST")).buildExample();
         ReflectionTestUtils.setField(testling, "testSuite", testSuite);
