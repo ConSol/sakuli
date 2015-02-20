@@ -47,7 +47,7 @@ public class CipherUtil {
             };//"con13SakSo"
     private static String algorithm = "AES/ECB/PKCS5Padding";
     private String interfaceName;
-    private boolean testMode;
+    private boolean autodetect;
     private byte[] macOfEncryptionInterface;
     private String interfaceLog = "";
 
@@ -57,16 +57,16 @@ public class CipherUtil {
     @Autowired
     public CipherUtil(ActionProperties cipherProps) {
         interfaceName = cipherProps.getEncryptionInterface();
-        testMode = cipherProps.isEncryptionInterfaceTestMode();
+        autodetect = cipherProps.isEncryptionInterfaceAutodetect();
     }
 
     /**
-     * Determines a valid default network interfaces, useful in case of testing.
+     * Determines a valid network interfaces.
      *
      * @return ethernet interface name
      * @throws Exception
      */
-    public static String determineAValidDefaultNetworkInterface() throws Exception {
+    static String autodetectValidInterfaceName() throws Exception {
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
         while (interfaces.hasMoreElements()) {
             NetworkInterface anInterface = interfaces.nextElement();
@@ -84,7 +84,7 @@ public class CipherUtil {
      * @throws SakuliCipherException for wrong interface names and MACs.
      */
     @PostConstruct
-    public void getNetworkInterfaceNames() throws SakuliCipherException {
+    public void scanNetworkInterfaces() throws SakuliCipherException {
         Enumeration<NetworkInterface> networkInterfaces;
         try {
             interfaceName = checkEthInterfaceName();
@@ -112,17 +112,15 @@ public class CipherUtil {
     }
 
     /**
-     * checks if {@link #testMode} is enabled and returns:
+     * checks if {@link #autodetect} is enabled and returns:
      * <ul>
      * <li>true: the first valid interface at this computer</li>
      * <li>false: the interface name defined at the property {@link ActionProperties#ENCRYPTION_INTERFACE}</li>
      * </ul>
-     *
-     * @return
      */
     private String checkEthInterfaceName() throws Exception {
-        if (testMode) {
-            return determineAValidDefaultNetworkInterface();
+        if (autodetect) {
+            return autodetectValidInterfaceName();
         }
         return interfaceName;
     }
@@ -187,4 +185,10 @@ public class CipherUtil {
         return new SecretKeySpec(key, "AES");
     }
 
+    /**
+     * @return the name of the currently used encryption interface
+     */
+    public String getInterfaceName() {
+        return interfaceName;
+    }
 }

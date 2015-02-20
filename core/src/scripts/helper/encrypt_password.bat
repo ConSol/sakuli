@@ -1,5 +1,13 @@
+@ECHO off
+set SECRET="-encrypt %1"
+if not "%2" == "" (
+    set INTERFACE="-interface %2"
+) else (
+    set INTERFACE=
+)
 
-set SECRET=%1
-set ENCRYPTION_INTERFACE=%2
+set SAKULI_JARS=%SAKULI_HOME%\bin\lib\*;%SAKULI_HOME%\bin\lib\resource;
 
-java -classpath sakuli.jar;..\..\bin\lib\* org.sakuli.starter.SakuliStarter -encrypt "%SECRET%" -interface "%ENCRYPTION_INTERFACE%"
+java -classpath %SAKULI_HOME%\bin\sakuli.jar;%SAKULI_JARS% org.sakuli.starter.SakuliStarter "%SECRET%" "%INTERFACE%"
+
+if "%2" == "" echo (interface determined by auto-detection)

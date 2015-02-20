@@ -41,11 +41,11 @@ public class ActionProperties extends AbstractProperties {
     public static final String TYPE_DELAY_PROPERTY = "sakuli.screenbased.typeDelay";
     public static final String CLICK_DELAY_PROPERTY = "sakuli.screenbased.clickDelay";
     public static final String ENCRYPTION_INTERFACE = "sakuli.encryption.interface";
-    public static final String ENCRYPTION_INTERFACE_TEST_MODE = "sakuli.encryption.interface.testmode";
+    public static final String ENCRYPTION_INTERFACE_AUTODETECT = "sakuli.encryption.interface.autodetect";
     public static final String SCREENSHOT_FOLDER_PROPERTY = "sakuli.screenshot.dir";
     public static final String SCREENSHOT_FORMAT_PROPERTY = "sakuli.screenshot.format";
     protected static final String ENCRYPTION_INTERFACE_DEFAULT = "null";
-    protected static final String ENCRYPTION_INTERFACE_TEST_MODE_DEFAULT = "false";
+    protected static final String ENCRYPTION_INTERFACE_AUTODETECT_DEFAULT = "true";
     @Value("${" + TAKE_SCREENSHOTS + "}")
     private boolean takeScreenshots;
     @Value("${" + AUTO_HIGHLIGHT_ENABLED + "}")
@@ -58,8 +58,8 @@ public class ActionProperties extends AbstractProperties {
     private double typeDelay;
     @Value("${" + ENCRYPTION_INTERFACE + ":" + ENCRYPTION_INTERFACE_DEFAULT + "}")
     private String encryptionInterface;
-    @Value("${" + ENCRYPTION_INTERFACE_TEST_MODE + ":" + ENCRYPTION_INTERFACE_TEST_MODE_DEFAULT + "}")
-    private boolean encryptionInterfaceTestMode;
+    @Value("${" + ENCRYPTION_INTERFACE_AUTODETECT + ":" + ENCRYPTION_INTERFACE_AUTODETECT_DEFAULT + "}")
+    private boolean encryptionInterfaceAutodetect;
     @Value("${" + SCREENSHOT_FOLDER_PROPERTY + "}")
     private String screenShotFolderPropertyValue;
     private Path screenShotFolder;
@@ -138,12 +138,12 @@ public class ActionProperties extends AbstractProperties {
         this.encryptionInterface = encryptionInterface;
     }
 
-    public boolean isEncryptionInterfaceTestMode() {
-        return encryptionInterfaceTestMode;
+    public boolean isEncryptionInterfaceAutodetect() {
+        return encryptionInterfaceAutodetect;
     }
 
-    public void setEncryptionInterfaceTestMode(boolean encryptionInterfaceTestMode) {
-        this.encryptionInterfaceTestMode = encryptionInterfaceTestMode;
+    public void setEncryptionInterfaceAutodetect(boolean encryptionInterfaceAutodetect) {
+        this.encryptionInterfaceAutodetect = encryptionInterfaceAutodetect;
     }
 
     public String getScreenShotFolderPropertyValue() {

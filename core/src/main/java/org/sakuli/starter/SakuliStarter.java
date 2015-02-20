@@ -40,6 +40,8 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.AbstractMap;
+import java.util.Map.Entry;
 
 public class SakuliStarter {
 
@@ -88,9 +90,10 @@ public class SakuliStarter {
             } else if (cmd.hasOption(encrypt.getOpt())) {
                 final String ethInterface = cmd.getOptionValue("interface");
                 final String strToEncrypt = cmd.getOptionValue("encrypt");
-                final String encryptedStr = encryptSecret(ethInterface, strToEncrypt);
-                System.out.println("String to Encrypt : " + strToEncrypt);
-                System.out.println("Encrypted : " + encryptedStr);
+                System.out.printf("\nString to Encrypt: %s \n...", strToEncrypt);
+                final Entry<String, String> secret = encryptSecret(strToEncrypt, ethInterface);
+                System.out.printf("\nEncrypted secret with interface '%s': %s", secret.getKey(), secret.getValue());
+                System.out.println("\n\n... now copy the secret to your testcase!");
                 System.exit(0);
             } else {
                 System.out.println("ERROR: print help");
@@ -179,18 +182,22 @@ public class SakuliStarter {
     /**
      * Encrypt a secret based on the assigned interface.
      *
-     * @param ethInterface name of network interface
      * @param strToEncrypt secret to encrypt
-     * @return the encrypted secret as string
+     * @param ethInterface name of network interface, if NULL use the auto-detection
+     * @return a Key-Value Pair of used interface for the encryption and the encrypted secret as strings.
      * @throws SakuliCipherException
      */
-    public static String encryptSecret(String ethInterface, String strToEncrypt) throws SakuliCipherException {
+    public static Entry<String, String> encryptSecret(String strToEncrypt, String ethInterface) throws SakuliCipherException {
         ActionProperties cipherProps = new ActionProperties();
-        cipherProps.setEncryptionInterface(ethInterface);
-        cipherProps.setEncryptionInterfaceTestMode(false);
+        if (StringUtils.isNotEmpty(ethInterface)) {
+            cipherProps.setEncryptionInterface(ethInterface);
+            cipherProps.setEncryptionInterfaceAutodetect(false);
+        } else {
+            cipherProps.setEncryptionInterfaceAutodetect(true);
+        }
         CipherUtil cipher = new CipherUtil(cipherProps);
-        cipher.getNetworkInterfaceNames();
-        return cipher.encrypt(strToEncrypt);
+        cipher.scanNetworkInterfaces();
+        return new AbstractMap.SimpleEntry<>(cipher.getInterfaceName(), cipher.encrypt(strToEncrypt));
     }
 
 

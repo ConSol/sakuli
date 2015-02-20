@@ -29,9 +29,9 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class SakuliStarterTest extends BaseTest {
 
@@ -84,5 +84,12 @@ public class SakuliStarterTest extends BaseTest {
         Path path = Paths.get(getClass().getResource("unvalid2").toURI());
         assertTrue(Files.exists(path));
         SakuliStarter.checkTestSuiteFolderAndSetContextVariables(path.toString(), "");
+    }
+
+    @Test
+    public void testEncryptSceret() throws Throwable {
+        Map.Entry<String, String> result = SakuliStarter.encryptSecret("test", null);
+        assertNotNull(result.getKey());
+        assertNotNull(result.getValue());
     }
 }

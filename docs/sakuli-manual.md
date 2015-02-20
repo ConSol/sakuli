@@ -16,7 +16,7 @@ Use the bypass list to exclude certain URLs from being accessed through the prox
 	ext.http.proxy.auth.enable=false
 	ext.http.proxy.auth.name=user
 	ext.http.proxy.auth.password=password
-	
+
 	# Use external proxy server for HTTPS
 	ext.https.proxy.enable=true
 	ext.https.proxy.host=proxy.server.com
@@ -130,26 +130,60 @@ FIXME
 
 (You probably came from [Installation (Windows 7)](../docs/installation-windows.md) or [Installation (Ubuntu)](../docs/installation-ubuntu.md)- if so, do the following section and jump back to the link mentioned at the end.)
 
-To ensure that secrets (passwords, PIN, etc) never get logged in plain text, they can be encrypted on the command line; Sakuli then decrypts them on runtime (for more information on how to do this, refer to FIXME) to use them on tests. There is no (quick) way to decrypt secrets again on the command line. This is of course no high-secure encryption mechanism but rather a way to obscure things not everybody should see.
+To ensure that secrets (passwords, PIN, etc) never get logged in plain text, they can be encrypted on the command line; Sakuli then decrypts them on runtime e.g. in the function `env.decryptSecret()`. There is no (quick) way to decrypt secrets again on the command line. This is of course no high-secure encryption mechanism but rather a way to obscure things not everybody should see.
 
-For the encryption, Sakuli uses among other parameters the MAC address of a given network interface card as a encryption salt. When you set up a new Sakuli client, the interface name has to be defined in _sakuli.properties_.
+For the encryption, Sakuli uses among other parameters the MAC address of a given network interface card as a encryption salt. When you set up a new Sakuli client, the interface name will be auto-detected as long as the property `sakuli.encryption.interface.autodetect=true`. If you wan't to use a specific network interface for the encryption set your `sakuli.properties` or `testsuite.properties` like follow:
+```
+sakuli.encryption.interface.autodetect=false
+sakuli.encryption.interface=eth0
+```
 
-To determine the correct name of an encryption interface do the following steps on _cmd.exe_ (Windows) or the Unix Shell:
+To __encrypt a secret__ do the following steps on Windows _cmd.exe_ or the Unix _Shell_:
 
-* Windows:  
+* __Windows__:
+    * Encrypt with __auto-detection__:
 
-			cd %SAKULI_HOME%\scripts\helper
-			encrypt_password.bat somesecret eth0
+      `%SAKULI_HOME%\scripts\helper\encrypt_password.bat somesecret`
 
-	* If "eth0" points to an interface with no valid MAC address (e.g. Virtual adapters), you will get a long error message starting with "Cannot resolve mac address".
-	 ![enc_error](../docs/pics/w_enc_error.jpg)
-	* Select an interface with a valid MAC (here: eth3) and start the script again. The output should be now something like
-	 ![encrypted](../docs/pics/w_encrypted.jpg)
-	* Remember the Interface name.
+      your output will be something like:
+      ```
+          String to Encrypt: somesecret
+          ...
+          Encrypted secret with interface 'eth3': THwLJK7ObjLkmoViCHm7lA==
 
-* Linux:
+          ... now copy the secret to your testcase!
+          (interface determined by auto-detection)
+      ```
 
-		java -classpath sakuli.jar:lib/* org.sakuli.starter.SakuliStarter -encrypt yourSecrect -interface eth0
+    * Encrypt with __sepcific interface__ (e.g. eth8):
+
+      `%SAKULI_HOME%\scripts\helper\encrypt_password.bat somesecret eth8`
+
+      your output will be something like:
+      ```
+          String to Encrypt: somesecret
+          ...
+          Encrypted secret with interface 'eth8': bVKIUWcgaPDjasFf2uI15Q==
+
+          ... now copy the secret to your testcase!
+      ```
+
+    * If "eth8" points to an interface with no valid MAC address (e.g. Virtual adapters), you will get a long error message starting with "Cannot resolve mac address".
+     ![enc_error](../docs/pics/w_enc_error.jpg)
+    * Select an interface with a valid MAC (here: eth3) and start the script again. The output should be now something like
+     ![encrypted](../docs/pics/w_encrypted.jpg)
+    * Remember the Interface name.
+
+
+* __Linux__:
+
+  The output will be similar to above one in Windows.
+    * Encrypt with __auto-detection__: `$SAKULI_HOME/scripts/helper/encrypt_password.sh somesecret`
+
+    * Encrypt with __sepcific interface__ (e.g. eth8): `$SAKULI_HOME/scripts/helper/encrypt_password.sh somesecret eth8`
+
+    * Sometimes it is necessary to mark the the script as executable before you can run it: `chmod +x $SAKULI_HOME/scripts/helper/encrypt_password.sh`
+
 
 If you came here during the [Installation on Windows 7](../docs/installation-windows.md) or [on Ubuntu](../docs/installation-ubuntu.md), go back there now.
 

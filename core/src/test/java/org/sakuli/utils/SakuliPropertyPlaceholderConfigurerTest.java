@@ -68,7 +68,7 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         verify(testling).addPropertiesFromFile(props,
                 Paths.get(TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER, true);
         verify(testling, never()).modifyPropertiesConfiguration(anyString(), anyListOf(String.class), any(Properties.class));
-        assertNull(props.getProperty(ActionProperties.ENCRYPTION_INTERFACE_TEST_MODE), null);
+        assertNull(props.getProperty(ActionProperties.ENCRYPTION_INTERFACE_AUTODETECT), null);
         assertEquals(props.getProperty(TestSuiteProperties.SUITE_ID), "0001_testsuite_example");
     }
 
@@ -104,7 +104,7 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         Properties props = new Properties();
         testling.addPropertiesFromFile(props, sakuliPropFile.toAbsolutePath().toString(), true);
         assertTrue(props.size() > 0);
-        assertEquals(props.getProperty(ActionProperties.ENCRYPTION_INTERFACE_TEST_MODE), "true");
+        assertEquals(props.getProperty(ActionProperties.ENCRYPTION_INTERFACE_AUTODETECT), "true");
     }
 
     @Test(expectedExceptions = RuntimeException.class, expectedExceptionsMessageRegExp = "Error by reading the property file '.*invalid.properties'")

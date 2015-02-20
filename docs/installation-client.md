@@ -37,10 +37,9 @@ Straightforward for Windows; for Ubuntu, see [Ubuntuusers Wiki](http://wiki.ubun
 
 The following settings have to be set in the file `%SAKULI_HOME%\_include\sakuli.properties`: 
 
-#### Encryption:
+#### Encryption (optional):
 
-  * To make use of the Sakuli encryption feature, set the encryption interface property `sakuli.encryption.interfac`. For further informations jump to [encryption of secrets](sakuli-manual.md) and come back here.
-  * If there is no need to encrypt passwords, set the property `sakuli.encryption.interface.testmode=true`.
+  * To use a specific network interface for the Sakuli encryption feature, jump to [Sakuli-Manual - Encryption](sakuli-manual.md#secret-de-encryption) of the and come back here.
 
 #### Receivers:
 
@@ -55,9 +54,9 @@ Depending on your environment, you probably want to set up one of these two poss
   * [Setting up Sakuli to send results to the Database](receivers/database.md#sakuli-configuration)
   * [Setting up Sakuli to submit results to the Gearman Receiver](receivers/gearman.md#sakuli-configuration)
 
-#### Company proxy:
+#### Company proxy (optional):
 
-(optional) Configure your company proxy as described under [Sakuli-Manual - Proxy-Settings](sakuli-manual.md#proxy-settings)
+Configure your company proxy as described under [Sakuli-Manual - Proxy-Settings](sakuli-manual.md#proxy-settings)
 
 #### Other settings: 
 

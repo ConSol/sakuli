@@ -40,9 +40,9 @@ public class CipherUtilsTest {
     public void setUp() throws Throwable {
         MockitoAnnotations.initMocks(this);
         ActionProperties props = new ActionProperties();
-        props.setEncryptionInterfaceTestMode(true);
+        props.setEncryptionInterfaceAutodetect(true);
         testling = new CipherUtil(props);
-        testling.getNetworkInterfaceNames();
+        testling.scanNetworkInterfaces();
     }
 
     @Test
@@ -77,10 +77,10 @@ public class CipherUtilsTest {
     public void testChipherException() throws Throwable {
         try {
             ActionProperties props = new ActionProperties();
-            props.setEncryptionInterfaceTestMode(false);
+            props.setEncryptionInterfaceAutodetect(false);
             props.setEncryptionInterface("etNOVALID");
             testling = new CipherUtil(props);
-            testling.getNetworkInterfaceNames();
+            testling.scanNetworkInterfaces();
             Assert.assertTrue(false, "Error, no exception is thrown");
         } catch (SakuliCipherException e) {
             Assert.assertNotNull(e.interfaceLog);
