@@ -1,0 +1,52 @@
+/*
+ * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+ *
+ * Copyright 2013 - 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*************************************
+ * Initialization of the JAVA backend
+ * and set warning and critical time
+ *************************************/
+_dynamicInclude($includeFolder);
+var testCase = new TestCase(60, 70);
+var env = new Environment();
+var screen = new Region();
+var appCalc = new Application("/usr/bin/gnome-calculator");
+var appGedit = new Application("/usr/bin/gedit");
+
+try {
+
+    appCalc.open();
+    screen.waitForImage("calculator.png",20);
+   
+    env.type("525");
+    env.sleep(2);
+    screen.find("plus.png").click().type("100");
+    screen.find("result.png").click();
+ 
+    appGedit.open();
+    screen.waitForImage("gedit.png",20);
+    env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
+	 env.sleep(4);
+	 
+	 
+} catch (e) {
+    testCase.handleException(e);
+} finally {
+    appCalc.closeApp();
+    appGedit.closeApp();
+    testCase.saveResult();
+}
