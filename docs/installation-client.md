@@ -1,86 +1,148 @@
 # Sakuli client installation 
 
-All steps on this page use `%SAKULI_HOME%` as a placeholder for the installation path of Sakuli: 
+This page describes the common steps to **install and test** Sakuli on **Windows** and **Ubuntu**. 
 
-- `C:\sakuli` on Windows
-- `/home/sakuli/sakuli` on Ubuntu 
+The default installation path of Sakuli is referenced as `%SAKULI_HOME%`, that is 
+
+- `%SAKULI_HOME%` on **Windows** (=`C:\sakuli`)
+- `$SAKULI_HOME` on **Ubuntu** (=`/home/sakuli`)
+
+**Conventions**: 
+
+- Wherever you see `%SAKULI_HOME%` in the instructions, you can replace it by the appropriate variable `$SAKULI_HOME` (Linux) respectively `%SAKULI_HOME%` (Windows).
+- Values surrounded by underscores like `__IP_ADDRESS__` must be replaced with specific values.
+- Unless stated otherwise, slashes/backslashes have to be used depending on the operating system.
+
+Examples (on Linux): 
+
+- `__SAKULI_HOME__/sahi/userdata/` => type `/home/sakuli/sahi/userdata/`
+- `%SAKULI_HOME%/sahi/userdata/` =>  type `$SAKULI_HOME/sahi/userdata/`
 
 ## Prerequisites
-The following installation manual assumes that...
 
-* you have a fresh installed OS (Windows 7 Home/Professional/whatever or Ubuntu 14.04 LTS Desktop) machine with all updates installed
-* at least 3GB RAM are available 
-* all necessary drivers are installed (incl. VMWare/Virtualbox guest additions)
-* this machine has access to the internet
-* no local firewall is running
-* there is a user account (e.g. "sakuli") with sudo/admin rights
-* no service/application is running which could show dialogues which could disturbe e2e checks (e.g. messages indicating a scheduled antivirus scan, custom software installation procedures, ...)
-* you have finished the [OMD Preparation](installation-omd.md) instructions
+We recommend to run Sakuli clients on virtual machines.
 
-We recommend to run Sakuli clients on virtual machines, as they are easy to manage. 
-
-## Desktop preparation
-
-FIXME Anker
-
-First prepare your desktop environment as described in [Sakuli Client Troubleshooting ("Desktop preparation")](./troubleshooting-sakuli-client.md). These steps are optional (Sakuli will run even without doing them), but will improve the check quality/reliability. We recommend to do this first and then come back here. 
+* **OS**: **Windows** or **Ubuntu** 14.04 LTS Desktop
+* **RAM**: 3GB+  
+* if virtualized: Hypervisor guest additions for best performance
+* no local firewall running
+* user account "sakuli" with sudo/admin rights
+* desktop appearance 
+  * Set the desktop background to a homogenous color. 
+  * If you do not want to run Sakuli headless, disable screen locking mechanisms
+  * Sakuli needs a predictable desktop environment: make sure that there are no pop-up windows of services or applications. 
+  * Other optional steps see ["Desktop tuning")](./troubleshooting-tuning-sakuli-client.md).
 
 ## Software installation 
-### Java 7 JRE
+### Java
 
-Straightforward for Windows; for Ubuntu, see [Ubuntuusers Wiki](http://wiki.ubuntuusers.de/Java/Installation/Oracle_Java/Java_7#Java-7-JRE).
+The last stable version of Sakuli (0.4.7) needs Java 7; all following versions require Java 8.  
+
+Straightforward for **Windows**; for **Ubuntu**, see Ubuntuusers Wiki for [Java 7 JRE](http://wiki.ubuntuusers.de/Java/Installation/Oracle_Java/Java_7#Java-7-JRE) or [Java 8 JRE](http://wiki.ubuntuusers.de/Java/Installation/Oracle_Java/Java_8#Java-8-JRE).
+
+On **Windows**: 
+
+* From desktop, right-click *My Computer* and click *Properties*
+* In *System Properties*, click on *Advanced*
+	* Edit the **system variable** **%PATH%** and add one of the following paths to the java binary: 
+		* Name: `PATH`
+		* Value: 
+			* `;C:\Program Files\Java\jre7/8\bin`
+			* or 
+			* `;C:\Program Files (x86)\Java\jre7/8\bin`
 
 ### Sakuli 
 
-* Download the latest version of Sakuli from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
-* Unzip the downloaded archive on level up of `%SAKULI_HOME%` (= `C:\` on Windows or `/home/sakuli/`on Ubuntu). 
+Download and unpack Sakuli: 
 
-The following settings have to be set in the file `%SAKULI_HOME%\_include\sakuli.properties`: 
-
-#### Encryption (optional):
-
-  * To use a specific network interface for the Sakuli encryption feature, jump to [Sakuli-Manual - Encryption](sakuli-manual.md#secret-de-encryption) of the and come back here.
-
-#### Receivers:
-
-Sakuli can send test result to "Receivers", which can be currently GearmanD servers (such as Nagios monitoring systems with mod-gearman) and JDBC databases. If no receiver is defined, a result summary is printed out in the end of a suite. 
+* Download Sakuli from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
+  * `sakuli-zipped-release-vX.X.X-SNAPSHOT.zip` = dev snapshot
+  * The highest version of `sakuli-zipped-release-vX.X.X.zip` = current stable version
+* Unzip the downloaded archive:
+  * on **Windows** into `C:\` 
+  * on **Ubuntu** into `/home/sakuli/`
   
-![sakuli_receivers](../docs/pics/sakuli-receivers.png)
+Set `SAKULI_HOME`: 
 
-For the configuration of receivers on the OMD server side, see [Receivers in OMD](installation-omd.md#receivers)
+* **Windows**
+  * From desktop, right-click *My Computer* and click *Properties*
+  * In *System Properties*, click on *Advanced*
+	* Create a new **user variable** **%SAKULI_HOME%**: 
+      * Name: `SAKULI_HOME`
+	  * Value: `C:\sakuli`
+	* Create a new **user variable** **%PATH%**: 
+		* Name: `PATH`
+		* Value: `%SAKULI_HOME%\bin\lib\libs`
+* **Ubuntu**
+  * Add to `.bashrc`: 
+    * `export SAKULI_HOME=/home/sakuli/sakuli`
 
-Depending on your environment, you probably want to set up one of these two possible receiver types. 
+<!--- 
+FIXME  `%SAKULI_HOME%\bin\lib\libs`
+-->    
 
-  * [Setting up Sakuli to send results to the Database](receivers/database.md#sakuli-configuration)
-  * [Setting up Sakuli to submit results to the Gearman Receiver](receivers/gearman.md#sakuli-configuration)
+On **Ubuntu** you have to install tesseract manually: 
 
-#### Company proxy (optional):
+	sudo apt-get install tesseract-ocr
 
-Configure your company proxy as described under [Sakuli-Manual - Proxy-Settings](sakuli-manual.md#proxy-settings)
-
-#### Other settings: 
-
-Some further default configuration can be done, see therefore the comments in [sakuli.properties](../core/src/main/_include/sakuli.properties). This default settings will be valid for all test suites of the Sakuli installation. Each single property can be overridden in the property file `testsuite.properties` of the test suite folders as well, see e.g. [testsuite.properties](../sakuli_test_suites/example/testsuite.properties). Overriding of properties makes it possible to configure the behaviour of each test suite individually.
-
-	
 ### Sahi
 
-* Download the latest version of Sahi from [http://sourceforge.net/projects/sahi/files/latest/download?source=files](http://sourceforge.net/projects/sahi/files/latest/download?source=files)
-* Unpack the downloaded file and start the installation by executing `java -jar install_sahi_v44_20130429.jar`, respectively by double clicking this file on Windows. 
-	* Installation path: `%SAKULI_HOME%\sahi`
+* Download Sahi v44 from [http://sourceforge.net/projects/sahi/files/?source=navbar](http://sourceforge.net/projects/sahi/files/) (Version 5 will be supported soon)
+* Unpack the downloaded file and start the installation by executing `java -jar __DOWNLOADED_JAR_FILE__`, respectively by double clicking this file on **Windows**. In the installatin assistent, set: 
+	* Installation path: `__SAKULI_HOME__/sahi`
 	* select all packages to install
 
-Sahi can be started now for the first time. Open "Start Sahi" from "Applications - Programming" on Ubuntu, or by double clicking the icon on the Windows desktop. 
+Sahi can be started now for the first time. Open "Start Sahi" from "Applications - Programming" on **Ubuntu**, or by double clicking the icon on the **Windows** desktop. 
 
-![startsahi](../docs/pics/w_startsahi.jpg) 	
+<!--- fixme anker, titel -->
 
-The Dashboard should list now all available browsers on this system (if not, go to [No browsers in Dashboard](../docs/troubleshooting-sakuli-client.md#no-browsers-in-dashboard): 
+The Dashboard should now list all available browsers on this system. To use the minimal test cases (see below), we recommend to install Firefox, if not yet done. ([Adding browsers to Sahi](../docs/sakuli-additional-settings.md): 
 
-![db_browsers](../docs/pics/w_sahi_dashboard_browsers.jpg) 	
-Click on any browser you like; Sahi will start it and present the default start page: 
+![db_browsers](./pics/w_sahi_dashboard_browsers.jpg) 
+![db_browsers](./pics/u_sahi_dashboard_browsers.png) 
+	
+Clicking on a browser icon will start it and present the default start page: 
 
 ![sahi_start](../docs/pics/sahi_startpage.jpg) 
 
-If neccessary, define now your company's proxy within Sahi: [Proxy settings](../docs/sakuli-manual.md)
+<!--- fixme Anker -->
+If neccessary, set the proxy Sahi is behind of: [Proxy settings](../docs/sakuli-additional-settings.md)
 
-Sahi is now installed completely.
+### Additional software
+
+All components below are optional but recommended: 
+
+#### PhantomJS
+	
+<!--- anker  fixme -->	
+Currently, *each* Sakuli test will start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Adding browsers to Sahi](../docs/sakuli-additional-settings.md) for more information. 
+
+
+#### Screenshot tool 
+ 
+You should use a screenshot tool which is able to
+
+- capture areas of the screen
+- delay the creation of screenshots for x seconds (important if Sikuli must navigate through menues)
+
+On **Windows** a good choice is [Greenshot](http://www.getgreenshot.org); on **Ubuntu** install [Shutter](http://shutter-project.org/).
+
+#### Notepad++
+You're doing better if you do *not* use gEdit or Windows Notepad to edit Sakuli files. 
+
+On **Windows** install for instance [Notepad++](http://notepad-plus-plus.org/); on **Ubuntu** [Bluefish](http://bluefish.openoffice.nl/index.html).
+	
+## Test
+
+You are now ready to run the **first minimal Sakuli check** to see if Sakuli and its components are working well together. 
+
+* On the **Ubuntu** desktop, open a terminal window and execute `~$ sakuli/scripts/starter/START_example_linux.sh` 
+* in **Windows**, doubleclick on `C:\sakuli\scripts\starter\START_example_windows.sh`
+
+On both platforms you should see that Sakuli
+
+1.  opens **Firefox**
+2.  opens the **calculator** and calculates *525+100=625* 
+3.  opens an **editor** and writes a **status message**
+
+![](pics/u_vnc_test.png)

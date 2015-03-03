@@ -2,7 +2,6 @@
 
 ## MySQL installation
 ### Apparmor prevention 
-(openSUSE and Ubuntu Linux)
 
 **Possible error 1:** mysql_install_db fails: 
 
@@ -35,14 +34,3 @@ If so, execute the following command to uninstall apparmor:
 
 	root@omd2:~# apt-get remove apparmor
 
-
-## Performance Data
-
-### No CPU/Mem graphs 
-
-FIXME
-
-  <NAGIOS_E2ECPUHOST>win7sakuli</NAGIOS_E2ECPUHOST>
-  <NAGIOS_E2ECPUSVC>CPU_Usage</NAGIOS_E2ECPUSVC>
-  <NAGIOS_E2EMEMHOST>win7sakuli</NAGIOS_E2EMEMHOST>
-  <NAGIOS_E2EMEMSVC>Mem_Usage</NAGIOS_E2EMEMSVC>

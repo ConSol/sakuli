@@ -1,6 +1,7 @@
 # Database Receiver
 This page describes how Sakuli can be configured to write its test results into a MySQL database which is checked asynchronously by the monitoring system with *check_mysql_health*. 
-![sakuli-db-receiver](../pics/sakuli-db.png)
+
+![sakuli-db-receiver](pics/sakuli-db.png)
  
 ## OMD Configuration
 
@@ -137,11 +138,11 @@ Reload OMD:
 	
 Now open Thruk; you should see now the Sakuli host with one service attached: 
 
-![omd_pending](../pics/omd-pending.png)
+![omd_pending](pics/omd-pending.png)
 
 Re-scheduling this service should display the UNKNOWN message that the requested suite could not be found. For the moment, this is ok: 
 
-![omd_unknown](../pics/omd-unknown.png)
+![omd_unknown](pics/omd-unknown.png)
 
 ## Sakuli Configuration
 

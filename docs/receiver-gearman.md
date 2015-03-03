@@ -1,7 +1,7 @@
 # Gearman Receiver
 This page describes how Sakuli can be configured to transmit its test results directly into the *Gearman queue* of the monitoring system. 
 
-![sakuli-db-receiver](../pics/sakuli-gearman.png)
+![sakuli-db-receiver](pics/sakuli-gearman.png)
 
 FIXME Nagios service check. The configured `testsuite.id` in the `testsuite.properties` file, will be used as __service name__.
 The results (ok and not ok results) will be available in the __"Status Information"__ of the service check.  
@@ -79,7 +79,7 @@ Reload OMD:
 	
 Now open Thruk; you should see now the Sakuli host with one service attached: 
 
-![omd_pending2](../pics/omd-pending2.png)
+![omd_pending2](pics/omd-pending2.png)
 
 The check is waiting now for check results from Sakuli clients. 
 

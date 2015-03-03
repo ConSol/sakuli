@@ -1,65 +1,13 @@
 
 
-# Troubleshooting Sakuli-Client
-## Sahi
-### Sahi does not start
-_**When I click on the "Start Sahi" icon on the desktop to Start Sahi Dashboard, nothing comes up.**_
+# Troubleshooting and Tuning the Sakuli client
 
-#### Check PATH
-Open _**%SAKULI_HOME%**\sahi\userdata\bin\start_dashboard.bat_ insert a new line on the end of the script and add "pause". Save te file and try to start Sahi again. If the error message is like *"command 'java' was not found"*, you should check if _**%PATH%**_ is containing the right path to the java executable.   
-
-### No browsers in Dashboard
-_**When I open the Sahi dashboard, no browsers are shown.**_
-
-![nobrowser](../docs/pics/w_sahi_no_browser.jpg) 
-
-Open _**SAKULI_HOME**\sahi\userdata\config\browser_types.xml_. Each browser is defined within a **browserType** block. "path" probably contains the variable **"$ProgramFiles (x86)…"**, which is wrong. *$ProgramFiles* itself resolves already to the right folder, hence you should delete the " (x86)" part. Restart the Sahi dashboard and try again.
-
-This are exemplary entries for Mozilla Firefox and Google Chrome: 
-
-	
-
-            <browserType>
-                    <name>firefox</name>
-                    <displayName>Firefox</displayName>
-                    <icon>firefox.png</icon>
-                    <path>C:\Program Files (x86)\Mozilla Firefox\firefox.exe</path>  
-                    <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>  
-                    <processName>firefox.exe</processName>
-                    <capacity>5</capacity>  
-            </browserType>
-     
-            <browserType>
-                    <name>chrome</name>
-                    <displayName>Chrome</displayName>
-                    <icon>chrome.png</icon>
-                    <path>C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</path>  
-                    <options>--user-data-dir=$userDir\browser\chrome\profiles\sahi$threadNo --proxy-server=localhost:9999 --disable-popup-blocking --always-authorize-plugins</options>  
-                    <processName>chrome.exe</processName>
-                    <capacity>5</capacity>  
-            </browserType>
-
-	
-
-
-## Desktop preparation
+## Desktop tuning
 These steps are optional, but will improve the check quality/reliability. 
 
-### Ubuntu / Windows
-
-#### Disable desktop background 
-Set the desktop background to a homogenous color. 
-
-#### Disable screen saver and screen locking
-
-Disable everything which can cause the screen to get locked / changed in its appearance.  
-
 ### Ubuntu 
-#### Disable desktop background 
-Set the desktop background to a homogenous color. 
-
-#### Change Ubuntu desktop theme
-Change the theme by installing [gnome-session-fallback](https://apps.ubuntu.com/cat/applications/gnome-session-fallback/):  
+#### how to install GNOME session fallback theme
+Sakuli can test on Unity, of course - but [gnome-session-fallback](https://apps.ubuntu.com/cat/applications/gnome-session-fallback/) is more than sufficient…  
 
  `sudo apt-get install gnome-session-fallback`
 
@@ -72,13 +20,11 @@ The Ubuntu menu bar should have changed now to the "classical" one:
 
 ![menu](.././docs/pics/u_menu.jpg)
 
-All other steps can be done similar to [Installation Windows7 - Install Sakuli](installation-windows.md#installation-of-sakuli)
-
 
 ### Windows 
 
 #### Change Windows theme and title bar colors
-Windows 7 comes by default with an "aero" theme, which is quite awkward for Sakuli, because there are many transparency effects which cause window elements to change their appearance dependend on the elements below. For that, change the theme to "Windows Classic".
+Windows 7 comes by default with an "aero" theme, which is quite awkward for Sikuli, because there are many transparency effects which cause window elements to change their appearance dependend on the elements below. For that, change the theme to "Windows Classic".
 ![classic](pics/w_classictheme.jpg)
 
 
@@ -114,7 +60,7 @@ ClearType ("antialiasing" / "Font Smoothing"), is a technology that is used to d
 ![visualeffects](pics/w_visualeffects.jpg)
 
 #### RDP related settings
-The following steps have only to be done if you are accessing the Sakuli Client with RDP. 
+The following steps have only to be done if you are accessing the Sakuli Client via RDP. 
 ##### Disable Clipboard Sharing
 The "paste" function of Sakuli uses the clipboard at runtime to decrypt and paste passwords. For this reason, the clipboard exchange of the Sakuli client and the RDP client should be suppressed in the settings tab of your **local Remote Desktop client**:
 
@@ -148,6 +94,20 @@ Error reporting is enabled by default - you should turn off this service because
 * Start -> Control Panel -> System and Security -> Action center
 * Change Action Center settings -> Problem reporting settings
 * Set "Never check for solutions"  
+
+
+
+## Troubleshooting
+
+### Sahi does not start
+_**When I click on the "Start Sahi" icon on the desktop to Start Sahi Dashboard, nothing comes up.**_
+
+#### Check PATH
+Open _**%SAKULI_HOME%**\sahi\userdata\bin\start_dashboard.bat_ insert a new line on the end of the script and add "pause". Save te file and try to start Sahi again. If the error message is like *"command 'java' was not found"*, you should check if _**%PATH%**_ is containing the right path to the java executable.   
+
+
+
+
 
 ## cannot resolve mac address
 
