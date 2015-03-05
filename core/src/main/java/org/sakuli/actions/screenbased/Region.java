@@ -73,10 +73,6 @@ public class Region implements Action {
         typingUtil = new TypingUtil<>(this);
     }
 
-    /**********************
-     * FIND FUNCTIONS
-     **********************/
-
     /**
      * Finds an image inside this region immediately.
      *
@@ -110,10 +106,6 @@ public class Region implements Action {
         return update(regionImpl.findRegion(region.getRegionImpl()));
     }
 
-    /**************************************
-     * EXISTS FUNCTIONS
-     *************************************/
-
     /**
      * Check whether the give pattern is visible on the screen.
      *
@@ -144,10 +136,6 @@ public class Region implements Action {
         return update(regionImpl.exists(imageName, seconds));
     }
 
-    /**************************************
-     * CLICKS
-     *************************************/
-
     /**
      * makes a mouse click on the center of the {@link Region}.
      *
@@ -159,10 +147,6 @@ public class Region implements Action {
         return update(regionImpl.clickMe());
     }
 
-
-    /***************************
-     * DOUBLE CLICK
-     ***************************/
 
     /**
      * makes a double click on the center of the {@link Region}.
@@ -176,10 +160,6 @@ public class Region implements Action {
     }
 
 
-    /***************************
-     * RIGHT CLICKS
-     ***************************/
-
     /**
      * makes a rigth click on the center of the {@link Region}.
      *
@@ -191,10 +171,17 @@ public class Region implements Action {
         return update(regionImpl.rightClickMe());
     }
 
+    /**
+     * Move the mouse pointer the center of the {@link Region} and "hovers" it.
+     *
+     * @return the {@link Region} or NULL on errors.
+     */
+    @ModifySahiTimer
+    @LogToResult
+    public Region moveMouse() {
+        return update(regionImpl.moveMouse());
+    }
 
-    /***************************
-     * WAIT
-     ***************************/
 
     /**
      * Blocks and waits until a target which is specified by the optImageName is found in the hole {@link Screen} within
@@ -221,14 +208,6 @@ public class Region implements Action {
     public Region waitFor(int seconds) {
         return update(regionImpl.waitFor(seconds));
     }
-
-
-    /********************
-     * KEYBOARD FUNCTIONS
-     *******************/
-    /********************************************************
-     * PASTE FUNCTIONS
-     *******************************************************/
 
 
     /**
@@ -258,10 +237,6 @@ public class Region implements Action {
         return typingUtil.pasteAndDecrypt(text);
     }
 
-
-    /********************************************************
-     * TYPE FUNCTIONS
-     *******************************************************/
 
     /**
      * See {@link TypingUtil#type(String, String)}.
@@ -357,10 +332,6 @@ public class Region implements Action {
 
     }
 
-    /*********************
-     * MOUSE WHEEL FUNCTIONS
-     *********************/
-
     /**
      * {@link TypingUtil#mouseWheelDown(int)}
      */
@@ -376,11 +347,6 @@ public class Region implements Action {
     public Region mouseWheelUp(int steps) {
         return typingUtil.mouseWheelUp(steps);
     }
-
-
-    /*******************
-     * HELPER FUNCTIONS
-     ******************/
 
 
     /**
@@ -562,9 +528,6 @@ public class Region implements Action {
         return regionImpl.extractText();
     }
 
-    /**
-     * ********************* INTERNAL FUNCTIONS ********************
-     */
 
     @Override
     public String toString() {
