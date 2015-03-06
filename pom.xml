@@ -23,11 +23,11 @@
 
     <groupId>org.sakuli</groupId>
     <artifactId>root</artifactId>
-    <version>0.4.8-SNAPSHOT</version>
+    <version>0.4.8-new-structure-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>sakuli-parent</name>
-    <description>Parent pom for the complete sakuli projekt.
+    <description>Parent pom for the complete sakuli project.
         If you want to build a new zip-installer-file please run "mvn clean assembly:single",
         to build a new release see 'core/dev_stuff/how-to-release.md'
     </description>
