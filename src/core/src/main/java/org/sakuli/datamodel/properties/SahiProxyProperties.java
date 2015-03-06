@@ -21,6 +21,7 @@ package org.sakuli.datamodel.properties;
 import org.sakuli.starter.helper.SahiProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -95,8 +96,6 @@ public class SahiProxyProperties extends AbstractProperties {
             SAHI_LOG_FILE_HANDLER_LIMIT, SAHI_LOG_FILE_HANDLER_COUNT, SAHI_LOG_FILE_HANDLER_PATERN);
     public static final Logger LOGGER = LoggerFactory.getLogger(SahiProxyProperties.class);
 
-    @Value("${" + SakuliProperties.INCLUDE_FOLDER + "}")
-    private String includeFolderPropertyValue;
     @Value("${" + PROXY_HOME_FOLDER + "}")
     private String sahiHomeFolderPropertyValue;
     private Path sahiHomeFolder;
@@ -117,6 +116,8 @@ public class SahiProxyProperties extends AbstractProperties {
     private Integer requestDelayMs;
     @Value("${" + REQUEST_DELAY_REFRESH_MS + ":500}")
     private Integer requestDelayRefreshMs;
+    @Autowired
+    private SakuliProperties sakuliProperties;
     private Path sahiJSInjectConfigFile;
     private Path sahiJSInjectSourceFile;
     private Path sahiJSInjectTargetFile;
@@ -136,7 +137,7 @@ public class SahiProxyProperties extends AbstractProperties {
      */
     protected void loadSahiInjectFiles() throws FileNotFoundException {
         sahiJSInjectConfigFile = Paths.get(sahiHomeFolder.toString() + SAHI_JS_INJECT_CONFIG_FILE_APPENDER);
-        sahiJSInjectSourceFile = Paths.get(includeFolderPropertyValue + SAHI_JS_INJECT_CODE_FILENAME_APPENDER);
+        sahiJSInjectSourceFile = Paths.get(sakuliProperties.getJsLibFolder() + SAHI_JS_INJECT_CODE_FILENAME_APPENDER);
         checkFiles(sahiJSInjectConfigFile, sahiJSInjectSourceFile);
 
         //don't check files and folders => will be created during runtime

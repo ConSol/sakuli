@@ -61,7 +61,7 @@
             <includes>
                 <include>${project.jar.name}.jar</include>
             </includes>
-            <outputDirectory>/bin</outputDirectory>
+            <outputDirectory>/libs/java</outputDirectory>
         </fileSet>
         <!-- copy Context-files to bin/lib/resources -->
         <fileSet>
@@ -74,16 +74,19 @@
                     sakuli-log-config.xml
                 </exclude>
             </excludes>
-            <outputDirectory>/bin/lib/resources</outputDirectory>
+            <outputDirectory>/libs/java/resources</outputDirectory>
         </fileSet>
 
-        <!-- create "_include" folder-->
+        <!-- create "config" folder-->
         <fileSet>
-            <directory>${basedir}/src/main/_include</directory>
-            <excludes>
-                <exclude>conf.json</exclude>
-            </excludes>
-            <outputDirectory>/_include</outputDirectory>
+            <directory>${basedir}/src/main/config</directory>
+            <outputDirectory>/config</outputDirectory>
+        </fileSet>
+
+        <!-- create "libs" folder-->
+        <fileSet>
+            <directory>${basedir}/src/main/libs</directory>
+            <outputDirectory>/libs</outputDirectory>
         </fileSet>
 
         <!-- copy sample test suites -->
@@ -100,7 +103,7 @@
     <!-- add dependency jars to "bin/lib" -->
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/bin/lib</outputDirectory>
+            <outputDirectory>/libs/java</outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>
             <unpack>false</unpack>
             <scope>runtime</scope>

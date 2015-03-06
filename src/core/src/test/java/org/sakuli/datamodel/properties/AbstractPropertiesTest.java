@@ -31,7 +31,7 @@ public class AbstractPropertiesTest extends BaseTest {
 
     @Test
     public void testCheckFolders() throws Exception {
-        testling.checkFolders(Paths.get(INCLUDE_FOLDER_PATH), Paths.get(TEST_FOLDER_PATH));
+        testling.checkFolders(Paths.get(SAKULI_MAIN_FOLDER_PATH), Paths.get(TEST_FOLDER_PATH));
     }
 
     @Test(expectedExceptions = FileNotFoundException.class, expectedExceptionsMessageRegExp = "necessary Folder 'notValidFolderPath' does not exists!")

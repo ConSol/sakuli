@@ -39,7 +39,7 @@ public abstract class AopBaseTest extends AbstractLogAwareTest {
     @BeforeMethod(alwaysRun = true)
     public void setUp() throws Exception {
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = BaseTest.TEST_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = BaseTest.INCLUDE_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAKULI_MAIN_FOLDER_VALUE = BaseTest.SAKULI_MAIN_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = BaseTest.SAHI_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = "aopTest-beanRefFactory.xml";
         logFile = Paths.get(BeanLoader.loadBean(PropertyHolder.class).getLogFile());

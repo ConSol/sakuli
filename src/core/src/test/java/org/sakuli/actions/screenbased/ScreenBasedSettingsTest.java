@@ -34,7 +34,7 @@ public class ScreenBasedSettingsTest {
         ActionProperties props = new ActionProperties();
         props.setAutoHighlightSeconds(0.6f);
         SakuliProperties sakuliProps = new SakuliProperties();
-        sakuliProps.setIncludeFolder(Paths.get("."));
+        sakuliProps.setTessDataLibFolder(Paths.get("."));
 
         ScreenBasedSettings testling = new ScreenBasedSettings(props, sakuliProps);
         testling.setDefaults();

@@ -35,7 +35,7 @@ import static org.testng.Assert.assertTrue;
  */
 public abstract class BaseTest extends AbstractLogAwareTest {
 
-    public static final String INCLUDE_FOLDER_PATH = "." + File.separator + "src" + File.separator + "main" + File.separator + "_include";
+    public static final String SAKULI_MAIN_FOLDER_PATH = "." + File.separator + "src" + File.separator + "main";
     public static final String SAHI_FOLDER_PATH = ".." + File.separator + "sahi";
     public static final String TEST_FOLDER_PATH = getResource("/_testsuite4JUnit");
     public static final String TEST_CONTEXT_PATH = "JUnit-beanRefFactory.xml";
@@ -55,7 +55,7 @@ public abstract class BaseTest extends AbstractLogAwareTest {
     @BeforeClass(alwaysRun = true)
     public void setContextProperties() {
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAKULI_MAIN_FOLDER_VALUE = SAKULI_MAIN_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
         BeanLoader.refreshContext();

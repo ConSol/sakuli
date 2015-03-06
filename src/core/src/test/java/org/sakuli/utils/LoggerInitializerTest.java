@@ -81,11 +81,11 @@ public class LoggerInitializerTest extends BaseTest {
         Assert.assertNotNull(sakuliLogger);
         Assert.assertNotNull(root);
 
-        when(sakuliProperties.getIncludeFolder()).thenReturn(Paths.get(BaseTest.INCLUDE_FOLDER_PATH));
+        when(sakuliProperties.getConfigFolder()).thenReturn(Paths.get(BaseTest.SAKULI_MAIN_FOLDER_PATH + SakuliProperties.CONFIG_FOLDER_APPEDER));
 
         testling.initLoggerContext();
         verify(testling).getConfigFileFromClasspath();
-        verify(testling).getConfigFileFromIncludeFolder();
+        verify(testling).getConfigFile();
 
         //verify root logger
         context = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -102,7 +102,7 @@ public class LoggerInitializerTest extends BaseTest {
     @Test(expectedExceptions = SakuliException.class)
     public void testInitLoggerContextException() throws Throwable {
         doReturn(null).when(testling).getConfigFileFromClasspath();
-        doReturn(null).when(testling).getConfigFileFromIncludeFolder();
+        doReturn(null).when(testling).getConfigFile();
 
         testling.initLoggerContext();
     }
@@ -115,9 +115,9 @@ public class LoggerInitializerTest extends BaseTest {
 
     @Test
     public void testGetConfigFileFromIncludeFolder() throws Throwable {
-        when(sakuliProperties.getIncludeFolder()).thenReturn(Paths.get(BaseTest.INCLUDE_FOLDER_PATH));
-        String configFileFromIncludeFolder = testling.getConfigFileFromIncludeFolder();
-        Assert.assertNotNull(configFileFromIncludeFolder);
-        Assert.assertTrue(Files.exists(Paths.get(configFileFromIncludeFolder)));
+        when(sakuliProperties.getConfigFolder()).thenReturn(Paths.get(BaseTest.SAKULI_MAIN_FOLDER_PATH + SakuliProperties.CONFIG_FOLDER_APPEDER));
+        String configFileFromConfigFolder = testling.getConfigFile();
+        Assert.assertNotNull(configFileFromConfigFolder);
+        Assert.assertTrue(Files.exists(Paths.get(configFileFromConfigFolder)));
     }
 }

@@ -57,7 +57,7 @@ public class ScreenBasedSettings extends Settings {
         ClickDelay = props.getClickDelay();
         TypeDelay = props.getTypeDelay();
 
-        OcrDataPath = sakuliProps.getIncludeFolder().toAbsolutePath().toString();
+        OcrDataPath = sakuliProps.getTessDataLibFolder().toAbsolutePath().toString();
         OcrTextSearch = true;
         OcrTextRead = true;
 

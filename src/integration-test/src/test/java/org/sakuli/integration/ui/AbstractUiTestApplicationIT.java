@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 
+import java.nio.file.Paths;
 import java.util.Map;
 
 /**
@@ -50,13 +51,18 @@ public abstract class AbstractUiTestApplicationIT extends AbstractSakuliTest imp
     protected Environment env;
 
     @Override
-    protected String getIncludeFolder() {
-        return INCLUDE_FOLDER_PATH;
+    protected String getSakuliMainFolder() {
+        return SAKULI_MAIN_FOLDER_PATH;
     }
 
     @Override
     protected String getTestSuiteFolder() {
         return getTestSuiteRootFolder() + TEST_FOLDER_PATH;
+    }
+
+    @Override
+    protected String getSahiFolder() {
+        return Paths.get("../../sahi").normalize().toAbsolutePath().toString();
     }
 
     @BeforeMethod(alwaysRun = true)

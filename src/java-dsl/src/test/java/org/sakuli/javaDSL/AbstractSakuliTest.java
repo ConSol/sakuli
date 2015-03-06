@@ -61,8 +61,18 @@ public abstract class AbstractSakuliTest {
         BeanLoader.CONTEXT_PATH = "java-dsl-beanRefFactory.xml";
         SakuliJavaPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = getTestSuiteFolder();
         SakuliJavaPropertyPlaceholderConfigurer.JAVA_TEST_SUITE_FOLDER = getTestSuiteRootFolder();
-        SakuliJavaPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = getIncludeFolder();
+        SakuliJavaPropertyPlaceholderConfigurer.SAKULI_MAIN_FOLDER_VALUE = getSakuliMainFolder();
+        SakuliJavaPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = getSahiFolder();
         InitializingServiceHelper.invokeInitializingServcies();
+    }
+
+    /**
+     * Override this method to specify a custom Sahi installation folder!
+     *
+     * @return the installation folder of Sahi
+     */
+    protected String getSahiFolder() {
+        return null;
     }
 
     @BeforeClass(alwaysRun = true)
@@ -144,8 +154,8 @@ public abstract class AbstractSakuliTest {
     }
 
     //TODO make separate maven module and centralize the default properties
-    protected String getIncludeFolder() {
-        return ".." + File.separator + "core" + File.separator + "src" + File.separator + "main" + File.separator + "_include";
+    protected String getSakuliMainFolder() {
+        return ".." + File.separator + "core" + File.separator + "src" + File.separator + "main";
     }
 
 

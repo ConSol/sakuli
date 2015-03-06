@@ -61,10 +61,10 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         testling.setLoadSakuliProperties(false);
         testling.loadProperties(props);
         verify(props).put(TestSuiteProperties.TEST_SUITE_FOLDER, TEST_FOLDER_PATH);
-        verify(props).put(SakuliProperties.INCLUDE_FOLDER, INCLUDE_FOLDER_PATH);
+        verify(props).put(SakuliProperties.SAKULI_MAIN_FOLDER, SAKULI_MAIN_FOLDER_PATH);
         verify(props).put(SahiProxyProperties.PROXY_HOME_FOLDER, SAHI_FOLDER_PATH);
         verify(testling, never()).addPropertiesFromFile(props,
-                Paths.get(INCLUDE_FOLDER_PATH).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
+                Paths.get(SAKULI_MAIN_FOLDER_PATH).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
         verify(testling).addPropertiesFromFile(props,
                 Paths.get(TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER, true);
         verify(testling, never()).modifyPropertiesConfiguration(anyString(), anyListOf(String.class), any(Properties.class));
@@ -78,13 +78,13 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         testling.setLoadTestSuiteProperties(false);
         testling.loadProperties(props);
         verify(props).put(TestSuiteProperties.TEST_SUITE_FOLDER, TEST_FOLDER_PATH);
-        verify(props).put(SakuliProperties.INCLUDE_FOLDER, INCLUDE_FOLDER_PATH);
+        verify(props).put(SakuliProperties.SAKULI_MAIN_FOLDER, SAKULI_MAIN_FOLDER_PATH);
         verify(testling).addPropertiesFromFile(props,
-                Paths.get(INCLUDE_FOLDER_PATH).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
+                Paths.get(SAKULI_MAIN_FOLDER_PATH + SakuliProperties.CONFIG_FOLDER_APPEDER).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
         verify(testling, never()).addPropertiesFromFile(props,
                 Paths.get(TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER, true);
 
-        assertNotNull(props.getProperty(SakuliProperties.INCLUDE_FOLDER));
+        assertNotNull(props.getProperty(SakuliProperties.SAKULI_MAIN_FOLDER));
         assertNull(props.getProperty(TestSuiteProperties.SUITE_ID));
     }
 
@@ -127,8 +127,8 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
     public void testIncludeFolder() throws IOException {
         SakuliProperties properties = BeanLoader.loadBean(SakuliProperties.class);
 
-        assertTrue(Files.exists(properties.getIncludeFolder()), "include folder doesn't exists");
-        assertTrue(properties.getIncludeFolder().toString().contains(INCLUDE_FOLDER_PATH.substring(2)));
+        assertTrue(Files.exists(properties.getJsLibFolder()), "include folder doesn't exists");
+        assertTrue(properties.getJsLibFolder().toString().contains(SAKULI_MAIN_FOLDER_PATH.substring(2)));
 
         assertNotNull(properties.getLogPattern());
     }

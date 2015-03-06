@@ -39,7 +39,7 @@ public class SakuliStarterTest extends BaseTest {
     public void tearDown() throws Exception {
         //ensure that the system wide static variables point to the right values
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAKULI_MAIN_FOLDER_VALUE = SAKULI_MAIN_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
     }
 

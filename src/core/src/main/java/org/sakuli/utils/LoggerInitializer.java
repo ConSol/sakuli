@@ -33,9 +33,8 @@ import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -68,7 +67,7 @@ public class LoggerInitializer {
         //determine the config file
         String configFilePath = getConfigFileFromClasspath();
         if (configFilePath == null) {
-            configFilePath = getConfigFileFromIncludeFolder();
+            configFilePath = getConfigFile();
         }
         if (configFilePath == null) {
             throw new SakuliException("file '" + LOG_CONFIG_FILE_NAME + "'not found! Please ensure that your include folder or your classpath contains at least the file '" + LOG_CONFIG_FILE_NAME + "'.");
@@ -81,24 +80,27 @@ public class LoggerInitializer {
         logger.info("set '{}' to '{}''", SakuliProperties.LOG_PATTERN, sakuliProperties.getLogPattern());
     }
 
-    protected String getConfigFileFromIncludeFolder() throws SakuliException {
-        Path includeFolderConfigFile = Paths.get(sakuliProperties.getIncludeFolder().toString() + File.separator + LOG_CONFIG_FILE_NAME);
-        if (Files.exists(includeFolderConfigFile)) {
-            return includeFolderConfigFile.toAbsolutePath().toString();
+    protected String getConfigFile() throws SakuliException {
+        Path configFile = Paths.get(sakuliProperties.getConfigFolder() + File.separator + LOG_CONFIG_FILE_NAME);
+        if (Files.exists(configFile)) {
+            return configFile.toAbsolutePath().toString();
         }
         return null;
     }
 
     protected String getConfigFileFromClasspath() {
-        URL classPathConfigURL = getClass().getResource("/" + LOG_CONFIG_FILE_NAME);
-        if (classPathConfigURL != null) {
-            try {
-                return Paths.get(classPathConfigURL.toURI()).toAbsolutePath().toString();
-            } catch (FileSystemNotFoundException | URISyntaxException e) {
-                logger.error("unexpected error by resolving the '" + LOG_CONFIG_FILE_NAME + "' from classpath, now try to resolve it from the include folder.");
-            }
+        try {
+            return ResourceHelper.getClasspathResource(
+                    getClass(),
+                    "/" + LOG_CONFIG_FILE_NAME,
+                    "unexpected error by resolving the '" + LOG_CONFIG_FILE_NAME + "' from classpath, now try to resolve it from the include folder."
+            )
+                    .toAbsolutePath()
+                    .toString();
+        } catch (NoSuchFileException e) {
+            logger.error(e.getMessage(), e);
+            return null;
         }
-        return null;
     }
 
 }
