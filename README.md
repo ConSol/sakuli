@@ -5,20 +5,20 @@
 **TABLE OF CONTENTS**
 
 * [**Introduction**](#Introduction)
-    * [What is Sakuli?](#what-is-sakuli)
+    * [Concept of Sakuli](#concept-of-sakuli)
     * [History](#history-of-sakuli)
     * [Why Sakuli](#why-sakuli)
 * [**Resources**](#resources)
     * [Demo](#demo-virtual-machine)
     * [Media](#media)
-    * [**Documentation**](#documentation)
+    * [**Documentation**](./docs/README.md)
     * [Changelog](#changelog)
     * [Help](#help)
     
 
 
 # Introduction
-## What is Sakuli? 
+## Concept of Sakuli
 
 **Sakuli simulates user actions** on graphical user interfaces (web, fat client, citrix, …), and provides the obtained information (runtime, result, screenshots) to third party (e.g. Nagios compatible monitoring) systems. 
 
@@ -79,34 +79,6 @@ Episode 9 of the ***ConSol Monitoring Minutes*** shows the main features of Saku
 for web sites and common UIs with full Nagios integration](https://rawgit.com/toschneck/presentation/sakuli-dev-day-presentation/index.html#/) (Tobias Schneck, 2014)
 
  
-## Documentation
-
-### Usage
-**Basic setup:**
-
-* [Sakuli client **installation**](./docs/installation-client.md)
-* Submitting Sakuli results 
-  * [to OMD (Nagios/Icinga2/Shinken)](./docs/installation-omd.md)
-    * [via **Gearman**](./docs/receiver-gearman.md)
-    * [via **Database**](./docs/receiver-database.md)
-
-**Ressources:** 
-
-* **Headless** Sakuli checks
-  * [on Windows](./docs/headless-windows.md) -- in progress
-  * [on Ubuntu](./docs/headless-ubuntu.md) -- in progress
-* [**additional** Sakuli Settings](./docs/additional-settings.md)
-* **Troubleshooting** and **Tuning**
-  * [**Sakuli Client**](./docs/troubleshooting-tuning-sakuli-client.md) 
-  * [**OMD/Nagios**](./docs/troubleshooting-omd.md) 
-* [Sakuli **API**](./docs/sakuli-api.md) - an overview about the most important Sakuli functions
-
-### Contribution
-
-* [Installation instructions for **developers**](./docs/development/installation-developers.md)
-* [How to prepare a **new releas**e](./docs/development/how-to-release.md)
-* [**Maven Build Aspects**](./docs/development/maven-aspects.md)
-
 
 ## Changelog 
  
