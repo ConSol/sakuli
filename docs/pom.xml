@@ -31,22 +31,74 @@
     <artifactId>docs</artifactId>
     <version>0.4.8-SNAPSHOT</version>
     <name>docs</name>
-    <description>create api docs with jsdoc</description>
+    <description>maven module to build the markdown api docs from jsdoc</description>
 
     <packaging>pom</packaging>
 
     <properties>
         <node.dir>${project.build.directory}/node-mvn</node.dir>
+        <node.modules.dir>${node.dir}/node_modules</node.modules.dir>
+        <js-src.target>${project.build.directory}/js_src</js-src.target>
     </properties>
 
     <profiles>
         <profile>
-            <id>generate-jsdox</id>
+            <id>generate-markdown</id>
             <build>
                 <plugins>
                     <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <!-- copy the js sources to the target -->
+                                <id>copy-jsdoc-resources</id>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${js-src.target}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/main/resources</directory>
+                                        </resource>
+                                        <resource>
+                                            <directory>${project.parent.basedir}/core/src/main/_include</directory>
+                                            <includes>
+                                                <include>*.js</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                                <phase>generate-resources</phase>
+                            </execution>
+                            <execution>
+                                <!-- copy the generated sakuli-api.md file back-->
+                                <id>copy-markdown-files</id>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.basedir}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${js-src.target}</directory>
+                                            <includes>
+                                                <include>*.md</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                                <phase>compile</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
+                        <configuration>
+                            <workingDirectory>${js-src.target}</workingDirectory>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>install node and npm</id>
@@ -54,125 +106,34 @@
                                     <goal>install-node-and-npm</goal>
                                 </goals>
                                 <configuration>
-                                    <nodeVersion>v0.10.18</nodeVersion>
-                                    <npmVersion>1.3.8</npmVersion>
-                                    <workingDirectory>${node.dir}</workingDirectory>
+                                    <nodeVersion>v0.12.0</nodeVersion>
+                                    <npmVersion>2.6.1</npmVersion>
                                 </configuration>
                                 <phase>generate-resources</phase>
                             </execution>
-                        </executions>
-                    </plugin>
 
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
+                            <!-- install the modules from 'src/main/resources/package.json' -->
                             <execution>
-                                <id>npm-install-jsdox</id>
+                                <id>npm install</id>
                                 <goals>
-                                    <goal>exec</goal>
+                                    <goal>npm</goal>
                                 </goals>
                                 <configuration>
-                                    <executable>node/node</executable>
-                                    <!-- optional -->
-                                    <workingDirectory>${node.dir}</workingDirectory>
-                                    <arguments>
-                                        <argument>node/npm</argument>
-                                        <argument>install</argument>
-                                        <argument>-g</argument>
-                                        <argument>jsdox</argument>
-                                    </arguments>
+                                    <arguments>install --verbose</arguments>
                                 </configuration>
-                                <phase>prepare-package</phase>
+                                <phase>generate-resources</phase>
                             </execution>
-                            <execution>
-                                <id>npm-test</id>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>node/node</executable>
-                                    <!-- optional -->
-                                    <workingDirectory>${node.dir}</workingDirectory>
-                                    <arguments>
-                                        <argument>node/npm</argument>
-                                        <argument>test</argument>
-                                    </arguments>
-                                </configuration>
-                                <phase>prepare-package</phase>
-                            </execution>
-                            <execution>
-                                <id>jsdox-generate-md-files</id>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>node/node</executable>
-                                    <!-- optional -->
-                                    <workingDirectory>${node.dir}</workingDirectory>
-                                    <arguments>
-                                        <argument>bin/jsdox</argument>
-                                        <argument>--output</argument>
-                                        <argument>${project.basedir}/api</argument>
-                                        <argument>${project.parent.basedir}/core/src/main/_include/</argument>
-                                    </arguments>
-                                </configuration>
-                                <phase>package</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
 
-
-        <profile>
-            <id>jsdox-set-proxy</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <executions>
+                            <!-- execute the grunt tasks from 'src/main/resources/Gruntfile.js' -->
                             <execution>
-                                <id>set-proxy-http</id>
+                                <id>grunt build</id>
                                 <goals>
-                                    <goal>exec</goal>
+                                    <goal>grunt</goal>
                                 </goals>
                                 <configuration>
-                                    <executable>node/node</executable>
-                                    <!-- optional -->
-                                    <workingDirectory>${node.dir}</workingDirectory>
-                                    <arguments>
-                                        <argument>node/npm</argument>
-                                        <argument>config</argument>
-                                        <argument>set</argument>
-                                        <argument>proxy</argument>
-                                        <!--<argument>${env.http_proxy}</argument>-->
-                                        <argument>http://proxy.consol.de:8001</argument>
-                                    </arguments>
+                                    <arguments>--verbose</arguments>
                                 </configuration>
-                                <phase>process-resources</phase>
-                            </execution>
-                            <execution>
-                                <id>set-proxy-https</id>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                                <configuration>
-                                    <executable>node/node</executable>
-                                    <!-- optional -->
-                                    <workingDirectory>${node.dir}</workingDirectory>
-                                    <arguments>
-                                        <argument>node/npm</argument>
-                                        <argument>config</argument>
-                                        <argument>set</argument>
-                                        <argument>https-proxy</argument>
-                                        <!--<argument>${env.https_proxy}</argument>-->
-                                        <argument>http://proxy.consol.de:8001</argument>
-                                    </arguments>
-                                </configuration>
-                                <phase>process-resources</phase>
+                                <phase>generate-resources</phase>
                             </execution>
                         </executions>
                     </plugin>

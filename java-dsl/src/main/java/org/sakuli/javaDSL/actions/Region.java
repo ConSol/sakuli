@@ -32,25 +32,6 @@ public class Region extends org.sakuli.actions.screenbased.Region {
     }
 
     /**
-     * Creates a new Region according to the assigned image name.
-     *
-     * @param imageName name of the image pattern
-     */
-    public Region(String imageName) {
-        super(imageName, false, BeanLoader.loadScreenActionLoader());
-    }
-
-    /**
-     * Creates a new Region according to the assigned image name.
-     *
-     * @param resumeOnException if true, the test execution won't stop on an occurring error.
-     * @param imageName         name of the image pattern
-     */
-    public Region(String imageName, boolean resumeOnException) {
-        super(imageName, resumeOnException, BeanLoader.loadScreenActionLoader());
-    }
-
-    /**
      * Creates a new Region from the position parameters.
      *
      * @param x x position of a rectangle on the screen.

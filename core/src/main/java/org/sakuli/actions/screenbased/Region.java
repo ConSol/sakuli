@@ -41,15 +41,6 @@ public class Region implements Action {
     }
 
     /**
-     * Creates a Region object with underlying pattern. This pattern will be used then internal for the find functions
-     * an so on.
-     */
-    public Region(String imageName, boolean resumeOnException, ScreenActionLoader loader) {
-        this.regionImpl = new RegionImpl(imageName, resumeOnException, loader);
-        typingUtil = new TypingUtil<>(this);
-    }
-
-    /**
      * Creates a new Region from the position parameters
      */
     public Region(int x, int y, int w, int h, boolean resumeOnException, ScreenActionLoader loader) {
@@ -84,18 +75,6 @@ public class Region implements Action {
         return update(regionImpl.find(imageName));
     }
 
-
-    /**
-     * find the pre defined region if needed.
-     *
-     * @return the found {@link Region} or if the target can't be found {@code null}.
-     */
-    @LogToResult(message = "find the constructor based image on the screen")
-    public Region find() {
-        return update(regionImpl.findBaseRegion());
-    }
-
-
     /**
      * Finds a target in this {@link Region} immediately;
      *
@@ -104,16 +83,6 @@ public class Region implements Action {
     @LogToResult(message = "find in this region another region")
     public Region findRegion(Region region) {
         return update(regionImpl.findRegion(region.getRegionImpl()));
-    }
-
-    /**
-     * Check whether the give pattern is visible on the screen.
-     *
-     * @return this {@link Region} or null
-     */
-    @LogToResult(message = "check if this region is visible")
-    public Region exists() {
-        return update(regionImpl.exists());
     }
 
     /**
@@ -196,19 +165,6 @@ public class Region implements Action {
     public Region waitForImage(String imageName, int seconds) {
         return update(regionImpl.waitForImage(imageName, seconds));
     }
-
-    /**
-     * same function as {@link #waitForImage(String, int)}, just waiting for the predefined pattern.
-     *
-     * @param seconds the maximum time to waitFor in seconds
-     * @return a {@link Region} object representing the region occupied by the found target, or null if the target can
-     * not be found within the given time.
-     */
-    @LogToResult(message = "wait for this region for x seconds")
-    public Region waitFor(int seconds) {
-        return update(regionImpl.waitFor(seconds));
-    }
-
 
     /**
      * {@link TypingUtil#paste(String)}.
@@ -360,7 +316,7 @@ public class Region implements Action {
      */
     @LogToResult(message = "move this region")
     public Region move(int offsetX, int offsetY) {
-        return update(regionImpl.findBaseRegion().move(offsetX, offsetY));
+        return update(regionImpl.move(offsetX, offsetY));
     }
 
     /**
@@ -371,7 +327,7 @@ public class Region implements Action {
      */
     @LogToResult(message = "grow on each side")
     public Region grow(int range) {
-        return update(regionImpl.findBaseRegion().grow(range));
+        return update(regionImpl.grow(range));
     }
 
     /**
@@ -383,7 +339,7 @@ public class Region implements Action {
      */
     @LogToResult(message = "grow on each side with width and height")
     public Region grow(int width, int height) {
-        return update(regionImpl.findBaseRegion().grow(width, height));
+        return update(regionImpl.grow(width, height));
     }
 
     /**
@@ -392,7 +348,7 @@ public class Region implements Action {
      */
     @LogToResult()
     public Region above(int range) {
-        return update(regionImpl.findBaseRegion().above(range));
+        return update(regionImpl.above(range));
     }
 
     /**
@@ -401,7 +357,7 @@ public class Region implements Action {
      */
     @LogToResult()
     public Region below(int range) {
-        return update(regionImpl.findBaseRegion().below(range));
+        return update(regionImpl.below(range));
     }
 
     /**
@@ -410,7 +366,7 @@ public class Region implements Action {
      */
     @LogToResult()
     public Region left(int range) {
-        return update(regionImpl.findBaseRegion().left(range));
+        return update(regionImpl.left(range));
     }
 
 
@@ -420,7 +376,7 @@ public class Region implements Action {
      */
     @LogToResult()
     public Region right(int range) {
-        return update(regionImpl.findBaseRegion().right(range));
+        return update(regionImpl.right(range));
     }
 
     /**
@@ -428,7 +384,7 @@ public class Region implements Action {
      */
     @LogToResult
     public int getH() {
-        return regionImpl.findBaseRegion().getH();
+        return regionImpl.getH();
     }
 
     /**
@@ -445,7 +401,7 @@ public class Region implements Action {
      */
     @LogToResult
     public int getW() {
-        return regionImpl.findBaseRegion().getW();
+        return regionImpl.getW();
     }
 
     /**
@@ -462,7 +418,7 @@ public class Region implements Action {
      */
     @LogToResult
     public int getX() {
-        return regionImpl.findBaseRegion().getX();
+        return regionImpl.getX();
     }
 
     /**
@@ -479,7 +435,7 @@ public class Region implements Action {
      */
     @LogToResult
     public int getY() {
-        return regionImpl.findBaseRegion().getY();
+        return regionImpl.getY();
     }
 
     /**
@@ -496,7 +452,7 @@ public class Region implements Action {
      */
     @LogToResult
     public Region highlight(int seconds) {
-        regionImpl.findBaseRegion().highlight(seconds);
+        regionImpl.highlight(seconds);
         return this;
     }
 
@@ -505,7 +461,7 @@ public class Region implements Action {
      */
     @LogToResult
     public Region highlight() {
-        regionImpl.findBaseRegion().highlight(getLoader().getSettings().DefaultHighlightTime);
+        regionImpl.highlight(getLoader().getSettings().DefaultHighlightTime);
         return this;
     }
 

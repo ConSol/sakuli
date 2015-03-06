@@ -18,6 +18,11 @@
 
 /**** Exclude this global variables from JSLint Warnings ****/
 /* global navigator, window, java, Packages,saveResult,step, $output, _set, _stopOnError, _logExceptionAsFailure,_resolvePath,_include, $sahi_userdata, $guid, $capture, initialize */
+/**
+ * All Sahi API functions are natively useable in Sakuli. For a complete documentation, see [Sahi API](http://sahi.co.in/w/all-apis).
+ *
+ * @namespace Sahi API
+ */
 
 
 /*****************************************************************************************************
@@ -33,48 +38,33 @@ _include("sakuli_Region.js");
  *****************************************************************************************************/
 
 /**
- * CONSTRUCTOR: TestCase - Sets the current test case folder as default folder and calls
- * TestCaseWithImagePathArray(...).
- * @param {Integer} `warningTime` threshold in seconds
- * @param {Integer} `criticalTime` threshold in seconds
- */
-function TestCase(warningTime, criticalTime) {
-    var defaultImagePath = _resolvePath();
-    defaultImagePath = defaultImagePath.substring(0, defaultImagePath.lastIndexOf(Packages.java.io.File.separator));
-    java.lang.System.out.println("set default path for images to the test case folder \"" + defaultImagePath + "\"");
-
-    return new TestCaseWithImagePath(warningTime, criticalTime, defaultImagePath);
-}
-
-/**
- * CONSTRUCTOR: TestCase - This function initializes the Sakuli object and sets the warning and critical time for this
- * test case.
- * @param {Integer} `warningTime` threshold in seconds
- * @param {Integer} `criticalTime` threshold in seconds
- * @param {String} `picPath` Path to the folder containing the pictures for these test cases.
+ * TestCase - initializes the Sakuli object and sets the warning and critical time for this test case.
+ * @example
+ * ```
+ * var testCase = new TestCase(20,30, "path-to/image-folder-name");
+ * ```
+ *
+ * @param {number} warningTime threshold in seconds
+ * @param {number} criticalTime threshold in seconds
+ * @param {String[]} optImagePathArray (optional) Path or Array of Paths to the folder containing the image patterns for these test cases.
  *
  * @returns an initialized Sakuli object.
+ * @namespace TestCase
  */
-function TestCaseWithImagePath(warningTime, criticalTime, picPath) {
-    return new TestCaseWithImagePathArray(warningTime, criticalTime, new Array(picPath));
-}
-
-/**
- * This function initializes the Sakuli object and sets the warning and critical time for this test case.
- * @param {Integer} `warningTime` threshold in seconds
- * @param {Integer} `criticalTime` threshold in seconds
- * @param {String[]} `picPathArray` An Array of Paths to the folders containing all the pictures for these test cases.
- *
- * @returns an initialized Sakuli object.
- */
-function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
+function TestCase(warningTime, criticalTime, optImagePathArray) {
     var that = {};
-    var env, init;
+    var env;
 
     that.javaObject = null;
     that.tcID = null;
     env = null;
 
+    if (undefined == optImagePathArray) {
+        optImagePathArray = new Array(resolveDefaultImagePath());
+    }
+    else if (optImagePathArray instanceof String) {
+        optImagePathArray = new Array(optImagePathArray);
+    }
     /*****************************************************************************************************
      * TEST CASE HANDLING FUNCTIONS
      *****************************************************************************************************/
@@ -84,8 +74,10 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
      * particular runtime. Together with the test Case, a special "step" timer is started. Each time endOfStep is
      * called, the current timer value is read out, stored with the step name (first parameter) and gets resetted . If
      * the runtime exceeds the step threshold (second parameter), the step is saved with state "WARNING".
-     * @param {String} `stepName`
-     * @param {Integer} `warningTime` threshold in seconds
+     * @param {String} stepName
+     * @param {number} warningTime threshold in seconds
+     * @memberOf TestCase
+     * @method endOfStep
      */
     that.endOfStep = function (stepName, warningTime) {
         var currentTime = (new Date()).getTime();
@@ -100,14 +92,19 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
      * Handles any Exception or Error. The handleException function calls the Java backend and stores the Exception to
      * the database.
      *
-     * Use it at the end of a catch-block. Example:
-     *        try {
-     *          ... do something  
-     *      } catch (e) {  
-     *          sakuli.handleException(e);  
-     *      }
+     * Use it at the end of a catch-block.
+     * @example
+     * ```
+     * try {
+     *   ... do something
+     * } catch (e) {
+     *     sakuli.handleException(e);
+     * }
+     * ```
      *
-     * @param {Exception} `e` Any Exception or Error
+     * @param {Error} e any Exception or Error
+     * @memberOf TestCase
+     * @method handleException
      */
     that.handleException = function (e) {
         if (e.javaException instanceof java.lang.Exception) {
@@ -129,14 +126,20 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
     /**
      * Saves the results of the current test case to the database.
      *
-     * Should be called in finally-block of the test case. Example:
-     *        try {
-     *          ... do something  
-     *		} catch (e) {  
-     *          sakuli.handleException(e);  
-     *      } finally {  
-     *          sakuli.saveResult();  
-     *      }
+     * Should be called in finally-block of the test case:
+     * @example
+     *  ```
+     *  try {
+     *      ... do something
+     *  } catch (e) {
+     *      sakuli.handleException(e);
+     *  } finally {
+     *      sakuli.saveResult();
+     *  }
+     *  ```
+     *
+     * @memberOf TestCase
+     * @method saveResult
      */
     that.saveResult = function () {
         env.logInfo("=========== SAVE Test Case '" + that.tcID + "' ==================");
@@ -150,9 +153,12 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
         //call the backend
         that.javaObject.saveResult(that.tcID, that.startTime, stopTime, lastURL, browser);
     };
+
     /**
-     * Returns the current id of this test case.
-     * @returns id
+     * Returns the __current__ id of this test case.
+     * @returns {String} id
+     * @memberOf TestCase
+     * @method getID
      */
     that.getID = function () {
         return that.tcID;
@@ -161,6 +167,8 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
     /**
      * Updates and returns the URL of the last visited URL
      * @returns {String} last visited URL
+     * @memberOf TestCase
+     * @method getLastURL
      */
     that.getLastURL = function () {
         var lastURL = "";
@@ -170,28 +178,45 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
     };
 
     /**
-     * @return the folder path of the current testcase as {String}.
+     * @return {String} the folder path of the current testcase.
+     * @memberOf TestCase
+     * @method getTestCaseFolderPath
      */
     that.getTestCaseFolderPath = function () {
         return that.javaObject.getTestCaseFolderPath();
-    }
+    };
 
     /**
-     * @return the folder path of the current testcase as {String}.
+     * @return {String} the folder path of the current testcase.
+     * @memberOf TestCase
+     * @method getTestSuiteFolderPath
      */
     that.getTestSuiteFolderPath = function () {
         return that.javaObject.getTestSuiteFolderPath();
-    }
+    };
 
     /*****************************************************************************************************
      * INTERNAL CLASS FUNCTIONS - NOT REACHABLE IN THE TEST CASE EXECUTION
      *****************************************************************************************************/
 
     /**
+     * @private
+     * (internal function)
+     * @returns the default image path of this testcase
+     */
+    function resolveDefaultImagePath() {
+        var defaultImagePath = _resolvePath();
+        defaultImagePath = defaultImagePath.substring(0, defaultImagePath.lastIndexOf(Packages.java.io.File.separator));
+        java.lang.System.out.println("set default path for images to the test case folder \"" + defaultImagePath + "\"");
+        return defaultImagePath;
+    }
+
+    /**
+     * @private
      * (internal function)
      * This function will be called automatically on the startup of TestCase().
      */
-    init = function () {
+    function init() {
         _stopOnError();
         /**
          * get @type {Environment}
@@ -211,9 +236,9 @@ function TestCaseWithImagePathArray(warningTime, criticalTime, picPathArray) {
          */
         that.startTime = (new Date()).getTime();
         that.stepStartTime = (new Date()).getTime();
-        that.javaObject.init(that.tcID, warningTime, criticalTime, picPathArray);
+        that.javaObject.init(that.tcID, warningTime, criticalTime, optImagePathArray);
         env.logInfo("Now start to execute the test case '" + that.tcID + "' ! \n ....\n ...\n....");
-    };
+    }
 
     init();
     return that;

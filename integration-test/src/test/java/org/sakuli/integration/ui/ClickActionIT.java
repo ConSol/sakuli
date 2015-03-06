@@ -18,7 +18,6 @@
 
 package org.sakuli.integration.ui;
 
-import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.sakuli.integration.IntegrationTest;
@@ -64,7 +63,7 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
         region.waitForImage("login_bt.png", 3).doubleClick();
 
         //opt2
-        new Region("login_bt.png").waitFor(3).doubleClick().sleep(2);
+        new Region().waitForImage("login_bt.png", 3).doubleClick().sleep(2);
 
         //assert the count of button clicks
         stopUiApplication(stage);
@@ -81,10 +80,10 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
 
         //opt 1
         org.sakuli.actions.screenbased.Region region = new Region().exists("login_bt.png", 5);
-        region.find().click();
+        region.click();
         //opt 2
         new Region().find("login_bt").click();
-        new Region("login_bt").click().sleep(2).rightClick().sleep(2);
+        new Region().find("login_bt").click().sleep(2).rightClick().sleep(2);
         //assert the count of button clicks
         assertEquals(getEventCount(LOGIN_BT), expectedClickCount);
         stopUiApplication(stage);
@@ -99,9 +98,9 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
         new Region().find("username").click().type("demo");
         new Region().find("login_bt").click();
         assertEquals(getEventCount(LOGIN_BT), 2);
-        new Region("password").click().type("demo");
-        new Region("login_bt").click();
-        assertTrue(new Region("profil").exists() != null);
+        new Region().find("password").click().type("demo");
+        new Region().find("login_bt").click();
+        assertTrue(new Region().exists("profil") != null);
         assertEquals(getEventCount(LOGIN_BT), 3);
         stopUiApplication(stage);
     }
@@ -109,12 +108,9 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
     protected Stage startUiApplication() {
         UiTestApplication.cleanAllEvents();
         eventCounter = new ConcurrentHashMap<>();
-        UiTestApplication.addLoginControllEvent(LOGIN_BT, MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                logger.info("---> MOUSE EVENT triggered");
-                countEvent(LOGIN_BT);
-            }
+        UiTestApplication.addLoginControllEvent(LOGIN_BT, MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+            logger.info("---> MOUSE EVENT triggered");
+            countEvent(LOGIN_BT);
         });
         return super.startUiApplication();
     }
