@@ -19,13 +19,31 @@ Sakuli can send test result to "Receivers", which can be currently **GearmanD** 
 
 For the configuration of receivers on the OMD server side, see [Receivers in OMD](installation-omd.md#receivers)
 
-Depending on your environment, you probably want to set up one of these two possible receiver types. 
-
   * [Setting up Sakuli client to send results to the **Database**](receiver-database.md#sakuli-configuration)
   * [Setting up Sakuli client to submit results to the **Gearman Receiver**](receiver-gearman.md#sakuli-configuration)
 
+### Exception handling
 
+Some objects (*Region, Application, Environment*) allow on their creation to specify the optional boolean argument `resumeOnException`, which controls whether the script should resume on an exception which is related to the object or one of its method (default: false).
 
+Setting this to *true* can be useful if you want to raise a custom exception or no exception at all. 
+
+In `SAKULI_HOME_/_include/sakuli.properties` you can set `sakuli.exception.suppressResumedExceptions` to
+
+   * `true`  = the exception will be logged and appear in the test result
+   * `false` = the exception will NEITHER be logged NOR appear in the test result.
+
+Example:
+ 
+    // create region "foo"
+    var foo = new Region("bar.png",true);
+    // if "image" is not found, the script will resume
+    var baz = foo.find("image");
+    // throw your "own" exception.
+    // If you do not, and suppressResumedExceptions=true, the exception will be suppressed.
+    if (baz == null){
+        throw "Sorry, I could not find image 'image'.";
+    }
 
 ### Logging 
 
@@ -208,5 +226,17 @@ Use the bypass list to exclude certain URLs from being accessed through the prox
 
     ```
 
+### Sahi browser profile tuning
+
+#### Mozilla Firefox ####
+
+Edit `%SAKULI_HOME%/sahi/config/ff_profile_template/prefs.js`: 
+
+    user_pref("browser.sessionstore.max_tabs_undo",0);
+    user_pref("browser.sessionstore.max_windows_undo",0);
+    
+To take these changes effect, you need to delete the firefox profile folders. Sahi will re-create them on the next run: 
+
+    rm -rf %SAKULI_HOME%/sahi/userdata/browser/ff/profiles/*
 
 <!--- FIXME killprocs.vbs/.sh -->

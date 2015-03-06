@@ -1,5 +1,5 @@
 # Database Receiver
-This page describes how Sakuli can be configured to write its test results into a MySQL database which is checked asynchronously by the monitoring system with *check_mysql_health*. 
+This page describes how Sakuli can be configured to write its test results into a **MySQL database** which is checked asynchronously by the monitoring system with *check_mysql_health*. 
 
 ![sakuli-db-receiver](pics/sakuli-db.png)
  
@@ -8,27 +8,25 @@ This page describes how Sakuli can be configured to write its test results into 
 ### Enabling the site's MySQL Database
 If not already done for other reasons, a site-specific MySQL instance has to be started. That's the place where all Sakuli clients will store their check results. 
 
-Stop the OMD site:
+Stop the OMD site and start the OMD configuration menu:
 
 	OMD[sakuli]:~$ omd stop
-
-Start the OMD configuration menu
-
+     ...
 	OMD[sakuli]:~$ omd config
 	
 Select *Addons -> MYSQL -> ON* and exit the menu. 
 
-Open *~/.my.cnf* and set the following values: 
+Open `~/.my.cnf` and set the following values: 
 
 	OMD[sakuli]:~$ vim .my.cnf
-	# make sure to choose a free port
-	port = 3007  
+	# make sure to choose a free port, e.g. 3007
+	port = __DB_PORT__  
 	# bind on all interfaces
 	bind-address = 0.0.0.0 
 	# enable network access
 	#skip-networking
 
-Create the system tables for the new database and start OMD afterwards. You should see now OMD coming up with a dedicated MySQL instance: 
+Create the system tables for the new database and start OMD afterwards. You should see now OMD coming up with a **dedicated MySQL instance**: 
 
 	OMD[sakuli]:~$ mysql_install_db 
 	OMD[sakuli]:~$ omd start
@@ -41,54 +39,54 @@ Create the system tables for the new database and start OMD afterwards. You shou
 	 
 ### create Sakuli DB and user
 
-Create the Sakuli database using the SQL script within the repository: 
+Create the **Sakuli database**:
 
-	OMD[sakuli]:~$ mysql < [TEMP_FOLDER]/setup/database/create_sakuli_database.sql
+	OMD[sakuli]:~$ mysql < __TEMP__/setup/database/create_sakuli_database.sql
 	
-Create the database user which is used by all clients to write their check results: 
+Create the **database user**:
 
 	OMD[sakuli]:~$ mysql
-	  grant ALL on sakuli.* to 'sakuli'@'%' identified by 'sakuli';
+	  grant ALL on sakuli.* to '__DB_USER__'@'%' identified by '__DB_PASSWORD__';
 	  flush privileges;
 	  quit
 	  
-Now you should be able to do a first connection test with *check_mysql_health*: 
+Check the connection with *check_mysql_health*: 
 
-	OMD[sakuli]:~$ 	~/lib/nagios/plugins/check_mysql_health -H [IP] --username sakuli --password sakuli --database sakuli --port 3307 --mode connection-time
-	  OK - 0.24 seconds to connect as sahi | connection_time=0.2366s;1;5
+	OMD[sakuli]:~$ 	~/lib/nagios/plugins/check_mysql_health -H __DB_IP__ --username __DB_USER__ --password __DB_PASSWORD__ --database sakuli --port __DB_PORT__ --mode connection-time
+	  OK - 0.24 seconds to connect as sakuli | connection_time=0.2366s;1;5
 
 ### create Nagios check
 
-To fetch Sakuli's check results from the database, Nagios uses the plugin [check_mysql_health](http://labs.consol.de/lang/de/nagios/check_mysql_health/), which is already contained in OMD. 
+Nagios fetches Sakuli check results using the plugin [check_mysql_health](http://labs.consol.de/lang/de/nagios/check_mysql_health/), which is already contained in OMD. 
 
 #### CheckMySQLHealthSakuli.pm
 
-The Perl module *CheckMySQLHealthSakuli.pm*  enhances the functionality of *check_mysql_health* by introducing the mode *--my-sakuli-suite*. This mode allows to read out the last result for a given Sakuli suite. 
+The Perl module `CheckMySQLHealthSakuli.pm` enhances the functionality of *check_mysql_health* by introducing the mode `--my-sakuli-suite`. 
 
-Create the *etc* directory for *check_mysql_health* and copy the module there: 
+Create a config directory for *check_mysql_health* and **copy the module** there: 
 
 	OMD[sakuli]:~$ mkdir ~/etc/check_mysql_health
-	OMD[sakuli]:~$ cp [TEMP_FOLDER]/setup/nagios/CheckMySQLHealthSakuli.pm ~/etc/check_mysql_health/
+	OMD[sakuli]:~$ cp __TEMP__/setup/nagios/CheckMySQLHealthSakuli.pm ~/etc/check_mysql_health/
 
 ##### resource.cfg
-Set USER macros for static vars in *resource.cfg*, which makes it easy to use them in all nagios checks:  
+Set **USER macros** for static vars in `resource.cfg`, which makes it easy to use them in all nagios checks:  
 
 	OMD[sakuli]:~$ vim ~/etc/nagios/resource.cfg
 	  # database name
 	  $USER10$=sakuli
 	  # database user
-	  $USER11$=sakuli
+	  $USER11$=__DB_USER__
 	  # database password
-	  $USER12$=sakuli
+	  $USER12$=__DB_PASSWORD__
 	  # database port
-	  $USER13$=3007
-	  # check_mysql_health dyndir
+	  $USER13$=__DB_PORT__
+	  # check_mysql_health module dir
 	  $USER15$=/opt/omd/sites/sakuli/etc/check_mysql_health/
-	  # database=OMD IP
-	  $USER16$=[IP]  
+	  # database IP
+	  $USER16$=__DB_IP__  
 	  
 ##### Nagios configuration
-Create a new check_command: 
+Create a new **check_command**: 
 
 	vim ~/etc/nagios/conf.d/commands.cfg
 	
@@ -110,18 +108,19 @@ Create a new check_command:
         --with-mymodules-dyn-dir=$USER15$
 	}
 
-Create a host object for the host on which Sakuli checks will be executed: 
+Create a **host object** for the host on which Sakuli checks will be executed: 
 
 	vim ~/etc/nagios/conf.d/hosts.cfg
 	
 	define host {
 	  host_name                      win7sakuli
 	  alias                          Windows 7 Sakuli
-	  address                        [IP]
+	  address                        __CLIENT_IP__
 	  use                            generic-host
 	}
 
-Create the following service object for the first test case: 
+Create the following **service object** for the first test case: 
+<!--- fixme Minimalbeispiel -->
 
 	vim ~/etc/nagios/conf.d/services.cfg
 	
@@ -146,17 +145,17 @@ Re-scheduling this service should display the UNKNOWN message that the requested
 
 ## Sakuli Configuration
 
-Open `%SAKULI_HOME\_include\sakuli.properties` on the Sakuli client and fill in the parameters for the database Sakuli should write the test results to:
+Open `__SAKULI_HOME__/_include/sakuli.properties` on the Sakuli client and fill in the **database parameters** Sakuli should write the test results to:
 
     # DEFAULT: false
     sakuli.receiver.database.enabled=true
 	
 	jdbc.driverClass=com.mysql.jdbc.Driver
-    jdbc.host=[IPofOMD]
-    jdbc.port=[Database Port]]
+    jdbc.host=__DB_IP__
+    jdbc.port=__DB_PORT__
     jdbc.database=sakuli
-    jdbc.user=sakuli
-    jdbc.pw=sakuli
+    jdbc.user=__DB_USER__
+    jdbc.pw=__DB_PW__
     jdbc.model=sakuli
     jdbc.url=jdbc:mysql://${jdbc.host}:${jdbc.port}/${jdbc.database}
 

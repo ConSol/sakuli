@@ -68,33 +68,30 @@ for web sites and common UIs with full Nagios integration](https://rawgit.com/to
 ## Documentation
 
 ### Usage
-**Basic setup: **
+**Basic setup:**
 
-* [Sakuli client installation](./docs/installation-client.md)
-* The first check 
-  * [on Windows](./docs/firststeps-windows.md)
-  * [on Ubuntu](./docs/firststeps-ubuntu.md)
-* Submitting results 
+* [Sakuli client **installation**](./docs/installation-client.md)
+* Submitting Sakuli results 
   * [to OMD (Nagios/Icinga2/Shinken)](./docs/installation-omd.md)
-    * [via Gearman](./docs/receiver-gearman.md)
-    * [via Database](./docs/receiver-database.md)
+    * [via **Gearman**](./docs/receiver-gearman.md)
+    * [via **Database**](./docs/receiver-database.md)
 
 **Ressources:** 
 
-* Headless Sakuli checks
+* **Headless** Sakuli checks
   * [on Windows](./docs/headless-windows.md) -- in progress
   * [on Ubuntu](./docs/headless-ubuntu.md) -- in progress
-* [additional Sakuli Settings](./docs/additional-settings.md)
-* Troubleshooting and Tuning
-  * [Sakuli Client](./docs/troubleshooting-tuning-sakuli-client.md) 
-  * [OMD/Nagios](./docs/troubleshooting-omd.md) 
-* [Sakuli API](./docs/sakuli-api.md) - an overview about the most important Sakuli functions. 
+* [**additional** Sakuli Settings](./docs/additional-settings.md)
+* **Troubleshooting** and **Tuning**
+  * [**Sakuli Client**](./docs/troubleshooting-tuning-sakuli-client.md) 
+  * [**OMD/Nagios**](./docs/troubleshooting-omd.md) 
+* [Sakuli **API**](./docs/sakuli-api.md) - an overview about the most important Sakuli functions
 
 ### Contribution
 
-* [Installation instructions for developers](./docs/development/installation-developers.md)
-* [How to prepare a new release](./docs/development/how-to-release.md)
-* [Maven Build Aspects](./docs/development/maven-aspects.md)
+* [Installation instructions for **developers**](./docs/development/installation-developers.md)
+* [How to prepare a **new releas**e](./docs/development/how-to-release.md)
+* [**Maven Build Aspects**](./docs/development/maven-aspects.md)
 
 
 ## Changelog 

@@ -9,11 +9,11 @@ The default installation path of Sakuli is referenced as `%SAKULI_HOME%`, that i
 
 **Conventions**: 
 
-- Wherever you see `%SAKULI_HOME%` in the instructions, you can replace it by the appropriate variable `$SAKULI_HOME` (Linux) respectively `%SAKULI_HOME%` (Windows).
-- Values surrounded by underscores like `__IP_ADDRESS__` must be replaced with specific values.
+- Wherever you see `%SAKULI_HOME%` in the instructions, you can replace it by the appropriate variable `$SAKULI_HOME` (**Linux**) respectively `%SAKULI_HOME%` (**Windows**).
+- Values surrounded by underscores (e.g. `__IP_ADDRESS__`) must be replaced with specific values.
 - Unless stated otherwise, slashes/backslashes have to be used depending on the operating system.
 
-Examples (on Linux): 
+Examples (on **Linux**): 
 
 - `__SAKULI_HOME__/sahi/userdata/` => type `/home/sakuli/sahi/userdata/`
 - `%SAKULI_HOME%/sahi/userdata/` =>  type `$SAKULI_HOME/sahi/userdata/`
@@ -24,89 +24,84 @@ We recommend to run Sakuli clients on virtual machines.
 
 * **OS**: **Windows** or **Ubuntu** 14.04 LTS Desktop
 * **RAM**: 3GB+  
-* if virtualized: Hypervisor guest additions for best performance
+* if virtualized: **Hypervisor guest additions** for best performance 
 * no local firewall running
-* user account "sakuli" with sudo/admin rights
+* user account "sakuli" with **sudo/admin rights**
 * desktop appearance 
   * Set the desktop background to a homogenous color. 
   * If you do not want to run Sakuli headless, disable screen locking mechanisms
   * Sakuli needs a predictable desktop environment: make sure that there are no pop-up windows of services or applications. 
-  * Other optional steps see ["Desktop tuning")](./troubleshooting-tuning-sakuli-client.md).
+  * Other optional steps see ["Desktop tuning")](./troubleshooting-tuning-sakuli-client.md#desktop-tuning).
+* the client should not have more than one screen 
 
 ## Software installation 
 ### Java
 
-The last stable version of Sakuli (0.4.7) needs Java 7; all following versions require Java 8.  
+Sakuli versions including v0.4.7 need **Java 7**; all newer versions are based on **Java 8**.  
 
-Straightforward for **Windows**; for **Ubuntu**, see Ubuntuusers Wiki for [Java 7 JRE](http://wiki.ubuntuusers.de/Java/Installation/Oracle_Java/Java_7#Java-7-JRE) or [Java 8 JRE](http://wiki.ubuntuusers.de/Java/Installation/Oracle_Java/Java_8#Java-8-JRE).
+Installation is straightforward for **Windows**; for **Ubuntu**, see Ubuntuusers Wiki for [Java 7 JRE](http://wiki.ubuntuusers.de/Java/Installation/Oracle_Java/Java_7#Java-7-JRE) / [Java 8 JRE](http://wiki.ubuntuusers.de/Java/Installation/Oracle_Java/Java_8#Java-8-JRE).
 
-On **Windows**: 
+Additionally, on **Windows**: 
 
 * From desktop, right-click *My Computer* and click *Properties*
 * In *System Properties*, click on *Advanced*
-	* Edit the **system variable** **%PATH%** and add one of the following paths to the java binary: 
-		* Name: `PATH`
-		* Value: 
-			* `;C:\Program Files\Java\jre7/8\bin`
-			* or 
-			* `;C:\Program Files (x86)\Java\jre7/8\bin`
+* Edit the **system variable** **%PATH%** and add one of the following paths to the java binary: 
+  * Name: `PATH`
+  * Value: 
+    * `;C:\Program Files\Java\jre7/8\bin`
+    * or 
+	* `;C:\Program Files (x86)\Java\jre7/8\bin`
 
 ### Sakuli 
 
-Download and unpack Sakuli: 
-
-* Download Sakuli from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
-  * `sakuli-zipped-release-vX.X.X-SNAPSHOT.zip` = dev snapshot
-  * The highest version of `sakuli-zipped-release-vX.X.X.zip` = current stable version
+* Download **Sakuli** from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
+  * current **development** snapshot = `sakuli-zipped-release-vX.X.X-SNAPSHOT.zip` 
+  * current **stable** version = highest version of `sakuli-zipped-release-vX.X.X.zip` 
 * Unzip the downloaded archive:
   * on **Windows** into `C:\` 
-  * on **Ubuntu** into `/home/sakuli/`
+  * on **Ubuntu** into `/home/sakuli/` (will result in `/home/sakuli/sakuli`)
   
 Set `SAKULI_HOME`: 
 
 * **Windows**
   * From desktop, right-click *My Computer* and click *Properties*
   * In *System Properties*, click on *Advanced*
-	* Create a new **user variable** **%SAKULI_HOME%**: 
+	* Create a new **user variable**: 
       * Name: `SAKULI_HOME`
 	  * Value: `C:\sakuli`
-	* Create a new **user variable** **%PATH%**: 
+	* Create a new **user variable**: 
 		* Name: `PATH`
 		* Value: `%SAKULI_HOME%\bin\lib\libs`
 * **Ubuntu**
-  * Add to `.bashrc`: 
+  * Add to `/home/sakuli/.bashrc`: 
     * `export SAKULI_HOME=/home/sakuli/sakuli`
+  
 
-<!--- 
-FIXME  `%SAKULI_HOME%\bin\lib\libs`
--->    
-
-On **Ubuntu** you have to install tesseract manually: 
+Additionally, on **Ubuntu** you have to install tesseract manually: 
 
 	sudo apt-get install tesseract-ocr
 
 ### Sahi
 
-* Download Sahi v44 from [http://sourceforge.net/projects/sahi/files/?source=navbar](http://sourceforge.net/projects/sahi/files/) (Version 5 will be supported soon)
-* Unpack the downloaded file and start the installation by executing `java -jar __DOWNLOADED_JAR_FILE__`, respectively by double clicking this file on **Windows**. In the installatin assistent, set: 
+* Download **Sahi v44** from [http://sourceforge.net/projects/sahi/files/?source=navbar](http://sourceforge.net/projects/sahi/files/) (Version 5 will be supported soon)
+* Unpack the downloaded file and start the installation by executing `java -jar __DOWNLOADED_JAR_FILE__`, respectively by double clicking this file on **Windows**. In the installation assistent, set: 
 	* Installation path: `__SAKULI_HOME__/sahi`
 	* select all packages to install
 
-Sahi can be started now for the first time. Open "Start Sahi" from "Applications - Programming" on **Ubuntu**, or by double clicking the icon on the **Windows** desktop. 
+Sahi can be tested now for the first time. Open *"Start Sahi"* from *"Applications - Programming"* on **Ubuntu**, or by double clicking the icon on the **Windows** desktop. 
 
 <!--- fixme anker, titel -->
 
-The Dashboard should now list all available browsers on this system. To use the minimal test cases (see below), we recommend to install Firefox, if not yet done. ([Adding browsers to Sahi](../docs/sakuli-additional-settings.md): 
+The **Sahi Dashboard** should now list all available browsers on this system. To use the minimal test cases (see below), we recommend to install Firefox, if not yet done. (see [Adding browsers to Sahi](../docs/additional-settings.md#adding-browsers-to-sahi)): 
 
 ![db_browsers](./pics/w_sahi_dashboard_browsers.jpg) 
 ![db_browsers](./pics/u_sahi_dashboard_browsers.png) 
 	
-Clicking on a browser icon will start it and present the default start page: 
+After clickint on a browser icon you should see the default start page of Sahi: 
 
 ![sahi_start](../docs/pics/sahi_startpage.jpg) 
 
-<!--- fixme Anker -->
-If neccessary, set the proxy Sahi is behind of: [Proxy settings](../docs/sakuli-additional-settings.md)
+If neccessary, set the proxy Sahi is behind of: [Proxy settings](../docs/sakuli-additional-settings.md#sahi-behind-a-proxy)
 
 ### Additional software
 
@@ -115,7 +110,7 @@ All components below are optional but recommended:
 #### PhantomJS
 	
 <!--- anker  fixme -->	
-Currently, *each* Sakuli test will start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Adding browsers to Sahi](../docs/sakuli-additional-settings.md) for more information. 
+Currently, *each* Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Adding browsers to Sahi](../docs/sakuli-additional-settings.md) for more information. 
 
 
 #### Screenshot tool 
@@ -125,12 +120,16 @@ You should use a screenshot tool which is able to
 - capture areas of the screen
 - delay the creation of screenshots for x seconds (important if Sikuli must navigate through menues)
 
-On **Windows** a good choice is [Greenshot](http://www.getgreenshot.org); on **Ubuntu** install [Shutter](http://shutter-project.org/).
+A good choice is
+
+* [Greenshot](http://www.getgreenshot.org) on **Windows**  
+* [Shutter](http://shutter-project.org/) on **Ubuntu**.
 
 #### Notepad++
 You're doing better if you do *not* use gEdit or Windows Notepad to edit Sakuli files. 
 
-On **Windows** install for instance [Notepad++](http://notepad-plus-plus.org/); on **Ubuntu** [Bluefish](http://bluefish.openoffice.nl/index.html).
+* on **Windows** install for instance [Notepad++](http://notepad-plus-plus.org/) 
+* on **Ubuntu** use [Bluefish](http://bluefish.openoffice.nl/index.html)
 	
 ## Test
 

@@ -54,7 +54,7 @@ You are now ready to run the **minimal Sakuli check** in **headless (=VNC)** mod
 
 On the **Ubuntu** desktop, open a terminal window and execute 
 
-    `~$ sakuli/scripts/starter/START_example_linux_headless.sh` 
+    ~$ sakuli/scripts/starter/START_example_linux_headless.sh
  
 You should see that Sakuli
 
