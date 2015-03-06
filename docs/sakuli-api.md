@@ -2,7 +2,7 @@
 
 **Namespaces**
 
-* [Sahi API](#Sahi API)
+* [Sahi-API](#Sahi-API)
 * [TestCase](#TestCase)
   * [TestCase.endOfStep(stepName, warningTime)](#TestCase.endOfStep)
   * [TestCase.handleException(e)](#TestCase.handleException)
@@ -149,13 +149,13 @@
   * [Key.DECIMAL](#Key.DECIMAL)
   * [Key.CONTEXT](#Key.CONTEXT)
  
-<a name="Sahi API"></a>
-#Sahi API
-All Sahi API functions are natively useable in Sakuli. For a complete documentation, see [Sahi API](http://sahi.co.in/w/all-apis).
+<a name="Sahi-API"></a>
+#Sahi-API
+__All Sahi-API__ functions are natively usable in Sakuli. For a complete documentation, see [Sahi-API](http://sahi.co.in/w/all-apis).
 
 **Members**
 
-* [Sahi API](#Sahi API)
+* [Sahi-API](#Sahi-API)
 
 <a name="TestCase"></a>
 #TestCase

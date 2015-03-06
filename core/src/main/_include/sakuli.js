@@ -19,9 +19,9 @@
 /**** Exclude this global variables from JSLint Warnings ****/
 /* global navigator, window, java, Packages,saveResult,step, $output, _set, _stopOnError, _logExceptionAsFailure,_resolvePath,_include, $sahi_userdata, $guid, $capture, initialize */
 /**
- * All Sahi API functions are natively useable in Sakuli. For a complete documentation, see [Sahi API](http://sahi.co.in/w/all-apis).
+ * __All Sahi-API__ functions are natively usable in Sakuli. For a complete documentation, see [Sahi-API](http://sahi.co.in/w/all-apis).
  *
- * @namespace Sahi API
+ * @namespace Sahi-API
  */
 
 
