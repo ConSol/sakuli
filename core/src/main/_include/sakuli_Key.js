@@ -20,14 +20,17 @@
 /* global navigator, window, java, Packages,saveResult,step, $output, _set, _stopOnError, _logExceptionAsFailure,_resolvePath,_include, $sahi_userdata, $guid, $capture, initialize */
 
 /**
- * KEY constants - representing modifier keys.
- * The following KEY values are possible:
+ * Key - representing some Key constants which can be used in type functions as input text and as modifier keys.
  *
- * @example close an window over the short cut `ALT + F4`:
+ * The following __Key__ values are possible:
+ *
+ * `SPACE`, `ENTER`, `BACKSPACE`, `TAB`, `ESC`, `UP`, `RIGHT`, `DOWN`, `LEFT`, `PAGE_UP`, `PAGE_DOWN`, `DELETE`, `END`, `HOME`, `INSERT`, `F1`, `F2`, `F3`, `F4`, `F5`, `F6`, `F7`, `F8`, `F9`, `F10`, `F11`, `F12`, `F13`, `F14`, `F15`, `SHIFT`, `CTRL`, `ALT`, `ALTGR`, `META`, `CMD`, `WIN`, `PRINTSCREEN`, `SCROLL_LOCK`, `PAUSE`, `CAPS_LOCK`, `NUM0`, `NUM1`, `NUM2`, `NUM3`, `NUM4`, `NUM5`, `NUM6`, `NUM7`, `NUM8`, `NUM9`, `SEPARATOR`, `NUM_LOCK`, `ADD`, `MINUS`, `MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`
+ *
+ * @example Closing an window over typing the short cut `ALT + F4`:
  * ```
  * env.type(Key.F4, Key.ALT);
  * ```
- * @enum Key
+ * @namespace Key
  */
 Key = {
     SPACE: " ",

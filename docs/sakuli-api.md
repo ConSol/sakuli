@@ -46,6 +46,7 @@
   * [Environment.logWarning(message)](#Environment.logWarning)
   * [Environment.logInfo(message)](#Environment.logInfo)
   * [Environment.logDebug(message)](#Environment.logDebug)
+* [Key](#Key)
 * [Region](#Region)
   * [Region.find(imageName)](#Region.find)
   * [Region.findRegion()](#Region.findRegion)
@@ -85,69 +86,6 @@
   * [Region.sleep(seconds)](#Region.sleep)
   * [Region.extractText()](#Region.extractText)
 * [RegionRectangle](#RegionRectangle)
-
-**Members**
-
-* [enum: Key](#Key)
-  * [Key.SPACE](#Key.SPACE)
-  * [Key.ENTER](#Key.ENTER)
-  * [Key.BACKSPACE](#Key.BACKSPACE)
-  * [Key.TAB](#Key.TAB)
-  * [Key.ESC](#Key.ESC)
-  * [Key.UP](#Key.UP)
-  * [Key.RIGHT](#Key.RIGHT)
-  * [Key.DOWN](#Key.DOWN)
-  * [Key.LEFT](#Key.LEFT)
-  * [Key.PAGE_UP](#Key.PAGE_UP)
-  * [Key.PAGE_DOWN](#Key.PAGE_DOWN)
-  * [Key.DELETE](#Key.DELETE)
-  * [Key.END](#Key.END)
-  * [Key.HOME](#Key.HOME)
-  * [Key.INSERT](#Key.INSERT)
-  * [Key.F1](#Key.F1)
-  * [Key.F2](#Key.F2)
-  * [Key.F3](#Key.F3)
-  * [Key.F4](#Key.F4)
-  * [Key.F5](#Key.F5)
-  * [Key.F6](#Key.F6)
-  * [Key.F7](#Key.F7)
-  * [Key.F8](#Key.F8)
-  * [Key.F9](#Key.F9)
-  * [Key.F10](#Key.F10)
-  * [Key.F11](#Key.F11)
-  * [Key.F12](#Key.F12)
-  * [Key.F13](#Key.F13)
-  * [Key.F14](#Key.F14)
-  * [Key.F15](#Key.F15)
-  * [Key.SHIFT](#Key.SHIFT)
-  * [Key.CTRL](#Key.CTRL)
-  * [Key.ALT](#Key.ALT)
-  * [Key.ALTGR](#Key.ALTGR)
-  * [Key.META](#Key.META)
-  * [Key.CMD](#Key.CMD)
-  * [Key.WIN](#Key.WIN)
-  * [Key.PRINTSCREEN](#Key.PRINTSCREEN)
-  * [Key.SCROLL_LOCK](#Key.SCROLL_LOCK)
-  * [Key.PAUSE](#Key.PAUSE)
-  * [Key.CAPS_LOCK](#Key.CAPS_LOCK)
-  * [Key.NUM0](#Key.NUM0)
-  * [Key.NUM1](#Key.NUM1)
-  * [Key.NUM2](#Key.NUM2)
-  * [Key.NUM3](#Key.NUM3)
-  * [Key.NUM4](#Key.NUM4)
-  * [Key.NUM5](#Key.NUM5)
-  * [Key.NUM6](#Key.NUM6)
-  * [Key.NUM7](#Key.NUM7)
-  * [Key.NUM8](#Key.NUM8)
-  * [Key.NUM9](#Key.NUM9)
-  * [Key.SEPARATOR](#Key.SEPARATOR)
-  * [Key.NUM_LOCK](#Key.NUM_LOCK)
-  * [Key.ADD](#Key.ADD)
-  * [Key.MINUS](#Key.MINUS)
-  * [Key.MULTIPLY](#Key.MULTIPLY)
-  * [Key.DIVIDE](#Key.DIVIDE)
-  * [Key.DECIMAL](#Key.DECIMAL)
-  * [Key.CONTEXT](#Key.CONTEXT)
  
 <a name="Sahi-API"></a>
 #Sahi-API
@@ -618,6 +556,24 @@ The log entries can be configured over the properties "log4.properties"
 
 - message `String` - as a String  
 
+<a name="Key"></a>
+#Key
+Key - representing some Key constants which can be used in type functions as input text and as modifier keys.
+
+The following __Key__ values are possible:
+
+`SPACE`, `ENTER`, `BACKSPACE`, `TAB`, `ESC`, `UP`, `RIGHT`, `DOWN`, `LEFT`, `PAGE_UP`, `PAGE_DOWN`, `DELETE`, `END`, `HOME`, `INSERT`, `F1`, `F2`, `F3`, `F4`, `F5`, `F6`, `F7`, `F8`, `F9`, `F10`, `F11`, `F12`, `F13`, `F14`, `F15`, `SHIFT`, `CTRL`, `ALT`, `ALTGR`, `META`, `CMD`, `WIN`, `PRINTSCREEN`, `SCROLL_LOCK`, `PAUSE`, `CAPS_LOCK`, `NUM0`, `NUM1`, `NUM2`, `NUM3`, `NUM4`, `NUM5`, `NUM6`, `NUM7`, `NUM8`, `NUM9`, `SEPARATOR`, `NUM_LOCK`, `ADD`, `MINUS`, `MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`
+
+**Example**  
+Closing an window over typing the short cut `ALT + F4`:
+```
+env.type(Key.F4, Key.ALT);
+```
+
+**Members**
+
+* [Key](#Key)
+
 <a name="Region"></a>
 #Region
 Region - Represents a region as a part of or the hole screen.
@@ -1012,16 +968,4 @@ var notepadRegion = new RegionRectangle(0,0,100,100);
 **Members**
 
 * [RegionRectangle](#RegionRectangle)
-
-<a name="Key"></a>
-#enum: Key
-KEY constants - representing modifier keys.
-The following KEY values are possible:
-
-**Properties**: `SPACE`, `ENTER`, `BACKSPACE`, `TAB`, `ESC`, `UP`, `RIGHT`, `DOWN`, `LEFT`, `PAGE_UP`, `PAGE_DOWN`, `DELETE`, `END`, `HOME`, `INSERT`, `F1`, `F2`, `F3`, `F4`, `F5`, `F6`, `F7`, `F8`, `F9`, `F10`, `F11`, `F12`, `F13`, `F14`, `F15`, `SHIFT`, `CTRL`, `ALT`, `ALTGR`, `META`, `CMD`, `WIN`, `PRINTSCREEN`, `SCROLL_LOCK`, `PAUSE`, `CAPS_LOCK`, `NUM0`, `NUM1`, `NUM2`, `NUM3`, `NUM4`, `NUM5`, `NUM6`, `NUM7`, `NUM8`, `NUM9`, `SEPARATOR`, `NUM_LOCK`, `ADD`, `MINUS`, `MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`  
-**Example**  
-close an window over the short cut `ALT + F4`:
-```
-env.type(Key.F4, Key.ALT);
-```
 
