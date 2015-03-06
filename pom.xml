@@ -34,10 +34,10 @@
     <url>http://maven.apache.org</url>
 
     <modules>
-        <module>core</module>
-        <module>integration-test</module>
-        <module>docs</module>
-        <module>java-dsl</module>
+        <module>src/core</module>
+        <module>src/integration-test</module>
+        <module>src/docs</module>
+        <module>src/java-dsl</module>
     </modules>
 
     <properties>

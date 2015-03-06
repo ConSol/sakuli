@@ -1,0 +1,87 @@
+/*
+ * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+ *
+ * Copyright 2013 - 2014 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.background {
+    /*-fx-background-image: url("CoarseGrid.png");*/
+    /*-fx-background-repeat: repeat;*/
+    -fx-background-color: lightgrey;
+    /*-fx-background-color: linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%), linear-gradient(#20262b, #191d22), radial-gradient(center 50% 0%, radius 100%, rgba(114, 131, 148, 0.9), rgba(0, 0, 0, 0));*/
+}
+
+.top-segment {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-border-color: darkblue;
+    -fx-border-width: 1, 1.5;
+    -fx-border-insets: -1, 0;
+}
+
+.label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 16;
+    -fx-text-fill: darkblue;
+}
+
+.profileTitle {
+    -fx-font-size: 18;
+}
+
+.hyperlink {
+    -fx-font-family: "Arial";
+    -fx-font-size: 18;
+    -fx-text-fill: #000000;
+    -fx-border-width: 0;
+}
+
+.check-box .box {
+    -fx-background-color: lightyellow;
+}
+
+.check-box:focused .box {
+    -fx-background-color: rgb(255, 255, 255, 0.15), rgb(0, 0, 0, 0.8), -fx-outer-border, -fx-inner-border, white;
+}
+
+.button .text {
+    -fx-text-fill: #000000;
+}
+
+.button {
+    -fx-background-color: darkgrey;
+    -fx-font-family: "Arial";
+    -fx-text-fill: darkblue;
+    -fx-font-size: 35;
+    -fx-padding: 4;
+}
+
+.text-field, .text-area {
+    -fx-font-size: 18;
+    -fx-background-color: lightyellow;
+    -fx-background-insets: 0 0 -1 0, 0, 1.5;
+    -fx-background-radius: 6, 5, 4;
+    -fx-padding: 6 10 4 10;
+    -fx-text-fill: #000000;
+    -fx-font-family: "Arial";
+}
+
+.text-area {
+    -fx-padding: 6 5 6 5;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-prompt-text-fill: rgb(128, 128, 128);
+    -fx-background-color: lightblue;
+}
