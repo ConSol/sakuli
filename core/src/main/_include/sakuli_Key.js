@@ -19,11 +19,16 @@
 /**** Exclude this global variables from JSLint Warnings ****/
 /* global navigator, window, java, Packages,saveResult,step, $output, _set, _stopOnError, _logExceptionAsFailure,_resolvePath,_include, $sahi_userdata, $guid, $capture, initialize */
 
-
-/*****************************************************************************************************
- * KEY constants - representing modifier keys
- *****************************************************************************************************/
-
+/**
+ * KEY constants - representing modifier keys.
+ * The following KEY values are possible:
+ *
+ * @example close an window over the short cut `ALT + F4`:
+ * ```
+ * env.type(Key.F4, Key.ALT);
+ * ```
+ * @enum Key
+ */
 Key = {
     SPACE: " ",
     ENTER: '\n',

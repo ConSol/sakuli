@@ -59,9 +59,9 @@ try {
 
     env.sleep(2);
 
-    var windowsLogo2 = new RegionImage("windows_logo.png");
-    windowsLogo2.exists().move(50, -50).highlight(1);
-    windowsLogo2.find().click().doubleClick().rightClick();
+    var windowsLogo2 = new Region().find("windows_logo.png");
+    windowsLogo2.move(50, -50).highlight(1);
+    windowsLogo2.click().doubleClick().rightClick();
     testCase.endOfStep("windows", 10);
 
     /***
@@ -70,8 +70,7 @@ try {
     editorApp.setSleepTime(1).open().focus();
 
 
-    var secWarn = new RegionImage("1_1_sec_warn.png")
-        .waitFor(35)
+    var secWarn = new Region().waitForImage("1_1_sec_warn.png", 35)
         .setH(900)
         .highlight(2);
     secWarn.find("1_1_sec_warn_execute")

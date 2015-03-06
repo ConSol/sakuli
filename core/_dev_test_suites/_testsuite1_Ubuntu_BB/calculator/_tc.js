@@ -40,7 +40,7 @@ try {
         testCase.endOfStep("Open Calculator", 3);
 
         //caculate
-        env.setSimilarity(0.5);
+        //env.setSimilarity(0.9);
         var calculatorRegion = calculatorApp.getRegion();
         calculatorRegion.type("525");
         env.sleep(2);

@@ -78,11 +78,6 @@ public class BeanLoader {
         return new Region(x, y, w, h, Boolean.valueOf(resumeOnException), loadScreenActionLoader());
     }
 
-    public static Region loadRegionImage(String imageName, String resumeOnException) {
-        logger.debug("Get an new Region object over BeanFactory.");
-        return new Region(imageName, Boolean.valueOf(resumeOnException), loadScreenActionLoader());
-    }
-
     /**
      * @param classDef class definition of the expected bean
      * @param <T>      generic type of the returned bean.

@@ -32,7 +32,7 @@ var testCase = new TestCase(80, 100);
  ******************************/
 try {
 
-    var env = new Environment(false).setSimilarity(0.5);
+    var env = new Environment(false).setSimilarity(0.9);
 
     env.setClipboard("TEST");
     var testString = env.getClipboard();
@@ -67,13 +67,13 @@ try {
         notepadRegion.highlight(2);
 
         env.setClipboard("clipboard");
-        var newNotpadRegion = new RegionImage("gedit_doc_logo").grow(500, 300);
+        var newNotpadRegion = new Region().find("gedit_doc_logo").grow(500, 300);
         newNotpadRegion.click();
         env.pasteClipboard().cleanClipboard().pasteClipboard();
         newNotpadRegion.click().paste("BLA BAL BAL");
 
 
-        //var extractText = new RegionImage("gedit_doc_logo").find().move(-5, 20).grow(50, 0).extractText();
+        //var extractText = new Region().find("gedit_doc_logo").move(-5, 20).grow(50, 0).extractText();
         //newNotpadRegion.typeMasked(extractText);
 
     } finally {

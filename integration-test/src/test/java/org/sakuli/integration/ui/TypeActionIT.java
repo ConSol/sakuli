@@ -51,33 +51,33 @@ public class TypeActionIT extends AbstractUiTestApplicationIT {
     public void testLoginAction() throws Exception {
         env.setSimilarity(0.7);
         Stage stage = startUiApplication();
-        new Region("app_logo").waitFor(10);
-        new Region("username").click().type("demo");
-        new Region("password").click().typeMasked("demo");
-        assertNotNull(new Region("username_filled").find());
-        assertNotNull(new Region("password_filled").find());
+        new Region().waitForImage("app_logo", 10);
+        new Region().find("username").click().type("demo");
+        new Region().find("password").click().typeMasked("demo");
+        assertNotNull(new Region().find("username_filled"));
+        assertNotNull(new Region().find("password_filled"));
 
 
-        new Region("login_bt").click();
-        assertTrue(new Region("profil").exists() != null);
+        new Region().find("login_bt").click();
+        assertTrue(new Region().exists("profil") != null);
 
-        new Region("email").right(50).click().paste("test@sakuli.de");
+        new Region().find("email").right(50).click().paste("test@sakuli.de");
         env.type(Key.TAB + "089-123456");
         env.type(Key.TAB).typeMasked("capital letters", Key.SHIFT);
 
-        new Region("subscribe_newsletter").find("checkbox").click();
+        new Region().find("subscribe_newsletter").find("checkbox").click();
         Arrays.asList("email_filled", "phone_filled", "subscribe_newsletter_filled", "address_filled")
                 .forEach(pic -> {
                     logger.info("check pic '{}'", pic);
                     assertNotNull(new Region().exists(pic));
                 });
-        new Region("save").click();
+        new Region().find("save").click();
 
         assertNotNull(new Region().exists("successfull_updated"));
-        new Region("logout").click();
+        new Region().find("logout").click();
 
         assertNotNull(new Region().exists("app_logo"));
-        assertNotNull(new Region("login_bt").find());
+        assertNotNull(new Region().find("login_bt"));
 
         stopUiApplication(stage);
     }

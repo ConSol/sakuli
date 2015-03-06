@@ -19,77 +19,69 @@
 /**** Exclude this global variables from JSLint Warnings ****/
 /* global navigator, window, java, Packages,saveResult,step, $output, _set, _stopOnError, _logExceptionAsFailure,_resolvePath,_include, $sahi_userdata, $guid, $capture, initialize */
 
-
-/*****************************************************************************************************
- * Region Class
- *
- * @param optResumeOnException if this parameter is undefined, it will be false.
- *****************************************************************************************************/
-
 /**
- * CONSTRUCTOR: Region - Represents a region.
- * @param {Boolean} `optResumeOnException` if true, the test execution won't stop on an occurring error. Default: false.
+ * Region - Represents a region as a part of or the hole screen.
+ *
+ * @param {Boolean} optResumeOnException if true, the test execution won't stop on an occurring error. Default: false.
+ *
+ * @example `var screen = new Region();   //represents the hole screen`
+ * @namespace Region
  */
 function Region(optResumeOnException) {
     if (undefined == optResumeOnException) {
-        optResumeOnException = new Boolean(false);
+        optResumeOnException = Boolean(false);
     }
     return loadRegion(Packages.org.sakuli.loader.BeanLoader.loadRegion(optResumeOnException), optResumeOnException);
 }
 
 /**
- * CONSTRUCTOR: Region - Represents a region.
- * @param {Boolean} `optResumeOnException` if true, the test execution won't stop on an occurring error. Default: false.
- * @param {String} `imageName` name of the image pattern
- */
-function RegionImage(imageName, optResumeOnException) {
-    if (undefined == optResumeOnException) {
-        optResumeOnException = new Boolean(false);
-    }
-    return loadRegion(Packages.org.sakuli.loader.BeanLoader.loadRegionImage(imageName, optResumeOnException), optResumeOnException);
-};
-
-/**
- * CONSTRUCTOR: Region - Represents a region.
- * @param {Boolean} `optResumeOnException` if true, the test execution won't stop on an occurring error. Default: false.
- * @param {Integer} `x` – x position of a rectangle on the screen.
- * @param {Integer} `y` – y position of a rectangle on the screen.
- * @param {Integer} `w` – width of a rectangle.
- * @param {Integer} `h` – height of a rectangle.
+ * RegionRectangle (extends [Region](#Region)) - Represents a region specified by the x and y coordinates, width and height as a part of the screen.
+ *
+ * @param {number} x – x position of a rectangle on the screen.
+ * @param {number} y – y position of a rectangle on the screen.
+ * @param {number} w – width of a rectangle in pixel.
+ * @param {number} h – height of a rectangle in pixel.
+ * @param {Boolean} optResumeOnException (optional) if true, the test execution won't stop on an occurring error. Default: false.
+ *
+ * @example
+ * ```
+ * var notepadRegion = new RegionRectangle(0,0,100,100);
+ * //represents a region which start at x=0, y=o (left upper corner) and have a size of 100px * 100px.
+ * ```
+ * @namespace RegionRectangle
  */
 function RegionRectangle(x, y, w, h, optResumeOnException) {
     if (undefined == optResumeOnException) {
-        optResumeOnException = new Boolean(false);
+        optResumeOnException = Boolean(false);
     }
     return loadRegion(Packages.org.sakuli.loader.BeanLoader.loadRegionRectangle(x, y, w, h, optResumeOnException), optResumeOnException);
-};
+}
 
+/**
+ * @private (internal loader function)
+ */
 function loadRegion(javaObject, resumeOnException) {
-
-    /**
-     Region.RegionFunctions
-     */
     var that = {};
-    var update;
 
     /**
      * Finds an image inside this region immediately.
      *
-     * @param {String} `optImageName` name of the preloaded picture
+     * @param {String} imageName name of the preloaded picture
      *        (if not set, the find operation will take place on the predefined region object.)
      * @return the found Region or if the target can't be found  null.
+     * @memberOf Region
+     * @method find
      */
-    that.find = function (optImageName) {
-        if (undefined == optImageName) {
-            return update(that.javaObject.find());
-        }
-        return update(that.javaObject.find(optImageName));
+    that.find = function (imageName) {
+        return update(that.javaObject.find(imageName));
     };
 
     /**
      * Finds a target in this Region immediately;
      *
      * @return the found Region or if the target can't be found null.
+     * @memberOf Region
+     * @method findRegion
      */
     that.findRegion = function (region) {
         return update(that.javaObject.findRegion(region));
@@ -102,17 +94,17 @@ function loadRegion(javaObject, resumeOnException) {
     /**
      * Check whether the give pattern is visible on the screen.
      *
-     * @param {String} `optImageName` if set, the function search inside the given region for the image
-     * @param {Integer} `optWaitSeconds` if set, the funciton search for x seconds for the pattern.
+     * @param {String} imageName if set, the function search inside the given region for the image
+     * @param {number} optWaitSeconds if set, the function search for x seconds for the pattern.
      * @return this Region or null
+     * @memberOf Region
+     * @method exists
      */
-    that.exists = function (optImageName, optWaitSeconds) {
-        if (undefined == optImageName && undefined == optWaitSeconds) {
-            return update(that.javaObject.exists());
-        } else if (undefined == optWaitSeconds) {
-            return update(that.javaObject.exists(optImageName));
+    that.exists = function (imageName, optWaitSeconds) {
+        if (undefined == optWaitSeconds) {
+            return update(that.javaObject.exists(imageName));
         }
-        return update(that.javaObject.exists(optImageName, optWaitSeconds));
+        return update(that.javaObject.exists(imageName, optWaitSeconds));
     };
 
 
@@ -120,6 +112,8 @@ function loadRegion(javaObject, resumeOnException) {
      * makes a mouse click on the center of the Region.
      *
      * @return the Region or NULL on errors.
+     * @memberOf Region
+     * @method click
      */
     that.click = function () {
         return update(that.javaObject.click());
@@ -129,6 +123,8 @@ function loadRegion(javaObject, resumeOnException) {
      * makes a double click on the center of the Region.
      *
      * @return the Region or NULL on errors.
+     * @memberOf Region
+     * @method doubleClick
      */
     that.doubleClick = function () {
         return update(that.javaObject.doubleClick());
@@ -136,45 +132,39 @@ function loadRegion(javaObject, resumeOnException) {
 
 
     /**
-     * makes a rigth click on the center of the Region.
+     * makes a right click on the center of the Region.
      *
      * @return the Region or NULL on errors.
+     * @memberOf Region
+     * @method rightClick
      */
     that.rightClick = function () {
         return update(that.javaObject.rightClick());
     };
 
-
     /**
      * Blocks and waits until a target which is specified by the optImageName is found in the hole
      * Screen within a given time period in seconds.
      *
-     * @param {String} `imageName` name of the image pattern
-     * @param {Integer} `seconds`   the maximum time to waitFor in seconds
+     * @param {String} imageName name of the image pattern
+     * @param {number} seconds   the maximum time to waitFor in seconds
      * @return a Region object representing the region occupied by the found target,
      *         or null if the target can not be found within the given time.
+     * @memberOf Region
+     * @method waitForImage
      */
     that.waitForImage = function (imageName, seconds) {
         return update(that.javaObject.waitForImage(imageName, seconds));
     };
 
     /**
-     * same function as waitForImage, just waiting for the predefined pattern.
-     *
-     * @param {Integer} `seconds` the maximum time to waitFor in seconds
-     * @return a Region object representing the region occupied by the found target,
-     *         or null if the target can not be found within the given time.
-     */
-    that.waitFor = function (seconds) {
-        return update(that.javaObject.waitFor(seconds));
-    };
-
-    /**
      * pastes the text at the current position of the focus/carret <br/>using the
      * clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
      *
-     * @param {String} `text` a string, which might contain unicode characters
+     * @param {String} text as a string, which might contain unicode characters
      * @return this Region or NULL on errors.
+     * @memberOf Region
+     * @method paste
      */
     that.paste = function (text) {
         return update(that.javaObject.paste(text));
@@ -184,8 +174,10 @@ function loadRegion(javaObject, resumeOnException) {
     /**
      * makes a masked paste(String) without any logging.
      *
-     * @param {String} `text` a string, which might contain unicode characters
+     * @param {String} text a string, which might contain unicode characters
      * @return this Region or NULL on errors.
+     * @memberOf Region
+     * @method pasteMasked
      */
     that.pasteMasked = function (text) {
         return update(that.javaObject.pasteMasked(text));
@@ -194,8 +186,10 @@ function loadRegion(javaObject, resumeOnException) {
     /**
      * combines pasteMasked(String) and decryptSecret(String).
      *
-     * @param {String} `text` encrypted secret
+     * @param {String} text encrypted secret
      * @return this Region or NULL on errors.
+     * @memberOf Region
+     * @method pasteAndDecrypt
      */
     that.pasteAndDecrypt = function (text) {
         return update(that.javaObject.pasteAndDecrypt(text));
@@ -208,9 +202,11 @@ function loadRegion(javaObject, resumeOnException) {
      * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
      * The text is entered at the current position of the focus.
      *
-     * @param {String} `text` containing characters and/or Key constants
-     * @param {String} `optModifiers` (optional) an String with only Key constants.
+     * @param {String} text containing characters and/or Key constants
+     * @param {String} optModifiers (optional) an String with only Key constants.
      * @return this Region or NULL on errors.
+     * @memberOf Region
+     * @method type
      */
     that.type = function (text, optModifiers) {
         if (undefined == optModifiers) {
@@ -227,9 +223,11 @@ function loadRegion(javaObject, resumeOnException) {
      * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
      * The text is entered at the current position of the focus.
      *
-     * @param {String} `text` containing characters and/or Key constants
-     * @param {String} `optModifiers` (optional) an String with only Key constants.
+     * @param {String} text containing characters and/or Key constants
+     * @param {String} optModifiers (optional) an String with only Key constants.
      * @return this Region or NULL on errors.
+     * @memberOf Region
+     * @method typeMasked
      */
     that.typeMasked = function (text, optModifiers) {
         if (undefined == optModifiers) {
@@ -247,9 +245,11 @@ function loadRegion(javaObject, resumeOnException) {
      * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
      * The text is entered at the current position of the focus.
      *
-     * @param {String} `text` containing characters and/or Key constants
-     * @param {String} `optModifiers` (optional) an String with only Key constants.
+     * @param {String} text containing characters and/or Key constants
+     * @param {String} optModifiers (optional) an String with only Key constants.
      * @return this Region or NULL on errors.
+     * @memberOf Region
+     * @method typeAndDecrypt
      */
     that.typeAndDecrypt = function (text, optModifiers) {
         if (undefined == optModifiers) {
@@ -266,8 +266,10 @@ function loadRegion(javaObject, resumeOnException) {
      * might be mixed with simple characters<br/>
      * use + to concatenate Key constants
      *
-     * @param {String} `keys` valid keys
+     * @param {String} keys valid keys
      * @return this Region or NULL on errors.
+     * @memberOf Region
+     * @method keyDown
      */
     that.keyDown = function (keys) {
         return update(that.javaObject.keyDown(keys));
@@ -276,8 +278,10 @@ function loadRegion(javaObject, resumeOnException) {
     /**
      * release the given keys (see Region.keyDown(...)).
      *
-     * @param {String} `keys` valid keys
+     * @param {String} keys valid keys
      * @return this Region or NULL on errors.
+     * @memberOf Region
+     * @method keyUp
      */
     that.keyUp = function (keys) {
         return update(that.javaObject.keyUp(keys));
@@ -299,8 +303,10 @@ function loadRegion(javaObject, resumeOnException) {
      * Mac: write("#w2.#M.n#W1.#D3.")<br/>
      * for more details about the special key codes and examples consult the sikuliX docs <br/>
      *
-     * @param {String} `text` a coded text interpreted as a series of key actions (press/hold/release)
+     * @param {String} text a coded text interpreted as a series of key actions (press/hold/release)
      * @return this Region or NULL on errors.
+     * @memberOf Region
+     * @method write
      */
     that.write = function (text) {
         return update(that.javaObject.write(text));
@@ -310,8 +316,10 @@ function loadRegion(javaObject, resumeOnException) {
     /**
      * delete a amount of chars in a field
      *
-     * @param {Integer} `amountOfChars` number of chars to delete
+     * @param {number} amountOfChars number of chars to delete
      * @return this Region or null on errors
+     * @memberOf Region
+     * @method deleteChars
      */
     that.deleteChars = function (amountOfChars) {
         return update(that.javaObject.deleteChars(amountOfChars));
@@ -325,7 +333,9 @@ function loadRegion(javaObject, resumeOnException) {
      * move the mouse pointer to the given target location and move the
      * wheel the given steps down.
      *
-     * @param {Integer} `steps` the number of steps
+     * @param {number} steps the number of steps
+     * @memberOf Region
+     * @method mouseWheelDown
      */
     that.mouseWheelDown = function (steps) {
         return update(that.javaObject.mouseWheelDown(steps));
@@ -335,7 +345,9 @@ function loadRegion(javaObject, resumeOnException) {
      * move the mouse pointer to the given target location and move the
      * wheel the given steps up.
      *
-     * @param {Integer} `steps` the number of steps
+     * @param {number} steps the number of steps
+     * @memberOf Region
+     * @method mouseWheelUp
      */
     that.mouseWheelUp = function (steps) {
         return update(that.javaObject.mouseWheelUp(steps));
@@ -347,9 +359,11 @@ function loadRegion(javaObject, resumeOnException) {
      * The offset function will move the Region's rectangle with x to the right and with y to the left.
      * The size of the rectangle will be the same.
      *
-     * @param {Integer} `offsetX` x-value for the offset action
-     * @param {Integer} `offsetY` y-value for the offset action
+     * @param {number} offsetX x-value for the offset action
+     * @param {number} offsetY y-value for the offset action
      * @return a Region with the new coordinates
+     * @memberOf Region
+     * @method move
      */
     that.move = function (offsetX, offsetY) {
         return update(that.javaObject.move(offsetX, offsetY));
@@ -358,64 +372,87 @@ function loadRegion(javaObject, resumeOnException) {
     /**
      * create a region enlarged range pixels on each side
      *
-     * @param {Integer} `range` of pixels
+     * @param {number} range of pixels
      * @return a new Region
+     * @memberOf Region
+     * @method grow
      */
     that.grow = function (range) {
         return update(that.javaObject.grow(range));
-    }
+    };
 
     /**
      * create a region with enlarged range pixels
      *
-     * @param {Integer} `width`  in pixels to grow in both directions
-     * @param {Integer} `height` in pixels to grow in both directions
+     * @param {number} width  in pixels to grow in both directions
+     * @param {number} height in pixels to grow in both directions
      * @return a new Region
+     * @memberOf Region
+     * @method grow
      */
     that.grow = function (width, height) {
         if (undefined == height) {
-//prevents js wrong function matching
+            //prevents js wrong function matching
             return update(that.javaObject.grow(width));
         }
         return update(that.javaObject.grow(width, height));
-    }
+    };
 
     /**
      * @return  a new Region that is defined above the current region’s top border
      * with a height of range number of pixels.
+     * @param {number} range of pixels
+     *
+     * @memberOf Region
+     * @method above
      */
     that.above = function (range) {
         return update(that.javaObject.above(range));
-    }
+    };
 
     /**
      * @return  a new Region that is defined below the current region’s top border
      * with a height of range number of pixels.
+     * @param {number} range of pixels
+     *
+     * @memberOf Region
+     * @method below
      */
     that.below = function (range) {
         return update(that.javaObject.below(range));
-    }
+    };
 
     /**
      * @return  a new Region that is defined on the left the current region’s top border
      * with a height of range number of pixels.
+     * @param {number} range of pixels
+     *
+     * @memberOf Region
+     * @method left
      */
     that.left = function (range) {
         return update(that.javaObject.left(range));
-    }
+    };
 
     /**
      * @return  a new Region that is defined on the right the current region’s top border
      * with a height of range number of pixels.
+     * @param {number} range of pixels
+     *
+     * @memberOf Region
+     * @method right
      */
     that.right = function (range) {
         return update(that.javaObject.right(range));
-    }
+    };
 
 
     /**
-     * @param {Integer} `height` in pixels
      * set the height, based form the upper left corner downsides
+     * @param {number} height in pixels
+     *
+     * @memberOf Region
+     * @method setH
      */
     that.setH = function (height) {
         return update(that.javaObject.setH(height));
@@ -423,13 +460,19 @@ function loadRegion(javaObject, resumeOnException) {
 
     /**
      * @return height as int value
+     * @memberOf Region
+     * @method getH
      */
     that.getH = function () {
         return that.javaObject.getH();
     };
 
     /**
-     * @param {Integer} `width` set the width, based form the upper left corner to the right
+     * set the width, based form the upper left corner to the right
+     * @param {number} width
+     *
+     * @memberOf Region
+     * @method setW
      */
     that.setW = function (width) {
         return update(that.javaObject.setW(width));
@@ -437,13 +480,18 @@ function loadRegion(javaObject, resumeOnException) {
 
     /**
      * @return width as int value
+     * @memberOf Region
+     * @method getW
      */
     that.getW = function () {
         return that.javaObject.getW();
     };
 
     /**
-     * @param {Integer} `x` set the X coordinate of the upper left corner.
+     * set the X coordinate of the upper left corner.
+     * @param {number} x
+     * @memberOf Region
+     * @method setX
      */
     that.setX = function (x) {
         return update(that.javaObject.setX(x));
@@ -451,13 +499,18 @@ function loadRegion(javaObject, resumeOnException) {
 
     /**
      * @return width as int value
+     * @memberOf Region
+     * @method getX
      */
     that.getX = function () {
         return that.javaObject.getX();
     };
 
     /**
-     * @return X coordinate of the upper left corner
+     * set the Y coordinate of the upper left corner.
+     * @param {number} y
+     * @memberOf Region
+     * @method setY
      */
     that.setY = function (y) {
         return update(that.javaObject.setY(y));
@@ -465,14 +518,19 @@ function loadRegion(javaObject, resumeOnException) {
 
     /**
      * @return Y coordinate of the upper left corner
+     * @memberOf Region
+     * @method getY
      */
     that.getY = function () {
         return that.javaObject.getY();
     };
 
     /**
-     * @param {Integer} `seconds` highlights this Region for x seconds
+     * @param {number} seconds highlights this Region for x seconds
      * or the default time
+     *
+     * @memberOf Region
+     * @method highlight
      */
     that.highlight = function (seconds) {
         if (undefined == seconds) {
@@ -484,8 +542,10 @@ function loadRegion(javaObject, resumeOnException) {
     /**
      * Blocks the current testcase execution for x seconds
      *
-     * @param {Integer} `seconds` to sleep
+     * @param {number} seconds to sleep
      * @return this Region or NULL on errors.
+     * @memberOf Region
+     * @method sleep
      */
     that.sleep = function (seconds) {
         return update(that.javaObject.sleep(seconds));
@@ -493,6 +553,8 @@ function loadRegion(javaObject, resumeOnException) {
 
     /**
      * @return from this region a extracted Text as String
+     * @memberOf Region
+     * @method extractText
      */
     that.extractText = function () {
         return that.javaObject.extractText();
@@ -502,37 +564,43 @@ function loadRegion(javaObject, resumeOnException) {
     /**
      * gets the inherit java object for not yet wrapped methods
      * @returns {*}
+     * @private
      */
     that.getRegionImpl = function () {
         return that.javaObject.getRegionImpl();
-    }
+    };
 
-    /*
+    /**
      * param: `modifiedJavaObject`
      * updates the inherit java object after modifaction with getRegionImpl.
      * returns: {*}
+     * @private
      */
     that.setRegionImpl = function (modifiedJavaObject) {
         that.javaObject.setRegionImpl(modifiedJavaObject);
         return that;
-    }
+    };
 
     /*****************************************************************************************************
      * INTERNAL CLASS FUNCTIONS - NOT REACHABLE IN THE TEST CASE EXECUTION
      *****************************************************************************************************/
 
     that.javaObject = javaObject;
-    that.resumeOnException = new Boolean(resumeOnException);
+    that.resumeOnException = Boolean(resumeOnException);
 
-    update = function (updatedJavaObject) {
+    /**
+     * @private (internal function)
+     */
+    function update(updatedJavaObject) {
         if (undefined == updatedJavaObject || updatedJavaObject == null) {
             return undefined;
         }
-        return new loadRegion(updatedJavaObject, that.resumeOnException);
-    };
+        that.javaObject = updatedJavaObject;
+        return that;
+    }
 
     return that;
-};
+}
 
 
 
