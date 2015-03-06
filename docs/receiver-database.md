@@ -143,6 +143,21 @@ Re-scheduling this service should display the UNKNOWN message that the requested
 
 ![omd_unknown](pics/omd-unknown.png)
 
+
+### Database cleanup (optional)
+
+Create a OMD crontab entry for a automatic database cleanup: 
+
+    OMD[sakuli]:~$ vim etc/cron.d/sakuli
+    
+    00 12 * * * $OMD_ROOT/sakuli/scripts/helper/mysql_purge.sh > /dev/null 2>&1 
+
+After that, reload the OMD crontab: 
+
+    OMD[sakuli]:~$ omd reload crontab 
+    Removing Crontab...OK
+    Initializing Crontab...OK
+
 ## Sakuli Configuration
 
 Open `__SAKULI_HOME__/_include/sakuli.properties` on the Sakuli client and fill in the **database parameters** Sakuli should write the test results to:

@@ -87,6 +87,18 @@ Edit `__SAKULI_HOME__/_include/sakuli.properties` to configure the logfile forma
 		sakuli.log.pattern= %-5level [%d{YYYY-MM-dd HH:mm:ss.SSS}] - %msg%n
 		sakuli.log.folder=${sakuli.testsuite.folder}/_logs
 
+#### Log file rotation 
+
+On Linux you can configure logrotate to tidy up old log files: 
+
+    vim /etc/logrotate.d/sakuli
+    
+    __SAKULI_HOME__/sakuli_test_suites/*/_logs/* __SAKULI_HOME__/sakuli_test_suites/*/_logs/_screenshots/* {
+        size 1k
+        missingok
+        maxage 2
+    }
+
 
 ### Secret De-/Encryption
 #### Interface selection
