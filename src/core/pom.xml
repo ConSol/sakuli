@@ -38,7 +38,8 @@
 
     <properties>
         <project.jar.name>sakuli</project.jar.name>
-        <sakuli.zipped.release.prefix>zipped-release-v</sakuli.zipped.release.prefix>
+        <sakuli.version.postfix>v${project.version}</sakuli.version.postfix>
+        <sakuli.filename>${project.jar.name}-${sakuli.version.postfix}</sakuli.filename>
     </properties>
 
     <build>
@@ -93,8 +94,9 @@
                         <descriptor>descriptor_zip_release.xml</descriptor>
                     </descriptors>
                     <outputDirectory>${project.build.directory}/install</outputDirectory>
-                    <finalName>${project.jar.name}</finalName>
+                    <finalName>sakuli</finalName>
                     <recompressZippedFiles>true</recompressZippedFiles>
+                    <ignorePermissions>true</ignorePermissions>
                 </configuration>
                 <executions>
                     <execution>

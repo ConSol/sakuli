@@ -19,7 +19,7 @@
 <assembly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
           xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
-    <id>${sakuli.zipped.release.prefix}${project.version}</id>
+    <id>${sakuli.version.postfix}</id>
     <formats>
         <format>zip</format>
     </formats>
@@ -30,38 +30,39 @@
             <directory>${parent.basedir}/</directory>
             <includes>
                 <include>changelog.md</include>
+                <include>README.md</include>
                 <include>*.txt</include>
             </includes>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>/${sakuli.filename}</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${parent.basedir}/docs</directory>
+            <excludes>
+                <!-- excludes the whole docs/development folder -->
+                <exclude>**/development/</exclude>
+            </excludes>
+            <outputDirectory>/${sakuli.filename}/docs</outputDirectory>
         </fileSet>
 
         <!-- create setup folder -->
         <!-- copy database script to setup folder -->
         <fileSet>
-            <directory>${basedir}/src/database_scripts</directory>
-            <includes>
-                <include>*.sql</include>
-            </includes>
-            <outputDirectory>/setup/database</outputDirectory>
-        </fileSet>
-        <!-- copy nagios files to setup folder -->
-        <fileSet>
-            <directory>${basedir}/src/nagios_scripts</directory>
-            <outputDirectory>/setup/nagios</outputDirectory>
+            <directory>${basedir}/src/main</directory>
+            <excludes>
+                <!-- excludes the whole java and resources folder -->
+                <exclude>**/java/</exclude>
+                <exclude>**/resources/</exclude>
+            </excludes>
+            <outputDirectory>/${sakuli.filename}</outputDirectory>
         </fileSet>
 
-        <!-- create "script" folder -->
-        <fileSet>
-            <directory>${basedir}/src/scripts</directory>
-            <outputDirectory>/scripts</outputDirectory>
-        </fileSet>
         <!-- copy compiled jar -->
         <fileSet>
             <directory>${basedir}/target</directory>
             <includes>
                 <include>${project.jar.name}.jar</include>
             </includes>
-            <outputDirectory>/libs/java</outputDirectory>
+            <outputDirectory>/${sakuli.filename}/libs/java</outputDirectory>
         </fileSet>
         <!-- copy Context-files to bin/lib/resources -->
         <fileSet>
@@ -69,33 +70,16 @@
             <includes>
                 <include>*.xml</include>
             </includes>
-            <excludes>
-                <exclude>
-                    sakuli-log-config.xml
-                </exclude>
-            </excludes>
-            <outputDirectory>/libs/java/resources</outputDirectory>
-        </fileSet>
-
-        <!-- create "config" folder-->
-        <fileSet>
-            <directory>${basedir}/src/main/config</directory>
-            <outputDirectory>/config</outputDirectory>
-        </fileSet>
-
-        <!-- create "libs" folder-->
-        <fileSet>
-            <directory>${basedir}/src/main/libs</directory>
-            <outputDirectory>/libs</outputDirectory>
+            <outputDirectory>/${sakuli.filename}/libs/java/resources</outputDirectory>
         </fileSet>
 
         <!-- copy sample test suites -->
         <fileSet>
-            <directory>${project.parent.basedir}/sakuli_test_suites</directory>
-            <outputDirectory>/sakuli_test_suites</outputDirectory>
+            <directory>${project.parent.basedir}/example_test_suites</directory>
+            <outputDirectory>/example_test_suites</outputDirectory>
             <excludes>
                 <!-- excludes the whole _logs folder -->
-                <exclude>*/_logs/**</exclude>
+                <exclude>**/_logs/</exclude>
             </excludes>
         </fileSet>
     </fileSets>
@@ -103,7 +87,7 @@
     <!-- add dependency jars to "bin/lib" -->
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/libs/java</outputDirectory>
+            <outputDirectory>/${sakuli.filename}/libs/java</outputDirectory>
             <useProjectArtifact>true</useProjectArtifact>
             <unpack>false</unpack>
             <scope>runtime</scope>
