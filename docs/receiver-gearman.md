@@ -24,16 +24,22 @@ Select *Distributed Monitoring* and
 * -> `GEARMAND_PORT` -> `__OMD_IP__:__GEARMAN_PORT__` (default: 4470) 
 * -> `GEARMAN_WORKER` -> `OFF`
 
-Unless you make already use of mod-gearman (and *only* then), the following settings should be set in *~/etc/mod-gearman/server.cfg*: 
+As Sakuli only uses the *result queue* of gearmand, you can disable all other queues unless you are using mod-gearman for regular checks: 
 
+    OMD[sakuli]:~$ vim ~/etc/mod-gearman/server.cfg
 	eventhandler=no
 	services=no
 	hosts=no
 	do_hostchecks=no
-	encryption=yes
 	
-<!--- FIXME encryption -->
+At the time of the creation of this documents, Sakuli does not encrypt any gearman results. Therefore, set  `accept_clear_results` in ``:
 
+    OMD[sakuli]:~$ vim ~/etc/mod-gearman/server.cfg
+	accept_clear_results=yes
+	
+Reload gearmand to load the new settings: 
+
+    OMD[sakuli]:~$ omd reload gearmand
 	  
 ### Create a Nagios service
 

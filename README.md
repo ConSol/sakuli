@@ -22,7 +22,7 @@
 
 **Sakuli simulates user actions** on graphical user interfaces (web, fat client, citrix, …), and provides the obtained information (runtime, result, screenshots) to third party (e.g. Nagios compatible monitoring) systems. 
 
-**Sakuli** depends on Java and should run on most OS; Windows and Ubuntu Linux (14.04 LTS) are currently proved.  
+**Sakuli** depends on **Java** and should run on most OS; **Windows** and **Ubuntu Linux (14.04 LTS)** are currently proved.  
 
 The **Sakuli** project brings together two Open-Source end-to-end testing tools which perfectly fit together: **Sahi** ([http://www.sahi.co.in/]([http://www.sahi.co.in/)) for **web-based tests** (by injecting JavaScript code into the browser), as well as the screenshot-based testing tool **Sikuli** ([http://www.sikuli.org](http://www.sikuli.org)), which allows the execution of **keyboard and mouse actions** on screen areas that have been defined by previously recorded screenshots and are recognized using the OpenCV engine. 
 

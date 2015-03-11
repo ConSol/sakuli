@@ -22,9 +22,17 @@
 * **Troubleshooting** and **Tuning**
   * [**Sakuli Client**](troubleshooting-tuning-sakuli-client.md) 
   * [**OMD/Nagios**](troubleshooting-omd.md) 
-* [Sakuli **API**](sakuli-api.md) - an overview about the most important Sakuli functions
+  
+## Sakuli API
 
-## Contribution
+* [Sahi API](sakuli-api.md#Sahi API)
+* [TestCase](sakuli-api.md#TestCase)
+* [Application](sakuli-api.md#Application)
+* [Environment](sakuli-api.md#Environment)
+* [Region](sakuli-api.md#Region)
+* [Keys](sakuli-api.md#Key)
+
+## How to contribute
 
 * [Installation instructions for **developers**](development/installation-developers.md)
 * [How to prepare a **new releas**e](development/how-to-release.md)
