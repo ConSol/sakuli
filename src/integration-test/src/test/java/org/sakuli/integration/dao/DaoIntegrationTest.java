@@ -69,7 +69,7 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
         System.out.println(">>>>>>>>>>>>>>>>>> INITALIZE DAO INTEGRATION TEST!");
         BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = getTestSuiteFolder();
-        SakuliPropertyPlaceholderConfigurer.SAKULI_MAIN_FOLDER_VALUE = SAKULI_MAIN_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = SAKULI_MAIN_FOLDER_PATH;
         dataSource = BeanLoader.loadBean(DataSource.class);
     }
 

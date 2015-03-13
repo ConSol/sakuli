@@ -36,14 +36,14 @@ import java.util.*;
 
 /**
  * Overrides the default {@link PropertyPlaceholderConfigurer} to dynamically load the properties files in  the {@link
- * TestSuiteProperties#TEST_SUITE_FOLDER} and {@link SakuliProperties#SAKULI_MAIN_FOLDER}.
+ * TestSuiteProperties#TEST_SUITE_FOLDER} and {@link SakuliProperties#SAKULI_HOME_FOLDER}.
  *
  * @author tschneck Date: 11.05.14
  */
 public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
 
     public static String TEST_SUITE_FOLDER_VALUE;
-    public static String SAKULI_MAIN_FOLDER_VALUE;
+    public static String SAKULI_HOME_FOLDER_VALUE;
     public static String SAHI_PROXY_HOME_VALUE;
     protected boolean loadSakuliProperties = true;
     protected boolean loadTestSuiteProperties = true;
@@ -59,7 +59,7 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
     protected void loadProperties(Properties props) throws IOException {
         //load properties set by command args
         props.put(TestSuiteProperties.TEST_SUITE_FOLDER, TEST_SUITE_FOLDER_VALUE);
-        props.put(SakuliProperties.SAKULI_MAIN_FOLDER, SAKULI_MAIN_FOLDER_VALUE);
+        props.put(SakuliProperties.SAKULI_HOME_FOLDER, SAKULI_HOME_FOLDER_VALUE);
 
         //load common sakuli properties
         loadCommonSakuliProperties(props);
@@ -79,7 +79,7 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
     }
 
     protected void loadCommonSakuliProperties(Properties props) {
-        String sakuliProperties = Paths.get(SAKULI_MAIN_FOLDER_VALUE + SakuliProperties.CONFIG_FOLDER_APPEDER).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER;
+        String sakuliProperties = Paths.get(SAKULI_HOME_FOLDER_VALUE + SakuliProperties.CONFIG_FOLDER_APPEDER).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER;
         addPropertiesFromFile(props, sakuliProperties, loadSakuliProperties);
     }
 

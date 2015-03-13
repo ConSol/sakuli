@@ -72,7 +72,7 @@ public class SahiConnectorTest extends BaseTest {
     public void testStartSahiTestSuiteFAILURE() throws Throwable {
         TestRunner testRunnerMock = mock(TestRunner.class);
         doReturn(testRunnerMock).when(testling).getTestRunner();
-        doReturn(SAKULI_MAIN_FOLDER_PATH).when(testling).getIncludeFolderJsPath();
+        doReturn(SAKULI_HOME_FOLDER_PATH).when(testling).getIncludeFolderJsPath();
         when(testRunnerMock.execute()).thenReturn("FAILURE");
         when(testSuiteMock.getStopDate()).thenReturn(new Date());
         testling.startSahiTestSuite();
@@ -88,7 +88,7 @@ public class SahiConnectorTest extends BaseTest {
     public void testStartSahiTestSuiteOK() throws Throwable {
         TestRunner testRunnerMock = mock(TestRunner.class);
         doReturn(testRunnerMock).when(testling).getTestRunner();
-        doReturn(SAKULI_MAIN_FOLDER_PATH).when(testling).getIncludeFolderJsPath();
+        doReturn(SAKULI_HOME_FOLDER_PATH).when(testling).getIncludeFolderJsPath();
         when(testRunnerMock.execute()).thenReturn("OK");
         when(testSuiteMock.getStopDate()).thenReturn(new Date());
         testling.startSahiTestSuite();
@@ -106,7 +106,7 @@ public class SahiConnectorTest extends BaseTest {
         doReturn(testRunnerMock).when(testling).getTestRunner();
         when(testRunnerMock.execute()).thenThrow(new ConnectException("TEST"));
         doNothing().when(testling).reconnect(any(Exception.class));
-        doReturn(SAKULI_MAIN_FOLDER_PATH).when(testling).getIncludeFolderJsPath();
+        doReturn(SAKULI_HOME_FOLDER_PATH).when(testling).getIncludeFolderJsPath();
 
         testling.startSahiTestSuite();
         verify(testRunnerMock).addReport(any(Report.class));

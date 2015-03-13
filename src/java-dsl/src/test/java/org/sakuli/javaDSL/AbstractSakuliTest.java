@@ -61,7 +61,7 @@ public abstract class AbstractSakuliTest {
         BeanLoader.CONTEXT_PATH = "java-dsl-beanRefFactory.xml";
         SakuliJavaPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = getTestSuiteFolder();
         SakuliJavaPropertyPlaceholderConfigurer.JAVA_TEST_SUITE_FOLDER = getTestSuiteRootFolder();
-        SakuliJavaPropertyPlaceholderConfigurer.SAKULI_MAIN_FOLDER_VALUE = getSakuliMainFolder();
+        SakuliJavaPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = getSakuliMainFolder();
         SakuliJavaPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = getSahiFolder();
         InitializingServiceHelper.invokeInitializingServcies();
     }

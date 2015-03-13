@@ -17,17 +17,12 @@
   -->
 
 <component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="SakuliStarter (Template)" type="Application" factoryName="Application">
-        <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
-            <pattern>
-                <option name="PATTERN" value="org.sakuli.starter.*"/>
-                <option name="ENABLED" value="true"/>
-            </pattern>
-        </extension>
+    <configuration default="false" name="DEV - Ubuntu" type="Application" factoryName="Application" singleton="true">
+        <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea"/>
         <option name="MAIN_CLASS_NAME" value="org.sakuli.starter.SakuliStarter"/>
         <option name="VM_PARAMETERS" value=""/>
         <option name="PROGRAM_PARAMETERS"
-                value="-run ../sakuli_test_suites/_your_test_suite src/main/_include ../sahi"/>
+                value="-run dev_stuff/suites/ubuntu -sakuli_home src/main -sahi_home ../../sahi"/>
         <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$"/>
         <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false"/>
         <option name="ALTERNATIVE_JRE_PATH" value=""/>
@@ -36,7 +31,13 @@
         <option name="PASS_PARENT_ENVS" value="true"/>
         <module name="core"/>
         <envs/>
+        <RunnerSettings RunnerId="Debug">
+            <option name="DEBUG_PORT" value=""/>
+            <option name="TRANSPORT" value="0"/>
+            <option name="LOCAL" value="true"/>
+        </RunnerSettings>
         <RunnerSettings RunnerId="Run"/>
+        <ConfigurationWrapper RunnerId="Debug"/>
         <ConfigurationWrapper RunnerId="Run"/>
         <method/>
     </configuration>
