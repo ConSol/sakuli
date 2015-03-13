@@ -117,8 +117,8 @@ public class SakuliFolderHelper {
         if (!Files.exists(sahiFolder)) {
             throw new FileNotFoundException("sahi folder \"" + sahiProxyHomePath + "\" does not exist!");
         }
-        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = sahiFolder.normalize().toAbsolutePath().toString();
-        return tempLogCache + "\nset property '" + SahiProxyProperties.PROXY_HOME_FOLDER + "' to \"" + SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE + "\"";
+        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = sahiFolder.normalize().toAbsolutePath().toString();
+        return tempLogCache + "\nset property '" + SahiProxyProperties.PROXY_HOME_FOLDER + "' to \"" + SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE + "\"";
     }
 
 }

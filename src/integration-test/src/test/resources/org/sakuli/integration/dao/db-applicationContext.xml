@@ -30,6 +30,7 @@
         <property name="fileEncoding" value="UTF-8"/>
         <property name="systemPropertiesMode" value="2"/>
         <property name="loadSakuliProperties" value="true"/>
+        <property name="loadSakuliDefaultProperties" value="true"/>
         <property name="loadTestSuiteProperties" value="true"/>
         <property name="writePropertiesToSahiConfig" value="false"/>
         <property name="locations">

@@ -353,7 +353,6 @@ function loadEnvironment(javaObject, resumeOnException) {
     /**
      * make a error-log over Java backend into the log file.
      * This won't stop the execution of the test case.
-     * The log entries can be configured over the properties "log4.properties"
      *
      * @param {String} message as a String
      * @memberOf Environment
@@ -366,7 +365,6 @@ function loadEnvironment(javaObject, resumeOnException) {
 
     /**
      * make a debug-log over Java backend into the log file.
-     * The log entries can be configured over the properties "log4.properties"
      *
      * @param {String} message as a String
      * @memberOf Environment
@@ -379,7 +377,6 @@ function loadEnvironment(javaObject, resumeOnException) {
 
     /**
      * make a info-log over Java backend into the log file.
-     * The log entries can be configured over the properties "log4.properties"
      *
      * @param {String} message as a String
      * @memberOf Environment
@@ -391,7 +388,6 @@ function loadEnvironment(javaObject, resumeOnException) {
     };
     /**
      * make a debug-log over Java backend into the log file.
-     * The log entries can be configured over the properties "log4.properties"
      *
      * @param {String} message as a String
      * @memberOf Environment

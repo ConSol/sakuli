@@ -2,9 +2,21 @@
 
 This page contains different topics regarding the configuration of both **Sakuli** and its components, **Sahi** and **Sikuli**.
 
-The default settings in `__SAKULI_HOME__/_include/sakuli.properties` can be overridden for each test in the property file `__SAKULI_HOME__/_sakuli_test_suites/__SUITE__/testsuite.properties`. 
+## Property settings and loading strategy
 
-For example, you can set `testsuite.browser=firefox` in `sakuli.properties` to execute each test in Firefox. If one check should run in IE, set `testsuite.browser=ie` in `testsuite.properties`. 
+The default property settings in `__SAKULI_HOME__/config/sakuli-default.properties` are the defaults and can be overridden like follow:
+
+1. `system properties` - for example added with the Java VM option -Dsakuli.property.key=value
+   -> valid for runtime
+2. file `your-test-suites-folder/test-suite/testsuite.properties` in the test suite folder
+   -> valid for all test cases
+3. file `your-test-suites-folder/sakuli.properties` in folder above your specified test suite folder
+   -> valid for all test suites
+
+To define a specific behaviour to your test, it is possible to override all
+properties of the 'sakuli-default.properties' file in one of above mentioned files.
+
+For example, you can set `testsuite.browser=firefox` in `sakuli.properties` to execute each test in your test suite folder in Firefox. If one check should run in IE, set `testsuite.browser=ie` in `testsuite.properties`.
 
 
 ## Sakuli settings

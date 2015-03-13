@@ -64,7 +64,7 @@ For the following guide you need
     ```
 
 * Install Sahi into `<project-dir>/sahi`. Ensure that this path is set in `sahi.proxy.homePath` in file
-  `core/src/main/_include/sakuli.properties`.
+  `core/src/main/sakuli.properties`.
 
 * You only need to install the components
 	* Sahi Core

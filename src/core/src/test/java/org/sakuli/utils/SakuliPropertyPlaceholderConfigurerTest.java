@@ -29,6 +29,8 @@ import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.loader.BeanLoader;
+import org.sakuli.services.receiver.gearman.GearmanProperties;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -43,58 +45,96 @@ import java.util.Properties;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 
-public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
+public class SakuliPropertyPlaceholderConfigurerTest {
+
+    public static final String PPROPERTY_TEST_FOLDER_PATH = BaseTest.getResource("/property_test/suite_folder");
     @Spy
     private SakuliPropertyPlaceholderConfigurer testling;
+
+    @BeforeClass(alwaysRun = true)
+    public void setContextProperties() {
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = PPROPERTY_TEST_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = BaseTest.SAKULI_HOME_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = BaseTest.SAHI_FOLDER_PATH;
+        BeanLoader.CONTEXT_PATH = BaseTest.TEST_CONTEXT_PATH;
+        BeanLoader.refreshContext();
+    }
 
     @BeforeMethod
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         testling.setWritePropertiesToSahiConfig(false);
-        testling.setLoadTestSuiteProperties(true);
+        testling.setLoadSakuliDefaultProperties(true);
         testling.setLoadSakuliProperties(true);
+        testling.setLoadTestSuiteProperties(true);
     }
 
     @Test
     public void testLoadPropertiesTestSuiteFolder() throws Exception {
         Properties props = spy(new Properties());
         testling.setLoadSakuliProperties(false);
+        testling.setLoadSakuliDefaultProperties(false);
         testling.loadProperties(props);
-        verify(props).put(TestSuiteProperties.TEST_SUITE_FOLDER, TEST_FOLDER_PATH);
-        verify(props).put(SakuliProperties.SAKULI_HOME_FOLDER, SAKULI_HOME_FOLDER_PATH);
-        verify(props).put(SahiProxyProperties.PROXY_HOME_FOLDER, SAHI_FOLDER_PATH);
+        verify(props).put(TestSuiteProperties.TEST_SUITE_FOLDER, PPROPERTY_TEST_FOLDER_PATH);
+        verify(props).put(SakuliProperties.SAKULI_HOME_FOLDER, BaseTest.SAKULI_HOME_FOLDER_PATH);
+        verify(props).put(SahiProxyProperties.PROXY_HOME_FOLDER, BaseTest.SAHI_FOLDER_PATH);
         verify(testling, never()).addPropertiesFromFile(props,
-                Paths.get(SAKULI_HOME_FOLDER_PATH).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
+                Paths.get(BaseTest.SAKULI_HOME_FOLDER_PATH).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_DEFAULT_PROPERTIES_FILE_APPENDER, true);
+        verify(testling, never()).addPropertiesFromFile(props,
+                Paths.get(PPROPERTY_TEST_FOLDER_PATH).getParent().normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
         verify(testling).addPropertiesFromFile(props,
-                Paths.get(TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER, true);
+                Paths.get(PPROPERTY_TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER, true);
         verify(testling, never()).modifyPropertiesConfiguration(anyString(), anyListOf(String.class), any(Properties.class));
         assertNull(props.getProperty(ActionProperties.ENCRYPTION_INTERFACE_AUTODETECT), null);
         assertEquals(props.getProperty(TestSuiteProperties.SUITE_ID), "0001_testsuite_example");
     }
 
     @Test
-    public void testLoadPropertiesIncludeFolder() throws Exception {
+    public void testLoadSakuliDefaultPropertiesFolder() throws Exception {
         Properties props = spy(new Properties());
         testling.setLoadTestSuiteProperties(false);
+        testling.setLoadSakuliProperties(false);
         testling.loadProperties(props);
-        verify(props).put(TestSuiteProperties.TEST_SUITE_FOLDER, TEST_FOLDER_PATH);
-        verify(props).put(SakuliProperties.SAKULI_HOME_FOLDER, SAKULI_HOME_FOLDER_PATH);
+        verify(props).put(TestSuiteProperties.TEST_SUITE_FOLDER, PPROPERTY_TEST_FOLDER_PATH);
+        verify(props).put(SakuliProperties.SAKULI_HOME_FOLDER, BaseTest.SAKULI_HOME_FOLDER_PATH);
         verify(testling).addPropertiesFromFile(props,
-                Paths.get(SAKULI_HOME_FOLDER_PATH + SakuliProperties.CONFIG_FOLDER_APPEDER).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
+                Paths.get(BaseTest.SAKULI_HOME_FOLDER_PATH + SakuliProperties.CONFIG_FOLDER_APPEDER).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_DEFAULT_PROPERTIES_FILE_APPENDER, true);
         verify(testling, never()).addPropertiesFromFile(props,
-                Paths.get(TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER, true);
+                Paths.get(PPROPERTY_TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER, true);
+        verify(testling, never()).addPropertiesFromFile(props,
+                Paths.get(PPROPERTY_TEST_FOLDER_PATH).getParent().normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
 
         assertNotNull(props.getProperty(SakuliProperties.SAKULI_HOME_FOLDER));
         assertNull(props.getProperty(TestSuiteProperties.SUITE_ID));
     }
 
     @Test
+    public void testLoadSakuliPropertiesFolder() throws Exception {
+        Properties props = spy(new Properties());
+        testling.setLoadTestSuiteProperties(false);
+        testling.setLoadSakuliDefaultProperties(false);
+        testling.loadProperties(props);
+        verify(props).put(TestSuiteProperties.TEST_SUITE_FOLDER, PPROPERTY_TEST_FOLDER_PATH);
+        verify(props).put(SakuliProperties.SAKULI_HOME_FOLDER, BaseTest.SAKULI_HOME_FOLDER_PATH);
+        verify(testling).addPropertiesFromFile(props,
+                Paths.get(PPROPERTY_TEST_FOLDER_PATH).getParent().normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
+        verify(testling, never()).addPropertiesFromFile(props,
+                Paths.get(BaseTest.SAKULI_HOME_FOLDER_PATH + SakuliProperties.CONFIG_FOLDER_APPEDER).normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_DEFAULT_PROPERTIES_FILE_APPENDER, true);
+        verify(testling, never()).addPropertiesFromFile(props,
+                Paths.get(PPROPERTY_TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER, true);
+
+        assertNotNull(props.getProperty(SakuliProperties.SAKULI_HOME_FOLDER));
+        assertNull(props.getProperty(TestSuiteProperties.SUITE_ID));
+        assertEquals(props.getProperty(GearmanProperties.SERVER_HOST), "test-gearman-host");
+    }
+
+    @Test
     public void testLoadPropertiesSahiHomeNotset() throws Exception {
-        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = "";
+        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = "";
         Properties props = spy(new Properties());
         testling.loadProperties(props);
         verify(props, never()).put(SahiProxyProperties.PROXY_HOME_FOLDER, "");
-        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = BaseTest.SAHI_FOLDER_PATH;
     }
 
     @Test
@@ -119,8 +159,7 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         Path tsFolder = Paths.get(properties.getTestSuiteFolder());
 
         assertTrue(Files.exists(tsFolder), "test suite folder doesn't exists or have not been set correctly");
-        System.out.println(tsFolder.toFile().getAbsolutePath());
-        assertTrue(tsFolder.toFile().getAbsolutePath().contains(TEST_FOLDER_PATH));
+        BaseTest.assertContains(tsFolder.toAbsolutePath().toString(), PPROPERTY_TEST_FOLDER_PATH);
     }
 
     @Test
@@ -128,7 +167,7 @@ public class SakuliPropertyPlaceholderConfigurerTest extends BaseTest {
         SakuliProperties properties = BeanLoader.loadBean(SakuliProperties.class);
 
         assertTrue(Files.exists(properties.getJsLibFolder()), "include folder doesn't exists");
-        assertTrue(properties.getJsLibFolder().toString().contains(SAKULI_HOME_FOLDER_PATH.substring(2)));
+        assertTrue(properties.getJsLibFolder().toString().contains(BaseTest.SAKULI_HOME_FOLDER_PATH.substring(2)));
 
         assertNotNull(properties.getLogPattern());
     }

@@ -40,7 +40,7 @@ public class SakuliFolderHelperTest extends BaseTest {
         //ensure that the system wide static variables point to the right values
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = SAKULI_HOME_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = SAHI_FOLDER_PATH;
     }
 
     @Test
@@ -49,7 +49,7 @@ public class SakuliFolderHelperTest extends BaseTest {
         final String absoluteSahiPath = Paths.get(TEST_FOLDER_PATH).toAbsolutePath().toString();
         String log = "";
         log = SakuliFolderHelper.checkSahiProxyHomeAndSetContextVariables(TEST_FOLDER_PATH, log);
-        assertEquals(SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE, absoluteSahiPath);
+        assertEquals(SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE, absoluteSahiPath);
         assertEquals(log, "\nset property '" + SahiProxyProperties.PROXY_HOME_FOLDER + "' to \"" + absoluteSahiPath + "\"");
     }
 

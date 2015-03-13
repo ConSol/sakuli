@@ -72,7 +72,7 @@ public class SpringProfilesInitializerTest {
     @Test(dataProvider = "profileProperties")
     public void testAfterPropertiesSet(String propertyFile, int countOfResultServices) throws Exception {
         SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = BaseTest.SAKULI_HOME_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = BaseTest.SAHI_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = BaseTest.SAHI_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = "loaderTest-beanRefFactory.xml";
         Path testProps = Paths.get(getClass().getResource(propertyFile).toURI());
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = testProps.toString();

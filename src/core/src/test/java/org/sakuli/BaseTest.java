@@ -56,7 +56,7 @@ public abstract class BaseTest extends AbstractLogAwareTest {
     public void setContextProperties() {
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = SAKULI_HOME_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = SAHI_FOLDER_PATH;
         BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
         BeanLoader.refreshContext();
         loaderMock = BeanLoader.loadBean(BaseActionLoader.class);

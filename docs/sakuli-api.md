@@ -523,7 +523,6 @@ wheel the given steps up.
 ##Environment.logError(message)
 make a error-log over Java backend into the log file.
 This won't stop the execution of the test case.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -532,7 +531,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logWarning"></a>
 ##Environment.logWarning(message)
 make a debug-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -541,7 +539,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logInfo"></a>
 ##Environment.logInfo(message)
 make a info-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -550,7 +547,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logDebug"></a>
 ##Environment.logDebug(message)
 make a debug-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
