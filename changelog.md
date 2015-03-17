@@ -6,6 +6,7 @@
 * fix bug: test suite has stat 'OK' instead of 'RUNNING' during the execution
 * improve logging for more information, see [Sakuli - Manual](docs/sakuli-manual.md)
 * clearify the sakuli encryption functionality - modify documentation and improve the implementation, see #5
+* refactor data structur, see #60
 
 ### Version 0.4.7
 * add function `getLastUrl()` to the `TestCase` functions, to enable URL based test case handling.
