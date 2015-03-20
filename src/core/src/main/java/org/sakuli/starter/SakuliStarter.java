@@ -46,29 +46,29 @@ public class SakuliStarter {
     private final static Option run = OptionBuilder
             .withArgName("test-suite-folder")
             .hasArg()
-            .withDescription("starts to run a sakuli test suite with the arguments")
+            .withDescription("run a sakuli test suite")
             .create("run");
     private final static Option sakuliHome = OptionBuilder
             .withArgName("sakuli-folder")
             .hasArg()
-            .withDescription("(optional) defines the SAKULI_HOME folder")
+            .withDescription("(optional) SAKULI_HOME folder")
             .isRequired(false)
             .create("sakuli_home");
     private final static Option sahiHome = OptionBuilder
             .withArgName("sahi-folder")
             .hasArg()
-            .withDescription("(optional) defines the folder of the Sahi installation")
+            .withDescription("(optional) Sahi installation folder")
             .isRequired(false)
             .create("sahi_home");
     private final static Option encrypt = OptionBuilder
             .withArgName("secret")
             .hasArg()
-            .withDescription("encrypt your secret to decrypted String")
+            .withDescription("encrypt a secret")
             .create("encrypt");
     private final static Option anInterface = OptionBuilder
             .withArgName("interface-name")
             .hasArg()
-            .withDescription("(optional) define a specific interface for your secret")
+            .withDescription("(optional) network interface used for encryption (instead of auto selection)")
             .isRequired(false)
             .create("interface");
 
