@@ -39,6 +39,11 @@ public class SakuliProperties extends AbstractProperties {
     public static final String SUPPRESS_RESUMED_EXCEPTIONS = "sakuli.exception.suppressResumedExceptions";
     public static final String LOG_FOLDER = "sakuli.log.folder";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
+    public static final String LOG_LEVEL_SAKULI = "log.level.sakuli";
+    public static final String LOG_LEVEL_SAHI = "log.level.sahi";
+    public static final String LOG_LEVEL_SIKULI = "log.level.sikuli";
+    public static final String LOG_LEVEL_SPRING = "log.level.spring";
+    public static final String LOG_LEVEL_ROOT = "log.level.root";
     public static final String CONFIG_FOLDER_APPEDER = File.separator + "config";
     public static final String LIBS_FOLDER_APPEDER = File.separator + "libs";
     public static final String JS_LIB_FOLDER_APPEDER = LIBS_FOLDER_APPEDER + File.separator + "js";
@@ -54,6 +59,16 @@ public class SakuliProperties extends AbstractProperties {
     private Path logFolder;
     @Value("${" + LOG_PATTERN + "}")
     private String logPattern;
+    @Value("${" + LOG_LEVEL_SAKULI + ":}")
+    private String logLevelSakuli;
+    @Value("${" + LOG_LEVEL_SAHI + ":}")
+    private String logLevelSahi;
+    @Value("${" + LOG_LEVEL_SIKULI + ":}")
+    private String logLevelSikuli;
+    @Value("${" + LOG_LEVEL_SPRING + ":}")
+    private String logLevelSpring;
+    @Value("${" + LOG_LEVEL_ROOT + ":}")
+    private String logLevelRoot;
     private Path configFolder;
     private Path jsLibFolder;
     private Path tessDataLibFolder;
@@ -144,4 +159,43 @@ public class SakuliProperties extends AbstractProperties {
         this.tessDataLibFolder = tessDataLibFolder;
     }
 
+    public String getLogLevelSakuli() {
+        return logLevelSakuli;
+    }
+
+    public void setLogLevelSakuli(String logLevelSakuli) {
+        this.logLevelSakuli = logLevelSakuli;
+    }
+
+    public String getLogLevelSahi() {
+        return logLevelSahi;
+    }
+
+    public void setLogLevelSahi(String logLevelSahi) {
+        this.logLevelSahi = logLevelSahi;
+    }
+
+    public String getLogLevelSpring() {
+        return logLevelSpring;
+    }
+
+    public void setLogLevelSpring(String logLevelSpring) {
+        this.logLevelSpring = logLevelSpring;
+    }
+
+    public String getLogLevelSikuli() {
+        return logLevelSikuli;
+    }
+
+    public void setLogLevelSikuli(String logLevelSikuli) {
+        this.logLevelSikuli = logLevelSikuli;
+    }
+
+    public String getLogLevelRoot() {
+        return logLevelRoot;
+    }
+
+    public void setLogLevelRoot(String logLevelRoot) {
+        this.logLevelRoot = logLevelRoot;
+    }
 }

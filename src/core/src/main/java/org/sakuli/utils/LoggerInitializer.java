@@ -21,8 +21,9 @@ package org.sakuli.utils;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.spi.JoranException;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.logging.LogConfigurationException;
 import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.exceptions.SakuliException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,14 @@ import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
 
 /**
  * @author tschneck Date: 09.05.14
@@ -51,7 +55,21 @@ public class LoggerInitializer {
     private SakuliProperties sakuliProperties;
 
     @PostConstruct
-    public void initLoggerContext() throws JoranException, URISyntaxException, SakuliException {
+    public void initLoggerContext() {
+        // properties of the LoggerContext
+        List<ImmutablePair<String, String>> properties = Arrays.asList(
+                new ImmutablePair<>(SakuliProperties.LOG_FOLDER, sakuliProperties.getLogFolder().toAbsolutePath().toString()),
+                new ImmutablePair<>(SakuliProperties.LOG_PATTERN, sakuliProperties.getLogPattern()),
+                new ImmutablePair<>(SakuliProperties.LOG_LEVEL_SAKULI, sakuliProperties.getLogLevelSakuli()),
+                new ImmutablePair<>(SakuliProperties.LOG_LEVEL_SAHI, sakuliProperties.getLogLevelSahi()),
+                new ImmutablePair<>(SakuliProperties.LOG_LEVEL_SIKULI, sakuliProperties.getLogLevelSikuli()),
+                new ImmutablePair<>(SakuliProperties.LOG_LEVEL_SPRING, sakuliProperties.getLogLevelSpring()),
+                new ImmutablePair<>(SakuliProperties.LOG_LEVEL_ROOT, sakuliProperties.getLogLevelRoot())
+        );
+        //log new properties before configuring
+        properties.stream().filter(p -> isNotEmpty(p.getValue()))
+                .forEach(p -> logger.info("set '{}' to '{}'", p.getKey(), p.getValue()));
+
         //start sysout forwarding to slf4j
         SysOutOverSLF4J.sendSystemOutAndErrToSLF4J(LogLevel.INFO, LogLevel.ERROR);
 
@@ -60,9 +78,9 @@ public class LoggerInitializer {
         jc.setContext(context);
         context.reset(); // override default configuration
 
-        // set the properties of the LoggerContext
-        context.putProperty(SakuliProperties.LOG_FOLDER, sakuliProperties.getLogFolder().toAbsolutePath().toString());
-        context.putProperty(SakuliProperties.LOG_PATTERN, sakuliProperties.getLogPattern());
+        //put properties into the context
+        properties.stream().filter(p -> isNotEmpty(p.getValue()))
+                .forEach(p -> context.putProperty(p.getKey(), p.getValue()));
 
         //determine the config file
         String configFilePath = getConfigFileFromClasspath();
@@ -70,17 +88,18 @@ public class LoggerInitializer {
             configFilePath = getConfigFile();
         }
         if (configFilePath == null) {
-            throw new SakuliException("file '" + LOG_CONFIG_FILE_NAME + "'not found! Please ensure that your include folder or your classpath contains at least the file '" + LOG_CONFIG_FILE_NAME + "'.");
+            throw new LogConfigurationException("Log configuration file '" + LOG_CONFIG_FILE_NAME + "' not found! Please ensure that your config folder or your classpath contains the file.");
         }
-        jc.doConfigure(configFilePath);
+        try {
+            jc.doConfigure(configFilePath);
+        } catch (JoranException e) {
+            throw new LogConfigurationException("unable to run the LoggerIntializer, pleae check your config!", e);
+        }
 
-        //log all properties after logger is configured
         logger.info("set logback configuration file '{}'", configFilePath);
-        logger.info("set '{}' to '{}'", SakuliProperties.LOG_FOLDER, sakuliProperties.getLogFolder().toAbsolutePath().toString());
-        logger.info("set '{}' to '{}''", SakuliProperties.LOG_PATTERN, sakuliProperties.getLogPattern());
     }
 
-    protected String getConfigFile() throws SakuliException {
+    protected String getConfigFile() {
         Path configFile = Paths.get(sakuliProperties.getConfigFolder() + File.separator + LOG_CONFIG_FILE_NAME);
         if (Files.exists(configFile)) {
             return configFile.toAbsolutePath().toString();
