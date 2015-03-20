@@ -32,7 +32,7 @@ As Sakuli only uses the *result queue* of gearmand, you can disable all other qu
 	hosts=no
 	do_hostchecks=no
 	
-At the time of the creation of this documents, Sakuli does not encrypt any gearman results. Therefore, set  `accept_clear_results` in ``:
+At the time of the creation of this documents, Sakuli does not encrypt any gearman results. Therefore, set  `accept_clear_results` in `server.cfg`:
 
     OMD[sakuli]:~$ vim ~/etc/mod-gearman/server.cfg
 	accept_clear_results=yes
