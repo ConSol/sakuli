@@ -184,7 +184,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     /**
      * wrapper implementation for {@link #mouseMove(Object)} ()}
      */
-    public RegionImpl moveMouse() {
+    public RegionImpl mouseMoveMe() {
         int ret;
         try {
             Location center = this.getCenter();
@@ -196,6 +196,30 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         if (ret != 1) {
             loader.getExceptionHandler().handleException("Could not move the mouse on region " + this, this, resumeOnException);
             return null;
+        }
+        return this;
+    }
+
+    /**
+     * wrapper implementation for {@link #mouseDown(int)}
+     */
+    public RegionImpl mouseDown(MouseButton mouseButton) {
+        try {
+            this.mouseDown(mouseButton.getValue());
+        } catch (Throwable e) {
+            loader.getExceptionHandler().handleException("Could execute mouseDown action for " + this, this, resumeOnException);
+        }
+        return this;
+    }
+
+    /**
+     * wrapper implementation for {@link #mouseUp(int)}
+     */
+    public RegionImpl mouseUp(MouseButton mouseButton) {
+        try {
+            this.mouseUp(mouseButton.getValue());
+        } catch (Throwable e) {
+            loader.getExceptionHandler().handleException("Could execute mouseUp action for " + this, this, resumeOnException);
         }
         return this;
     }

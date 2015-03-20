@@ -31,6 +31,7 @@
 _include("sakuli_Application.js");
 _include("sakuli_Environment.js");
 _include("sakuli_Key.js");
+_include("sakuli_MouseButton.js");
 _include("sakuli_Region.js");
 
 /*****************************************************************************************************
