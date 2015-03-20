@@ -22,7 +22,7 @@
         <option name="MAIN_CLASS_NAME" value="org.sakuli.starter.SakuliStarter"/>
         <option name="VM_PARAMETERS" value=""/>
         <option name="PROGRAM_PARAMETERS"
-                value="-run dev_stuff/suites/ubuntu -sakuli_home src/main -sahi_home ../../sahi"/>
+                value="--run dev_stuff/suites/ubuntu --sakuli_home src/main --sahi_home ../../sahi"/>
         <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$"/>
         <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false"/>
         <option name="ALTERNATIVE_JRE_PATH" value=""/>
