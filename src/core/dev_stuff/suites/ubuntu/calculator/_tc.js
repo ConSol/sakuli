@@ -26,6 +26,7 @@
 _dynamicInclude($includeFolder);
 var testCase = new TestCase(80, 100);
 var env = new Environment();
+var screen = new Region();
 
 /******************************
  * Description of the test case
@@ -33,32 +34,27 @@ var env = new Environment();
 try {
 
     //get calculator app
-    var calculatorApp = new Application("galculator").setSleepTime(1);
+    var appCalc = new Application("/usr/bin/gnome-calculator");
+    var appGedit = new Application("/usr/bin/gedit");
     try {
-        //open the app
-        calculatorApp.open();
-        testCase.endOfStep("Open Calculator", 3);
+        appCalc.open();
+        screen.waitForImage("calculator.png", 20);
 
-        //caculate
-        //env.setSimilarity(0.9);
-        var calculatorRegion = calculatorApp.getRegion();
-        calculatorRegion.type("525");
+        env.type("525");
         env.sleep(2);
-        calculatorRegion.find("plus.png").click().type("100");
-        calculatorRegion.find("calculate").click();
-        testCase.endOfStep("calculate 525 +100", 20);
+        //screen.find("plus.png").click().type("100");
+        screen.find("plus.png").mouseMove().sleep(2).mouseDown(MouseButton.LEFT).sleep(1).mouseUp(MouseButton.LEFT).type("100");
+        screen.find("result.png").click();
 
-        env.sleep(2);
-        calculatorRegion.find("sqrt").click();
-        env.sleep(2);
-        testCase.endOfStep("sqrt on 625", 10);
-
-        calculatorRegion.find("clear").click();
-        env.sleep(2);
+        appGedit.open();
+        screen.waitForImage("gedit.png", 20);
+        env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
+        env.sleep(4);
         // finally close the calculator app!
     } finally {
 
-        calculatorApp.closeApp();
+        appCalc.closeApp();
+        appGedit.closeApp();
         testCase.endOfStep("Close Calculator", 10);
     }
 
