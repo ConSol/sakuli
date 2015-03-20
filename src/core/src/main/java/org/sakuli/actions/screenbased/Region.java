@@ -147,8 +147,46 @@ public class Region implements Action {
      */
     @ModifySahiTimer
     @LogToResult
-    public Region moveMouse() {
-        return update(regionImpl.moveMouse());
+    public Region mouseMove() {
+        return update(regionImpl.mouseMoveMe());
+    }
+
+    /**
+     * Low-level mouse action to press the assigned {@link MouseButton} on the current position.
+     * <p>
+     * Example: Press and release the right mouse button vor 3 seconds on a specified region:
+     * <br/>
+     * Region region = new Region().find("your-pattern.png");
+     * <br/>
+     * region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+     * <br/>
+     * </p>
+     *
+     * @return the {@link Region} or NULL on errors.
+     */
+    @ModifySahiTimer
+    @LogToResult
+    public Region mouseDown(MouseButton mouseButton) {
+        return update(regionImpl.mouseDown(mouseButton));
+    }
+
+    /**
+     * Low-level mouse action to release the assigned {@link MouseButton}.
+     * <p>
+     * Example: Press and release the right mouse button vor 3 seconds on a specified region:
+     * <br/>
+     * Region region = new Region().find("your-pattern.png");
+     * <br/>
+     * region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+     * <br/>
+     * </p>
+     *
+     * @return the {@link Region} or NULL on errors.
+     */
+    @ModifySahiTimer
+    @LogToResult
+    public Region mouseUp(MouseButton mouseButton) {
+        return update(regionImpl.mouseUp(mouseButton));
     }
 
 

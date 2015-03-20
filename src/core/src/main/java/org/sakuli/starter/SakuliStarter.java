@@ -19,7 +19,6 @@
 package org.sakuli.starter;
 
 import org.apache.commons.cli.*;
-import org.apache.commons.lang.StringUtils;
 import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.ActionProperties;
@@ -37,40 +36,46 @@ import java.io.FileNotFoundException;
 import java.util.AbstractMap;
 import java.util.Map.Entry;
 
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
+
 @SuppressWarnings("AccessStaticViaInstance")
 public class SakuliStarter {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(SakuliStarter.class);
-    private final static Option help = OptionBuilder.withDescription("display help").create("help");
-    private final static Option questionmark = OptionBuilder.withDescription("display help").create("?");
+    private final static Option help = OptionBuilder.withDescription("display help").withLongOpt("help").create("h");
     private final static Option run = OptionBuilder
             .withArgName("test-suite-folder")
             .hasArg()
             .withDescription("run a sakuli test suite")
-            .create("run");
+            .withLongOpt("run")
+            .create("r");
     private final static Option sakuliHome = OptionBuilder
             .withArgName("sakuli-folder")
             .hasArg()
-            .withDescription("(optional) SAKULI_HOME folder")
+            .withDescription("(optional) SAKULI_HOME folder, \ndefault: environment variable 'SAHI_HOME'")
             .isRequired(false)
-            .create("sakuli_home");
+            .withLongOpt("sakuli_home")
+            .create();
     private final static Option sahiHome = OptionBuilder
             .withArgName("sahi-folder")
             .hasArg()
-            .withDescription("(optional) Sahi installation folder")
+            .withDescription("(optional) Sahi installation folder, \ndefault: property 'sahi.proxy.homePath'")
             .isRequired(false)
-            .create("sahi_home");
+            .withLongOpt("sahi_home")
+            .create();
     private final static Option encrypt = OptionBuilder
             .withArgName("secret")
             .hasArg()
             .withDescription("encrypt a secret")
-            .create("encrypt");
+            .withLongOpt("encrypt")
+            .create("e");
     private final static Option anInterface = OptionBuilder
             .withArgName("interface-name")
             .hasArg()
-            .withDescription("(optional) network interface used for encryption (instead of auto selection)")
+            .withDescription("(optional) network interface used for encryption, default: auto-selection")
             .isRequired(false)
-            .create("interface");
+            .withLongOpt("interface")
+            .create("i");
 
     /**
      * The Sakuli-Starter executes a specific sakuli-testsuite. A test suite has to contain as minimum following files:
@@ -85,7 +90,6 @@ public class SakuliStarter {
         CommandLineParser parser = new PosixParser();
         Options options = new Options();
         options.addOption(help);
-        options.addOption(questionmark);
         options.addOption(run);
         options.addOption(sakuliHome);
         options.addOption(sahiHome);
@@ -93,19 +97,19 @@ public class SakuliStarter {
         options.addOption(anInterface);
         try {
             CommandLine cmd = parser.parse(options, args);
-            final String testSuiteFolderPath = cmd.getOptionValue(run.getOpt());
-            final String sakuliMainFolderPath = cmd.getOptionValue(sakuliHome.getOpt());
-            final String sahiHomePath = cmd.getOptionValue(sahiHome.getOpt());
-            final String ethInterface = cmd.getOptionValue(anInterface.getOpt());
-            final String strToEncrypt = cmd.getOptionValue(encrypt.getOpt());
+            final String testSuiteFolderPath = getOptionValue(cmd, run);
+            final String sakuliMainFolderPath = getOptionValue(cmd, sakuliHome);
+            final String sahiHomePath = getOptionValue(cmd, sahiHome);
+            final String ethInterface = getOptionValue(cmd, anInterface);
+            final String strToEncrypt = getOptionValue(cmd, encrypt);
 
-            if (cmd.hasOption(run.getOpt())) {
+            if (cmd.hasOption(run.getLongOpt()) || cmd.hasOption(run.getOpt())) {
                 TestSuite testSuite = runTestSuite(testSuiteFolderPath, sakuliMainFolderPath, sahiHomePath);
                 //return the state as system exit parameter
                 //return values are corresponding to the error codes in file "sahi_return_codes.txt"
                 System.exit(testSuite.getState().getErrorCode());
 
-            } else if (cmd.hasOption(encrypt.getOpt())) {
+            } else if (cmd.hasOption(encrypt.getLongOpt()) || cmd.hasOption(encrypt.getOpt())) {
                 System.out.printf("\nString to Encrypt: %s \n...", strToEncrypt);
                 final Entry<String, String> secret = encryptSecret(strToEncrypt, ethInterface);
                 System.out.printf("\nEncrypted secret with interface '%s': %s", secret.getKey(), secret.getValue());
@@ -116,7 +120,7 @@ public class SakuliStarter {
             }
         } catch (SakuliCipherException e) {
             e.printStackTrace();
-            System.out.println("CHIPHER ERROR: " + e.getMessage());
+            System.out.println("CIPHER ERROR: " + e.getMessage());
         } catch (ParseException e) {
             System.err.println("Parsing of command line failed: " + e.getMessage());
             printHelp(options);
@@ -126,9 +130,16 @@ public class SakuliStarter {
         }
     }
 
+    private static String getOptionValue(CommandLine cmd, Option option) {
+        return option.getOpt() != null ? cmd.getOptionValue(option.getOpt()) : cmd.getOptionValue(option.getLongOpt());
+//        return isNotEmpty(shortOptionValue) ? shortOptionValue : cmd.getOptionValue(option.getLongOpt());
+    }
+
     private static void printHelp(Options options) {
         System.out.println();
-        new HelpFormatter().printHelp("sakuli", options);
+        HelpFormatter helpFormatter = new HelpFormatter();
+        helpFormatter.setWidth(80);
+        helpFormatter.printHelp("sakuli [options]", options);
     }
 
     /**
@@ -164,7 +175,7 @@ public class SakuliStarter {
         tempLogCache = SakuliFolderHelper.checkSakuliHomeFolderAndSetContextVariables(sakuliHomeFolderPath, tempLogCache);
 
         //if sahi home have been set override the default
-        if (StringUtils.isNotEmpty(sahiHomeFolder)) {
+        if (isNotEmpty(sahiHomeFolder)) {
             tempLogCache = SakuliFolderHelper.checkSahiProxyHomeAndSetContextVariables(sahiHomeFolder, tempLogCache);
         }
 
@@ -210,7 +221,7 @@ public class SakuliStarter {
      */
     public static Entry<String, String> encryptSecret(String strToEncrypt, String ethInterface) throws SakuliCipherException {
         ActionProperties cipherProps = new ActionProperties();
-        if (StringUtils.isNotEmpty(ethInterface)) {
+        if (isNotEmpty(ethInterface)) {
             cipherProps.setEncryptionInterface(ethInterface);
             cipherProps.setEncryptionInterfaceAutodetect(false);
         } else {

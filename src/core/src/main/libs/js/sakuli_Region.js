@@ -143,6 +143,52 @@ function loadRegion(javaObject, resumeOnException) {
     };
 
     /**
+     * Move the mouse pointer the center of the {@link Region} and "hovers" it.
+     *
+     * @returns the {@link Region} or NULL on errors.
+     * @memberOf Region
+     * @method mouseMove
+     */
+    that.mouseMove = function () {
+        return update(that.javaObject.mouseMove());
+    };
+
+    /**
+     * Low-level mouse action to press the assigned {@link MouseButton} on the current position.
+     *
+     * @example Press and release the right mouse button vor 3 seconds on a specified region:
+     * ```
+     * var region = new Region().find("your-pattern.png");
+     * region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+     * ```
+     *
+     * @param mouseButton on of {@link MouseButton} values
+     * @returns the {@link Region} or NULL on errors.
+     * @memberOf Region
+     * @method mouseDown
+     */
+    that.mouseDown = function (mouseButton) {
+        return update(that.javaObject.mouseDown(mouseButton))
+    };
+
+    /**
+     * Low-level mouse action to release the assigned {@link MouseButton}.
+     *
+     * @example Press and release the right mouse button vor 3 seconds on a specified region:
+     * ```
+     * var region = new Region().find("your-pattern.png");
+     * region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+     * ```
+     * @param mouseButton on of {@link MouseButton} values
+     * @returns the {@link Region} or NULL on errors.
+     * @memberOf Region
+     * @method mouseUp
+     */
+    that.mouseUp = function (mouseButton) {
+        return update(that.javaObject.mouseUp(mouseButton))
+    };
+
+    /**
      * Blocks and waits until a target which is specified by the optImageName is found in the hole
      * Screen within a given time period in seconds.
      *

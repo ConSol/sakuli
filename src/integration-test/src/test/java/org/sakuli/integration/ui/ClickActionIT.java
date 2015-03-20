@@ -20,6 +20,7 @@ package org.sakuli.integration.ui;
 
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.sakuli.actions.screenbased.MouseButton;
 import org.sakuli.integration.IntegrationTest;
 import org.sakuli.integration.ui.app.UiTestApplication;
 import org.sakuli.javaDSL.TestCaseInitParameter;
@@ -90,6 +91,22 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
     }
 
     @Test
+    public void testMouseUpDownAction() throws Exception {
+        Stage stage = startUiApplication();
+
+        //move central
+        new Region().waitForImage("login_bt", 5).mouseMove().click();
+        new Region().find("password").mouseMove().click();
+        assertEquals(getEventCount(LOGIN_BT), 1);
+
+        new Region().find("login_bt").mouseMove().mouseDown(MouseButton.LEFT).mouseUp(MouseButton.LEFT).sleep(2);
+
+        //assert the count of button clicks
+        assertEquals(getEventCount(LOGIN_BT), 2);
+        stopUiApplication(stage);
+    }
+
+    @Test
     public void testLoginAction() throws Exception {
         Stage stage = startUiApplication();
         new Region().exists("login_bt.png", 5).click();
@@ -114,5 +131,4 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
         });
         return super.startUiApplication();
     }
-
 }
