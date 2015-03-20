@@ -64,14 +64,6 @@
             </includes>
             <outputDirectory>/${sakuli.filename}/libs/java</outputDirectory>
         </fileSet>
-        <!-- copy Context-files to bin/lib/resources -->
-        <fileSet>
-            <directory>${basedir}/src/main/resources</directory>
-            <includes>
-                <include>*.xml</include>
-            </includes>
-            <outputDirectory>/${sakuli.filename}/libs/java/resources</outputDirectory>
-        </fileSet>
 
         <!-- copy sample test suites -->
         <fileSet>
