@@ -80,7 +80,7 @@
     <dependencySets>
         <dependencySet>
             <outputDirectory>/${sakuli.filename}/libs/java</outputDirectory>
-            <useProjectArtifact>true</useProjectArtifact>
+            <useProjectArtifact>false</useProjectArtifact>
             <unpack>false</unpack>
             <scope>runtime</scope>
         </dependencySet>

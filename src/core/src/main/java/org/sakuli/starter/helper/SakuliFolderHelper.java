@@ -92,7 +92,7 @@ public class SakuliFolderHelper {
     }
 
     private static Path getAlternativeSakuliMainFolder() throws FileNotFoundException {
-        Path sakuli_home = Paths.get(System.getenv("SAKULI_HOME"));
+        Path sakuli_home = System.getenv("SAKULI_HOME");
         if (Files.exists(sakuli_home) && checkSubMainFolder(sakuli_home)) {
             return sakuli_home;
         }
