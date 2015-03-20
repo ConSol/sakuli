@@ -111,21 +111,21 @@ public abstract class AbstractLogAwareTest {
     }
 
     /**
-     * Set the property 'log-level-sakuli' for the file 'sakuli-log-config.xml'.
+     * Set the property 'log.level.sakuli' for the file 'sakuli-log-config.xml'.
      *
      * @param logLevel as String e.g. 'DEBUG'
      */
     public static void setSakuliLogLevel(String logLevel) {
-        setSystemProperty(logLevel, "log-level-sakuli");
+        setSystemProperty(logLevel, "log.level.sakuli");
     }
 
     /**
-     * Set the property 'log-level-sikuli' for the file 'sakuli-log-config.xml'.
+     * Set the property 'log.level.sikuli' for the file 'sakuli-log-config.xml'.
      *
      * @param logLevel as String e.g. 'DEBUG'
      */
     public static void setSikuliLogLevel(String logLevel) {
-        setSystemProperty(logLevel, "log-level-sikuli");
+        setSystemProperty(logLevel, "log.level.sikuli");
     }
 
     @BeforeSuite(alwaysRun = true)

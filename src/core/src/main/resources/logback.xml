@@ -28,13 +28,13 @@
             <pattern>${sakuli.log.pattern:-%-5level [%d{YYYY-MM-dd HH:mm:ss.SSS}] - %msg%n}</pattern>
         </encoder>
     </appender>
-    <logger name="org.sakuli" level="${log-level-sakuli:-INFO}"/>
-    <logger name="org.sikuli" level="${log-level-sikuli:-WARN}"/>
-    <logger name="net.sf.sahi" level="${log-level-sahi:-WARN}"/>
-    <logger name="org.springframework" level="${log-level-spring:-WARN}"/>
+    <logger name="org.sakuli" level="${log.level.sakuli:-INFO}"/>
+    <logger name="org.sikuli" level="${log.level.sikuli:-WARN}"/>
+    <logger name="net.sf.sahi" level="${log.level.sahi:-WARN}"/>
+    <logger name="org.springframework" level="${log.level.spring:-WARN}"/>
     <logger name="uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J" level="WARN"/>
     <logger name="org.apache.commons" level="WARN"/>
-    <root level="${log-level-root:-INFO}">
+    <root level="${log.level.root:-INFO}">
         <appender-ref ref="stdout"/>
     </root>
 </configuration>

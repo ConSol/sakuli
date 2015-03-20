@@ -22,13 +22,13 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Appender;
+import org.apache.commons.logging.LogConfigurationException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.sakuli.BaseTest;
 import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.exceptions.SakuliException;
 import org.sakuli.loader.BeanLoader;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -99,7 +99,7 @@ public class LoggerInitializerTest extends BaseTest {
         Assert.assertNotNull(sakuliAppender);
     }
 
-    @Test(expectedExceptions = SakuliException.class)
+    @Test(expectedExceptions = LogConfigurationException.class)
     public void testInitLoggerContextException() throws Throwable {
         doReturn(null).when(testling).getConfigFileFromClasspath();
         doReturn(null).when(testling).getConfigFile();

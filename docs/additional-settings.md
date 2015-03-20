@@ -65,36 +65,21 @@ Logging verbosity can be defined **globally** as well as on a **per-suite** basi
 
 ("Verbosity" means one of the levels `DEBUG - INFO - WARN - ERROR` )
 
-* setting **globally**: `__SAKULI_HOME__/_include/sakuli-log-config.xml`
+* setting **globally**: Add or modify one of the property to the file `__SAKULI_HOME__/sakuli_test_suites/sakuli.properties`
 
-        <logger name="org.sakuli" level="${log-level-sakuli:-INFO}"/>
-        <logger name="org.sikuli" level="${log-level-sikuli:-WARN}"/>
-        <logger name="net.sf.sahi" level="${log-level-sahi:-WARN}"/>
-        <logger name="org.springframework" level="${log-level-spring:-WARN}"/>
-        <root level="${log-level-root:-INFO}">
-            <appender-ref ref="stdout"/>
-            <appender-ref ref="sakuli"/>
-        </root>
+    * `log.level.sakuli=__LEVEL__`  -  logging level for **Sakuli** output
+    * `log.level.sikuli=__LEVEL__`  -  logging level for **Sikuli** output
+    * `log.level.sahi=__LEVEL__`  -  logging level for **Sahi** output
+    * `log.level.spring=__LEVEL__`  -  logging level for the **Spring** framework (only used internally)
+    * `log.level.root=__LEVEL__`  -  logging level for all other **Java classes and libraries**
 
     Each component is bound to a "**logger**". Its verbosity value is in UPPERCASE letters at the end of each line (e.g. `INFO`), or gets overriden with a custom variable, if set (see next point).
 
-* setting **per check** in the starter scripts in `__SAKULI_HOME__/scripts/starter/` by appending **debug variables** on the call of *SakuliStarter* :
-
-    * `-Dlog-level-sakuli=__LEVEL__`  -  logging level for **Sakuli** output
-    * `-Dlog-level-sikuli=__LEVEL__`  -  logging level for **Sikuli** output
-    * `-Dlog-level-sahi=__LEVEL__`  -  logging level for **Sahi** output
-    * `-Dlog-level-spring=__LEVEL__`  -  logging level for the **Spring** framework (only used internally)
-    * `-Dlog-level-root=__LEVEL__`  -  logging level for all other **Java classes and libraries**
-
-    Example: To override the log level for **Sakuli** (default: `ÌNFO`) with `WARN`: 
-
-        java -classpath ... org.sakuli.starter.SakuliStarter -run "$SAKULI_HOME/sakuli_test_suites/$SUITE" "$INCLUDE_FOLDER" -Dlog-level-sakuli=WARN
-
-For more information about the Logback syntax please refer to the [Logback manual](http://logback.qos.ch/manual/configuration.html).	 
+* setting **per-suite**: Add or modify one of the upper mentioned property to the file `__SAKULI_HOME__/sakuli_test_suites/your-test-suite/testsuite.properties`.
 
 #### Log file location / format
 
-Edit `__SAKULI_HOME__/_include/sakuli.properties` to configure the logfile format and its location: 
+Edit `__SAKULI_HOME__/sakuli_test_suites/sakuli.properties` to configure the logfile format and its location:
 
 		sakuli.log.pattern= %-5level [%d{YYYY-MM-dd HH:mm:ss.SSS}] - %msg%n
 		sakuli.log.folder=${sakuli.testsuite.folder}/_logs
@@ -111,6 +96,7 @@ On Linux you can configure logrotate to tidy up old log files:
         maxage 2
     }
 
+In general it is also possible to add your own Logback configuration under `__SAKULI_HOME__/config/sakuli-log-config.xml`. For more information about the Logback syntax please refer to the [Logback manual](http://logback.qos.ch/manual/configuration.html).
 
 ### Secret De-/Encryption
 #### Interface selection
