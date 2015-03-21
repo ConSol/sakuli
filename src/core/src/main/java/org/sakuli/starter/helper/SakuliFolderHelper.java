@@ -18,6 +18,7 @@
 
 package org.sakuli.starter.helper;
 
+import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
@@ -92,7 +93,8 @@ public class SakuliFolderHelper {
     }
 
     private static Path getAlternativeSakuliMainFolder() throws FileNotFoundException {
-        Path sakuli_home = Paths.get(System.getenv("SAKULI_HOME"));
+        String envSakuliHome = System.getenv("SAKULI_HOME");
+        Path sakuli_home = StringUtils.isNotEmpty(envSakuliHome) ? Paths.get(envSakuliHome) : Paths.get(".");
         if (Files.exists(sakuli_home) && checkSubMainFolder(sakuli_home)) {
             return sakuli_home;
         }
