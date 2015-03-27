@@ -163,13 +163,22 @@ public class SakuliPropertyPlaceholderConfigurerTest {
     }
 
     @Test
-    public void testIncludeFolder() throws IOException {
+    public void testSakuliHomeFolder() throws IOException {
         SakuliProperties properties = BeanLoader.loadBean(SakuliProperties.class);
 
         assertTrue(Files.exists(properties.getJsLibFolder()), "include folder doesn't exists");
         assertTrue(properties.getJsLibFolder().toString().contains(BaseTest.SAKULI_HOME_FOLDER_PATH.substring(2)));
 
         assertNotNull(properties.getLogPattern());
+    }
+
+    @Test
+    public void testTestSuiteBrowser() throws IOException {
+        final String browserName = "chrome";
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_BROWSER = browserName;
+        Properties props = new Properties();
+        testling.loadProperties(props);
+        assertEquals(props.get(TestSuiteProperties.BROWSER_NAME), browserName);
     }
 
     @SuppressWarnings("unchecked")

@@ -123,4 +123,16 @@ public class SakuliFolderHelper {
         return tempLogCache + "\nset property '" + SahiProxyProperties.PROXY_HOME_FOLDER + "' to \"" + SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE + "\"";
     }
 
+    /**
+     * set the {@link TestSuiteProperties#BROWSER_NAME} to the assigned testSuiteBrowserName.
+     *
+     * @param testSuiteBrowserName name of a configured browser for the test suite
+     * @param tempLogCache         temporary string for later logging
+     * @return the updated tempLogCache String.
+     */
+    public static String setTestSuiteBrowserContextVariable(String testSuiteBrowserName, String tempLogCache) {
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_BROWSER = StringUtils.trimToNull(testSuiteBrowserName);
+        return tempLogCache + "\nset property '" + TestSuiteProperties.BROWSER_NAME + "' to \"" + SakuliPropertyPlaceholderConfigurer.TEST_SUITE_BROWSER + "\"";
+    }
+
 }

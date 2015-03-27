@@ -49,6 +49,13 @@ public class SakuliStarter {
             .withDescription("run a sakuli test suite")
             .withLongOpt("run")
             .create("r");
+    private final static Option browser = OptionBuilder
+            .withArgName("browser")
+            .hasArg()
+            .withDescription("(optional) browser for the test execution, \ndefault: property 'testsuite.browser'")
+            .withLongOpt("browser")
+            .isRequired(false)
+            .create("b");
     private final static Option sakuliHome = OptionBuilder
             .withArgName("sakuli-folder")
             .hasArg()
@@ -91,12 +98,14 @@ public class SakuliStarter {
         Options options = new Options();
         options.addOption(help);
         options.addOption(run);
+        options.addOption(browser);
         options.addOption(sakuliHome);
         options.addOption(sahiHome);
         options.addOption(encrypt);
         options.addOption(anInterface);
         try {
             CommandLine cmd = parser.parse(options, args);
+            final String browserValue = getOptionValue(cmd, browser);
             final String testSuiteFolderPath = getOptionValue(cmd, run);
             final String sakuliMainFolderPath = getOptionValue(cmd, sakuliHome);
             final String sahiHomePath = getOptionValue(cmd, sahiHome);
@@ -104,7 +113,7 @@ public class SakuliStarter {
             final String strToEncrypt = getOptionValue(cmd, encrypt);
 
             if (cmd.hasOption(run.getLongOpt()) || cmd.hasOption(run.getOpt())) {
-                TestSuite testSuite = runTestSuite(testSuiteFolderPath, sakuliMainFolderPath, sahiHomePath);
+                TestSuite testSuite = runTestSuite(testSuiteFolderPath, sakuliMainFolderPath, browserValue, sahiHomePath);
                 //return the state as system exit parameter
                 //return values are corresponding to the error codes in file "sahi_return_codes.txt"
                 System.exit(testSuite.getState().getErrorCode());
@@ -143,10 +152,18 @@ public class SakuliStarter {
 
     /**
      * wrapper for {@link #runTestSuite(String, String, String)} with usage of the default sahi-proxy configured in the
-     * 'sakuli.properties'.
+     * 'sakuli.properties' and the configured browser 'testsuite.browser'.
      */
     public static TestSuite runTestSuite(String testSuiteFolderPath, String sakuliMainFolder) throws FileNotFoundException {
         return runTestSuite(testSuiteFolderPath, sakuliMainFolder, null);
+    }
+
+    /**
+     * wrapper for {@link #runTestSuite(String, String, String, String)} with usage of the default sahi-proxy configured in the
+     * 'sakuli.properties'.
+     */
+    public static TestSuite runTestSuite(String testSuiteFolderPath, String sakuliMainFolder, String browser) throws FileNotFoundException {
+        return runTestSuite(testSuiteFolderPath, sakuliMainFolder, browser, null);
     }
 
     /**
@@ -159,11 +176,12 @@ public class SakuliStarter {
      *
      * @param testSuiteFolderPath  path to the Sakuli test suite
      * @param sakuliHomeFolderPath path to the folder which contains 'config' and the 'libs' folder
+     * @param browser              (optional) browser for the test execution, default: property 'testsuite.browser'
      * @param sahiHomeFolder       (optional) specifies a different sahi proxy as in the 'sakuli.properties' file
      * @return the {@link TestSuiteState} of the Sakuli test execution.
      * @throws FileNotFoundException
      */
-    public static TestSuite runTestSuite(String testSuiteFolderPath, String sakuliHomeFolderPath, String sahiHomeFolder) throws FileNotFoundException {
+    public static TestSuite runTestSuite(String testSuiteFolderPath, String sakuliHomeFolderPath, String browser, String sahiHomeFolder) throws FileNotFoundException {
         LOGGER.info(String.format("\n\n=========== START new SAKULI Testsuite from '%s' =================", testSuiteFolderPath));
 
         //temp log cache for init stuff -> should be in the log file
@@ -176,6 +194,11 @@ public class SakuliStarter {
         //if sahi home have been set override the default
         if (isNotEmpty(sahiHomeFolder)) {
             tempLogCache = SakuliFolderHelper.checkSahiProxyHomeAndSetContextVariables(sahiHomeFolder, tempLogCache);
+        }
+
+        //set browser for test execution if not empty
+        if (isNotEmpty(browser)) {
+            tempLogCache = SakuliFolderHelper.setTestSuiteBrowserContextVariable(browser, tempLogCache);
         }
 
         //because of the property loading strategy, the logger must be initialized through the Spring Context!

@@ -20,7 +20,6 @@ package org.sakuli.utils;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
@@ -35,6 +34,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static org.apache.commons.lang.StringUtils.isNotEmpty;
+
 /**
  * Overrides the default {@link PropertyPlaceholderConfigurer} to dynamically load the properties files in  the {@link
  * TestSuiteProperties#TEST_SUITE_FOLDER} and {@link SakuliProperties#SAKULI_HOME_FOLDER}.
@@ -46,6 +47,7 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
     public static String TEST_SUITE_FOLDER_VALUE;
     public static String SAKULI_HOME_FOLDER_VALUE;
     public static String SAHI_HOME_VALUE;
+    public static String TEST_SUITE_BROWSER;
     protected boolean loadSakuliProperties = true;
     protected boolean loadSakuliDefaultProperties = true;
     protected boolean loadTestSuiteProperties = true;
@@ -68,9 +70,12 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         loadSakuliProperties(props);
         loadTestSuiteProperties(props);
         //override if set sahi proxy home
-        if (StringUtils.isNotEmpty(SAHI_HOME_VALUE)) {
+        if (isNotEmpty(SAHI_HOME_VALUE)) {
             props.setProperty(SahiProxyProperties.PROXY_HOME_FOLDER, SAHI_HOME_VALUE);
             props.setProperty(SahiProxyProperties.PROXY_CONFIG_FOLDER, SAHI_HOME_VALUE + File.separator + "userdata");
+        }
+        if (isNotEmpty(TEST_SUITE_BROWSER)) {
+            props.setProperty(TestSuiteProperties.BROWSER_NAME, TEST_SUITE_BROWSER);
         }
         modifySahiProperties(props);
         super.loadProperties(props);
@@ -185,7 +190,6 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
             logger.debug("modify properties file '{}' with '{}'", propFilePathToConfig, temProps.toString());
         } catch (ConfigurationException e) {
             logger.error("modify sahi properties went wrong", e);
-//            throw new RuntimeException("Error by reading the property file '" + propFilePathToConfig + "'", e);
         }
 
     }
