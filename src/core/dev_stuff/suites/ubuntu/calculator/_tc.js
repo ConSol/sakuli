@@ -39,6 +39,7 @@ try {
     try {
         appCalc.open();
         screen.waitForImage("calculator.png", 20);
+        testCase.endOfStep("init");
 
         env.type("525");
         env.sleep(2);
@@ -60,7 +61,7 @@ try {
         if (screen.exists("close-without-saving", 1)) {
             screen.find("close-without-saving").click();
         }
-        testCase.endOfStep("Close Calculator", 10);
+        testCase.endOfStep("Close Calculator");
     }
 
     /************************************************

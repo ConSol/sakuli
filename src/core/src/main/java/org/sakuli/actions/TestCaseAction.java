@@ -164,6 +164,13 @@ public class TestCaseAction {
     }
 
     /**
+     * Wrapper for {@link #addTestCaseStep(String, String, String, int)} with warningTime '0'.
+     */
+    public void addTestCaseStep(String stepName, String startTime, String stopTime) throws SakuliException {
+        addTestCaseStep(stepName, startTime, stopTime, 0);
+    }
+
+    /**
      * Save a new step to a existing test case. Must be called before {@link #saveResult(String, String, String, String,
      * String)}
      *

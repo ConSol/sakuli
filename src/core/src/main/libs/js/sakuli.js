@@ -81,6 +81,9 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      * @method endOfStep
      */
     that.endOfStep = function (stepName, warningTime) {
+        if (undefined == warningTime) {
+            warningTime = 0;
+        }
         var currentTime = (new Date()).getTime();
         //call the backend
         that.javaObject.addTestCaseStep(stepName, that.stepStartTime, currentTime, warningTime);
