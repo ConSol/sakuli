@@ -52,11 +52,11 @@ Copy the PNP4nagios graph template into the templates folder:
 
 	OMD[sakuli]:~$ cp __TEMP__/setup/nagios/check_sakuli.php ~/etc/pnp4nagios/templates/
 
-## Receivers
-Depending on your environment, you can set up on of these two possible receiver types. Each of them is documented on a single page.
+## Forwarder
+Depending on your environment, you can set up on of these two possible forwarder types. Each of them is documented on a single page.
 
-  * [Setting up the Sakuli **result database** in OMD](receivers/database.md#omd-configuration)
-  * [Setting up Nagios to **receive Gearman results** from Sakuli clients](receivers/gearman.md#omd-configuration)
+  * [Setting up the Sakuli **result database** in OMD](forwarder-database.md#omd-configuration)
+  * [Setting up Nagios to **receive Gearman results** from Sakuli clients](forwarder-gearman.md#omd-configuration)
 
 
 ## Include CPU/Memory metrics in Sakuli graphs (optional) 

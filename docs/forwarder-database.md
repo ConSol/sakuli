@@ -1,7 +1,7 @@
-# Database Receiver
+# Database Forwarder
 This page describes how Sakuli can be configured to write its test results into a **MySQL database** which is checked asynchronously by the monitoring system with *check_mysql_health*. 
 
-![sakuli-db-receiver](pics/sakuli-db.png)
+![sakuli-db-forwarder](pics/sakuli-db.png)
  
 ## OMD Configuration
 
@@ -163,7 +163,7 @@ After that, reload the OMD crontab:
 Open `__SAKULI_HOME__/_include/sakuli.properties` on the Sakuli client and fill in the **database parameters** Sakuli should write the test results to:
 
     # DEFAULT: false
-    sakuli.receiver.database.enabled=true
+    sakuli.forwarder.database.enabled=true
 	
 	jdbc.driverClass=com.mysql.jdbc.Driver
     jdbc.host=__DB_IP__

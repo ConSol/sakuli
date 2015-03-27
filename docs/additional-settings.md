@@ -9,18 +9,18 @@ For example, you can set `testsuite.browser=firefox` in `sakuli.properties` to e
 
 ## Sakuli settings
 
-### Receivers
+### Forwarder
 
 <!--- FIXME: umbenennen in forwarder -->
 
-Sakuli can send test result to "Receivers", which can be currently **GearmanD** servers (such as Nagios monitoring systems with mod-gearman) and **JDBC databases**. If no receiver is defined, a result summary is printed out in the end of a suite. 
+Sakuli can send test result to "Forwarder", which can be currently **GearmanD** servers (such as Nagios monitoring systems with mod-gearman) and **JDBC databases**. If no forwarder is defined, a result summary is printed out in the end of a suite. 
   
-![sakuli_receivers](pics/sakuli-receivers.png)
+![sakuli_forwarders](pics/sakuli-forwarders.png)
 
-For the configuration of receivers on the OMD server side, see [Receivers in OMD](installation-omd.md#receivers)
+For the configuration of forwarders on the OMD server side, see [Forwarder in OMD](installation-omd.md#forwarders)
 
-  * [Setting up Sakuli client to send results to the **Database**](receiver-database.md#sakuli-configuration)
-  * [Setting up Sakuli client to submit results to the **Gearman Receiver**](receiver-gearman.md#sakuli-configuration)
+  * [Setting up Sakuli client to send results to the **Database**](forwarder-database.md#sakuli-configuration)
+  * [Setting up Sakuli client to submit results to the **Gearman Forwarder**](forwarder-gearman.md#sakuli-configuration)
 
 ### Exception handling
 

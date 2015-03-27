@@ -1,7 +1,7 @@
-# Gearman Receiver
+# Gearman Forwarder
 This page describes how Sakuli can be configured to transmit its test results directly into the **Gearman queue** of the monitoring system. 
 
-![sakuli-db-receiver](pics/sakuli-gearman.png)
+![sakuli-db-forwarder](pics/sakuli-gearman.png)
 
 The configured `testsuite.id` in the `testsuite.properties` file, will be used as __service name__.
 The results (ok and not ok results) will be available in the __"Status Information"__ of the service check.  
@@ -98,14 +98,14 @@ Open `__SAKULI_HOME__\_include\sakuli.properties` on the Sakuli client:
 
 ### Gearman parameters
 
-	sakuli.receiver.gearman.enabled=true
-	sakuli.receiver.gearman.server.host=__GEARMAN_IP__
-	sakuli.receiver.gearman.server.port=[Gearman Port defined in "omd config"]
-	sakuli.receiver.gearman.server.queue=check_results
+	sakuli.forwarder.gearman.enabled=true
+	sakuli.forwarder.gearman.server.host=__GEARMAN_IP__
+	sakuli.forwarder.gearman.server.port=[Gearman Port defined in "omd config"]
+	sakuli.forwarder.gearman.server.queue=check_results
 	
 	# Nagios check settings
 	# default nagios host_name (can be overwritten in testsuite.properties) 
-	sakuli.receiver.gearman.nagios.hostname=win7sakuli
+	sakuli.forwarder.gearman.nagios.hostname=win7sakuli
 	# gets appended to the performance data in order to set the name of PNP4nagios template
-	sakuli.receiver.gearman.nagios.check_command=check_sakuli
+	sakuli.forwarder.gearman.nagios.check_command=check_sakuli
 
