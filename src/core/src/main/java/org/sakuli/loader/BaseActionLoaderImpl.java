@@ -108,6 +108,7 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
             if (!testSuite.isUiTest()) {
                 //add the "sakuli-delay-active" var to the script runner context
                 if (rhinoScriptRunner == null || rhinoScriptRunner.getSession() == null) {
+                    //could be possible if the aspectj compiler won't worked correctly, see RhinoAspect#getRhinoScriptRunner
                     throw new SakuliException(String.format("cannot init rhino script runner with sakuli custom delay variable '%s'",
                             SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR));
                 }
