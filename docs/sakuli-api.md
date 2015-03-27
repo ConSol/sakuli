@@ -316,7 +316,7 @@ set a new default similarity for the screen capturing methods.
 
 **Params**
 
-- similarity `Double` - value between 0 and 1, default = 0.8  
+- similarity `number` - value between 0 and 1, default = 0.8  
 
 **Returns**:  - this Environment or NULL on errors.  
 <a name="Environment.getRegionFromFocusedWindow"></a>

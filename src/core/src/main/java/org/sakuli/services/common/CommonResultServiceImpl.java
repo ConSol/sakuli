@@ -19,12 +19,14 @@
 package org.sakuli.services.common;
 
 import org.sakuli.actions.environment.Application;
+import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.state.TestSuiteState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.function.Predicate;
 
 /**
  * The common result service will be called every time after the test suite execution.
@@ -49,10 +51,35 @@ public class CommonResultServiceImpl extends AbstractResultService {
         logger.info(testSuite.getResultString()
                 + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
                 + testSuite.getState() + " ======================\n");
-        if (testSuite.getState().equals(TestSuiteState.ERRORS)) {
-            String errorMsg = "ERROR-Summary:\n" + testSuite.getExceptionMessages();
-            logger.error(errorMsg + "\n");
+        switch (testSuite.getState()) {
+            case WARNING_IN_CASE:
+                logTestCaseStateDetailInfo(tc -> tc.getState().isWarning());
+                break;
+            case WARNING_IN_STEP:
+                logTestCaseStateDetailInfo(tc -> tc.getState().isWarningInStep());
+                break;
+            case CRITICAL_IN_CASE:
+                logTestCaseStateDetailInfo(tc -> tc.getState().isCritical());
+                break;
+            case ERRORS:
+                String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages();
+                logger.error(errorMsg + "\n");
+                break;
         }
+    }
+
+    private void logTestCaseStateDetailInfo(Predicate<TestCase> predicate) {
+        testSuite.getTestCases().values().stream()
+                .filter(predicate)
+                .forEach(tc -> {
+                    if (tc.getState().isWarningInStep()) {
+                        tc.getSteps().stream()
+                                .filter(s -> s.getState().isWarning())
+                                .forEach(s -> logger.warn("{}: {}", testSuite.getState(), tc.getName() + " -> " + s.getName()));
+                    } else {
+                        logger.warn("{}: {}", testSuite.getState(), tc.getName());
+                    }
+                });
     }
 
     protected void cleanClipboard() {

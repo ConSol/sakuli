@@ -31,7 +31,7 @@ function Region(optResumeOnException) {
     if (undefined == optResumeOnException) {
         optResumeOnException = Boolean(false);
     }
-    return loadRegion(Packages.org.sakuli.loader.BeanLoader.loadRegion(optResumeOnException), optResumeOnException);
+    return initRegion(this, Packages.org.sakuli.loader.BeanLoader.loadRegion(optResumeOnException));
 }
 
 /**
@@ -54,14 +54,15 @@ function RegionRectangle(x, y, w, h, optResumeOnException) {
     if (undefined == optResumeOnException) {
         optResumeOnException = Boolean(false);
     }
-    return loadRegion(Packages.org.sakuli.loader.BeanLoader.loadRegionRectangle(x, y, w, h, optResumeOnException), optResumeOnException);
+    return initRegion(this, Packages.org.sakuli.loader.BeanLoader.loadRegionRectangle(x, y, w, h, optResumeOnException));
 }
 
 /**
- * @private (internal loader function)
+ * Internal class to implement all Region functions.
+ *
+ * @private (internal function)
  */
-function loadRegion(javaObject, resumeOnException) {
-    var that = {};
+function initRegion(that, javaObject) {
 
     /**
      * Finds an image inside this region immediately.
@@ -632,7 +633,6 @@ function loadRegion(javaObject, resumeOnException) {
      *****************************************************************************************************/
 
     that.javaObject = javaObject;
-    that.resumeOnException = Boolean(resumeOnException);
 
     /**
      * @private (internal function)
@@ -641,8 +641,8 @@ function loadRegion(javaObject, resumeOnException) {
         if (undefined == updatedJavaObject || updatedJavaObject == null) {
             return undefined;
         }
-        that.javaObject = updatedJavaObject;
-        return that;
+        //return new instance to keep old reference stable
+        return initRegion({}, updatedJavaObject);
     }
 
     return that;

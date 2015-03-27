@@ -62,7 +62,7 @@ public enum TestCaseState implements SakuliState {
     private final int errorCode;
     private final String stateDescription;
 
-    private TestCaseState(int i, String stateDescription) {
+    TestCaseState(int i, String stateDescription) {
         this.errorCode = i;
         this.stateDescription = stateDescription;
     }
@@ -98,6 +98,10 @@ public enum TestCaseState implements SakuliState {
         return getWarningCodes().contains(this);
     }
 
+    public boolean isWarningInStep() {
+        return WARNING_IN_STEP.equals(this);
+    }
+
     @Override
     public boolean isCritical() {
         return getCriticalCodes().contains(this);
@@ -119,5 +123,4 @@ public enum TestCaseState implements SakuliState {
     public List<TestCaseState> getCriticalCodes() {
         return Arrays.asList(CRITICAL, ERRORS);
     }
-
 }

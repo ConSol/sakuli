@@ -43,18 +43,23 @@ try {
         env.type("525");
         env.sleep(2);
         //screen.find("plus.png").click().type("100");
-        screen.find("plus.png").mouseMove().sleep(2).mouseDown(MouseButton.LEFT).sleep(1).mouseUp(MouseButton.LEFT).type("100");
-        screen.find("result.png").click();
+        appCalc.getRegion().find("plus.png").mouseMove().sleep(2).mouseDown(MouseButton.LEFT).sleep(1).mouseUp(MouseButton.LEFT).type("100");
+        appCalc.getRegion().find("result.png").click();
+        testCase.endOfStep("calculation", 12);
 
         appGedit.open();
         screen.waitForImage("gedit.png", 20);
         env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
         env.sleep(4);
+        testCase.endOfStep("gedit paste", 20);
         // finally close the calculator app!
     } finally {
 
         appCalc.closeApp();
         appGedit.closeApp();
+        if (screen.exists("close-without-saving", 1)) {
+            screen.find("close-without-saving").click();
+        }
         testCase.endOfStep("Close Calculator", 10);
     }
 

@@ -132,7 +132,6 @@ public class SakuliStarter {
 
     private static String getOptionValue(CommandLine cmd, Option option) {
         return option.getOpt() != null ? cmd.getOptionValue(option.getOpt()) : cmd.getOptionValue(option.getLongOpt());
-//        return isNotEmpty(shortOptionValue) ? shortOptionValue : cmd.getOptionValue(option.getLongOpt());
     }
 
     private static void printHelp(Options options) {

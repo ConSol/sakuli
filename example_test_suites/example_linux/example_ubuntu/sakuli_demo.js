@@ -30,23 +30,24 @@ var appGedit = new Application("/usr/bin/gedit");
 try {
 
     appCalc.open();
-    screen.waitForImage("calculator.png",20);
-   
+    screen.waitForImage("calculator.png", 20);
+
     env.type("525");
     env.sleep(2);
     screen.find("plus.png").click().type("100");
     screen.find("result.png").click();
- 
+
     appGedit.open();
-    screen.waitForImage("gedit.png",20);
+    screen.waitForImage("gedit.png", 20);
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
-	 env.sleep(4);
-	 
-	 
+    env.sleep(4);
 } catch (e) {
     testCase.handleException(e);
 } finally {
     appCalc.closeApp();
     appGedit.closeApp();
+    if (screen.exists("close-without-saving", 1)) {
+        screen.find("close-without-saving").click();
+    }
     testCase.saveResult();
 }

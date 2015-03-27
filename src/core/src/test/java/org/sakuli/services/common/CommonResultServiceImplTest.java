@@ -19,15 +19,19 @@
 package org.sakuli.services.common;
 
 import org.sakuli.LoggerTest;
+import org.sakuli.builder.TestCaseExampleBuilder;
+import org.sakuli.builder.TestCaseStepExampleBuilder;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.state.TestCaseState;
+import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.nio.file.Path;
@@ -42,33 +46,50 @@ import static org.mockito.Mockito.spy;
 public class CommonResultServiceImplTest extends LoggerTest {
 
     private CommonResultServiceImpl testling = spy(new CommonResultServiceImpl());
-    private TestSuite testSuite;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @DataProvider(name = "states")
+    public static Object[][] states() {
+        return new Object[][]{
+                {TestSuiteState.ERRORS, TestCaseState.WARNING, "ERROR .* ERROR:"},
+                {TestSuiteState.WARNING_IN_CASE, TestCaseState.WARNING, "WARN .* WARNING_IN_CASE: Unit Test Case"},
+                {TestSuiteState.CRITICAL_IN_CASE, TestCaseState.CRITICAL, "WARN .* CRITICAL_IN_CASE: Unit Test Case"},
+                {TestSuiteState.WARNING_IN_STEP, TestCaseState.WARNING_IN_STEP, "WARN .* WARNING_IN_STEP: Unit Test Case -\\> step for unit test"}
+        };
+    }
 
     @Override
     @BeforeMethod
     public void init() {
         super.init();
         doNothing().when(testling).cleanClipboard();
-        testSuite = new TestSuiteExampleBuilder()
-                .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS).withException(new SakuliException("TEST")).buildExample();
-        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
     }
 
-    @Test
-    public void testSaveAllResults() throws Exception {
+    @Test(dataProvider = "states")
+    public void testSaveAllResults(TestSuiteState testSuiteState, TestCaseState testCaseState, String stateOutputRegex) throws Exception {
+        TestCaseStepState stepState = TestCaseStepState.WARNING;
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .withId("LOG_TEST_SUITE").withState(testSuiteState)
+                .withException(testSuiteState.isError() ? new SakuliException("TEST") : null)
+                .withTestCases(Arrays.asList(new TestCaseExampleBuilder()
+                                .withTestCaseSteps(Arrays.asList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
+                                .withState(testCaseState)
+                                .buildExample()
+                ))
+                .buildExample();
+        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
         Path logfile = Paths.get(properties.getLogFile());
         testling.saveAllResults();
-        String lastLineOfLogFile = getLastLineOfLogFile(logfile, 42);
+        String lastLineOfLogFile = getLastLineOfLogFile(logfile, testSuiteState.isError() ? 42 : 39);
         List<String> regExes = Arrays.asList(
                 "INFO.*",
-                "=========== RESULT of SAKULI Testsuite \"LOG_TEST_SUITE\" - ERRORS =================",
+                "=========== RESULT of SAKULI Testsuite \"LOG_TEST_SUITE\" - " + testSuiteState + " =================",
                 "test suite id: LOG_TEST_SUITE",
                 "guid: LOG_TEST_SUITE.*",
                 "name: Unit Test Sample Test Suite",
-                "RESULT STATE: ERRORS",
-                "result code: 6",
-                "ERRORS:TEST",
+                "RESULT STATE: " + testSuiteState,
+                "result code: " + testSuiteState.getErrorCode(),
+                testSuiteState.isError() ? "ERRORS:TEST" : null,
                 "db primary key: -1",
                 "duration: 120.0 sec.",
                 "warning time: 0 sec.",
@@ -77,11 +98,11 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 "end time: 17-08-2014 14:02:00",
                 "db primary key of job table: -1",
                 "browser: firefox",
-                "\t======== test case \"UNIT_TEST.*\" ended with OK =================",
+                "\t======== test case \"UNIT_TEST.*\" ended with " + testCaseState + " =================",
                 "\ttest case id: UNIT_TEST_CASE.*",
                 "\tname: Unit Test Case",
-                "\tRESULT STATE: OK",
-                "\tresult code: 0",
+                "\tRESULT STATE: " + testCaseState,
+                "\tresult code: " + testCaseState.getErrorCode(),
                 "\tdb primary key: -1",
                 "\tduration: 3.0 sec.",
                 "\twarning time: 4 sec.",
@@ -90,25 +111,30 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 "\tend time: .*",
                 "\tstart URL: http://www.start-url.com",
                 "\tlast URL: http://www.last-url.com",
-                "\t\t======== test case step \"step for unit test\" ended with OK =================",
+                "\t\t======== test case step \"step for unit test\" ended with " + stepState + " =================",
                 "\t\tname: step for unit test",
-                "\t\tRESULT STATE: OK",
-                "\t\tresult code: 0",
+                "\t\tRESULT STATE: " + stepState,
+                "\t\tresult code: " + stepState.getErrorCode(),
                 "\t\tdb primary key: -1*",
                 "\t\tduration: 1.0 sec.",
                 "\t\twarning time: 2 sec.",
                 "\t\tstart time: .*",
                 "\t\tend time: .*",
-                "===========  SAKULI Testsuite \"LOG_TEST_SUITE\" execution FINISHED - ERRORS ======================",
+                "===========  SAKULI Testsuite \"LOG_TEST_SUITE\" execution FINISHED - " + testSuiteState + " ======================",
                 "",
-                "ERROR .* ERROR-Summary:",
-                "TEST.*");
+                stateOutputRegex,
+                testSuiteState.isError() ? "TEST.*" : null
+        );
+
         List<String> strings = Arrays.asList(lastLineOfLogFile.split("\n"));
         Iterator<String> regExIterator = regExes.iterator();
         for (String string : strings) {
             String regex = regExIterator.next();
+            while (regex == null && regExIterator.hasNext()) {
+                regex = regExIterator.next();
+            }
             logger.debug("\nREGEX: {}\n |\n - STR: {}", regex, string);
-            Assert.assertTrue(string.matches(regex));
+            assertRegExMatch(string, regex);
         }
     }
 }
