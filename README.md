@@ -2,6 +2,8 @@
 
 *An end-to-end testing tool for web sites and common UIs with full Nagios integration*
 
+**-> [Download](http://labs.consol.de/sakuli/install/)**
+
 **TABLE OF CONTENTS**
 
 * [**Introduction**](#Introduction)
