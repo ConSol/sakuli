@@ -230,7 +230,7 @@ public class SakuliExceptionHandler {
 
 
     /**
-     * transforms any {@link Throwable} to SakuliException. If the property 'sakuli.takeScreenShots.onErrors=true' is
+     * transforms any {@link Throwable} to SakuliException. If the property 'sakuli.screenshot.onError=true' is
      * set, the methods add a Screenshot.
      *
      * @param e a {@link Throwable}

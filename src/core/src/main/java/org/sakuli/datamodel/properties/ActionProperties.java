@@ -34,7 +34,7 @@ import java.nio.file.Paths;
 @Component
 public class ActionProperties extends AbstractProperties {
 
-    public static final String TAKE_SCREENSHOTS = "sakuli.takeScreenShots.onErrors";
+    public static final String TAKE_SCREENSHOTS = "sakuli.screenshot.onError";
     public static final String AUTO_HIGHLIGHT_ENABLED = "sakuli.autoHighlight.enabled";
     public static final String AUTO_HIGHLIGHT_SEC = "sakuli.autoHighlight.seconds";
     public static final String AUTO_HIGHLIGHT_SEC_DEFAULT = "1.1f";
