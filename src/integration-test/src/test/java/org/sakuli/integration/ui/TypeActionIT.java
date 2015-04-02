@@ -20,7 +20,6 @@ package org.sakuli.integration.ui;
 
 import javafx.stage.Stage;
 import org.sakuli.integration.IntegrationTest;
-import org.sakuli.javaDSL.TestCaseInitParameter;
 import org.sakuli.javaDSL.actions.Key;
 import org.sakuli.javaDSL.actions.Region;
 import org.testng.annotations.Test;
@@ -31,21 +30,10 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 /**
- * @author tschneck
- *         Date: 09.04.14
+ * @author tschneck Date: 09.04.14
  */
 @Test(groups = IntegrationTest.GROUP_UI)
 public class TypeActionIT extends AbstractUiTestApplicationIT {
-
-    @Override
-    protected String getTestCaseId() {
-        return "Type_Action_Test";
-    }
-
-    @Override
-    protected TestCaseInitParameter getTestCaseInitParameter() throws Throwable {
-        return new TestCaseInitParameter(getUniqueTestCaseId(), IMAGE_LIB_FOLDER_NAME);
-    }
 
     @Test
     public void testLoginAction() throws Exception {

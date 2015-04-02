@@ -43,7 +43,7 @@ public abstract class AbstractLogAwareTest {
         try {
             return Paths.get(BaseTest.class.getResource(resourceName).toURI()).toString();
         } catch (URISyntaxException e) {
-            LOGGER.error("could not resolve Testsuite from classpath resource '{}'", resourceName, e);
+            LOGGER.error("could not resolve resource '{}' from classpath '{}'", resourceName, e);
             return null;
         }
     }

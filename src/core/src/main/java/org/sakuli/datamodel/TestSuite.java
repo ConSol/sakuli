@@ -45,7 +45,6 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
     private Path testSuiteFile;
     private int dbJobPrimaryKey = -1;
     private Map<String, TestCase> testCases;
-    private boolean uiTest = false;
 
     public TestSuite() {
     }
@@ -270,11 +269,4 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
         return new TreeSet<>();
     }
 
-    public boolean isUiTest() {
-        return uiTest;
-    }
-
-    public void setUiTest(boolean uiTest) {
-        this.uiTest = uiTest;
-    }
 }

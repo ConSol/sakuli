@@ -16,4 +16,8 @@ public class SakuliRuntimeException extends RuntimeException {
     public SakuliRuntimeException(String reason, Exception e) {
         super(reason, e);
     }
+
+    public SakuliRuntimeException(String reason) {
+        super(reason);
+    }
 }

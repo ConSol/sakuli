@@ -21,4 +21,11 @@ public class SakuliJavaPropertyPlaceholderConfigurer extends SakuliPropertyPlace
         super.loadSakuliDefaultProperties(props);
         props.put(TestSuiteProperties.LOAD_TEST_CASES_AUTOMATIC_PROPERTY, "false");
     }
+
+    @Override
+    protected void modifySahiProperties(Properties props) {
+        String isUiTest = props.getProperty(TestSuiteProperties.TEST_SUITE_IS_UI_TEST);
+        writePropertiesToSahiConfig = !Boolean.valueOf(isUiTest);
+        super.modifySahiProperties(props);
+    }
 }

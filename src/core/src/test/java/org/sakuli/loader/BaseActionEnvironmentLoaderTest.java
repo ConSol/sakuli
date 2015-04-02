@@ -27,6 +27,7 @@ import org.mockito.MockitoAnnotations;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
+import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.testng.Assert;
@@ -48,6 +49,8 @@ public class BaseActionEnvironmentLoaderTest {
     private Session session;
     @Mock
     private SahiProxyProperties sahiProxyProperties;
+    @Mock
+    private TestSuiteProperties testSuiteProperties;
     @Mock
     private TestSuite testSuite;
     @Mock

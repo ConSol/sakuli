@@ -6,12 +6,14 @@
  */
 package org.sakuli.javaDSL;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.sakuli.actions.TestCaseAction;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.builder.TestCaseBuilder;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.javaDSL.utils.SakuliJavaPropertyPlaceholderConfigurer;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
@@ -24,7 +26,7 @@ import org.testng.annotations.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -46,9 +48,16 @@ public abstract class AbstractSakuliTest {
     private TestCaseInitParameter initParameter;
     private TestSuite testSuite;
 
-    abstract protected TestCaseInitParameter getTestCaseInitParameter() throws Throwable;
+    public static Path resolveResource(Class<?> aClass, String resourceName) {
+        try {
+            //should be the common src/test/resources folder
+            return Paths.get(aClass.getResource(resourceName).toURI());
+        } catch (URISyntaxException | NullPointerException e) {
+            throw new SakuliRuntimeException("cannot resolve resource '" + resourceName + "' from classpath!", e);
+        }
+    }
 
-    protected abstract String getTestSuiteFolder();
+    abstract protected TestCaseInitParameter getTestCaseInitParameter() throws Throwable;
 
     /**
      * Initialize the Spring context of the Sakuli test suite and invokes all configured Initializing Services.
@@ -60,7 +69,7 @@ public abstract class AbstractSakuliTest {
         executorService = Executors.newCachedThreadPool();
         BeanLoader.CONTEXT_PATH = "java-dsl-beanRefFactory.xml";
         SakuliJavaPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = getTestSuiteFolder();
-        SakuliJavaPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = getSakuliMainFolder();
+        SakuliJavaPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = getSakuliHomeFolder();
         SakuliJavaPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = getSahiFolder();
         InitializingServiceHelper.invokeInitializingServcies();
     }
@@ -86,12 +95,13 @@ public abstract class AbstractSakuliTest {
             throw new SakuliException("init parameter have to be set!");
         }
         testSuite = BeanLoader.loadBean(TestSuite.class);
-        testSuite.setUiTest(true);
         testSuite.addTestCase(new TestCaseBuilder(testCaseName, initParameter.getTestCaseId()).build());
         testCaseAction = BeanLoader.loadTestCaseAction();
 
         //init the image folders and test case times
-        initParameter.addImagePath(getTestCaseFolder().toString());
+        if (Files.exists(getTestCaseFolder())) {
+            initParameter.addImagePath(getTestCaseFolder().toString());
+        }
         List<Path> imagePaths = initParameter.getImagePaths();
         testCaseAction.initWithPaths(initParameter.getTestCaseId(),
                 initParameter.getWarningTime(),
@@ -140,21 +150,36 @@ public abstract class AbstractSakuliTest {
     }
 
     protected String getTestSuiteRootFolder() {
-        URL test_suites = this.getClass().getResource("/test_suites");
-        try {
-            return Paths.get(test_suites.toURI()).toString();
-        } catch (URISyntaxException e) {
-            throw new RuntimeException("cannot find test-resource folder 'test-suites'", e);
+        Path resourcePath = resolveResource(this.getClass(), "/");
+        if (Files.exists(resourcePath)) {
+            return resourcePath.normalize().toAbsolutePath().toString();
         }
+        throw new SakuliRuntimeException("Cannot load test suites root folder! Should be at normal test 'src/test/resources'");
+    }
+
+    /**
+     * @return the matching resource folder of the package of the current class!
+     */
+    protected String getTestSuiteFolder() {
+        Path suiteFolder = resolveResource(this.getClass(), ".");
+        if (Files.exists(suiteFolder)) {
+            return suiteFolder.normalize().toAbsolutePath().toString();
+        }
+        throw new SakuliRuntimeException(String.format("Cannot load test suite folder from classpath! Should be at normal test 'src/test/resources/%s'",
+                StringUtils.replace(this.getClass().getCanonicalName(), ".", "/")));
     }
 
     protected Path getTestCaseFolder() {
         return Paths.get(getTestSuiteFolder() + File.separator + initParameter.getTestCaseFolderName());
     }
 
-    //TODO make separate maven module and centralize the default properties
-    protected String getSakuliMainFolder() {
-        return ".." + File.separator + "core" + File.separator + "src" + File.separator + "main";
+    protected String getSakuliHomeFolder() {
+        String packageName = "/org/sakuli/common";
+        Path sakuliHomeFolder = resolveResource(AbstractSakuliTest.class, packageName);
+        if (Files.exists(sakuliHomeFolder)) {
+            return sakuliHomeFolder.normalize().toAbsolutePath().toString();
+        }
+        throw new SakuliRuntimeException("Cannot load SAKULI_HOME folder! Should be normally under 'target/classes/" + packageName + "'");
     }
 
 

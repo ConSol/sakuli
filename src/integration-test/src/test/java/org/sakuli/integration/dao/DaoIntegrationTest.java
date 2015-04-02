@@ -74,9 +74,9 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
     }
 
     private String getTestSuiteFolder() {
-        URL test_suites = this.getClass().getResource("/test_suites");
+        URL test_suites = this.getClass().getResource(".");
         try {
-            return Paths.get(test_suites.toURI()).toString() + TEST_FOLDER_PATH;
+            return Paths.get(test_suites.toURI()).toString();
         } catch (URISyntaxException e) {
             throw new RuntimeException("Can't load test_suites folder:", e);
         }

@@ -23,7 +23,6 @@ import javafx.stage.Stage;
 import org.sakuli.actions.screenbased.MouseButton;
 import org.sakuli.integration.IntegrationTest;
 import org.sakuli.integration.ui.app.UiTestApplication;
-import org.sakuli.javaDSL.TestCaseInitParameter;
 import org.sakuli.javaDSL.actions.Region;
 import org.testng.annotations.Test;
 
@@ -34,21 +33,10 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 /**
- * @author tschneck
- *         Date: 09.04.14
+ * @author tschneck Date: 09.04.14
  */
 @Test(groups = IntegrationTest.GROUP_UI)
 public class ClickActionIT extends AbstractUiTestApplicationIT {
-
-    @Override
-    protected String getTestCaseId() {
-        return "Click_Action_Test";
-    }
-
-    @Override
-    protected TestCaseInitParameter getTestCaseInitParameter() throws Throwable {
-        return new TestCaseInitParameter(getUniqueTestCaseId(), IMAGE_LIB_FOLDER_NAME);
-    }
 
     @Test
     public void testWaitForDoubleClickAction() throws Exception {

@@ -74,6 +74,10 @@
         <constructor-arg value="org.sakuli.loader.ScreenActionLoaderImpl">
         </constructor-arg>
     </bean>
+    <bean id="org.sakuli.datamodel.properties.TestSuiteProperties" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.datamodel.properties.TestSuiteProperties">
+        </constructor-arg>
+    </bean>
 
     <!-- test beans for testing SpringProfilesInitializer -->
     <!--<bean class="org.sakuli.utils.SpringProfilesInitializer" />-->

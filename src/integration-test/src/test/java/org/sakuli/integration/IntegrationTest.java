@@ -34,6 +34,5 @@ public interface IntegrationTest {
     String GROUP_UI = "ui";
     String SAKULI_MAIN_FOLDER_PATH = StringUtils.replace(
             "../common/src/main/resources/org/sakuli/common", "/", File.separator);
-    String TEST_FOLDER_PATH = File.separator + "_testsuite4IT";
 
 }

@@ -109,8 +109,8 @@ public class SahiProxyProperties extends AbstractProperties {
     @Value("${" + MAX_CONNECT_TRIES + ":" + DEFAULT_MAX_CONNECT_TRIES + "}")
     private Integer maxConnectTries;
     /**
-     * Specifies the default delay for one event, which should be used to prevent
-     * blocking Request during sikuli based actions in a sahi controlled proxy
+     * Specifies the default delay for one event, which should be used to prevent blocking Request during sikuli based
+     * actions in a sahi controlled proxy
      */
     @Value("${" + REQUEST_DELAY_MS + ":}")
     private Integer requestDelayMs;
@@ -118,6 +118,8 @@ public class SahiProxyProperties extends AbstractProperties {
     private Integer requestDelayRefreshMs;
     @Autowired
     private SakuliProperties sakuliProperties;
+    @Autowired
+    private TestSuiteProperties testSuiteProperties;
     private Path sahiJSInjectConfigFile;
     private Path sahiJSInjectSourceFile;
     private Path sahiJSInjectTargetFile;
@@ -126,12 +128,15 @@ public class SahiProxyProperties extends AbstractProperties {
     public void initFolders() throws FileNotFoundException {
         sahiHomeFolder = Paths.get(sahiHomeFolderPropertyValue).normalize().toAbsolutePath();
         sahiConfigFolder = Paths.get(sahiConfigFolderPropertyValue).normalize().toAbsolutePath();
-        checkFolders(sahiHomeFolder, sahiConfigFolder);
-        loadSahiInjectFiles();
+        if (!testSuiteProperties.isUiTest()) {
+            checkFolders(sahiHomeFolder, sahiConfigFolder);
+            loadSahiInjectFiles();
+        }
     }
 
     /**
-     * Loads the paths for all custom Sahi inject files, which will be needed for {@link SahiProxy#injectCustomJavaScriptFiles()}
+     * Loads the paths for all custom Sahi inject files, which will be needed for {@link
+     * SahiProxy#injectCustomJavaScriptFiles()}
      *
      * @throws FileNotFoundException
      */

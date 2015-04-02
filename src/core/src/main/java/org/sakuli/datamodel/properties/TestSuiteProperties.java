@@ -37,6 +37,7 @@ public class TestSuiteProperties {
     public static final String TEST_SUITE_PROPERTIES_FILE_APPENDER = File.separator + TEST_SUITE_PROPERTIES_FILE_NAME;
     public static final String TEST_SUITE_SUITE_FILE_NAME = "testsuite.suite";
     public static final String TEST_SUITE_SUITE_FILE_APPENDER = File.separator + TEST_SUITE_SUITE_FILE_NAME;
+    public static final String TEST_SUITE_IS_UI_TEST = "testsuite.ui-test.only";
 
     public static final String SUITE_ID = "testsuite.id";
     public static final String SUITE_NAME = "testsuite.name";
@@ -65,6 +66,8 @@ public class TestSuiteProperties {
     private String browserName;
     @Value("${" + LOAD_TEST_CASES_AUTOMATIC_PROPERTY + ":true}") //default = TRUE
     private boolean loadTestCasesAutomatic;
+    @Value("${" + TEST_SUITE_IS_UI_TEST + ":false}") // default FALSE
+    private boolean uiTest = false;
 
     @PostConstruct
     public void initFolders() {
@@ -142,5 +145,17 @@ public class TestSuiteProperties {
 
     public void setLoadTestCasesAutomatic(boolean loadTestCasesAutomatic) {
         this.loadTestCasesAutomatic = loadTestCasesAutomatic;
+    }
+
+    /**
+     * will be set to true if only an ui-test (without web-components) will take place. Attention: this feature is
+     * currently only supported in the javaDsl!!!
+     */
+    public boolean isUiTest() {
+        return uiTest;
+    }
+
+    public void setUiTest(boolean uiTest) {
+        this.uiTest = uiTest;
     }
 }
