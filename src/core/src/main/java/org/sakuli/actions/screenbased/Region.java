@@ -92,7 +92,7 @@ public class Region implements Action {
         typingUtil = new TypingUtil<>(this);
     }
 
-    public ScreenActionLoader getScreenActionLoader() {
+    protected ScreenActionLoader getScreenActionLoader() {
         return BeanLoader.loadScreenActionLoader();
     }
 
