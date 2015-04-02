@@ -72,11 +72,12 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
 
     @Test
     public void testCallRegionMethod() throws Exception {
-        ScreenActionLoader loaderMock = mock(ScreenActionLoader.class);
+        RegionImpl regionImplMock = mock(RegionImpl.class);
         TypingUtil typingUtil = mock(TypingUtil.class);
         when(typingUtil.type(anyString(), anyString())).thenReturn(null);
 
-        Region region = new Region(mock(RegionImpl.class), false);
+        Region region = spy(new Region(regionImplMock, false));
+        doReturn(mock(ScreenActionLoader.class)).when(region).getScreenActionLoader();
         ReflectionTestUtils.setField(region, "typingUtil", typingUtil);
         region.type("BLA");
         assertLastLine(logFile, "Environment", LogLevel.INFO, "Environment.type() - type over system keyboard with arg(s) [BLA]");

@@ -46,7 +46,7 @@ public class Region implements Action {
      * @param resumeOnException if true, the test execution won't stop on an occurring error.
      */
     public Region(boolean resumeOnException) {
-        this.regionImpl = new RegionImpl(resumeOnException, BeanLoader.loadScreenActionLoader());
+        this.regionImpl = new RegionImpl(resumeOnException, getScreenActionLoader());
         typingUtil = new TypingUtil<>(this);
     }
 
@@ -72,7 +72,7 @@ public class Region implements Action {
      * @param h                 height of the rectangle stating by x,y
      */
     public Region(int x, int y, int w, int h, boolean resumeOnException) {
-        this.regionImpl = new RegionImpl(x, y, w, h, resumeOnException, BeanLoader.loadScreenActionLoader());
+        this.regionImpl = new RegionImpl(x, y, w, h, resumeOnException, getScreenActionLoader());
         typingUtil = new TypingUtil<>(this);
     }
 
@@ -80,7 +80,7 @@ public class Region implements Action {
      * Wrapper for the {@link org.sikuli.script.Region} objects.
      */
     public Region(org.sikuli.script.Region region, boolean resumeOnException) {
-        this.regionImpl = new RegionImpl(region, resumeOnException, BeanLoader.loadScreenActionLoader());
+        this.regionImpl = new RegionImpl(region, resumeOnException, getScreenActionLoader());
         typingUtil = new TypingUtil<>(this);
     }
 
@@ -90,6 +90,10 @@ public class Region implements Action {
     public Region(RegionImpl regionImpl) {
         this.regionImpl = regionImpl;
         typingUtil = new TypingUtil<>(this);
+    }
+
+    public ScreenActionLoader getScreenActionLoader() {
+        return BeanLoader.loadScreenActionLoader();
     }
 
     /**
