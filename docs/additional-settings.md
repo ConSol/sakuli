@@ -2,30 +2,32 @@
 
 This page contains different topics regarding the configuration of both **Sakuli** and its components, **Sahi** and **Sikuli**.
 
-## Property settings and loading strategy
 
-The default property settings in `__SAKULI_HOME__/config/sakuli-default.properties` are the defaults and can be overridden like follow:
-
-1. `system properties` - for example added with the Java VM option -Dsakuli.property.key=value
-   -> valid for runtime
-2. file `your-test-suites-folder/test-suite/testsuite.properties` in the test suite folder
-   -> valid for all test cases
-3. file `your-test-suites-folder/sakuli.properties` in folder above your specified test suite folder
-   -> valid for all test suites
-
-To define a specific behaviour to your test, it is possible to override all
-properties of the 'sakuli-default.properties' file in one of above mentioned files.
-
-For example, you can set `testsuite.browser=firefox` in `sakuli.properties` to execute each test in your test suite folder in Firefox. If one check should run in IE, set `testsuite.browser=ie` in `testsuite.properties`.
 
 
 ## Sakuli settings
 
-### Receivers
+### General note on property settings
 
-<!--- FIXME: umbenennen in forwarder -->
+Sakuli properties are predefined in `__SAKULI_HOME__/config/sakuli-default.properties`; these values should/can be **overridden** in the following order (last match wins): 
 
-Sakuli can send test result to "Receivers", which can be currently **GearmanD** servers (such as Nagios monitoring systems with mod-gearman) and **JDBC databases**. If no receiver is defined, a result summary is printed out in the end of a suite. 
+1. as a **global testsuite property** in `test-suites-folder/sakuli.properties`
+   -> valid for **all test suites** within this folder
+2. as a **testsuite property** in `test-suites-folder/test-suite/testsuite.properties`
+   -> valid for **all test cases** within a test suite 
+3. as a **Java VM option** `-Dsakuli.property.key=value`, appended to the Sakuli starter `sakuli.sh / sakuli.bat` 
+   -> valid for a Sakuli starter
+
+We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file; your changes will not be preserved. 
+
+**Example:** To use Chrome instead of Firefox you can set
+
+* `testsuite.browser=firefox` in `sakuli.properties` for all suites.
+* `testsuite.browser=ie` in `testsuite.properties` for a particular test suite.
+
+### Forwarder
+
+Sakuli can send test result to *Receivers*, which can be currently **GearmanD** servers (such as Nagios monitoring systems with mod-gearman) and **JDBC databases**. 
   
 ![sakuli_receivers](pics/sakuli-receivers.png)
 

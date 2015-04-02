@@ -99,46 +99,10 @@ Error reporting is enabled by default - you should turn off this service because
 
 ## Troubleshooting
 
-### Sahi does not start
-_**When I click on the "Start Sahi" icon on the desktop to Start Sahi Dashboard, nothing comes up.**_
+### Missing keystrokes on `type("...")` or failing `paste("...")`
 
-#### Check PATH
-Open _**%SAKULI_HOME%**\sahi\userdata\bin\start_dashboard.bat_ insert a new line on the end of the script and add "pause". Save te file and try to start Sahi again. If the error message is like *"command 'java' was not found"*, you should check if _**%PATH%**_ is containing the right path to the java executable.   
+Sikuli keyboard events (`type()`and `paste()`) on a Sahi-controlled browser instance can get lost if they are executed at the same time when Sahi internal status requests are sent from the browser to the Sahi proxy (default: 10x per sec). 
 
+For this reason, Sikuli type/paste methods first extend the Sahi status interval to the value of `sahi.proxy.requestDelayOnSikuliInput.delayTime` (in ms) which is long enough to execute _one_ keyboard action. For the method `type` (which is "press/release character by character""), a multiple if this value is chosen. Before leaving the paste/type method, the interval gets reset by Sakuli to the default Sahi status interval.
 
-
-
-
-## cannot resolve mac address
-
-FIXME
-
-![macadress](../docs/pics/w_macaddress.jpg) 
-### Suite does not start
-#### Sikuli lib path
-
-
-FIXME
-
-### Missing keys on `type("...")` or not successful `paste("...")`
-
-FIXME
-
-It is possible if you use inside of the browser the typing and paste funktion of sakuli, which simulates real keyboard 
-interaction, that they sometimes won't work as you expect. The reason for this is, that in the backend running
-Sahi proxy communicates with your browser over synchronous POST-requests. If you actually hit such a POST-request timeslot,
-it is possible that your Browser engine will lost the key events.
-
-__Solution:__ Set the property `sahi.proxy.requestDelayOnSikuliInput.delayTime` in your `sakuli.properties` or `testsuite.properties` which modify the request interval 
-of the sahi proxy so that the keyboard interaction won't be in conflict with some synchronous POST-requests. See:
-
- ```
- # Specifies the interval in milliseconds, what should be applied when sikuli based input
- # (like typing or clicking) is interacting with a Browser website.
- # This setting only make sense, if your test does NOT use Sahi functions for controlling the
- # testing website. This setting will prevent the test for losing some key or click events
- # in case of blocking, synchronous sahi-interal status requests.
- #
- sahi.proxy.requestDelayOnSikuliInput.delayTime=500
- ```
-=======
+This setting is not needed if Sikuli does keyboard actions on GUIs not controlled by Sahi.
