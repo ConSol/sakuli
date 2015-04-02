@@ -47,13 +47,11 @@
         <!-- create setup folder -->
         <!-- copy database script to setup folder -->
         <fileSet>
-            <directory>${basedir}/src/main</directory>
-            <excludes>
-                <!-- excludes the whole java and resources folder -->
-                <exclude>**/java/</exclude>
-                <exclude>**/resources/</exclude>
-            </excludes>
+            <directory>${project.parent.basedir}/src/common/src/main/resources/org/sakuli/common</directory>
             <outputDirectory>/${sakuli.filename}</outputDirectory>
+            <excludes>
+                <exclude>META-INF</exclude>
+            </excludes>
         </fileSet>
 
         <!-- copy compiled jar -->

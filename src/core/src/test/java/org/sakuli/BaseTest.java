@@ -19,6 +19,7 @@
 package org.sakuli;
 
 import net.sf.sahi.report.Report;
+import org.apache.commons.lang3.StringUtils;
 import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
@@ -35,7 +36,8 @@ import static org.testng.Assert.assertTrue;
  */
 public abstract class BaseTest extends AbstractLogAwareTest {
 
-    public static final String SAKULI_HOME_FOLDER_PATH = "." + File.separator + "src" + File.separator + "main";
+    public static final String SAKULI_HOME_FOLDER_PATH = StringUtils.replace(
+            "../common/src/main/resources/org/sakuli/common", "/", File.separator);
     public static final String SAHI_FOLDER_PATH = ".." + File.separator + "sahi";
     public static final String TEST_FOLDER_PATH = getResource("/_testsuite4JUnit");
     public static final String TEST_CONTEXT_PATH = "JUnit-beanRefFactory.xml";

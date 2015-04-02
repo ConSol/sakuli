@@ -18,22 +18,22 @@
 
 package org.sakuli.integration;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.File;
 
 /**
  * basic interface  for all INTEGRATION tests
- * <p>
- * to run your test als integration test annotate it with
- * <br/>
- * {@code @Test(groups = IntegrationTest.GROUP)}
+ * <p/>
+ * to run your test als integration test annotate it with <br/> {@code @Test(groups = IntegrationTest.GROUP)}
  *
- * @author tschneck
- *         Date: 09.04.14
+ * @author tschneck Date: 09.04.14
  */
 public interface IntegrationTest {
-    public static final String GROUP = "integration";
-    public static final String GROUP_UI = "ui";
-    public static final String SAKULI_MAIN_FOLDER_PATH = ".." + File.separator + "core" + File.separator + "src" + File.separator + "main";
-    public static final String TEST_FOLDER_PATH = File.separator + "_testsuite4IT";
+    String GROUP = "integration";
+    String GROUP_UI = "ui";
+    String SAKULI_MAIN_FOLDER_PATH = StringUtils.replace(
+            "../common/src/main/resources/org/sakuli/common", "/", File.separator);
+    String TEST_FOLDER_PATH = File.separator + "_testsuite4IT";
 
 }

@@ -117,6 +117,11 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
+        <!-- Derby Driver for embedded DB -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+        </dependency>
 
         <!-- JAVA FX - unfortunately only over this way possible yet -->
         <dependency>

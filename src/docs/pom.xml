@@ -39,7 +39,7 @@
         <node.dir>${project.build.directory}/node-mvn</node.dir>
         <node.modules.dir>${node.dir}/node_modules</node.modules.dir>
         <js-src.target>${project.build.directory}/js_src</js-src.target>
-        <js-src.source>${project.parent.basedir}/src/core/src/main/libs/js</js-src.source>
+        <js-src.source>${project.parent.basedir}src/common/src/main/resources/org/sakuli/common/libs/js</js-src.source>
         <markdown.output.directory>${project.parent.basedir}/docs</markdown.output.directory>
     </properties>
 

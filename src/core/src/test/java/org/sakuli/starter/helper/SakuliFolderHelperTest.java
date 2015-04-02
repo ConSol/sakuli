@@ -88,7 +88,7 @@ public class SakuliFolderHelperTest extends BaseTest {
 
     @Test
     public void testCheckHomeFolder() throws Exception {
-        Path path = Paths.get("./src/main");
+        Path path = Paths.get(BaseTest.SAKULI_HOME_FOLDER_PATH);
         assertTrue(Files.exists(path));
         SakuliFolderHelper.checkSakuliHomeFolderAndSetContextVariables(path.toString(), "");
         assertEquals(SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE, path.normalize().toAbsolutePath().toString());
