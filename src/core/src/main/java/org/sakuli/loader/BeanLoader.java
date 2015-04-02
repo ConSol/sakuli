@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author tschneck
- *         Date: 24.06.13
+ * @author tschneck Date: 24.06.13
  */
 public class BeanLoader {
     protected static final Logger logger = LoggerFactory.getLogger(BeanLoader.class);
@@ -60,22 +59,22 @@ public class BeanLoader {
     public static Application loadApplication(String applicationNameOrPath, String resumeOnException) {
         logger.debug("Get an new application object over BeanFactory for \""
                 + applicationNameOrPath + "\"");
-        return new Application(applicationNameOrPath, Boolean.valueOf(resumeOnException), loadScreenActionLoader());
+        return new Application(applicationNameOrPath, Boolean.valueOf(resumeOnException));
     }
 
     public static Environment loadEnvironment(String resumeOnException) {
         logger.debug("Get an new environment object over BeanFactory.");
-        return new Environment(Boolean.valueOf(resumeOnException), loadScreenActionLoader());
+        return new Environment(Boolean.valueOf(resumeOnException));
     }
 
     public static Region loadRegion(String resumeOnException) {
         logger.debug("Get an new Region object over BeanFactory.");
-        return new Region(Boolean.valueOf(resumeOnException), loadScreenActionLoader());
+        return new Region(Boolean.valueOf(resumeOnException));
     }
 
     public static Region loadRegionRectangle(int x, int y, int w, int h, String resumeOnException) {
         logger.debug("Get an new Region object over BeanFactory.");
-        return new Region(x, y, w, h, Boolean.valueOf(resumeOnException), loadScreenActionLoader());
+        return new Region(x, y, w, h, Boolean.valueOf(resumeOnException));
     }
 
     /**

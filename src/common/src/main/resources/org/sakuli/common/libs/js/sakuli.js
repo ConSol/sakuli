@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,8 @@
 /**** Exclude this global variables from JSLint Warnings ****/
 /* global navigator, window, java, Packages,saveResult,step, $output, _set, _stopOnError, _logExceptionAsFailure,_resolvePath,_include, $sahi_userdata, $guid, $capture, initialize */
 /**
- * __All Sahi-API__ functions are natively usable in Sakuli. For a complete documentation, see [Sahi-API](http://sahi.co.in/w/all-apis).
+ * __All Sahi-API__ functions are natively usable in Sakuli. For a complete documentation, see
+ * [Sahi-API](http://sahi.co.in/w/all-apis).
  *
  * @namespace Sahi-API
  */
@@ -47,7 +48,8 @@ _include("sakuli_Region.js");
  *
  * @param {number} warningTime threshold in seconds
  * @param {number} criticalTime threshold in seconds
- * @param {String[]} optImagePathArray (optional) Path or Array of Paths to the folder containing the image patterns for these test cases.
+ * @param {String[]} optImagePathArray (optional) Path or Array of Paths to the folder containing the image patterns
+ *     for these test cases.
  *
  * @returns an initialized Sakuli object.
  * @namespace TestCase

@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ package org.sakuli.actions.screenbased;
 import org.sakuli.actions.Action;
 import org.sakuli.actions.ModifySahiTimer;
 import org.sakuli.actions.logging.LogToResult;
+import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.Screen;
 
@@ -33,33 +34,60 @@ public class Region implements Action {
     private TypingUtil<Region> typingUtil;
 
     /**
-     * Creates a new Region from the hole Screen
+     * Creates a new Region of the complete screen.
      */
-    public Region(boolean resumeOnException, ScreenActionLoader loader) {
-        this.regionImpl = new RegionImpl(resumeOnException, loader);
+    public Region() {
+        this(false);
+    }
+
+    /**
+     * Creates a new Region of the complete screen.
+     *
+     * @param resumeOnException if true, the test execution won't stop on an occurring error.
+     */
+    public Region(boolean resumeOnException) {
+        this.regionImpl = new RegionImpl(resumeOnException, BeanLoader.loadScreenActionLoader());
         typingUtil = new TypingUtil<>(this);
     }
 
     /**
-     * Creates a new Region from the position parameters
+     * Creates a new Region from the position parameters.
+     *
+     * @param x x position of a rectangle on the screen.
+     * @param y x position of a rectangle on the screen.
+     * @param w weight of the rectangle stating by x,y
+     * @param h height of the rectangle stating by x,y
      */
-    public Region(int x, int y, int w, int h, boolean resumeOnException, ScreenActionLoader loader) {
-        this.regionImpl = new RegionImpl(x, y, w, h, resumeOnException, loader);
+    public Region(int x, int y, int w, int h) {
+        this(x, y, w, h, false);
+    }
+
+    /**
+     * Creates a new Region from the position parameters.
+     *
+     * @param resumeOnException if true, the test execution won't stop on an occurring error.
+     * @param x                 x position of a rectangle on the screen.
+     * @param y                 x position of a rectangle on the screen.
+     * @param w                 weight of the rectangle stating by x,y
+     * @param h                 height of the rectangle stating by x,y
+     */
+    public Region(int x, int y, int w, int h, boolean resumeOnException) {
+        this.regionImpl = new RegionImpl(x, y, w, h, resumeOnException, BeanLoader.loadScreenActionLoader());
         typingUtil = new TypingUtil<>(this);
     }
 
     /**
      * Wrapper for the {@link org.sikuli.script.Region} objects.
      */
-    public Region(org.sikuli.script.Region region, boolean resumeOnException, ScreenActionLoader loader) {
-        this.regionImpl = new RegionImpl(region, resumeOnException, loader);
+    public Region(org.sikuli.script.Region region, boolean resumeOnException) {
+        this.regionImpl = new RegionImpl(region, resumeOnException, BeanLoader.loadScreenActionLoader());
         typingUtil = new TypingUtil<>(this);
     }
 
     /**
-     * Wrapper for the {@link org.sikuli.script.Region} objects.
+     * Wrapper for the {@link RegionImpl} objects.
      */
-    public Region(RegionImpl regionImpl, boolean resumeOnException, ScreenActionLoader loader) {
+    public Region(RegionImpl regionImpl) {
         this.regionImpl = regionImpl;
         typingUtil = new TypingUtil<>(this);
     }
@@ -152,15 +180,10 @@ public class Region implements Action {
     }
 
     /**
-     * Low-level mouse action to press the assigned {@link MouseButton} on the current position.
-     * <p>
-     * Example: Press and release the right mouse button vor 3 seconds on a specified region:
-     * <br/>
-     * Region region = new Region().find("your-pattern.png");
-     * <br/>
-     * region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
-     * <br/>
-     * </p>
+     * Low-level mouse action to press the assigned {@link MouseButton} on the current position. <p> Example: Press and
+     * release the right mouse button vor 3 seconds on a specified region: <br/> Region region = new
+     * Region().find("your-pattern.png"); <br/> region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+     * <br/> </p>
      *
      * @return the {@link Region} or NULL on errors.
      */
@@ -171,15 +194,9 @@ public class Region implements Action {
     }
 
     /**
-     * Low-level mouse action to release the assigned {@link MouseButton}.
-     * <p>
-     * Example: Press and release the right mouse button vor 3 seconds on a specified region:
-     * <br/>
-     * Region region = new Region().find("your-pattern.png");
-     * <br/>
-     * region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
-     * <br/>
-     * </p>
+     * Low-level mouse action to release the assigned {@link MouseButton}. <p> Example: Press and release the right
+     * mouse button vor 3 seconds on a specified region: <br/> Region region = new Region().find("your-pattern.png");
+     * <br/> region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT); <br/> </p>
      *
      * @return the {@link Region} or NULL on errors.
      */
@@ -543,11 +560,11 @@ public class Region implements Action {
     }
 
     private Region update(RegionImpl regionImpl) {
-        return regionImpl != null ? new Region(regionImpl, getResumeOnException(), getLoader()) : null;
+        return regionImpl != null ? new Region(regionImpl, getResumeOnException()) : null;
     }
 
     private Region update(org.sikuli.script.Region region) {
-        return region != null ? new Region(region, getResumeOnException(), getLoader()) : null;
+        return region != null ? new Region(region, getResumeOnException()) : null;
 
     }
 

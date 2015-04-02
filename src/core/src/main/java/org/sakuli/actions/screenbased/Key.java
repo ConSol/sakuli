@@ -16,15 +16,14 @@
  * limitations under the License.
  */
 
-package org.sakuli.javaDSL.actions;
+package org.sakuli.actions.screenbased;
 
 /**
- * Wrapper class for {@link org.sikuli.script.Key}
- * Represents the javascript file "sakuli_Key.js"
+ * Wrapper class for {@link org.sikuli.script.Key} Represents the javascript file "sakuli_Key.js"
  *
- * @author tschneck
- *         Date: 08.01.15
+ * @author tschneck Date: 08.01.15
  */
 public class Key extends org.sikuli.script.Key {
 
 }
+

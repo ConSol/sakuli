@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,9 @@
 package org.sakuli.integration.ui;
 
 import javafx.stage.Stage;
+import org.sakuli.actions.screenbased.Key;
+import org.sakuli.actions.screenbased.Region;
 import org.sakuli.integration.IntegrationTest;
-import org.sakuli.javaDSL.actions.Key;
-import org.sakuli.javaDSL.actions.Region;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;

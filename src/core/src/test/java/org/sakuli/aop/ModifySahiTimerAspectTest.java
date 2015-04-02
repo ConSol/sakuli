@@ -63,8 +63,9 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         ScreenActionLoader loaderMock = mock(ScreenActionLoader.class);
         TypingUtil typingUtil = mock(TypingUtil.class);
         when(typingUtil.type(anyString(), anyString())).thenReturn(null);
-        Environment env = new Environment(false, loaderMock);
+        Environment env = new Environment(false);
         ReflectionTestUtils.setField(env, "typingUtil", typingUtil);
+        ReflectionTestUtils.setField(env, "loader", loaderMock);
         env.type("BLA");
         assertLastLine(logFile, "Environment", LogLevel.INFO, "Environment.type() - type over system keyboard with arg(s) [BLA]");
     }
@@ -75,7 +76,7 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         TypingUtil typingUtil = mock(TypingUtil.class);
         when(typingUtil.type(anyString(), anyString())).thenReturn(null);
 
-        Region region = new Region(mock(RegionImpl.class), false, loaderMock);
+        Region region = new Region(mock(RegionImpl.class), false);
         ReflectionTestUtils.setField(region, "typingUtil", typingUtil);
         region.type("BLA");
         assertLastLine(logFile, "Environment", LogLevel.INFO, "Environment.type() - type over system keyboard with arg(s) [BLA]");

@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.screenbased.Region;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.actions.screenbased.TypingUtil;
+import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.App;
 import org.sikuli.script.IRobot;
@@ -49,10 +50,21 @@ public class Environment implements Action {
     private ScreenActionLoader loader;
     private TypingUtil<Environment> typingUtil;
 
+    /**
+     * Creates a new Environment object, to control all non-region actions like typing or pasting.
+     */
+    public Environment() {
+        this(false);
+    }
 
-    public Environment(boolean resumeOnException, ScreenActionLoader Loader) {
+    /**
+     * Creates a new Environment object, to control all non-region actions like typing or pasting.
+     *
+     * @param resumeOnException if true, the test execution won't stop on an occurring error.
+     */
+    public Environment(boolean resumeOnException) {
         this.resumeOnException = resumeOnException;
-        this.loader = Loader;
+        this.loader = BeanLoader.loadScreenActionLoader();
         this.typingUtil = new TypingUtil<>(this);
     }
 
@@ -75,25 +87,23 @@ public class Environment implements Action {
     }
 
     /**
-     * @return a {@link Region} object from the current focused window
-     * or NULL on errors.
+     * @return a {@link Region} object from the current focused window or NULL on errors.
      */
     @LogToResult(logClassInstance = false)
     public Region getRegionFromFocusedWindow() {
         org.sikuli.script.Region origRegion = App.focusedWindow();
         if (origRegion != null) {
-            return new Region(origRegion, resumeOnException, loader);
+            return new Region(origRegion, resumeOnException);
         }
         loader.getExceptionHandler().handleException("couldn't extract a Region from the current focused window", resumeOnException);
         return null;
     }
 
     /**
-     * Takes a screenshot of the current screen and saves it to the overgiven path.
-     * If there ist just a file name, the screenshot will be saved in your testsuite log folder.
+     * Takes a screenshot of the current screen and saves it to the overgiven path. If there ist just a file name, the
+     * screenshot will be saved in your testsuite log folder.
      *
-     * @param pathName "pathname/filname.format" or just "filename.format"<br>
-     *                 for example "test.png".
+     * @param pathName "pathname/filname.format" or just "filename.format"<br> for example "test.png".
      */
     @LogToResult(message = "take a screenshot from the current screen and save it to the file system", logClassInstance = false)
     public String takeScreenshot(final String pathName) {
@@ -158,8 +168,7 @@ public class Environment implements Action {
     }
 
     /**
-     * pastes the current clipboard content into the focused area.
-     * Will do the same as "STRG + C".
+     * pastes the current clipboard content into the focused area. Will do the same as "STRG + C".
      *
      * @return this {@link Environment}.
      */
@@ -176,8 +185,7 @@ public class Environment implements Action {
     }
 
     /**
-     * copy the current selected item or text to the clipboard.
-     * Will do the same as "STRG + V".
+     * copy the current selected item or text to the clipboard. Will do the same as "STRG + V".
      *
      * @return this {@link Environment}.
      */

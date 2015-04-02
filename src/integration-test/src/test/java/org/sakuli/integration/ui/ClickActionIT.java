@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ package org.sakuli.integration.ui;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.sakuli.actions.screenbased.MouseButton;
+import org.sakuli.actions.screenbased.Region;
 import org.sakuli.integration.IntegrationTest;
 import org.sakuli.integration.ui.app.UiTestApplication;
-import org.sakuli.javaDSL.actions.Region;
 import org.testng.annotations.Test;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -68,7 +68,7 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
          */
 
         //opt 1
-        org.sakuli.actions.screenbased.Region region = new Region().exists("login_bt.png", 5);
+        Region region = new Region().exists("login_bt.png", 5);
         region.click();
         //opt 2
         new Region().find("login_bt").click();

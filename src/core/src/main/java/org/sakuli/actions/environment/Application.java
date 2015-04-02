@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package org.sakuli.actions.environment;
 
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.screenbased.Region;
+import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.App;
 import org.slf4j.Logger;
@@ -42,20 +43,29 @@ public class Application extends App {
     /**
      * Creates a new Application of the name or path to the executable.
      *
+     * @param appName name of path of the application.
+     */
+    public Application(String appName) {
+        this(appName, false);
+    }
+
+    /**
+     * Creates a new Application of the name or path to the executable.
+     *
      * @param appName           name of path of the application.
      * @param resumeOnException if true the execution of the script wont't stop at an exception
      */
     // TODO: add aspect for constructor
     @LogToResult(message = "create application", logClassInstance = false)
-    public Application(String appName, boolean resumeOnException, ScreenActionLoader loader) {
+    public Application(String appName, boolean resumeOnException) {
         super(appName);
-        this.loader = loader;
+        this.loader = BeanLoader.loadScreenActionLoader();
         this.resumeOnException = resumeOnException;
     }
 
     /**
-     * Opens the created application.
-     * For loadtime intensiv application change the default sleep time with {@link #setSleepTime(Integer)}.
+     * Opens the created application. For loadtime intensiv application change the default sleep time with {@link
+     * #setSleepTime(Integer)}.
      *
      * @return this {@link Application}.
      */
@@ -76,16 +86,9 @@ public class Application extends App {
      *
      * @return this {@link Application}.
      */
-    @LogToResult(message = "focus application")
     @Override
     public Application focus() {
-        App app = super.focus();
-        sleep(sleepMillis);
-        if (app == null) {
-            loader.getExceptionHandler().handleException("Application '" + getName() + "\" could not be focused! ... Please check if the application has been opened before or is already focused!", resumeOnException);
-            return null;
-        }
-        return this;
+        return focusWindow(0);
     }
 
     /**
@@ -96,12 +99,12 @@ public class Application extends App {
      */
     @LogToResult(message = "focus application in window")
     public Application focusWindow(Integer windowNumber) {
-        logger.info("Focus window \"" + windowNumber + "\" in application \"" + getName() + "\".");
+        logger.debug("Focus window \"" + windowNumber + "\" in application \"" + getName() + "\".");
         App app = super.focus(windowNumber);
         sleep(sleepMillis);
         if (app == null) {
-            loader.getExceptionHandler().handleException("Application '" + getName() + " with window \"" + windowNumber + "\" could not be focused! ... Please check if the application has been opened before!", resumeOnException);
-            return null;
+            logger.warn("Application '{}' could not be focused! ... Please check if the application has been opened before or is already focused!", getName());
+            return this;
         }
         return this;
     }
@@ -129,8 +132,8 @@ public class Application extends App {
     }
 
     /**
-     * sets the sleep time in seconds of the application actions to handle with long loading times.
-     * The default sleep time is set to 1 seconds
+     * sets the sleep time in seconds of the application actions to handle with long loading times. The default sleep
+     * time is set to 1 seconds
      *
      * @param seconds sleep time in seconds
      * @return this {@link Application}.
@@ -148,12 +151,12 @@ public class Application extends App {
      */
     @LogToResult(message = "get a Region object from the application")
     public Region getRegion() {
-        Region region = new Region(super.window(), resumeOnException, loader);
-        if (region == null) {
+        org.sikuli.script.Region window = super.window();
+        if (window == null) {
             loader.getExceptionHandler().handleException("Could not identify Region for application \"" + getName() + "\"", resumeOnException);
             return null;
         }
-        return region;
+        return new Region(window, resumeOnException);
     }
 
     /**
@@ -164,12 +167,12 @@ public class Application extends App {
      */
     @LogToResult(message = "get a Region object from the window of the application ")
     public Region getRegionForWindow(int windowNumber) {
-        Region region = new Region(super.window(windowNumber), resumeOnException, loader);
-        if (region == null) {
+        org.sikuli.script.Region window = super.window(windowNumber);
+        if (window == null) {
             loader.getExceptionHandler().handleException("Could not identify Region for window \"" + windowNumber + "\" of application \"" + getName() + "\"", resumeOnException);
             return null;
         }
-        return region;
+        return new Region(window, resumeOnException);
     }
 
     /**

@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,13 +35,15 @@ function Region(optResumeOnException) {
 }
 
 /**
- * RegionRectangle (extends [Region](#Region)) - Represents a region specified by the x and y coordinates, width and height as a part of the screen.
+ * RegionRectangle (extends [Region](#Region)) - Represents a region specified by the x and y coordinates, width and
+ * height as a part of the screen.
  *
  * @param {number} x – x position of a rectangle on the screen.
  * @param {number} y – y position of a rectangle on the screen.
  * @param {number} w – width of a rectangle in pixel.
  * @param {number} h – height of a rectangle in pixel.
- * @param {Boolean} optResumeOnException (optional) if true, the test execution won't stop on an occurring error. Default: false.
+ * @param {Boolean} optResumeOnException (optional) if true, the test execution won't stop on an occurring error.
+ *     Default: false.
  *
  * @example
  * ```
