@@ -1,13 +1,4 @@
 #!/bin/bash
-# todo ffmpeg
-
-
-# sakuli --run (pfad zur Suite) --sahi_home (Sahi install dir) -h -d --sakuli_home (opt. anderes Sak. Home) 
-
-# sakuli --encrypt (secret) --interface eth0
-
-# ARG1 = suitename
-# 
 VNC_RESOLUTION="1024x768"
 VNC_COL_DEPTH=24
 VNC_DISPLAY=1
