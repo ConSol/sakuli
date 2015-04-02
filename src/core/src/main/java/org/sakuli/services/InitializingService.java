@@ -20,7 +20,7 @@ package org.sakuli.services;
 
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
-import org.sakuli.exceptions.SakuliProxyException;
+import org.sakuli.exceptions.SakuliInitException;
 
 /**
  * Service Interface for all initializing actions.
@@ -37,5 +37,5 @@ public interface InitializingService extends PrioritizedService {
      * <li>load the {@link TestCase}s</li>
      * </ol>
      */
-    void initTestSuite() throws SakuliProxyException;
+    void initTestSuite() throws SakuliInitException;
 }

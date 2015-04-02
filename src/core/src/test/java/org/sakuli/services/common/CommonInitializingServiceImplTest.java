@@ -26,7 +26,7 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliProxyException;
+import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.utils.TestSuitePropertiesTestUtils;
 import org.testng.annotations.Test;
 
@@ -86,7 +86,7 @@ public class CommonInitializingServiceImplTest {
     }
 
 
-    @Test(expectedExceptions = SakuliProxyException.class, expectedExceptionsMessageRegExp = "Cannot read testsuite.suite.*")
+    @Test(expectedExceptions = SakuliInitException.class, expectedExceptionsMessageRegExp = "Cannot read testsuite.suite.*")
     public void testInitExceptionForTestCase() throws Throwable {
         testSuiteProperties = spy(TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "unvalid", ""));
         ts = spy(new TestSuite(testSuiteProperties));

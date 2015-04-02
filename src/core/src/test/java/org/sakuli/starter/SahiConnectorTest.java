@@ -29,7 +29,7 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliProxyException;
+import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.starter.helper.SahiProxy;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -79,7 +79,7 @@ public class SahiConnectorTest extends BaseTest {
         verify(testRunnerMock).addReport(any(Report.class));
         verify(testRunnerMock).setInitJS(anyString());
         verify(testSuiteMock).setStopDate(any(Date.class));
-        verify(sakuliExceptionHandler).handleException(any(SakuliProxyException.class));
+        verify(sakuliExceptionHandler).handleException(any(SakuliInitException.class));
         verify(sahiProxy).shutdown();
         verify(testling, never()).reconnect(any(Exception.class));
     }
@@ -95,7 +95,7 @@ public class SahiConnectorTest extends BaseTest {
         verify(testRunnerMock).addReport(any(Report.class));
         verify(testRunnerMock).setInitJS(anyString());
         verify(testSuiteMock).setStopDate(any(Date.class));
-        verify(sakuliExceptionHandler, never()).handleException(any(SakuliProxyException.class));
+        verify(sakuliExceptionHandler, never()).handleException(any(SakuliInitException.class));
         verify(sahiProxy).shutdown();
         verify(testling, never()).reconnect(any(Exception.class));
     }
@@ -111,7 +111,7 @@ public class SahiConnectorTest extends BaseTest {
         testling.startSahiTestSuite();
         verify(testRunnerMock).addReport(any(Report.class));
         verify(testRunnerMock).setInitJS(anyString());
-        verify(sakuliExceptionHandler, never()).handleException(any(SakuliProxyException.class));
+        verify(sakuliExceptionHandler, never()).handleException(any(SakuliInitException.class));
         verify(sahiProxy).shutdown();
         verify(testling).reconnect(any(Exception.class));
     }

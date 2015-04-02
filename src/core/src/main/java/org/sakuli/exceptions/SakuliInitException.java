@@ -19,23 +19,18 @@
 package org.sakuli.exceptions;
 
 /**
- * Wrapper for a {@link SakuliException} thrown by the Sahi Proxy.
+ * Wrapper for a {@link SakuliException} thrown when something went wrong during the initialisation.
  */
-public class SakuliProxyException extends SakuliException {
-    public SakuliProxyException(String message) {
+public class SakuliInitException extends SakuliException {
+    public SakuliInitException(String message) {
         super(message);
     }
 
-    /**
-     * wraps a {@link Throwable}
-     *
-     * @param e
-     */
-    public SakuliProxyException(Throwable e) {
+    public SakuliInitException(Throwable e) {
         super(e);
     }
 
-    public SakuliProxyException(Throwable e, String message) {
+    public SakuliInitException(Throwable e, String message) {
         super(e, message);
     }
 }

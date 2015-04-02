@@ -6,7 +6,7 @@
  */
 package org.sakuli.services;
 
-import org.sakuli.exceptions.SakuliProxyException;
+import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.loader.BeanLoader;
 
 import java.io.FileNotFoundException;
@@ -30,7 +30,7 @@ public class InitializingServiceHelper {
         for (InitializingService initializingService : services) {
             try {
                 initializingService.initTestSuite();
-            } catch (SakuliProxyException e) {
+            } catch (SakuliInitException e) {
                 BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(e);
             }
         }

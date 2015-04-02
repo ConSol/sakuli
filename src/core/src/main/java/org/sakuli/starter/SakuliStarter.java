@@ -24,7 +24,7 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliCipherException;
-import org.sakuli.exceptions.SakuliProxyException;
+import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.services.ResultServiceHelper;
@@ -220,7 +220,7 @@ public class SakuliStarter {
         }
         /**
          * will be catched if the Sahi-Proxy could not shutdown;
-         */ catch (SakuliProxyException e) {
+         */ catch (SakuliInitException e) {
             LOGGER.error("Unexpected error occurred:", e);
             System.exit(99);
         } finally {

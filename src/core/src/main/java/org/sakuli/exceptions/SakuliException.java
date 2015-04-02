@@ -22,7 +22,7 @@ package org.sakuli.exceptions;
  * @author tschneck
  *         Date: 20.06.13
  */
-public class SakuliException extends Throwable {
+public class SakuliException extends Exception {
 
     public boolean resumeOnException = false;
 

@@ -133,7 +133,7 @@ public class SakuliExceptionHandler {
         }
 
         //Proxy Exception should only be handled if no other exceptions have been added
-        if (!(e instanceof SakuliProxyException) ||
+        if (!(e instanceof SakuliInitException) ||
                 (!containsException(loader.getTestSuite()))) {
             //if the exception have been already handled do no exception handling!
             if (!e.getMessage().contains(RhinoAspect.ALREADY_HANDELED)

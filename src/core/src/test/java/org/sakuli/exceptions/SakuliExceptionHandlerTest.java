@@ -134,7 +134,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
 
         //test Proxy Exception
         when(loader.getCurrentTestCase()).thenReturn(null);
-        testling.handleException(new SakuliProxyException("FAILURE"));
+        testling.handleException(new SakuliInitException("FAILURE"));
         Assert.assertNull(testSuite.getException());
     }
 
@@ -191,8 +191,8 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     public void testHandleSakuliProxyExceptionForTestCases() throws Exception {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
-        testling.handleException(new SakuliProxyException(testExcMessage));
-        assertTrue(testSuite.getException().getCause() instanceof SakuliProxyException);
+        testling.handleException(new SakuliInitException(testExcMessage));
+        assertTrue(testSuite.getException().getCause() instanceof SakuliInitException);
         assertTrue(testSuite.getException().getMessage().contains(testExcMessage));
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
     }
