@@ -72,7 +72,7 @@
                     <showWeaveInfo>true</showWeaveInfo>
                     <forceAjcCompile>true</forceAjcCompile>
                     <verbose>false</verbose>
-                    <Xlint>warning</Xlint>
+                    <Xlint>ignore</Xlint>
                 </configuration>
             </plugin>
 

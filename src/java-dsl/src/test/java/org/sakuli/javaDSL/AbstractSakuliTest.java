@@ -24,7 +24,6 @@ import org.sakuli.actions.TestCaseAction;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.builder.TestCaseBuilder;
 import org.sakuli.exceptions.SakuliException;
-import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.javaDSL.utils.SakuliJavaPropertyPlaceholderConfigurer;
 import org.sakuli.loader.BeanLoader;
@@ -32,7 +31,6 @@ import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.services.ResultServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.CollectionUtils;
 import org.testng.annotations.*;
 
 import java.io.File;
@@ -49,6 +47,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author Tobias Schneck
  */
+@Listeners(value = SakuliExceptionListener.class)
 public abstract class AbstractSakuliTest {
     public static final String SAKULI_TEST = "sakuli-test";
     protected static final Logger logger = LoggerFactory.getLogger(AbstractSakuliTest.class);
@@ -138,12 +137,6 @@ public abstract class AbstractSakuliTest {
                 String.valueOf(DateTime.now().getMillis()),
                 0
         );
-        List<Throwable> exceptions = SakuliExceptionHandler.getAllExceptions(testSuite);
-        if (!CollectionUtils.isEmpty(exceptions)) {
-            //return the first
-            throw exceptions.iterator().next();
-        }
-
     }
 
     @AfterClass(alwaysRun = true)

@@ -39,16 +39,6 @@ public class SakuliExceptionWithScreenshot extends SakuliException {
         this.screenshot = screenshot;
     }
 
-    /**
-     * creates a {@link SakuliException} from a {@link String} and stores the Path to screenshot
-     *
-     * @param message
-     * @param screenshot
-     */
-    public SakuliExceptionWithScreenshot(String message, Path screenshot, boolean resumeOnException) {
-        super(message, resumeOnException);
-        this.screenshot = screenshot;
-    }
 
     /**
      * creates a {@link SakuliException} from a {@link Throwable} and stores the Path to screenshot
@@ -58,11 +48,6 @@ public class SakuliExceptionWithScreenshot extends SakuliException {
      */
     public SakuliExceptionWithScreenshot(Throwable e, Path screenshot) {
         super(e);
-        this.screenshot = screenshot;
-    }
-
-    public SakuliExceptionWithScreenshot(Throwable e, Path screenshot, boolean resumeOnException) {
-        super(e, resumeOnException);
         this.screenshot = screenshot;
     }
 

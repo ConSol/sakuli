@@ -24,8 +24,6 @@ package org.sakuli.exceptions;
  */
 public class SakuliException extends Exception {
 
-    public boolean resumeOnException = false;
-
     /**
      * creates a new {@link SakuliException} from type {@link Throwable}
      *
@@ -53,27 +51,6 @@ public class SakuliException extends Exception {
     public SakuliException(Throwable suppressedException, String message) {
         super(message);
         this.addSuppressed(suppressedException);
-    }
-
-    /**
-     * creates a new {@link SakuliException} from type {@link Throwable}
-     *
-     * @param message message of the exception
-     */
-    public SakuliException(String message, boolean resumeOnException) {
-        super(message);
-        this.resumeOnException = resumeOnException;
-    }
-
-    /**
-     * wraps a {@link Throwable} to a {@link SakuliException}
-     *
-     * @param resumeOnException if false the RhinoScript
-     * @param e
-     */
-    public SakuliException(Throwable e, boolean resumeOnException) {
-        super(e);
-        this.resumeOnException = resumeOnException;
     }
 
 }

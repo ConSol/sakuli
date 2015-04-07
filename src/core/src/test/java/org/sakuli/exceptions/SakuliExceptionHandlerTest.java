@@ -56,7 +56,6 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     private String screenShotFolder = "src/test/resources/org/sakuli/exceptions/screenshots";
     private String testExcMessage = "TEST IT";
     private Path expectedScreenshotPath;
-    private HashMap<String, TestCase> testCases;
 
     @Mock
     private ScreenshotActions screenshotActionsMock;
@@ -82,7 +81,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(screenshotActionsMock.takeScreenshot(anyString(), any(Path.class))).thenReturn(expectedScreenshotPath);
         when(loader.getScreenshotActions()).thenReturn(screenshotActionsMock);
         testCase = new TestCase("testling", "1234_");
-        testCases = new HashMap<>();
+        HashMap<String, TestCase> testCases = new HashMap<>();
         testCases.put(testCase.getId(), testCase);
         testSuite = new TestSuite();
         testSuite.setState(TestSuiteState.RUNNING);
@@ -112,14 +111,14 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         assertTrue(testSuite.getExceptionMessages().contains(excpMessage2));
         assertTrue(testSuite.getExceptionMessages().contains(testExcMessage));
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
-
-
+        assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
     @Test
     public void testHandleExceptionForTestCases() throws Exception {
         setUp();
-        testling.handleException(new Exception(testExcMessage));
+        Exception testExc = new Exception(testExcMessage);
+        testling.handleException(testExc);
         assertTrue(testCase.getException() instanceof SakuliExceptionWithScreenshot);
         assertTrue(testCase.getException().getMessage().contains(testExcMessage));
         assertEquals(testCase.getScreenShotPath(), expectedScreenshotPath);
@@ -136,6 +135,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new SakuliInitException("FAILURE"));
         Assert.assertNull(testSuite.getException());
+        assertTrue(testling.isAlreadyProcessed(testExc));
     }
 
     @Test
@@ -150,7 +150,8 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class), anyString());
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertEquals(testSuite.getException(), receiverException);
-        assertEquals(((SakuliException) testSuite.getException()).resumeOnException, true);
+        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
     @Test
@@ -166,7 +167,8 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);
-        assertEquals(((SakuliException) testSuite.getException()).resumeOnException, true);
+        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
     @Test
@@ -184,7 +186,8 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);
-        assertEquals(((SakuliException) testSuite.getException()).resumeOnException, true);
+        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
     @Test

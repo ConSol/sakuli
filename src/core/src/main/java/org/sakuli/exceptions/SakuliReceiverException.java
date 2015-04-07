@@ -22,7 +22,7 @@ package org.sakuli.exceptions;
  * Wrapper for a {@link SakuliException} thrown by the sakuli {@link org.sakuli.services.receiver} services.
  * For this kind of exception, not error screenshot is necessary
  */
-public class SakuliReceiverException extends SakuliException {
+public class SakuliReceiverException extends SakuliInitException {
     public SakuliReceiverException(String message) {
         super(message);
     }

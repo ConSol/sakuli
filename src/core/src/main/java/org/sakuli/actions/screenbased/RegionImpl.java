@@ -311,7 +311,8 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     }
 
     protected Pattern loadPattern(String imageName) {
-        return loadImage(imageName).getPattern();
+        ImageLibObject imageLibObject = loadImage(imageName);
+        return imageLibObject != null ? imageLibObject.getPattern() : null;
     }
 
     private RegionImpl toRegion(Match match) {
