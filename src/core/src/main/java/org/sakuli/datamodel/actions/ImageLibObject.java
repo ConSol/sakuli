@@ -25,6 +25,9 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Mapping object for images in the sakuli application.
@@ -34,6 +37,7 @@ import java.nio.file.Path;
  */
 public class ImageLibObject {
 
+    public static final List<String> SUPPORT_INPUT_FILE_ENDINGS = Collections.unmodifiableList(Arrays.asList(".png", ".PNG", ".jpg", ".JPG"));
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final Path imageFile;
     private String id;
@@ -46,24 +50,28 @@ public class ImageLibObject {
         if (Files.exists(imageFile)) {
             String name = imageFile.toFile().getName();
 
-            if (name.endsWith(".png")) {
+            if (isValidInputImageFileEnding(name)) {
                 pattern = new Pattern(imageFile.toFile().getAbsolutePath());
 
-                id = name.substring(0, name.indexOf('.'));
+                id = name.substring(0, name.lastIndexOf('.'));
 
                 logger.info("loaded image " + this.toString());
             }
             // for .js files do nothing
             else if (name.endsWith(".js")) {
-                logger.debug("internal image library: Ignore Sahi file " + name);
+                logger.debug("internal image library: Ignore javascript file " + name);
             }
             // for all other files log a warning
             else {
-                logger.info("internal image library: \"" + imageFile.toFile().getAbsolutePath() + "\" is no .png picture");
+                logger.info("internal image library: '" + imageFile.toFile().getAbsolutePath() + "' is no .png picture");
             }
         } else {
-            throw new SakuliException("Image-File \"" + imageFile.toFile().getAbsolutePath() + " does not exists!");
+            throw new SakuliException("Image-File '" + imageFile.toFile().getAbsolutePath() + "' does not exists!");
         }
+    }
+
+    public static boolean isValidInputImageFileEnding(String name) {
+        return SUPPORT_INPUT_FILE_ENDINGS.stream().anyMatch(name::endsWith);
     }
 
     public void setMinSimilarity(double similarityScore) {

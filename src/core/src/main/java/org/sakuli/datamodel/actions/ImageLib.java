@@ -78,8 +78,8 @@ public class ImageLib extends HashMap<String, ImageLibObject> {
 
     public ImageLibObject getImage(String imageName) throws SakuliException {
         String key = imageName;
-        if (imageName.toLowerCase().endsWith(".png")) {
-            key = imageName.substring(0, imageName.length() - 4);
+        if (ImageLibObject.isValidInputImageFileEnding(imageName)) {
+            key = imageName.substring(0, imageName.lastIndexOf("."));
         }
 
         //if the set imageName is not loaded in the piclib throw a exception and log it
