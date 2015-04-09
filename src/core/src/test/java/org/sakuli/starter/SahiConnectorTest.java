@@ -65,6 +65,7 @@ public class SahiConnectorTest extends BaseTest {
         MockitoAnnotations.initMocks(this);
         when(sakuliProperties.getLogFolder()).thenReturn(Paths.get(TEST_FOLDER_PATH));
         when(testSuiteMock.getTestSuiteFolder()).thenReturn(Paths.get(TEST_FOLDER_PATH));
+        when(testSuiteMock.getAbsolutePathOfTestSuiteFile()).thenReturn(Paths.get(TEST_FOLDER_PATH).toString() + File.separator + "testsuite.suite");
     }
 
 
@@ -157,5 +158,11 @@ public class SahiConnectorTest extends BaseTest {
         when(sahiProxyProperties.getMaxConnectTries()).thenReturn(3);
         testling.reconnect(new Exception("Test"));
         verify(testling, never()).startSahiTestSuite();
+    }
+
+    @Test(expectedExceptions = SakuliInitException.class, expectedExceptionsMessageRegExp = "Error - java.io.FileNotFoundException.* - during reading in testsuite.suite file 'unvalid-testsuite.suite'")
+    public void testUnvalidTestSuiteFile() throws Exception {
+        when(testSuiteMock.getAbsolutePathOfTestSuiteFile()).thenReturn(Paths.get("unvalid-testsuite.suite").toString());
+        testling.checkTestSuiteFile();
     }
 }

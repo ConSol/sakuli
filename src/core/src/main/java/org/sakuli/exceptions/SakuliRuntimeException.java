@@ -32,4 +32,8 @@ public class SakuliRuntimeException extends RuntimeException {
     public SakuliRuntimeException(String reason) {
         super(reason);
     }
+
+    public SakuliRuntimeException(Exception e) {
+        super(e);
+    }
 }

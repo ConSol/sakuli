@@ -19,6 +19,7 @@
 package org.sakuli.services;
 
 import org.sakuli.exceptions.SakuliInitException;
+import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.loader.BeanLoader;
 
 import java.io.FileNotFoundException;
@@ -39,7 +40,7 @@ public class InitializingServiceHelper {
                     try {
                         s.initTestSuite();
                     } catch (SakuliInitException e) {
-                        BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(e);
+                        throw new SakuliRuntimeException(e);
                     }
                 });
     }

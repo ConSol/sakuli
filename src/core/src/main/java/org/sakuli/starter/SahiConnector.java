@@ -20,6 +20,7 @@ package org.sakuli.starter;
 
 import net.sf.sahi.ant.Report;
 import net.sf.sahi.test.TestRunner;
+import net.sf.sahi.util.Utils;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
@@ -71,6 +72,7 @@ public class SahiConnector {
                 + testSuite.getTestSuiteFolder().toAbsolutePath().toString()
                 + "\"");
 
+        checkTestSuiteFile();
 //        ConnectionTester.checkTestCaseInitURL(testSuite);
         //default sahi runner to play the sahi script
         TestRunner runner = getTestRunner();
@@ -110,6 +112,21 @@ public class SahiConnector {
             logger.info("test suite finished");
             //shutdown sahi proxy!
             sahiProxy.shutdown();
+        }
+    }
+
+    /**
+     * checks the 'testsuite.suite' file if it is walid!.
+     *
+     * @throws SakuliInitException
+     */
+    void checkTestSuiteFile() throws SakuliInitException {
+        try {
+            Utils.readFileAsString(testSuite.getAbsolutePathOfTestSuiteFile());
+        } catch (Exception e) {
+            throw new SakuliInitException(e, String.format("Error - %s - during reading in testsuite.suite file '%s'",
+                    (e instanceof NullPointerException) ? "unable to read or locate file" : e.getMessage(),
+                    testSuite.getAbsolutePathOfTestSuiteFile()));
         }
     }
 

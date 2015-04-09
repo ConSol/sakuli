@@ -29,7 +29,7 @@ try {
     _highlight(_link("Online Documentation"));
     _highlight(_link("Test Pages"));
     _highlight(_link("Sample Application"));
-    
+
     appCalc.open();
     screen.waitForImage("calculator.png", 20);
 
@@ -45,10 +45,12 @@ try {
 } catch (e) {
     testCase.handleException(e);
 } finally {
-    appCalc.closeApp();
-    appGedit.closeApp();
-    //if (screen.exists("close-without-saving", 1)) {
-    //    screen.find("close-without-saving").click();
-    //}
     testCase.saveResult();
+    try {
+        appCalc.closeApp();
+        appNotepad.closeApp();
+    } catch (e) {
+        //do not handle exception, this is just a teardown
+        env.logInfo(e);
+    }
 }
