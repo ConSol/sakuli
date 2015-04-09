@@ -142,7 +142,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     public void testSakuliReceiverException() throws Exception {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
-        SakuliReceiverException receiverException = new SakuliReceiverException("RECEIVER_EXCEPTION");
+        SakuliReceiverException receiverException = new SakuliReceiverException("FORWARDER_EXCEPTION");
 
         testling.handleException(receiverException, true);
         verify(screenshotActionsMock, never()).takeScreenshotAndHighlight(anyString(), any(Path.class), any(RegionImpl.class));
