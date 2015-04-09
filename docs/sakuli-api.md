@@ -47,6 +47,7 @@
   * [Environment.logInfo(message)](#Environment.logInfo)
   * [Environment.logDebug(message)](#Environment.logDebug)
 * [Key](#Key)
+* [MouseButton](#MouseButton)
 * [Region](#Region)
   * [Region.find(imageName)](#Region.find)
   * [Region.findRegion()](#Region.findRegion)
@@ -54,6 +55,9 @@
   * [Region.click()](#Region.click)
   * [Region.doubleClick()](#Region.doubleClick)
   * [Region.rightClick()](#Region.rightClick)
+  * [Region.mouseMove()](#Region.mouseMove)
+  * [Region.mouseDown(mouseButton)](#Region.mouseDown)
+  * [Region.mouseUp(mouseButton)](#Region.mouseUp)
   * [Region.waitForImage(imageName, seconds)](#Region.waitForImage)
   * [Region.paste(text)](#Region.paste)
   * [Region.pasteMasked(text)](#Region.pasteMasked)
@@ -312,7 +316,7 @@ set a new default similarity for the screen capturing methods.
 
 **Params**
 
-- similarity `Double` - value between 0 and 1, default = 0.8  
+- similarity `number` - value between 0 and 1, default = 0.8  
 
 **Returns**:  - this Environment or NULL on errors.  
 <a name="Environment.getRegionFromFocusedWindow"></a>
@@ -523,7 +527,6 @@ wheel the given steps up.
 ##Environment.logError(message)
 make a error-log over Java backend into the log file.
 This won't stop the execution of the test case.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -532,7 +535,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logWarning"></a>
 ##Environment.logWarning(message)
 make a debug-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -541,7 +543,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logInfo"></a>
 ##Environment.logInfo(message)
 make a info-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -550,7 +551,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logDebug"></a>
 ##Environment.logDebug(message)
 make a debug-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -574,6 +574,25 @@ env.type(Key.F4, Key.ALT);
 
 * [Key](#Key)
 
+<a name="MouseButton"></a>
+#MouseButton
+MouseButton - representing the possible mouse action button.
+
+The following __MouseButton__ values are possible:
+
+`LEFT`, `RIGHT`, `MIDDLE`
+
+**Example**  
+Press and release the right mouse button vor 3 seconds on a specified region:
+```
+var region = new Region().find("your-pattern.png");
+region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+```
+
+**Members**
+
+* [MouseButton](#MouseButton)
+
 <a name="Region"></a>
 #Region
 Region - Represents a region as a part of or the hole screen.
@@ -594,6 +613,9 @@ Region - Represents a region as a part of or the hole screen.
   * [Region.click()](#Region.click)
   * [Region.doubleClick()](#Region.doubleClick)
   * [Region.rightClick()](#Region.rightClick)
+  * [Region.mouseMove()](#Region.mouseMove)
+  * [Region.mouseDown(mouseButton)](#Region.mouseDown)
+  * [Region.mouseUp(mouseButton)](#Region.mouseUp)
   * [Region.waitForImage(imageName, seconds)](#Region.waitForImage)
   * [Region.paste(text)](#Region.paste)
   * [Region.pasteMasked(text)](#Region.pasteMasked)
@@ -666,6 +688,43 @@ makes a double click on the center of the Region.
 makes a right click on the center of the Region.
 
 **Returns**:  - the Region or NULL on errors.  
+<a name="Region.mouseMove"></a>
+##Region.mouseMove()
+Move the mouse pointer the center of the [Region](#Region) and "hovers" it.
+
+**Returns**:  - the [Region](#Region) or NULL on errors.  
+<a name="Region.mouseDown"></a>
+##Region.mouseDown(mouseButton)
+Low-level mouse action to press the assigned [MouseButton](#MouseButton) on the current position.
+
+**Params**
+
+- mouseButton  - on of [MouseButton](#MouseButton) values  
+
+**Returns**:  - the [Region](#Region) or NULL on errors.  
+**Example**  
+Press and release the right mouse button vor 3 seconds on a specified region:
+```
+var region = new Region().find("your-pattern.png");
+region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+```
+
+<a name="Region.mouseUp"></a>
+##Region.mouseUp(mouseButton)
+Low-level mouse action to release the assigned [MouseButton](#MouseButton).
+
+**Params**
+
+- mouseButton  - on of [MouseButton](#MouseButton) values  
+
+**Returns**:  - the [Region](#Region) or NULL on errors.  
+**Example**  
+Press and release the right mouse button vor 3 seconds on a specified region:
+```
+var region = new Region().find("your-pattern.png");
+region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+```
+
 <a name="Region.waitForImage"></a>
 ##Region.waitForImage(imageName, seconds)
 Blocks and waits until a target which is specified by the optImageName is found in the hole

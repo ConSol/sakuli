@@ -64,7 +64,7 @@ For the following guide you need
     ```
 
 * Install Sahi into `<project-dir>/sahi`. Ensure that this path is set in `sahi.proxy.homePath` in file
-  `core/src/main/_include/sakuli.properties`.
+  `core/src/main/sakuli.properties`.
 
 * You only need to install the components
 	* Sahi Core
@@ -107,7 +107,7 @@ Setup a local MySQL database to save the results of test case executions. The da
   * __working directory:__ `$MODULE_DIR$`
   * __main class:__ `org.sakuli.starter.SakuliStarter`
   * __program arguments:__ 
-    ```-run <path to your Sakuli test suite folder> <path to your _include folder> <path to your sahi folder>```
+    ```-run <path to your Sakuli test suite folder> --sakuli_home <path to your "main" folder> --sahi_home <path to your sahi folder>```
     e.g. for the provided Win7 example use `-run ../sakuli_test_suites/example src/main/_include ../sahi`
 
 

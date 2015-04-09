@@ -1,0 +1,36 @@
+<!--
+  ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+  ~
+  ~ Copyright 2013 - 2015 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="DEV - Windows" type="Application" factoryName="Application" singleton="true">
+        <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea"/>
+        <option name="MAIN_CLASS_NAME" value="org.sakuli.starter.SakuliStarter"/>
+        <option name="VM_PARAMETERS" value=""/>
+        <option name="PROGRAM_PARAMETERS"
+                value="--run dev_stuff/suites/windows --sakuli_home ../common/src/main/resources/org/sakuli/common --sahi_home ../../sahi"/>
+        <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$"/>
+        <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false"/>
+        <option name="ALTERNATIVE_JRE_PATH" value=""/>
+        <option name="ENABLE_SWING_INSPECTOR" value="false"/>
+        <option name="ENV_VARIABLES"/>
+        <option name="PASS_PARENT_ENVS" value="true"/>
+        <module name="core"/>
+        <envs/>
+        <method/>
+    </configuration>
+</component>
