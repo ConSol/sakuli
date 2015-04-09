@@ -87,7 +87,7 @@ Sahi can be tested now for the first time. Open *"Start Sahi"* from *"Applicatio
 
 <!--- fixme anker, titel -->
 
-The **Sahi Dashboard** should now list all available browsers on this system. To use the minimal test cases (see below), we recommend to install Firefox, if not yet done. (see [Adding browsers to Sahi](../docs/additional-settings.md#adding-browsers-to-sahi)): 
+The **Sahi Dashboard** should now list all available browsers on this system. To use the minimal test cases (see below), we recommend to install Firefox, if not yet done. (see [Adding browsers to Sahi](./additional-settings.md#adding-browsers-to-sahi)): 
 
 ![db_browsers](./pics/w_sahi_dashboard_browsers.jpg) 
 ![db_browsers](./pics/u_sahi_dashboard_browsers.png) 
@@ -96,7 +96,7 @@ After clicking on a browser icon you should see the default start page of Sahi:
 
 ![sahi_start](../docs/pics/sahi_startpage.jpg) 
 
-If neccessary, set the proxy Sahi is behind of: [Proxy settings](../docs/sakuli-additional-settings.md#sahi-behind-a-proxy)
+If neccessary, set the proxy Sahi is behind of: [Proxy settings](./sakuli-additional-settings.md#sahi-behind-a-proxy)
 
 ### Additional software
 
@@ -105,7 +105,7 @@ All components below are optional but recommended:
 #### PhantomJS
 	
 <!--- anker  fixme -->	
-Currently, *each* Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Adding browsers to Sahi](../docs/sakuli-additional-settings.md) for more information. 
+Currently, *each* Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Adding browsers to Sahi](./sakuli-additional-settings.md) for more information. 
 
 
 #### Screenshot tool 
@@ -130,11 +130,11 @@ You're doing better if you do *not* use gEdit or Windows Notepad to edit Sakuli 
 	
 ## Test
 
-You are now ready to run the **first minimal Sakuli check** to see if Sakuli and its components are working well together. 
+You are now ready to run the **first minimal Sakuli check** to see if Sakuli and its components are working well together. Execute the **Sakuli starter script** to start a test: 
 
-* **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __SAKULI_HOME__/example_test_suites/example_ubuntu/` 
-* **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __SAKULI_HOME__/example_test_suites/example_opensuse/` 
-* **Windows**: `__SAKULI_HOME__\bin\sakuli.bat --run __SAKULI_HOME__\example_test_suites\example_windows\`
+* **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_ubuntu/` 
+* **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_opensuse/` 
+* **Windows**: `__SAKULI_HOME__\bin\sakuli.bat --run __INST_DIR__\example_test_suites\example_windows\`
 
 Sakuli should now 
 

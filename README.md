@@ -63,7 +63,11 @@ Use this demo appliance to see all the features of Sakuli in action. *sakulidemo
 
 * **sakulidemo.ova v0.2**: Download the .ova file from [http://labs.consol.de/sakuli/demo](http://labs.consol.de/sakuli/demo) and import this machine into Virtualbox.
 
-User accounts are kept simple: *root/root* and *sakuli/sakuli*. Don't use this in production. 
+User accounts: *root/root* and *sakuli/sakuli*. 
+
+It is recommended to fix the VM's resolution to 1024x768px. 
+
+Don't use this in production. 
 
 ## Media
 

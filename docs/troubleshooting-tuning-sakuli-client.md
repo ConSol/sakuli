@@ -91,6 +91,7 @@ To disable the "GUI-less" mode **on your local host**:
 
 #### Disable Error reporting service
 Error reporting is enabled by default - you should turn off this service because it can display messages (about crashes applications, e.g. when Sakuli kills an application in the end of a test), which remain on the screen until somebody clicks them away. 
+
 * Start -> Control Panel -> System and Security -> Action center
 * Change Action Center settings -> Problem reporting settings
 * Set "Never check for solutions"  
@@ -98,6 +99,12 @@ Error reporting is enabled by default - you should turn off this service because
 
 
 ## Troubleshooting
+### Sikuli does not recognize images
+
+If Sikuli does not recognize regions on the screen, check the following list of possible reasons: 
+
+* **Run the client's OS on a fixed resolution:** Some applications/OS scale window elements slightly depending on the resolution. for example, if you are running Sakuli within Virtualbox, the guest OS changes its resolution as soon as you resize the VM window. The dimensions of window elements can then slightly diverge by 1-2 pixels from the screenshots taken before. This difference is small for human's eyes, but a big one for Sikuli. Make sure to disable features like "Auto-Adjust Guest Display" and set the Client's desktop to a common resolution (e.g. 1024x768). Side note: the smaller you set the resolution, the less work has to be done by Sikuli. 
+* **Disable any image compression algorithms** in your screenshot capturing program (Greenshot, Shutter, …). Otherwise Sikuli will compare *compressed* pattern images with *umcompressed* image data on the screen, which will fail for sure.     
 
 ### Missing keystrokes on `type("...")` or failing `paste("...")`
 
