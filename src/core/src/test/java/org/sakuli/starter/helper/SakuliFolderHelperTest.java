@@ -22,7 +22,6 @@ import org.sakuli.BaseTest;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 import java.io.FileNotFoundException;
@@ -34,14 +33,6 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class SakuliFolderHelperTest extends BaseTest {
-
-    @AfterMethod
-    public void tearDown() throws Exception {
-        //ensure that the system wide static variables point to the right values
-        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = SAKULI_HOME_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = SAHI_FOLDER_PATH;
-    }
 
     @Test
     public void testCheckSahiProxyHomeAndSetContextVariables() throws Exception {

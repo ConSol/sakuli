@@ -139,17 +139,17 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     }
 
     @Test
-    public void testSakuliReceiverException() throws Exception {
+    public void testSakuliForwarderException() throws Exception {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
-        SakuliReceiverException receiverException = new SakuliReceiverException("FORWARDER_EXCEPTION");
+        SakuliForwarderException forwarderException = new SakuliForwarderException("FORWARDER_EXCEPTION");
 
-        testling.handleException(receiverException, true);
+        testling.handleException(forwarderException, true);
         verify(screenshotActionsMock, never()).takeScreenshotAndHighlight(anyString(), any(Path.class), any(RegionImpl.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class), anyString());
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
-        assertEquals(testSuite.getException(), receiverException);
+        assertEquals(testSuite.getException(), forwarderException);
         assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
         assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }

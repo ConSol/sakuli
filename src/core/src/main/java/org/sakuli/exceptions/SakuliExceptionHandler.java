@@ -266,7 +266,7 @@ public class SakuliExceptionHandler {
      */
     private SakuliException transformException(Throwable e) {
         if (loader.getActionProperties().isTakeScreenshots() &&
-                !(e instanceof SakuliReceiverException)) {
+                !(e instanceof SakuliForwarderException)) {
             //try to get a screenshot
             try {
                 Path screenshot = null;

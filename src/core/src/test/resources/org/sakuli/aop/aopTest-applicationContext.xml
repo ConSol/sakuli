@@ -56,7 +56,7 @@
         </constructor-arg>
     </bean>
     <bean id="org.sakuli.dao.DaoTestSuite " class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.services.receiver.database.dao.DaoTestSuite ">
+        <constructor-arg value="org.sakuli.services.forwarder.database.dao.DaoTestSuite ">
         </constructor-arg>
     </bean>
     <bean id="org.sakuli.exceptions.SakuliExceptionHandler" class="org.sakuli.MockitoFactoryBean">
@@ -75,8 +75,8 @@
         <constructor-arg value="org.sakuli.datamodel.properties.SahiProxyProperties">
         </constructor-arg>
     </bean>
-    <bean id="org.sakuli.datamodel.properties.ReceiverProperties" class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.datamodel.properties.ReceiverProperties">
+    <bean id="org.sakuli.datamodel.properties.ForwarderProperties" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.datamodel.properties.ForwarderProperties">
         </constructor-arg>
     </bean>
 

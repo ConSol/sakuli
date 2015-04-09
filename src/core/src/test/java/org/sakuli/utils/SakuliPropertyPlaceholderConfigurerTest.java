@@ -29,7 +29,7 @@ import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.loader.BeanLoader;
-import org.sakuli.services.receiver.gearman.GearmanProperties;
+import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

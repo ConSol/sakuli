@@ -20,7 +20,7 @@ package org.sakuli.integration.dao;
 
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.integration.builder.TestCaseBuilder;
-import org.sakuli.services.receiver.database.dao.impl.DaoTestCaseImpl;
+import org.sakuli.services.forwarder.database.dao.impl.DaoTestCaseImpl;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

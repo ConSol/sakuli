@@ -40,9 +40,13 @@ public abstract class AbstractLogAwareTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
 
     public static String getResource(String resourceName) {
+        return getResource(resourceName, BaseTest.class);
+    }
+
+    public static String getResource(String resourceName, Class<?> resourceClass) {
         try {
-            return Paths.get(BaseTest.class.getResource(resourceName).toURI()).toString();
-        } catch (URISyntaxException e) {
+            return Paths.get(resourceClass.getResource(resourceName).toURI()).toString();
+        } catch (URISyntaxException | NullPointerException e) {
             LOGGER.error("could not resolve resource '{}' from classpath '{}'", resourceName, e);
             return null;
         }

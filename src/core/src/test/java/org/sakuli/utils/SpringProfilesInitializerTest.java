@@ -22,7 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.BaseTest;
-import org.sakuli.datamodel.properties.ReceiverProperties;
+import org.sakuli.datamodel.properties.ForwarderProperties;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.ResultService;
 import org.testng.annotations.AfterMethod;
@@ -39,7 +39,7 @@ import static org.testng.Assert.assertEquals;
 public class SpringProfilesInitializerTest {
 
     @Mock
-    private ReceiverProperties receiverProperties;
+    private ForwarderProperties forwarderProperties;
     @InjectMocks
     private SpringProfilesInitializer testling;
 
@@ -64,8 +64,8 @@ public class SpringProfilesInitializerTest {
     @Test(dataProvider = "profileNames")
     public void testGetConfiguredProfiles(boolean database, boolean gearman, String[] expectedStrings) throws Exception {
         MockitoAnnotations.initMocks(this);
-        when(receiverProperties.isDatabaseReceiverEnabled()).thenReturn(database);
-        when(receiverProperties.isGearmanReceiverEnabled()).thenReturn(gearman);
+        when(forwarderProperties.isDatabaseEnabled()).thenReturn(database);
+        when(forwarderProperties.isGearmanEnabled()).thenReturn(gearman);
         assertEquals(expectedStrings, testling.getConfiguredProfiles());
     }
 

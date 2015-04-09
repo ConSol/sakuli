@@ -23,12 +23,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import java.io.File;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertTrue;
 
 /**
@@ -54,14 +54,39 @@ public abstract class BaseTest extends AbstractLogAwareTest {
                 String.format("string '%s' won't contain '%s'", string, contains));
     }
 
+    protected String getTestContextPath() {
+        return TEST_CONTEXT_PATH;
+    }
+
+    protected String getSahiFolderPath() {
+        return SAHI_FOLDER_PATH;
+    }
+
+    protected String getSakuliHomeFolderPath() {
+        return SAKULI_HOME_FOLDER_PATH;
+    }
+
+    protected String getTestFolderPath() {
+        return TEST_FOLDER_PATH;
+    }
+
     @BeforeClass(alwaysRun = true)
     public void setContextProperties() {
-        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = SAKULI_HOME_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = SAHI_FOLDER_PATH;
-        BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = getTestFolderPath();
+        SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = getSakuliHomeFolderPath();
+        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = getSahiFolderPath();
+        BeanLoader.CONTEXT_PATH = getTestContextPath();
         BeanLoader.refreshContext();
         loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
+        reset(loaderMock);
         when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void tearDown() throws Exception {
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = BaseTest.TEST_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = BaseTest.SAKULI_HOME_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = BaseTest.SAHI_FOLDER_PATH;
+        BeanLoader.CONTEXT_PATH = BaseTest.TEST_CONTEXT_PATH;
     }
 }

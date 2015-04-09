@@ -29,7 +29,7 @@ import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.integration.IntegrationTest;
 import org.sakuli.integration.builder.TestSuiteBuilder;
 import org.sakuli.loader.BeanLoader;
-import org.sakuli.services.receiver.database.dao.impl.Dao;
+import org.sakuli.services.forwarder.database.dao.impl.Dao;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
