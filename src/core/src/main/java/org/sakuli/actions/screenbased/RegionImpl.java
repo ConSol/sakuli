@@ -305,7 +305,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         try {
             return loader.getImageLib().getImage(imageName);
         } catch (SakuliException e) {
-            loader.getExceptionHandler().handleException(e);
+            loader.getExceptionHandler().handleException(e, resumeOnException);
         }
         return null;
     }

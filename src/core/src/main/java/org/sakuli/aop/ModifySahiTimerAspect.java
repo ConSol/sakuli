@@ -103,7 +103,7 @@ public class ModifySahiTimerAspect extends BaseSakuliAspect {
                         logger.info("wait {}ms for sahi refresh", sahiProxyProperties.getRequestDelayRefreshMs());
                         Thread.sleep(sahiProxyProperties.getRequestDelayRefreshMs());
                     } catch (InterruptedException e) {
-                        BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(e);
+                        BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(e, true);
                     }
                     logger.info("sahi-proxy-timer modified to {} ms", delay.toString());
 
