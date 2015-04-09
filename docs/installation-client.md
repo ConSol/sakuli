@@ -1,6 +1,6 @@
 # Sakuli client installation 
 
-This page describes the common steps to **install and test** Sakuli on **Windows** and **Linux** (Ubuntu Desktop 14.04 LTS/GNOME Fallback, OpenSUSE 13.2/KDE). 
+This page describes the common steps to **install and test** Sakuli on **Windows** and **Linux** (Ubuntu Desktop 14.04 LTS/GNOME Fallback, OpenSUSE 13.2/KDE). For updating Sakuli, click [here](#upgrade-process).
 
 The default installation path of a particular Sakuli version is referenced as `%SAKULI_HOME%`, that is 
 
@@ -126,7 +126,27 @@ You're doing better if you do *not* use gEdit or Windows Notepad to edit Sakuli 
 * on **Windows** install for instance [Notepad++](http://notepad-plus-plus.org/) 
 * on **Linux** use [Bluefish](http://bluefish.openoffice.nl/index.html)
 	
-## Upgrade process
+
+	
+## Test
+
+You are now ready to run the **first minimal Sakuli check** to see if Sakuli and its components are working well together. 
+
+* **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __SAKULI_HOME__/example_test_suites/example_ubuntu/` 
+* **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __SAKULI_HOME__/example_test_suites/example_opensuse/` 
+* **Windows**: `__SAKULI_HOME__\bin\sakuli.bat --run __SAKULI_HOME__\example_test_suites\example_windows\`
+
+Sakuli should now 
+
+1.  open **Firefox** with the Sakuli welcome page, highlight some page elements
+2.  open the **calculator** and calculate *525+100=625* 
+3.  open an **editor** and write a **status message**
+
+![](pics/u_vnc_test.png)
+
+Congratulations - you have installed Sakuli!
+
+# Upgrade process
 
 You can use several versions of Sakuli among side by side - just unzip the ZIP file as described above into `__INST_DIR__`: 
 
@@ -137,21 +157,3 @@ You can use several versions of Sakuli among side by side - just unzip the ZIP f
      |- examples_test_suites
     
 Only change `%SAKULI_HOME%` to the new version and you are done. 
-	
-## Test
-
-You are now ready to run the **first minimal Sakuli check** to see if Sakuli and its components are working well together. 
-
-* **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __SAKULI_HOME__/example_test_suites/example_ubuntu/` 
-* **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __SAKULI_HOME__/example_test_suites/example_ubuntu/` 
-* **Windows**: `__SAKULI_HOME__\bin\sakuli.bat --run __SAKULI_HOME__\example_test_suites\example_windows\`
-
-Sakuli should now 
-
-1.  open **Firefox**
-2.  open the **calculator** and calculate *525+100=625* 
-3.  open an **editor** and write a **status message**
-
-![](pics/u_vnc_test.png)
-
-Congratulations - you have installed Sakuli. 

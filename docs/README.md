@@ -8,6 +8,7 @@
 ### Basic setup
 
 * [Sakuli client **installation**](installation-client.md)
+* [The **Sakuli starter**](sakuli-starter.md)
 * Submitting Sakuli results 
   * [to OMD (Nagios/Icinga2/Shinken)](installation-omd.md)
     * [via **Gearman**](receiver-gearman.md)
