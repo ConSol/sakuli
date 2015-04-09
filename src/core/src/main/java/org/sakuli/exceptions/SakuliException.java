@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,7 @@ package org.sakuli.exceptions;
  * @author tschneck
  *         Date: 20.06.13
  */
-public class SakuliException extends Throwable {
-
-    public boolean resumeOnException = false;
+public class SakuliException extends Exception {
 
     /**
      * creates a new {@link SakuliException} from type {@link Throwable}
@@ -53,27 +51,6 @@ public class SakuliException extends Throwable {
     public SakuliException(Throwable suppressedException, String message) {
         super(message);
         this.addSuppressed(suppressedException);
-    }
-
-    /**
-     * creates a new {@link SakuliException} from type {@link Throwable}
-     *
-     * @param message message of the exception
-     */
-    public SakuliException(String message, boolean resumeOnException) {
-        super(message);
-        this.resumeOnException = resumeOnException;
-    }
-
-    /**
-     * wraps a {@link Throwable} to a {@link SakuliException}
-     *
-     * @param resumeOnException if false the RhinoScript
-     * @param e
-     */
-    public SakuliException(Throwable e, boolean resumeOnException) {
-        super(e);
-        this.resumeOnException = resumeOnException;
     }
 
 }

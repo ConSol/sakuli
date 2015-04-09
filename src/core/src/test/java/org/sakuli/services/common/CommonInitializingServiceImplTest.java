@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliProxyException;
+import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.utils.TestSuitePropertiesTestUtils;
 import org.testng.annotations.Test;
 
@@ -86,7 +86,7 @@ public class CommonInitializingServiceImplTest {
     }
 
 
-    @Test(expectedExceptions = SakuliProxyException.class, expectedExceptionsMessageRegExp = "Cannot read testsuite.suite.*")
+    @Test(expectedExceptions = SakuliInitException.class, expectedExceptionsMessageRegExp = "Cannot read testsuite.suite.*")
     public void testInitExceptionForTestCase() throws Throwable {
         testSuiteProperties = spy(TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "unvalid", ""));
         ts = spy(new TestSuite(testSuiteProperties));

@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliCipherException;
-import org.sakuli.exceptions.SakuliProxyException;
+import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.services.ResultServiceHelper;
@@ -220,7 +220,7 @@ public class SakuliStarter {
         }
         /**
          * will be catched if the Sahi-Proxy could not shutdown;
-         */ catch (SakuliProxyException e) {
+         */ catch (SakuliInitException e) {
             LOGGER.error("Unexpected error occurred:", e);
             System.exit(99);
         } finally {

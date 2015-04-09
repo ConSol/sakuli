@@ -63,19 +63,18 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         ScreenActionLoader loaderMock = mock(ScreenActionLoader.class);
         TypingUtil typingUtil = mock(TypingUtil.class);
         when(typingUtil.type(anyString(), anyString())).thenReturn(null);
-        Environment env = new Environment(false, loaderMock);
+        Environment env = new Environment(false);
         ReflectionTestUtils.setField(env, "typingUtil", typingUtil);
+        ReflectionTestUtils.setField(env, "loader", loaderMock);
         env.type("BLA");
         assertLastLine(logFile, "Environment", LogLevel.INFO, "Environment.type() - type over system keyboard with arg(s) [BLA]");
     }
 
     @Test
     public void testCallRegionMethod() throws Exception {
-        ScreenActionLoader loaderMock = mock(ScreenActionLoader.class);
         TypingUtil typingUtil = mock(TypingUtil.class);
         when(typingUtil.type(anyString(), anyString())).thenReturn(null);
-
-        Region region = new Region(mock(RegionImpl.class), false, loaderMock);
+        Region region = new RegionTestMock();
         ReflectionTestUtils.setField(region, "typingUtil", typingUtil);
         region.type("BLA");
         assertLastLine(logFile, "Environment", LogLevel.INFO, "Environment.type() - type over system keyboard with arg(s) [BLA]");
@@ -153,5 +152,16 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
 
         when(joinPoint.getArgs()).thenReturn(new String[]{"12characters", "MOD"});
         assertEquals(testling.determineDelay(joinPoint, loader).intValue(), 12 * 550);
+    }
+
+    private class RegionTestMock extends Region {
+        public RegionTestMock() {
+            super(mock(RegionImpl.class));
+        }
+
+        @Override
+        public ScreenActionLoader getScreenActionLoader() {
+            return mock(ScreenActionLoader.class);
+        }
     }
 }

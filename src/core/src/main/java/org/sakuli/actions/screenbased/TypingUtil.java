@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -254,7 +254,7 @@ public class TypingUtil<A extends Action> {
         try {
             return action.getLoader().getCipherUtil().decrypt(secret);
         } catch (SakuliCipherException e) {
-            action.getLoader().getExceptionHandler().handleException(e);
+            action.getLoader().getExceptionHandler().handleException(e, action.getResumeOnException());
         }
         return null;
     }

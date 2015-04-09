@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.integration.IntegrationTest;
 import org.sakuli.integration.builder.TestSuiteBuilder;
 import org.sakuli.loader.BeanLoader;
-import org.sakuli.services.receiver.database.dao.impl.Dao;
+import org.sakuli.services.forwarder.database.dao.impl.Dao;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -74,9 +74,9 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
     }
 
     private String getTestSuiteFolder() {
-        URL test_suites = this.getClass().getResource("/test_suites");
+        URL test_suites = this.getClass().getResource(".");
         try {
-            return Paths.get(test_suites.toURI()).toString() + TEST_FOLDER_PATH;
+            return Paths.get(test_suites.toURI()).toString();
         } catch (URISyntaxException e) {
             throw new RuntimeException("Can't load test_suites folder:", e);
         }

@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,27 +34,13 @@ public class SakuliActionException extends SakuliException {
         super(s);
     }
 
-    public SakuliActionException(String s, boolean resumeOnException) {
-        super(s, resumeOnException);
-    }
-
     public SakuliActionException(String s, RegionImpl lastRegion) {
         super(s);
         this.lastRegion = lastRegion;
     }
 
-    public SakuliActionException(String s, RegionImpl lastRegion, boolean resumeOnException) {
-        super(s, resumeOnException);
-        this.lastRegion = lastRegion;
-    }
-
     public SakuliActionException(Throwable e, RegionImpl lastRegion) {
         super(e);
-        this.lastRegion = lastRegion;
-    }
-
-    public SakuliActionException(Throwable e, RegionImpl lastRegion, boolean resumeOnException) {
-        super(e, resumeOnException);
         this.lastRegion = lastRegion;
     }
 

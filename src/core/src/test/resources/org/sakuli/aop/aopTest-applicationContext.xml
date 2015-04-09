@@ -2,7 +2,7 @@
 <!--
   ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
   ~
-  ~ Copyright 2013 - 2014 the original author or authors.
+  ~ Copyright 2013 - 2015 the original author or authors.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@
         </constructor-arg>
     </bean>
     <bean id="org.sakuli.dao.DaoTestSuite " class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.services.receiver.database.dao.DaoTestSuite ">
+        <constructor-arg value="org.sakuli.services.forwarder.database.dao.DaoTestSuite ">
         </constructor-arg>
     </bean>
     <bean id="org.sakuli.exceptions.SakuliExceptionHandler" class="org.sakuli.MockitoFactoryBean">
@@ -75,13 +75,17 @@
         <constructor-arg value="org.sakuli.datamodel.properties.SahiProxyProperties">
         </constructor-arg>
     </bean>
-    <bean id="org.sakuli.datamodel.properties.ReceiverProperties" class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.datamodel.properties.ReceiverProperties">
+    <bean id="org.sakuli.datamodel.properties.ForwarderProperties" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.datamodel.properties.ForwarderProperties">
         </constructor-arg>
     </bean>
 
     <bean id="org.sakuli.loader.ScreenActionLoaderImpl" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.loader.ScreenActionLoaderImpl">
+        </constructor-arg>
+    </bean>
+    <bean id="org.sakuli.datamodel.properties.TestSuiteProperties" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.datamodel.properties.TestSuiteProperties">
         </constructor-arg>
     </bean>
 

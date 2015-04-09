@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 package org.sakuli.utils;
 
-import org.sakuli.datamodel.properties.ReceiverProperties;
+import org.sakuli.datamodel.properties.ForwarderProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -44,7 +44,7 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
     private static final Logger logger = LoggerFactory.getLogger(SpringProfilesInitializer.class);
     private ConfigurableApplicationContext ctx;
     @Autowired
-    private ReceiverProperties receiverProperties;
+    private ForwarderProperties forwarderProperties;
 
     public void setApplicationContext(ApplicationContext ac) throws BeansException {
         ctx = (ConfigurableApplicationContext) ac;
@@ -65,10 +65,10 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
 
     protected String[] getConfiguredProfiles() {
         List<String> profileNames = new ArrayList<>();
-        if (receiverProperties.isDatabaseReceiverEnabled()) {
+        if (forwarderProperties.isDatabaseEnabled()) {
             profileNames.add(JDBC_DB);
         }
-        if (receiverProperties.isGearmanReceiverEnabled()) {
+        if (forwarderProperties.isGearmanEnabled()) {
             profileNames.add(GEARMAN);
         }
         return profileNames.toArray(new String[profileNames.size()]);

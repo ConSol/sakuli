@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
+import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.slf4j.Logger;
@@ -56,6 +57,8 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
     private SakuliExceptionHandler exceptionHandler;
     @Autowired
     private TestSuite testSuite;
+    @Autowired
+    private TestSuiteProperties testSuiteProperties;
     @Autowired
     private CipherUtil cipherUtil;
     @Autowired
@@ -105,7 +108,7 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
             this.imageLib = new ImageLib();
             imageLib.addImagesFromFolder(imagePaths);
 
-            if (!testSuite.isUiTest()) {
+            if (!testSuiteProperties.isUiTest()) {
                 //add the "sakuli-delay-active" var to the script runner context
                 if (rhinoScriptRunner == null || rhinoScriptRunner.getSession() == null) {
                     //could be possible if the aspectj compiler won't worked correctly, see RhinoAspect#getRhinoScriptRunner

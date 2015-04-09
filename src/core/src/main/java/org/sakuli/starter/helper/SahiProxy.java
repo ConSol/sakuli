@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
-import org.sakuli.exceptions.SakuliProxyException;
+import org.sakuli.exceptions.SakuliInitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class SahiProxy {
     /**
      * see {@link #startProxy(boolean)} with parameter true.
      */
-    public void startProxy() throws SakuliProxyException, FileNotFoundException {
+    public void startProxy() throws SakuliInitException, FileNotFoundException {
         startProxy(true);
     }
 
@@ -65,9 +65,9 @@ public class SahiProxy {
      * You can do a shutdown with
      *
      * @param asyncron init if a separate thread should started
-     * @throws SakuliProxyException if the specified files in the sahi.properties are not valid
+     * @throws SakuliInitException if the specified files in the sahi.properties are not valid
      */
-    public void startProxy(boolean asyncron) throws SakuliProxyException, FileNotFoundException {
+    public void startProxy(boolean asyncron) throws SakuliInitException, FileNotFoundException {
 
         sahiProxy = new Proxy(props.getProxyPort());
 
@@ -89,10 +89,10 @@ public class SahiProxy {
                 Thread.sleep(200);
             } catch (RuntimeException e) {
                 logger.error("RUNTIME EXCEPTION");
-                throw new SakuliProxyException(e);
+                throw new SakuliInitException(e);
             } catch (Throwable e) {
                 logger.error("THROWABLE EXCEPTION");
-                throw new SakuliProxyException(e.getMessage());
+                throw new SakuliInitException(e.getMessage());
             }
         } else {
             throw new FileNotFoundException("the path to '" + SahiProxyProperties.PROXY_HOME_FOLDER + "=" + props.getSahiHomeFolder().toAbsolutePath().toString()
@@ -123,13 +123,13 @@ public class SahiProxy {
                 || FileUtils.isFileNewer(source.toFile(), target.toFile());
     }
 
-    public void shutdown() throws SakuliProxyException {
+    public void shutdown() throws SakuliInitException {
         logger.debug("SHUTDOWN SAHI-Proxy now!");
         sahiProxy.stop();
         if (!sahiProxy.isRunning()) {
             logger.info("SHUTDOWN SAHI-Proxy SUCCESSFULLY");
         } else {
-            throw new SakuliProxyException("SAHI-Proxy failed to Shutdown!");
+            throw new SakuliInitException("SAHI-Proxy failed to Shutdown!");
         }
 
     }

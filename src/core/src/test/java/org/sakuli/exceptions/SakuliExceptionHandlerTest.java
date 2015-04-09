@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,7 +56,6 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     private String screenShotFolder = "src/test/resources/org/sakuli/exceptions/screenshots";
     private String testExcMessage = "TEST IT";
     private Path expectedScreenshotPath;
-    private HashMap<String, TestCase> testCases;
 
     @Mock
     private ScreenshotActions screenshotActionsMock;
@@ -82,7 +81,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(screenshotActionsMock.takeScreenshot(anyString(), any(Path.class))).thenReturn(expectedScreenshotPath);
         when(loader.getScreenshotActions()).thenReturn(screenshotActionsMock);
         testCase = new TestCase("testling", "1234_");
-        testCases = new HashMap<>();
+        HashMap<String, TestCase> testCases = new HashMap<>();
         testCases.put(testCase.getId(), testCase);
         testSuite = new TestSuite();
         testSuite.setState(TestSuiteState.RUNNING);
@@ -112,14 +111,14 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         assertTrue(testSuite.getExceptionMessages().contains(excpMessage2));
         assertTrue(testSuite.getExceptionMessages().contains(testExcMessage));
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
-
-
+        assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
     @Test
     public void testHandleExceptionForTestCases() throws Exception {
         setUp();
-        testling.handleException(new Exception(testExcMessage));
+        Exception testExc = new Exception(testExcMessage);
+        testling.handleException(testExc);
         assertTrue(testCase.getException() instanceof SakuliExceptionWithScreenshot);
         assertTrue(testCase.getException().getMessage().contains(testExcMessage));
         assertEquals(testCase.getScreenShotPath(), expectedScreenshotPath);
@@ -134,23 +133,25 @@ public class SakuliExceptionHandlerTest extends BaseTest {
 
         //test Proxy Exception
         when(loader.getCurrentTestCase()).thenReturn(null);
-        testling.handleException(new SakuliProxyException("FAILURE"));
+        testling.handleException(new SakuliInitException("FAILURE"));
         Assert.assertNull(testSuite.getException());
+        assertTrue(testling.isAlreadyProcessed(testExc));
     }
 
     @Test
-    public void testSakuliReceiverException() throws Exception {
+    public void testSakuliForwarderException() throws Exception {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
-        SakuliReceiverException receiverException = new SakuliReceiverException("RECEIVER_EXCEPTION");
+        SakuliForwarderException forwarderException = new SakuliForwarderException("FORWARDER_EXCEPTION");
 
-        testling.handleException(receiverException, true);
+        testling.handleException(forwarderException, true);
         verify(screenshotActionsMock, never()).takeScreenshotAndHighlight(anyString(), any(Path.class), any(RegionImpl.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class), anyString());
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
-        assertEquals(testSuite.getException(), receiverException);
-        assertEquals(((SakuliException) testSuite.getException()).resumeOnException, true);
+        assertEquals(testSuite.getException(), forwarderException);
+        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
     @Test
@@ -166,7 +167,8 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);
-        assertEquals(((SakuliException) testSuite.getException()).resumeOnException, true);
+        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
     @Test
@@ -184,15 +186,16 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);
-        assertEquals(((SakuliException) testSuite.getException()).resumeOnException, true);
+        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
     @Test
     public void testHandleSakuliProxyExceptionForTestCases() throws Exception {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
-        testling.handleException(new SakuliProxyException(testExcMessage));
-        assertTrue(testSuite.getException().getCause() instanceof SakuliProxyException);
+        testling.handleException(new SakuliInitException(testExcMessage));
+        assertTrue(testSuite.getException().getCause() instanceof SakuliInitException);
         assertTrue(testSuite.getException().getMessage().contains(testExcMessage));
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
     }

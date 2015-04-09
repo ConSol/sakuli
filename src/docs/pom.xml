@@ -2,7 +2,7 @@
 <!--
   ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
   ~
-  ~ Copyright 2013 - 2014 the original author or authors.
+  ~ Copyright 2013 - 2015 the original author or authors.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@
         <node.dir>${project.build.directory}/node-mvn</node.dir>
         <node.modules.dir>${node.dir}/node_modules</node.modules.dir>
         <js-src.target>${project.build.directory}/js_src</js-src.target>
-        <js-src.source>${project.parent.basedir}/src/core/src/main/libs/js</js-src.source>
+        <js-src.source>${project.parent.basedir}src/common/src/main/resources/org/sakuli/common/libs/js</js-src.source>
         <markdown.output.directory>${project.parent.basedir}/docs</markdown.output.directory>
     </properties>
 

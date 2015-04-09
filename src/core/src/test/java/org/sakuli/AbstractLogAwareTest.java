@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,10 +40,14 @@ public abstract class AbstractLogAwareTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(BaseTest.class);
 
     public static String getResource(String resourceName) {
+        return getResource(resourceName, BaseTest.class);
+    }
+
+    public static String getResource(String resourceName, Class<?> resourceClass) {
         try {
-            return Paths.get(BaseTest.class.getResource(resourceName).toURI()).toString();
-        } catch (URISyntaxException e) {
-            LOGGER.error("could not resolve Testsuite from classpath resource '{}'", resourceName, e);
+            return Paths.get(resourceClass.getResource(resourceName).toURI()).toString();
+        } catch (URISyntaxException | NullPointerException e) {
+            LOGGER.error("could not resolve resource '{}' from classpath '{}'", resourceName, e);
             return null;
         }
     }

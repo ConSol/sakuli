@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ public class ModifySahiTimerAspect extends BaseSakuliAspect {
                         logger.info("wait {}ms for sahi refresh", sahiProxyProperties.getRequestDelayRefreshMs());
                         Thread.sleep(sahiProxyProperties.getRequestDelayRefreshMs());
                     } catch (InterruptedException e) {
-                        BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(e);
+                        BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(e, true);
                     }
                     logger.info("sahi-proxy-timer modified to {} ms", delay.toString());
 

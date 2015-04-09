@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,6 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
     private Path testSuiteFile;
     private int dbJobPrimaryKey = -1;
     private Map<String, TestCase> testCases;
-    private boolean uiTest = false;
 
     public TestSuite() {
     }
@@ -270,11 +269,4 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
         return new TreeSet<>();
     }
 
-    public boolean isUiTest() {
-        return uiTest;
-    }
-
-    public void setUiTest(boolean uiTest) {
-        this.uiTest = uiTest;
-    }
 }

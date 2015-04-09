@@ -2,7 +2,7 @@
 <!--
   ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
   ~
-  ~ Copyright 2013 - 2014 the original author or authors.
+  ~ Copyright 2013 - 2015 the original author or authors.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -91,6 +91,35 @@
                 <test.included.groups>${test.group.integration},${test.group.ui}</test.included.groups>
                 <test.excluded.groups>${test.group.unit}</test.excluded.groups>
             </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>org.sakuli</groupId>
+                                            <artifactId>java-dsl</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>jar</type>
+                                            <overWrite>true</overWrite>
+                                        </artifactItem>
+                                    </artifactItems>
+                                    <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
 
         <profile>
@@ -116,6 +145,11 @@
             <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
+        </dependency>
+        <!-- Derby Driver for embedded DB -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
         </dependency>
 
         <!-- JAVA FX - unfortunately only over this way possible yet -->

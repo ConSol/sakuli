@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ package org.sakuli.services;
 
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
-import org.sakuli.exceptions.SakuliProxyException;
+import org.sakuli.exceptions.SakuliInitException;
 
 /**
  * Service Interface for all initializing actions.
@@ -37,5 +37,5 @@ public interface InitializingService extends PrioritizedService {
      * <li>load the {@link TestCase}s</li>
      * </ol>
      */
-    void initTestSuite() throws SakuliProxyException;
+    void initTestSuite() throws SakuliInitException;
 }

@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
 @Component
 public class RhinoAspect extends BaseSakuliAspect {
 
-    public static final String ALREADY_HANDELED = "{{SAKULI_EX}}";
+    public static final String ALREADY_PROCESSED = "{{SAKULI_EX}}";
     protected final static Logger logger = LoggerFactory.getLogger(RhinoAspect.class);
 
     /**
@@ -100,8 +100,8 @@ public class RhinoAspect extends BaseSakuliAspect {
     }
 
     /**
-     * Pointcut for the {@link org.sakuli.actions.logging} classes to do an {@link
-     * #addActionLog(org.aspectj.lang.JoinPoint, org.sakuli.actions.logging.LogToResult)}
+     * Pointcut for the {@link org.sakuli.actions.logging} classes to do an {@link #addActionLog(org.aspectj.lang.JoinPoint,
+     * org.sakuli.actions.logging.LogToResult)}
      */
     @Before("execution(* org.sakuli.actions.logging.*.*(..)) &&" +
             "@annotation(logToResult)")
@@ -110,8 +110,8 @@ public class RhinoAspect extends BaseSakuliAspect {
     }
 
     /**
-     * Method to do all Logs for the action classes annotated with {@link org.sakuli.actions.logging.LogToResult}.
-     * A log entry will created at the sakuli log files and at the sahi HTML {@link net.sf.sahi.report.Report}.
+     * Method to do all Logs for the action classes annotated with {@link org.sakuli.actions.logging.LogToResult}. A log
+     * entry will created at the sakuli log files and at the sahi HTML {@link net.sf.sahi.report.Report}.
      *
      * @param joinPoint   {@link JoinPoint} object of the calling aspect
      * @param logToResult {@link LogToResult} Annotation
@@ -184,10 +184,7 @@ public class RhinoAspect extends BaseSakuliAspect {
                 (String) args[2],
                 (String) args[3]
         );
-        if (logResult.getFailureMsg() == null
-                || !logResult.getFailureMsg().contains(ALREADY_HANDELED)
-//                && !logResult.getMessage().startsWith("Logging exception:")
-                ) {
+        if (logResult.getFailureMsg() == null || !logResult.getFailureMsg().contains(ALREADY_PROCESSED)) {
 
             //log and handle exception from sahi actions
             if (ResultType.ERROR.equals(resultType)

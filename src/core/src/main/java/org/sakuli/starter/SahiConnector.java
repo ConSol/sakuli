@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliProxyException;
+import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.starter.helper.SahiProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +58,7 @@ public class SahiConnector {
     /**
      * Initialize method to start the sahi proxy thread, if needed
      */
-    public void init() throws FileNotFoundException, SakuliProxyException {
+    public void init() throws FileNotFoundException, SakuliInitException {
         logger.info("Initialize Sahi Proxy! ");
         sahiProxy.startProxy();
     }
@@ -66,7 +66,7 @@ public class SahiConnector {
     /**
      * starts a specific sahi test suite in sakuli
      */
-    public void startSahiTestSuite() throws SakuliProxyException {
+    public void startSahiTestSuite() throws SakuliInitException {
         logger.info("Start Sakuli-Test-Suite from folder \""
                 + testSuite.getTestSuiteFolder().toAbsolutePath().toString()
                 + "\"");
@@ -96,7 +96,7 @@ public class SahiConnector {
                 //should only thrown if an exception could fetched by the backend of some reason
                 if (output.equals("FAILURE")
                         && testSuite.getException() == null) {
-                    throw new SakuliProxyException("SAHI-Proxy returned 'FAILURE' ");
+                    throw new SakuliInitException("SAHI-Proxy returned 'FAILURE' ");
                 }
 
 

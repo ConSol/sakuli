@@ -71,7 +71,7 @@ For the following guide you need
 	* Tools
 	* Userdata
 
-###Database Setup (optional, onyl for DB receiver necessary)
+###Database Setup (optional, onyl for DB forwarder necessary)
 Setup a local MySQL database to save the results of test case executions. The database won't be needed for running `mvn install`.
 
 * __User:__ `sahi`

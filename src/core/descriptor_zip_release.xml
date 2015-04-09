@@ -1,7 +1,7 @@
 <!--
   ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
   ~
-  ~ Copyright 2013 - 2014 the original author or authors.
+  ~ Copyright 2013 - 2015 the original author or authors.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -47,13 +47,11 @@
         <!-- create setup folder -->
         <!-- copy database script to setup folder -->
         <fileSet>
-            <directory>${basedir}/src/main</directory>
-            <excludes>
-                <!-- excludes the whole java and resources folder -->
-                <exclude>**/java/</exclude>
-                <exclude>**/resources/</exclude>
-            </excludes>
+            <directory>${project.parent.basedir}/src/common/src/main/resources/org/sakuli/common</directory>
             <outputDirectory>/${sakuli.filename}</outputDirectory>
+            <excludes>
+                <exclude>META-INF</exclude>
+            </excludes>
         </fileSet>
 
         <!-- copy compiled jar -->

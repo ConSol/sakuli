@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import org.mockito.MockitoAnnotations;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
+import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.testng.Assert;
@@ -48,6 +49,8 @@ public class BaseActionEnvironmentLoaderTest {
     private Session session;
     @Mock
     private SahiProxyProperties sahiProxyProperties;
+    @Mock
+    private TestSuiteProperties testSuiteProperties;
     @Mock
     private TestSuite testSuite;
     @Mock

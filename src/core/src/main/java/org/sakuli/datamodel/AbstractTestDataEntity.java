@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
     protected S state;
     protected String name;
     /**
-     * is initial set to -1, if the database receiver profile is enabled the service call {@link InitializingService#initTestSuite()}
+     * is initial set to -1, if the database forwarder profile is enabled the service call {@link InitializingService#initTestSuite()}
      * should set the primary key.
      */
     protected int dbPrimaryKey = -1;

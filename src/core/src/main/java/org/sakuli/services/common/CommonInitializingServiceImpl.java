@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ import org.sakuli.datamodel.helper.TestSuiteHelper;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliProxyException;
+import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.services.InitializingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,7 @@ public class CommonInitializingServiceImpl implements InitializingService {
      * {@inheritDoc}
      */
     @Override
-    public void initTestSuite() throws SakuliProxyException {
+    public void initTestSuite() throws SakuliInitException {
         logger.info("initialize test suite with id '{}'", testSuite.getId());
         testSuite.setState(TestSuiteState.RUNNING);
         testSuite.setStartDate(new Date());
@@ -75,7 +75,7 @@ public class CommonInitializingServiceImpl implements InitializingService {
             try {
                 testSuite.setTestCases(TestSuiteHelper.loadTestCases(testSuiteProperties));
             } catch (IOException e) {
-                throw new SakuliProxyException(e, String.format("Cannot read testsuite.suite '%s' file", testSuiteProperties.getTestSuiteSuiteFile().toString()));
+                throw new SakuliInitException(e, String.format("Cannot read testsuite.suite '%s' file", testSuiteProperties.getTestSuiteSuiteFile().toString()));
             }
         }
         logger.info("test suite with guid '{}' has been initialized!", testSuite.getGuid());

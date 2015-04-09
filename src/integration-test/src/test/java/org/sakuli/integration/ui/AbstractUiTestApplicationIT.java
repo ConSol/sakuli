@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,25 +23,24 @@ import javafx.concurrent.Task;
 import javafx.embed.swing.JFXPanel;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.sakuli.actions.environment.Environment;
 import org.sakuli.integration.IntegrationTest;
 import org.sakuli.integration.ui.app.UiTestApplication;
 import org.sakuli.integration.ui.app.UiTestEvent;
 import org.sakuli.javaDSL.AbstractSakuliTest;
-import org.sakuli.javaDSL.actions.Environment;
+import org.sakuli.javaDSL.TestCaseInitParameter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 
-import java.nio.file.Paths;
 import java.util.Map;
 
 /**
- * Represents an abstract representation of UI (user interface) integration test for Sakuli.
- * There should be tested, if all graphical actions will work correctly.
+ * Represents an abstract representation of UI (user interface) integration test for Sakuli. There should be tested, if
+ * all graphical actions will work correctly.
  *
- * @author tschneck
- *         Date: 08.05.2014
+ * @author tschneck Date: 08.05.2014
  */
 public abstract class AbstractUiTestApplicationIT extends AbstractSakuliTest implements IntegrationTest {
 
@@ -51,18 +50,8 @@ public abstract class AbstractUiTestApplicationIT extends AbstractSakuliTest imp
     protected Environment env;
 
     @Override
-    protected String getSakuliMainFolder() {
-        return SAKULI_MAIN_FOLDER_PATH;
-    }
-
-    @Override
-    protected String getTestSuiteFolder() {
-        return getTestSuiteRootFolder() + TEST_FOLDER_PATH;
-    }
-
-    @Override
-    protected String getSahiFolder() {
-        return Paths.get("../../sahi").normalize().toAbsolutePath().toString();
+    protected TestCaseInitParameter getTestCaseInitParameter() throws Exception {
+        return new TestCaseInitParameter(getUniqueTestCaseId(), IMAGE_LIB_FOLDER_NAME);
     }
 
     @BeforeMethod(alwaysRun = true)
@@ -96,16 +85,11 @@ public abstract class AbstractUiTestApplicationIT extends AbstractSakuliTest imp
     }
 
     /**
-     * @return a unique ID from {@link #getTestCaseId()}.
+     * @return a unique ID from.
      */
     protected String getUniqueTestCaseId() {
-        return getTestCaseId() + System.nanoTime();
+        return this.getClass().getSimpleName() + System.nanoTime();
     }
-
-    /**
-     * @return a test case id - should be implemented in the explicit tests
-     */
-    protected abstract String getTestCaseId();
 
     /**
      * Starts the example {@link UiTestApplication}

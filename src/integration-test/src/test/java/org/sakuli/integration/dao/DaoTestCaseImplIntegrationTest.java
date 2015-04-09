@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ package org.sakuli.integration.dao;
 
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.integration.builder.TestCaseBuilder;
-import org.sakuli.services.receiver.database.dao.impl.DaoTestCaseImpl;
+import org.sakuli.services.forwarder.database.dao.impl.DaoTestCaseImpl;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

@@ -2,7 +2,7 @@
 <!--
   ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
   ~
-  ~ Copyright 2013 - 2014 the original author or authors.
+  ~ Copyright 2013 - 2015 the original author or authors.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
     <context:component-scan base-package="org.sakuli.actions.settings"/>
 
     <bean class="org.sakuli.datamodel.properties.SakuliProperties"/>
-    <bean class="org.sakuli.datamodel.properties.ReceiverProperties"/>
+    <bean class="org.sakuli.datamodel.properties.ForwarderProperties"/>
     <bean class="org.sakuli.datamodel.properties.ActionProperties"/>
     <bean class="org.sakuli.loader.BaseActionLoaderImpl"/>
 
@@ -50,13 +50,13 @@
         <constructor-arg value="org.sakuli.datamodel.TestSuite"/>
     </bean>
     <bean id="org.sakuli.dao.DaoTestSuite " class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.services.receiver.database.dao.DaoTestSuite "/>
+        <constructor-arg value="org.sakuli.services.forwarder.database.dao.DaoTestSuite "/>
     </bean>
     <bean id="org.sakuli.dao.DaoTestCase " class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.services.receiver.database.dao.DaoTestCase "/>
+        <constructor-arg value="org.sakuli.services.forwarder.database.dao.DaoTestCase "/>
     </bean>
     <bean id="org.sakuli.dao.DaoTestCaseStep " class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.services.receiver.database.dao.DaoTestCaseStep "/>
+        <constructor-arg value="org.sakuli.services.forwarder.database.dao.DaoTestCaseStep "/>
     </bean>
     <bean id="org.sakuli.exceptions.SakuliExceptionHandler" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.exceptions.SakuliExceptionHandler"/>
@@ -74,21 +74,25 @@
         <constructor-arg value="org.sakuli.loader.ScreenActionLoaderImpl">
         </constructor-arg>
     </bean>
+    <bean id="org.sakuli.datamodel.properties.TestSuiteProperties" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.datamodel.properties.TestSuiteProperties">
+        </constructor-arg>
+    </bean>
 
     <!-- test beans for testing SpringProfilesInitializer -->
     <!--<bean class="org.sakuli.utils.SpringProfilesInitializer" />-->
     <beans profile="JDBC_DB">
-        <bean class="org.sakuli.services.receiver.database.DatabaseResultServiceImpl"/>
+        <bean class="org.sakuli.services.forwarder.database.DatabaseResultServiceImpl"/>
     </beans>
     <beans profile="GEARMAN">
-        <bean class="org.sakuli.services.receiver.gearman.GearmanResultServiceImpl"/>
-        <bean id="org.sakuli.services.receiver.gearman.GearmanProperties"
+        <bean class="org.sakuli.services.forwarder.gearman.GearmanResultServiceImpl"/>
+        <bean id="org.sakuli.services.forwarder.gearman.GearmanProperties"
               class="org.sakuli.MockitoFactoryBean">
-            <constructor-arg value="org.sakuli.services.receiver.gearman.GearmanProperties"/>
+            <constructor-arg value="org.sakuli.services.forwarder.gearman.GearmanProperties"/>
         </bean>
-        <bean id="org.sakuli.services.receiver.gearman.model.builder.NagiosCheckResultBuilder"
+        <bean id="org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilderr"
               class="org.sakuli.MockitoFactoryBean">
-            <constructor-arg value="org.sakuli.services.receiver.gearman.model.builder.NagiosCheckResultBuilder"/>
+            <constructor-arg value="org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder"/>
         </bean>
     </beans>
 
