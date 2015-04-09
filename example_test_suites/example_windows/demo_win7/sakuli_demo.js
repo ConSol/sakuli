@@ -20,8 +20,8 @@ _dynamicInclude($includeFolder);
 var testCase = new TestCase(60, 70);
 var env = new Environment();
 var screen = new Region();
-var appCalc = new Application("/usr/bin/gnome-calculator");
-var appGedit = new Application("/usr/bin/gedit");
+var appNotepad = new Application("notepad.exe");
+var appCalc = new Application("calc.exe");
 
 try {
     _highlight(_link("SSL Manager"));
@@ -38,8 +38,8 @@ try {
     screen.find("plus.png").click().type("100");
     screen.find("result.png").click();
 
-    appGedit.open();
-    screen.waitForImage("gedit.png", 20);
+    appNotepad.open();
+    screen.waitForImage("notepad.png", 20);
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
     env.sleep(4);
 } catch (e) {
@@ -47,8 +47,8 @@ try {
 } finally {
     appCalc.closeApp();
     appGedit.closeApp();
-    if (screen.exists("close-without-saving", 1)) {
-        screen.find("close-without-saving").click();
-    }
+    //if (screen.exists("close-without-saving", 1)) {
+    //    screen.find("close-without-saving").click();
+    //}
     testCase.saveResult();
 }
