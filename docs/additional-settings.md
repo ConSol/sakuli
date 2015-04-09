@@ -2,14 +2,14 @@
 
 This page contains different topics regarding the configuration of both **Sakuli** and its components, **Sahi** and **Sikuli**.
 
-
+<!-- FIXME: SAKULI_HOME -->
 
 
 ## Sakuli settings
 
 ### General note on property settings
 
-Sakuli properties are predefined in `__SAKULI_HOME__/config/sakuli-default.properties`; these values should/can be **overridden** in the following order (last match wins): 
+**Sakuli properties** are predefined in `__SAKULI_HOME__/config/sakuli-default.properties`; these values should/can be **overridden** in the following order (last match wins): 
 
 1. as a **global testsuite property** in `test-suites-folder/sakuli.properties`
    -> valid for **all test suites** within this folder
@@ -20,13 +20,11 @@ Sakuli properties are predefined in `__SAKULI_HOME__/config/sakuli-default.prope
 
 We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file; your changes will not be preserved. 
 
-**Example:** To use Chrome instead of Firefox you can set
-
 ### Forwarder
 
-Sakuli can send test result to "Forwarder", which can be currently **GearmanD** servers (such as Nagios monitoring systems with mod-gearman) and **JDBC databases**. If no forwarder is defined, a result summary is printed out in the end of a suite. 
+Sakuli can hand over test result to "**Forwarder**", which can be currently **GearmanD** servers (such as Nagios monitoring systems with mod-gearman) and **JDBC databases**. If no forwarder is defined, a result summary is printed out in the end of a suite. 
 
-![sakuli_forwarders](pics/sakuli-forwarders.png)
+![sakuli_forwarders](./pics/sakuli-forwarder.png)
 
 For the configuration of forwarders on the OMD server side, see [Forwarder in OMD](installation-omd.md#forwarders)
 
@@ -39,7 +37,7 @@ Some objects (*Region, Application, Environment*) allow on their creation to spe
 
 Setting this to *true* can be useful if you want to raise a custom exception or no exception at all. 
 
-In `SAKULI_HOME_/_include/sakuli.properties` you can set `sakuli.exception.suppressResumedExceptions` to
+Set property **`sakuli.exception.suppressResumedExceptions`** to
 
    * `true`  = the exception will be logged and appear in the test result
    * `false` = the exception will NEITHER be logged NOR appear in the test result.
@@ -60,42 +58,37 @@ Example:
 
 #### Verbosity
 
-Logging verbosity can be defined **globally** as well as on a **per-suite** basis. In addition, it is possible to control the logging verbosity of all compoments *Sakuli, Sahi, Sikuli, Spring* - and *Java* in general. 
+The logging verbosity of all compoments *Sakuli, Sahi, Sikuli, Spring* - and *Java* in general can be changed individually. 
 
 ("Verbosity" means one of the levels `DEBUG - INFO - WARN - ERROR` )
 
-* setting **globally**: Add or modify one of the property to the file `__SAKULI_HOME__/sakuli_test_suites/sakuli.properties`
+* **`log.level.sakuli`**`=__LEVEL__`  -  logging level for **Sakuli** output
+* **`log.level.sikuli`**`=__LEVEL__`  -  logging level for **Sikuli** output
+* **`log.level.sahi`**`=__LEVEL__`  -  logging level for **Sahi** output
+* **`log.level.spring`**`=__LEVEL__`  -  logging level for the **Spring** framework (only used internally)
+* **`log.level.root`**`=__LEVEL__`  -  logging level for all other **Java classes and libraries**
 
-    * `log.level.sakuli=__LEVEL__`  -  logging level for **Sakuli** output
-    * `log.level.sikuli=__LEVEL__`  -  logging level for **Sikuli** output
-    * `log.level.sahi=__LEVEL__`  -  logging level for **Sahi** output
-    * `log.level.spring=__LEVEL__`  -  logging level for the **Spring** framework (only used internally)
-    * `log.level.root=__LEVEL__`  -  logging level for all other **Java classes and libraries**
+#### Log file folder / pattern
 
-    Each component is bound to a "**logger**". Its verbosity value is in UPPERCASE letters at the end of each line (e.g. `INFO`), or gets overriden with a custom variable, if set (see next point).
+* **`sakuli.log.pattern`**`=%-5level [%d{YYYY-MM-dd HH:mm:ss.SSS}] - %msg%n`  -  Format string 
+* **`sakuli.log.folder`**`=${sakuli.testsuite.folder}/_logs`  -  Log folder
 
-* setting **per-suite**: Add or modify one of the upper mentioned property to the file `__SAKULI_HOME__/sakuli_test_suites/your-test-suite/testsuite.properties`.
+In general it is also possible to add your own Logback configuration under `__SAKULI_HOME__/config/sakuli-log-config.xml`. For more information about the Logback syntax please refer to the [Logback manual](http://logback.qos.ch/manual/configuration.html).
 
-#### Log file location / format
-
-Edit `__SAKULI_HOME__/sakuli_test_suites/sakuli.properties` to configure the logfile format and its location:
-
-		sakuli.log.pattern= %-5level [%d{YYYY-MM-dd HH:mm:ss.SSS}] - %msg%n
-		sakuli.log.folder=${sakuli.testsuite.folder}/_logs
 
 #### Log file rotation 
 
-On Linux you can configure logrotate to tidy up old log files: 
+On Linux you can configure **logrotate** to tidy up old log files: 
 
     vim /etc/logrotate.d/sakuli
     
-    __SAKULI_HOME__/sakuli_test_suites/*/_logs/* __SAKULI_HOME__/sakuli_test_suites/*/_logs/_screenshots/* {
+    __SUITE_FOLDER__/*/_logs/* __SUITE_FOLDER__/*/_logs/_screenshots/* {
         size 1k
         missingok
         maxage 2
     }
 
-In general it is also possible to add your own Logback configuration under `__SAKULI_HOME__/config/sakuli-log-config.xml`. For more information about the Logback syntax please refer to the [Logback manual](http://logback.qos.ch/manual/configuration.html).
+
 
 ### Secret De-/Encryption
 #### Interface selection
@@ -106,42 +99,34 @@ That's the reason why Sakuli is able to **encrypt** them on the command line, an
 
 Among other parameters, Sakuli uses the MAC address of a local network interface card as a encryption salt. Hence no virtual adapters can be choosen. 
 
-In `__SAKULI_HOME__/_include/sakuli.properties` you can let Sakuli automatically select an adapter:
+You can decide whether Sakuli should automatically select an adapter...
 
-	# automatically select the first NIC for secret encryption
-    sakuli.encryption.interface.autodetect=true`
+* **`sakuli.encryption.interface.autodetect`**`=true`
 
-Alternatively specify one:
+..or a specific one should be used: 
 
-    # use NIC eth0 for secret encryption
-    sakuli.encryption.interface.autodetect=false`
-	sakuli.encryption.interface=eth0 
-
-Like all other properties, this can also be set for each test suite in `testsuite.properties`.
+* **`sakuli.encryption.interface.autodetect`**`=false`
+* **`sakuli.encryption.interface`**`=eth0`
 
 #### Encrypt a secret
 
-On **Windows**, open `cmd.exe` and execute the following command:  
+Use the generic Sakuli starter script to encrypt secrets on the command line: 
+
+On **Windows**:   
 
     # for autodetect=true
-    %SAKULI_HOME%\scripts\helper\encrypt_password.bat somesecret [enter]
-      String to Encrypt: somesecret
-      ...
-      Encrypted secret with interface 'eth3': THwLJK7ObjLkmoViCHm7lA==
-      
-    # for autodetect=false
-    %SAKULI_HOME%\scripts\helper\encrypt_password.bat somesecret eth8 [enter] 
-      String to Encrypt: somesecret
-      ...
-      Encrypted secret with interface 'eth8': bVKIUWcgaPDjasFf2uI15Q==
+    %SAKULI_HOME%/bin/sakuli.bat --encrypt somesecret [enter]
+    
+    # for autodetect=false, use eth3 
+    %SAKULI_HOME%/bin/sakuli.bat --encrypt somesecret --interface eth3 [enter] 
 
-On the **Linux** `shell` it's almost the same: 
+On **Linux**: 
 
     # for autodetect=true
-    %SAKULI_HOME%/scripts/helper/encrypt_password.sh somesecret [enter]
+    %SAKULI_HOME%/bin/sakuli.sh --encrypt somesecret [enter]
 
-    # for autodetect=false
-    %SAKULI_HOME%/scripts/helper/encrypt_password.sh somesecret eth8 [enter] 
+    # for autodetect=false, use eth3 
+    %SAKULI_HOME%/bin/sakuli.sh --encrypt somesecret --interface eth3 [enter] 
 
 #### Decrypt a secret
 
@@ -154,15 +139,11 @@ To decrypt and use a secret in Sakuli test cases, use one of the following metho
 
 ### Screenshot settings
 
-`%SAKULI_HOME%/_include/sakuli.properties` allows to set the format and destination folder for screenshots taken by Sakuli:
+To set the format and destination folder for screenshots taken by Sakuli:
 
-    # folder for screenshot files (if activated)
-    sakuli.screenshot.dir=${sakuli.log.folder}/_screenshots
-
-    # screenshot file format (Possible values: jpg, png)
-    sakuli.screenshot.format=jpg
+* **`sakuli.screenshot.dir`**`=${sakuli.log.folder}/_screenshots`  -  folder for screenshot files (if activated)
+* **`sakuli.screenshot.format`**`=jpg`  -  screenshot file format (Possible values: jpg, png)
     
-
 ### RDP pecularities
 #### connection types
 There are several ways to connect to and work on a Sakuli client machine:
@@ -179,15 +160,15 @@ For RDP, there are some special things to know. Connecting to the Sakuli test cl
 Sakuli will also run within that RDP session. But closing/disconnecting/logging of that RDP session will not unlock the local console session again. Sakuli will see the same as a regular user: the famous blue lock screen.
 
 #### LOGOFF.bat
-To log off a RDP session, right-click `%SAKULI_HOME%/scripts/helper/LOGOFF.bat` and execute the script with administrator privileges. 
+To log off a RDP session, right-click `%SAKULI_HOME%/bin/helper/LOGOFF.bat` and execute the script with administrator privileges. The script then
 
-* determine the current RDP session ID
-* redirect this session back to the local console
-* terminate the RDP session.
+* determines the current RDP session ID
+* redirects this session back to the local console
+* terminates the RDP session.
 
 #### check_logon_session.ps1
 
-In *sakuli\setup\nagios* you can find **check_logon_session.ps1** which can be used as a client-side check to ensure that the Sakuli user is always logged on, either via RDP or on the local console. Instructions for the implementation of this check can be found in the script header.
+In `%SAKULI_HOME%/setup/nagios` you can find **check_logon_session.ps1** which can be used as a client-side check to ensure that the Sakuli user is always logged on, either via RDP or on the local console. Instructions for the implementation of this check can be found in the script header.
 
 Define a service dependency of all Sakuli checks to this logon check; this will ensure that a locked session will not raise false alarms.
 
@@ -199,22 +180,21 @@ If the Sahi dashboard does not show any browser or if you want to add another br
 
 ![nobrowser](../docs/pics/w_sahi_no_browser.jpg) 
 
-…you have to edit `__SAKULI_HOME__\sahi\userdata\config\browser_types.xml`. Each browser is defined within a **browserType** block. Please refer to the [Sahi Documentation, "Configure Browsers"](https://sahipro.com/docs/using-sahi/sahi-configuration-basic.html) to see the *browserType* Nodes for popular browsers. 
+…you have to edit `__SAHI_DIR__/userdata/config/browser_types.xml`. Each browser is defined within a **browserType** block. Please refer to the [Sahi Documentation, "Configure Browsers"](https://sahipro.com/docs/using-sahi/sahi-configuration-basic.html) to see the *browserType* Nodes for popular browsers. 
 
-For **PhantomJS** please save [sahi.js](http://labs.consol.de/sakuli/install/3rd-party/phantom/sahi.js) into the folder `__SAKULI_HOME__\phantomjs\` and use this option line: 
+For **PhantomJS** please save [sahi.js](http://labs.consol.de/sakuli/install/3rd-party/phantom/sahi.js) into the folder `__SAHI_DIR__\phantomjs\` and use this option line: 
 
-        	<options>--proxy=localhost:9999 __SAKULI_HOME__\phantomjs\sahi.js</options> 
+        	<options>--proxy=localhost:9999 __SAHI_DIR__\phantomjs\sahi.js</options> 
 	
 
 ### Sahi behind a proxy
-If web tests with Sakuli should go through your company's proxy, edit the property file `__SAKULI_HOME__/_include/sakuli.properties` and set it there for both http and https. `auth.username` and `auth.password` are only used if `auth.enable` is set to `true`.
 
-Use the bypass list to exclude certain URLs from being accessed through the proxy.
+SEt the following properties (as global) to define a proxy Sahi should connect to.  
 
     ```
 	### HTTP/HTTPS proxy Settings
 	### Set these properties, to enable the test execution behind company proxies
-	# Use external proxy server for HTTP
+	# Use external proxy server for HTTP* 
 	ext.http.proxy.enable=true
 	ext.http.proxy.host=proxy.yourcompany.com
 	ext.http.proxy.port=8080
@@ -239,13 +219,11 @@ Use the bypass list to exclude certain URLs from being accessed through the prox
 
 #### Mozilla Firefox ####
 
-Edit `%SAKULI_HOME%/sahi/config/ff_profile_template/prefs.js`: 
+Edit `__SAHI_DIR__/config/ff_profile_template/prefs.js`: 
 
     user_pref("browser.sessionstore.max_tabs_undo",0);
     user_pref("browser.sessionstore.max_windows_undo",0);
     
 To take these changes effect, you need to delete the firefox profile folders. Sahi will re-create them on the next run: 
 
-    rm -rf %SAKULI_HOME%/sahi/userdata/browser/ff/profiles/*
-
-<!--- FIXME killprocs.vbs/.sh -->
+    rm -rf __SAHI_DIR__/userdata/browser/ff/profiles/*

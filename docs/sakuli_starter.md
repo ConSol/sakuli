@@ -1,2 +1,0 @@
-# Sakuli Starter
-
