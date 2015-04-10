@@ -324,4 +324,16 @@ public class SakuliExceptionHandler {
         }
         return e;
     }
+
+    /**
+     * Throws a new {@link SakuliRuntimeException} for all collected resumed exceptions. A resumed exception have been
+     * created by{@link #handleException(Throwable, boolean)}  with resumeOnException==true.
+     */
+    public void throwCollectedResumedExceptions() {
+        if (resumeExceptions.size() > 0) {
+            SakuliRuntimeException e = new SakuliRuntimeException("test contains some suppressed resumed exceptions!");
+            resumeExceptions.stream().forEach(t -> e.addSuppressed(t));
+            throw e;
+        }
+    }
 }
