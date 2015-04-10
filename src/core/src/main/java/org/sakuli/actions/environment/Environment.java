@@ -45,6 +45,7 @@ import java.nio.file.Paths;
  */
 public class Environment implements Action {
 
+    public static final double DEFAULT_SIMILARITY = 0.8;
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final boolean resumeOnException;
     private ScreenActionLoader loader;
@@ -69,9 +70,10 @@ public class Environment implements Action {
     }
 
     /**
-     * set a new default similarity for the screen capturing methods.
+     * set a new default similarity of the screen capturing methods. To reset the similarty call {@link
+     * #resetSimilarity()}.
      *
-     * @param similarity double value between 0 and 1, default = 0.8f
+     * @param similarity double value between 0 and 1, default = {@link #DEFAULT_SIMILARITY}
      * @return this {@link Environment} or NULL on errors.
      */
     @LogToResult(message = "set similarity level", logClassInstance = false)
@@ -84,6 +86,16 @@ public class Environment implements Action {
             return null;
         }
         return this;
+    }
+
+    /**
+     * Resets the current similarty of the screen capturing methods to the original default value of {@link
+     * #DEFAULT_SIMILARITY}.
+     *
+     * @return this {@link Environment} or NULL on errors.
+     */
+    public Environment resetSimilarity() {
+        return setSimilarity(DEFAULT_SIMILARITY);
     }
 
     /**
