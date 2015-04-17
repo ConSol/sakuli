@@ -22,6 +22,7 @@
   * [Application.getName()](#Application.getName)
 * [Environment](#Environment)
   * [Environment.setSimilarity(similarity)](#Environment.setSimilarity)
+  * [Environment.resetSimilarity()](#Environment.resetSimilarity)
   * [Environment.getRegionFromFocusedWindow()](#Environment.getRegionFromFocusedWindow)
   * [Environment.takeScreenshot(pathName)](#Environment.takeScreenshot)
   * [Environment.sleep(seconds)](#Environment.sleep)
@@ -93,7 +94,8 @@
  
 <a name="Sahi-API"></a>
 #Sahi-API
-__All Sahi-API__ functions are natively usable in Sakuli. For a complete documentation, see [Sahi-API](http://sahi.co.in/w/all-apis).
+__All Sahi-API__ functions are natively usable in Sakuli. For a complete documentation, see
+[Sahi-API](http://sahi.co.in/w/all-apis).
 
 **Members**
 
@@ -107,7 +109,8 @@ TestCase - initializes the Sakuli object and sets the warning and critical time 
 
 - warningTime `number` - threshold in seconds  
 - criticalTime `number` - threshold in seconds  
-- optImagePathArray `Array.<String>` - (optional) Path or Array of Paths to the folder containing the image patterns for these test cases.  
+- optImagePathArray `Array.<String>` - (optional) Path or Array of Paths to the folder containing the image patterns
+    for these test cases.  
 
 **Returns**:  - an initialized Sakuli object.  
 **Example**  
@@ -198,7 +201,8 @@ Application Class - Represents an application.
 **Params**
 
 - applicationNameOrPath `String` - Path to the application file. Example: `C:\Windows\system32\notepad.exe`  
-- optResumeOnException `Boolean` - Determines whether to ignore exceptions from this class. If this parameter is undefined, it will be false.  
+- optResumeOnException `Boolean` - Determines whether to ignore exceptions from this class. If this parameter is
+    undefined, it will be false.  
 
 **Returns**: [Application](#Application) - an initialized  object.  
 **Example**  
@@ -285,6 +289,7 @@ Environment - Represents the environment of the current test host.
 
 * [Environment](#Environment)
   * [Environment.setSimilarity(similarity)](#Environment.setSimilarity)
+  * [Environment.resetSimilarity()](#Environment.resetSimilarity)
   * [Environment.getRegionFromFocusedWindow()](#Environment.getRegionFromFocusedWindow)
   * [Environment.takeScreenshot(pathName)](#Environment.takeScreenshot)
   * [Environment.sleep(seconds)](#Environment.sleep)
@@ -312,13 +317,18 @@ Environment - Represents the environment of the current test host.
 
 <a name="Environment.setSimilarity"></a>
 ##Environment.setSimilarity(similarity)
-set a new default similarity for the screen capturing methods.
+Set a new default similarity for the screen capturing methods.
 
 **Params**
 
 - similarity `number` - value between 0 and 1, default = 0.8  
 
 **Returns**:  - this Environment or NULL on errors.  
+<a name="Environment.resetSimilarity"></a>
+##Environment.resetSimilarity()
+Resets the current similarty of the screen capturing methods to the original default value of 0.8.
+
+**Returns**:  - this [Environment](#Environment) or NULL on errors.  
 <a name="Environment.getRegionFromFocusedWindow"></a>
 ##Environment.getRegionFromFocusedWindow()
 Get a Region object from the current focused window
@@ -562,7 +572,11 @@ Key - representing some Key constants which can be used in type functions as inp
 
 The following __Key__ values are possible:
 
-`SPACE`, `ENTER`, `BACKSPACE`, `TAB`, `ESC`, `UP`, `RIGHT`, `DOWN`, `LEFT`, `PAGE_UP`, `PAGE_DOWN`, `DELETE`, `END`, `HOME`, `INSERT`, `F1`, `F2`, `F3`, `F4`, `F5`, `F6`, `F7`, `F8`, `F9`, `F10`, `F11`, `F12`, `F13`, `F14`, `F15`, `SHIFT`, `CTRL`, `ALT`, `ALTGR`, `META`, `CMD`, `WIN`, `PRINTSCREEN`, `SCROLL_LOCK`, `PAUSE`, `CAPS_LOCK`, `NUM0`, `NUM1`, `NUM2`, `NUM3`, `NUM4`, `NUM5`, `NUM6`, `NUM7`, `NUM8`, `NUM9`, `SEPARATOR`, `NUM_LOCK`, `ADD`, `MINUS`, `MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`
+`SPACE`, `ENTER`, `BACKSPACE`, `TAB`, `ESC`, `UP`, `RIGHT`, `DOWN`, `LEFT`, `PAGE_UP`, `PAGE_DOWN`, `DELETE`, `END`,
+`HOME`, `INSERT`, `F1`, `F2`, `F3`, `F4`, `F5`, `F6`, `F7`, `F8`, `F9`, `F10`, `F11`, `F12`, `F13`, `F14`, `F15`,
+`SHIFT`, `CTRL`, `ALT`, `ALTGR`, `META`, `CMD`, `WIN`, `PRINTSCREEN`, `SCROLL_LOCK`, `PAUSE`, `CAPS_LOCK`, `NUM0`,
+`NUM1`, `NUM2`, `NUM3`, `NUM4`, `NUM5`, `NUM6`, `NUM7`, `NUM8`, `NUM9`, `SEPARATOR`, `NUM_LOCK`, `ADD`, `MINUS`,
+`MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`
 
 **Example**  
 Closing an window over typing the short cut `ALT + F4`:
@@ -1008,7 +1022,8 @@ Blocks the current testcase execution for x seconds
 **Returns**:  - from this region a extracted Text as String  
 <a name="RegionRectangle"></a>
 #RegionRectangle
-RegionRectangle (extends [Region](#Region)) - Represents a region specified by the x and y coordinates, width and height as a part of the screen.
+RegionRectangle (extends [Region](#Region)) - Represents a region specified by the x and y coordinates, width and
+height as a part of the screen.
 
 **Params**
 
@@ -1016,7 +1031,8 @@ RegionRectangle (extends [Region](#Region)) - Represents a region specified by t
 - y `number` - – y position of a rectangle on the screen.  
 - w `number` - – width of a rectangle in pixel.  
 - h `number` - – height of a rectangle in pixel.  
-- optResumeOnException `Boolean` - (optional) if true, the test execution won't stop on an occurring error. Default: false.  
+- optResumeOnException `Boolean` - (optional) if true, the test execution won't stop on an occurring error.
+    Default: false.  
 
 **Example**  
 ```

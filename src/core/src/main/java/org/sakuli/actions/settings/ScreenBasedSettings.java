@@ -18,6 +18,7 @@
 
 package org.sakuli.actions.settings;
 
+import org.sakuli.actions.environment.Environment;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sikuli.basics.Debug;
@@ -37,7 +38,7 @@ import java.security.InvalidParameterException;
 @Component
 public class ScreenBasedSettings extends Settings {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScreenBasedSettings.class);
-    private double curMinSimilarity = 0.8f;
+    private double curMinSimilarity = Environment.DEFAULT_SIMILARITY;
     private ActionProperties props;
     private SakuliProperties sakuliProps;
 

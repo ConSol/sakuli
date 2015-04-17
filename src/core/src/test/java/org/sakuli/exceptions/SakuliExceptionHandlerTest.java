@@ -46,8 +46,7 @@ import java.util.List;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
 public class SakuliExceptionHandlerTest extends BaseTest {
@@ -136,6 +135,26 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         testling.handleException(new SakuliInitException("FAILURE"));
         Assert.assertNull(testSuite.getException());
         assertTrue(testling.isAlreadyProcessed(testExc));
+    }
+
+    @Test
+    public void testGetSuppressedExceptions() throws Exception {
+        setUp();
+        Exception testExc = new Exception(testExcMessage);
+        testling.handleException(testExc, true);
+        assertTrue(testCase.getException() instanceof SakuliExceptionWithScreenshot);
+        assertTrue(testCase.getException().getMessage().contains(testExcMessage));
+        assertEquals(testCase.getScreenShotPath(), expectedScreenshotPath);
+
+        SakuliRuntimeException resumedExceptions = null;
+        try {
+            testling.throwCollectedResumedExceptions();
+        } catch (SakuliRuntimeException e) {
+            resumedExceptions = e;
+        }
+        assertNotNull(resumedExceptions, "exception is expected!");
+        assertEquals(resumedExceptions.getMessage(), "test contains some suppressed resumed exceptions!");
+        assertTrue(resumedExceptions.getSuppressed()[0].getMessage().contains(testExcMessage));
     }
 
     @Test

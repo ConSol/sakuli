@@ -38,7 +38,7 @@ function Environment(optResumeOnException) {
 function initEnvironment(that, javaObject) {
 
     /**
-     * set a new default similarity for the screen capturing methods.
+     * Set a new default similarity for the screen capturing methods.
      * @param {number} similarity value between 0 and 1, default = 0.8
      * @return this Environment or NULL on errors.
      * @memberOf Environment
@@ -46,6 +46,16 @@ function initEnvironment(that, javaObject) {
      */
     that.setSimilarity = function (similarity) {
         return update(that.javaObject.setSimilarity(similarity));
+    };
+
+    /**
+     * Resets the current similarty of the screen capturing methods to the original default value of 0.8.
+     * @return this {@link Environment} or NULL on errors.
+     * @memberOf Environment
+     * @method resetSimilarity
+     */
+    that.resetSimilarity = function () {
+        return update(that.javaObject.resetSimilarity());
     };
 
     /**
