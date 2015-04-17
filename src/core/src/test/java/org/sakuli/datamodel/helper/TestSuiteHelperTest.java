@@ -18,17 +18,22 @@
 
 package org.sakuli.datamodel.helper;
 
+import org.apache.commons.io.FileUtils;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.utils.TestSuitePropertiesTestUtils;
 import org.testng.annotations.Test;
 
 import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNull;
+import static org.testng.Assert.*;
 
 /**
  * @author tschneck Date: 17.07.13
@@ -77,6 +82,42 @@ public class TestSuiteHelperTest extends TestSuitePropertiesTestUtils {
         source = "line1\r\n\r\n\r\nbla\r\n";
         assertEquals(TestSuiteHelper.replaceEmptyLines(source, "//"),
                 "line1\r\n//\r\n//\r\nbla\r\n");
+    }
+
+    @Test
+    public void testModifyFiles() throws Exception {
+        Path path = Paths.get("temp-testsuite.suite");
+        try {
+            String source = "line1\r\n\r\nbla\r\n";
+            FileUtils.writeStringToFile(path.toFile(), source);
+            FileTime beforeTimeStamp = Files.getLastModifiedTime(path, LinkOption.NOFOLLOW_LINKS);
+            Thread.sleep(1100);
+
+            String result = TestSuiteHelper.prepareTestSuiteFile(path);
+            assertEquals(result, "line1\r\n//\r\nbla\r\n");
+            FileTime afterTimeStamp = Files.getLastModifiedTime(path, LinkOption.NOFOLLOW_LINKS);
+            assertNotEquals(beforeTimeStamp, afterTimeStamp);
+        } finally {
+            Files.deleteIfExists(path);
+        }
+    }
+
+    @Test
+    public void testNotModifyFiles() throws Exception {
+        Path path = Paths.get("temp-testsuite.suite");
+        try {
+            String source = "line1\r\nbla\r\n";
+            FileUtils.writeStringToFile(path.toFile(), source);
+            FileTime beforeTimeStamp = Files.getLastModifiedTime(path, LinkOption.NOFOLLOW_LINKS);
+            Thread.sleep(1100);
+
+            String result = TestSuiteHelper.prepareTestSuiteFile(path);
+            assertEquals(source, result);
+            FileTime afterTimeStamp = Files.getLastModifiedTime(path, LinkOption.NOFOLLOW_LINKS);
+            assertEquals(beforeTimeStamp, afterTimeStamp);
+        } finally {
+            Files.deleteIfExists(path);
+        }
     }
 
     @Test(expectedExceptions = InvalidParameterException.class)

@@ -96,11 +96,15 @@ public class TestSuiteHelper {
     /**
      * Modifies the testsuite.suite file so that no empty lines are included.
      */
-    private static String prepareTestSuiteFile(Path testSuiteFile) throws IOException {
+    static String prepareTestSuiteFile(Path testSuiteFile) throws IOException {
         String suiteFile = FileUtils.readFileToString(testSuiteFile.toFile());
-        suiteFile = replaceEmptyLines(suiteFile, "//");
-        FileUtils.writeStringToFile(testSuiteFile.toFile(), suiteFile);
-        return suiteFile;
+        String updatedFile = replaceEmptyLines(suiteFile, "//");
+        if (suiteFile.equals(updatedFile)) {
+            return suiteFile;
+        } else {
+            FileUtils.writeStringToFile(testSuiteFile.toFile(), updatedFile);
+            return updatedFile;
+        }
     }
 
     /**
