@@ -122,13 +122,13 @@
             </build>
         </profile>
 
-        <profile>
-            <id>release-build</id>
-            <properties>
-                <!--go back to root folder ignore 'target/checkout' -->
-                <sakuli.home>${project.parent.basedir}/../..</sakuli.home>
-            </properties>
-        </profile>
+        <!--<profile>-->
+        <!--<id>release-build</id>-->
+        <!--<properties>-->
+        <!--&lt;!&ndash;go back to root folder ignore 'target/checkout' &ndash;&gt;-->
+        <!--<sakuli.home>${project.parent.basedir}/../..</sakuli.home>-->
+        <!--</properties>-->
+        <!--</profile>-->
     </profiles>
 
     <dependencies>
