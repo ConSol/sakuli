@@ -189,8 +189,15 @@ For **PhantomJS** please save [sahi.js](http://labs.consol.de/sakuli/install/3rd
 
 ### Sahi behind a proxy
 
-SEt the following properties (as global) to define a proxy Sahi should connect to.  
+Set the following properties (as global in the sakuli.properties) to define a proxy Sahi should connect to.  
 
+#### Proxy AutoConfig Script
+     ```
+     ## Proxy AutoConfig Script
+     ext.http.proxy.pac.url=http://your-autoconfig-url/proxy.pac
+     ```
+
+#### Fixed proxy
     ```
 	### HTTP/HTTPS proxy Settings
 	### Set these properties, to enable the test execution behind company proxies

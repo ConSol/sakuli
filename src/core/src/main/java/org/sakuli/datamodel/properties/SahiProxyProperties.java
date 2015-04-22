@@ -76,12 +76,13 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String HTTPS_PROXY_AUTH_NAME = "ext.https.proxy.auth.name";
     public static final String HTTPS_PROXY_AUTH_PASSWORD = "ext.https.proxy.auth.password";
     public static final String HTTP_HTTPS_BYBASS_HOSTS = "ext.http.both.proxy.bypass_hosts";
+    public static final String HTTP_PROXY_PAC_URL = "ext.http.proxy.pac.url";
     public static final List<String> userdataPropertyNames = Arrays.asList(SAHI_LOG_DIR,
             HTTP_PROXY_ENABLED, HTTP_PROXY_HOST, HTTP_PROXY_PORT, HTTP_PROXY_AUTH_ENABLED,
             HTTP_PROXY_AUTH_NAME, HTTP_PROXY_AUTH_PASSWORD,
             HTTPS_PROXY_ENABLED, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT, HTTPS_PROXY_AUTH_ENABLED,
             HTTPS_PROXY_AUTH_NAME, HTTPS_PROXY_AUTH_PASSWORD,
-            HTTP_HTTPS_BYBASS_HOSTS
+            HTTP_HTTPS_BYBASS_HOSTS, HTTP_PROXY_PAC_URL
     );
     public static final String SAHI_HANLDER = "handlers";
     public static final String SAHI_LOG_CONSOLE_HANLDER_LEVEL = "java.util.logging.ConsoleHandler.level";
