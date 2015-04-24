@@ -45,7 +45,7 @@
         <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
         <downloadSources>true</downloadSources>
         <downloadJavadocs>true</downloadJavadocs>
-        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.5</dependencies.aspectj.version>
