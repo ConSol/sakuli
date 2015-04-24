@@ -26,6 +26,7 @@ import org.sakuli.javaDSL.actions.Region;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
@@ -66,11 +67,11 @@ public class TypeActionIT extends AbstractUiTestApplicationIT {
         env.type(Key.TAB).typeMasked("capital letters", Key.SHIFT);
 
         new Region().find("subscribe_newsletter").find("checkbox").click();
-        Arrays.asList("email_filled", "phone_filled", "subscribe_newsletter_filled", "address_filled")
-                .forEach(pic -> {
-                    logger.info("check pic '{}'", pic);
-                    assertNotNull(new Region().exists(pic));
-                });
+        List<String> pics = Arrays.asList("email_filled", "phone_filled", "subscribe_newsletter_filled", "address_filled");
+        for(String pic : pics){
+            logger.info("check pic '{}'", pic);
+            assertNotNull(new Region().exists(pic));
+        }
         new Region().find("save").click();
 
         assertNotNull(new Region().exists("successfull_updated"));
