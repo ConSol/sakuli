@@ -255,7 +255,7 @@ public class OutputBuilderTest {
                 " in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")</td></tr>");
     }
 
-    @Test(enabled = false) //TODO TS enable when gaearman can handle with screenshots
+    @Test
     public void testFormatTestSuiteTableExceptionWithScreenshot() throws Exception {
         GearmanPropertiesTestHelper.initMock(gearmanProperties);
         Path screenshotPath = Paths.get(OutputBuilder.class.getResource("computer.png").toURI());
@@ -277,8 +277,8 @@ public class OutputBuilderTest {
 
         String start = "<div style=\"width:640px\" id=\"sakuli_screenshot\">" +
                 "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" " +
-                "src=\"data:image/jpg;base64,";
-        String end = "\"></div></td></tr>";
+                "src=\"data:image/png;base64,";
+        String end = "></div></td></tr>";
         String substring = result.substring(result.indexOf(separator));
         assertEquals(substring.substring(0, start.length()), start);
         assertEquals(substring.substring(substring.length() - end.length()), end);
