@@ -13,7 +13,7 @@ This page contains different topics regarding the configuration of both **Sakuli
 2. as a **testsuite property** in `test-suites-folder/test-suite/testsuite.properties`
    -> valid for **all test cases** within a test suite 
 3. as a **Java VM option** `-Dsakuli.property.key=value`, appended to the Sakuli starter `sakuli.sh / sakuli.bat` 
-   -> valid for a Sakuli starter
+   -> valid for a Sakuli starter execution
 
 We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file; your changes will not be preserved. 
 
@@ -176,11 +176,12 @@ Define a service dependency of all Sakuli checks to this logon check; this will 
 ## Sikuli settings
 ### Highlighting
 
-* **`sakuli.autoHighlight.enabled`**=`false` - If true, every region gets highlighted automatically.
-* **`sakuli.autoHighlight.seconds`**=`1.1f` - Auto highlight duration 
+* **`sakuli.highlight.seconds`**=`1.1f` - duration for auto-highlighting and `highlight()` method 
+* **`sakuli.autoHighlight.enabled`**=`false` - If true, every region gets highlighted automatically for `sakuli.highlight.seconds`
+
 
 ## Sahi settings
-### Adding browsers to Sahi
+### Browser configuration
 If the Sahi dashboard does not show any browser or if you want to add another browser to the dashboard…
 
 ![nobrowser](../docs/pics/w_sahi_no_browser.jpg) 
@@ -191,12 +192,23 @@ For **PhantomJS** please save [sahi.js](http://labs.consol.de/sakuli/install/3rd
 
         	<options>--proxy=localhost:9999 __SAHI_DIR__\phantomjs\sahi.js</options> 
 	
+### Browser selection 
+
+You may want to change the browser due to the following reasons: 
+
+* to check if a web test (made with Sahi methods) for browser A is also running properly on browser B
+* to run a headless browser
+    * just for curiosity :-)
+    * to keep the browser in background while Sakuli tests a non-web application (e.g. fat client)  
+
+In addition to the possibilities described in [General note on property settings](./additional-settings.md#general-note-on-property-settings), `sakuli.bat/sakuli.sh` can also be given the parameter `-b`: 
+
+    %SAKULI_HOME%/bin/sakuli.sh -b chrome --run /path/to/suite 
 
 ### Sahi behind a proxy
 
-SEt the following properties (as global) to define a proxy Sahi should connect to.  
+Set the following properties (as global) to define a proxy Sahi should connect to.  
 
-    ```
 	### HTTP/HTTPS proxy Settings
 	### Set these properties, to enable the test execution behind company proxies
 	# Use external proxy server for HTTP* 
@@ -217,8 +229,6 @@ SEt the following properties (as global) to define a proxy Sahi should connect t
 
 	# There is only one bypass list for both secure and insecure.
 	ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.verisign.com
-
-    ```
 
 ### Sahi browser profile tuning
 
