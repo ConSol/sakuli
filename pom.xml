@@ -70,7 +70,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.source}</target>
+                    <target>${maven.compiler.target}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
