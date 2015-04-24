@@ -140,7 +140,7 @@ As soon as the created services produce perfdata for the first time, their XML f
 
 ### Change PNP working mode
 
-OMD runs PNP by default in **[Bulk Mode with NPCD and npcdmod.o](http://docs.pnp4nagios.org/pnp-0.6/modes#bulk_mode_with_npcdmod)**. In this mode the Nagios broker module `npcdmod.o` reads the performance directly from the monitoring core and writes them in *var/spool/perfdata*. This data are not expandable with **custom macros** - therefore the mode has to be changed to <!--- fixme link --> **[Bulk Mode with npcdmod.o](http://docs.pnp4nagios.org/pnp-0.6/modes#bulk_mode_with_npcdmod)**. (the performance of both modes will be equal). 
+OMD runs PNP by default in **[Bulk Mode with NPCD and npcdmod.o](http://docs.pnp4nagios.org/pnp-0.6/modes#bulk_mode_with_npcdmod)**. In this mode the Nagios broker module `npcdmod.o` reads the performance directly from the monitoring core and writes them in *var/spool/perfdata*. This data are not expandable with **custom macros** - therefore the mode has to be changed to **[Bulk Mode with NPCD](http://docs.pnp4nagios.org/pnp-0.6/modes#bulk_mode_with_npcd)**. (the performance of both modes will be equal). 
 
 In this mode the monitoring core itself writes perfdata to the spool directory (instead of *npcdmod.o*). The format of this data can be freely defined by adapting `service_perfdata_file_template`. In the following code block you can see that the four **custom host macros** were added to this template string. Perfdata files are then moved to *var/spool/perfdata* every 15 seconds by the monitoring core.
 

@@ -48,8 +48,6 @@ Additionally, on **Windows**:
 
 ### Sakuli 
 
-<!-- FIXME: lib-Variable benötigt? -->
-
 * Download **Sakuli** from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
   * current **development** snapshot = `sakuli-v.0.5.0-SNAPSHOT.zip` 
   * current **stable** version = highest version of `sakuli-zipped-release-vX.X.X.zip` 
@@ -61,9 +59,6 @@ Additionally, on **Windows**:
   	* Create a new **user variable**: 
         * Name: `SAKULI_HOME`
   	  * Value: `__INST_DIR__\sakuli-vX.X.X\`
-  	* Create a new **user variable**:  FIXME: needed? 
-  		* Name: `PATH`
-  		* Value: `%SAKULI_HOME%\bin\lib\libs`
   * **Linux**
     * Add to `~/.bashrc`: 
     
@@ -85,8 +80,6 @@ Additionally, on **Windows**:
 
 Sahi can be tested now for the first time. Open *"Start Sahi"* from *"Applications - Programming"* on **Ubuntu**, or by double clicking the icon on the **Windows** desktop. 
 
-<!--- fixme anker, titel -->
-
 The **Sahi Dashboard** should now list all available browsers on this system. To use the minimal test cases (see below), we recommend to install Firefox, if not yet done. (see [Adding browsers to Sahi](./additional-settings.md#adding-browsers-to-sahi)): 
 
 ![db_browsers](./pics/w_sahi_dashboard_browsers.jpg) 
@@ -104,8 +97,7 @@ All components below are optional but recommended:
 
 #### PhantomJS
 	
-<!--- anker  fixme -->	
-Currently, *each* Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Adding browsers to Sahi](./sakuli-additional-settings.md) for more information. 
+Currently, *each* Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Adding browsers to Sahi](./additional-settings.md#adding-browsers-to-sahi) for more information. 
 
 
 #### Screenshot tool 
