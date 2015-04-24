@@ -87,8 +87,8 @@ public class SakuliStarter {
     /**
      * The Sakuli-Starter executes a specific sakuli-testsuite. A test suite has to contain as minimum following files:
      * <ul>
-     * <li>testsuite.suite  => specifies the testcases</li>
-     * <li>testsuite.properties  => specifies the runtime settings like the browser for the test suite.</li>
+     * <li>testsuite.suite  - specifies the testcases</li>
+     * <li>testsuite.properties  - specifies the runtime settings like the browser for the test suite.</li>
      * </ul>
      *
      * @param args relative or absolute path to the folder of your test suite
@@ -170,8 +170,8 @@ public class SakuliStarter {
      * Executes a specific Sakuli test suite in the assigend 'testSuiteFolder'. A test suite has to contain as minimum
      * following files:
      * <ul>
-     * <li>testsuite.suite  => specifies the testcases</li>
-     * <li>testsuite.properties  => specifies the runtime settings like the browser for the test suite.</li>
+     * <li>testsuite.suite  = specifies the testcases</li>
+     * <li>testsuite.properties  = specifies the runtime settings like the browser for the test suite.</li>
      * </ul>
      *
      * @param testSuiteFolderPath  path to the Sakuli test suite

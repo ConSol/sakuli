@@ -27,7 +27,7 @@ import org.springframework.beans.factory.FactoryBean;
  *         Date: 15.05.14
  *         <p>
  *         A {@link FactoryBean} for creating spyed beans based on Mockito so that they
- *         can be {@link @Autowired} into Spring test configurations.
+ *         can be {@code @Autowired} into Spring test configurations.
  * @author Mattias Severson, Jayway
  * @see FactoryBean
  * @see Mockito
