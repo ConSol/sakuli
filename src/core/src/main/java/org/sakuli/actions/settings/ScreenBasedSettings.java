@@ -63,13 +63,13 @@ public class ScreenBasedSettings extends Settings {
         OcrTextRead = true;
 
         Highlight = props.isAutoHighlightEnabled();
-        if (props.getAutoHighlightSeconds() < 1) {
+        if (props.getDefaultHighlightSeconds() < 1) {
             /**
              * because of the mehtode {@link org.sikuli.script.ScreenHighlighter#closeAfter(float)}
              * */
-            throw new InvalidParameterException("the property '" + ActionProperties.AUTO_HIGHLIGHT_SEC + "' has to be greater as 1, but was " + props.getAutoHighlightSeconds());
+            throw new InvalidParameterException("the property '" + ActionProperties.DEFAULT_HIGHLIGHT_SEC + "' has to be greater as 1, but was " + props.getDefaultHighlightSeconds());
         }
-        DefaultHighlightTime = props.getAutoHighlightSeconds();
+        DefaultHighlightTime = props.getDefaultHighlightSeconds();
         WaitAfterHighlight = 0.1f;
 
         /***

@@ -50,7 +50,7 @@ public class ScreenshotActions {
     public ScreenshotActions(Screen screen, ActionProperties props) {
         this.screen = screen;
         screenShotFormat = props.getScreenShotFormat();
-        autohighlightSeconds = props.getAutoHighlightSeconds();
+        autohighlightSeconds = props.getDefaultHighlightSeconds();
     }
 
     /**

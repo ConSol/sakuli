@@ -36,8 +36,8 @@ public class ActionProperties extends AbstractProperties {
 
     public static final String TAKE_SCREENSHOTS = "sakuli.screenshot.onError";
     public static final String AUTO_HIGHLIGHT_ENABLED = "sakuli.autoHighlight.enabled";
-    public static final String AUTO_HIGHLIGHT_SEC = "sakuli.autoHighlight.seconds";
-    public static final String AUTO_HIGHLIGHT_SEC_DEFAULT = "1.1f";
+    public static final String DEFAULT_HIGHLIGHT_SEC = "sakuli.highlight.seconds";
+    public static final String DEFAULT_HIGHLIGHT_SEC_DEFAULT = "1.1f";
     public static final String TYPE_DELAY_PROPERTY = "sakuli.screenbased.typeDelay";
     public static final String CLICK_DELAY_PROPERTY = "sakuli.screenbased.clickDelay";
     public static final String ENCRYPTION_INTERFACE = "sakuli.encryption.interface";
@@ -50,8 +50,8 @@ public class ActionProperties extends AbstractProperties {
     private boolean takeScreenshots;
     @Value("${" + AUTO_HIGHLIGHT_ENABLED + "}")
     private boolean autoHighlightEnabled;
-    @Value("${" + AUTO_HIGHLIGHT_SEC + ":" + AUTO_HIGHLIGHT_SEC_DEFAULT + "}")
-    private float autoHighlightSeconds;
+    @Value("${" + DEFAULT_HIGHLIGHT_SEC + ":" + DEFAULT_HIGHLIGHT_SEC_DEFAULT + "}")
+    private float defaultHighlightSeconds;
     @Value("${" + CLICK_DELAY_PROPERTY + "}")
     private double clickDelay;
     @Value("${" + TYPE_DELAY_PROPERTY + "}")
@@ -96,12 +96,12 @@ public class ActionProperties extends AbstractProperties {
         this.autoHighlightEnabled = autoHighlightEnabled;
     }
 
-    public float getAutoHighlightSeconds() {
-        return autoHighlightSeconds;
+    public float getDefaultHighlightSeconds() {
+        return defaultHighlightSeconds;
     }
 
-    public void setAutoHighlightSeconds(float autoHighlightSeconds) {
-        this.autoHighlightSeconds = autoHighlightSeconds;
+    public void setDefaultHighlightSeconds(float defaultHighlightSeconds) {
+        this.defaultHighlightSeconds = defaultHighlightSeconds;
     }
 
     /**

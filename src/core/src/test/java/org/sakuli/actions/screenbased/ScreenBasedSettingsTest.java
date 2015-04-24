@@ -29,10 +29,10 @@ import java.security.InvalidParameterException;
 
 public class ScreenBasedSettingsTest {
 
-    @Test(expectedExceptions = InvalidParameterException.class, expectedExceptionsMessageRegExp = "the property '" + ActionProperties.AUTO_HIGHLIGHT_SEC + "' has to be greater as 1, but was 0.6")
+    @Test(expectedExceptions = InvalidParameterException.class, expectedExceptionsMessageRegExp = "the property '" + ActionProperties.DEFAULT_HIGHLIGHT_SEC + "' has to be greater as 1, but was 0.6")
     public void testSetDefaults() throws Exception {
         ActionProperties props = new ActionProperties();
-        props.setAutoHighlightSeconds(0.6f);
+        props.setDefaultHighlightSeconds(0.6f);
         SakuliProperties sakuliProps = new SakuliProperties();
         sakuliProps.setTessDataLibFolder(Paths.get("."));
 
