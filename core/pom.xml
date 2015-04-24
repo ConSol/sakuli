@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.4.9-SNAPSHOT</version>
+        <version>0.4.8</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>core</artifactId>
-    <version>0.4.9-SNAPSHOT</version>
+    <version>0.4.8</version>
     <name>core</name>
 
     <description>core module for all sakuli functionality</description>
