@@ -21,19 +21,16 @@ package org.sakuli.integration;
 import java.io.File;
 
 /**
- * basic interface  for all INTEGRATION tests
- * <p/>
- * to run your test als integration test annotate it with
- * <br/>
- * {@code @Test(groups = IntegrationTest.GROUP)}
+ * Basic interface  for all INTEGRATION tests. To run your test als integration test annotate it with
+ * {@code @Test(groups = IntegrationTest.GROUP)}.
  *
  * @author tschneck
  *         Date: 09.04.14
  */
 public interface IntegrationTest {
-    public static final String GROUP = "integration";
-    public static final String GROUP_UI = "ui";
-    public static final String INCLUDE_FOLDER_PATH = ".." + File.separator + "core" + File.separator + "src" + File.separator + "main" + File.separator + "_include";
-    public static final String TEST_FOLDER_PATH = File.separator + "_testsuite4IT";
+    String GROUP = "integration";
+    String GROUP_UI = "ui";
+    String INCLUDE_FOLDER_PATH = ".." + File.separator + "core" + File.separator + "src" + File.separator + "main" + File.separator + "_include";
+    String TEST_FOLDER_PATH = File.separator + "_testsuite4IT";
 
 }

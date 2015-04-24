@@ -25,9 +25,10 @@ import java.lang.annotation.*;
 /**
  * This Annotation should be used for all actions in the package {@link org.sakuli.actions}, if the
  * annotated method should be modify the Sahi request timer in respect of the property {@link SahiProxyProperties#REQUEST_DELAY_MS}
- * <p/>
+ * <p>
  * All annoted methods or constructor will be called by the aspect
  * {@link org.sakuli.aop.ModifySahiTimerAspect}.
+ * </p>
  *
  * @author Tobias Schneck
  */
