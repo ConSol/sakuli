@@ -1,6 +1,8 @@
 ## Change Log of Sakuli Releases
 
-- - -
+- - -   
+
+### Version 0.5.0
 
 ### Version 0.4.8
 * fix bug: test suite has stat 'OK' instead of 'RUNNING' during the execution
