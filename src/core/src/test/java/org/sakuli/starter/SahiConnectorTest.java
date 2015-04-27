@@ -68,6 +68,15 @@ public class SahiConnectorTest extends BaseTest {
         when(testSuiteMock.getAbsolutePathOfTestSuiteFile()).thenReturn(Paths.get(TEST_FOLDER_PATH).toString() + File.separator + "testsuite.suite");
     }
 
+    @Test
+    public void testGetTestRunner() throws Exception {
+        when(sahiProxyProperties.getProxyPort()).thenReturn(9000);
+        final TestRunner testRunner = testling.getTestRunner();
+        final String s = testRunner.toString();
+        assertContains(s, "sahiHost = localhost");
+        assertContains(s, "port = 9000");
+        assertContains(s, "threads = 1");
+    }
 
     @Test
     public void testStartSahiTestSuiteFAILURE() throws Throwable {

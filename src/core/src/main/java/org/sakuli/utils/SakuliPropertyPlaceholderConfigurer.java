@@ -149,10 +149,12 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
 
             String sahiPropConfig = Paths.get(sahiConfigFolerPath + SahiProxyProperties.SAHI_PROPERTY_FILE_APPENDER).normalize().toAbsolutePath().toString();
             modifyPropertiesConfiguration(sahiPropConfig, SahiProxyProperties.userdataPropertyNames, props);
+            modifySahiProxyPortPropertiesConfiguration(sahiConfigFolerPath, props);
             String sahiLogPropConfig = Paths.get(sahiConfigFolerPath + SahiProxyProperties.SAHI_LOG_PROPERTY_FILE_APPENDER).normalize().toAbsolutePath().toString();
             modifyPropertiesConfiguration(sahiLogPropConfig, SahiProxyProperties.logPropertyNames, props);
         }
     }
+
 
     private String resolve(String string, Properties props) {
         if (string != null) {
@@ -166,6 +168,31 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
             }
         }
         return string;
+    }
+
+    /**
+     * writes the {@link SahiProxyProperties#PROXY_PORT} value as {@link SahiProxyProperties#SAHI_PROPERTY_PROXY_PORT_MAPPING}
+     * property to sahiConfigPropertyFilePath!
+     */
+    protected void modifySahiProxyPortPropertiesConfiguration(String sahiConfigPropertyFilePath, Properties props) {
+        final String sahiProxyPort = props.getProperty(SahiProxyProperties.PROXY_PORT);
+        if (sahiProxyPort != null) {
+            try {
+                PropertiesConfiguration propConfig = new PropertiesConfiguration(sahiConfigPropertyFilePath);
+                propConfig.setAutoSave(true);
+                final String sahiMappingPropertyProxyPort = SahiProxyProperties.SAHI_PROPERTY_PROXY_PORT_MAPPING;
+
+                if (propConfig.containsKey(sahiMappingPropertyProxyPort)) {
+                    propConfig.clearProperty(sahiMappingPropertyProxyPort);
+                }
+                //remove property after the test execution, so that the installation can't break
+                addToModifiedPropertiesMap(sahiConfigPropertyFilePath, sahiMappingPropertyProxyPort, null);
+                propConfig.addProperty(sahiMappingPropertyProxyPort, sahiProxyPort);
+                logger.debug("modify properties file '{}' with '{}={}'", sahiConfigPropertyFilePath, sahiConfigPropertyFilePath, sahiProxyPort);
+            } catch (ConfigurationException e) {
+                logger.error("modify sahi properties went wrong", e);
+            }
+        }
     }
 
     /**

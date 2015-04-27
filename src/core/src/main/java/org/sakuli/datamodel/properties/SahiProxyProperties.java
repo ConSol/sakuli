@@ -43,6 +43,10 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String PROXY_HOME_FOLDER = "sahi.proxy.homePath";
     public static final String PROXY_CONFIG_FOLDER = "sahi.proxy.configurationPath";
     public static final String PROXY_PORT = "sahi.proxy.port";
+    /**
+     * Mapping between sakuli.properties {@link #PROXY_PORT} and sahi orignal property key in 'userdata.properties'.
+     */
+    public static final String SAHI_PROPERTY_PROXY_PORT_MAPPING = "proxy.port";
     public static final String MAX_CONNECT_TRIES = "sahi.proxy.maxConnectTries";
     public static final String RECONNECT_SECONDS = "sahi.proxy.reconnectSeconds";
     public static final String REQUEST_DELAY_MS = "sahi.proxy.requestDelayOnSikuliInput.delayTime";
