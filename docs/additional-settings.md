@@ -209,13 +209,6 @@ In addition to the possibilities described in [General note on property settings
 
 Set the following properties (as global in the sakuli.properties) to define a proxy Sahi should connect to.  
 
-#### Proxy AutoConfig Script
-     ```
-     ## Proxy AutoConfig Script
-     ext.http.proxy.pac.url=http://your-autoconfig-url/proxy.pac
-     ```
-
-#### Fixed proxy
     ```
 	### HTTP/HTTPS proxy Settings
 	### Set these properties, to enable the test execution behind company proxies
