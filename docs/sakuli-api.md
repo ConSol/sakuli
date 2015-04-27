@@ -22,6 +22,7 @@
   * [Application.getName()](#Application.getName)
 * [Environment](#Environment)
   * [Environment.setSimilarity(similarity)](#Environment.setSimilarity)
+  * [Environment.resetSimilarity()](#Environment.resetSimilarity)
   * [Environment.getRegionFromFocusedWindow()](#Environment.getRegionFromFocusedWindow)
   * [Environment.takeScreenshot(pathName)](#Environment.takeScreenshot)
   * [Environment.sleep(seconds)](#Environment.sleep)
@@ -47,6 +48,7 @@
   * [Environment.logInfo(message)](#Environment.logInfo)
   * [Environment.logDebug(message)](#Environment.logDebug)
 * [Key](#Key)
+* [MouseButton](#MouseButton)
 * [Region](#Region)
   * [Region.find(imageName)](#Region.find)
   * [Region.findRegion()](#Region.findRegion)
@@ -54,6 +56,9 @@
   * [Region.click()](#Region.click)
   * [Region.doubleClick()](#Region.doubleClick)
   * [Region.rightClick()](#Region.rightClick)
+  * [Region.mouseMove()](#Region.mouseMove)
+  * [Region.mouseDown(mouseButton)](#Region.mouseDown)
+  * [Region.mouseUp(mouseButton)](#Region.mouseUp)
   * [Region.waitForImage(imageName, seconds)](#Region.waitForImage)
   * [Region.paste(text)](#Region.paste)
   * [Region.pasteMasked(text)](#Region.pasteMasked)
@@ -89,7 +94,8 @@
  
 <a name="Sahi-API"></a>
 #Sahi-API
-__All Sahi-API__ functions are natively usable in Sakuli. For a complete documentation, see [Sahi-API](http://sahi.co.in/w/all-apis).
+__All Sahi-API__ functions are natively usable in Sakuli. For a complete documentation, see
+[Sahi-API](http://sahi.co.in/w/all-apis).
 
 **Members**
 
@@ -103,7 +109,8 @@ TestCase - initializes the Sakuli object and sets the warning and critical time 
 
 - warningTime `number` - threshold in seconds  
 - criticalTime `number` - threshold in seconds  
-- optImagePathArray `Array.<String>` - (optional) Path or Array of Paths to the folder containing the image patterns for these test cases.  
+- optImagePathArray `Array.<String>` - (optional) Path or Array of Paths to the folder containing the image patterns
+    for these test cases.  
 
 **Returns**:  - an initialized Sakuli object.  
 **Example**  
@@ -194,7 +201,8 @@ Application Class - Represents an application.
 **Params**
 
 - applicationNameOrPath `String` - Path to the application file. Example: `C:\Windows\system32\notepad.exe`  
-- optResumeOnException `Boolean` - Determines whether to ignore exceptions from this class. If this parameter is undefined, it will be false.  
+- optResumeOnException `Boolean` - Determines whether to ignore exceptions from this class. If this parameter is
+    undefined, it will be false.  
 
 **Returns**: [Application](#Application) - an initialized  object.  
 **Example**  
@@ -281,6 +289,7 @@ Environment - Represents the environment of the current test host.
 
 * [Environment](#Environment)
   * [Environment.setSimilarity(similarity)](#Environment.setSimilarity)
+  * [Environment.resetSimilarity()](#Environment.resetSimilarity)
   * [Environment.getRegionFromFocusedWindow()](#Environment.getRegionFromFocusedWindow)
   * [Environment.takeScreenshot(pathName)](#Environment.takeScreenshot)
   * [Environment.sleep(seconds)](#Environment.sleep)
@@ -308,13 +317,18 @@ Environment - Represents the environment of the current test host.
 
 <a name="Environment.setSimilarity"></a>
 ##Environment.setSimilarity(similarity)
-set a new default similarity for the screen capturing methods.
+Set a new default similarity for the screen capturing methods.
 
 **Params**
 
-- similarity `Double` - value between 0 and 1, default = 0.8  
+- similarity `number` - value between 0 and 1, default = 0.8  
 
 **Returns**:  - this Environment or NULL on errors.  
+<a name="Environment.resetSimilarity"></a>
+##Environment.resetSimilarity()
+Resets the current similarty of the screen capturing methods to the original default value of 0.8.
+
+**Returns**:  - this [Environment](#Environment) or NULL on errors.  
 <a name="Environment.getRegionFromFocusedWindow"></a>
 ##Environment.getRegionFromFocusedWindow()
 Get a Region object from the current focused window
@@ -523,7 +537,6 @@ wheel the given steps up.
 ##Environment.logError(message)
 make a error-log over Java backend into the log file.
 This won't stop the execution of the test case.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -532,7 +545,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logWarning"></a>
 ##Environment.logWarning(message)
 make a debug-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -541,7 +553,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logInfo"></a>
 ##Environment.logInfo(message)
 make a info-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -550,7 +561,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logDebug"></a>
 ##Environment.logDebug(message)
 make a debug-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -562,7 +572,11 @@ Key - representing some Key constants which can be used in type functions as inp
 
 The following __Key__ values are possible:
 
-`SPACE`, `ENTER`, `BACKSPACE`, `TAB`, `ESC`, `UP`, `RIGHT`, `DOWN`, `LEFT`, `PAGE_UP`, `PAGE_DOWN`, `DELETE`, `END`, `HOME`, `INSERT`, `F1`, `F2`, `F3`, `F4`, `F5`, `F6`, `F7`, `F8`, `F9`, `F10`, `F11`, `F12`, `F13`, `F14`, `F15`, `SHIFT`, `CTRL`, `ALT`, `ALTGR`, `META`, `CMD`, `WIN`, `PRINTSCREEN`, `SCROLL_LOCK`, `PAUSE`, `CAPS_LOCK`, `NUM0`, `NUM1`, `NUM2`, `NUM3`, `NUM4`, `NUM5`, `NUM6`, `NUM7`, `NUM8`, `NUM9`, `SEPARATOR`, `NUM_LOCK`, `ADD`, `MINUS`, `MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`
+`SPACE`, `ENTER`, `BACKSPACE`, `TAB`, `ESC`, `UP`, `RIGHT`, `DOWN`, `LEFT`, `PAGE_UP`, `PAGE_DOWN`, `DELETE`, `END`,
+`HOME`, `INSERT`, `F1`, `F2`, `F3`, `F4`, `F5`, `F6`, `F7`, `F8`, `F9`, `F10`, `F11`, `F12`, `F13`, `F14`, `F15`,
+`SHIFT`, `CTRL`, `ALT`, `ALTGR`, `META`, `CMD`, `WIN`, `PRINTSCREEN`, `SCROLL_LOCK`, `PAUSE`, `CAPS_LOCK`, `NUM0`,
+`NUM1`, `NUM2`, `NUM3`, `NUM4`, `NUM5`, `NUM6`, `NUM7`, `NUM8`, `NUM9`, `SEPARATOR`, `NUM_LOCK`, `ADD`, `MINUS`,
+`MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`
 
 **Example**  
 Closing an window over typing the short cut `ALT + F4`:
@@ -573,6 +587,25 @@ env.type(Key.F4, Key.ALT);
 **Members**
 
 * [Key](#Key)
+
+<a name="MouseButton"></a>
+#MouseButton
+MouseButton - representing the possible mouse action button.
+
+The following __MouseButton__ values are possible:
+
+`LEFT`, `RIGHT`, `MIDDLE`
+
+**Example**  
+Press and release the right mouse button vor 3 seconds on a specified region:
+```
+var region = new Region().find("your-pattern.png");
+region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+```
+
+**Members**
+
+* [MouseButton](#MouseButton)
 
 <a name="Region"></a>
 #Region
@@ -594,6 +627,9 @@ Region - Represents a region as a part of or the hole screen.
   * [Region.click()](#Region.click)
   * [Region.doubleClick()](#Region.doubleClick)
   * [Region.rightClick()](#Region.rightClick)
+  * [Region.mouseMove()](#Region.mouseMove)
+  * [Region.mouseDown(mouseButton)](#Region.mouseDown)
+  * [Region.mouseUp(mouseButton)](#Region.mouseUp)
   * [Region.waitForImage(imageName, seconds)](#Region.waitForImage)
   * [Region.paste(text)](#Region.paste)
   * [Region.pasteMasked(text)](#Region.pasteMasked)
@@ -666,6 +702,43 @@ makes a double click on the center of the Region.
 makes a right click on the center of the Region.
 
 **Returns**:  - the Region or NULL on errors.  
+<a name="Region.mouseMove"></a>
+##Region.mouseMove()
+Move the mouse pointer the center of the [Region](#Region) and "hovers" it.
+
+**Returns**:  - the [Region](#Region) or NULL on errors.  
+<a name="Region.mouseDown"></a>
+##Region.mouseDown(mouseButton)
+Low-level mouse action to press the assigned [MouseButton](#MouseButton) on the current position.
+
+**Params**
+
+- mouseButton  - on of [MouseButton](#MouseButton) values  
+
+**Returns**:  - the [Region](#Region) or NULL on errors.  
+**Example**  
+Press and release the right mouse button vor 3 seconds on a specified region:
+```
+var region = new Region().find("your-pattern.png");
+region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+```
+
+<a name="Region.mouseUp"></a>
+##Region.mouseUp(mouseButton)
+Low-level mouse action to release the assigned [MouseButton](#MouseButton).
+
+**Params**
+
+- mouseButton  - on of [MouseButton](#MouseButton) values  
+
+**Returns**:  - the [Region](#Region) or NULL on errors.  
+**Example**  
+Press and release the right mouse button vor 3 seconds on a specified region:
+```
+var region = new Region().find("your-pattern.png");
+region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+```
+
 <a name="Region.waitForImage"></a>
 ##Region.waitForImage(imageName, seconds)
 Blocks and waits until a target which is specified by the optImageName is found in the hole
@@ -949,7 +1022,8 @@ Blocks the current testcase execution for x seconds
 **Returns**:  - from this region a extracted Text as String  
 <a name="RegionRectangle"></a>
 #RegionRectangle
-RegionRectangle (extends [Region](#Region)) - Represents a region specified by the x and y coordinates, width and height as a part of the screen.
+RegionRectangle (extends [Region](#Region)) - Represents a region specified by the x and y coordinates, width and
+height as a part of the screen.
 
 **Params**
 
@@ -957,7 +1031,8 @@ RegionRectangle (extends [Region](#Region)) - Represents a region specified by t
 - y `number` - – y position of a rectangle on the screen.  
 - w `number` - – width of a rectangle in pixel.  
 - h `number` - – height of a rectangle in pixel.  
-- optResumeOnException `Boolean` - (optional) if true, the test execution won't stop on an occurring error. Default: false.  
+- optResumeOnException `Boolean` - (optional) if true, the test execution won't stop on an occurring error.
+    Default: false.  
 
 **Example**  
 ```

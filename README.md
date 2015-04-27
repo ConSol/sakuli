@@ -2,6 +2,8 @@
 
 *An end-to-end testing tool for web sites and common UIs with full Nagios integration*
 
+**-> [Download](http://labs.consol.de/sakuli/install/)**
+
 **TABLE OF CONTENTS**
 
 * [**Introduction**](#Introduction)
@@ -22,7 +24,7 @@
 
 **Sakuli simulates user actions** on graphical user interfaces (web, fat client, citrix, …), and provides the obtained information (runtime, result, screenshots) to third party (e.g. Nagios compatible monitoring) systems. 
 
-**Sakuli** depends on **Java** and should run on most OS; **Windows** and **Ubuntu Linux (14.04 LTS)** are currently proved.  
+**Sakuli** depends on **Java** and should run on most OS; **Windows**, **Ubuntu  Linux (14.04 LTS)** and **OpenSUSE 13.2** are currently proved.  
 
 The **Sakuli** project brings together two Open-Source end-to-end testing tools which perfectly fit together: **Sahi** ([http://www.sahi.co.in/]([http://www.sahi.co.in/)) for **web-based tests** (by injecting JavaScript code into the browser), as well as the screenshot-based testing tool **Sikuli** ([http://www.sikuli.org](http://www.sikuli.org)), which allows the execution of **keyboard and mouse actions** on screen areas that have been defined by previously recorded screenshots and are recognized using the OpenCV engine. 
 
@@ -61,7 +63,11 @@ Use this demo appliance to see all the features of Sakuli in action. *sakulidemo
 
 * **sakulidemo.ova v0.2**: Download the .ova file from [http://labs.consol.de/sakuli/demo](http://labs.consol.de/sakuli/demo) and import this machine into Virtualbox.
 
-User accounts are kept simple: *root/root* and *sakuli/sakuli*. Don't use this in production. 
+User accounts: *root/root* and *sakuli/sakuli*. 
+
+It is recommended to fix the VM's resolution to 1024x768px. 
+
+Don't use this in production. 
 
 ## Media
 
@@ -87,7 +93,7 @@ for web sites and common UIs with full Nagios integration](https://rawgit.com/to
 
 ## Help
 In case you have any questions or requests for help, feel free to get in contact with us! 
-The Sakuli team members are reachable on the email address [sakuli@consol.de](mailto:sakuli@consol.de).
+The Sakuli team members are reachable on the email address **[sakuli@consol.de](mailto:sakuli@consol.de)**.
 
 The guys behind Sakuli: 
 
