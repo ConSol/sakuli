@@ -1,6 +1,29 @@
 ## Change Log of Sakuli Releases
 
-- - -
+- - -   
+
+### Version 0.5.0
+* rename sakuli.autoHighlight.seconds to sakuli.highlight.seconds
+* Documentation
+* fix #72 modfy testsuite.suite file writer - just overwrite the file if any blank lines are inside
+* add Environment#resetSimilarity()
+* fix api generation script
+* improve error message for invalid paths in 'testsuite.suite' file
+* add support for more screenshot paterns - .jpg, .JPG, .png, .PNG
+* .#52 rename sakuli.receiver properties to sakuli.forwarder
+* fix #71 add the resumeOnException flag to some missing handleException calls
+* refactor exception handling // improve exception handling for javaDSL
+* refactor dependency management // extract bin, config, libs to new common 'module'
+* .#13 rename screeshot property to 'sakuli.screenshot.onError'
+* .#20 enable testCase.endOfStep("name")
+* .#66 add -b, --browser into sakuli.jar/sakuli.sh
+* .#64 Added Linux (sakuli.sh) and Windows (sakuli.bat) starter.
+* .#55 low-level-mouse functions, add mouseMove(), mouseUp(mouseButton), mouseDown(mouseButton)
+* .#60 refactor command line options
+* .#62 move log-level settings to sakuli.properties
+* .#60 introduce a 'sakuli-default.properties' file to move the sakuli.properties to the test suite root
+* .#60 introduce new file system structure
+
 
 ### Version 0.4.8
 * fix bug: test suite has stat 'OK' instead of 'RUNNING' during the execution

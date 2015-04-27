@@ -120,7 +120,7 @@ Create a **host object** for the host on which Sakuli checks will be executed:
 	}
 
 Create the following **service object** for the first test case: 
-<!--- fixme Minimalbeispiel -->
+<!--- fixme Anpassen fürs Minimalbeispiel -->
 
 	vim ~/etc/nagios/conf.d/services.cfg
 	

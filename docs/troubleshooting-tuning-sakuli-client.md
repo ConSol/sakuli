@@ -99,6 +99,21 @@ Error reporting is enabled by default - you should turn off this service because
 
 
 ## Troubleshooting
+
+### Hanging applications
+
+If you are testing applications which tend to hang/freeze, there is a solution (currently only for Windows) to "tidy up" stale processes on each start of Sakuli. Add this line to `sakuli.bat`:  
+
+    cscript.exe %SAKULI_HOME%\bin\helper\killproc.vbs -f %SAKULI_HOME%\bin\helper\procs_to_kill.txt
+    
+In `procs_to_kill.txt` you can define which processes should be killed before Sakuli starts a new check: 
+
+    # Full path: 
+    C:\Program Files\Mozilla Firefox\firefox.exe
+    C:\Program Files\Internet Explorer\iexplore.exe
+    # Using wildcards (%): 
+    java%sakuli.jar
+
 ### Sikuli does not recognize images
 
 If Sikuli does not recognize regions on the screen, check the following list of possible reasons: 

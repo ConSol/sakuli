@@ -95,8 +95,8 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
 
 
     /**
-     * Handles any Exception or Error. The handleException function calls the Java backend and stores the Exception to
-     * the database.
+     * Handles any Exception or Error. The handleException function calls the Java backend and stores the Exception 
+     * for further processing.
      *
      * Use it at the end of a catch-block.
      * @example
@@ -130,7 +130,7 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
 
 
     /**
-     * Saves the results of the current test case to the database.
+     * Saves the results of the current test case for further processing.
      *
      * Should be called in finally-block of the test case:
      * @example

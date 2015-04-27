@@ -2,9 +2,6 @@
 
 This page contains different topics regarding the configuration of both **Sakuli** and its components, **Sahi** and **Sikuli**.
 
-<!-- FIXME: SAKULI_HOME -->
-
-
 ## Sakuli settings
 
 ### General note on property settings
@@ -16,7 +13,7 @@ This page contains different topics regarding the configuration of both **Sakuli
 2. as a **testsuite property** in `test-suites-folder/test-suite/testsuite.properties`
    -> valid for **all test cases** within a test suite 
 3. as a **Java VM option** `-Dsakuli.property.key=value`, appended to the Sakuli starter `sakuli.sh / sakuli.bat` 
-   -> valid for a Sakuli starter
+   -> valid for a Sakuli starter execution
 
 We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file; your changes will not be preserved. 
 
@@ -141,8 +138,10 @@ To decrypt and use a secret in Sakuli test cases, use one of the following metho
 
 To set the format and destination folder for screenshots taken by Sakuli:
 
+* **`sakuli.screenshot.onError`**=`true` - take a screenshot in case of an exception 
 * **`sakuli.screenshot.dir`**`=${sakuli.log.folder}/_screenshots`  -  folder for screenshot files (if activated)
 * **`sakuli.screenshot.format`**`=jpg`  -  screenshot file format (Possible values: jpg, png)
+* **`sakuli.forwarder.gearman.nagios.output.screenshotDivWidth`**=`640px` - Screenshot dimensions for results sent to Gearmand
     
 ### RDP pecularities
 #### connection types
@@ -160,7 +159,7 @@ For RDP, there are some special things to know. Connecting to the Sakuli test cl
 Sakuli will also run within that RDP session. But closing/disconnecting/logging of that RDP session will not unlock the local console session again. Sakuli will see the same as a regular user: the famous blue lock screen.
 
 #### LOGOFF.bat
-To log off a RDP session, right-click `%SAKULI_HOME%/bin/helper/LOGOFF.bat` and execute the script with administrator privileges. The script then
+To log off a RDP session, right-click `%SAKULI_HOME%\bin\helper\LOGOFF.bat` and execute the script with administrator privileges. The script then
 
 * determines the current RDP session ID
 * redirects this session back to the local console
@@ -168,14 +167,21 @@ To log off a RDP session, right-click `%SAKULI_HOME%/bin/helper/LOGOFF.bat` and 
 
 #### check_logon_session.ps1
 
-In `%SAKULI_HOME%/setup/nagios` you can find **check_logon_session.ps1** which can be used as a client-side check to ensure that the Sakuli user is always logged on, either via RDP or on the local console. Instructions for the implementation of this check can be found in the script header.
+In `%SAKULI_HOME%\setup\nagios` you can find **check_logon_session.ps1** which can be used as a client-side Nagios check to ensure that the Sakuli user is always logged on, either via RDP or on the local console. Instructions for the implementation of this check can be found in the script header.
 
 Define a service dependency of all Sakuli checks to this logon check; this will ensure that a locked session will not raise false alarms.
 
 ![](pics/userloggedin.jpg)
 
+## Sikuli settings
+### Highlighting
+
+* **`sakuli.highlight.seconds`**=`1.1f` - duration for auto-highlighting and `highlight()` method 
+* **`sakuli.autoHighlight.enabled`**=`false` - If true, every region gets highlighted automatically for `sakuli.highlight.seconds`
+
+
 ## Sahi settings
-### Adding browsers to Sahi
+### Browser configuration
 If the Sahi dashboard does not show any browser or if you want to add another browser to the dashboard…
 
 ![nobrowser](../docs/pics/w_sahi_no_browser.jpg) 
@@ -186,6 +192,18 @@ For **PhantomJS** please save [sahi.js](http://labs.consol.de/sakuli/install/3rd
 
         	<options>--proxy=localhost:9999 __SAHI_DIR__\phantomjs\sahi.js</options> 
 	
+### Browser selection 
+
+You may want to change the browser due to the following reasons: 
+
+* to check if a web test (made with Sahi methods) for browser A is also running properly on browser B
+* to run a headless browser
+    * just for curiosity :-)
+    * to keep the browser in background while Sakuli tests a non-web application (e.g. fat client)  
+
+In addition to the possibilities described in [General note on property settings](./additional-settings.md#general-note-on-property-settings), `sakuli.bat/sakuli.sh` can also be given the parameter `-b`: 
+
+    %SAKULI_HOME%/bin/sakuli.sh -b chrome --run /path/to/suite 
 
 ### Sahi behind a proxy
 
@@ -220,16 +238,17 @@ Set the following properties (as global in the sakuli.properties) to define a pr
 	# There is only one bypass list for both secure and insecure.
 	ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.verisign.com
 
-    ```
-
 ### Sahi browser profile tuning
 
 #### Mozilla Firefox ####
 
 Edit `__SAHI_DIR__/config/ff_profile_template/prefs.js`: 
 
+    # Disable session restore functionality
     user_pref("browser.sessionstore.max_tabs_undo",0);
     user_pref("browser.sessionstore.max_windows_undo",0);
+    # Disable user-rating in FF >=37
+    user_pref("browser.selfsupport.url","");
     
 To take these changes effect, you need to delete the firefox profile folders. Sahi will re-create them on the next run: 
 

@@ -28,6 +28,7 @@ import java.lang.annotation.*;
  * <p>
  * All annoted methods or constructor will be called by the aspect
  * {@link org.sakuli.aop.ModifySahiTimerAspect}.
+ * </p>
  *
  * @author Tobias Schneck
  */

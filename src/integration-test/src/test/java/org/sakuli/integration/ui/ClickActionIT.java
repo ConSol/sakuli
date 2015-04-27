@@ -18,6 +18,8 @@
 
 package org.sakuli.integration.ui;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.sakuli.actions.screenbased.MouseButton;
@@ -113,9 +115,12 @@ public class ClickActionIT extends AbstractUiTestApplicationIT {
     protected Stage startUiApplication() {
         UiTestApplication.cleanAllEvents();
         eventCounter = new ConcurrentHashMap<>();
-        UiTestApplication.addLoginControllEvent(LOGIN_BT, MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-            logger.info("---> MOUSE EVENT triggered");
-            countEvent(LOGIN_BT);
+        UiTestApplication.addLoginControllEvent(LOGIN_BT, MouseEvent.MOUSE_CLICKED, new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                logger.info("---> MOUSE EVENT triggered");
+                countEvent(LOGIN_BT);
+            }
         });
         return super.startUiApplication();
     }

@@ -108,8 +108,11 @@ public class TestSuiteHelper {
     }
 
     /**
-     * Replace an string like: <ul> <li>replaceEmptyLines("bla\n\nbla", "123")   =>   "bla\n123\nbla"</li>
-     * <li>replaceEmptyLines("bla\r\n\r\nbla", "123")   =>   "bla\r\n123\r\nbla"</li> </ul>
+     * Replace an string like:
+     * <ul>
+     * <li>replaceEmptyLines("bla\n\nbla", "123")   =   "bla\n123\nbla"</li>
+     * <li>replaceEmptyLines("bla\r\n\r\nbla", "123")   =   "bla\r\n123\r\nbla"</li>
+     * </ul>
      *
      * @param source        source String
      * @param replaceString replace String without double new line

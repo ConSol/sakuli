@@ -173,7 +173,7 @@ public class Region implements Action {
     }
 
     /**
-     * Move the mouse pointer the center of the {@link Region} and "hovers" it.
+     * Move the mouse pointer to the center of the {@link Region} and "hovers" it.
      *
      * @return the {@link Region} or NULL on errors.
      */
@@ -184,10 +184,15 @@ public class Region implements Action {
     }
 
     /**
-     * Low-level mouse action to press the assigned {@link MouseButton} on the current position. <p> Example: Press and
-     * release the right mouse button vor 3 seconds on a specified region: <br/> Region region = new
-     * Region().find("your-pattern.png"); <br/> region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
-     * <br/> </p>
+     * Low-level mouse action to press the assigned {@link MouseButton} on the current position.
+     * <p>
+     * Example: Press and release the right mouse button vor 3 seconds on a specified region:
+     * <br>
+     * {@code
+     * Region region = new Region().find("your-pattern.png");
+     * region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+     * }
+     * </p>
      *
      * @return the {@link Region} or NULL on errors.
      */
@@ -198,9 +203,15 @@ public class Region implements Action {
     }
 
     /**
-     * Low-level mouse action to release the assigned {@link MouseButton}. <p> Example: Press and release the right
-     * mouse button vor 3 seconds on a specified region: <br/> Region region = new Region().find("your-pattern.png");
-     * <br/> region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT); <br/> </p>
+     * Low-level mouse action to release the assigned {@link MouseButton}.
+     * <p>
+     * Example: Press and release the right mouse button vor 3 seconds on a specified region:
+     * <br>
+     * {@code
+     * Region region = new Region().find("your-pattern.png");
+     * region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+     * }
+     * </p>
      *
      * @return the {@link Region} or NULL on errors.
      */

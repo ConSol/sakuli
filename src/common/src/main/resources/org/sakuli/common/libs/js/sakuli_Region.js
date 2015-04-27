@@ -146,7 +146,7 @@ function initRegion(that, javaObject) {
     };
 
     /**
-     * Move the mouse pointer the center of the {@link Region} and "hovers" it.
+     * Move the mouse pointer to the center of the {@link Region} and "hovers" it.
      *
      * @returns the {@link Region} or NULL on errors.
      * @memberOf Region

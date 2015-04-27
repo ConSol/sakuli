@@ -2,7 +2,7 @@ target
 **/integration-test/temp-db-sahi
 **/install/*.zip
 **/_logs
-sahi
+sahi*
 firefox
 .idea
 *.iml

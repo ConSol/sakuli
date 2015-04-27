@@ -50,7 +50,7 @@ public class ScreenshotActions {
     public ScreenshotActions(Screen screen, ActionProperties props) {
         this.screen = screen;
         screenShotFormat = props.getScreenShotFormat();
-        autohighlightSeconds = props.getAutoHighlightSeconds();
+        autohighlightSeconds = props.getDefaultHighlightSeconds();
     }
 
     /**
@@ -60,7 +60,7 @@ public class ScreenshotActions {
      * @param folderPath Folder of the place, where the picture should be stored
      * @param region     if not null, the region will be highlighted at the screenshot
      * @return {@link java.nio.file.Path} ot the screenshot.
-     * @throws java.io.IOException
+     * @throws IOException
      */
     public Path takeScreenshotAndHighlight(String message, Path folderPath, RegionImpl region) throws IOException {
 
@@ -78,6 +78,12 @@ public class ScreenshotActions {
 
     /**
      * takes a Screenshot a specific format
+     *
+     * @param message
+     * @param folderPath
+     * @param format
+     * @return
+     * @throws IOException
      */
     public Path takeScreenshot(String message, Path folderPath, String format) throws IOException {
         String standardFormat = screenShotFormat;

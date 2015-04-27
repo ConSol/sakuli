@@ -1,7 +1,5 @@
 ![sakuli-logo](pics/sakuli_logo_small.png) 
 
- 
-
 # Documentation
 
 ## Usage
@@ -17,7 +15,7 @@
 
 * **Headless** Sakuli checks
   * [on Windows](headless-windows.md) -- in progress
-  * [on Ubuntu](headless-ubuntu.md) -- in progress
+  * [on Linux](headless-linux.md)
 * [**additional** Sakuli Settings](additional-settings.md)
 * **Troubleshooting** and **Tuning**
   * [**Sakuli Client**](troubleshooting-tuning-sakuli-client.md) 
@@ -25,7 +23,14 @@
   
 ## Sakuli API
 
-* [Sahi API](sakuli-api.md#Sahi API)
+Sakuli provides methods of three different types:
+
+* JS methods of **[Sahi](http://sahi.co.in/w/all-apis)**, which can be used 100% *natively*
+* JS methods which encapsulate a subset of the **Sikuli** Java API 
+* JS methods of **Sakuli** framework itself (testcase stuff, exception handling, …)  
+
+The latter two can be found in the following classes:  
+ 
 * [TestCase](sakuli-api.md#TestCase)
 * [Application](sakuli-api.md#Application)
 * [Environment](sakuli-api.md#Environment)

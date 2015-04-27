@@ -38,7 +38,7 @@ import java.nio.file.Path;
 
 
 /**
- * Starts the proxy like <sahi-installation-folder>/bin/sakuli_proxy.sh
+ * Starts the proxy like {@code <sahi-installation-folder>/bin/sakuli_proxy.sh}
  */
 @Component
 public class SahiProxy {

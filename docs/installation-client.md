@@ -5,7 +5,7 @@ This page describes the common steps to **install and test** Sakuli on **Windows
 The default installation path of a particular Sakuli version is referenced as `%SAKULI_HOME%`, that is 
 
 - `%SAKULI_HOME%` on **Windows** (e.g. `C:\sakuli\sakuli-v0.5.0\`)
-- `$SAKULI_HOME` on **Linux** (e.g. `/home/sakuli_user/sakuli-v0.5.0/`)
+- `$SAKULI_HOME` on **Linux** (e.g. `/home/e2e/sakuli-v0.5.0/`)
 
 **Conventions**: 
 
@@ -27,8 +27,9 @@ We recommend to run Sakuli clients on virtual machines.
   * Set the desktop background to a homogenous color. 
   * If you do not want to run Sakuli headless, disable screen locking mechanisms
   * Sakuli needs a reliable and predictable desktop environment: make sure that there are no pop-up windows of services or applications
-  * Other optional steps see ["Desktop tuning")](./troubleshooting-tuning-sakuli-client.md#desktop-tuning).
-* the client should not have more than one screen 
+  * If Sakuli is running within a VM, change the desktop resolution to a fixed value (e.g. 1024x768) and disable any auto-resizing mechanisms uf the guest display. This ensures that the guest's resolution does not change in case that you resize its window.
+  * Other optional steps see ["Desktop tuning"](./troubleshooting-tuning-sakuli-client.md#desktop-tuning).
+* the client should not have more than one physical screen 
 
 ## Software installation 
 ### Java
@@ -45,10 +46,10 @@ Additionally, on **Windows**:
     * `;C:\Program Files\Java\jre7/8\bin`
     * or 
 	* `;C:\Program Files (x86)\Java\jre7/8\bin`
+	
+
 
 ### Sakuli 
-
-<!-- FIXME: lib-Variable benötigt? -->
 
 * Download **Sakuli** from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
   * current **development** snapshot = `sakuli-v.0.5.0-SNAPSHOT.zip` 
@@ -61,9 +62,6 @@ Additionally, on **Windows**:
   	* Create a new **user variable**: 
         * Name: `SAKULI_HOME`
   	  * Value: `__INST_DIR__\sakuli-vX.X.X\`
-  	* Create a new **user variable**:  FIXME: needed? 
-  		* Name: `PATH`
-  		* Value: `%SAKULI_HOME%\bin\lib\libs`
   * **Linux**
     * Add to `~/.bashrc`: 
     
@@ -83,14 +81,13 @@ Additionally, on **Windows**:
   * Installation path: `__INST_DIR__/sahi`
   * select all packages to install
 
-Sahi can be tested now for the first time. Open *"Start Sahi"* from *"Applications - Programming"* on **Ubuntu**, or by double clicking the icon on the **Windows** desktop. 
+Sahi can be tested now for the first time. Open *"Start Sahi"* from the applications menu of your OS. 
 
-<!--- fixme anker, titel -->
-
-The **Sahi Dashboard** should now list all available browsers on this system. To use the minimal test cases (see below), we recommend to install Firefox, if not yet done. (see [Adding browsers to Sahi](./additional-settings.md#adding-browsers-to-sahi)): 
+The **Sahi Dashboard** should now list all available browsers on this system. To use the minimal test cases (see below), we recommend to install Firefox, if not yet done. (see [Browser configuration](./additional-settings.md#browser-configuration)): 
 
 ![db_browsers](./pics/w_sahi_dashboard_browsers.jpg) 
 ![db_browsers](./pics/u_sahi_dashboard_browsers.png) 
+![db_browsers](./pics/s_sahi_dashboard_browsers.jpg) 
 	
 After clicking on a browser icon you should see the default start page of Sahi: 
 
@@ -104,8 +101,7 @@ All components below are optional but recommended:
 
 #### PhantomJS
 	
-<!--- anker  fixme -->	
-Currently, *each* Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Adding browsers to Sahi](./sakuli-additional-settings.md) for more information. 
+Currently, *each* Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Browser configuration](./additional-settings.md#browser-configuration) for more information. 
 
 
 #### Screenshot tool 
@@ -144,7 +140,7 @@ Sakuli should now
 
 ![](pics/u_vnc_test.png)
 
-Congratulations - you have installed Sakuli!
+**Congratulations - you have installed Sakuli!**
 
 # Upgrade process
 

@@ -43,7 +43,7 @@ Reload gearmand to load the new settings:
 	  
 ### Create a Nagios service
 
-<!--- fixme -->
+<!--- fixme Anpassen fürs Minimalbeispiel -->
 Create a check_command, which will be executed only if Nagios did not receive a Sakuli result within the last 30 minutes. This ensures that you get a notification even if no passive check results arrive in Nagios at all:   
 
 	vim ~/etc/nagios/conf.d/commands.cfg

@@ -23,9 +23,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 
 /**
- * basic interface  for all INTEGRATION tests
- * <p/>
- * to run your test als integration test annotate it with <br/> {@code @Test(groups = IntegrationTest.GROUP)}
+ * Basic interface  for all INTEGRATION tests. To run your test als integration test annotate it with
+ * {@code @Test(groups = IntegrationTest.GROUP)}.
  *
  * @author tschneck Date: 09.04.14
  */

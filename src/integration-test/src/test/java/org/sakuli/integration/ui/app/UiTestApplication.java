@@ -30,6 +30,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageBuilder;
+import javafx.stage.WindowEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,7 +101,12 @@ public class UiTestApplication extends Application implements Runnable {
                 .height(height)
                 .title("Sakuli Login Sample")
                 .scene(loginScene)
-                .onCloseRequest(c -> LOGGER.info("PLATFORM exit!")).build();
+                .onCloseRequest(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent event) {
+                        LOGGER.info("PLATFORM exit!");
+                    }
+                }).build();
         LOGGER.info("set width '{}' and height '{}'", width, height);
         start(stage);
     }

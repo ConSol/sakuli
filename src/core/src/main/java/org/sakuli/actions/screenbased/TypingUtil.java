@@ -41,8 +41,9 @@ public class TypingUtil<A extends Action> {
      *******************************************************/
 
     /**
-     * pastes the text at the current position of the focus/carret <br />using the
-     * clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
+     * pastes the text at the current position of the focus/carret
+     * <br>
+     * using the clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
      *
      * @param text a string, which might contain unicode characters
      * @return this {@link A} or NULL on errors.
@@ -95,6 +96,7 @@ public class TypingUtil<A extends Action> {
      * About the usable Key constants see documentation of {@link org.sikuli.script.Key}.
      * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
      * The text is entered at the current position of the focus.
+     * </p>
      *
      * @param text         containing characters and/or {@link org.sikuli.script.Key} constants
      * @param optModifiers (optional) an String with only {@link org.sikuli.script.Key} constants.
@@ -114,6 +116,7 @@ public class TypingUtil<A extends Action> {
      * About the usable Key constants see documentation of {@link org.sikuli.script.Key}.
      * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
      * The text is entered at the current position of the focus.
+     * </p>
      *
      * @param text         containing characters and/or {@link org.sikuli.script.Key} constants
      * @param optModifiers (optional) an String with only {@link org.sikuli.script.Key} constants.
@@ -133,6 +136,7 @@ public class TypingUtil<A extends Action> {
      * About the usable Key constants see documentation of {@link org.sikuli.script.Key}.
      * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
      * The text is entered at the current position of the focus.
+     * </p>
      *
      * @param text         containing characters and/or {@link org.sikuli.script.Key} constants
      * @param optModifiers (optional) an String with only {@link org.sikuli.script.Key} constants.
