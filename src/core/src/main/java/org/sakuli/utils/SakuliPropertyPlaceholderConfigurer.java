@@ -149,7 +149,7 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
 
             String sahiPropConfig = Paths.get(sahiConfigFolerPath + SahiProxyProperties.SAHI_PROPERTY_FILE_APPENDER).normalize().toAbsolutePath().toString();
             modifyPropertiesConfiguration(sahiPropConfig, SahiProxyProperties.userdataPropertyNames, props);
-            modifySahiProxyPortPropertiesConfiguration(sahiConfigFolerPath, props);
+            modifySahiProxyPortPropertiesConfiguration(sahiPropConfig, props);
             String sahiLogPropConfig = Paths.get(sahiConfigFolerPath + SahiProxyProperties.SAHI_LOG_PROPERTY_FILE_APPENDER).normalize().toAbsolutePath().toString();
             modifyPropertiesConfiguration(sahiLogPropConfig, SahiProxyProperties.logPropertyNames, props);
         }
@@ -188,7 +188,7 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
                 //remove property after the test execution, so that the installation can't break
                 addToModifiedPropertiesMap(sahiConfigPropertyFilePath, sahiMappingPropertyProxyPort, null);
                 propConfig.addProperty(sahiMappingPropertyProxyPort, sahiProxyPort);
-                logger.debug("modify properties file '{}' with '{}={}'", sahiConfigPropertyFilePath, sahiConfigPropertyFilePath, sahiProxyPort);
+                logger.debug("modify properties file '{}' with '{}={}'", sahiConfigPropertyFilePath, sahiMappingPropertyProxyPort, sahiProxyPort);
             } catch (ConfigurationException e) {
                 logger.error("modify sahi properties went wrong", e);
             }
