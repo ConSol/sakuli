@@ -29,21 +29,17 @@ function Environment(optResumeOnException) {
     if (undefined == optResumeOnException) {
         optResumeOnException = Boolean(false);
     }
-    return loadEnvironment(Packages.org.sakuli.loader.BeanLoader.loadEnvironment(optResumeOnException), optResumeOnException);
+    return initEnvironment(this, Packages.org.sakuli.loader.BeanLoader.loadEnvironment(optResumeOnException));
 }
 
 /**
  * @private (internal loader function)
  */
-function loadEnvironment(javaObject, resumeOnException) {
-    /**
-     Environment.EnvironmentFunctions
-     */
-    var that = {};
+function initEnvironment(that, javaObject) {
 
     /**
      * set a new default similarity for the screen capturing methods.
-     * @param {Double} similarity value between 0 and 1, default = 0.8
+     * @param {number} similarity value between 0 and 1, default = 0.8
      * @return this Environment or NULL on errors.
      * @memberOf Environment
      * @method setSimilarity
@@ -60,7 +56,7 @@ function loadEnvironment(javaObject, resumeOnException) {
      * @method getRegionFromFocusedWindow
      */
     that.getRegionFromFocusedWindow = function () {
-        return loadRegion(that.javaObject.getRegionFromFocusedWindow(), that.resumeOnException);
+        return initRegion({}, that.javaObject.getRegionFromFocusedWindow());
     };
 
     /**
@@ -353,7 +349,6 @@ function loadEnvironment(javaObject, resumeOnException) {
     /**
      * make a error-log over Java backend into the log file.
      * This won't stop the execution of the test case.
-     * The log entries can be configured over the properties "log4.properties"
      *
      * @param {String} message as a String
      * @memberOf Environment
@@ -366,7 +361,6 @@ function loadEnvironment(javaObject, resumeOnException) {
 
     /**
      * make a debug-log over Java backend into the log file.
-     * The log entries can be configured over the properties "log4.properties"
      *
      * @param {String} message as a String
      * @memberOf Environment
@@ -379,7 +373,6 @@ function loadEnvironment(javaObject, resumeOnException) {
 
     /**
      * make a info-log over Java backend into the log file.
-     * The log entries can be configured over the properties "log4.properties"
      *
      * @param {String} message as a String
      * @memberOf Environment
@@ -391,7 +384,6 @@ function loadEnvironment(javaObject, resumeOnException) {
     };
     /**
      * make a debug-log over Java backend into the log file.
-     * The log entries can be configured over the properties "log4.properties"
      *
      * @param {String} message as a String
      * @memberOf Environment
@@ -408,7 +400,6 @@ function loadEnvironment(javaObject, resumeOnException) {
      *****************************************************************************************************/
 
     that.javaObject = javaObject;
-    that.resumeOnException = Boolean(resumeOnException);
 
     /**
      * @private (internal function)
@@ -417,8 +408,8 @@ function loadEnvironment(javaObject, resumeOnException) {
         if (undefined == updatedJavaObject || updatedJavaObject == null) {
             return undefined;
         }
-        that.javaObject = updatedJavaObject;
-        return that;
+        //return new instance to keep old reference stable
+        return initEnvironment({}, updatedJavaObject);
     }
 
     return that;

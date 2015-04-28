@@ -31,12 +31,19 @@
  * ```
  *
  * @param {String} applicationNameOrPath Path to the application file. Example: `C:\Windows\system32\notepad.exe`
- * @param {Boolean} optResumeOnException Determines whether to ignore exceptions from this class. If this parameter is undefined, it will be false.
+ * @param {Boolean} optResumeOnException Determines whether to ignore exceptions from this class. If this parameter is
+ *     undefined, it will be false.
  * @returns an initialized {Application} object.
  * @namespace Application
  */
 function Application(applicationNameOrPath, optResumeOnException) {
-    var that = {};
+    if (undefined == optResumeOnException) {
+        optResumeOnException = Boolean(false);
+    }
+    return initApplication(this, Packages.org.sakuli.loader.BeanLoader.loadApplication(applicationNameOrPath, optResumeOnException));
+}
+
+function initApplication(that, javaObject) {
 
     /**
      * Opens the created application.
@@ -105,7 +112,7 @@ function Application(applicationNameOrPath, optResumeOnException) {
      * @method getRegion
      */
     that.getRegion = function () {
-        return loadRegion(that.javaObject.getRegion(), that.resumeOnException);
+        return initRegion({}, that.javaObject.getRegion());
     };
 
     /**
@@ -117,7 +124,7 @@ function Application(applicationNameOrPath, optResumeOnException) {
      * @method getRegionForWindow
      */
     that.getRegionForWindow = function (windowNumber) {
-        return loadRegion(that.javaObject.getRegionForWindow(windowNumber), that.resumeOnException);
+        return initRegion({}, that.javaObject.getRegionForWindow(windowNumber));
     };
 
     /**
@@ -133,7 +140,7 @@ function Application(applicationNameOrPath, optResumeOnException) {
     /*****************************************************************************************************
      * INTERNAL CLASS FUNCTIONS - NOT REACHABLE IN THE TEST CASE EXECUTION
      *****************************************************************************************************/
-
+    that.javaObject = javaObject;
     /**
      * @private (internal function)
      */
@@ -141,24 +148,11 @@ function Application(applicationNameOrPath, optResumeOnException) {
         if (undefined == updatedJavaObject || updatedJavaObject == null) {
             return undefined;
         }
-        that.javaObject = updatedJavaObject;
-        return that;
+        //return new instance to keep old reference stable
+        return initApplication({}, updatedJavaObject);
     }
 
-    /**
-     * @private (internal function)
-     */
-    function init(applicationNameOrPath, optResumeOnException) {
-        if (undefined == optResumeOnException) {
-            optResumeOnException = Boolean(false);
-        }
-
-        that.resumeOnException = Boolean(optResumeOnException);
-        that.javaObject = Packages.org.sakuli.loader.BeanLoader.loadApplication(applicationNameOrPath, optResumeOnException);
-        return that;
-    }
-
-    return init(applicationNameOrPath, optResumeOnException);
+    return that;
 }
 
 
