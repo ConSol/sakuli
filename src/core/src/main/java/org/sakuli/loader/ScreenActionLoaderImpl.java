@@ -30,6 +30,7 @@ import org.sakuli.datamodel.actions.Screen;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
+import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -125,6 +126,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     @Override
     public SahiProxyProperties getSahiProxyProperties() {
         return baseLoader.getSahiProxyProperties();
+    }
+
+    @Override
+    public TestSuiteProperties getTestSuitePropeties() {
+        return baseLoader.getTestSuitePropeties();
     }
 
     @Override

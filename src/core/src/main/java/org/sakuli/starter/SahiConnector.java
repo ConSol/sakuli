@@ -59,9 +59,13 @@ public class SahiConnector {
     /**
      * Initialize method to start the sahi proxy thread, if needed
      */
-    public void init() throws FileNotFoundException, SakuliInitException {
+    public void init() throws SakuliInitException {
         logger.info("Initialize Sahi Proxy! ");
-        sahiProxy.startProxy();
+        try {
+            sahiProxy.startProxy();
+        } catch (FileNotFoundException e) {
+            throw new SakuliInitException(e);
+        }
     }
 
     /**

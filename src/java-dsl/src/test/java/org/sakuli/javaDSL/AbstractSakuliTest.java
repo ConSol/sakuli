@@ -18,6 +18,8 @@
 
 package org.sakuli.javaDSL;
 
+import net.sf.sahi.client.Browser;
+import net.sf.sahi.test.ProcessHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.sakuli.actions.TestCaseAction;
@@ -25,12 +27,14 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.builder.TestCaseBuilder;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliRuntimeException;
+import org.sakuli.javaDSL.service.SahiInitializingService;
 import org.sakuli.javaDSL.utils.SakuliJavaPropertyPlaceholderConfigurer;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.services.ResultServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.*;
 
 import java.io.File;
@@ -53,11 +57,13 @@ public abstract class AbstractSakuliTest {
     protected static final Logger logger = LoggerFactory.getLogger(AbstractSakuliTest.class);
     protected ExecutorService executorService;
     protected TestCaseAction testCaseAction;
+    protected Browser browser;
     private int counter;
     private DateTime startTime;
     private DateTime startTimeCase;
     private TestCaseInitParameter initParameter;
     private TestSuite testSuite;
+    private String browserProcessName;
 
     public static Path resolveResource(Class<?> aClass, String resourceName) {
         try {
@@ -106,6 +112,10 @@ public abstract class AbstractSakuliTest {
             throw new SakuliException("init parameter have to be set!");
         }
         testSuite = BeanLoader.loadBean(TestSuite.class);
+
+        //start sahi controlled browser if needed
+        initSahiBrowser();
+
         testSuite.addTestCase(new TestCaseBuilder(testCaseName, initParameter.getTestCaseId()).build());
         testCaseAction = BeanLoader.loadTestCaseAction();
 
@@ -117,6 +127,11 @@ public abstract class AbstractSakuliTest {
         logger.info("............................START TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
         counter = 0;
         startTimeCase = DateTime.now();
+    }
+
+    private void initSahiBrowser() {
+        browser = BeanLoader.loadBean(SahiInitializingService.class).getBrowser();
+        browserProcessName = String.valueOf(ReflectionTestUtils.getField(browser, "browserProcessName"));
     }
 
     /**
@@ -162,6 +177,9 @@ public abstract class AbstractSakuliTest {
                 null,
                 null
         );
+        if (browser != null) {
+            browser.close();
+        }
     }
 
     protected String getTestSuiteRootFolder() {
@@ -207,6 +225,11 @@ public abstract class AbstractSakuliTest {
         }
         if (executorService != null) {
             executorService.shutdownNow();
+        }
+
+        if (StringUtils.isNotEmpty(browserProcessName) && !browserProcessName.equals("null")) {
+            logger.info("kill browser process '{}'", browserProcessName);
+            ProcessHelper.killAll(browserProcessName);
         }
     }
 }

@@ -18,6 +18,7 @@
 
 package org.sakuli.javaDSL.utils;
 
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 
@@ -32,6 +33,7 @@ public class SakuliJavaPropertyPlaceholderConfigurer extends SakuliPropertyPlace
     protected void loadSakuliDefaultProperties(Properties props) {
         super.loadSakuliDefaultProperties(props);
         props.put(TestSuiteProperties.LOAD_TEST_CASES_AUTOMATIC_PROPERTY, "false");
+        props.put(SakuliProperties.JAVASCRIPT_ENGINE, "false");
     }
 
     @Override
