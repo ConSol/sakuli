@@ -125,6 +125,6 @@ If Sikuli does not recognize regions on the screen, check the following list of 
 
 Sikuli keyboard events (`type()`and `paste()`) on a Sahi-controlled browser instance can get lost if they are executed at the same time when Sahi internal status requests are sent from the browser to the Sahi proxy (default: 10x per sec). 
 
-For this reason, Sikuli type/paste methods first extend the Sahi status interval to the value of `sahi.proxy.requestDelayOnSikuliInput.delayTime` (in ms) which is long enough to execute _one_ keyboard action. For the method `type` (which is "press/release character by character""), a multiple if this value is chosen. Before leaving the paste/type method, the interval gets reset by Sakuli to the default Sahi status interval.
+For this reason, Sikuli type/paste methods first extend the Sahi status interval to the value of `sahi.proxy.onSikuliInput.delayPerKey` (in ms) which is long enough to execute _one_ keyboard action. For the method `type` (which is "press/release character by character""), a multiple if this value is chosen. Before leaving the paste/type method, the interval gets reset by Sakuli to the default Sahi status interval.
 
 This setting is not needed if Sikuli does keyboard actions on GUIs not controlled by Sahi.
