@@ -109,19 +109,29 @@ public abstract class AbstractSakuliTest {
         testSuite.addTestCase(new TestCaseBuilder(testCaseName, initParameter.getTestCaseId()).build());
         testCaseAction = BeanLoader.loadTestCaseAction();
 
-        //init the image folders and test case times
+        //add the the testcase folder as image folder
         if (Files.exists(getTestCaseFolder())) {
             initParameter.addImagePath(getTestCaseFolder().toString());
         }
-        List<Path> imagePaths = initParameter.getImagePaths();
-        testCaseAction.initWithPaths(initParameter.getTestCaseId(),
-                initParameter.getWarningTime(),
-                initParameter.getCriticalTime(),
-                imagePaths.toArray(new Path[imagePaths.size()])
-        );
+        initTestCaseAction(initParameter);
         logger.info("............................START TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
         counter = 0;
         startTimeCase = DateTime.now();
+    }
+
+    /**
+     * Initialize the image folders, warning time and critical time for the current testcase with the assigned
+     * initParameter.
+     *
+     * @param initParameter a initialized object of {@link TestCaseInitParameter}.
+     */
+    protected void initTestCaseAction(TestCaseInitParameter initParameter) {
+        List<Path> imagePaths = initParameter.getImagePaths();
+        testCaseAction.initWithPaths(this.initParameter.getTestCaseId(),
+                this.initParameter.getWarningTime(),
+                this.initParameter.getCriticalTime(),
+                imagePaths.toArray(new Path[imagePaths.size()])
+        );
     }
 
     @BeforeMethod(alwaysRun = true)
