@@ -76,7 +76,9 @@ Additionally, on **Windows**:
 
 ### Sahi
 
-* Download **Sahi v44** from [http://sourceforge.net/projects/sahi/files/?source=navbar](http://sourceforge.net/projects/sahi/files/) (Version 5 will be supported soon)
+* Download **Sahi** from [http://sourceforge.net/projects/sahi/files/?source=navbar](http://sourceforge.net/projects/sahi/files/)
+  * For **Sakuli < v0.6.0**, use version **0.44**
+  * For **Sakuli >= v0.6.0**, use version **0.5**
 * Unpack the downloaded file and start the installation by executing `java -jar __DOWNLOADED_JAR_FILE__`. In the installation assistant, set: 
   * Installation path: `__INST_DIR__/sahi`
   * select all packages to install
