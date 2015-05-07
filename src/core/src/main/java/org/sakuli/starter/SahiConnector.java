@@ -59,9 +59,13 @@ public class SahiConnector {
     /**
      * Initialize method to start the sahi proxy thread, if needed
      */
-    public void init() throws FileNotFoundException, SakuliInitException {
+    public void init() throws SakuliInitException {
         logger.info("Initialize Sahi Proxy! ");
-        sahiProxy.startProxy();
+        try {
+            sahiProxy.startProxy();
+        } catch (FileNotFoundException e) {
+            throw new SakuliInitException(e);
+        }
     }
 
     /**
@@ -76,6 +80,7 @@ public class SahiConnector {
 //        ConnectionTester.checkTestCaseInitURL(testSuite);
         //default sahi runner to play the sahi script
         TestRunner runner = getTestRunner();
+        runner.setIsSingleSession(false);
         //config reporter
         runner.addReport(new Report("html", sakuliProperties.getLogFolder().toAbsolutePath().toString()));
         //add include folder property
@@ -134,11 +139,16 @@ public class SahiConnector {
         //have to be always one, to prevent errors in the sikuli screen capturing parts
         String threads = "1";
         //default start URL of the sahi proxy
-        String startUrl = "http://localhost:9999";
+        final String sahiHost = "localhost";
+        final String sahiPort = sahiProxyProperties.getProxyPort().toString();
+        String startUrl = String.format("http://%s:%s", sahiHost, sahiPort);
+        logger.info("connect Sahi-TestRunner:{}", startUrl);
         return new TestRunner(
                 testSuite.getAbsolutePathOfTestSuiteFile(),  //path to the .suite file
                 testSuite.getBrowserName(),   //the browser name, for example "firefox"
                 startUrl,                     //the start url, for example "http://localhost:9999"
+                sahiHost,                     //host on which the sahi proxy will started
+                sahiPort,                     //port on which the sahi port is opend
                 threads);                     //numer of parallel process in the sakuli application still 1
     }
 

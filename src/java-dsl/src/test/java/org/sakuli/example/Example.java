@@ -23,6 +23,9 @@ import org.sakuli.javaDSL.AbstractSakuliTest;
 import org.sakuli.javaDSL.TestCaseInitParameter;
 import org.testng.annotations.Test;
 
+import java.nio.file.Paths;
+import java.util.Arrays;
+
 /**
  * @author Tobias Schneck
  */
@@ -36,9 +39,26 @@ public class Example extends AbstractSakuliTest {
                 .withCriticalTime(10);
     }
 
+    @Override
+    protected String getSahiFolder() {
+        // sahi installation folder under the project root
+        return Paths.get("../../sahi").toAbsolutePath().normalize().toString();
+    }
+
     @Test
-    public void example1() throws Exception {
+    public void example1GUI() throws Exception {
         new Region().highlight();
 
+    }
+
+    @Test
+    public void exampleSahi() throws Exception {
+        browser.navigateTo("http://sahi.example.com/_s_/dyn/Driver_initialized");
+        Arrays.asList("SSL Manager", "Logs", "Online Documentation", "Test Pages", "Sample Application")
+                .stream().forEach(this::highlightLink);
+    }
+
+    private void highlightLink(String identifier) {
+        browser.highlight(browser.link(identifier));
     }
 }

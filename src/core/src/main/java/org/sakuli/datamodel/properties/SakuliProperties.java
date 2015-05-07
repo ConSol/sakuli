@@ -37,6 +37,7 @@ public class SakuliProperties extends AbstractProperties {
     public static final String SAKULI_DEFAULT_PROPERTIES_FILE_APPENDER = File.separator + "sakuli-default.properties";
     public static final String SAKULI_HOME_FOLDER = "sakuli.home.folder";
     public static final String SUPPRESS_RESUMED_EXCEPTIONS = "sakuli.exception.suppressResumedExceptions";
+    public static final String JAVASCRIPT_ENGINE = "sakuli.javascript.engine";
     public static final String LOG_FOLDER = "sakuli.log.folder";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
     public static final String LOG_LEVEL_SAKULI = "log.level.sakuli";
@@ -50,11 +51,14 @@ public class SakuliProperties extends AbstractProperties {
     // have to be the common/libs older, so that {@link TextRecognizer} can add "tessdata" to the path!
     public static final String TESSDATA_LIB_FOLDER_APPEDER = LIBS_FOLDER_APPEDER;
     private static final boolean SUPPRESS_RESUMED_EXCEPTIONS_DEFAULT = false;
+    private static final boolean JAVASCRIPT_ENGINE_DEFAULT = true;
     @Value("${" + SAKULI_HOME_FOLDER + "}")
     private String sakuliHomeFolderPropertyValue;
     private Path sakuliHomeFolder;
     @Value("${" + SUPPRESS_RESUMED_EXCEPTIONS + ":" + SUPPRESS_RESUMED_EXCEPTIONS_DEFAULT + "}")
     private boolean suppressResumedExceptions;
+    @Value("${" + JAVASCRIPT_ENGINE + ":" + JAVASCRIPT_ENGINE_DEFAULT + "}")
+    private boolean loadJavaScriptEngine;
     @Value("${" + LOG_FOLDER + "}")
     private String logFolderPropertyValue;
     private Path logFolder;
@@ -73,6 +77,7 @@ public class SakuliProperties extends AbstractProperties {
     private Path configFolder;
     private Path jsLibFolder;
     private Path tessDataLibFolder;
+
 
     @PostConstruct
     public void initFolders() throws FileNotFoundException {
@@ -202,5 +207,13 @@ public class SakuliProperties extends AbstractProperties {
 
     public void setLogLevelRoot(String logLevelRoot) {
         this.logLevelRoot = logLevelRoot;
+    }
+
+    public boolean isLoadJavaScriptEngine() {
+        return loadJavaScriptEngine;
+    }
+
+    public void setLoadJavaScriptEngine(boolean loadJavaScriptEngine) {
+        this.loadJavaScriptEngine = loadJavaScriptEngine;
     }
 }

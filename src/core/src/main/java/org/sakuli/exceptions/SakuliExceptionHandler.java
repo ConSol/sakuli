@@ -187,8 +187,9 @@ public class SakuliExceptionHandler {
      * @return true if the exception have been already processed by Sakuli
      */
     public boolean isAlreadyProcessed(Throwable e) {
-        return e.getMessage().contains(RhinoAspect.ALREADY_PROCESSED)
-                || e.getMessage().contains(("Logging exception:")) || processedExceptions.contains(e);
+        String message = e.getMessage() != null ? e.getMessage() : e.toString();
+        return message.contains(RhinoAspect.ALREADY_PROCESSED)
+                || message.contains(("Logging exception:")) || processedExceptions.contains(e);
     }
 
     /**

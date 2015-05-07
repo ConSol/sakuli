@@ -110,6 +110,8 @@ Setup a local MySQL database to save the results of test case executions. The da
     ```-run <path to your Sakuli test suite folder> --sakuli_home <path to your "main" folder> --sahi_home <path to your sahi folder>```
     e.g. for the provided Win7 example use `-run ../sakuli_test_suites/example src/main/_include ../sahi`
 
+* To run the testng-Tets correctly and preventing wrong file paths, set the default TestNG config like follow:
+  ![](../pics/intellij_testng_run_config.png)
 
 ###Important note
 If you run your Sakuli test the first time, you might get a native library error, caused by Sikuli, saying that it could not find the correct native library to work with. At the same time, Sikuli already tried to fix the problem by modyfing PATH.  

@@ -207,8 +207,9 @@ In addition to the possibilities described in [General note on property settings
 
 ### Sahi behind a proxy
 
-Set the following properties (as global) to define a proxy Sahi should connect to.  
+Set the following properties (as global in the sakuli.properties) to define a proxy Sahi should connect to.  
 
+    ```
 	### HTTP/HTTPS proxy Settings
 	### Set these properties, to enable the test execution behind company proxies
 	# Use external proxy server for HTTP* 

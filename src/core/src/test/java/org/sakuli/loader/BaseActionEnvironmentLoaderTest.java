@@ -27,6 +27,7 @@ import org.mockito.MockitoAnnotations;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
@@ -55,6 +56,8 @@ public class BaseActionEnvironmentLoaderTest {
     private TestSuite testSuite;
     @Mock
     private SakuliExceptionHandler exceptionHandler;
+    @Mock
+    private SakuliProperties sakuliProperties;
 
     @InjectMocks
     private BaseActionLoaderImpl testling;
@@ -70,6 +73,7 @@ public class BaseActionEnvironmentLoaderTest {
         String testCaseId = "xyz";
         when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("Test", testCaseId));
         when(sahiProxyProperties.isRequestDelayActive()).thenReturn(true);
+        when(sakuliProperties.isLoadJavaScriptEngine()).thenReturn(true);
         testling.init(testCaseId, ".");
         verify(exceptionHandler, never()).handleException(any(Exception.class));
         verify(session).setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, "true");
@@ -80,6 +84,7 @@ public class BaseActionEnvironmentLoaderTest {
         String testCaseId = "xyz";
         when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("Test", testCaseId));
         when(sahiProxyProperties.isRequestDelayActive()).thenReturn(false);
+        when(sakuliProperties.isLoadJavaScriptEngine()).thenReturn(true);
         testling.init(testCaseId, ".");
         verify(exceptionHandler, never()).handleException(any(Exception.class));
         verify(session).setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, "false");
@@ -91,6 +96,7 @@ public class BaseActionEnvironmentLoaderTest {
         String testCaseId = "xyz";
         when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("Test", testCaseId));
         when(rhinoScriptRunner.getSession()).thenReturn(null);
+        when(sakuliProperties.isLoadJavaScriptEngine()).thenReturn(true);
 
         ArgumentCaptor<SakuliException> ac = ArgumentCaptor.forClass(SakuliException.class);
         testling.init(testCaseId, ".");
