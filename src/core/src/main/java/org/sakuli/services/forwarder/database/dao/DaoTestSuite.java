@@ -29,7 +29,7 @@ public interface DaoTestSuite {
 
 
     /**
-     * save the initial TestSuite data into the table sahi_suites and returns the valid primary key from the database
+     * save the initial TestSuite data into the table sakuli_suites and returns the valid primary key from the database
      *
      * @return database id (primary key) for this suite
      */
