@@ -37,6 +37,7 @@ try {
     env.sleep(2);
     screen.find("plus.png").click().type("100");
     screen.find("result.png").click();
+    screen.waitForImage("625",10);
 
     appGedit.open();
     screen.waitForImage("gedit.png", 20);

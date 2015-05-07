@@ -21,7 +21,7 @@ var testCase = new TestCase(60, 70);
 var env = new Environment();
 var screen = new Region();
 var appCalc = new Application("/usr/bin/kcalc");
-var appGedit = new Application("/usr/bin/kwrite");
+var appKwrite = new Application("/usr/bin/kwrite");
 
 try {
     _highlight(_link("SSL Manager"));
@@ -34,11 +34,15 @@ try {
     screen.waitForImage("calculator.png", 20);
 
     env.type("525");
-    env.sleep(2);
-    screen.find("plus.png").click().type("100");
+    env.sleep(1);
+    screen.find("plus.png").click();
+    env.sleep(1);
+    env.type("100");
+    env.sleep(1);
     screen.find("result.png").click();
+    screen.waitForImage("625",10);
 
-    appGedit.open();
+    appKwrite.open();
     screen.waitForImage("kwrite.png", 20);
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
     env.sleep(4);
@@ -46,7 +50,7 @@ try {
     testCase.handleException(e);
 } finally {
     appCalc.closeApp();
-    appGedit.closeApp();
+    appKwrite.closeApp();
     if (screen.exists("close-without-saving", 1)) {
         screen.find("close-without-saving").click();
     }
