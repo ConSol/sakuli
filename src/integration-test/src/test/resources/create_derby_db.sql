@@ -1,17 +1,17 @@
 -- delete alt DB
-DROP TABLE sahi.sahi_steps;
-DROP TABLE sahi.sahi_cases;
-DROP TABLE sahi.sahi_suites;
-DROP TABLE sahi.sahi_jobs;
-DROP SCHEMA sahi RESTRICT;
+DROP TABLE sakuli.sakuli_steps;
+DROP TABLE sakuli.sakuli_cases;
+DROP TABLE sakuli.sakuli_suites;
+DROP TABLE sakuli.sakuli_jobs;
+DROP SCHEMA sakuli RESTRICT;
 
 -- create new schema
-CREATE SCHEMA sahi;
-CREATE TABLE sahi.sahi_cases
+CREATE SCHEMA sakuli;
+CREATE TABLE sakuli.sakuli_cases
 (
   id             INT                                 NOT NULL
   GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
-  sahi_suites_id INT                                 NOT NULL,
+  sakuli_suites_id INT NOT NULL,
   caseID         VARCHAR(255)                        NOT NULL,
   result         INT                                 NOT NULL,
   result_desc    VARCHAR(45)                         NOT NULL,
@@ -26,21 +26,21 @@ CREATE TABLE sahi.sahi_cases
   screenshot     BLOB,
   msg            VARCHAR(2500),
   time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id, sahi_suites_id)
+  PRIMARY KEY (id, sakuli_suites_id)
 );
-CREATE INDEX fk_sahi_cases_sahi_suites ON sahi.sahi_cases (sahi_suites_id);
-CREATE TABLE sahi.sahi_jobs
+CREATE INDEX fk_sakuli_cases_sakuli_suites ON sakuli.sakuli_cases (sakuli_suites_id);
+CREATE TABLE sakuli.sakuli_jobs
 (
   id   INT PRIMARY KEY NOT NULL
   GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
   guid VARCHAR(255)    NOT NULL
 );
-CREATE INDEX ind_guid ON sahi.sahi_jobs (guid);
-CREATE TABLE sahi.sahi_steps
+CREATE INDEX ind_guid ON sakuli.sakuli_jobs (guid);
+CREATE TABLE sakuli.sakuli_steps
 (
   id            INT                                 NOT NULL
   GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
-  sahi_cases_id INT                                 NOT NULL,
+  sakuli_cases_id INT NOT NULL,
   result        INT                                 NOT NULL,
   result_desc   VARCHAR(45)                         NOT NULL,
   name          VARCHAR(255)                        NOT NULL,
@@ -49,10 +49,10 @@ CREATE TABLE sahi.sahi_steps
   warning       INT,
   duration      REAL                                NOT NULL,
   time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (id, sahi_cases_id)
+  PRIMARY KEY (id, sakuli_cases_id)
 );
-CREATE INDEX fk_sahi_steps_sahi_cases1 ON sahi.sahi_steps (sahi_cases_id);
-CREATE TABLE sahi.sahi_suites
+CREATE INDEX fk_sakuli_steps_sakuli_cases1 ON sakuli.sakuli_steps (sakuli_cases_id);
+CREATE TABLE sakuli.sakuli_suites
 (
   id          INT PRIMARY KEY                     NOT NULL
   GENERATED ALWAYS AS IDENTITY ( START WITH 1, INCREMENT BY 1),
@@ -72,4 +72,4 @@ CREATE TABLE sahi.sahi_suites
   msg         VARCHAR(2500),
   time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-CREATE UNIQUE INDEX guid_UNIQUE ON sahi.sahi_suites (guid);
+CREATE UNIQUE INDEX guid_UNIQUE ON sakuli.sakuli_suites (guid);

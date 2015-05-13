@@ -62,7 +62,7 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
 
         //create a map for the sql parameters
         MapSqlParameterSource tcParameters = new MapSqlParameterSource();
-        tcParameters.addValue("sahi_suites_id", testSuite.getDbPrimaryKey());
+        tcParameters.addValue("sakuli_suites_id", testSuite.getDbPrimaryKey());
         tcParameters.addValue("caseID", testCase.getId());
         tcParameters.addValue("result", testCase.getState().getErrorCode());
         tcParameters.addValue("result_desc", testCase.getState());
@@ -90,31 +90,31 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
 
         //generate the sql-statement
         SimpleJdbcInsert insertTCResults = new SimpleJdbcInsert(getDataSource())
-                .withTableName("sahi_cases")
+                .withTableName("sakuli_cases")
                 .usingGeneratedKeyColumns("id");
 
 
-        logger.info("write the following values to 'sahi_cases': "
+        logger.info("write the following values to 'sakuli_cases': "
                 + tcParameters.getValues()
                 + " => now execute ....");
 
         int dbPrimaryKey = insertTCResults.executeAndReturnKey(tcParameters).intValue();
 
         logger.info("test case '" + testCase.getId()
-                + "' has been written to 'sahi_cases' with  primaryKey=" + dbPrimaryKey);
+                + "' has been written to 'sakuli_cases' with  primaryKey=" + dbPrimaryKey);
         testCase.setDbPrimaryKey(dbPrimaryKey);
     }
 
     @Override
     public int getCountOfSahiCases() {
-        return this.getJdbcTemplate().queryForObject("select count(*) from sahi_cases", Integer.class);
+        return this.getJdbcTemplate().queryForObject("select count(*) from sakuli_cases", Integer.class);
     }
 
     @Deprecated
     @Override
     public File getScreenShotFromDB(int dbPrimaryKey) {
         try {
-            List l = getJdbcTemplate().query("select id, screenshot from sahi_cases where id=" + dbPrimaryKey,
+            List l = getJdbcTemplate().query("select id, screenshot from sakuli_cases where id=" + dbPrimaryKey,
                     new RowMapper() {
                         public Object mapRow(ResultSet rs, int i) throws SQLException {
                             Map results = new HashMap();

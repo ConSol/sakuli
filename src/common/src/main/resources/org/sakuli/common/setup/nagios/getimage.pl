@@ -9,9 +9,9 @@ my $id = $cgi->param('id');
 my $tbl = $cgi->param('tbl');
 my $table;
 if ($tbl eq "case") {
-	$table = "sahi_cases";
+	$table = "sakuli_cases";
 } elsif ($tbl eq "suite") {
-	$table = "sahi_suites";
+	$table = "sakuli_suites";
 }
 my $database="sahi";
 my $user="sakuli";
