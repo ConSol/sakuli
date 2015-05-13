@@ -11,6 +11,7 @@
   * [TestCase.getLastURL()](#TestCase.getLastURL)
   * [TestCase.getTestCaseFolderPath()](#TestCase.getTestCaseFolderPath)
   * [TestCase.getTestSuiteFolderPath()](#TestCase.getTestSuiteFolderPath)
+  * [TestCase.throwException(message, screenshot)](#TestCase.throwException)
 * [Application](#Application)
   * [Application.open()](#Application.open)
   * [Application.focus()](#Application.focus)
@@ -128,6 +129,7 @@ var testCase = new TestCase(20,30, "path-to/image-folder-name");
   * [TestCase.getLastURL()](#TestCase.getLastURL)
   * [TestCase.getTestCaseFolderPath()](#TestCase.getTestCaseFolderPath)
   * [TestCase.getTestSuiteFolderPath()](#TestCase.getTestSuiteFolderPath)
+  * [TestCase.throwException(message, screenshot)](#TestCase.throwException)
 
 <a name="TestCase.endOfStep"></a>
 ##TestCase.endOfStep(stepName, warningTime)
@@ -143,8 +145,8 @@ the runtime exceeds the step threshold (second parameter), the step is saved wit
 
 <a name="TestCase.handleException"></a>
 ##TestCase.handleException(e)
-Handles any Exception or Error. The handleException function calls the Java backend and stores the Exception to
-the database.
+Handles any Exception or Error. The handleException function calls the Java backend and stores the Exception
+for further processing.
 
 Use it at the end of a catch-block.
 
@@ -163,7 +165,7 @@ try {
 
 <a name="TestCase.saveResult"></a>
 ##TestCase.saveResult()
-Saves the results of the current test case to the database.
+Saves the results of the current test case for further processing.
 
 Should be called in finally-block of the test case:
 
@@ -194,6 +196,16 @@ Updates and returns the URL of the last visited URL
 <a name="TestCase.getTestSuiteFolderPath"></a>
 ##TestCase.getTestSuiteFolderPath()
 **Returns**: `String` - the folder path of the current testcase.  
+<a name="TestCase.throwException"></a>
+##TestCase.throwException(message, screenshot)
+Creates a new test case based exception with an optional screenshot at the calling time.
+Will be called from sakuli.js or in side of 'org.sakuli.javaDSL.AbstractSakuliTest'.
+
+**Params**
+
+- message `String` - error message  
+- screenshot `Boolean` - enable / disable screenshot functionality  
+
 <a name="Application"></a>
 #Application
 Application Class - Represents an application.
@@ -704,7 +716,7 @@ makes a right click on the center of the Region.
 **Returns**:  - the Region or NULL on errors.  
 <a name="Region.mouseMove"></a>
 ##Region.mouseMove()
-Move the mouse pointer the center of the [Region](#Region) and "hovers" it.
+Move the mouse pointer to the center of the [Region](#Region) and "hovers" it.
 
 **Returns**:  - the [Region](#Region) or NULL on errors.  
 <a name="Region.mouseDown"></a>

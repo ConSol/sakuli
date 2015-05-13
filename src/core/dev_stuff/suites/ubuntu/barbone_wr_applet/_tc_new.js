@@ -40,6 +40,7 @@ try {
         throw "NOT EQUAL " + testString + " to TEST";
     }
 
+    //testCase.throwException("NO SCREENSHOT!", false);
 
     /***
      * NEW STEP

@@ -95,7 +95,7 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
 
 
     /**
-     * Handles any Exception or Error. The handleException function calls the Java backend and stores the Exception 
+     * Handles any Exception or Error. The handleException function calls the Java backend and stores the Exception
      * for further processing.
      *
      * Use it at the end of a catch-block.
@@ -199,6 +199,22 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      */
     that.getTestSuiteFolderPath = function () {
         return that.javaObject.getTestSuiteFolderPath();
+    };
+
+    /**
+     * Creates a new test case based exception with an optional screenshot at the calling time.
+     * Will be called from sakuli.js or in side of 'org.sakuli.javaDSL.AbstractSakuliTest'.
+     *
+     * @param {String}   message error message
+     * @param {Boolean} screenshot enable / disable screenshot functionality
+     * @memberOf TestCase
+     * @method throwException
+     */
+    that.throwException = function (message, screenshot) {
+        if (undefined == screenshot) {
+            screenshot = true;
+        }
+        that.javaObject.throwException(message, screenshot)
     };
 
     /*****************************************************************************************************
