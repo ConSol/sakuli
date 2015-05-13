@@ -34,6 +34,7 @@ _include("sakuli_Environment.js");
 _include("sakuli_Key.js");
 _include("sakuli_MouseButton.js");
 _include("sakuli_Region.js");
+_include("sakuli_Logger.js");
 
 /*****************************************************************************************************
  * TEST CASE OBJECT
@@ -114,14 +115,14 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      */
     that.handleException = function (e) {
         if (e.javaException instanceof java.lang.Exception) {
-            env.logDebug("FROM HANDLE JAVA-EXCEPTION:" + e.javaException);
+            Logger.logDebug("FROM HANDLE JAVA-EXCEPTION:" + e.javaException);
             that.javaObject.handleException(e.javaException);
         } else if (e.javaException instanceof java.lang.RuntimeException) {
-            env.logDebug("FROM HANDLE RUNTIME-EXCEPTION:" + e.javaException);
+            Logger.logDebug("FROM HANDLE RUNTIME-EXCEPTION:" + e.javaException);
             that.javaObject.handleException(e.javaException);
         } else {
             if (e !== "||STOP EXECUTION||") {
-                env.logDebug("FROM HANDLE RHINO-EXCEPTION:" + e);
+                Logger.logDebug("FROM HANDLE RHINO-EXCEPTION:" + e);
                 that.javaObject.handleException(e);
             }
         }
@@ -148,7 +149,7 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      * @method saveResult
      */
     that.saveResult = function () {
-        env.logInfo("=========== SAVE Test Case '" + that.tcID + "' ==================");
+        Logger.logInfo("=========== SAVE Test Case '" + that.tcID + "' ==================");
         //create the values
         var stopTime, lastURL = "", browser = "";
         stopTime = (new Date()).getTime();
@@ -247,9 +248,9 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
         /***
          * init the java backed
          */
-        env.logDebug("get Backend - step 1 (load backend)");
+        Logger.logDebug("get Backend - step 1 (load backend)");
         that.javaObject = Packages.org.sakuli.loader.BeanLoader.loadTestCaseAction();
-        env.logDebug("get Backend - step 2 (get the test case id)");
+        Logger.logDebug("get Backend - step 2 (get the test case id)");
         that.tcID = that.javaObject.getIdFromPath(_resolvePath());
 
         /**
@@ -259,7 +260,7 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
         that.startTime = (new Date()).getTime();
         that.stepStartTime = (new Date()).getTime();
         that.javaObject.init(that.tcID, warningTime, criticalTime, optImagePathArray);
-        env.logInfo("Now start to execute the test case '" + that.tcID + "' ! \n ....\n ...\n....");
+        Logger.logInfo("Now start to execute the test case '" + that.tcID + "' ! \n ....\n ...\n....");
     }
 
     init();

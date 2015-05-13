@@ -42,14 +42,14 @@ try {
     var noEd = new RegionRectangle(0, 0, 50, 50).highlight(1).exists("notepad");
 
     if (noEd == null) {
-        env.logInfo("NULL");
+        Logger.logInfo("NULL");
     }
     if (noEd != null) {
-        env.logInfo("NOT NULL");
+        Logger.logInfo("NOT NULL");
 
     }
     if (undefined == noEd) {
-        env.logInfo("UNDEFINED OR NULL");
+        Logger.logInfo("UNDEFINED OR NULL");
 
     }
 
@@ -105,7 +105,7 @@ try {
         .setW(300).highlight(2)
         .setH(100).highlight(2)
         .extractText();
-    env.logInfo(extractedText);
+    Logger.logInfo(extractedText);
 
     editorApp.focus();
     env.typeMasked(Key.ENTER + "a masked text" + Key.ENTER)
@@ -142,12 +142,12 @@ try {
 
 
 
-    env.logDebug("Sahi wait for 2 seconds!!!");
+    Logger.logDebug("Sahi wait for 2 seconds!!!");
     _wait(2000);
     testCase.endOfStep("Type into amount 500", 20);
 
 
-    env.logError("DAS ERROR LOG");
+    Logger.logError("DAS ERROR LOG");
 
 
     /************************************************

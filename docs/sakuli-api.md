@@ -44,11 +44,12 @@
   * [Environment.write(text)](#Environment.write)
   * [Environment.mouseWheelDown(steps)](#Environment.mouseWheelDown)
   * [Environment.mouseWheelUp(steps)](#Environment.mouseWheelUp)
-  * [Environment.logError(message)](#Environment.logError)
-  * [Environment.logWarning(message)](#Environment.logWarning)
-  * [Environment.logInfo(message)](#Environment.logInfo)
-  * [Environment.logDebug(message)](#Environment.logDebug)
 * [Key](#Key)
+* [Logger](#Logger)
+  * [Logger.logError(message)](#Logger.logError)
+  * [Logger.logWarning(message)](#Logger.logWarning)
+  * [Logger.logInfo(message)](#Logger.logInfo)
+  * [Logger.logDebug(message)](#Logger.logDebug)
 * [MouseButton](#MouseButton)
 * [Region](#Region)
   * [Region.find(imageName)](#Region.find)
@@ -322,10 +323,6 @@ Environment - Represents the environment of the current test host.
   * [Environment.write(text)](#Environment.write)
   * [Environment.mouseWheelDown(steps)](#Environment.mouseWheelDown)
   * [Environment.mouseWheelUp(steps)](#Environment.mouseWheelUp)
-  * [Environment.logError(message)](#Environment.logError)
-  * [Environment.logWarning(message)](#Environment.logWarning)
-  * [Environment.logInfo(message)](#Environment.logInfo)
-  * [Environment.logDebug(message)](#Environment.logDebug)
 
 <a name="Environment.setSimilarity"></a>
 ##Environment.setSimilarity(similarity)
@@ -545,39 +542,6 @@ wheel the given steps up.
 
 - steps `number` - the number of steps  
 
-<a name="Environment.logError"></a>
-##Environment.logError(message)
-make a error-log over Java backend into the log file.
-This won't stop the execution of the test case.
-
-**Params**
-
-- message `String` - as a String  
-
-<a name="Environment.logWarning"></a>
-##Environment.logWarning(message)
-make a debug-log over Java backend into the log file.
-
-**Params**
-
-- message `String` - as a String  
-
-<a name="Environment.logInfo"></a>
-##Environment.logInfo(message)
-make a info-log over Java backend into the log file.
-
-**Params**
-
-- message `String` - as a String  
-
-<a name="Environment.logDebug"></a>
-##Environment.logDebug(message)
-make a debug-log over Java backend into the log file.
-
-**Params**
-
-- message `String` - as a String  
-
 <a name="Key"></a>
 #Key
 Key - representing some Key constants which can be used in type functions as input text and as modifier keys.
@@ -599,6 +563,51 @@ env.type(Key.F4, Key.ALT);
 **Members**
 
 * [Key](#Key)
+
+<a name="Logger"></a>
+#Logger
+Logger - Logging functions to do 'debug, 'info', 'warning' and 'error' log entries.
+
+**Members**
+
+* [Logger](#Logger)
+  * [Logger.logError(message)](#Logger.logError)
+  * [Logger.logWarning(message)](#Logger.logWarning)
+  * [Logger.logInfo(message)](#Logger.logInfo)
+  * [Logger.logDebug(message)](#Logger.logDebug)
+
+<a name="Logger.logError"></a>
+##Logger.logError(message)
+make a error-log over Java backend into the log file.
+This won't stop the execution of the test case.
+
+**Params**
+
+- message `String` - as a String  
+
+<a name="Logger.logWarning"></a>
+##Logger.logWarning(message)
+make a debug-log over Java backend into the log file.
+
+**Params**
+
+- message `String` - as a String  
+
+<a name="Logger.logInfo"></a>
+##Logger.logInfo(message)
+make a info-log over Java backend into the log file.
+
+**Params**
+
+- message `String` - as a String  
+
+<a name="Logger.logDebug"></a>
+##Logger.logDebug(message)
+make a debug-log over Java backend into the log file.
+
+**Params**
+
+- message `String` - as a String  
 
 <a name="MouseButton"></a>
 #MouseButton

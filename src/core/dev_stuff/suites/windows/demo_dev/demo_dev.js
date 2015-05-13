@@ -76,7 +76,7 @@ try {
     _navigateTo($cl_home);
     _highlight(_link($cl_projekte));
     _click(_link($cl_projekte));
-    env.logInfo("LAST-URL: " + testCase.getLastURL());
+    Logger.logInfo("LAST-URL: " + testCase.getLastURL());
     env.sleep(5);
     env.takeScreenshot("testscreenshot.png");    //will be saved in the test suite folder
     _highlight(_link($cl_c_mysql_h));

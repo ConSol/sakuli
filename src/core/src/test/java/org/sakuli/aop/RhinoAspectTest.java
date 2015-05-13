@@ -221,7 +221,7 @@ public class RhinoAspectTest extends AopBaseTest {
     public void testDoLoggingLog() throws Exception {
         initMocks();
         Logger.logInfo("INFO-LOG");
-        assertLastLine(logFile, Logger.class.getSimpleName(), LogLevel.INFO, "Logger.logInfo() with arg(s) [INFO-LOG]");
+        assertLastLine(logFile, "INFO-", LogLevel.INFO, "INFO-LOG");
     }
 
     @Test
@@ -246,5 +246,14 @@ public class RhinoAspectTest extends AopBaseTest {
                 "\"test case [" + sampleTc.getActionValueString() + "]\" TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
     }
 
-
+    @Test
+    public void testCreateLoggingString() throws Exception {
+        JoinPoint jp = mock(JoinPoint.class);
+        when(jp.getArgs()).thenReturn(new Object[]{"TEST", "arguments"});
+        LogToResult annotation = mock(LogToResult.class);
+        when(annotation.logArgsOnly()).thenReturn(true);
+        when(annotation.logArgs()).thenReturn(true);
+        StringBuilder result = new RhinoAspect().createLoggingString(jp, annotation);
+        assertEquals(result.toString(), "TEST, arguments");
+    }
 }

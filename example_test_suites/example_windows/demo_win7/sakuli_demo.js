@@ -55,6 +55,6 @@ try {
         appNotepad.close();
     } catch (e) {
         //do not handle exception, this is just a teardown
-        env.logInfo(e);
+        Logger.logInfo(e);
     }
 }

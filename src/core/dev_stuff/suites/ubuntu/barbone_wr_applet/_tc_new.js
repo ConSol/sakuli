@@ -51,6 +51,7 @@ try {
     try {
         editorApp.open();
 
+        Logger.logWarning("TEST");
 
         var notepadRegion = editorApp.getRegion();
 
@@ -124,7 +125,7 @@ try {
 
 //    //click OK-Button
 //    testCase.click("4_ok_button");
-    env.logInfo("Sahi wait for 2 seconds!!!");
+    Logger.logInfo("Sahi wait for 2 seconds!!!");
     _wait(2000);
     testCase.endOfStep("Type into amount 500", 20);
 
