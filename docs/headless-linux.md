@@ -1,8 +1,12 @@
-# Headless Sakuli checks on Ubuntu
+# Headless Sakuli checks on Linux
+
+Running Sakuli on the user desktop is nice, but has the drawback that the session gets highjacked on each Sakuli run. Moving the mouse e.g. can have negative effects on the test execution. 
+
+For that reason we advise to run Sakuli checks in a virtual display (="headless"), which is straightforward in Linux. 
 
 ## Installing and configuring the VNC server
 
-First **install** vnc4server: 
+On **Ubuntu**, first **install** vnc4server: 
 
     sudo apt-get install vnc4server
     
@@ -16,26 +20,26 @@ Start vncserver for the first time to create a **session password**:
 
     New 'sakulidemo:1 (sakuli)' desktop is sakulidemo:1
 
-    Creating default startup script /home/sakuli/.vnc/xstartup
-    Starting applications specified in /home/sakuli/.vnc/xstartup
-    Log file is /home/sakuli/.vnc/sakulidemo:1.log
+    Creating default startup script __HOME__/.vnc/xstartup
+    Starting applications specified in __HOME__/.vnc/xstartup
+    Log file is __HOME__/.vnc/sakulidemo:1.log
 
-Edit `.vnc/xstartup`: 
+`.vnc/xstartup` controls what to start within a xvnc session. Do not touch this file on OpenSUSE; on **Ubuntu** you have to replace its content with the following lines (because you are using  **gnome-session-fallback**, don't you…?): 
 
     ~$ vim .vnc/xstartup  
     
-        #!/bin/sh
-        export XKL_XMODMAP_DISABLE=1
-        unset SESSION_MANAGER
-        unset DBUS_SESSION_BUS_ADDRESS
+    #!/bin/sh
+    export XKL_XMODMAP_DISABLE=1
+    unset SESSION_MANAGER
+    unset DBUS_SESSION_BUS_ADDRESS
 
-        gnome-panel &
-        gnome-settings-daemon &
-        metacity &
+    gnome-panel &
+    gnome-settings-daemon &
+    metacity &
 
 Restart the current vnc sesssion: 
 
-    ~$ killall Xvnc4 && vncserver
+    ~$ vncserver -kill :1 && vncserver
     
 Now open a RDP client (on Ubuntu: *Applications - Internet - Remmina Remote Desktop Client*) and enter the connection data: 
 
@@ -43,9 +47,7 @@ Now open a RDP client (on Ubuntu: *Applications - Internet - Remmina Remote Desk
 * Server: localhost:5901
 * Password: `__VNC_SESSION_PASSWORD__`
 
-You should see now a grey empty desktop with only the menu and status bar: 
-
-![](pics/u_vnc_desktop.png)
+You should see now an empty GNOME/KDE desktop - started headless!
 
 
 ## Test
@@ -54,7 +56,8 @@ You are now ready to run the **minimal Sakuli check** in **headless (=VNC)** mod
 
 On the **Ubuntu** desktop, open a terminal window and execute 
 
-    ~$ sakuli/scripts/starter/START_example_linux_headless.sh
+* on **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_ubuntu/ --vnc --display 1` 
+* on **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_opensuse/` 
  
 You should see that Sakuli
 

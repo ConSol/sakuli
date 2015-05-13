@@ -214,9 +214,21 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new SakuliInitException(testExcMessage));
-        assertTrue(testSuite.getException().getCause() instanceof SakuliInitException);
+        assertTrue(testSuite.getException() instanceof NonScreenshotException);
         assertTrue(testSuite.getException().getMessage().contains(testExcMessage));
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
+        verify(loader, never()).getScreenshotActions();
+    }
+
+    @Test
+    public void testSakuliValidationException() throws Exception {
+        setUp();
+        when(loader.getCurrentTestCase()).thenReturn(null);
+        testling.handleException(new SakuliValidationException(testExcMessage));
+        assertTrue(testSuite.getException() instanceof NonScreenshotException);
+        assertTrue(testSuite.getException().getMessage().contains(testExcMessage));
+        assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
+        verify(loader, never()).getScreenshotActions();
     }
 
     @Test

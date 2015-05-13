@@ -108,7 +108,7 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
             this.imageLib = new ImageLib();
             imageLib.addImagesFromFolder(imagePaths);
 
-            if (!testSuiteProperties.isUiTest()) {
+            if (sakuliProperties.isLoadJavaScriptEngine()) {
                 //add the "sakuli-delay-active" var to the script runner context
                 if (rhinoScriptRunner == null || rhinoScriptRunner.getSession() == null) {
                     //could be possible if the aspectj compiler won't worked correctly, see RhinoAspect#getRhinoScriptRunner
@@ -149,6 +149,15 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
 
     public void setSahiProxyProperties(SahiProxyProperties sahiProxyProperties) {
         this.sahiProxyProperties = sahiProxyProperties;
+    }
+
+    @Override
+    public TestSuiteProperties getTestSuitePropeties() {
+        return this.testSuiteProperties;
+    }
+
+    public void setTestSuiteProperties(TestSuiteProperties testSuiteProperties) {
+        this.testSuiteProperties = testSuiteProperties;
     }
 
     @Override

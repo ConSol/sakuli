@@ -160,7 +160,7 @@ After that, reload the OMD crontab:
 
 ## Sakuli Configuration
 
-Open `__SAKULI_HOME__/_include/sakuli.properties` on the Sakuli client and fill in the **database parameters** Sakuli should write the test results to:
+Open `sakuli.properties` on the Sakuli client and fill in the **database parameters** Sakuli should write the test results to:
 
     # DEFAULT: false
     sakuli.forwarder.database.enabled=true

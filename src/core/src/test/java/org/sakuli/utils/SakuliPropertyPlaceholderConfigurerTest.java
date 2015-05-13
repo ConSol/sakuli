@@ -226,4 +226,19 @@ public class SakuliPropertyPlaceholderConfigurerTest {
         assertEquals(targetProfConf.getString("test.prop.1"), "xyz");
         assertEquals(targetProfConf.getString("test.prop.2"), "zyx");
     }
+
+    @Test
+    public void testModifySahiProxyPortInPropertyFile() throws Exception {
+        Path targetProps = Paths.get(this.getClass().getResource("properties-test/target.properties").toURI());
+
+        Properties basicProps = new Properties();
+        basicProps.put(SahiProxyProperties.PROXY_PORT, "9000");
+        testling.modifySahiProxyPortPropertiesConfiguration(targetProps.toAbsolutePath().toString(), basicProps);
+        PropertiesConfiguration targetProfConf = new PropertiesConfiguration(targetProps.toFile());
+        assertEquals(targetProfConf.getString(SahiProxyProperties.SAHI_PROPERTY_PROXY_PORT_MAPPING), "9000");
+
+        testling.restoreProperties();
+        targetProfConf = new PropertiesConfiguration(targetProps.toFile());
+        assertEquals(targetProfConf.getString(SahiProxyProperties.SAHI_PROPERTY_PROXY_PORT_MAPPING), null);
+    }
 }

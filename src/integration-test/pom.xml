@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.5.1-SNAPSHOT</version>
+        <version>0.9.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>integration-test</artifactId>
-    <version>0.5.1-SNAPSHOT</version>
+    <version>0.9.1-SNAPSHOT</version>
     <name>integration-test</name>
     <description>integration test module for sakuli</description>
 
@@ -71,7 +71,7 @@
                         <fileset>
                             <directory>${pom.basedir}</directory>
                             <includes>
-                                <include>temp-db-sahi/</include>
+                                <include>temp-db-sakuli/</include>
                                 <include>*.log</include>
                             </includes>
                         </fileset>

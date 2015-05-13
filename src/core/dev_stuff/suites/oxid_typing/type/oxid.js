@@ -29,7 +29,7 @@ function fill(str) {
     i++;
     if (action == "paste") {
         env.paste(str);
-        env.logInfo("clipboad:", env.getClipboard())
+        Logger.logInfo("clipboad:", env.getClipboard())
     } else if (action == "pasteMasked") {
         env.pasteMasked(str);
     } else if (action == "type") {
@@ -37,7 +37,7 @@ function fill(str) {
     } else if (action == "typeMasked") {
         env.typeMasked(str);
     }
-    env.logInfo("COUNT:" + i);
+    Logger.logInfo("COUNT:" + i);
 }
 
 try {
@@ -51,7 +51,7 @@ try {
     _setValue(_textbox("invadr[oxuser__oxfname]"), "DONE");
     for (i = 0; i < 15; i++) {
         var pw = "adkajld()!";
-        env.logInfo("Try " + i + " start --------------");
+        Logger.logInfo("Try " + i + " start --------------");
 
         _focus(_textbox("invadr[oxuser__oxfname]"));
         //env.pasteMasked(pw);
@@ -81,13 +81,13 @@ try {
         _set($d, _getValue(_textbox("invadr[oxuser__oxaddinfo]")));
         _set($e, _getValue(_textbox("invadr[oxuser__oxstreet]")));
 
-        env.logInfo($a + ", " + $b + ", " + $c + ", " + $d + ", " + $e);
+        Logger.logInfo($a + ", " + $b + ", " + $c + ", " + $d + ", " + $e);
         if ($a.toString !== pw || $b.toString !== pw || $c.toString !== pw || $d.toString !== pw || $e.toString !== pw) {
             _alert("MISMATCH!");
-            env.logError("MISMATCH-at-cound:" + i);
+            Logger.logError("MISMATCH-at-cound:" + i);
 
         } else {
-            env.logInfo("SAME: '" + $u + "' and '" + $p + "'");
+            Logger.logInfo("SAME: '" + $u + "' and '" + $p + "'");
         }
 
         _setValue(_textbox("invadr[oxuser__oxfname]"), "");

@@ -48,7 +48,7 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
         for (TestCaseStep step : steps) {
             logger.info("============== save STEP \"" + step.getName() + "\" ==============");
             MapSqlParameterSource stepParameters = new MapSqlParameterSource();
-            stepParameters.addValue("sahi_cases_id", primaryKeyOfTestCase);
+            stepParameters.addValue("sakuli_cases_id", primaryKeyOfTestCase);
             stepParameters.addValue("result", step.getState().getErrorCode());
             stepParameters.addValue("result_desc", step.getState());
             stepParameters.addValue("name", step.getName());
@@ -57,25 +57,25 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
             stepParameters.addValue("warning", step.getWarningTime());
             stepParameters.addValue("duration", step.getDuration());
 
-            logger.info("write the following values to 'sahi_steps': "
+            logger.info("write the following values to 'sakuli_steps': "
                     + stepParameters.getValues()
                     + "\n now execute ....");
 
             //generate the sql-statement
             SimpleJdbcInsert insertStepResults = new SimpleJdbcInsert(getDataSource())
-                    .withTableName("sahi_steps")
+                    .withTableName("sakuli_steps")
                     .usingGeneratedKeyColumns("id");
 
             //execute the sql-statement and save the primary key
             int dbPrimaryKey = insertStepResults.executeAndReturnKey(stepParameters).intValue();
             logger.info("test case step '" + step.getName()
-                    + "' has been written to 'sahi_steps' with  primaryKey=" + dbPrimaryKey);
+                    + "' has been written to 'sakuli_steps' with  primaryKey=" + dbPrimaryKey);
             step.setDbPrimaryKey(dbPrimaryKey);
         }
     }
 
     @Override
     public int getCountOfSahiSteps() {
-        return this.getJdbcTemplate().queryForObject("select count(*) from sahi_steps", Integer.class);
+        return this.getJdbcTemplate().queryForObject("select count(*) from sakuli_steps", Integer.class);
     }
 }

@@ -39,6 +39,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import static org.apache.commons.lang.StringUtils.removeEnd;
+import static org.apache.commons.lang3.StringUtils.removeStart;
 
 /**
  * Aspect for the External Sahi Libary {@link net.sf.sahi}
@@ -56,7 +58,7 @@ public class RhinoAspect extends BaseSakuliAspect {
      * Aspect to fetch the {@link RhinoScriptRunner} at the start of a test case script. The {@link RhinoScriptRunner}
      * will then saved in the {@link BaseActionLoaderImpl} for forther usage.
      *
-     * @param joinPoint
+     * @param joinPoint injected joinPoint of the execution
      */
     @After("execution(* net.sf.sahi.rhino.RhinoScriptRunner.setReporter*(*))")
     public void getRhinoScriptRunner(JoinPoint joinPoint) {
@@ -119,18 +121,7 @@ public class RhinoAspect extends BaseSakuliAspect {
     protected void addActionLog(JoinPoint joinPoint, LogToResult logToResult) {
         Logger logger = getLogger(joinPoint);
         if (logToResult != null) {
-            StringBuilder message = new StringBuilder();
-            if (logToResult.logClassInstance() && joinPoint.getTarget() != null) {
-                message.append("\"").append(joinPoint.getTarget().toString()).append("\" ");
-            }
-            message.append(getClassAndMethodAsString(joinPoint));
-
-            if (isNotEmpty(logToResult.message())) {
-                message.append(" - ").append(logToResult.message());
-            }
-            if (ArrayUtils.isNotEmpty(joinPoint.getArgs())) {
-                message.append(" with arg(s) ").append(printArgs(joinPoint, logToResult.logArgs()));
-            }
+            StringBuilder message = createLoggingString(joinPoint, logToResult);
 
             //log the action to log file and print
             switch (logToResult.level()) {
@@ -162,10 +153,36 @@ public class RhinoAspect extends BaseSakuliAspect {
     }
 
     /**
+     * @return based on the different arguments of the {@link LogToResult} annotation an different output {@link String}
+     */
+    protected StringBuilder createLoggingString(JoinPoint joinPoint, LogToResult logToResult) {
+        if (logToResult.logArgsOnly()) {
+            return new StringBuilder(removeEnd(removeStart(printArgs(joinPoint, logToResult.logArgs()), "["), "]"));
+        }
+
+        StringBuilder message = new StringBuilder();
+        //log class instance?
+        if (logToResult.logClassInstance() && joinPoint.getTarget() != null) {
+            message.append("\"").append(joinPoint.getTarget().toString()).append("\" ");
+        }
+        message.append(getClassAndMethodAsString(joinPoint));
+
+        //add message if needed
+        if (isNotEmpty(logToResult.message())) {
+            message.append(" - ").append(logToResult.message());
+        }
+        //add args if needed
+        if (ArrayUtils.isNotEmpty(joinPoint.getArgs())) {
+            message.append(" with arg(s) ").append(printArgs(joinPoint, logToResult.logArgs()));
+        }
+        return message;
+    }
+
+    /**
      * Aspect to fetch all Logs from the Sahi-Proxy by the methode {@link net.sf.sahi.ant.Report} and do an trusty
      * exception handling on top of that.
      *
-     * @param joinPoint
+     * @param joinPoint injected joinPoint of the execution
      */
     @Before("execution(* net.sf.sahi.report.Report.addResult(..))")
     public void doHandleRhinoException(JoinPoint joinPoint) {

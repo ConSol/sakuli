@@ -3,9 +3,9 @@
 # Automatic cleanup for Sakuli result tables
 
 mysql sakuli<<EOFMYSQL
-DELETE FROM sahi_suites where time < DATE_SUB(NOW(), INTERVAL 3 DAY);
-DELETE FROM sahi_cases where time < DATE_SUB(NOW(), INTERVAL 3 DAY);
-DELETE FROM sahi_steps where time < DATE_SUB(NOW(), INTERVAL 3 DAY);
+DELETE FROM sakuli_suites where time < DATE_SUB(NOW(), INTERVAL 3 DAY);
+DELETE FROM sakuli_cases where time < DATE_SUB(NOW(), INTERVAL 3 DAY);
+DELETE FROM sakuli_steps where time < DATE_SUB(NOW(), INTERVAL 3 DAY);
 EOFMYSQL
 
 echo "FLUSH QUERY CACHE;" | mysql

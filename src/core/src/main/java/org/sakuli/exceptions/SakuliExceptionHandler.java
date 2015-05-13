@@ -187,8 +187,9 @@ public class SakuliExceptionHandler {
      * @return true if the exception have been already processed by Sakuli
      */
     public boolean isAlreadyProcessed(Throwable e) {
-        return e.getMessage().contains(RhinoAspect.ALREADY_PROCESSED)
-                || e.getMessage().contains(("Logging exception:")) || processedExceptions.contains(e);
+        String message = e.getMessage() != null ? e.getMessage() : e.toString();
+        return message.contains(RhinoAspect.ALREADY_PROCESSED)
+                || message.contains(("Logging exception:")) || processedExceptions.contains(e);
     }
 
     /**
@@ -266,7 +267,7 @@ public class SakuliExceptionHandler {
      */
     private SakuliException transformException(Throwable e) {
         if (loader.getActionProperties().isTakeScreenshots() &&
-                !(e instanceof SakuliForwarderException)) {
+                !(e instanceof NonScreenshotException)) {
             //try to get a screenshot
             try {
                 Path screenshot = null;

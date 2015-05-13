@@ -352,59 +352,6 @@ function initEnvironment(that, javaObject) {
         return update(that.javaObject.mouseWheelUp(steps));
     };
 
-    /*******************************
-     * LOGGING FUNCTIONS
-     */
-
-    /**
-     * make a error-log over Java backend into the log file.
-     * This won't stop the execution of the test case.
-     *
-     * @param {String} message as a String
-     * @memberOf Environment
-     * @method logError
-     */
-    that.logError = function (message) {
-        Packages.org.sakuli.actions.logging.Logger.logError(message);
-        return that;
-    };
-
-    /**
-     * make a debug-log over Java backend into the log file.
-     *
-     * @param {String} message as a String
-     * @memberOf Environment
-     * @method logWarning
-     */
-    that.logWarning = function (message) {
-        Packages.org.sakuli.actions.logging.Logger.logWarning(message);
-        return that;
-    };
-
-    /**
-     * make a info-log over Java backend into the log file.
-     *
-     * @param {String} message as a String
-     * @memberOf Environment
-     * @method logInfo
-     */
-    that.logInfo = function (message) {
-        Packages.org.sakuli.actions.logging.Logger.logInfo(message);
-        return that;
-    };
-    /**
-     * make a debug-log over Java backend into the log file.
-     *
-     * @param {String} message as a String
-     * @memberOf Environment
-     * @method logDebug
-     */
-    that.logDebug = function (message) {
-        Packages.org.sakuli.actions.logging.Logger.logDebug(message);
-        return that;
-    };
-
-
     /*****************************************************************************************************
      * INTERNAL CLASS FUNCTIONS - NOT REACHABLE IN THE TEST CASE EXECUTION
      *****************************************************************************************************/

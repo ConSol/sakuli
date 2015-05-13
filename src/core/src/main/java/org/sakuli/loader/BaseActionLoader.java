@@ -27,6 +27,7 @@ import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
+import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 
 import java.nio.file.Path;
@@ -78,4 +79,6 @@ public interface BaseActionLoader {
     ActionProperties getActionProperties();
 
     SahiProxyProperties getSahiProxyProperties();
+
+    TestSuiteProperties getTestSuitePropeties();
 }

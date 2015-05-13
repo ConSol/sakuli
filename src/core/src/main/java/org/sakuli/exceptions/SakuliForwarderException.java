@@ -22,16 +22,11 @@ package org.sakuli.exceptions;
  * Wrapper for a {@link SakuliException} thrown by the sakuli {@link org.sakuli.services.forwarder} services.
  * For this kind of exception, not error screenshot is necessary
  */
-public class SakuliForwarderException extends SakuliInitException {
+public class SakuliForwarderException extends SakuliException implements NonScreenshotException {
     public SakuliForwarderException(String message) {
         super(message);
     }
 
-    /**
-     * wraps a {@link Throwable}
-     *
-     * @param e
-     */
     public SakuliForwarderException(Throwable e) {
         super(e);
     }

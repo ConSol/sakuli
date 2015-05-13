@@ -1,5 +1,18 @@
 ## Change Log of Sakuli Releases
 
+### Version 0.9.0
+* close #74 extract logging functions to separate javascript class Logger
+* close #70 rename sakuli.screenbased.* properties to sikuli.*
+* close #42 rename Application#closeApp to Application#close in javascript
+* close #27 modify 'non screenshot exception handling' // add TestCaseAction#throwException(message,screenshot) 
+* add mysql Dockefile for sakuli database forwarder setup, see #10 
+* close #10 rename table name from sahi to sakuli
+* rewritten documentation for sahi delay.
+* close #79 rename property `sahi.proxy.requestDelayOnSikuliInput.delayTime` -> `sahi.proxy.onSikuliInput.delayPerKey` and `sahi.proxy.requestDelayOnSikuliInput.refreshTime` -> `sahi.proxy.onSikuliInput.delayBeforeInput` 
+* finish JavaDSL to be fully supported of all Sakuli features also in Java
+* fix #11 custom sahi-port handling (use different ports for sahi-proxy)
+* close #7 update sahi-jar verison to sahi 5.0 
+
 - - -   
 
 ### Version 0.5.0

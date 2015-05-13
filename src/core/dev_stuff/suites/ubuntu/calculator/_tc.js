@@ -56,8 +56,8 @@ try {
         // finally close the calculator app!
     } finally {
 
-        appCalc.closeApp();
-        appGedit.closeApp();
+        appCalc.close();
+        appGedit.close();
         if (screen.exists("close-without-saving", 1)) {
             screen.find("close-without-saving").click();
         }

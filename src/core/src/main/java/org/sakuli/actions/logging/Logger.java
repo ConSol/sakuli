@@ -29,19 +29,19 @@ import org.sakuli.datamodel.actions.LogLevel;
  */
 public class Logger {
 
-    @LogToResult(logClassInstance = false, level = LogLevel.INFO)
+    @LogToResult(logArgsOnly = true, level = LogLevel.INFO)
     public static void logInfo(String message) {
     }
 
-    @LogToResult(logClassInstance = false, level = LogLevel.ERROR)
+    @LogToResult(logArgsOnly = true, level = LogLevel.ERROR)
     public static void logError(String message) {
     }
 
-    @LogToResult(logClassInstance = false, level = LogLevel.WARNING)
+    @LogToResult(logArgsOnly = true, level = LogLevel.WARNING)
     public static void logWarning(String message) {
     }
 
-    @LogToResult(logClassInstance = false, level = LogLevel.DEBUG)
+    @LogToResult(logArgsOnly = true, level = LogLevel.DEBUG)
     public static void logDebug(String message) {
     }
 

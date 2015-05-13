@@ -4,8 +4,8 @@ This page describes the common steps to **install and test** Sakuli on **Windows
 
 The default installation path of a particular Sakuli version is referenced as `%SAKULI_HOME%`, that is 
 
-- `%SAKULI_HOME%` on **Windows** (e.g. `C:\sakuli\sakuli-v0.5.0\`)
-- `$SAKULI_HOME` on **Linux** (e.g. `/home/e2e/sakuli-v0.5.0/`)
+- `%SAKULI_HOME%` on **Windows** (e.g. `C:\sakuli\sakuli-v0.6.0\`)
+- `$SAKULI_HOME` on **Linux** (e.g. `/home/e2e/sakuli/sakuli-v0.6.0/`)
 
 **Conventions**: 
 
@@ -22,12 +22,12 @@ We recommend to run Sakuli clients on virtual machines.
 * **CPU**: dual-Core
 * if virtualized: **Hypervisor guest additions** for best performance 
 * no local firewall running
-* user account "sakuli" with **sudo/admin rights**
-* desktop appearance 
+* a user account with **sudo/admin rights**
+* desktop appearance:
   * Set the desktop background to a homogenous color. 
-  * If you do not want to run Sakuli headless, disable screen locking mechanisms
+  * If you do not want to run Sakuli [headless](headless-linux.md), disable any screen locking mechanisms
   * Sakuli needs a reliable and predictable desktop environment: make sure that there are no pop-up windows of services or applications
-  * If Sakuli is running within a VM, change the desktop resolution to a fixed value (e.g. 1024x768) and disable any auto-resizing mechanisms uf the guest display. This ensures that the guest's resolution does not change in case that you resize its window.
+  * If Sakuli is running within a VM, change the desktop resolution to a fixed value (e.g. 1024x768) and disable any auto-resizing mechanisms of the guest display. This ensures that the guest's resolution does not change in case that you resize its window.
   * Other optional steps see ["Desktop tuning"](./troubleshooting-tuning-sakuli-client.md#desktop-tuning).
 * the client should not have more than one physical screen 
 
@@ -52,7 +52,7 @@ Additionally, on **Windows**:
 ### Sakuli 
 
 * Download **Sakuli** from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
-  * current **development** snapshot = `sakuli-v.0.5.0-SNAPSHOT.zip` 
+  * current **development** snapshot = `sakuli-v.0.6.0-SNAPSHOT.zip` 
   * current **stable** version = highest version of `sakuli-zipped-release-vX.X.X.zip` 
 * Unzip the downloaded archive into a folder of your choice; a folder `sakuli` will be created (referenced as `__INST_DIR__`). 
 * Set the environment variable `SAKULI_HOME`: 
@@ -76,7 +76,9 @@ Additionally, on **Windows**:
 
 ### Sahi
 
-* Download **Sahi v44** from [http://sourceforge.net/projects/sahi/files/?source=navbar](http://sourceforge.net/projects/sahi/files/) (Version 5 will be supported soon)
+* Download **Sahi** from [http://sourceforge.net/projects/sahi/files/?source=navbar](http://sourceforge.net/projects/sahi/files/)
+  * For **Sakuli < v0.6.0**, use version **0.44**
+  * For **Sakuli >= v0.6.0**, use version **0.5**
 * Unpack the downloaded file and start the installation by executing `java -jar __DOWNLOADED_JAR_FILE__`. In the installation assistant, set: 
   * Installation path: `__INST_DIR__/sahi`
   * select all packages to install

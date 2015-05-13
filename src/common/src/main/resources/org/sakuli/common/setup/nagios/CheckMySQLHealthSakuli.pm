@@ -106,13 +106,13 @@ my %ERRORS=( OK => 0, WARNING => 1, CRITICAL => 2, UNKNOWN => 3 );
 
 # Queries for sub get_cases, depending on working mode
 my %SQL_CASES = (
-	"my::sakuli::suite"	=>	q{SELECT sc.id,result,name,start,stop,warning,critical,sahi_suites_id,duration,UNIX_TIMESTAMP(time),msg,screenshot
-					FROM sahi_cases sc
-					WHERE (sc.sahi_suites_id = ?) 
+	"my::sakuli::suite"	=>	q{SELECT sc.id,result,name,start,stop,warning,critical,sakuli_suites_id,duration,UNIX_TIMESTAMP(time),msg,screenshot
+					FROM sakuli_cases sc
+					WHERE (sc.sakuli_suites_id = ?)
 					ORDER BY sc.id },
 
-	"my::sakuli::case"	=>	q{SELECT sc.id,result,name,start,stop,warning,critical,sahi_suites_id,duration,UNIX_TIMESTAMP(time),msg,screenshot
-					FROM sahi_cases sc, sahi_jobs sj
+	"my::sakuli::case"	=>	q{SELECT sc.id,result,name,start,stop,warning,critical,sakuli_suites_id,duration,UNIX_TIMESTAMP(time),msg,screenshot
+					FROM sakuli_cases sc, sakuli_jobs sj
 					WHERE (sc.name = ?) and (sc.guid = sj.guid)
 					ORDER BY sc.id DESC LIMIT 1}
 );
@@ -263,7 +263,7 @@ sub get_suite {
 	my %params = @_; 
 	my @suite = $params{handle}->fetchrow_array(q{
 		SELECT ss.id,ss.suiteID,ss.result,ss.name,ss.warning,ss.critical,ss.duration,UNIX_TIMESTAMP(ss.time),screenshot,msg
-		FROM sahi_suites ss
+		FROM sakuli_suites ss
 		WHERE (ss.suiteID = ?) and (ss.result >= 0)
 		ORDER BY ss.id DESC LIMIT 1
 	}, $params{name} );
@@ -291,19 +291,19 @@ sub get_cases {
 #	}
 	foreach my $c_ref (@cases) {
 		my %caseshash;
-		@caseshash{qw(id result name start stop warning critical sahi_suites_id duration time msg screenshot)} = @$c_ref;
+		@caseshash{qw(id result name start stop warning critical sakuli_suites_id duration time msg screenshot)} = @$c_ref;
 		push @{$ret_cases}, \%caseshash;
 
 		# Steps --------------------------------------------
 		my @steps = $params{handle}->fetchall_array(q{
-			SELECT id,result,name,warning,sahi_cases_id,duration,time
-			FROM sahi_steps ss
-			WHERE ss.sahi_cases_id = ?
+			SELECT id,result,name,warning,sakuli_cases_id,duration,time
+			FROM sakuli_steps ss
+			WHERE ss.sakuli_cases_id = ?
 			ORDER BY ss.id
 		}, $ret_cases->[-1]{id});
 		foreach my $s_ref (@steps) {
 			my %stephash;
-			@stephash{qw(id result name warning sahi_cases_id duration time)} = @$s_ref;
+			@stephash{qw(id result name warning sakuli_cases_id duration time)} = @$s_ref;
 			push @{$ret_steps->{$ret_cases->[-1]{id}}}, \%stephash;
 		}
 	}

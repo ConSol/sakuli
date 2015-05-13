@@ -29,7 +29,8 @@ try {
     _highlight(_link("Online Documentation"));
     _highlight(_link("Test Pages"));
     _highlight(_link("Sample Application"));
-    
+
+    testCase.endOfStep("Test Sahi landing page",30);
     appCalc.open();
     screen.waitForImage("calculator.png", 20);
 
@@ -37,16 +38,19 @@ try {
     env.sleep(2);
     screen.find("plus.png").click().type("100");
     screen.find("result.png").click();
+    screen.waitForImage("625",10);
+    testCase.endOfStep("Calculation",30);
 
     appGedit.open();
     screen.waitForImage("gedit.png", 20);
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
+    testCase.endOfStep("Editor",30);
     env.sleep(4);
 } catch (e) {
     testCase.handleException(e);
 } finally {
-    appCalc.closeApp();
-    appGedit.closeApp();
+    appCalc.close();
+    appGedit.close();
     if (screen.exists("close-without-saving", 1)) {
         screen.find("close-without-saving").click();
     }

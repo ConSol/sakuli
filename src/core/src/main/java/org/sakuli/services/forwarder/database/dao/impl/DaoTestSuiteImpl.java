@@ -51,65 +51,65 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
      */
     @Override
     public int insertInitialTestSuiteData() {
-        logger.info("Build SQL query for new primary key in table 'sahi_suites'");
+        logger.info("Build SQL query for new primary key in table 'sakuli_suites'");
 
         testSuite.refreshState();
         MapSqlParameterSource tcParameters = getInitialDataParameters();
-        logger.info("write the following values to 'sahi_suites': "
+        logger.info("write the following values to 'sakuli_suites': "
                 + tcParameters.getValues()
                 + " ==>  now execute ....");
         SimpleJdbcInsert insertInitialSuiteData = new SimpleJdbcInsert(getDataSource())
-                .withTableName("sahi_suites")
+                .withTableName("sakuli_suites")
                 .usingGeneratedKeyColumns("id");
 
         int dbPrimaryKey = insertInitialSuiteData.executeAndReturnKey(tcParameters).intValue();
 
         logger.info("test suite \"" + testSuite.getId()
-                + "\" has been written to 'sahi_suites' with  primaryKey=" + dbPrimaryKey);
+                + "\" has been written to 'sakuli_suites' with  primaryKey=" + dbPrimaryKey);
         return dbPrimaryKey;
     }
 
     @Override
     public void saveTestSuiteResult() {
         testSuite.refreshState();
-        logger.info("save the results of the test suite to the table 'sahi_suites'");
+        logger.info("save the results of the test suite to the table 'sakuli_suites'");
 
 
         MapSqlParameterSource tcParameters = getCompleteParameters();
-        logger.info("write the following values to 'sahi_suites': "
+        logger.info("write the following values to 'sakuli_suites': "
                 + tcParameters.getValues()
                 + " ==>  now execute ....");
         String sqlStatement =
-                "UPDATE sahi_suites "
+                "UPDATE sakuli_suites "
                         + createSqlSetStringForNamedParameter(tcParameters.getValues())
                         + " where id=:id";
 
-        logger.debug("SQL-Statement for update 'sahi_suites': " + sqlStatement);
+        logger.debug("SQL-Statement for update 'sakuli_suites': " + sqlStatement);
         int affectedRows = getNamedParameterJdbcTemplate().update(sqlStatement, tcParameters);
-        logger.info("update 'sahi_suites' affected " + affectedRows + " rows");
+        logger.info("update 'sakuli_suites' affected " + affectedRows + " rows");
     }
 
     @Override
     public int saveTestSuiteToSahiJobs() {
-        logger.info("save the guid to the table 'sahi_jobs'");
+        logger.info("save the guid to the table 'sakuli_jobs'");
         //build up the statement
         MapSqlParameterSource tcParameters = getGuidParameter();
-        logger.info("write the following values to 'sahi_jobs': "
+        logger.info("write the following values to 'sakuli_jobs': "
                 + tcParameters.getValues()
                 + " ==>  now execute ....");
         SimpleJdbcInsert insertTS = new SimpleJdbcInsert(getDataSource())
-                .withTableName("sahi_jobs")
+                .withTableName("sakuli_jobs")
                 .usingGeneratedKeyColumns("id");
         testSuite.setDbJobPrimaryKey(insertTS.executeAndReturnKey(tcParameters).intValue());
         logger.info("the test suite \"" + testSuite.getId() + "\""
                 + "with the guid \"" + testSuite.getGuid()
-                + "\" has been written to 'sahi_jobs' with  primaryKey=" + testSuite.getDbJobPrimaryKey());
+                + "\" has been written to 'sakuli_jobs' with  primaryKey=" + testSuite.getDbJobPrimaryKey());
         return testSuite.getDbJobPrimaryKey();
     }
 
     @Override
     public int getCountOfSahiJobs() {
-        return this.getJdbcTemplate().queryForObject("select count(*) from sahi_jobs", Integer.class);
+        return this.getJdbcTemplate().queryForObject("select count(*) from sakuli_jobs", Integer.class);
     }
 
     private MapSqlParameterSource getInitialDataParameters() {

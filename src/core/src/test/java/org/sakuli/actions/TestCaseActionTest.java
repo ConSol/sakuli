@@ -27,7 +27,10 @@ import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestCaseStepState;
+import org.sakuli.exceptions.NonScreenshotException;
+import org.sakuli.exceptions.SakuliActionException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.exceptions.SakuliValidationException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -42,6 +45,7 @@ import java.util.Map;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.AssertJUnit.assertNotNull;
 import static org.testng.AssertJUnit.assertTrue;
 
@@ -192,5 +196,31 @@ public class TestCaseActionTest extends BaseTest {
     public void testGetTestSuiteFolderPath() throws Exception {
         String expectedPath = Paths.get(TEST_FOLDER_PATH).toAbsolutePath().toString();
         assertEquals(testling.getTestSuiteFolderPath(), expectedPath);
+    }
+
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+    @Test
+    public void testThrowExceptionNoScreenshot() throws Exception {
+        String exMessage = "TEST";
+        testling.throwException(exMessage, false);
+        ArgumentCaptor<Throwable> ac = ArgumentCaptor.forClass(Throwable.class);
+        verify(exceptionHandlerMock).handleException(ac.capture());
+        assertEquals(ac.getValue().getMessage(), exMessage);
+        assertTrue(ac.getValue() instanceof SakuliValidationException);
+        assertTrue(ac.getValue() instanceof NonScreenshotException);
+        assertFalse(ac.getValue() instanceof SakuliActionException);
+    }
+
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+    @Test
+    public void testThrowExceptionWithScreenshot() throws Exception {
+        String exMessage = "TEST";
+        testling.throwException(exMessage, true);
+        ArgumentCaptor<Throwable> ac = ArgumentCaptor.forClass(Throwable.class);
+        verify(exceptionHandlerMock).handleException(ac.capture());
+        assertEquals(ac.getValue().getMessage(), exMessage);
+        assertFalse(ac.getValue() instanceof SakuliValidationException);
+        assertFalse(ac.getValue() instanceof NonScreenshotException);
+        assertTrue(ac.getValue() instanceof SakuliActionException);
     }
 }
