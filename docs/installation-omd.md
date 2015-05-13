@@ -9,19 +9,17 @@ This chapter describes all neccessary steps to configure a **Nagios** compatible
 
 General note: you should download the **same package version of Sakuli** as you did on the clients. **Do not mix versions**. 
 
-* Download **Sakuli** from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install) into a temporary folder `__TEMP__`
-  * current **development** snapshot = `sakuli-zipped-release-vX.X.X-SNAPSHOT.zip` 
-  * current **stable** version = highest version of `sakuli-zipped-release-vX.X.X.zip` 
- 
+* Download **Sakuli** from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install) into a temporary folder `__TEMP__`. 
+
         cd __TEMP__
-	    wget http://labs.consol.de/sakuli/install/sakuli-zipped-release-vX.X.X.zip
+        wget http://labs.consol.de/sakuli/install/sakuli-vx.x.x-SNAPSHOT.zip
+        
+* decompress it:
 
-* decompress it 
-
-		unzip sakuli-zipped-release-vX.X.X.zip
+		unzip sakuli-vx.x.x-SNAPSHOT.zip
 
 ## General preparations
-All following steps should be done as the **OMD site user *sakuli***:
+All following steps should be done as the **OMD site user** (here: "sakuli"):
 
 		su - sakuli
 		
@@ -31,6 +29,13 @@ Sakuli will produce HTML formatted output. **HTML escaping** in Nagios must be t
 
 	OMD[sakuli]:~$ vim etc/nagios/cgi.cfg
 		escape_html_tags=0
+
+
+## Choose a forwarder
+Depending on your environment, you can set up on of these two possible forwarder types. Each of them is documented on a single page.
+
+  * [Setting up the Sakuli **result database** in OMD](forwarder-database.md#omd-configuration)
+  * [Setting up Nagios to **receive Gearman results** from Sakuli clients](forwarder-gearman.md#omd-configuration)
 
 ## PNP4Nagios
 ### RRD Storage Type
@@ -44,59 +49,64 @@ Verify `RRD_STORAGE_TYPE` in `process_perfdata.cfg`:
 
 If this value is *"SINGLE"* on your system and you do not want to change it globally, use the *custom check_command* cfg file. PNP4Nagios will then use storage type *"MULTIPLE"* only for this check_command then:  
 
-	OMD[sakuli]:~$ cp __TEMP__/setup/nagios/check_sakuli.cfg ~/etc/pnp4nagios/check_commands/
+	OMD[sakuli]:~$ cp __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/check_sakuli.cfg ~/etc/pnp4nagios/check_commands/
 
-### PNP graph template
+### install PNP graph template
 
 Copy the PNP4nagios graph template into the templates folder: 
 
-	OMD[sakuli]:~$ cp __TEMP__/setup/nagios/check_sakuli.php ~/etc/pnp4nagios/templates/
-
-## Forwarder
-Depending on your environment, you can set up on of these two possible forwarder types. Each of them is documented on a single page.
-
-  * [Setting up the Sakuli **result database** in OMD](forwarder-database.md#omd-configuration)
-  * [Setting up Nagios to **receive Gearman results** from Sakuli clients](forwarder-gearman.md#omd-configuration)
+	OMD[sakuli]:~$ cp __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/check_sakuli.php ~/etc/pnp4nagios/templates/
 
 
-## Include CPU/Memory metrics in Sakuli graphs (optional) 
+### Include CPU/Memory metrics in Sakuli graphs (optional) 
 
 If Sakuli reports a long check runtime, it is good to know the CPU/Memory metrics on the Sakuli client machine, because CPU/IO bottlenecks affect Sakuli tests, too.
  
 The following optional enhancement displays the **CPU/Memory graph** lines of the Sakuli test client in the suite/case graph. By setting **custom host macros**, the graph template knows where to fetch these data from. 
 
 ![PNP graph](./pics/pnp_graph.png) 
+*(picture shows a Linux client with CPU check, displayed by a yellow line)*
 
-### add CPU load check (for Linux Sakuli clients)
+#### add CPU load check (for Linux Sakuli clients)
 
-Add this **command check_local_load**:
+Add this **command** to `commands.cfg`: 
 
     define command{
         command_name    check_local_load
         command_line    $USER1$/check_load -w $ARG1$ -c $ARG2$
     }
 
-Add this **service** to Nagios: 
+Add this **service** to `services.cfg`:  
 
 	define service {
 	  service_description            CPU_Load
-	  hostgroup_name                 sakulihost
+	  host_name                 sakuli_client
 	  use                            generic-service,srv-pnp
-	  # if Sakuli checks are running on the same machine (see demo VM)
+	  # if Sakuli checks are running on the same machine (as in the demo VM)
 	  check_command                  check_local_load!2.5,1.5,1!5,3.5,2
-	  # if Sakuli checks are running on another Client
+	  # if Sakuli checks are running on another host than OMD
 	  check_command                  check_by_ssh!check_load!2.5,1.5,1!5,3.5,2
 	}
 
-Add this **custom host macros** to every Nagios host where Sakuli checks are defined: 
+Add this **custom host macros** to every Sakuli host in `hosts.cfg`:
 	
 	define host {
         …
-	    _E2E_CPU_HOST                  sakulihost
+	    _E2E_CPU_HOST                  sakuli_client
 	    _E2E_CPU_SVC                   CPU_Load_load5
     }
+   
+Now reload OMD: 
+
+    omd reload   
     
-### add CPU/Memory usage check (for Windows Sakuli clients)
+You should see now the following service on `sakuli_client`: 
+
+![PNP graph](./pics/svc_cpu.png)  
+   
+**Note**: The value of `_E2E_CPU_SVC` and `_E2E_MEM_SVC` refer to the file name of the corresponding RRD file. `CPU_Usage_5` for example means to get the the CPU usage data from `$OMD_ROOT/var/pnp4nagios/perfdata/[_E2E_CPU_HOST]/CPU_Usage_5.rrd`.    
+    
+#### add CPU/Memory usage check (for Windows Sakuli clients)
 
 Install **NSClient++** on the Windows client. Then add this **command check_nrpe_arg:**
 
@@ -130,19 +140,23 @@ Add these host macros to every Nagios host where Sakuli checks are defined:
 		_E2E_MEM_HOST                  win7sakuli
 		_E2E_MEM_SVC                   Mem_Usage
 
-Now reload Nagios to let the changes take effect.
+Now reload OMD: 
+
+    omd reload	
 		
 **Note**: The value of `_E2E_CPU_SVC` and `_E2E_MEM_SVC` refer to the file name of the corresponding RRD file. `CPU_Usage_5` for example means to get the the CPU usage data from `$OMD_ROOT/var/pnp4nagios/perfdata/[_E2E_CPU_HOST]/CPU_Usage_5.rrd`. 
 
-### XML update delay
+#### XML update delay
 
 As soon as the created services produce perfdata for the first time, their XML file created by PNP4Nagios will also contain the host macros created in the step before. If not, check if  `XML_UPDATE_DELAY` in `etc/pnp4nagios/process_perfdata.cfg` is set too high. 
 
-### Change PNP working mode
+#### Change PNP working mode
 
 OMD runs PNP by default in **[Bulk Mode with NPCD and npcdmod.o](http://docs.pnp4nagios.org/pnp-0.6/modes#bulk_mode_with_npcdmod)**. In this mode the Nagios broker module `npcdmod.o` reads the performance directly from the monitoring core and writes them in *var/spool/perfdata*. This data are not expandable with **custom macros** - therefore the mode has to be changed to **[Bulk Mode with NPCD](http://docs.pnp4nagios.org/pnp-0.6/modes#bulk_mode_with_npcd)**. (the performance of both modes will be equal). 
 
 In this mode the monitoring core itself writes perfdata to the spool directory (instead of *npcdmod.o*). The format of this data can be freely defined by adapting `service_perfdata_file_template`. In the following code block you can see that the four **custom host macros** were added to this template string. Perfdata files are then moved to *var/spool/perfdata* every 15 seconds by the monitoring core.
+
+**Make sure to replace the OMD site name placeholder `__OMD_SITE__` with your site name!** (in *vim* type `:%s/__OMD_SITE__/yoursitename/g`)
 
 	vim ~/etc/nagios/nagios.d/pnp4nagios.cfg
 
@@ -179,4 +193,11 @@ Check if the perfdata processing commands are present:
 		command_line    /bin/mv /omd/sites/__OMD_SITE__/var/pnp4nagios/host-perfdata /omd/sites/__OMD_SITE__/var/pnp4nagios/spool/host-perfdata.$TIMET$
 	}
 
-Restart the OMD site to unload the *npcdmod.o* module. 
+Restart the OMD site to unload the *npcdmod.o* module:
+
+    omd restart
+    
+#### Test
+ 
+First reschedule the CPU/Mem check on the sakuli client. It can take several minutes to store the values in the RRD database. As soon as you can see "real" values in the PNP4Nagios graph of "CPU Load" (instead of "`-nan`"), restart the Sakuli check. 
+The Sakui graph should now contain also CPU/Memory values. 
