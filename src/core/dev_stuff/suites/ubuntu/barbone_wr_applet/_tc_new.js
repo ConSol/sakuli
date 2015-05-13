@@ -79,7 +79,7 @@ try {
 
     } finally {
         //env.type(Key.ALT + Key.F4);
-        editorApp.closeApp();
+        editorApp.close();
         new Region().waitForImage("gedit_close_without_saving", 10).click();
         env.sleep(1);
         testCase.endOfStep("external Application test", 25);

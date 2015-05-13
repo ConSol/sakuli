@@ -51,8 +51,8 @@ try {
 } finally {
     testCase.saveResult();
     try {
-        appCalc.closeApp();
-        appNotepad.closeApp();
+        appCalc.close();
+        appNotepad.close();
     } catch (e) {
         //do not handle exception, this is just a teardown
         env.logInfo(e);

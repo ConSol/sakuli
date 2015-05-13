@@ -132,7 +132,7 @@ try {
 
     env.sleep(5);
 
-    editorApp.closeApp();
+    editorApp.close();
     testCase.endOfStep("external Application test", 11);
 
 

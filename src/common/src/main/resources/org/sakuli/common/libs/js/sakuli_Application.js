@@ -85,9 +85,9 @@ function initApplication(that, javaObject) {
      *
      * @return this Application object.
      * @memberOf Application
-     * @method closeApp
+     * @method close
      */
-    that.closeApp = function () {
+    that.close = function () {
         return update(that.javaObject.closeApp());
     };
 

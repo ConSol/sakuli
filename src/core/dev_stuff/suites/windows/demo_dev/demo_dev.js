@@ -118,7 +118,7 @@ try {
 } catch (e) {
     testCase.handleException(e);
 } finally {
-    appNotepad.closeApp();
-    appCalc.closeApp();
+    appNotepad.close();
+    appCalc.close();
     testCase.saveResult();
 }

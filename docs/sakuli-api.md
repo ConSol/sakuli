@@ -16,7 +16,7 @@
   * [Application.open()](#Application.open)
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
-  * [Application.closeApp()](#Application.closeApp)
+  * [Application.close()](#Application.close)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -231,7 +231,7 @@ var editor = new Application("gedit");
   * [Application.open()](#Application.open)
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
-  * [Application.closeApp()](#Application.closeApp)
+  * [Application.close()](#Application.close)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -257,8 +257,8 @@ Focuses a specific window of the application.
 - windowNumber `number` - identifies the window  
 
 **Returns**:  - this Application object.  
-<a name="Application.closeApp"></a>
-##Application.closeApp()
+<a name="Application.close"></a>
+##Application.close()
 Closes the already existing application.
 
 **Returns**:  - this Application object.  
