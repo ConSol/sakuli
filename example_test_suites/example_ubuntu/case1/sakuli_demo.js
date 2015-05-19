@@ -49,8 +49,8 @@ try {
 } catch (e) {
     testCase.handleException(e);
 } finally {
-    appCalc.closeApp();
-    appGedit.closeApp();
+    appCalc.close();
+    appGedit.close();
     if (screen.exists("close-without-saving", 1)) {
         screen.find("close-without-saving").click();
     }

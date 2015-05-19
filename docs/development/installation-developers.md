@@ -74,11 +74,16 @@ For the following guide you need
 ###Database Setup (optional, onyl for DB forwarder necessary)
 Setup a local MySQL database to save the results of test case executions. The database won't be needed for running `mvn install`.
 
-* __User:__ `sahi`
-* __Password:__ `sahi`
-* __Database:__ `sahi`
-* __SQL-Script:__ [core/src/database_scripts/create_and_drop_database.sql](/core/src/database_scripts/create_and_drop_database.sql)
+* __User:__ `sakuli`
+* __Password:__ `sakuli`
+* __Database:__ `sakuli`
+* __SQL-Script:__ [create_sakuli_database](../../src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database)
 
+If you wan't to you use an Docker-Container for it, you can build and run it over the following commands:
+    
+    cd src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database
+    docker build -t=toschneck/mysql-sakuli .
+    docker run --name mysql-sakuli -p 3306:3306 toschneck/mysql-sakuli
 
 ###Development-Environment-Konfiguration
 * Execute `mvn clean verify` to ensure that the setup is correct

@@ -11,11 +11,12 @@
   * [TestCase.getLastURL()](#TestCase.getLastURL)
   * [TestCase.getTestCaseFolderPath()](#TestCase.getTestCaseFolderPath)
   * [TestCase.getTestSuiteFolderPath()](#TestCase.getTestSuiteFolderPath)
+  * [TestCase.throwException(message, screenshot)](#TestCase.throwException)
 * [Application](#Application)
   * [Application.open()](#Application.open)
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
-  * [Application.closeApp()](#Application.closeApp)
+  * [Application.close()](#Application.close)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -43,11 +44,12 @@
   * [Environment.write(text)](#Environment.write)
   * [Environment.mouseWheelDown(steps)](#Environment.mouseWheelDown)
   * [Environment.mouseWheelUp(steps)](#Environment.mouseWheelUp)
-  * [Environment.logError(message)](#Environment.logError)
-  * [Environment.logWarning(message)](#Environment.logWarning)
-  * [Environment.logInfo(message)](#Environment.logInfo)
-  * [Environment.logDebug(message)](#Environment.logDebug)
 * [Key](#Key)
+* [Logger](#Logger)
+  * [Logger.logError(message)](#Logger.logError)
+  * [Logger.logWarning(message)](#Logger.logWarning)
+  * [Logger.logInfo(message)](#Logger.logInfo)
+  * [Logger.logDebug(message)](#Logger.logDebug)
 * [MouseButton](#MouseButton)
 * [Region](#Region)
   * [Region.find(imageName)](#Region.find)
@@ -128,6 +130,7 @@ var testCase = new TestCase(20,30, "path-to/image-folder-name");
   * [TestCase.getLastURL()](#TestCase.getLastURL)
   * [TestCase.getTestCaseFolderPath()](#TestCase.getTestCaseFolderPath)
   * [TestCase.getTestSuiteFolderPath()](#TestCase.getTestSuiteFolderPath)
+  * [TestCase.throwException(message, screenshot)](#TestCase.throwException)
 
 <a name="TestCase.endOfStep"></a>
 ##TestCase.endOfStep(stepName, warningTime)
@@ -143,8 +146,8 @@ the runtime exceeds the step threshold (second parameter), the step is saved wit
 
 <a name="TestCase.handleException"></a>
 ##TestCase.handleException(e)
-Handles any Exception or Error. The handleException function calls the Java backend and stores the Exception to
-the database.
+Handles any Exception or Error. The handleException function calls the Java backend and stores the Exception
+for further processing.
 
 Use it at the end of a catch-block.
 
@@ -163,7 +166,7 @@ try {
 
 <a name="TestCase.saveResult"></a>
 ##TestCase.saveResult()
-Saves the results of the current test case to the database.
+Saves the results of the current test case for further processing.
 
 Should be called in finally-block of the test case:
 
@@ -194,6 +197,16 @@ Updates and returns the URL of the last visited URL
 <a name="TestCase.getTestSuiteFolderPath"></a>
 ##TestCase.getTestSuiteFolderPath()
 **Returns**: `String` - the folder path of the current testcase.  
+<a name="TestCase.throwException"></a>
+##TestCase.throwException(message, screenshot)
+Creates a new test case based exception with an optional screenshot at the calling time.
+Will be called from sakuli.js or in side of 'org.sakuli.javaDSL.AbstractSakuliTest'.
+
+**Params**
+
+- message `String` - error message  
+- screenshot `Boolean` - enable / disable screenshot functionality  
+
 <a name="Application"></a>
 #Application
 Application Class - Represents an application.
@@ -219,7 +232,7 @@ var editor = new Application("gedit");
   * [Application.open()](#Application.open)
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
-  * [Application.closeApp()](#Application.closeApp)
+  * [Application.close()](#Application.close)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -245,8 +258,8 @@ Focuses a specific window of the application.
 - windowNumber `number` - identifies the window  
 
 **Returns**:  - this Application object.  
-<a name="Application.closeApp"></a>
-##Application.closeApp()
+<a name="Application.close"></a>
+##Application.close()
 Closes the already existing application.
 
 **Returns**:  - this Application object.  
@@ -310,10 +323,6 @@ Environment - Represents the environment of the current test host.
   * [Environment.write(text)](#Environment.write)
   * [Environment.mouseWheelDown(steps)](#Environment.mouseWheelDown)
   * [Environment.mouseWheelUp(steps)](#Environment.mouseWheelUp)
-  * [Environment.logError(message)](#Environment.logError)
-  * [Environment.logWarning(message)](#Environment.logWarning)
-  * [Environment.logInfo(message)](#Environment.logInfo)
-  * [Environment.logDebug(message)](#Environment.logDebug)
 
 <a name="Environment.setSimilarity"></a>
 ##Environment.setSimilarity(similarity)
@@ -533,39 +542,6 @@ wheel the given steps up.
 
 - steps `number` - the number of steps  
 
-<a name="Environment.logError"></a>
-##Environment.logError(message)
-make a error-log over Java backend into the log file.
-This won't stop the execution of the test case.
-
-**Params**
-
-- message `String` - as a String  
-
-<a name="Environment.logWarning"></a>
-##Environment.logWarning(message)
-make a debug-log over Java backend into the log file.
-
-**Params**
-
-- message `String` - as a String  
-
-<a name="Environment.logInfo"></a>
-##Environment.logInfo(message)
-make a info-log over Java backend into the log file.
-
-**Params**
-
-- message `String` - as a String  
-
-<a name="Environment.logDebug"></a>
-##Environment.logDebug(message)
-make a debug-log over Java backend into the log file.
-
-**Params**
-
-- message `String` - as a String  
-
 <a name="Key"></a>
 #Key
 Key - representing some Key constants which can be used in type functions as input text and as modifier keys.
@@ -587,6 +563,51 @@ env.type(Key.F4, Key.ALT);
 **Members**
 
 * [Key](#Key)
+
+<a name="Logger"></a>
+#Logger
+Logger - Logging functions to do 'debug, 'info', 'warning' and 'error' log entries.
+
+**Members**
+
+* [Logger](#Logger)
+  * [Logger.logError(message)](#Logger.logError)
+  * [Logger.logWarning(message)](#Logger.logWarning)
+  * [Logger.logInfo(message)](#Logger.logInfo)
+  * [Logger.logDebug(message)](#Logger.logDebug)
+
+<a name="Logger.logError"></a>
+##Logger.logError(message)
+make a error-log over Java backend into the log file.
+This won't stop the execution of the test case.
+
+**Params**
+
+- message `String` - as a String  
+
+<a name="Logger.logWarning"></a>
+##Logger.logWarning(message)
+make a debug-log over Java backend into the log file.
+
+**Params**
+
+- message `String` - as a String  
+
+<a name="Logger.logInfo"></a>
+##Logger.logInfo(message)
+make a info-log over Java backend into the log file.
+
+**Params**
+
+- message `String` - as a String  
+
+<a name="Logger.logDebug"></a>
+##Logger.logDebug(message)
+make a debug-log over Java backend into the log file.
+
+**Params**
+
+- message `String` - as a String  
 
 <a name="MouseButton"></a>
 #MouseButton
@@ -704,7 +725,7 @@ makes a right click on the center of the Region.
 **Returns**:  - the Region or NULL on errors.  
 <a name="Region.mouseMove"></a>
 ##Region.mouseMove()
-Move the mouse pointer the center of the [Region](#Region) and "hovers" it.
+Move the mouse pointer to the center of the [Region](#Region) and "hovers" it.
 
 **Returns**:  - the [Region](#Region) or NULL on errors.  
 <a name="Region.mouseDown"></a>

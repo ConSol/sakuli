@@ -40,4 +40,6 @@ public @interface LogToResult {
     boolean logArgs() default true;
 
     LogLevel level() default LogLevel.INFO;
+
+    boolean logArgsOnly() default false;
 }

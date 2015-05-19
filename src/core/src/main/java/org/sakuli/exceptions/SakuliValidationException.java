@@ -19,19 +19,19 @@
 package org.sakuli.exceptions;
 
 /**
- * Wrapper for a {@link SakuliException} thrown by the sakuli {@link org.sakuli.services.forwarder} services.
- * For this kind of exception, not error screenshot is necessary
+ * Implementation for a {@link Exception}s which should be thrown if an validation during the testcase went wrong
+ * and a screenshot should NOT be created.
  */
-public class SakuliForwarderException extends SakuliException implements NonScreenshotException {
-    public SakuliForwarderException(String message) {
+public class SakuliValidationException extends SakuliException implements NonScreenshotException {
+    public SakuliValidationException(String message) {
         super(message);
     }
 
-    public SakuliForwarderException(Throwable e) {
+    public SakuliValidationException(Throwable e) {
         super(e);
     }
 
-    public SakuliForwarderException(Throwable suppressedException, String message) {
+    public SakuliValidationException(Throwable suppressedException, String message) {
         super(suppressedException, message);
     }
 }

@@ -22,9 +22,12 @@ import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.datamodel.helper.TestCaseHelper;
+import org.sakuli.exceptions.SakuliActionException;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.exceptions.SakuliValidationException;
 import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.BaseActionLoaderImpl;
 import org.slf4j.Logger;
@@ -213,9 +216,17 @@ public class TestCaseAction {
                 + "\"");
     }
 
-    /****************
-     * EXCEPTION HANDLING
-     *********************/
+    /**
+     * Creates a new test case based exception with an optional screenshot at the calling time.
+     * Will be called from sakuli.js or in side of 'org.sakuli.javaDSL.AbstractSakuliTest'.
+     *
+     * @param message    error message
+     * @param screenshot enable / disable screenshot functionality
+     */
+    @LogToResult(level = LogLevel.ERROR)
+    public void throwException(String message, boolean screenshot) {
+        loader.getExceptionHandler().handleException(screenshot ? new SakuliActionException(message) : new SakuliValidationException(message));
+    }
 
     /**
      * calls the method {@link SakuliExceptionHandler#handleException(Throwable)}

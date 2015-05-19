@@ -38,8 +38,8 @@ public class ActionProperties extends AbstractProperties {
     public static final String AUTO_HIGHLIGHT_ENABLED = "sakuli.autoHighlight.enabled";
     public static final String DEFAULT_HIGHLIGHT_SEC = "sakuli.highlight.seconds";
     public static final String DEFAULT_HIGHLIGHT_SEC_DEFAULT = "1.1f";
-    public static final String TYPE_DELAY_PROPERTY = "sakuli.screenbased.typeDelay";
-    public static final String CLICK_DELAY_PROPERTY = "sakuli.screenbased.clickDelay";
+    public static final String TYPE_DELAY_PROPERTY = "sikuli.typeDelay";
+    public static final String CLICK_DELAY_PROPERTY = "sikuli.clickDelay";
     public static final String ENCRYPTION_INTERFACE = "sakuli.encryption.interface";
     public static final String ENCRYPTION_INTERFACE_AUTODETECT = "sakuli.encryption.interface.autodetect";
     public static final String SCREENSHOT_FOLDER_PROPERTY = "sakuli.screenshot.dir";

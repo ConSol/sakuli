@@ -40,6 +40,7 @@ try {
         throw "NOT EQUAL " + testString + " to TEST";
     }
 
+    //testCase.throwException("NO SCREENSHOT!", false);
 
     /***
      * NEW STEP
@@ -50,6 +51,7 @@ try {
     try {
         editorApp.open();
 
+        Logger.logWarning("TEST");
 
         var notepadRegion = editorApp.getRegion();
 
@@ -78,7 +80,7 @@ try {
 
     } finally {
         //env.type(Key.ALT + Key.F4);
-        editorApp.closeApp();
+        editorApp.close();
         new Region().waitForImage("gedit_close_without_saving", 10).click();
         env.sleep(1);
         testCase.endOfStep("external Application test", 25);
@@ -123,7 +125,7 @@ try {
 
 //    //click OK-Button
 //    testCase.click("4_ok_button");
-    env.logInfo("Sahi wait for 2 seconds!!!");
+    Logger.logInfo("Sahi wait for 2 seconds!!!");
     _wait(2000);
     testCase.endOfStep("Type into amount 500", 20);
 

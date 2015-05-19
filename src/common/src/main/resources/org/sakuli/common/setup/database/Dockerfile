@@ -8,10 +8,12 @@ ENV MYSQL_DATABASE=sakuli
 ENV MYSQL_USER=sakuli
 ENV MYSQL_PASSWORD=sakuli
 
-#WORKDIR /sakuli-inst
-#
-#ADD . /sakuli-inst
+# commands to start:
+# docker build -t=toschneck/mysql-sakuli .
+# docker run --name mysql-sakuli -p 3306:3306 toschneck/mysql-sakuli
 
+
+#DID NOT WORKED :(
 #CMD ["mysqld"]
 #CMD ["/usr/local/mysql/bin/mysql -u sakuli -p sakuli sakuli <  \/sakuli-inst\/create_sakuli_database.sql"]
 EXPOSE 3306
