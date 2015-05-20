@@ -183,12 +183,12 @@ public class OutputBuilderTest {
 
         assertEquals(testling.getPerformanceData(testSuiteExample), "suite__state=1;;;; " +
                 "suite_sakuli-123=120.00s;100;150;; " +
-                "c_1__state_case-warning=1;;;; " +
-                "c_1_case-warning=20.00s;19;25;; " +
-                "s_1_1_step1=10.00s;9;;; " +
-                "s_1_2_step2=8.00s;10;;; " +
-                "c_2__state_case_with_no_steps=0;;;; " +
-                "c_2_case_with_no_steps=15.00s;;;;");
+                "c_001__state_case-warning=1;;;; " +
+                "c_001_case-warning=20.00s;19;25;; " +
+                "s_001_001_step1=10.00s;9;;; " +
+                "s_001_002_step2=8.00s;10;;; " +
+                "c_002__state_case_with_no_steps=0;;;; " +
+                "c_002_case_with_no_steps=15.00s;;;;");
     }
 
     @Test
