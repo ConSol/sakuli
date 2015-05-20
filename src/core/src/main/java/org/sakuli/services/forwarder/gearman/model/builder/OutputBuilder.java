@@ -147,11 +147,11 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         int i = 1;
         for (TestCase tc : testSuite.getTestCasesAsSortedSet()) {
             OutputState tcOutputState = OutputState.lookupSakuliState(tc.getState());
-            data = addPerformanceDataRow(data, "c_" + i + "__state_" + tc.getId(), String.valueOf(tcOutputState.getErrorCode()), null, null);
-            data = addPerformanceDataRow(data, "c_" + i + "_" + tc.getId(), tc.getDuration(), tc.getWarningTime(), tc.getCriticalTime());
+            data = addPerformanceDataRow(data, String.format("c_%03d__state_%s", i, tc.getId()), String.valueOf(tcOutputState.getErrorCode()), null, null);
+            data = addPerformanceDataRow(data, String.format("c_%03d_%s", i, tc.getId()), tc.getDuration(), tc.getWarningTime(), tc.getCriticalTime());
             int j = 1;
             for (TestCaseStep step : tc.getStepsAsSortedSet()) {
-                data = addPerformanceDataRow(data, "s_" + i + "_" + j + "_" + step.getId(), step.getDuration(), step.getWarningTime(), 0);
+                data = addPerformanceDataRow(data, String.format("s_%03d_%03d_%s", i, j, step.getId()), step.getDuration(), step.getWarningTime(), 0);
                 j++;
             }
             i++;
