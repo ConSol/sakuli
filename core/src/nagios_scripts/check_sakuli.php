@@ -32,12 +32,14 @@ $col_suite_runtime_area = '#bdbdbd';
 
 # Case colors
 $col_case_line = $this->config->scheme['Blues'];
+$col_case_line = array_merge($col_case_line, $col_case_line, $col_case_line, $col_case_line);
 $col_case_area = $col_case_line;
 $col_case_area_opacity = "BB";
 
 # Step colors
 
 $col_step_line = $this->config->scheme['Spectral'];
+$col_step_line = array_merge($col_step_line, $col_step_line, $col_step_line, $col_step_line);
 $col_step_area = $col_step_line;
 $col_step_area_opacity = "BB";
 
