@@ -365,7 +365,7 @@ foreach ($this->DS as $KEY=>$VAL) {
 
 		        if ($graph_cpu == "load" ) {
 				# Load is usually a much lower value than usage (%) -> scale the right axis with factor 10
-		                $opt[$casecount_int] .= " --right-axis \"0.1:0\" --right-axis-label \"CPU wd\" ";
+		                $opt[$casecount_int] .= " --right-axis \"0.1:0\" --right-axis-label \"CPU Load\" ";
 		        } else {
 		                $opt[$casecount_int] .= " --right-axis \"1:0\" --right-axis-label \"CPU Usage\" ";
 		        }
