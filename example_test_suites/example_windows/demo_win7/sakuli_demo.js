@@ -36,6 +36,7 @@ try {
 
     env.type("525");
     env.sleep(1);
+    env.setSimilarity(0.99);
     screen.find("plus.png").highlight().click().type("100");
     screen.find("result.png").highlight().click();
 	screen.waitForImage("625",10).highlight();
