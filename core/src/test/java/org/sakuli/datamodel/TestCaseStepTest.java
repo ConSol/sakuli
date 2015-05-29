@@ -45,4 +45,16 @@ public class TestCaseStepTest {
         testling.refreshState();
         Assert.assertEquals(TestCaseStepState.WARNING, testling.getState());
     }
+
+    @Test
+    public void testRefreshStateZeroWarningTime() throws Exception {
+        TestCaseStep testling = new TestCaseStep();
+        testling.setWarningTime(-1);
+        Date currentDate = new Date();
+        testling.setStartDate(new Date(currentDate.getTime() - TimeUnit.SECONDS.toMillis(5)));
+        testling.stopDate = currentDate;
+
+        testling.refreshState();
+        Assert.assertEquals(TestCaseStepState.OK, testling.getState());
+    }
 }
