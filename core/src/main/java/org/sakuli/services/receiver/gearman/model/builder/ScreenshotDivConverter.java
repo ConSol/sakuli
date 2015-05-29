@@ -42,10 +42,18 @@ import java.util.Arrays;
 @Component
 public class ScreenshotDivConverter implements Converter<ScreenshotDiv, Throwable> {
 
+    public static final String REGEX_SRC_DATA_IMAGE_BASE64 = "src=\"data:image\\/.*;base64,.*\"";
     @Autowired
     private SakuliExceptionHandler exceptionHandler;
     @Autowired
     private GearmanProperties gearmanProperties;
+
+    public static String removeBase64ImageDataString(String string) {
+        if (StringUtils.isNotEmpty(string)) {
+            return string.replaceAll(REGEX_SRC_DATA_IMAGE_BASE64, "src=\"\"");
+        }
+        return string;
+    }
 
     @Override
     public ScreenshotDiv convert(Throwable e) {
@@ -72,8 +80,8 @@ public class ScreenshotDivConverter implements Converter<ScreenshotDiv, Throwabl
                 try {
                     byte[] binaryScreenshot = Files.readAllBytes(screenshotPath);
                     String base64String = new BASE64Encoder().encode(binaryScreenshot);
-                    for (String newLine: Arrays.asList("\n", "\r")){
-                         base64String = StringUtils.remove(base64String,newLine );
+                    for (String newLine : Arrays.asList("\n", "\r")) {
+                        base64String = StringUtils.remove(base64String, newLine);
                     }
                     return base64String;
                 } catch (IOException e) {

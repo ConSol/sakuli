@@ -28,6 +28,7 @@ import org.sakuli.services.common.AbstractResultService;
 import org.sakuli.services.receiver.gearman.model.NagiosCheckResult;
 import org.sakuli.services.receiver.gearman.model.builder.NagiosCheckResultBuilder;
 import org.sakuli.services.receiver.gearman.model.builder.NagiosExceptionBuilder;
+import org.sakuli.services.receiver.gearman.model.builder.ScreenshotDivConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class GearmanResultServiceImpl extends AbstractResultService {
         NagiosCheckResult checkResult = nagiosCheckResultBuilder.build();
 
         String message = checkResult.getPayloadString();
-        logger.info("MESSAGE for GEARMAN:\n{}", message);
+        logger.info("MESSAGE for GEARMAN:\n{}", ScreenshotDivConverter.removeBase64ImageDataString(message));
         try {
             GearmanJob job = creatJob(checkResult);
             gearmanClient.addJobServer(connection);
