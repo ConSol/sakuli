@@ -44,8 +44,10 @@ _include("sakuli_Region.js");
  * var testCase = new TestCase(20,30, "path-to/image-folder-name");
  * ```
  *
- * @param {number} warningTime threshold in seconds
- * @param {number} criticalTime threshold in seconds
+ * @param {number} warningTime threshold in seconds. If the threshold is set to 0,
+ *                 the execution time will never exceed, so the state will be always OK!
+ * @param {number} criticalTime threshold in seconds. If the threshold is set to 0,
+ *                 the execution time will never exceed, so the state will be always OK!
  * @param {String[]} optImagePathArray (optional) Path or Array of Paths to the folder containing the image patterns for these test cases.
  *
  * @returns an initialized Sakuli object.
@@ -75,14 +77,18 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      * called, the current timer value is read out, stored with the step name (first parameter) and gets resetted . If
      * the runtime exceeds the step threshold (second parameter), the step is saved with state "WARNING".
      * @param {String} stepName
-     * @param {number} warningTime threshold in seconds
+     * @param {number} optWarningTime (optional) threshold in seconds, default = 0. If the threshold is set to 0,
+     *                 the execution time will never exceed, so the state will be always OK!
      * @memberOf TestCase
      * @method endOfStep
      */
-    that.endOfStep = function (stepName, warningTime) {
+    that.endOfStep = function (stepName, optWarningTime) {
+        if (undefined == optWarningTime) {
+            optWarningTime = 0;
+        }
         var currentTime = (new Date()).getTime();
         //call the backend
-        that.javaObject.addTestCaseStep(stepName, that.stepStartTime, currentTime, warningTime);
+        that.javaObject.addTestCaseStep(stepName, that.stepStartTime, currentTime, optWarningTime);
         //set stepstart for the next step
         that.stepStartTime = currentTime;
     };

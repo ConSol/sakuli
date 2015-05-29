@@ -4,7 +4,7 @@
 
 * [Sahi-API](#Sahi-API)
 * [TestCase](#TestCase)
-  * [TestCase.endOfStep(stepName, warningTime)](#TestCase.endOfStep)
+  * [TestCase.endOfStep(stepName, optWarningTime)](#TestCase.endOfStep)
   * [TestCase.handleException(e)](#TestCase.handleException)
   * [TestCase.saveResult()](#TestCase.saveResult)
   * [TestCase.getID()](#TestCase.getID)
@@ -101,8 +101,10 @@ TestCase - initializes the Sakuli object and sets the warning and critical time 
 
 **Params**
 
-- warningTime `number` - threshold in seconds  
-- criticalTime `number` - threshold in seconds  
+- warningTime `number` - threshold in seconds. If the threshold is set to 0,
+                the execution time will never exceed, so the state will be always OK!  
+- criticalTime `number` - threshold in seconds. If the threshold is set to 0,
+                the execution time will never exceed, so the state will be always OK!  
 - optImagePathArray `Array.<String>` - (optional) Path or Array of Paths to the folder containing the image patterns for these test cases.  
 
 **Returns**:  - an initialized Sakuli object.  
@@ -114,7 +116,7 @@ var testCase = new TestCase(20,30, "path-to/image-folder-name");
 **Members**
 
 * [TestCase](#TestCase)
-  * [TestCase.endOfStep(stepName, warningTime)](#TestCase.endOfStep)
+  * [TestCase.endOfStep(stepName, optWarningTime)](#TestCase.endOfStep)
   * [TestCase.handleException(e)](#TestCase.handleException)
   * [TestCase.saveResult()](#TestCase.saveResult)
   * [TestCase.getID()](#TestCase.getID)
@@ -123,7 +125,7 @@ var testCase = new TestCase(20,30, "path-to/image-folder-name");
   * [TestCase.getTestSuiteFolderPath()](#TestCase.getTestSuiteFolderPath)
 
 <a name="TestCase.endOfStep"></a>
-##TestCase.endOfStep(stepName, warningTime)
+##TestCase.endOfStep(stepName, optWarningTime)
 A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
 particular runtime. Together with the test Case, a special "step" timer is started. Each time endOfStep is
 called, the current timer value is read out, stored with the step name (first parameter) and gets resetted . If
@@ -132,7 +134,8 @@ the runtime exceeds the step threshold (second parameter), the step is saved wit
 **Params**
 
 - stepName `String`  
-- warningTime `number` - threshold in seconds  
+- optWarningTime `number` - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
+                the execution time will never exceed, so the state will be always OK!  
 
 <a name="TestCase.handleException"></a>
 ##TestCase.handleException(e)
@@ -194,7 +197,8 @@ Application Class - Represents an application.
 **Params**
 
 - applicationNameOrPath `String` - Path to the application file. Example: `C:\Windows\system32\notepad.exe`  
-- optResumeOnException `Boolean` - Determines whether to ignore exceptions from this class. If this parameter is undefined, it will be false.  
+- optResumeOnException `Boolean` - Determines whether to ignore exceptions from this class. If this parameter is
+    undefined, it will be false.  
 
 **Returns**: [Application](#Application) - an initialized  object.  
 **Example**  
@@ -312,7 +316,7 @@ set a new default similarity for the screen capturing methods.
 
 **Params**
 
-- similarity `Double` - value between 0 and 1, default = 0.8  
+- similarity `number` - value between 0 and 1, default = 0.8  
 
 **Returns**:  - this Environment or NULL on errors.  
 <a name="Environment.getRegionFromFocusedWindow"></a>
@@ -523,7 +527,6 @@ wheel the given steps up.
 ##Environment.logError(message)
 make a error-log over Java backend into the log file.
 This won't stop the execution of the test case.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -532,7 +535,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logWarning"></a>
 ##Environment.logWarning(message)
 make a debug-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -541,7 +543,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logInfo"></a>
 ##Environment.logInfo(message)
 make a info-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -550,7 +551,6 @@ The log entries can be configured over the properties "log4.properties"
 <a name="Environment.logDebug"></a>
 ##Environment.logDebug(message)
 make a debug-log over Java backend into the log file.
-The log entries can be configured over the properties "log4.properties"
 
 **Params**
 
@@ -949,7 +949,8 @@ Blocks the current testcase execution for x seconds
 **Returns**:  - from this region a extracted Text as String  
 <a name="RegionRectangle"></a>
 #RegionRectangle
-RegionRectangle (extends [Region](#Region)) - Represents a region specified by the x and y coordinates, width and height as a part of the screen.
+RegionRectangle (extends [Region](#Region)) - Represents a region specified by the x and y coordinates, width and
+height as a part of the screen.
 
 **Params**
 
@@ -957,7 +958,8 @@ RegionRectangle (extends [Region](#Region)) - Represents a region specified by t
 - y `number` - – y position of a rectangle on the screen.  
 - w `number` - – width of a rectangle in pixel.  
 - h `number` - – height of a rectangle in pixel.  
-- optResumeOnException `Boolean` - (optional) if true, the test execution won't stop on an occurring error. Default: false.  
+- optResumeOnException `Boolean` - (optional) if true, the test execution won't stop on an occurring error.
+    Default: false.  
 
 **Example**  
 ```

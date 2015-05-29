@@ -2,6 +2,11 @@
 
 
 - - -
+### Version 0.4.9 (Bugfix Release)
+* modify documentation of warning / critical times
+* add testcase.endOfStep function without warning time
+* add #81 change numbering scheme for cases and steps to always three digits to expanded color array in PHP template
+
 
 ### Version 0.4.8
 * fix bug: test suite has stat 'OK' instead of 'RUNNING' during the execution

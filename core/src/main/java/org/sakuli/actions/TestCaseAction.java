@@ -60,8 +60,10 @@ public class TestCaseAction {
      * Set the warning and critical Time to the specific test case.
      *
      * @param testCaseID   current ID of the test case
-     * @param warningTime  warning threshold in seconds
-     * @param criticalTime critical threshold in seconds
+     * @param warningTime  warning threshold in seconds. If the threshold is set to 0,
+     *                     the execution time will never exceed, so the state will be always OK!
+     * @param criticalTime critical threshold in seconds. If the threshold is set to 0,
+     *                     the execution time will never exceed, so the state will be always OK!
      * @param imagePaths   multiple paths to images
      */
     @LogToResult(message = "init a new test case")
@@ -74,8 +76,10 @@ public class TestCaseAction {
      * Set the warning and critical Time to the specific test case.
      *
      * @param testCaseID   current ID of the test case
-     * @param warningTime  warning threshold in seconds
-     * @param criticalTime critical threshold in seconds
+     * @param warningTime  warning threshold in seconds. If the threshold is set to 0,
+     *                     the execution time will never exceed, so the state will be always OK!
+     * @param criticalTime critical threshold in seconds. If the threshold is set to 0,
+     *                     the execution time will never exceed, so the state will be always OK!
      * @param imagePaths   multiple paths to images
      */
     @LogToResult(message = "init a new test case")
@@ -164,13 +168,20 @@ public class TestCaseAction {
     }
 
     /**
+     * Wrapper for {@link #addTestCaseStep(String, String, String, int)} with warningTime '0'.
+     */
+    public void addTestCaseStep(String stepName, String startTime, String stopTime) throws SakuliException {
+        addTestCaseStep(stepName, startTime, stopTime, 0);
+    }
+
+    /**
      * Save a new step to a existing test case. Must be called before {@link #saveResult(String, String, String, String,
      * String)}
      *
      * @param stepName    name of this step
      * @param startTime   start time in milliseconds
      * @param stopTime    end time in milliseconds
-     * @param warningTime warning threshold in seconds
+     * @param warningTime warning threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
      * @throws SakuliException
      */
     @LogToResult(message = "add a step to the current test case")
