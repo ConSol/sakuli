@@ -251,12 +251,12 @@ if ( $graph_mem ) {
 # CASE Graphs  #############################################################
 foreach ($this->DS as $KEY=>$VAL) {
 	# c_001_case1
-	if(preg_match('/^c_(\d+)_(.*)/', $VAL['LABEL'], $c_matches)) {
+	if (preg_match('/^c_(\d+)_([a-zA-Z0-9].*)/', $VAL['LABEL'], $c_matches)) {
 		$casecount = $c_matches[1];
 		$casecount_int = intval($casecount);
 		$casename = $c_matches[2];
 		$ds_name[$casecount_int] = "Sakuli Case $casename";
-		$opt[$casecount_int] = "--vertical-label \"seconds\"  -l 0 -M --slope-mode --title \"$servicedesc (Sakuli case $casecount_int) on $hostname\" ";
+		$opt[$casecount_int] = "--vertical-label \"seconds\"  -l 0 -M --slope-mode --title \"$servicedesc (Sakuli case $casename) on $hostname\" ";
 		$def[$casecount_int] = "";
 		# STEP AREA ---------------------------------------------------------------------
 		foreach ($this->DS as $k=>$v) {
@@ -276,7 +276,7 @@ foreach ($this->DS as $KEY=>$VAL) {
 	        			$def[$casecount_int] .= rrd::area("s_area$stepcount", $col_step_area[$stepcount_int].$col_step_area_opacity,pad($stepname, $label_max_length), 0 );
 				} else {
 					# all areas >1 are stacked upon a invisible line 
-					$def[$casecount_int] .= rrd::line1("s_area_stackbase".lead3($stepcount-1),"#00000000");	
+					$def[$casecount_int] .= rrd::line1("s_area_stackbase" . lead3($stepcount - 1), "#00000000");
 					$def[$casecount_int] .= rrd::area("s_area$stepcount", $col_step_area[$stepcount_int].$col_step_area_opacity,pad($stepname, $label_max_length), 1 );
 					# add value to s_area_stackbase
 					$def[$casecount_int] .= rrd::cdef("s_area_stackbase$stepcount", "s_area_stackbase".lead3($stepcount_int-1).",s_area$stepcount,+");
@@ -331,7 +331,7 @@ foreach ($this->DS as $KEY=>$VAL) {
 		if ($s_last_index != "") {
 			$def[$casecount_int] .= rrd::cdef("case_diff$casecount","case$casecount,s_line_stackbase$s_last_index,-");
 			# invisible line to stack upon
-			$def[$casecount_int] .= rrd::line1("s_line_stackbase$s_last_index","#00000000");	
+			$def[$casecount_int] .= rrd::line1("s_line_stackbase$s_last_index", "#00000000");
 			$def[$casecount_int] .= rrd::area   ("case_diff$casecount", $col_case_area[$casecount_int].$col_case_area_opacity, pad($casename,$label_max_length),1 );
 			# invisible line to stack upon
 			$def[$casecount_int] .= rrd::line1("s_line_stackbase$s_last_index","#00000000");	
