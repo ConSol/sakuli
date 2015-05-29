@@ -38,7 +38,7 @@ import static org.testng.Assert.*;
 
 public class ScreenshotDivConverterTest {
 
-    private final String base64String = String.format("iVBORw0KGgoAAAANSUhEUgAAAE4AAAAQCAIAAAA3TN7NAAAAA3NCSVQICAjb4U/gAAAAGXRFWHRT" +
+    private final String base64String = "iVBORw0KGgoAAAANSUhEUgAAAE4AAAAQCAIAAAA3TN7NAAAAA3NCSVQICAjb4U/gAAAAGXRFWHRT" +
             "b2Z0d2FyZQBnbm9tZS1zY3JlZW5zaG907wO/PgAABPdJREFUSInllX9MU1cUx89997YIVGgV2bIh" +
             "AwXJWBSxAwRECuPHQAGVkMkQM4W5AYpMxR/RwRSjcYrBwVRANjEiDAY4lOAQg4zfY7gtGDPZ1HT8" +
             "UIHSlgJiLO3+eOxSaAvG4bJk39w05577Oefec997p+jW3U74f4ioVGoAaG2qetT1YFracoH9Ykf3" +
@@ -62,7 +62,7 @@ public class ScreenshotDivConverterTest {
             "ztyWeKCy/DLrPHA4NSlxq5n5K8czvoqOTUg9kpR9+qSZmXlkVKzmXqjlTodc2ldfXbpje6JSqRSL" +
             "xRYWFprN9v79++xfro2NTea500udRK/Nt532Uv65fN0WX29om8GEBCGory5dHxbBvp+GhoYSiUST" +
             "EAgErCGXy9eHRRQU5b1u+W+UCnq/lRcUYRi0zMWroCjvOQOWuXgxzIweQb9mdqO/AAbcJzu9/py2" +
-            "AAAAAElFTkSuQmCC");
+            "AAAAAElFTkSuQmCC";
 
     @Mock
     private SakuliExceptionHandler sakuliExceptionHandler;
@@ -128,5 +128,24 @@ public class ScreenshotDivConverterTest {
         assertTrue(excp instanceof SakuliForwarderException);
         assertEquals(excp.getMessage(), "error during the BASE64 encoding of the screenshot 'computerNOTVALID.png'");
         assertTrue(excp.getSuppressed()[0] instanceof NoSuchFileException);
+    }
+
+
+    @Test
+    public void testRemoveBase64Data() throws Exception {
+        ScreenshotDiv testling = new ScreenshotDiv();
+        testling.setWidth("600px");
+        testling.setId("test-id");
+        testling.setFormat("jpg");
+        testling.setBase64screenshot("00001111");
+
+        String result = ScreenshotDivConverter.removeBase64ImageDataString(testling.getPayloadString());
+        assertEquals(result, "<div style=\"width:600px\" id=\"test-id\">" +
+                "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" " +
+                "src=\"\" >" +
+                "</div>");
+
+        String srcString2 = "blas\nblakdfakdfjie";
+        assertEquals(srcString2, ScreenshotDivConverter.removeBase64ImageDataString(srcString2));
     }
 }

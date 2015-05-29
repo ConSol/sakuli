@@ -4,7 +4,7 @@
 
 * [Sahi-API](#Sahi-API)
 * [TestCase](#TestCase)
-  * [TestCase.endOfStep(stepName, warningTime)](#TestCase.endOfStep)
+  * [TestCase.endOfStep(stepName, optWarningTime)](#TestCase.endOfStep)
   * [TestCase.handleException(e)](#TestCase.handleException)
   * [TestCase.saveResult()](#TestCase.saveResult)
   * [TestCase.getID()](#TestCase.getID)
@@ -109,10 +109,12 @@ TestCase - initializes the Sakuli object and sets the warning and critical time 
 
 **Params**
 
-- warningTime `number` - threshold in seconds  
-- criticalTime `number` - threshold in seconds  
+- warningTime `number` - threshold in seconds. If the threshold is set to 0,
+                the execution time will never exceed, so the state will be always OK!  
+- criticalTime `number` - threshold in seconds. If the threshold is set to 0,
+                the execution time will never exceed, so the state will be always OK!  
 - optImagePathArray `Array.<String>` - (optional) Path or Array of Paths to the folder containing the image patterns
-    for these test cases.  
+                                    for these test cases.  
 
 **Returns**:  - an initialized Sakuli object.  
 **Example**  
@@ -123,7 +125,7 @@ var testCase = new TestCase(20,30, "path-to/image-folder-name");
 **Members**
 
 * [TestCase](#TestCase)
-  * [TestCase.endOfStep(stepName, warningTime)](#TestCase.endOfStep)
+  * [TestCase.endOfStep(stepName, optWarningTime)](#TestCase.endOfStep)
   * [TestCase.handleException(e)](#TestCase.handleException)
   * [TestCase.saveResult()](#TestCase.saveResult)
   * [TestCase.getID()](#TestCase.getID)
@@ -133,7 +135,7 @@ var testCase = new TestCase(20,30, "path-to/image-folder-name");
   * [TestCase.throwException(message, screenshot)](#TestCase.throwException)
 
 <a name="TestCase.endOfStep"></a>
-##TestCase.endOfStep(stepName, warningTime)
+##TestCase.endOfStep(stepName, optWarningTime)
 A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
 particular runtime. Together with the test Case, a special "step" timer is started. Each time endOfStep is
 called, the current timer value is read out, stored with the step name (first parameter) and gets resetted . If
@@ -142,7 +144,8 @@ the runtime exceeds the step threshold (second parameter), the step is saved wit
 **Params**
 
 - stepName `String`  
-- warningTime `number` - threshold in seconds  
+- optWarningTime `number` - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
+                the execution time will never exceed, so the state will be always OK!  
 
 <a name="TestCase.handleException"></a>
 ##TestCase.handleException(e)
