@@ -37,7 +37,7 @@ We recommend to run Sakuli clients on virtual machines.
 ## Software installation 
 ### Java
 
-Sakuli versions including v0.4.7 need **Java 7**; all newer versions are based on **Java 8**.  
+Sakuli versions including v0.4.* need **Java 7**; all newer versions are based on **Java 8**.  
 
 Installation is straightforward for **Windows**; for **Ubuntu**, see Ubuntuusers Wiki for [Java 7 JRE](http://wiki.ubuntuusers.de/Java/Installation/Oracle_Java/Java_7#Java-7-JRE) / [Java 8 JRE](http://wiki.ubuntuusers.de/Java/Installation/Oracle_Java/Java_8#Java-8-JRE).
 
