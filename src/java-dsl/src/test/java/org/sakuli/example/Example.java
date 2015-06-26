@@ -56,6 +56,7 @@ public class Example extends AbstractSakuliTest {
         browser.navigateTo("http://sahi.example.com/_s_/dyn/Driver_initialized");
         Arrays.asList("SSL Manager", "Logs", "Online Documentation", "Test Pages", "Sample Application")
                 .stream().forEach(this::highlightLink);
+        new Region().find("sahi_logo").highlight();
     }
 
     private void highlightLink(String identifier) {

@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -250,9 +251,20 @@
         <!-- well be needed for Functions like App() and so on...-->
         <dependency>
             <groupId>com.sikulix</groupId>
-            <artifactId>sikulixapi-complete</artifactId>
+            <artifactId>sikulixapi</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.sikulix</groupId>
+            <artifactId>sikulixlibslux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sikulix</groupId>
+            <artifactId>sikulixlibsmac</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sikulix</groupId>
+            <artifactId>sikulixlibswin</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.gearman</groupId>
             <artifactId>gearman-java</artifactId>

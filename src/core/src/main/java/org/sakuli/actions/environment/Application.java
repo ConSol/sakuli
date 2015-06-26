@@ -178,8 +178,9 @@ public class Application extends App {
     /**
      * @return the name of the current application as {@link String}.
      */
+    @Override
     public String getName() {
-        return super.name();
+        return super.getName();
     }
 
 

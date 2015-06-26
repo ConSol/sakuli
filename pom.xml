@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.sakuli</groupId>
@@ -55,7 +56,7 @@
         <test.group.ui>ui</test.group.ui>
         <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
         <!-- special sakuli-version 99x - change this later to latest stable version-->
-        <sikulixapi.version>1.1.990</sikulixapi.version>
+        <sikulixapi.version>1.1.991</sikulixapi.version>
         <sahi.version>5.0</sahi.version>
     </properties>
 
@@ -420,7 +421,22 @@
             <!-- well be needed for Functions like App() and so on...-->
             <dependency>
                 <groupId>com.sikulix</groupId>
-                <artifactId>sikulixapi-complete</artifactId>
+                <artifactId>sikulixapi</artifactId>
+                <version>${sikulixapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sikulix</groupId>
+                <artifactId>sikulixlibslux</artifactId>
+                <version>${sikulixapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sikulix</groupId>
+                <artifactId>sikulixlibsmac</artifactId>
+                <version>${sikulixapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sikulix</groupId>
+                <artifactId>sikulixlibswin</artifactId>
                 <version>${sikulixapi.version}</version>
             </dependency>
 
