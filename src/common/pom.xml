@@ -24,12 +24,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.9.1-sikuli-SNAPSHOT</version>
+        <version>0.9.1-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>common</artifactId>
-    <version>0.9.1-sikuli-SNAPSHOT</version>
+    <version>0.9.1-SNAPSHOT</version>
     <name>common</name>
     <description>maven module for common used resources</description>
 
