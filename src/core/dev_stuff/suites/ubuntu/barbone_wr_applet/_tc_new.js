@@ -81,7 +81,10 @@ try {
     } finally {
         //env.type(Key.ALT + Key.F4);
         editorApp.close();
-        new Region().waitForImage("gedit_close_without_saving", 10).click();
+        var exists = new Region().exists("gedit_close_without_saving", 3);
+        if (exists) {
+            exists.click();
+        }
         env.sleep(1);
         testCase.endOfStep("external Application test", 25);
     }

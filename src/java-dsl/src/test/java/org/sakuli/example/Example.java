@@ -18,9 +18,12 @@
 
 package org.sakuli.example;
 
+import net.sf.sahi.util.OSUtils;
+import org.sakuli.actions.environment.Application;
 import org.sakuli.actions.screenbased.Region;
 import org.sakuli.javaDSL.AbstractSakuliTest;
 import org.sakuli.javaDSL.TestCaseInitParameter;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.nio.file.Paths;
@@ -56,6 +59,27 @@ public class Example extends AbstractSakuliTest {
         browser.navigateTo("http://sahi.example.com/_s_/dyn/Driver_initialized");
         Arrays.asList("SSL Manager", "Logs", "Online Documentation", "Test Pages", "Sample Application")
                 .stream().forEach(this::highlightLink);
+        new Region().find("sahi_logo").highlight();
+    }
+
+    @Test
+    public void testEditor() throws Exception {
+        switch (OSUtils.identifyOS()) {
+            case "xp":
+                callEditor("notepad.exe");
+                break;
+            case "linux":
+                callEditor("gedit");
+                break;
+        }
+    }
+
+    private void callEditor(String executable) {
+        Application editor = new Application(executable).open();
+
+        Assert.assertTrue(editor.getPID() > 0, "PID " + editor.getPID() + " <= 0");
+        editor.getRegion().type("TEST it!");
+        editor.closeApp();
     }
 
     private void highlightLink(String identifier) {
