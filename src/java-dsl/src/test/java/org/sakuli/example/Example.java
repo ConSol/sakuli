@@ -68,7 +68,9 @@ public class Example extends AbstractSakuliTest {
             case "xp":
                 callEditor("notepad.exe");
                 break;
-
+            case "linux":
+                callEditor("gedit");
+                break;
         }
     }
 
