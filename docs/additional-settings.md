@@ -191,6 +191,8 @@ If the Sahi dashboard does not show any browser or if you want to add another br
 For **PhantomJS** please save [sahi.js](http://labs.consol.de/sakuli/install/3rd-party/phantom/sahi.js) into the folder `__SAHI_DIR__\phantomjs\` and use this option line: 
 
         	<options>--proxy=localhost:9999 __SAHI_DIR__\phantomjs\sahi.js</options> 
+
+Attention: PhantomJS 2 is currently unsupported. Use version 1.9.x
 	
 ### Browser selection 
 

@@ -105,6 +105,8 @@ All components below are optional but recommended:
 	
 Currently, *each* Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Browser configuration](./additional-settings.md#browser-configuration) for more information. 
 
+Attention: PhantomJS 2 is currently unsupported. Use version 1.9.x
+
 
 #### Screenshot tool 
  
