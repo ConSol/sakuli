@@ -78,6 +78,13 @@ public class Application extends App {
             loader.getExceptionHandler().handleException("Application '" + getName() + " could not be opend! ... Please check the application name or path!", resumeOnException);
             return null;
         }
+        final int tries = 60;
+        for (int i = 0; i < tries && this.getPID() <= 0; i++) {
+            logger.info("wait {} ms more for finish loading application {} - {} of {} tries",
+                    sleepMillis, this.getName(), i, tries);
+            sleep(sleepMillis);
+        }
+        logger.info("\"{}\" - PID: {}", this.getName(), this.getPID());
         return this;
     }
 
@@ -178,8 +185,9 @@ public class Application extends App {
     /**
      * @return the name of the current application as {@link String}.
      */
+    @Override
     public String getName() {
-        return super.name();
+        return super.getName();
     }
 
 

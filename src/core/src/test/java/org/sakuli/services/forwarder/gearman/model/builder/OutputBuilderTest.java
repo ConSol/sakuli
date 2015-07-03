@@ -46,6 +46,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -183,12 +184,12 @@ public class OutputBuilderTest {
 
         assertEquals(testling.getPerformanceData(testSuiteExample), "suite__state=1;;;; " +
                 "suite_sakuli-123=120.00s;100;150;; " +
-                "c_1__state_case-warning=1;;;; " +
-                "c_1_case-warning=20.00s;19;25;; " +
-                "s_1_1_step1=10.00s;9;;; " +
-                "s_1_2_step2=8.00s;10;;; " +
-                "c_2__state_case_with_no_steps=0;;;; " +
-                "c_2_case_with_no_steps=15.00s;;;;");
+                "c_001__state_case-warning=1;;;; " +
+                "c_001_case-warning=20.00s;19;25;; " +
+                "s_001_001_step1=10.00s;9;;; " +
+                "s_001_002_step2=8.00s;10;;; " +
+                "c_002__state_case_with_no_steps=0;;;; " +
+                "c_002_case_with_no_steps=15.00s;;;;");
     }
 
     @Test
@@ -275,13 +276,18 @@ public class OutputBuilderTest {
         assertEquals(result.substring(0, result.indexOf(separator)), "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli-123\" ran" +
                 " in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")");
 
-        String start = "<div style=\"width:640px\" id=\"sakuli_screenshot\">" +
+        String start_1 = "<div style=\"width:640px\" id=\"sakuli_screenshot\">" +
                 "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" " +
-                "src=\"data:image/png;base64,";
+                "src=\"";
+        String start = start_1 + "data:image/png;base64,";
         String end = "></div></td></tr>";
         String substring = result.substring(result.indexOf(separator));
         assertEquals(substring.substring(0, start.length()), start);
         assertEquals(substring.substring(substring.length() - end.length()), end);
+
+        //now check the remove function
+        String resultWithOutBase64Data = ScreenshotDivConverter.removeBase64ImageDataString(substring);
+        assertEquals(resultWithOutBase64Data, start_1 + "\" " + end);
     }
 
     @Test
@@ -349,7 +355,7 @@ public class OutputBuilderTest {
         TestSuite testSuite = new TestSuiteExampleBuilder()
                 .withState(TestSuiteState.OK)
                 .withId("TEST-SUITE-ID")
-                .withTestCases(Arrays.asList(new TestCaseExampleBuilder()
+                .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
                         .withId("TEST-CASE-ID")
                         .buildExample()))
                 .buildExample();

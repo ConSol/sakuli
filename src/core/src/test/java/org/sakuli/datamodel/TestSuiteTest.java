@@ -101,6 +101,36 @@ public class TestSuiteTest {
     }
 
     @Test
+    public void testRefreshStateZeroWarning() throws Exception {
+        TestSuite testling = new TestSuite();
+        Date currentDate = new Date();
+        Date currentDateMinus30 = new Date(currentDate.getTime() - TimeUnit.SECONDS.toMillis(30));
+        testling.setStartDate(currentDateMinus30);
+        testling.refreshState();
+        assertEquals(testling.getState(), TestSuiteState.RUNNING);
+
+        testling.stopDate = currentDate;
+        testling.setCriticalTime(0);
+        testling.setWarningTime(0);
+        TestCase tcTestling = new TestCase("testRefreshStat", testling.getId());
+        tcTestling.setState(TestCaseState.OK);
+        tcTestling.setWarningTime(0);
+        tcTestling.setCriticalTime(0);
+        tcTestling.setStartDate(currentDateMinus30);
+        tcTestling.setStopDate(currentDate);
+        Map<String, TestCase> testCaseMap = new HashMap<>();
+        testCaseMap.put(tcTestling.getId(), tcTestling);
+        ReflectionTestUtils.setField(testling, "testCases", testCaseMap);
+        testling.refreshState();
+        //unexpectd form Time Sate have to be OK
+        assertEquals(testling.getState(), TestSuiteState.OK);
+
+        testling.setCriticalTime(15);
+        testling.refreshState();
+        assertEquals(testling.getState(), TestSuiteState.CRITICAL_IN_SUITE);
+    }
+
+    @Test
     public void testGetGuid() throws Exception {
         TestSuite ts = new TestSuite();
         ts.setId("001");

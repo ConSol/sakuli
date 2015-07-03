@@ -1,5 +1,7 @@
 ## Change Log of Sakuli Releases
 
+### Version 1.0.0
+
 ### Version 0.9.0
 * close #74 extract logging functions to separate javascript class Logger
 * close #70 rename sakuli.screenbased.* properties to sikuli.*
@@ -37,6 +39,13 @@
 * .#60 introduce a 'sakuli-default.properties' file to move the sakuli.properties to the test suite root
 * .#60 introduce new file system structure
 
+ - - -
+ 
+### Version 0.4.9 (Bugfix Release)
+ * close #92 exclude Base64 String in log output
+ * modify documentation of warning / critical times
+ * add testcase.endOfStep function without warning time
+ * add #81 change numbering scheme for cases and steps to always three digits to expanded color array in PHP template
 
 ### Version 0.4.8
 * fix bug: test suite has stat 'OK' instead of 'RUNNING' during the execution

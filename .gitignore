@@ -2,7 +2,7 @@ target
 **/integration-test/temp-db-sakuli
 **/install/*.zip
 **/_logs
-sahi*
+sahi*/
 firefox
 .idea
 *.iml

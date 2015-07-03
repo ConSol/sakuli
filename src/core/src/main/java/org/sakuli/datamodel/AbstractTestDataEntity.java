@@ -152,6 +152,11 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return warningTime;
     }
 
+    /**
+     * If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
+     *
+     * @param warningTime time in seconds
+     */
     public void setWarningTime(int warningTime) {
         this.warningTime = warningTime;
     }
@@ -160,6 +165,11 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return criticalTime;
     }
 
+    /**
+     * If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
+     *
+     * @param criticalTime time in seconds
+     */
     public void setCriticalTime(int criticalTime) {
         this.criticalTime = criticalTime;
     }

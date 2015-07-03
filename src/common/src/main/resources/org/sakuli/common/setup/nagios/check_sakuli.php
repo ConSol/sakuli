@@ -1,22 +1,20 @@
 <?php
-# Copyright (C) 2012  Simon Meggle, <simon.meggle@consol.de>
+# PNP template for Sakuli checks 
+# Copyright (C) 2015 The Sakuli Team, <sakuli@consol.de>
+# See https://github.com/ConSol/sakuli for more information. 
 
-# this program Is free software; you can redistribute it And/Or
-# modify it under the terms of the GNU General Public License
-# As published by the Free Software Foundation; either version 2
-# of the License, Or (at your Option) any later version.
-
-# this program Is distributed In the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY Or FITNESS For A PARTICULAR PURPOSE.  See the
-# GNU General Public License For more details.
-
-# You should have received a copy of the GNU General Public License
-# along With this program; If Not, write To the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-# PNP template for Sakuli checks with check_mysql_health and the
-# Perl module CheckMySQLHealthSakuli.pm. 
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 isset($_GET['debug']) ? $DEBUG = $_GET['debug'] : $DEBUG = 0;
 
@@ -32,12 +30,14 @@ $col_suite_runtime_area = '#bdbdbd';
 
 # Case colors
 $col_case_line = $this->config->scheme['Blues'];
+$col_case_line = array_merge($col_case_line, $col_case_line, $col_case_line, $col_case_line);
 $col_case_area = $col_case_line;
 $col_case_area_opacity = "BB";
 
 # Step colors
 
 $col_step_line = $this->config->scheme['Spectral'];
+$col_step_line = array_merge($col_step_line, $col_step_line, $col_step_line, $col_step_line);
 $col_step_area = $col_step_line;
 $col_step_area_opacity = "BB";
 
@@ -131,21 +131,23 @@ $def[0] = "";
 
 # AREA  ---------------------------------------------------------------------
 foreach($this->DS as $k=>$v) {
-	# do not match a state label like 'c_1__state_demo_win7' (which contains two backslashes)
+	# c_001_case1
+	# but do not match a _state_ label like 'c_001__state_demo_win7' (which contains two backslashes)
 	if (preg_match('/c_(\d+)_([a-zA-Z0-9].*)/', $v["LABEL"], $c_matches)) {
 		$casecount = $c_matches[1];
+		$casecount_int = intval($casecount);
 		$casename = $c_matches[2];
 		$def[0] .= rrd::def("c_area$casecount", $v["RRDFILE"], $v["DS"], "AVERAGE");
-		if ($casecount == "1") {
+		if ($casecount == "001") {
 			$def[0] .= rrd::comment("Sakuli Cases\: \\n");
 			$def[0] .= rrd::cdef("c_area_stackbase$casecount", "c_area$casecount,1,*");
-			$def[0] .= rrd::area("c_area$casecount", $col_case_area[$casecount].$col_case_area_opacity, pad($casename, $label_max_length), 0);
+			$def[0] .= rrd::area("c_area$casecount", $col_case_area[$casecount_int].$col_case_area_opacity, pad($casename, $label_max_length), 0);
 		} else {
-			# invisible line to stack upon
-			$def[0] .= rrd::line1("c_area_stackbase".($casecount-1),"#00000000");
-			$def[0] .= rrd::area("c_area$casecount", $col_case_area[$casecount].$col_case_area_opacity, $casename, 1);
+			# all areas >1 are stacked upon a invisible line 
+			$def[0] .= rrd::line1("c_area_stackbase".lead3($casecount_int-1),"#00000000");
+			$def[0] .= rrd::area("c_area$casecount", $col_case_area[$casecount_int].$col_case_area_opacity, $casename, 1);
 			# add value to stackbase
-			$def[0] .= rrd::cdef("c_area_stackbase$casecount", "c_area_stackbase".($casecount-1).",c_area$casecount,+");
+			$def[0] .= rrd::cdef("c_area_stackbase$casecount", "c_area_stackbase".lead3($casecount_int-1).",c_area$casecount,+");
 		}
 
 		$def[0] .= rrd::gprint("c_area$casecount", "LAST", "%3.2lf s LAST");
@@ -160,20 +162,22 @@ foreach($this->DS as $k=>$v) {
 # LINE ---------------------------------------------------------------------
 $c_last_index = "";
 foreach($this->DS as $k=>$v) {
+	# c_001_case1
 	# do not match a state label like 'c_1__state_demo_win7' (which contains two backslashes)
 	if (preg_match('/c_(\d+)_([a-zA-Z0-9].*)/', $v["LABEL"], $c_matches)) {
 		$casecount = $c_matches[1];
+		$casecount_int = intval($casecount);
 		$casename = $c_matches[2];
 		$def[0] .= rrd::def("c_line$casecount", $v["RRDFILE"], $v["DS"], "AVERAGE");
-		if ($casecount == "1") {
+		if ($casecount == "001") {
 			$def[0] .= rrd::cdef("c_line_stackbase$casecount", "c_line$casecount,1,*");
-			$def[0] .= rrd::line1("c_line$casecount", $col_case_line[$casecount], "", 0);
+			$def[0] .= rrd::line1("c_line$casecount", $col_case_line[$casecount_int], "", 0);
 		} else {
 			# invisible line to stack upon
-			$def[0] .= rrd::line1("c_line_stackbase".($casecount-1),"#00000000");
-			$def[0] .= rrd::line1("c_line$casecount", $col_case_area[$casecount], "", 1);
+			$def[0] .= rrd::line1("c_line_stackbase".lead3($casecount_int-1),"#00000000");
+			$def[0] .= rrd::line1("c_line$casecount", $col_case_area[$casecount_int], "", 1);
 			# add value to stackbase
-			$def[0] .= rrd::cdef("c_line_stackbase$casecount", "c_line_stackbase".($casecount-1).",c_line$casecount,+");
+			$def[0] .= rrd::cdef("c_line_stackbase$casecount", "c_line_stackbase".lead3($casecount_int-1).",c_line$casecount,+");
 		}
 		# is this a unknown value? 
 		$def[0] .= rrd::cdef("c_".$casecount."_unknown", "c_line$casecount,UN,1,0,IF");
@@ -222,8 +226,8 @@ $def[0] .= rrd::cdef("suite_state_nok", "suite_state,0,GT,suite_state,0,IF") ;
 $def[0] .= rrd::cdef("suite_state_nok2", "suite_state_nok,3,LT,suite_state_nok,0,IF") ;
 $def[0] .= "TICK:suite_state_nok2".$col_NOK.$ticker_opacity.":".$ticker_frac.":not_ok " ;
 $def[0] .= "TICK:suite_state_unknown".$col_UNKN.$unkn_tick_opacity.":".$unkn_tick_frac.":unknown/stale " ;
-for ($i=1; $i<=$c_last_index; $i++) {
-	$def[0] .= "TICK:c_".$i."_unknown".$col_UNKN.$unkn_tick_opacity.":".$unkn_tick_frac.": " ;
+for ($i=1; $i <= intval($c_last_index); $i++) {
+	$def[0] .= "TICK:c_".lead3($i)."_unknown".$col_UNKN.$unkn_tick_opacity.":".$unkn_tick_frac.": " ;
 }
 $def[0] .= "VRULE:".$NAGIOS_TIMET."#000000:\"Last Service Check \\n\" ";
 
@@ -246,120 +250,131 @@ if ( $graph_mem ) {
 
 # CASE Graphs  #############################################################
 foreach ($this->DS as $KEY=>$VAL) {
-	if(preg_match('/^c_(\d?)_(.*)/', $VAL['LABEL'], $c_matches)) {
+	# c_001_case1
+	if (preg_match('/^c_(\d+)_([a-zA-Z0-9].*)/', $VAL['LABEL'], $c_matches)) {
 		$casecount = $c_matches[1];
+		$casecount_int = intval($casecount);
 		$casename = $c_matches[2];
-		$ds_name[$casecount] = "Sakuli Case $casename";
-		$opt[$casecount] = "--vertical-label \"seconds\"  -l 0 -M --slope-mode --title \"$servicedesc (Sakuli case $casecount) on $hostname\" ";
-		$def[$casecount] = "";
+		$ds_name[$casecount_int] = "Sakuli Case $casename";
+		$opt[$casecount_int] = "--vertical-label \"seconds\"  -l 0 -M --slope-mode --title \"$servicedesc (Sakuli case $casename) on $hostname\" ";
+		$def[$casecount_int] = "";
 		# STEP AREA ---------------------------------------------------------------------
 		foreach ($this->DS as $k=>$v) {
-			if (preg_match('/^s_'.$casecount.'_(\d?)_(.*)/', $v['LABEL'], $s_matches)) {
+			# s_001_001_stepone
+			# s_001_002_steptwo
+			# ...
+			if (preg_match('/^s_'.$casecount.'_(\d+)_(.*)/', $v['LABEL'], $s_matches)) {
 				$stepcount = $s_matches[1];
+				$stepcount_int = intval($stepcount);
 				$stepname = $s_matches[2];
-				$def[$casecount] .= rrd::def("s_area$stepcount", $v['RRDFILE'], $v['DS'], "AVERAGE");
-				if ($stepcount == "1"){
+				$def[$casecount_int] .= rrd::def("s_area$stepcount", $v['RRDFILE'], $v['DS'], "AVERAGE");
+
+				if ($stepcount == "001"){
 					# first step
-					$def[$casecount] .= rrd::comment("Steps\: \\n");
-					$def[$casecount] .= rrd::cdef("s_area_stackbase$stepcount", "s_area$stepcount,1,*");
-	        			$def[$casecount] .= rrd::area("s_area$stepcount", $col_step_area[$stepcount].$col_step_area_opacity,pad($stepname, $label_max_length), 0 );
+					$def[$casecount_int] .= rrd::comment("Steps\: \\n");
+					$def[$casecount_int] .= rrd::cdef("s_area_stackbase$stepcount", "s_area$stepcount,1,*");
+	        			$def[$casecount_int] .= rrd::area("s_area$stepcount", $col_step_area[$stepcount_int].$col_step_area_opacity,pad($stepname, $label_max_length), 0 );
 				} else {
 					# all areas >1 are stacked upon a invisible line 
-					$def[$casecount] .= rrd::line1("s_area_stackbase".($stepcount-1),"#00000000");	
-					$def[$casecount] .= rrd::area("s_area$stepcount", $col_step_area[$stepcount].$col_step_area_opacity,pad($stepname, $label_max_length), 1 );
+					$def[$casecount_int] .= rrd::line1("s_area_stackbase" . lead3($stepcount - 1), "#00000000");
+					$def[$casecount_int] .= rrd::area("s_area$stepcount", $col_step_area[$stepcount_int].$col_step_area_opacity,pad($stepname, $label_max_length), 1 );
 					# add value to s_area_stackbase
-					$def[$casecount] .= rrd::cdef("s_area_stackbase$stepcount", "s_area_stackbase".($stepcount-1).",s_area$stepcount,+");
+					$def[$casecount_int] .= rrd::cdef("s_area_stackbase$stepcount", "s_area_stackbase".lead3($stepcount_int-1).",s_area$stepcount,+");
 				}
-				$def[$casecount] .= rrd::gprint("s_area$stepcount", "LAST", "%3.2lf s LAST");
-				$def[$casecount] .= rrd::gprint("s_area$stepcount", "MAX", "%3.2lf s MAX ");
-				$def[$casecount] .= rrd::gprint("s_area$stepcount", "AVERAGE", "%3.2lf s AVG \j");
+				$def[$casecount_int] .= rrd::gprint("s_area$stepcount", "LAST", "%3.2lf s LAST");
+				$def[$casecount_int] .= rrd::gprint("s_area$stepcount", "MAX", "%3.2lf s MAX ");
+				$def[$casecount_int] .= rrd::gprint("s_area$stepcount", "AVERAGE", "%3.2lf s AVG \j");
 			}
 		}
 		# invisible line above maximum (for space between MAX and TICKER) ---------------	
-		$def[$casecount] .= rrd::def("case".$casecount."_max", $VAL['RRDFILE'], $VAL['DS'], "MAX") ;
-		$def[$casecount] .= rrd::cdef("case".$casecount."_maxplus", "case".$casecount."_max,".$ticker_dist_factor.",*");
-		$def[$casecount] .= rrd::line1("case".$casecount."_maxplus", $col_invisible);
+		$def[$casecount_int] .= rrd::def("case".$casecount."_max", $VAL['RRDFILE'], $VAL['DS'], "MAX") ;
+		$def[$casecount_int] .= rrd::cdef("case".$casecount."_maxplus", "case".$casecount."_max,".$ticker_dist_factor.",*");
+		$def[$casecount_int] .= rrd::line1("case".$casecount."_maxplus", $col_invisible);
 		# STEP LINE ---------------------------------------------------------------------
 		$s_last_index = "";
 		foreach ($this->DS as $k=>$v) {
-			if (preg_match('/^s_'.$casecount.'_(\d?)_(.*)/', $v['LABEL'], $s_matches)) {
+			# s_001_001_stepone
+                        # s_001_002_steptwo
+                        # ...
+			if (preg_match('/^s_'.$casecount.'_(\d+)_(.*)/', $v['LABEL'], $s_matches)) {
 				$stepcount = $s_matches[1];
+				$stepcount_int = intval($stepcount);
 				$stepname = $s_matches[2];
-				$def[$casecount] .= rrd::def("s_line$stepcount", $v['RRDFILE'], $v['DS'], "AVERAGE");
-				if ($stepcount == "1"){
-					$def[$casecount] .= rrd::cdef("s_line_stackbase$stepcount", "s_line$stepcount,1,*");
-					$def[$casecount] .= rrd::line1("s_line$stepcount", $col_step_line[$stepcount], "", 0 );
+				$def[$casecount_int] .= rrd::def("s_line$stepcount", $v['RRDFILE'], $v['DS'], "AVERAGE");
+				if ($stepcount == "001"){
+					$def[$casecount_int] .= rrd::cdef("s_line_stackbase$stepcount", "s_line$stepcount,1,*");
+					$def[$casecount_int] .= rrd::line1("s_line$stepcount", $col_step_line[$stepcount_int], "", 0 );
 				} else {
 					# invisible line to stack upon
-					$def[$casecount] .= rrd::line1("s_line_stackbase".($stepcount-1),"#00000000");	
-					$def[$casecount] .= rrd::line1("s_line$stepcount", $col_step_line[$stepcount], "", 1 );
+					$def[$casecount_int] .= rrd::line1("s_line_stackbase".lead3($stepcount_int-1),"#00000000");	
+					$def[$casecount_int] .= rrd::line1("s_line$stepcount", $col_step_line[$stepcount_int], "", 1 );
 					# add value to s_line_stackbase
-					$def[$casecount] .= rrd::cdef("s_line_stackbase$stepcount", "s_line_stackbase".($stepcount-1).",s_line$stepcount,+");
+					$def[$casecount_int] .= rrd::cdef("s_line_stackbase$stepcount", "s_line_stackbase".lead3($stepcount_int-1).",s_line$stepcount,+");
 				}
 				$s_last_index = $stepcount;
 			}
 		}
 		# CASE Warn/Crit -----------------------------------------------------------------
-		$def[$casecount] .= rrd::comment(" \\n");
-		$def[$casecount] .= rrd::comment("Case ".$casecount ."\g");
+		$def[$casecount_int] .= rrd::comment(" \\n");
+		$def[$casecount_int] .= rrd::comment("Case ".$casecount_int ."\g");
 		if(($VAL["WARN"] != "") && ($VAL["CRIT"] != "")) {
-			$def[$casecount] .= rrd::comment(" (\g");
-			$def[$casecount] .= rrd::hrule($VAL["WARN"], "#FFFF00", "Warning  ".$VAL["WARN"].$UNIT[$casecount]);
-			$def[$casecount] .= rrd::hrule($VAL["CRIT"], "#FF0000", "Critical  ".$VAL["CRIT"].$UNIT[$casecount]."\g");
-			$def[$casecount] .= rrd::comment(")\g");
+			$def[$casecount_int] .= rrd::comment(" (\g");
+			$def[$casecount_int] .= rrd::hrule($VAL["WARN"], "#FFFF00", "Warning  ".$VAL["WARN"].$UNIT[$casecount_int]);
+			$def[$casecount_int] .= rrd::hrule($VAL["CRIT"], "#FF0000", "Critical  ".$VAL["CRIT"].$UNIT[$casecount_int]."\g");
+			$def[$casecount_int] .= rrd::comment(")\g");
 		}
 		# CASE LINE & AREA --------------------------------------------------------------
-		$def[$casecount] .= rrd::comment("\:\\n");
-	        $def[$casecount] .= rrd::def("case$casecount", $VAL['RRDFILE'], $VAL['DS'], "AVERAGE");
+		$def[$casecount_int] .= rrd::comment("\:\\n");
+	        $def[$casecount_int] .= rrd::def("case$casecount", $VAL['RRDFILE'], $VAL['DS'], "AVERAGE");
 		# is this a unknown value?
-		$def[$casecount] .= rrd::cdef("case".$casecount."_unknown", "case$casecount,UN,1,0,IF");
+		$def[$casecount_int] .= rrd::cdef("case".$casecount."_unknown", "case$casecount,UN,1,0,IF");
 		if ($s_last_index != "") {
-			$def[$casecount] .= rrd::cdef("case_diff$casecount","case$casecount,s_line_stackbase$s_last_index,-");
+			$def[$casecount_int] .= rrd::cdef("case_diff$casecount","case$casecount,s_line_stackbase$s_last_index,-");
 			# invisible line to stack upon
-			$def[$casecount] .= rrd::line1("s_line_stackbase$s_last_index","#00000000");	
-			$def[$casecount] .= rrd::area   ("case_diff$casecount", $col_case_area[$casecount].$col_case_area_opacity, pad($casename,$label_max_length),1 );
+			$def[$casecount_int] .= rrd::line1("s_line_stackbase$s_last_index", "#00000000");
+			$def[$casecount_int] .= rrd::area   ("case_diff$casecount", $col_case_area[$casecount_int].$col_case_area_opacity, pad($casename,$label_max_length),1 );
 			# invisible line to stack upon
-			$def[$casecount] .= rrd::line1("s_line_stackbase$s_last_index","#00000000");	
-			$def[$casecount] .= rrd::line1   ("case_diff$casecount", $col_case_line[$casecount],"",1);
+			$def[$casecount_int] .= rrd::line1("s_line_stackbase$s_last_index","#00000000");	
+			$def[$casecount_int] .= rrd::line1   ("case_diff$casecount", $col_case_line[$casecount_int],"",1);
 		} else {
 			# no steps, no stacks
-			$def[$casecount] .= rrd::area   ("case$casecount", $col_case_area[$casecount].$col_case_area_opacity, $casename );
-			$def[$casecount] .= rrd::line1   ("case$casecount", $col_case_line[$casecount],"");
+			$def[$casecount_int] .= rrd::area   ("case$casecount", $col_case_area[$casecount_int].$col_case_area_opacity, $casename );
+			$def[$casecount_int] .= rrd::line1   ("case$casecount", $col_case_line[$casecount_int],"");
 		}
-		$def[$casecount] .= rrd::gprint ("case$casecount", "LAST", "%3.2lf s LAST");
-		$def[$casecount] .= rrd::gprint ("case$casecount", "MAX", "%3.2lf s MAX ");
-		$def[$casecount] .= rrd::gprint ("case$casecount", "AVERAGE", "%3.2lf s AVG \j");
-		$def[$casecount] .= rrd::comment(" \\n");
+		$def[$casecount_int] .= rrd::gprint ("case$casecount", "LAST", "%3.2lf s LAST");
+		$def[$casecount_int] .= rrd::gprint ("case$casecount", "MAX", "%3.2lf s MAX ");
+		$def[$casecount_int] .= rrd::gprint ("case$casecount", "AVERAGE", "%3.2lf s AVG \j");
+		$def[$casecount_int] .= rrd::comment(" \\n");
 		# TICKS ---------------------------------------------------------------------
 		foreach ($this->DS as $k=>$v) {
 			if(preg_match('/^c_'.$casecount.'__state/', $v['LABEL'], $state_matches)) {
-				$def[$casecount] .= rrd::def("case".$casecount."_state", $v['RRDFILE'], $v['DS'], "MAX") ;
-				$def[$casecount] .= rrd::cdef("case".$casecount."_state_unknown", "case".$casecount."_state,2,GT,case".$casecount."_state,0,IF") ;
-				$def[$casecount] .= rrd::cdef("case".$casecount."_state_nok", "case".$casecount."_state,0,GT,case".$casecount."_state,0,IF") ;
-				$def[$casecount] .= rrd::cdef("case".$casecount."_state_nok2", "case".$casecount."_state_nok,3,LT,case".$casecount."_state_nok,0,IF") ;
-				$def[$casecount] .= "TICK:case".$casecount."_state_nok2".$col_NOK.$ticker_opacity.":".$ticker_frac.":not_ok " ;
-				$def[$casecount] .= "TICK:case".$casecount."_state_unknown".$col_UNKN.$unkn_tick_opacity.":".$unkn_tick_frac.": " ;
+				$def[$casecount_int] .= rrd::def("case".$casecount."_state", $v['RRDFILE'], $v['DS'], "MAX") ;
+				$def[$casecount_int] .= rrd::cdef("case".$casecount."_state_unknown", "case".$casecount."_state,2,GT,case".$casecount."_state,0,IF") ;
+				$def[$casecount_int] .= rrd::cdef("case".$casecount."_state_nok", "case".$casecount."_state,0,GT,case".$casecount."_state,0,IF") ;
+				$def[$casecount_int] .= rrd::cdef("case".$casecount."_state_nok2", "case".$casecount."_state_nok,3,LT,case".$casecount."_state_nok,0,IF") ;
+				$def[$casecount_int] .= "TICK:case".$casecount."_state_nok2".$col_NOK.$ticker_opacity.":".$ticker_frac.":not_ok " ;
+				$def[$casecount_int] .= "TICK:case".$casecount."_state_unknown".$col_UNKN.$unkn_tick_opacity.":".$unkn_tick_frac.": " ;
 			}
 		}
-		$def[$casecount] .= "TICK:case".$casecount."_unknown".$col_UNKN.$unkn_tick_opacity.":".$unkn_tick_frac.":unknown/stale " ;
-		$def[$casecount] .= "VRULE:".$NAGIOS_TIMET."#000000:\"Last Service Check \\n\" ";
+		$def[$casecount_int] .= "TICK:case".$casecount."_unknown".$col_UNKN.$unkn_tick_opacity.":".$unkn_tick_frac.":unknown/stale " ;
+		$def[$casecount_int] .= "VRULE:".$NAGIOS_TIMET."#000000:\"Last Service Check \\n\" ";
 
                 if ($graph_cpu or $graph_mem) {
-                        $def[$casecount] .= rrd::comment(" \\n");
-                        $def[$casecount] .= rrd::comment("Host Statistics\:\\n");
+                        $def[$casecount_int] .= rrd::comment(" \\n");
+                        $def[$casecount_int] .= rrd::comment("Host Statistics\:\\n");
 
 		        if ($graph_cpu == "load" ) {
 				# Load is usually a much lower value than usage (%) -> scale the right axis with factor 10
-		                $opt[$casecount] .= " --right-axis \"0.1:0\" --right-axis-label \"CPU Load\" ";
+		                $opt[$casecount_int] .= " --right-axis \"0.1:0\" --right-axis-label \"CPU Load\" ";
 		        } else {
-		                $opt[$casecount] .= " --right-axis \"1:0\" --right-axis-label \"CPU Usage\" ";
+		                $opt[$casecount_int] .= " --right-axis \"1:0\" --right-axis-label \"CPU Usage\" ";
 		        }
                 }
 		if ( $graph_cpu ) {
-			$def[$casecount] .= $rrddef_cpu;	
+			$def[$casecount_int] .= $rrddef_cpu;	
 		}
  		if ( $graph_mem ) {
-			$def[$casecount] .= $rrddef_mem;	
+			$def[$casecount_int] .= $rrddef_mem;	
 		}
 
 	}
@@ -372,6 +387,10 @@ function pad ($str, $len) {
 }
 
 
+# refill numbers with leading 0s
+function lead3 ($num) {
+	return str_pad($num,3,'0',STR_PAD_LEFT);
+}
 
 if ( $DEBUG == 1 ) {
 #throw new Kohana_exception(print_r($def,TRUE));

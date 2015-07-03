@@ -199,7 +199,7 @@ public class SakuliPropertyPlaceholderConfigurerTest {
                                 "ext.http.proxy.auth.enable", "ext.http.proxy.auth.name", "ext.http.proxy.auth.password",
                                 "ext.https.proxy.enable", "ext.https.proxy.host", "ext.https.proxy.port",
                                 "ext.https.proxy.auth.enable", "ext.https.proxy.auth.name", "ext.https.proxy.auth.password",
-                                "ext.http.both.proxy.bypass_hosts")),
+                                "ext.http.both.proxy.bypass_hosts", "ssl.client.keystore.type", "ssl.client.cert.path", "ssl.client.cert.password")),
                 "currently contains: " + argumentCaptorSahiProp.getValue().toString());
         assertTrue(argumentCaptorLogProp.getValue().containsAll(
                         Arrays.asList("handlers", "java.util.logging.ConsoleHandler.level", "java.util.logging.FileHandler.level",
