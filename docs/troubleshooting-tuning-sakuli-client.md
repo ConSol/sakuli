@@ -108,7 +108,17 @@ Error reporting is enabled by default - you should turn off this service because
 * Change Action Center settings -> Problem reporting settings
 * Set "Never check for solutions"  
 
+If you still get messages for crashed applications, try to:
 
+* "regedit"
+* [ HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\Windows Error Reporting ]
+* "DontShowUI" (DWORD) => "1"
+
+#### Using task scheduler
+
+To execute your testcase regularly you can add new tasks to the windows task scheduler. As action, use this command to put the cmd window into the background to not disturb your tests:
+
+    cmd.exe /c start /min C:\sakuli\sakuli-v0.X.0\bin\sakuli.bat --run "C:\sakuli\example_test_suites\example_windows" ^& exit
 
 ## Troubleshooting
 
