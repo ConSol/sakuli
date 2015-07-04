@@ -235,13 +235,25 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         if (abstractSakuliTest == null) {
             return 1;
         }
-        if (startDate == null || startDate.compareTo(abstractSakuliTest.getStartDate()) == 0) {
+        if (super.equals(abstractSakuliTest)) {
+            return 0;
+        }
+        Date startDate2 = abstractSakuliTest.getStartDate();
+        if (this.startDate == null || startDate2 == null || this.startDate.compareTo(startDate2) == 0) {
             if (id == null) {
                 return abstractSakuliTest.getId() != null ? 1 : 0;
             }
             return id.compareTo(abstractSakuliTest.id);
         }
-        return startDate.compareTo(abstractSakuliTest.getStartDate());
+        return this.startDate.compareTo(startDate2);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof AbstractTestDataEntity) {
+            return compareTo((AbstractTestDataEntity) obj) == 0;
+        }
+        return super.equals(obj);
     }
 
     @Override
@@ -257,4 +269,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
                 ;
     }
 
+    public String toStringShort() {
+        return String.format("%s [id = %s, name = %s]", this.getClass().getSimpleName(), id, name);
+    }
 }
