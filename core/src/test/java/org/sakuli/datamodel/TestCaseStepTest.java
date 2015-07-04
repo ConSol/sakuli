@@ -34,6 +34,9 @@ public class TestCaseStepTest {
     @Test
     public void testRefreshState() throws Exception {
         TestCaseStep testling = new TestCaseStep();
+        testling.refreshState();
+        Assert.assertEquals(TestCaseStepState.INIT, testling.getState());
+
         Date currentDate = new Date();
         testling.setStartDate(new Date(currentDate.getTime() - TimeUnit.SECONDS.toMillis(5)));
         testling.stopDate = currentDate;
@@ -49,6 +52,9 @@ public class TestCaseStepTest {
     @Test
     public void testRefreshStateZeroWarningTime() throws Exception {
         TestCaseStep testling = new TestCaseStep();
+        testling.refreshState();
+        Assert.assertEquals(TestCaseStepState.INIT, testling.getState());
+
         testling.setWarningTime(-1);
         Date currentDate = new Date();
         testling.setStartDate(new Date(currentDate.getTime() - TimeUnit.SECONDS.toMillis(5)));
@@ -56,5 +62,21 @@ public class TestCaseStepTest {
 
         testling.refreshState();
         Assert.assertEquals(TestCaseStepState.OK, testling.getState());
+    }
+
+    @Test
+    public void testSetName() throws Exception {
+        TestCaseStep testCaseStep = new TestCaseStep();
+        testCaseStep.setName("example step with spaces");
+        Assert.assertEquals(testCaseStep.getName(), "example_step_with_spaces");
+        Assert.assertEquals(testCaseStep.getId(), "example_step_with_spaces");
+    }
+
+    @Test
+    public void testSetId() throws Exception {
+        TestCaseStep testCaseStep = new TestCaseStep();
+        testCaseStep.setId("example step with spaces");
+        Assert.assertEquals(testCaseStep.getName(), "example_step_with_spaces");
+        Assert.assertEquals(testCaseStep.getId(), "example_step_with_spaces");
     }
 }
