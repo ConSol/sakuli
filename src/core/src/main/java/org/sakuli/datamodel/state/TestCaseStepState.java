@@ -33,12 +33,17 @@ public enum TestCaseStepState implements SakuliState {
     /**
      * value = 1
      */
-    WARNING(1, "warning");
+    WARNING(1, "warning"),
+
+    /**
+     * state before the execution
+     */
+    INIT(-1, "initialized");
 
     private final int errorCode;
     private final String stateDescription;
 
-    private TestCaseStepState(int i, String stateDescription) {
+    TestCaseStepState(int i, String stateDescription) {
         this.errorCode = i;
         this.stateDescription = stateDescription;
     }

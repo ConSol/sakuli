@@ -104,10 +104,8 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
                 + "\n\tlast URL: " + this.getLastURL();
 
         //steps
-        if (!CollectionUtils.isEmpty(steps)) {
-            for (TestCaseStep step : getStepsAsSortedSet()) {
-                stout += step.getResultString();
-            }
+        for (TestCaseStep step : getStepsAsSortedSet()) {
+            stout += step.getResultString();
         }
         return stout;
     }
@@ -133,7 +131,7 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
     }
 
     public List<TestCaseStep> getSteps() {
-        return steps;
+        return steps == null ? new ArrayList<TestCaseStep>() : steps;
     }
 
     public void setSteps(List<TestCaseStep> steps) {
@@ -144,7 +142,9 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
         if (steps == null) {
             steps = new ArrayList<>();
         }
-        steps.add(step);
+        if (!steps.contains(step)) {
+            steps.add(step);
+        }
         Collections.sort(steps);
     }
 

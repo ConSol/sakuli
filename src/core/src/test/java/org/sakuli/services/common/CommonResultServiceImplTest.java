@@ -54,7 +54,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 {TestSuiteState.ERRORS, TestCaseState.WARNING, "ERROR .* ERROR:"},
                 {TestSuiteState.WARNING_IN_CASE, TestCaseState.WARNING, "WARN .* WARNING_IN_CASE: Unit Test Case"},
                 {TestSuiteState.CRITICAL_IN_CASE, TestCaseState.CRITICAL, "WARN .* CRITICAL_IN_CASE: Unit Test Case"},
-                {TestSuiteState.WARNING_IN_STEP, TestCaseState.WARNING_IN_STEP, "WARN .* WARNING_IN_STEP: Unit Test Case -\\> step for unit test"}
+                {TestSuiteState.WARNING_IN_STEP, TestCaseState.WARNING_IN_STEP, "WARN .* WARNING_IN_STEP: Unit Test Case -\\> step_for_unit_test"}
         };
     }
 
@@ -111,8 +111,8 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 "\tend time: .*",
                 "\tstart URL: http://www.start-url.com",
                 "\tlast URL: http://www.last-url.com",
-                "\t\t======== test case step \"step for unit test\" ended with " + stepState + " =================",
-                "\t\tname: step for unit test",
+                "\t\t======== test case step \"step_for_unit_test\" ended with " + stepState + " =================",
+                "\t\tname: step_for_unit_test",
                 "\t\tRESULT STATE: " + stepState,
                 "\t\tresult code: " + stepState.getErrorCode(),
                 "\t\tdb primary key: -1*",

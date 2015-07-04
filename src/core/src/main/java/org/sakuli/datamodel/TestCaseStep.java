@@ -18,10 +18,9 @@
 
 package org.sakuli.datamodel;
 
+import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.SakuliException;
-
-import java.util.Date;
 
 /**
  * test case step based Exceptions and critical times will be currently not supported in {@link
@@ -39,8 +38,10 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
         //if a step exceed the runtime set WARNING
         if (warningTime > 0 && getDuration() > warningTime) {
             state = TestCaseStepState.WARNING;
-        } else {
+        } else if (startDate != null && stopDate != null) {
             state = TestCaseStepState.OK;
+        } else {
+            state = TestCaseStepState.INIT;
         }
     }
 
@@ -48,14 +49,6 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
     public String getResultString() {
         return "\n\t\t======== test case step \"" + this.getName() + "\" ended with " + getState() + " ================="
                 + super.getResultString().replace("\n", "\n\t\t");
-    }
-
-    public void setDbPrimaryKey(int dbPrimaryKey) {
-        this.dbPrimaryKey = dbPrimaryKey;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
     }
 
     @Override
@@ -70,6 +63,7 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
      */
     @Override
     public void setName(String name) {
+        name = StringUtils.replace(name, " ", "_");
         super.setName(name);
         super.setId(name);
     }
@@ -79,7 +73,6 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
      */
     @Override
     public void setId(String id) {
-        super.setId(id);
-        super.setName(id);
+        this.setName(id);
     }
 }

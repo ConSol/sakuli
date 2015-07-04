@@ -24,6 +24,8 @@ import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.datamodel.helper.TestCaseHelper;
+import org.sakuli.datamodel.helper.TestCaseStepHelper;
+import org.sakuli.datamodel.helper.TestDataEntityHelper;
 import org.sakuli.exceptions.SakuliActionException;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
@@ -44,7 +46,7 @@ import java.util.Date;
  */
 @Component
 public class TestCaseAction {
-    public static final String ERROR_NOT_SET_THRESHOLD_VARIABLE = "the %s threshold have to be set! If the %s threshold should NOT be considered, please set it to 0!";
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
@@ -92,40 +94,17 @@ public class TestCaseAction {
     }
 
     private void initWarningAndCritical(int warningTime, int criticalTime) {
-        if (checkWarningAndCrititicalTime(warningTime, criticalTime)) {
-            //if everything is ok set the times
-            loader.getCurrentTestCase().setWarningTime(warningTime);
-            loader.getCurrentTestCase().setCriticalTime(criticalTime);
-        }
-    }
-
-    /**
-     * Check if the warning time is set correctly:
-     * <ul>
-     * <li>Greater or equal then 0</li>
-     * <li>warning time > critical time</li>
-     * </ul>
-     *
-     * @return true on success, on error - call {@link #handleException(String)} and return false!
-     */
-    private boolean checkWarningAndCrititicalTime(int warningTime, int criticalTime) {
-        if (criticalTime < 0) {
-            handleException(getErrorNotSetTimeVariableMessage("critical"));
-        } else if (warningTime < 0) {
-            handleException(getErrorNotSetTimeVariableMessage("warning"));
+        TestCase currentTestCase = loader.getCurrentTestCase();
+        String errormsg = TestDataEntityHelper.checkWarningAndCriticalTime(warningTime, criticalTime, currentTestCase.toStringShort());
+        if (errormsg != null) {
+            handleException(errormsg);
         } else {
-            if (warningTime > criticalTime) {
-                handleException("warning threshold must be less than critical threshold!");
-            } else {
-                return true;
-            }
+            //if everything is ok set the times
+            currentTestCase.setWarningTime(warningTime);
+            currentTestCase.setCriticalTime(criticalTime);
         }
-        return false;
     }
 
-    private String getErrorNotSetTimeVariableMessage(String thersholdName) {
-        return String.format(ERROR_NOT_SET_THRESHOLD_VARIABLE, thersholdName, thersholdName);
-    }
 
     /****************
      * TEST CASE HANDLING
@@ -189,20 +168,16 @@ public class TestCaseAction {
      */
     @LogToResult(message = "add a step to the current test case")
     public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime) throws SakuliException {
-
-        checkWarningAndCrititicalTime(loader.getCurrentTestCase().getWarningTime(), loader.getCurrentTestCase().getCriticalTime());
-        if (stepName.isEmpty() || stepName.equals("undefined")) {
+        if (stepName == null || stepName.isEmpty() || stepName.equals("undefined")) {
             handleException("Please set a Name - all values of the test case step need to be set!");
         }
-        if (warningTime < 0) {
-            handleException("warning time of test case step need to be greater or equal then 0!");
+        String errormsg = TestCaseStepHelper.checkWarningTime(warningTime, stepName);
+        if (errormsg != null) {
+            handleException(errormsg);
         }
 
-        //create a new step
-        TestCaseStep step = new TestCaseStep();
+        TestCaseStep step = findStep(stepName);
         try {
-
-            step.setName(stepName.replace(" ", "_"));
             step.setStartDate(new Date(Long.parseLong(startTime)));
             step.setStopDate(new Date(Long.parseLong(stopTime)));
             step.setWarningTime(warningTime);
@@ -218,6 +193,17 @@ public class TestCaseAction {
                 + "\" saved to test case \""
                 + loader.getCurrentTestCase().getId()
                 + "\"");
+    }
+
+    protected TestCaseStep findStep(String stepName) {
+        TestCaseStep newStep = new TestCaseStep();
+        newStep.setId(stepName);
+        for (TestCaseStep step : loader.getCurrentTestCase().getSteps()) {
+            if (step.equals(newStep)) {
+                return step;
+            }
+        }
+        return newStep;
     }
 
     /**
