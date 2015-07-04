@@ -65,6 +65,20 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${pom.basedir}</directory>
+                            <includes>
+                                <include>temp-db-sahi/</include>
+                                <include>*.log</include>
+                            </includes>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
