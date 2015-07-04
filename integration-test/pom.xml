@@ -109,7 +109,7 @@
             <groupId>javafx</groupId>
             <artifactId>jfxrt</artifactId>
             <version>${java.version}</version>
-            <systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
+            <systemPath>${java.home}/lib/jfxrt.jar</systemPath>
             <scope>system</scope>
         </dependency>
     </dependencies>
