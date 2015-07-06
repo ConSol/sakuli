@@ -18,6 +18,7 @@
 
 package org.sakuli.actions.environment;
 
+import net.sf.sahi.util.OSUtils;
 import org.sakuli.actions.Action;
 import org.sakuli.actions.ModifySahiTimer;
 import org.sakuli.actions.logging.LogToResult;
@@ -344,6 +345,43 @@ public class Environment implements Action {
     public String decryptSecret(String secret) {
         return typingUtil.decryptSecret(secret);
     }
+
+    /**
+     * @return true, if the OS is any instance of an Windows based OS
+     */
+    @LogToResult(logClassInstance = false, logArgs = false)
+    public boolean isWindows() {
+        switch (OSUtils.identifyOS()) {
+            case "xp":
+                return true;
+            case "nt":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * @return true, if the OS is any instance of an Linux based OS
+     */
+    @LogToResult(logClassInstance = false, logArgs = false)
+    public boolean isLinux() {
+        switch (OSUtils.identifyOS()) {
+            case "linux":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * @return a identifier of the current OS
+     */
+    @LogToResult(logClassInstance = false, logArgs = false)
+    public String getOsIdentifier() {
+        return OSUtils.identifyOS();
+    }
+
 
     @Override
     public boolean getResumeOnException() {

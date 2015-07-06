@@ -16,7 +16,7 @@
   * [Application.open()](#Application.open)
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
-  * [Application.close()](#Application.close)
+  * [Application.close(optSilent)](#Application.close)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -44,6 +44,9 @@
   * [Environment.write(text)](#Environment.write)
   * [Environment.mouseWheelDown(steps)](#Environment.mouseWheelDown)
   * [Environment.mouseWheelUp(steps)](#Environment.mouseWheelUp)
+  * [Environment.isWindows()](#Environment.isWindows)
+  * [Environment.isLinux()](#Environment.isLinux)
+  * [Environment.getOsIdentifier()](#Environment.getOsIdentifier)
 * [Key](#Key)
 * [Logger](#Logger)
   * [Logger.logError(message)](#Logger.logError)
@@ -235,7 +238,7 @@ var editor = new Application("gedit");
   * [Application.open()](#Application.open)
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
-  * [Application.close()](#Application.close)
+  * [Application.close(optSilent)](#Application.close)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -262,8 +265,12 @@ Focuses a specific window of the application.
 
 **Returns**:  - this Application object.  
 <a name="Application.close"></a>
-##Application.close()
+##Application.close(optSilent)
 Closes the already existing application.
+
+**Params**
+
+- optSilent `boolean` - (optional) if true, no exception will be thrown on errors and stop the test execution.  
 
 **Returns**:  - this Application object.  
 <a name="Application.setSleepTime"></a>
@@ -326,6 +333,9 @@ Environment - Represents the environment of the current test host.
   * [Environment.write(text)](#Environment.write)
   * [Environment.mouseWheelDown(steps)](#Environment.mouseWheelDown)
   * [Environment.mouseWheelUp(steps)](#Environment.mouseWheelUp)
+  * [Environment.isWindows()](#Environment.isWindows)
+  * [Environment.isLinux()](#Environment.isLinux)
+  * [Environment.getOsIdentifier()](#Environment.getOsIdentifier)
 
 <a name="Environment.setSimilarity"></a>
 ##Environment.setSimilarity(similarity)
@@ -545,6 +555,15 @@ wheel the given steps up.
 
 - steps `number` - the number of steps  
 
+<a name="Environment.isWindows"></a>
+##Environment.isWindows()
+**Returns**: `boolean` - true, if the OS is any instance of an Windows based OS  
+<a name="Environment.isLinux"></a>
+##Environment.isLinux()
+**Returns**: `boolean` - true, if the OS is any instance of an Linux based OS  
+<a name="Environment.getOsIdentifier"></a>
+##Environment.getOsIdentifier()
+**Returns**: `string` - identifier of the current OS  
 <a name="Key"></a>
 #Key
 Key - representing some Key constants which can be used in type functions as input text and as modifier keys.

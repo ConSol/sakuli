@@ -123,6 +123,17 @@ public class Application extends App {
      */
     @LogToResult
     public Application closeApp() {
+        return closeApp(false);
+    }
+
+    /**
+     * close the already existing application.
+     *
+     * @param silent if true, no exception  will be thrown on errors and stop the test execution.
+     * @return this {@link Application}.
+     */
+    @LogToResult
+    public Application closeApp(boolean silent) {
         logger.info("Close application with name or path \"" + getName() + "\".");
         int retValue = -1;
         try {
@@ -130,8 +141,7 @@ public class Application extends App {
         } catch (Throwable e) {
             logger.error("ERROR in closing Application", e);
         }
-        sleep(sleepMillis);
-        if (retValue < 0) {
+        if (!silent && retValue != 0) {
             loader.getExceptionHandler().handleException("Application '" + getName() + " could not be closed! ... Please check if the application has been opened before!", resumeOnException);
             return null;
         }

@@ -50,12 +50,7 @@ try {
 } catch (e) {
     testCase.handleException(e);
 } finally {
+    appCalc.close(true);      //silent
+    appNotepad.close(true);   //silent
     testCase.saveResult();
-    try {
-        appCalc.close();
-        appNotepad.close();
-    } catch (e) {
-        //do not handle exception, this is just a teardown
-        Logger.logInfo(e);
-    }
 }

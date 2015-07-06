@@ -352,6 +352,33 @@ function initEnvironment(that, javaObject) {
         return update(that.javaObject.mouseWheelUp(steps));
     };
 
+    /**
+     * @return {boolean} true, if the OS is any instance of an Windows based OS
+     * @memberOf Environment
+     * @method isWindows
+     */
+    that.isWindows = function () {
+        return that.javaObject.isWindows();
+    };
+
+    /**
+     * @return {boolean} true, if the OS is any instance of an Linux based OS
+     * @memberOf Environment
+     * @method isLinux
+     */
+    that.isLinux = function () {
+        return that.javaObject.isLinux();
+    };
+
+    /**
+     * @return {string} identifier of the current OS
+     * @memberOf Environment
+     * @method getOsIdentifier
+     */
+    that.getOsIdentifier = function () {
+        return that.javaObject.getOsIdentifier();
+    };
+
     /*****************************************************************************************************
      * INTERNAL CLASS FUNCTIONS - NOT REACHABLE IN THE TEST CASE EXECUTION
      *****************************************************************************************************/
