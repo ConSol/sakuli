@@ -78,7 +78,7 @@ public class Application extends App {
             loader.getExceptionHandler().handleException("Application '" + getName() + " could not be opend! ... Please check the application name or path!", resumeOnException);
             return null;
         }
-        final int tries = 60;
+        final int tries = 5;
         for (int i = 0; i < tries && this.getPID() <= 0; i++) {
             logger.info("wait {} ms more for finish loading application {} - {} of {} tries",
                     sleepMillis, this.getName(), i, tries);
