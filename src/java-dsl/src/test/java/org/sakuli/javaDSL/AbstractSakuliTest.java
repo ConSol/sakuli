@@ -34,11 +34,12 @@ import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.services.ResultServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.ReflectionUtils;
 import org.testng.annotations.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -131,7 +132,16 @@ public abstract class AbstractSakuliTest {
 
     private void initSahiBrowser() {
         browser = BeanLoader.loadBean(SahiInitializingService.class).getBrowser();
-        browserProcessName = String.valueOf(ReflectionTestUtils.getField(browser, "browserProcessName"));
+        browserProcessName = String.valueOf(getField(browser, "browserProcessName"));
+    }
+
+    private Object getField(Object target, String name) {
+        Field field = ReflectionUtils.findField(target.getClass(), name);
+        if (field != null) {
+            ReflectionUtils.makeAccessible(field);
+            return ReflectionUtils.getField(field, target);
+        }
+        return null;
     }
 
     /**
