@@ -75,6 +75,17 @@ public abstract class AbstractSakuliTest {
         }
     }
 
+    private static Object getField(Object target, String name) {
+        if (target != null) {
+            Field field = ReflectionUtils.findField(target.getClass(), name);
+            if (field != null) {
+                ReflectionUtils.makeAccessible(field);
+                return ReflectionUtils.getField(field, target);
+            }
+        }
+        return null;
+    }
+
     abstract protected TestCaseInitParameter getTestCaseInitParameter() throws Exception;
 
     /**
@@ -133,15 +144,6 @@ public abstract class AbstractSakuliTest {
     private void initSahiBrowser() {
         browser = BeanLoader.loadBean(SahiInitializingService.class).getBrowser();
         browserProcessName = String.valueOf(getField(browser, "browserProcessName"));
-    }
-
-    private Object getField(Object target, String name) {
-        Field field = ReflectionUtils.findField(target.getClass(), name);
-        if (field != null) {
-            ReflectionUtils.makeAccessible(field);
-            return ReflectionUtils.getField(field, target);
-        }
-        return null;
     }
 
     /**
