@@ -1,0 +1,9 @@
+// use "//" to disable single testcases
+//
+// ... define your tescase like:
+// folder-of-testcase http://www.startURL.de
+//
+//search_pet/_tc.js http://localhost
+verfication_test/verfication_test.js http://sahi.example.com/_s_/dyn/Driver_initialized
+search_pet/search_pet_test.js http://localhost:8080/petclinic/
+calculator/calculator_ui_test.js http://sahi.example.com/_s_/dyn/Driver_initialized

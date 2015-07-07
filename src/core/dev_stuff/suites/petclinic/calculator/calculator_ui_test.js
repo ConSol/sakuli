@@ -24,7 +24,6 @@ var appCalc = new Application("/usr/bin/gnome-calculator");
 var appGedit = new Application("/usr/bin/gedit");
 
 try {
-    testCase.endOfStep("Test Sahi landing page",30);
     appCalc.open();
     screen.waitForImage("calculator.png", 20);
 
@@ -32,13 +31,17 @@ try {
     env.sleep(2);
     screen.find("plus.png").click().type("100");
     screen.find("result.png").click();
-    screen.waitForImage("625",10);
-    testCase.endOfStep("Calculation",30);
+    screen.waitForImage("625", 10);
+    screen.find("edit").click();
+    screen.find("copy").click();
+    testCase.endOfStep("Calculation", 30);
 
     appGedit.open();
     screen.waitForImage("gedit.png", 20);
-    env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
-    testCase.endOfStep("Editor",30);
+    env.type("Now paste Result into the editor\n");
+    env.pasteClipboard();
+    screen.exists("editor_result");
+    testCase.endOfStep("Editor", 30);
     env.sleep(4);
 } catch (e) {
     testCase.handleException(e);
