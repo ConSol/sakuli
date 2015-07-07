@@ -84,7 +84,7 @@ public class SahiConnector {
         //config reporter
         runner.addReport(new Report("html", sakuliProperties.getLogFolder().toAbsolutePath().toString()));
         //add include folder property
-        runner.setInitJS("var $includeFolder = \"" + getIncludeFolderJsPath() + "\";");
+        runner.setInitJS(getInitJSString());
 
         try { //is there to handle exceptions in the catch block from this.reconnect()
             try {
@@ -135,6 +135,14 @@ public class SahiConnector {
         }
     }
 
+    //TODO TS #100  refactor, write Test and document
+    protected String getInitJSString() {
+        return String.format("var $includeFolder = '%s'; var $testSuiteFolder = '%s';",
+                getIncludeFolderJsPath(),
+                getTestSuiteFolderJsPath()
+        );
+    }
+
     protected TestRunner getTestRunner() {
         //have to be always one, to prevent errors in the sikuli screen capturing parts
         String threads = "1";
@@ -154,6 +162,15 @@ public class SahiConnector {
 
     protected String getIncludeFolderJsPath() {
         String path = sakuliProperties.getJsLibFolder().toAbsolutePath().toString() + File.separator + "sakuli.js";
+        if (path.contains("\\")) {
+            //replace \ with \\
+            path = path.replaceAll("\\\\", "\\\\\\\\");
+        }
+        return path;
+    }
+
+    protected String getTestSuiteFolderJsPath() {
+        String path = testSuite.getTestSuiteFolder().toAbsolutePath().toString();
         if (path.contains("\\")) {
             //replace \ with \\
             path = path.replaceAll("\\\\", "\\\\\\\\");
