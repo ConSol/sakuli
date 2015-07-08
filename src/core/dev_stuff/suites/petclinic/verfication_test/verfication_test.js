@@ -43,7 +43,7 @@ try {
     if (env.isWindows()) {
         appNotepad.open().getRegion().waitForImage("notepad.png", 10);
     }
-    if (env.isLinux) {
+    if (env.isLinux()) {
         appGedit.open().getRegion().waitForImage("gedit.png", 10);
     }
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...")
