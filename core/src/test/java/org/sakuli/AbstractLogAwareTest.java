@@ -17,6 +17,7 @@
  */
 package org.sakuli;
 
+import org.apache.commons.io.FileUtils;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +26,11 @@ import org.testng.annotations.BeforeSuite;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.spi.FileSystemProvider;
-import java.util.Scanner;
+import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
@@ -58,47 +59,34 @@ public abstract class AbstractLogAwareTest {
     }
 
     public static String getLastLineWithContent(Path file, String s) throws IOException {
-
-        Scanner in;
-        String lastLine = "";
-
-        in = new Scanner(Files.newInputStream(file));
-        while (in.hasNextLine()) {
-            String line = in.nextLine();
-            if (line.contains(s)) {
-                lastLine = line;
+        List<String> lines = FileUtils.readLines(file.toFile(), Charset.forName("UTF-8"));
+        if (!lines.isEmpty()) {
+            for (int i = lines.size() - 1; i >= 0; i--) {
+                String line = lines.get(i);
+                if (line.contains(s)) {
+                    return line;
+                }
             }
         }
-        return lastLine;
-
+        return "";
     }
 
     public static String getLastLineOfLogFile(Path file) throws IOException {
-        return getLastLineWithContent(file, "");
+        List<String> lines = FileUtils.readLines(file.toFile(), Charset.forName("UTF-8"));
+        return lines.isEmpty() ? "" : lines.get(lines.size() - 1);
     }
 
     public static String getLastLineOfLogFile(Path file, int lastLines) throws IOException {
-        Scanner in;
+        List<String> lines = FileUtils.readLines(file.toFile(), Charset.forName("UTF-8"));
         StringBuilder result = new StringBuilder();
-
-        in = new Scanner(Files.newInputStream(file));
-        int countOfLines = 0;
-        while (in.hasNextLine()) {
-            countOfLines++;
-            in.nextLine();
-        }
-
-        in = new Scanner(Files.newInputStream(file));
-        int countOfReadInLines = 0;
-        while (in.hasNextLine()) {
-            countOfReadInLines++;
-            String line = in.nextLine();
-            if (countOfLines - countOfReadInLines <= lastLines) {
-                result.append(line).append("\n");
+        if (!lines.isEmpty()) {
+            final int elements = lines.size() - 1;
+            for (int i = 0; i < lines.size(); i++) {
+                if (elements - i <= lastLines) {
+                    result.append(lines.get(i)).append("\n");
+                }
             }
         }
-
-
         return result.toString();
     }
 
