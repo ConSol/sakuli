@@ -123,7 +123,7 @@ public abstract class AbstractLogAwareTest {
     private static void waitForLogFile(Path file) {
         if (!Files.exists(file)) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 LOGGER.error("Thread.sleep error", e);
             }
