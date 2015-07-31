@@ -59,7 +59,7 @@ public class SakuliStarter {
     private final static Option sakuliHome = OptionBuilder
             .withArgName("sakuli-folder")
             .hasArg()
-            .withDescription("(optional) SAKULI_HOME folder, \ndefault: environment variable 'SAHI_HOME'")
+            .withDescription("(optional) SAKULI_HOME folder, \ndefault: environment variable 'SAKULI_HOME'")
             .isRequired(false)
             .withLongOpt("sakuli_home")
             .create();
