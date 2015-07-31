@@ -27,6 +27,7 @@ import org.testng.annotations.BeforeSuite;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.spi.FileSystemProvider;
@@ -59,6 +60,7 @@ public abstract class AbstractLogAwareTest {
     }
 
     public static String getLastLineWithContent(Path file, String s) throws IOException {
+        waitForLogFile(file);
         List<String> lines = FileUtils.readLines(file.toFile(), Charset.forName("UTF-8"));
         if (!lines.isEmpty()) {
             for (int i = lines.size() - 1; i >= 0; i--) {
@@ -72,11 +74,13 @@ public abstract class AbstractLogAwareTest {
     }
 
     public static String getLastLineOfLogFile(Path file) throws IOException {
+        waitForLogFile(file);
         List<String> lines = FileUtils.readLines(file.toFile(), Charset.forName("UTF-8"));
         return lines.isEmpty() ? "" : lines.get(lines.size() - 1);
     }
 
     public static String getLastLineOfLogFile(Path file, int lastLines) throws IOException {
+        waitForLogFile(file);
         List<String> lines = FileUtils.readLines(file.toFile(), Charset.forName("UTF-8"));
         StringBuilder result = new StringBuilder();
         if (!lines.isEmpty()) {
@@ -114,6 +118,16 @@ public abstract class AbstractLogAwareTest {
      */
     public static void setSikuliLogLevel(String logLevel) {
         setSystemProperty(logLevel, "log-level-sikuli");
+    }
+
+    private static void waitForLogFile(Path file) {
+        if (!Files.exists(file)) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                LOGGER.error("Thread.sleep error", e);
+            }
+        }
     }
 
     @BeforeSuite(alwaysRun = true)
