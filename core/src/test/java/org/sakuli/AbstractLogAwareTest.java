@@ -142,7 +142,7 @@ public abstract class AbstractLogAwareTest {
         setSikuliLogLevel(null);
     }
 
-    protected void assertLastLine(Path logFile, String filter, LogLevel logLevel, String expectedMessage) throws IOException {
+    protected synchronized void assertLastLine(Path logFile, String filter, LogLevel logLevel, String expectedMessage) throws IOException {
         String preFix = null;
         switch (logLevel) {
             case ERROR:

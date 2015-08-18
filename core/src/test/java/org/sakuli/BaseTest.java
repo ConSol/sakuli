@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,15 +19,17 @@
 package org.sakuli;
 
 import net.sf.sahi.report.Report;
+import org.mockito.internal.util.MockUtil;
 import org.sakuli.loader.BaseActionLoader;
+import org.sakuli.loader.BaseActionLoaderImpl;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import java.io.File;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertTrue;
 
 /**
@@ -52,14 +54,41 @@ public abstract class BaseTest extends AbstractLogAwareTest {
                 String.format("string '%s' won't contain '%s'", string, contains));
     }
 
+    protected String getTestContextPath() {
+        return TEST_CONTEXT_PATH;
+    }
+
+    protected String getSahiFolderPath() {
+        return SAHI_FOLDER_PATH;
+    }
+
+    protected String getSakuliHomeFolderPath() {
+        return INCLUDE_FOLDER_PATH;
+    }
+
+    protected String getTestFolderPath() {
+        return TEST_FOLDER_PATH;
+    }
+
     @BeforeClass(alwaysRun = true)
     public void setContextProperties() {
-        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = TEST_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = INCLUDE_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = SAHI_FOLDER_PATH;
-        BeanLoader.CONTEXT_PATH = TEST_CONTEXT_PATH;
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = getTestFolderPath();
+        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = getSakuliHomeFolderPath();
+        SakuliPropertyPlaceholderConfigurer.SAHI_PROXY_HOME_VALUE = getSahiFolderPath();
+        BeanLoader.CONTEXT_PATH = getTestContextPath();
         BeanLoader.refreshContext();
-        loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
-        when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
+        loaderMock = BeanLoader.loadBean(BaseActionLoaderImpl.class);
+        if (new MockUtil().isMock(loaderMock)) {
+            reset(loaderMock);
+            when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
+        }
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void tearDown() throws Exception {
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = BaseTest.TEST_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = BaseTest.INCLUDE_FOLDER_PATH;
+        SakuliPropertyPlaceholderConfigurer.INCLUDE_FOLDER_VALUE = BaseTest.SAHI_FOLDER_PATH;
+        BeanLoader.CONTEXT_PATH = BaseTest.TEST_CONTEXT_PATH;
     }
 }
