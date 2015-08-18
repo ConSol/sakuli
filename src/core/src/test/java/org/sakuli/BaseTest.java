@@ -20,6 +20,7 @@ package org.sakuli;
 
 import net.sf.sahi.report.Report;
 import org.apache.commons.lang3.StringUtils;
+import org.mockito.internal.util.MockUtil;
 import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.BaseActionLoaderImpl;
 import org.sakuli.loader.BeanLoader;
@@ -79,8 +80,10 @@ public abstract class BaseTest extends AbstractLogAwareTest {
         BeanLoader.CONTEXT_PATH = getTestContextPath();
         BeanLoader.refreshContext();
         loaderMock = BeanLoader.loadBean(BaseActionLoaderImpl.class);
-        reset(loaderMock);
-        when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
+        if (new MockUtil().isMock(loaderMock)) {
+            reset(loaderMock);
+            when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
+        }
     }
 
     @AfterClass(alwaysRun = true)
