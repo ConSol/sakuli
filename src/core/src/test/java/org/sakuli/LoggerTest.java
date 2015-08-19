@@ -79,7 +79,7 @@ public class LoggerTest extends BaseTest {
         logMessage = "WARNING-LOG-MESSAGE FOR " + testSuite.getId();
         logger.warn(logMessage);
         lastLine = getLastLineOfLogFile(logFile);
-        assertEquals("WARN ", lastLine.substring(0, 5));
+        assertEquals("XXXXX ", lastLine.substring(0, 5));
         assertTrue("Test for warning log", lastLine.contains(logMessage));
 
         //Test-Debug-Log
