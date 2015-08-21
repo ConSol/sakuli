@@ -108,7 +108,7 @@ Open `__SAKULI_HOME__\_include\sakuli.properties` on the Sakuli client:
 	
 	# Nagios check settings
 	# default nagios host_name (can be overwritten in testsuite.properties) 
-	sakuli.forwarder.geariman.nagios.hostname=sakuli_client
+	sakuli.forwarder.gearman.nagios.hostname=sakuli_client
 	# gets appended to the performance data in order to set the name of PNP4nagios template
 	sakuli.forwarder.gearman.nagios.check_command=check_sakuli
 
