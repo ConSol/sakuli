@@ -3,6 +3,9 @@
  
 
 # Documentation
+Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs.org)**.
+* Dev version (current development version on `dev-v0.4` branch) [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=dev-v0.4)](http://sakuli.readthedocs.org/en/dev-v0.4/)
+ 
 
 ## Usage
 ### Basic setup
