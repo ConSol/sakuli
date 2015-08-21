@@ -3,6 +3,7 @@
 ### Version 1.0.0
 
 ### Version 0.9.0
+* 
 * close #74 extract logging functions to separate javascript class Logger
 * close #70 rename sakuli.screenbased.* properties to sikuli.*
 * close #42 rename Application#closeApp to Application#close in javascript
