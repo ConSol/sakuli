@@ -1,4 +1,5 @@
 ![sakuli-logo](./docs/pics/sakuli_logo_small.png) 
+
 [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=dev-v0.4)](http://sakuli.readthedocs.org/en/dev-v0.4/)
 
 *An end-to-end testing tool for web sites and common UIs with full Nagios integration*
