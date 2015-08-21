@@ -24,6 +24,7 @@ import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
+import org.sakuli.exceptions.SakuliProxyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +52,7 @@ public class TestSuiteHelper {
      * @return a map of {@link TestCase}s with her {@link TestCase#id} as key.
      * @throws FileNotFoundException if files are not reachable
      */
-    public static HashMap<String, TestCase> loadTestCases(TestSuiteProperties properties) throws IOException {
+    public static HashMap<String, TestCase> loadTestCases(TestSuiteProperties properties) throws IOException, SakuliProxyException {
         Path testSuiteFile = properties.getTestSuiteSuiteFile();
         Path testSuiteFolder = properties.getTestSuiteFolder();
 
