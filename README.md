@@ -1,6 +1,8 @@
 ![sakuli-logo](./docs/pics/sakuli_logo_small.png) 
 
-[![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=dev-v0.4)](http://sakuli.readthedocs.org/en/dev-v0.4/)
+|branch  |build state| docs state|
+|--------|-----------|-----------|
+|`dev-v0.4` | [![Build Status](http://labs-build.consol.de/buildStatus/icon?job=Sakuli_CI_v04)](http://labs-build.consol.de/view/Sakuli/job/Sakuli_CI_v04/) |[![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=dev-v0.4)](http://sakuli.readthedocs.org/en/dev-v0.4/)
 
 *An end-to-end testing tool for web sites and common UIs with full Nagios integration*
 
