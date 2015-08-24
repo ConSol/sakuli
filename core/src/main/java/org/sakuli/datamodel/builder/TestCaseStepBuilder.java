@@ -15,6 +15,7 @@ import org.sakuli.datamodel.state.TestCaseStepState;
  */
 public class TestCaseStepBuilder implements Builder<TestCaseStep> {
     private final String name;
+    private TestCaseStepState stepState;
 
     public TestCaseStepBuilder(String name) {
         this.name = name;
@@ -25,7 +26,12 @@ public class TestCaseStepBuilder implements Builder<TestCaseStep> {
     public TestCaseStep build() {
         TestCaseStep newTestCase = new TestCaseStep();
         newTestCase.setName(name);
-        newTestCase.setState(TestCaseStepState.INIT);
+        newTestCase.setState(stepState != null ? stepState : TestCaseStepState.INIT);
         return newTestCase;
+    }
+
+    public TestCaseStepBuilder withState(TestCaseStepState stepState) {
+        this.stepState = stepState;
+        return this;
     }
 }

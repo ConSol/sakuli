@@ -151,7 +151,13 @@ public class OutputBuilder implements Builder<NagiosOutput> {
             data = addPerformanceDataRow(data, String.format("c_%03d_%s", i, tc.getId()), tc.getDuration(), tc.getWarningTime(), tc.getCriticalTime());
             int j = 1;
             for (TestCaseStep step : tc.getStepsAsSortedSet()) {
-                data = addPerformanceDataRow(data, String.format("s_%03d_%03d_%s", i, j, step.getId()), step.getDuration(), step.getWarningTime(), 0);
+                String stepName = String.format("s_%03d_%03d_%s", i, j, step.getId());
+                if (TestCaseStepState.INIT.equals(step.getState())) {
+                    //add data performance data with unknown state
+                    data = addPerformanceDataRow(data, stepName, "U", null, null);
+                } else {
+                    data = addPerformanceDataRow(data, stepName, step.getDuration(), step.getWarningTime(), 0);
+                }
                 j++;
             }
             i++;

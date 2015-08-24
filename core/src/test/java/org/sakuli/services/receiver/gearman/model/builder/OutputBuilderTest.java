@@ -28,6 +28,7 @@ import org.sakuli.builder.TestCaseStepExampleBuilder;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
@@ -190,6 +191,46 @@ public class OutputBuilderTest {
                 "s_001_002_step2=8.00s;10;;; " +
                 "c_002__state_case_with_no_steps=0;;;; " +
                 "c_002_case_with_no_steps=15.00s;;;;");
+    }
+
+    @Test
+    public void testGetPerformanceDataWithPreParsedSteps() throws Exception {
+        Date startDate = new GregorianCalendar(2014, 14, 7, 13, 0).getTime();
+        TestSuite testSuiteExample = new TestSuiteExampleBuilder()
+                .withId("sakuli-123")
+                .withStartDate(startDate)
+                .withStopDate(DateUtils.addSeconds(startDate, 120))
+                .withWarningTime(100)
+                .withCriticalTime(150)
+                .withTestCases(Arrays.asList(
+                        new TestCaseExampleBuilder().withState(TestCaseState.WARNING_IN_STEP)
+                                .withId("case-warning")
+                                .withStartDate(startDate)
+                                .withStopDate(DateUtils.addSeconds(startDate, 20))
+                                .withWarningTime(19)
+                                .withCriticalTime(25)
+                                .withTestCaseSteps(Arrays.asList(new TestCaseStepExampleBuilder()
+                                                .withName("step1")
+                                                .withState(TestCaseStepState.WARNING)
+                                                .withStartDate(startDate)
+                                                .withStopDate(DateUtils.addSeconds(startDate, 10))
+                                                .withWarningTime(9)
+                                                .buildExample(),
+                                        new TestCaseStepBuilder("step2_not_started")
+                                                .withState(TestCaseStepState.INIT)
+                                                .build()))
+                                .buildExample()
+                ))
+                .buildExample();
+        testSuiteExample.refreshState();
+
+        assertEquals(testling.getPerformanceData(testSuiteExample), "suite__state=1;;;; " +
+                        "suite_sakuli-123=120.00s;100;150;; " +
+                        "c_001__state_case-warning=1;;;; " +
+                        "c_001_case-warning=20.00s;19;25;; " +
+                        "s_001_001_step1=10.00s;9;;; " +
+                        "s_001_002_step2_not_started=U;;;;"
+        );
     }
 
     @Test
