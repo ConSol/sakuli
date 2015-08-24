@@ -23,7 +23,6 @@ import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
-import org.sakuli.exceptions.SakuliProxyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +49,7 @@ public class TestSuiteHelper {
      * @return a map of {@link TestCase}s with her {@link TestCase#id} as key.
      * @throws FileNotFoundException if files are not reachable
      */
-    public static HashMap<String, TestCase> loadTestCases(TestSuiteProperties properties) throws IOException, SakuliProxyException {
+    public static HashMap<String, TestCase> loadTestCases(TestSuiteProperties properties) throws IOException {
         Path testSuiteFile = properties.getTestSuiteSuiteFile();
         Path testSuiteFolder = properties.getTestSuiteFolder();
 
@@ -83,7 +82,7 @@ public class TestSuiteHelper {
                             TestCaseHelper.convertTestCaseFileToID(tcFileName));
                     tc.setStartUrl(startURL);
                     tc.setTcFile(tcFile);
-                    tc.setSteps(TestCaseStepHelper.parseSteps(tcFile));
+                    tc.setSteps(TestCaseStepHelper.readCachedStepDefinitions(tcFile));
                     //set the Map with the test case id as key
                     tcMap.put(tc.getId(), tc);
                 } else {

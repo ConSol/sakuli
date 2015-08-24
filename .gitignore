@@ -9,3 +9,4 @@ firefox
 .idea
 *.iml
 *.log
+*.sakuli-steps-cache

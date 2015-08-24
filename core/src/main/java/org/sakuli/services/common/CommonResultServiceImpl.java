@@ -49,7 +49,7 @@ public class CommonResultServiceImpl extends AbstractResultService {
         logger.info(testSuite.getResultString()
                 + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
                 + testSuite.getState() + " ======================\n");
-        if (testSuite.getState().equals(TestSuiteState.ERRORS)) {
+        if (TestSuiteState.ERRORS.equals(testSuite.getState())) {
             String errorMsg = "ERROR-Summary:\n" + testSuite.getExceptionMessages();
             logger.error(errorMsg + "\n");
         }

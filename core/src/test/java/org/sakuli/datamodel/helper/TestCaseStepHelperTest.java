@@ -18,19 +18,29 @@
 
 package org.sakuli.datamodel.helper;
 
+import org.apache.commons.io.FileUtils;
 import org.sakuli.BaseTest;
+import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
-import org.sakuli.exceptions.SakuliProxyException;
-import org.testng.annotations.DataProvider;
+import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.builder.TestCaseStepBuilder;
+import org.sakuli.datamodel.state.TestCaseStepState;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.*;
 
 /**
@@ -39,37 +49,13 @@ import static org.testng.Assert.*;
  */
 public class TestCaseStepHelperTest {
 
-    @DataProvider(name = "testFiles")
-    public static Object[][] testFiles() {
-        return new Object[][]{{"stephelper/tc_3_steps.js"}, {"stephelper/tc_3_steps_apostrophe.js"}};
-    }
+    public static final String CACHEFILE_NAME = "stephelper/" + TestCaseStepHelper.SAKULI_STEPS_CACHE_FILE;
 
-    @DataProvider(name = "stepString")
-    public static Object[][] stepString() {
-        return new Object[][]{
-                {"testCase.endOfStep( \"step_1\", \"5\");", "step_1"},
-                {"testCase.endOfStep(\"step_1\");", "step_1"},
-                {"testCase.endOfStep(\"step_1\", \"5\");", "step_1"},
-                {"testCase.endOfStep( \"step_1\" , '5');", "step_1"},
-                {"testCase.endOfStep( \"step_1\" , 5);", "step_1"},
-                {"testCase.endOfStep( 'step_1' , '5');", "step_1"},
-                {"testCase.endOfStep( 'step adfadf /_1' , '5');", "step adfadf /_1"},
-                {"testCase.endOfStep( 'step adfadf /_1' );", "step adfadf /_1"},
-        };
-    }
-
-    @DataProvider(name = "testCaseVarString")
-    public static Object[][] testCaseVarString() {
-        return new Object[][]{
-                {"testCase = new TestCase(80, 100);", "testCase"},
-                {"tc = new TestCase(80, 100);", "tc"},
-                {"var testCase = new TestCase(80, 100);", "testCase"},
-                {"var tc = new TestCase(80, 100);", "tc"},
-                {"var testCase = new TestCase();", "testCase"},
-                {"var tc = new TestCase();", "tc"},
-                {"var testCase=new TestCase(40, 50);", "testCase"},
-                {"testCase=new TestCase(40, 50);", "testCase"},
-        };
+    @BeforeMethod
+    public void setUp() throws Exception {
+        if (this.getClass().getResource(CACHEFILE_NAME) != null) {
+            Files.deleteIfExists(getResource(CACHEFILE_NAME));
+        }
     }
 
     @Test
@@ -80,38 +66,58 @@ public class TestCaseStepHelperTest {
         BaseTest.assertRegExMatch(TestCaseStepHelper.checkWarningTime(-1, "test"), regex);
     }
 
-    @Test(dataProvider = "testFiles")
-    public void testParseSteps(String fileName) throws Throwable {
-        URL filePath = this.getClass().getResource(fileName);
-        assertNotNull(filePath);
-
-        List<TestCaseStep> steps = TestCaseStepHelper.parseSteps(Paths.get(filePath.toURI()));
+    @Test
+    public void testParseSteps() throws Throwable {
+        Path tcFile = getResource("stephelper/tc.js");
+        FileUtils.writeStringToFile(
+                tcFile.getParent().resolve(TestCaseStepHelper.SAKULI_STEPS_CACHE_FILE).toFile(),
+                "step_1\nstep_2\nstep_3?special\n",
+                Charset.forName("UTF-8"));
+        List<TestCaseStep> steps = TestCaseStepHelper.readCachedStepDefinitions(tcFile);
+        assertNotNull(getResource(CACHEFILE_NAME));
         assertEquals(steps.size(), 3);
         Iterator<TestCaseStep> it = steps.iterator();
-        assertEquals(it.next().getId(), "step_1");
-        assertEquals(it.next().getId(), "step_2");
-        assertEquals(it.next().getId(), "step_3?special");
+        assertInitStep(it.next(), "step_1");
+        assertInitStep(it.next(), "step_2");
+        assertInitStep(it.next(), "step_3?special");
     }
 
-    @Test(dataProvider = "stepString")
-    public void testRegexEndOfStep(String teststring, String result) throws Exception {
-        Matcher matcher = Pattern.compile(TestCaseStepHelper.REGEX_PARSE_END_OF_STEP).matcher(teststring);
-        assertTrue(matcher.matches());
-        String step = matcher.replaceAll("${name}");
-        assertEquals(step, result);
+    protected void assertInitStep(TestCaseStep step, String stepId) {
+        assertEquals(step.getId(), stepId);
+        assertEquals(step.getState(), TestCaseStepState.INIT);
     }
 
-    @Test(dataProvider = "testCaseVarString")
-    public void testRegexTestCaseVar(String teststring, String result) throws Exception {
-        Matcher matcher = Pattern.compile(TestCaseStepHelper.REGEX_PARSE_TESTCASE_VAR).matcher(teststring);
-        assertTrue(matcher.matches());
-        String step = matcher.replaceAll("${name}");
-        assertEquals(step, result);
+    @Test
+    public void testNoCacheFileFound() throws Throwable {
+        assertNull(this.getClass().getResource(CACHEFILE_NAME));
+        List<TestCaseStep> steps = TestCaseStepHelper.readCachedStepDefinitions(getResource("stephelper/tc.js"));
+        assertEquals(steps.size(), 0);
     }
 
-    @Test(expectedExceptions = SakuliProxyException.class,
-            expectedExceptionsMessageRegExp = "Can't parse testcase file 'not_valid_file.js' for steps!")
-    public void testNoTcFileFound() throws Throwable {
-        TestCaseStepHelper.parseSteps(Paths.get("not_valid_file.js"));
+    @Test
+    public void testWritCachedStepsError() throws Throwable {
+        Path tcFile = getResource("stephelper/tc.js");
+        TestSuite testSuite = mock(TestSuite.class);
+        TestCase tc = mock(TestCase.class);
+        when(tc.getTcFile()).thenReturn(tcFile);
+        when(tc.getSteps()).thenReturn(Arrays.asList(
+                new TestCaseStepBuilder("step_warning").withState(TestCaseStepState.WARNING).build(),
+                new TestCaseStepBuilder("step_ok").withState(TestCaseStepState.OK).build(),
+                new TestCaseStepBuilder("step_not_started_1").build(),
+                new TestCaseStepBuilder("step_not_started_2").build()
+        ));
+        when(testSuite.getTestCases()).thenReturn(Collections.singletonMap("1", tc));
+
+        TestCaseStepHelper.writeCachedStepDefinitions(testSuite);
+        Path cacheFile = getResource(CACHEFILE_NAME);
+        assertTrue(Files.exists(cacheFile));
+        assertEquals(FileUtils.readFileToString(cacheFile.toFile(), Charset.forName("UTF-8")),
+                "step_warning\nstep_ok\nstep_not_started_1\nstep_not_started_2\n");
+    }
+
+    protected Path getResource(String fileName) throws URISyntaxException {
+        URL filePath = this.getClass().getResource(fileName);
+        assertNotNull(filePath);
+        return Paths.get(filePath.toURI());
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2015 the original author or authors.
+ * Copyright 2013 - 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,3 @@
  * limitations under the License.
  */
 
-var testCase = new TestCase(40, 50);
-
-try {
-    testCase.endOfStep("step_1", 5);
-
-    //ignore the next line on parsing
-    otherObject.endOfStep("no_step");
-    testCase.otherMethod("endOfStep");
-
-    testCase.endOfStep("step_2");
-    //testCase.endOfStep("comment out step", 12);
-    testCase.endOfStep("step_3?special", 3);
-
-} catch (e) {
-    testCase.handleException(e);
-} finally {
-    testCase.saveResult();
-}

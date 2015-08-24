@@ -19,8 +19,6 @@
 package org.sakuli.services.receiver.database;
 
 import org.sakuli.datamodel.TestCase;
-import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliReceiverException;
 import org.sakuli.services.common.AbstractResultService;
 import org.sakuli.services.receiver.database.dao.DaoTestCase;
@@ -47,10 +45,6 @@ public class DatabaseResultServiceImpl extends AbstractResultService {
     private DaoTestCaseStep daoTestCaseStep;
     @Autowired
     private DaoTestSuite daoTestSuite;
-    @Autowired
-    private TestSuite testSuite;
-    @Autowired
-    private SakuliExceptionHandler exceptionHandler;
 
     @Override
     public int getServicePriority() {
@@ -59,6 +53,7 @@ public class DatabaseResultServiceImpl extends AbstractResultService {
 
     @Override
     public void saveAllResults() {
+        writeCachedStepDefinitions();
         logger.info("try to save all results to the database");
         try {
             daoTestSuite.saveTestSuiteResult();

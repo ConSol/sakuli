@@ -21,6 +21,7 @@ package org.sakuli.services.receiver.database;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
@@ -53,6 +54,7 @@ public class DatabaseResultServiceImplTest {
     private TestSuite testSuite;
     @Mock
     private SakuliExceptionHandler exceptionHandler;
+    @Spy
     @InjectMocks
     private DatabaseResultServiceImpl testling;
 
@@ -69,6 +71,7 @@ public class DatabaseResultServiceImplTest {
         verify(daoTestSuite).saveTestSuiteToSahiJobs();
         verify(daoTestCase, never()).saveTestCaseResult(any(TestCase.class));
         verify(daoTestCaseStep, never()).saveTestCaseSteps(anyListOf(TestCaseStep.class), anyInt());
+        verify(testling).writeCachedStepDefinitions();
     }
 
     @Test
@@ -76,6 +79,7 @@ public class DatabaseResultServiceImplTest {
         doThrow(DataAccessException.class).when(daoTestSuite).saveTestSuiteResult();
         testling.saveAllResults();
         verify(exceptionHandler).handleException(any(SakuliReceiverException.class), anyBoolean());
+        verify(testling).writeCachedStepDefinitions();
     }
 
     @Test
@@ -105,6 +109,7 @@ public class DatabaseResultServiceImplTest {
         verify(daoTestCase, times(2)).saveTestCaseResult(any(TestCase.class));
         verify(daoTestCaseStep).saveTestCaseSteps(tcStepList, tcPrimaryKey);
         verify(daoTestCaseStep).saveTestCaseSteps(anyListOf(TestCaseStep.class), anyInt());
+        verify(testling).writeCachedStepDefinitions();
     }
 
 }

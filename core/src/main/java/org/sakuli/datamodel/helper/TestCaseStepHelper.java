@@ -19,19 +19,20 @@
 package org.sakuli.datamodel.helper;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.builder.TestCaseStepBuilder;
-import org.sakuli.exceptions.SakuliProxyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author tschneck
@@ -39,63 +40,54 @@ import java.util.regex.Pattern;
  */
 public class TestCaseStepHelper {
 
-    public static final String NAME_REPLACE_EXPRESSION = "${name}";
-
-    /**
-     * until the braclet of endOfStep: {@code .*\.endOfStep\(}  <br/>
-     * capture all characters as long as no " or ' exists: {@code (?<name>[^",^']*)}
-     */
-    static final String REGEX_PARSE_END_OF_STEP = ".*\\.endOfStep\\(\\s*[\",'](?<name>[^\",^']*).*";
-
-    /**
-     * start with 'var ' or without: {@code [var]*\s* } <br/>
-     * get the name until next = with or without space:{@code (?<name>\w*)\s?= }
-     */
-    static final String REGEX_PARSE_TESTCASE_VAR = "[var]*\\s*(?<name>\\w*)\\s?=\\s?new TestCase\\(.*";
-
+    public static final String SAKULI_STEPS_CACHE_FILE = ".sakuli-steps-cache";
     private static final Logger LOGGER = LoggerFactory.getLogger(TestCaseStepHelper.class);
 
-    public static List<TestCaseStep> parseSteps(Path tcFile) throws SakuliProxyException {
-        try {
-            List<TestCaseStep> result = new ArrayList<>();
-            List<String> lines = FileUtils.readLines(tcFile.toFile(), Charset.forName("UTF-8"));
-            Pattern patternEndOfStep = Pattern.compile(TestCaseStepHelper.REGEX_PARSE_END_OF_STEP);
-            Pattern patternTestCaseVar = Pattern.compile(TestCaseStepHelper.REGEX_PARSE_TESTCASE_VAR);
-
-            String testCasVarName = null;
-            boolean skipLines = false;
-            for (String line : lines) {
-                //check if file are currently in comment block
-                if (line.contains("/*")) {
-                    skipLines = true;
-                }
-                if (line.contains("*/")) {
-                    skipLines = false;
-                }
-
-                if (!skipLines) {
-                    Matcher matcherTestCaseVar = patternTestCaseVar.matcher(line);
-                    if (matcherTestCaseVar.matches()) {
-                        testCasVarName = matcherTestCaseVar.replaceAll(NAME_REPLACE_EXPRESSION);
+    public static List<TestCaseStep> readCachedStepDefinitions(Path tcFile) throws IOException {
+        List<TestCaseStep> result = new ArrayList<>();
+        if (tcFile != null) {
+            Path stepsCacheFile = tcFile.getParent().resolve(SAKULI_STEPS_CACHE_FILE);
+            if (Files.exists(stepsCacheFile)) {
+                try {
+                    List<String> lines = FileUtils.readLines(stepsCacheFile.toFile(), Charset.forName("UTF-8"));
+                    for (String line : lines) {
+                        if (StringUtils.isNotEmpty(line)) {
+                            TestCaseStep step = new TestCaseStepBuilder(line).build();
+                            result.add(step);
+                            LOGGER.debug("add cached step definition: " + step);
+                        }
                     }
+                } catch (IOException e) {
+                    throw new IOException(String.format("Can't read in cached step definitions in file '%s'", stepsCacheFile), e);
+                }
+            }
+        }
+        return result;
+    }
 
-                    Matcher matcher = patternEndOfStep.matcher(line);
-                    if (testCasVarName != null  //testcase variable is defined
-                            && line.trim().startsWith(testCasVarName) //starts with testcase var name (also filter out // comments)
-                            && matcher.matches() //matches to the 'endOfStep' regex
-                            ) {
-                        // get named captured value of the regex expression
-                        String stepName = matcher.replaceAll(NAME_REPLACE_EXPRESSION);
-                        TestCaseStep step = new TestCaseStepBuilder(stepName).build();
-                        result.add(step);
-                        LOGGER.debug("add parsed step: " + step);
+    public static void writeCachedStepDefinitions(TestSuite testSuite) throws IOException {
+        if (testSuite.getTestCases() != null) {
+            for (TestCase tc : testSuite.getTestCases().values()) {
+                if (tc.getTcFile() != null) {
+                    Path stepsCacheFile = tc.getTcFile().getParent().resolve(SAKULI_STEPS_CACHE_FILE);
+                    try {
+                        String stepNames = getStepName(tc.getSteps());
+                        LOGGER.debug("write following step IDs to file '{}':\n{}", stepsCacheFile, stepNames);
+                        FileUtils.writeStringToFile(stepsCacheFile.toFile(), stepNames, Charset.forName("UTF-8"), false);
+                    } catch (IOException e) {
+                        throw new IOException(String.format("error during writing into '%s' file ", stepsCacheFile), e);
                     }
                 }
             }
-            return result;
-        } catch (IOException e) {
-            throw new SakuliProxyException(e, String.format("Can't parse testcase file '%s' for steps!", tcFile));
         }
+    }
+
+    private static String getStepName(List<TestCaseStep> steps) {
+        StringBuilder sb = new StringBuilder();
+        for (TestCaseStep step : steps) {
+            sb.append(step.getId()).append('\n');
+        }
+        return sb.toString();
     }
 
     public static String checkWarningTime(int warningTime, String stepName) {

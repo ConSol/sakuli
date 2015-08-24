@@ -152,6 +152,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
         testling.saveAllResults();
 
         //checks
+        verify(testling).writeCachedStepDefinitions();
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
