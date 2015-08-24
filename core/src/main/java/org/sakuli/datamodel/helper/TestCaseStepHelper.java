@@ -62,10 +62,10 @@ public class TestCaseStepHelper {
             Pattern patternEndOfStep = Pattern.compile(TestCaseStepHelper.REGEX_PARSE_END_OF_STEP);
             Pattern patternTestCaseVar = Pattern.compile(TestCaseStepHelper.REGEX_PARSE_TESTCASE_VAR);
 
-            //TODO TS do some refactoring
             String testCasVarName = null;
             boolean skipLines = false;
             for (String line : lines) {
+                //check if file are currently in comment block
                 if (line.contains("/*")) {
                     skipLines = true;
                 }
@@ -80,7 +80,7 @@ public class TestCaseStepHelper {
                     }
 
                     Matcher matcher = patternEndOfStep.matcher(line);
-                    if (testCasVarName != null  //testcase variable defined
+                    if (testCasVarName != null  //testcase variable is defined
                             && line.trim().startsWith(testCasVarName) //starts with testcase var name (also filter out // comments)
                             && matcher.matches() //matches to the 'endOfStep' regex
                             ) {
@@ -94,7 +94,7 @@ public class TestCaseStepHelper {
             }
             return result;
         } catch (IOException e) {
-            throw new SakuliProxyException(e, "Can't parse testcase file '%s' for steps!");
+            throw new SakuliProxyException(e, String.format("Can't parse testcase file '%s' for steps!", tcFile));
         }
     }
 

@@ -20,6 +20,7 @@ package org.sakuli.datamodel.helper;
 
 import org.sakuli.BaseTest;
 import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.exceptions.SakuliProxyException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -106,5 +107,11 @@ public class TestCaseStepHelperTest {
         assertTrue(matcher.matches());
         String step = matcher.replaceAll("${name}");
         assertEquals(step, result);
+    }
+
+    @Test(expectedExceptions = SakuliProxyException.class,
+            expectedExceptionsMessageRegExp = "Can't parse testcase file 'not_valid_file.js' for steps!")
+    public void testNoTcFileFound() throws Throwable {
+        TestCaseStepHelper.parseSteps(Paths.get("not_valid_file.js"));
     }
 }
