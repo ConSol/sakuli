@@ -19,16 +19,14 @@
 package org.sakuli.datamodel;
 
 
+import org.joda.time.DateTime;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
 import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author tschneck Date: 19.07.13
@@ -81,8 +79,39 @@ public class AbstractTestDataEntityTest {
 
         //first should be the step with startdate, after that the init steps will follow after the creation date
         TreeSet<TestCaseStep> sorted = new TreeSet<>(values);
+        print(sorted);
         Assert.assertEquals(sorted.size(), 3);
         Assert.assertEquals(sorted.first().getName(), "first");
         Assert.assertEquals(sorted.last().getName(), "third");
+    }
+
+    protected void print(TreeSet<TestCaseStep> sorted) {
+        for (TestCaseStep s : sorted) {
+            System.out.println(s.getId());
+        }
+    }
+
+    @Test
+    public void testCompareToMixedSteps() throws Exception {
+        TestCaseStep third = new TestCaseStepBuilder("third").build();
+        Thread.sleep(20); //sleep to ensure that the creation time is not equal
+        TestCaseStep fourth = new TestCaseStepBuilder("fourth").build();
+        List<TestCaseStep> values = Arrays.asList(new TestCaseStepExampleBuilder()
+                        .withStartDate(new DateTime().plusMinutes(5).toDate())
+                        .withName("second")
+                        .buildExample(),
+                third, fourth,
+                new TestCaseStepExampleBuilder().withName("first").buildExample()
+        );
+
+        //first should be the step with startdate, after that the init steps will follow after the creation date
+        TreeSet<TestCaseStep> sorted = new TreeSet<>(values);
+        print(sorted);
+        Assert.assertEquals(sorted.size(), 4);
+        Iterator<TestCaseStep> it = sorted.iterator();
+        Assert.assertEquals(it.next().getName(), "first");
+        Assert.assertEquals(it.next().getName(), "second");
+        Assert.assertEquals(it.next().getName(), "third");
+        Assert.assertEquals(it.next().getName(), "fourth");
     }
 }

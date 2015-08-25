@@ -250,14 +250,18 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
             return 0;
         }
         Date startDate2 = abstractSakuliTest.getStartDate();
-        if (this.startDate == null && startDate2 == null) {
-            return creationDate.compareTo(abstractSakuliTest.creationDate);
-        }
+
         if (this.startDate == null || startDate2 == null || this.startDate.compareTo(startDate2) == 0) {
-            if (id == null) {
-                return abstractSakuliTest.getId() != null ? 1 : 0;
+            boolean boothNull = this.startDate == null && startDate2 == null;
+            if (!boothNull) {
+                if (this.startDate == null) {
+                    return 1;
+                }
+                if (startDate2 == null) {
+                    return -1;
+                }
             }
-            return id.compareTo(abstractSakuliTest.id);
+            return creationDate.compareTo(abstractSakuliTest.creationDate);
         }
         return this.startDate.compareTo(startDate2);
     }
