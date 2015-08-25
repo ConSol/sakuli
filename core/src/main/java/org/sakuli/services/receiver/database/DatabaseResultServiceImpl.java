@@ -53,7 +53,6 @@ public class DatabaseResultServiceImpl extends AbstractResultService {
 
     @Override
     public void saveAllResults() {
-        writeCachedStepDefinitions();
         logger.info("try to save all results to the database");
         try {
             daoTestSuite.saveTestSuiteResult();

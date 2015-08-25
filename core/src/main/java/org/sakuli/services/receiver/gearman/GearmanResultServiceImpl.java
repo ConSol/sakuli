@@ -54,7 +54,6 @@ public class GearmanResultServiceImpl extends AbstractResultService {
 
     @Override
     public void saveAllResults() {
-        writeCachedStepDefinitions();
         logger.info("======= SEND RESULTS TO GEARMAN SERVER ======");
         String hostname = properties.getServerHost();
         int port = properties.getServerPort();

@@ -19,12 +19,14 @@
 package org.sakuli.services.common;
 
 import org.sakuli.actions.environment.Application;
-import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.helper.TestCaseStepHelper;
 import org.sakuli.datamodel.state.TestSuiteState;
+import org.sakuli.exceptions.SakuliReceiverException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 /**
  * The common result service will be called every time after the test suite execution.
@@ -35,8 +37,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommonResultServiceImpl extends AbstractResultService {
     private static Logger logger = LoggerFactory.getLogger(CommonResultServiceImpl.class);
-    @Autowired
-    private TestSuite testSuite;
 
     @Override
     public int getServicePriority() {
@@ -46,6 +46,7 @@ public class CommonResultServiceImpl extends AbstractResultService {
     @Override
     public void saveAllResults() {
         cleanClipboard();
+        writeCachedStepDefinitions();
         logger.info(testSuite.getResultString()
                 + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
                 + testSuite.getState() + " ======================\n");
@@ -57,5 +58,16 @@ public class CommonResultServiceImpl extends AbstractResultService {
 
     protected void cleanClipboard() {
         Application.setClipboard(" ");
+    }
+
+    protected void writeCachedStepDefinitions() {
+        if (!TestSuiteState.ERRORS.equals(testSuite.getState())) {
+            try {
+                TestCaseStepHelper.writeCachedStepDefinitions(testSuite);
+            } catch (IOException e) {
+                exceptionHandler.handleException(
+                        new SakuliReceiverException(e, "Can't create cache file(s) for test case steps!"), true);
+            }
+        }
     }
 }

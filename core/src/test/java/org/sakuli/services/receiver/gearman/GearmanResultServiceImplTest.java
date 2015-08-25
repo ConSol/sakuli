@@ -40,6 +40,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.Future;
@@ -91,7 +92,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
                 .withId("sakuli_demo22")
                 .withStopDate(stopDate)
                 .withStartDate(DateUtils.addSeconds(stopDate, -60))
-                .withTestCases(Arrays.asList(
+                .withTestCases(Collections.singletonList(
                         new TestCaseExampleBuilder()
                                 .withId("ok_case")
                                 .withStartDate(DateUtils.addSeconds(stopDate, -12))
@@ -152,7 +153,6 @@ public class GearmanResultServiceImplTest extends BaseTest {
         testling.saveAllResults();
 
         //checks
-        verify(testling).writeCachedStepDefinitions();
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);

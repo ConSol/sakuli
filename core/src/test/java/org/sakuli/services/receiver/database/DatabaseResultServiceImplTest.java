@@ -71,7 +71,6 @@ public class DatabaseResultServiceImplTest {
         verify(daoTestSuite).saveTestSuiteToSahiJobs();
         verify(daoTestCase, never()).saveTestCaseResult(any(TestCase.class));
         verify(daoTestCaseStep, never()).saveTestCaseSteps(anyListOf(TestCaseStep.class), anyInt());
-        verify(testling).writeCachedStepDefinitions();
     }
 
     @Test
@@ -79,7 +78,6 @@ public class DatabaseResultServiceImplTest {
         doThrow(DataAccessException.class).when(daoTestSuite).saveTestSuiteResult();
         testling.saveAllResults();
         verify(exceptionHandler).handleException(any(SakuliReceiverException.class), anyBoolean());
-        verify(testling).writeCachedStepDefinitions();
     }
 
     @Test
@@ -89,7 +87,7 @@ public class DatabaseResultServiceImplTest {
         TestCase tc1 = mock(TestCase.class);
         TestCaseStep tcs1 = mock(TestCaseStep.class);
         when(tc1.getDbPrimaryKey()).thenReturn(tcPrimaryKey);
-        List<TestCaseStep> tcStepList = Arrays.asList(tcs1);
+        List<TestCaseStep> tcStepList = Collections.singletonList(tcs1);
         when(tc1.getSteps()).thenReturn(tcStepList);
 
         TestCase tc2 = mock(TestCase.class);
@@ -109,7 +107,6 @@ public class DatabaseResultServiceImplTest {
         verify(daoTestCase, times(2)).saveTestCaseResult(any(TestCase.class));
         verify(daoTestCaseStep).saveTestCaseSteps(tcStepList, tcPrimaryKey);
         verify(daoTestCaseStep).saveTestCaseSteps(anyListOf(TestCaseStep.class), anyInt());
-        verify(testling).writeCachedStepDefinitions();
     }
 
 }
