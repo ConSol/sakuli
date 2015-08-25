@@ -366,8 +366,8 @@ public class OutputBuilderTest {
                         new TestCaseStepExampleBuilder()
                                 .withName("step-name2")
                                 .withState(TestCaseStepState.WARNING)
-                                .withStartDate(startDate)
-                                .withStopDate(DateUtils.addMilliseconds(startDate, 154))
+                                .withStartDate(DateUtils.addMilliseconds(startDate, 4000))
+                                .withStopDate(DateUtils.addMilliseconds(startDate, 4154))
                                 .withWarningTime(1)
                                 .buildExample()))
                 .buildExample();
