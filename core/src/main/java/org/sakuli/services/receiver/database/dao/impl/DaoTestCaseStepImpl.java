@@ -28,7 +28,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.util.List;
+import java.util.SortedSet;
 
 /**
  * @author tschneck
@@ -44,7 +44,7 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
     }
 
     @Override
-    public void saveTestCaseSteps(List<TestCaseStep> steps, int primaryKeyOfTestCase) {
+    public void saveTestCaseSteps(SortedSet<TestCaseStep> steps, int primaryKeyOfTestCase) {
         for (TestCaseStep step : steps) {
             logger.info("============== save STEP \"" + step.getName() + "\" ==============");
             MapSqlParameterSource stepParameters = new MapSqlParameterSource();
@@ -74,8 +74,4 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
         }
     }
 
-    @Override
-    public int getCountOfSahiSteps() {
-        return this.getJdbcTemplate().queryForObject("select count(*) from sahi_steps", Integer.class);
-    }
 }

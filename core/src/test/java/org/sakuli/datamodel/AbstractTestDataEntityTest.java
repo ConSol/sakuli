@@ -19,11 +19,16 @@
 package org.sakuli.datamodel;
 
 
+import org.sakuli.builder.TestCaseStepExampleBuilder;
+import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.TreeSet;
 
 /**
  * @author tschneck Date: 19.07.13
@@ -65,5 +70,19 @@ public class AbstractTestDataEntityTest {
         testling.addException(new Exception("SuppressedTest"));
         Assert.assertNotNull(testling.getException().getSuppressed());
         Assert.assertTrue(testling.getExceptionMessages().contains("SuppressedTest"));
+    }
+
+    @Test
+    public void testCompareTo() throws Exception {
+        TestCaseStep second = new TestCaseStepBuilder("second").build();
+        Thread.sleep(20); //sleep to ensure that the creation time is not equal
+        TestCaseStep third = new TestCaseStepBuilder("third").build();
+        List<TestCaseStep> values = Arrays.asList(second, third, new TestCaseStepExampleBuilder().withName("first").buildExample());
+
+        //first should be the step with startdate, after that the init steps will follow after the creation date
+        TreeSet<TestCaseStep> sorted = new TreeSet<>(values);
+        Assert.assertEquals(sorted.size(), 3);
+        Assert.assertEquals(sorted.first().getName(), "first");
+        Assert.assertEquals(sorted.last().getName(), "third");
     }
 }

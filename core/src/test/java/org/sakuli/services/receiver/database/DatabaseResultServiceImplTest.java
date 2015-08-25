@@ -31,6 +31,7 @@ import org.sakuli.services.receiver.database.dao.DaoTestCase;
 import org.sakuli.services.receiver.database.dao.DaoTestCaseStep;
 import org.sakuli.services.receiver.database.dao.DaoTestSuite;
 import org.springframework.dao.DataAccessException;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -38,8 +39,6 @@ import java.util.*;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyListOf;
-import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.*;
 
 public class DatabaseResultServiceImplTest {
@@ -70,7 +69,7 @@ public class DatabaseResultServiceImplTest {
         verify(daoTestSuite).saveTestSuiteResult();
         verify(daoTestSuite).saveTestSuiteToSahiJobs();
         verify(daoTestCase, never()).saveTestCaseResult(any(TestCase.class));
-        verify(daoTestCaseStep, never()).saveTestCaseSteps(anyListOf(TestCaseStep.class), anyInt());
+        verify(daoTestCaseStep, never()).saveTestCaseSteps(any(SortedSet.class), anyInt());
     }
 
     @Test
@@ -87,8 +86,8 @@ public class DatabaseResultServiceImplTest {
         TestCase tc1 = mock(TestCase.class);
         TestCaseStep tcs1 = mock(TestCaseStep.class);
         when(tc1.getDbPrimaryKey()).thenReturn(tcPrimaryKey);
-        List<TestCaseStep> tcStepList = Collections.singletonList(tcs1);
-        when(tc1.getSteps()).thenReturn(tcStepList);
+        SortedSet<TestCaseStep> tcStepList = new TreeSet<>(Collections.singleton(tcs1));
+        when(tc1.getStepsAsSortedSet()).thenReturn(tcStepList);
 
         TestCase tc2 = mock(TestCase.class);
         when(tc2.getSteps()).thenReturn(new ArrayList<TestCaseStep>());
@@ -97,7 +96,10 @@ public class DatabaseResultServiceImplTest {
         testCaseMap.put("1", tc1);
         testCaseMap.put("2", tc2);
 
-        when(testSuite.getTestCases()).thenReturn(testCaseMap);
+        testSuite = new TestSuite();
+        testSuite.setTestCases(testCaseMap);
+        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
+
         testling.saveAllResults();
 
         verify(daoTestSuite).saveTestSuiteResult();
@@ -106,7 +108,7 @@ public class DatabaseResultServiceImplTest {
         verify(daoTestCase).saveTestCaseResult(tc2);
         verify(daoTestCase, times(2)).saveTestCaseResult(any(TestCase.class));
         verify(daoTestCaseStep).saveTestCaseSteps(tcStepList, tcPrimaryKey);
-        verify(daoTestCaseStep).saveTestCaseSteps(anyListOf(TestCaseStep.class), anyInt());
+        verify(daoTestCaseStep).saveTestCaseSteps(any(SortedSet.class), anyInt());
     }
 
 }

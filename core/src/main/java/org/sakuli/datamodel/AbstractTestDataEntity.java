@@ -18,6 +18,7 @@
 
 package org.sakuli.datamodel;
 
+import org.joda.time.DateTime;
 import org.sakuli.datamodel.state.SakuliState;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
@@ -57,6 +58,16 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
     protected int warningTime = -1;
     protected int criticalTime = -1;
     protected String id;
+
+    /**
+     * represent the creation date for this entity, to enable effective sorting after it.
+     * This is only for INTERNAL use. To get the date of starting this entity, see {@link #startDate}.
+     **/
+    private DateTime creationDate;
+
+    public AbstractTestDataEntity() {
+        creationDate = new DateTime();
+    }
 
     /**
      * set the times to the format "time in millisec / 1000"
@@ -239,6 +250,9 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
             return 0;
         }
         Date startDate2 = abstractSakuliTest.getStartDate();
+        if (this.startDate == null && startDate2 == null) {
+            return creationDate.compareTo(abstractSakuliTest.creationDate);
+        }
         if (this.startDate == null || startDate2 == null || this.startDate.compareTo(startDate2) == 0) {
             if (id == null) {
                 return abstractSakuliTest.getId() != null ? 1 : 0;
