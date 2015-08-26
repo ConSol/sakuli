@@ -105,11 +105,14 @@ _**When I click on the "Start Sahi" icon on the desktop to Start Sahi Dashboard,
 #### Check PATH
 Open _**%SAKULI_HOME%**\sahi\userdata\bin\start_dashboard.bat_ insert a new line on the end of the script and add "pause". Save te file and try to start Sahi again. If the error message is like *"command 'java' was not found"*, you should check if _**%PATH%**_ is containing the right path to the java executable.   
 
+### `Application("...").getRegion()` returns `NULL` or an `NullPointerException`
+On **Ubuntu** or other **Linux** based OS check if the packe `wmctrl` is installed. If not install it via:
+	
+	sudo apt-get install wmctrl
 
 
 
-
-## cannot resolve mac address
+### cannot resolve mac address
 
 FIXME
 

@@ -77,9 +77,10 @@ Set `SAKULI_HOME`:
     * `export SAKULI_HOME=/home/sakuli/sakuli`
   
 
-Additionally, on **Ubuntu** you have to install tesseract manually: 
+Additionally, on **Ubuntu** you have to install tesseract and wmctrl manually: 
 
 	sudo apt-get install tesseract-ocr
+	sudo apt-get install wmctrl
 
 ### Sahi
 
