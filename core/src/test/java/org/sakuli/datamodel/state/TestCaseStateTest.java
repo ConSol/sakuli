@@ -18,6 +18,7 @@
 
 package org.sakuli.datamodel.state;
 
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -34,6 +35,20 @@ public class TestCaseStateTest {
                 {WARNING_IN_STEP, 1},
                 {CRITICAL, 2},
                 {ERRORS, 2},
+                {INIT, 3},
+        };
+
+    }
+
+    @DataProvider(name = "statesNoErrors")
+    public static Object[][] statesNoErrors() {
+        return new Object[][]{
+                {OK, true},
+                {WARNING, true},
+                {WARNING_IN_STEP, true},
+                {CRITICAL, true},
+                {ERRORS, false},
+                {INIT, false},
         };
 
     }
@@ -41,5 +56,10 @@ public class TestCaseStateTest {
     @Test(dataProvider = "states")
     public void testGetNagiosErrorCode(TestCaseState state, int expectedErrorCode) throws Exception {
         assertEquals(state.getNagiosErrorCode(), expectedErrorCode);
+    }
+
+    @Test(dataProvider = "statesNoErrors")
+    public void testFinishedWithouErrors(TestCaseState state, boolean noError) throws Exception {
+        Assert.assertEquals(state.isFinishedWithoutErrors(), noError);
     }
 }

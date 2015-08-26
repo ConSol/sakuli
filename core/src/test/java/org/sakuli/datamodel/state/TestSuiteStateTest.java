@@ -38,11 +38,29 @@ public class TestSuiteStateTest {
                 {CRITICAL_IN_SUITE, 2},
                 {ERRORS, 2},
         };
+    }
 
+    @DataProvider(name = "statesNoError")
+    public static Object[][] statesNoError() {
+        return new Object[][]{
+                {RUNNING, false},
+                {OK, true},
+                {WARNING_IN_SUITE, true},
+                {WARNING_IN_CASE, true},
+                {WARNING_IN_STEP, true},
+                {CRITICAL_IN_CASE, true},
+                {CRITICAL_IN_SUITE, true},
+                {ERRORS, false},
+        };
     }
 
     @Test(dataProvider = "states")
     public void testGetNagiosErrorCode(TestSuiteState state, int expectedNagiosCode) throws Exception {
         Assert.assertEquals(state.getNagiosErrorCode(), expectedNagiosCode);
+    }
+
+    @Test(dataProvider = "statesNoError")
+    public void testFinishedWithouErrors(TestSuiteState state, boolean noError) throws Exception {
+        Assert.assertEquals(state.isFinishedWithoutErrors(), noError);
     }
 }

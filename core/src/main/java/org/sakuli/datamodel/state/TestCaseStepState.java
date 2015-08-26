@@ -88,4 +88,10 @@ public enum TestCaseStepState implements SakuliState {
         return false;
     }
 
+    @Override
+    public boolean isFinishedWithoutErrors() {
+        return !this.equals(INIT);
+    }
+
+
 }

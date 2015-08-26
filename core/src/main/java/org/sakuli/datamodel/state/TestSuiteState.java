@@ -19,6 +19,7 @@
 package org.sakuli.datamodel.state;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -70,7 +71,7 @@ public enum TestSuiteState implements SakuliState {
     private final int errorCode;
     private final String stateDescription;
 
-    private TestSuiteState(int i, String stateDescription) {
+    TestSuiteState(int i, String stateDescription) {
         this.errorCode = i;
         this.stateDescription = stateDescription;
     }
@@ -110,6 +111,11 @@ public enum TestSuiteState implements SakuliState {
         return this.equals(ERRORS);
     }
 
+    @Override
+    public boolean isFinishedWithoutErrors() {
+        return !Arrays.asList(ERRORS, RUNNING).contains(this);
+    }
+
 
     @Override
     public String getNagiosStateDescription() {
@@ -122,7 +128,7 @@ public enum TestSuiteState implements SakuliState {
     }
 
     public List<TestSuiteState> getOkCodes() {
-        return Arrays.asList(OK);
+        return Collections.singletonList(OK);
     }
 
     public List<TestSuiteState> getCriticalCodes() {

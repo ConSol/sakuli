@@ -21,7 +21,6 @@ package org.sakuli.services.common;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.helper.TestCaseStepHelper;
-import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliReceiverException;
 import org.slf4j.Logger;
@@ -30,7 +29,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,7 +50,7 @@ public class CacheHandlingResultServiceImpl extends AbstractResultService {
 
     @Override
     public void saveAllResults() {
-        if (hasTestSuiteFinishedWithoutErrors()) {
+        if (testSuite.getState() != null && testSuite.getState().isFinishedWithoutErrors()) {
             removeCachedInitSteps();
             writeCachedStepDefinitions();
         }
@@ -62,7 +60,7 @@ public class CacheHandlingResultServiceImpl extends AbstractResultService {
         for (TestCase tc : testSuite.getTestCases().values()) {
             List<TestCaseStep> filteredSteps = new ArrayList<>();
             for (TestCaseStep step : tc.getSteps()) {
-                if (!TestCaseStepState.INIT.equals(step.getState())) {
+                if (step.getState() != null && step.getState().isFinishedWithoutErrors()) {
                     filteredSteps.add(step);
                 } else {
                     logger.debug("remove cached and not called step '{}'", step.getId());
@@ -79,9 +77,5 @@ public class CacheHandlingResultServiceImpl extends AbstractResultService {
             exceptionHandler.handleException(
                     new SakuliReceiverException(e, "Can't create cache file(s) for test case steps!"), true);
         }
-    }
-
-    private boolean hasTestSuiteFinishedWithoutErrors() {
-        return !Arrays.asList(TestSuiteState.ERRORS, TestSuiteState.RUNNING).contains(testSuite.getState());
     }
 }

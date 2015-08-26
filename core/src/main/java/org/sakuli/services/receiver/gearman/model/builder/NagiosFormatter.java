@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2014 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,31 +16,24 @@
  * limitations under the License.
  */
 
-package org.sakuli.datamodel.state;
+package org.sakuli.services.receiver.gearman.model.builder;
+
+import java.util.Locale;
 
 /**
- * common abstract class for all different sakuli states
+ * Representing a set of formatting methods in the Nagios context.
+ *
+ * @author tschneck
+ *         Date: 8/26/15
  */
-public interface SakuliState {
+public class NagiosFormatter {
 
-    /**
-     * returns int value of an error state
-     *
-     * @return error code
-     */
-    int getErrorCode();
 
-    int getNagiosErrorCode();
+    public static String formatToSec(float duration) {
+        return String.format(Locale.ENGLISH, "%.2fs", duration);
+    }
 
-    boolean isOk();
-
-    boolean isWarning();
-
-    boolean isCritical();
-
-    boolean isError();
-
-    boolean isFinishedWithoutErrors();
-
-    String getNagiosStateDescription();
+    public static String formatToSec(int duration) {
+        return duration + "s";
+    }
 }
