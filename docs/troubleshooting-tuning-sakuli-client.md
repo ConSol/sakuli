@@ -145,3 +145,9 @@ of the sahi proxy so that the keyboard interaction won't be in conflict with som
  sahi.proxy.requestDelayOnSikuliInput.delayTime=500
  ```
 =======
+
+### GUI test only
+ 
+ To start GUI test only you can use the sahi default domain as start URL 
+ `http://sahi.example.com/_s_/dyn/Driver_initialized` in the file `testsuite.suites`
+ and as browser phantomJS.
