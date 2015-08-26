@@ -84,7 +84,7 @@ public class ImageLib extends HashMap<String, ImageLibObject> {
 
         //if the set imageName is not loaded in the piclib throw a exception and log it
         if (!this.containsKey(key)) {
-            throw new SakuliException("SIKULI-PIC \"" + imageName + "\" not found in the loaded picLib folders! ... availabe pictures are: " + this.values());
+            throw new SakuliException("SIKULI-PIC \"" + imageName + "\" not found in the loaded picLib folders! ... available pictures are: " + this.values());
         }
         ImageLibObject imageLibObject = get(key);
         imageLibObject.setMinSimilarity(ScreenBasedSettings.MinSimilarity);
