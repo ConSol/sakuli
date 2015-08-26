@@ -24,7 +24,7 @@
  *************************************/
 
 _dynamicInclude($includeFolder);
-var testCase = new TestCase(80, 100);
+var testCase = new TestCase(0, 0);
 var screen = new Region();
 
 /******************************
@@ -74,8 +74,8 @@ try {
         newNotpadRegion.click().paste("BLA BAL BAL");
         testCase.endOfStep("some clipboard stuff");
 
-        var extractTextRegion = screen.find("gedit_doc_logo").move(-4, 60).setW(70);
-        extractTextRegion.takeScreenShot();
+        var extractTextRegion = screen.find("gedit_doc_logo").move(-5, 60).setW(70);
+        //extractTextRegion.takeScreenShot();
         newNotpadRegion.typeMasked(extractTextRegion.extractText());
         testCase.endOfStep('OCR extracting text');
 
