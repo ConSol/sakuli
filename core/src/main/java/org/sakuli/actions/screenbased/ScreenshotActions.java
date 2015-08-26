@@ -21,12 +21,14 @@ package org.sakuli.actions.screenbased;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.Screen;
 import org.sakuli.datamodel.properties.ActionProperties;
+import org.sikuli.script.ScreenImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -74,6 +76,21 @@ public class ScreenshotActions {
 
     public Path takeScreenshot(String message, Path folderPath) throws IOException {
         return takeScreenshotAndHighlight(message, folderPath, null);
+    }
+
+
+    /**
+     * Takes a screenshot of the assigned area and save in the given format;
+     *
+     * @param message    Filename of the picture
+     * @param folderPath Folder of the place, where the picture should be stored
+     * @param rectangle  if not null, the screenshot only shows the defined rectangle
+     * @return {@link java.nio.file.Path} ot the screenshot.
+     * @throws IOException
+     */
+    public Path takeScreenshot(String message, Path folderPath, Rectangle rectangle) throws IOException {
+        ScreenImage screenImage = rectangle == null ? screen.capture() : screen.capture(rectangle);
+        return createPictureFromBufferedImage(message, folderPath, screenImage.getImage());
     }
 
     /**
