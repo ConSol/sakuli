@@ -54,7 +54,8 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
             stepParameters.addValue("name", step.getName());
             stepParameters.addValue("start", step.getStartDateAsUnixTimestamp());
             stepParameters.addValue("stop", step.getStopDateAsUnixTimestamp());
-            stepParameters.addValue("warning", step.getWarningTime());
+            int warningTime = step.getWarningTime();
+            stepParameters.addValue("warning", (warningTime != 0) ? warningTime : null);
             stepParameters.addValue("duration", step.getDuration());
 
             logger.info("write the following values to 'sahi_steps': "
