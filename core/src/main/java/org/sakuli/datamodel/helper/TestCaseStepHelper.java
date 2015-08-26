@@ -20,6 +20,7 @@ package org.sakuli.datamodel.helper;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
@@ -50,11 +51,14 @@ public class TestCaseStepHelper {
             if (Files.exists(stepsCacheFile)) {
                 try {
                     List<String> lines = FileUtils.readLines(stepsCacheFile.toFile(), Charset.forName("UTF-8"));
+                    DateTime creationDate = new DateTime();
                     for (String line : lines) {
                         if (StringUtils.isNotEmpty(line)) {
-                            TestCaseStep step = new TestCaseStepBuilder(line).build();
+                            TestCaseStep step = new TestCaseStepBuilder(line).withCreationDate(creationDate).build();
                             result.add(step);
                             LOGGER.debug("add cached step definition: " + step);
+                            //increase creation date to ensure correct sorting
+                            creationDate = creationDate.plusMillis(1);
                         }
                     }
                 } catch (IOException e) {

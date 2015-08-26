@@ -6,6 +6,7 @@
  */
 package org.sakuli.datamodel.builder;
 
+import org.joda.time.DateTime;
 import org.sakuli.datamodel.Builder;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.state.TestCaseStepState;
@@ -16,9 +17,11 @@ import org.sakuli.datamodel.state.TestCaseStepState;
 public class TestCaseStepBuilder implements Builder<TestCaseStep> {
     private final String name;
     private TestCaseStepState stepState;
+    private DateTime creationDate;
 
     public TestCaseStepBuilder(String name) {
         this.name = name;
+        creationDate = new DateTime();
     }
 
 
@@ -27,11 +30,17 @@ public class TestCaseStepBuilder implements Builder<TestCaseStep> {
         TestCaseStep newTestCase = new TestCaseStep();
         newTestCase.setName(name);
         newTestCase.setState(stepState != null ? stepState : TestCaseStepState.INIT);
+        newTestCase.setCreationDate(creationDate);
         return newTestCase;
     }
 
     public TestCaseStepBuilder withState(TestCaseStepState stepState) {
         this.stepState = stepState;
+        return this;
+    }
+
+    public TestCaseStepBuilder withCreationDate(DateTime creationDate) {
+        this.creationDate = creationDate;
         return this;
     }
 }

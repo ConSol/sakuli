@@ -72,9 +72,12 @@ public class AbstractTestDataEntityTest {
 
     @Test
     public void testCompareTo() throws Exception {
-        TestCaseStep second = new TestCaseStepBuilder("second").build();
-        Thread.sleep(20); //sleep to ensure that the creation time is not equal
-        TestCaseStep third = new TestCaseStepBuilder("third").build();
+        TestCaseStep second = new TestCaseStepBuilder("second")
+                .withCreationDate(new DateTime())
+                .build();
+        TestCaseStep third = new TestCaseStepBuilder("third")
+                .withCreationDate(new DateTime().plusMillis(1))    //ensure that the creation time is not equal
+                .build();
         List<TestCaseStep> values = Arrays.asList(second, third, new TestCaseStepExampleBuilder().withName("first").buildExample());
 
         //first should be the step with startdate, after that the init steps will follow after the creation date
@@ -93,9 +96,12 @@ public class AbstractTestDataEntityTest {
 
     @Test
     public void testCompareToMixedSteps() throws Exception {
-        TestCaseStep third = new TestCaseStepBuilder("third").build();
-        Thread.sleep(20); //sleep to ensure that the creation time is not equal
-        TestCaseStep fourth = new TestCaseStepBuilder("fourth").build();
+        TestCaseStep third = new TestCaseStepBuilder("third")
+                .withCreationDate(new DateTime())
+                .build();
+        TestCaseStep fourth = new TestCaseStepBuilder("fourth")
+                .withCreationDate(new DateTime().plusMillis(1))    //ensure that the creation time is not equal
+                .build();
         List<TestCaseStep> values = Arrays.asList(new TestCaseStepExampleBuilder()
                         .withStartDate(new DateTime().plusMinutes(5).toDate())
                         .withName("second")

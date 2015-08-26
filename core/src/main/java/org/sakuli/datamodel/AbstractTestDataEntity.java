@@ -241,6 +241,14 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         this.state = state;
     }
 
+    public DateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(DateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
     @Override
     public int compareTo(AbstractTestDataEntity abstractSakuliTest) {
         if (abstractSakuliTest == null) {
@@ -261,7 +269,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
                     return -1;
                 }
             }
-            return creationDate.compareTo(abstractSakuliTest.creationDate);
+            return creationDate.compareTo(abstractSakuliTest.getCreationDate());
         }
         return this.startDate.compareTo(startDate2);
     }

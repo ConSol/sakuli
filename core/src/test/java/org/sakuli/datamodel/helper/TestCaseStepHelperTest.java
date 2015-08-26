@@ -71,14 +71,17 @@ public class TestCaseStepHelperTest {
         Path tcFile = getResource("stephelper/tc.js");
         FileUtils.writeStringToFile(
                 tcFile.getParent().resolve(TestCaseStepHelper.SAKULI_STEPS_CACHE_FILE).toFile(),
-                "step_1\nstep_2\nstep_3?special\n",
+                "z_step_1\nother_step_2\nstep_3?special\n",
                 Charset.forName("UTF-8"));
         List<TestCaseStep> steps = TestCaseStepHelper.readCachedStepDefinitions(tcFile);
+        //do this to ensure correct sorting
+        List<TestCaseStep> result = Arrays.asList(steps.get(2), steps.get(0), steps.get(1));
+        Collections.sort(result);
         assertNotNull(getResource(CACHEFILE_NAME));
-        assertEquals(steps.size(), 3);
-        Iterator<TestCaseStep> it = steps.iterator();
-        assertInitStep(it.next(), "step_1");
-        assertInitStep(it.next(), "step_2");
+        assertEquals(result.size(), 3);
+        Iterator<TestCaseStep> it = result.iterator();
+        assertInitStep(it.next(), "z_step_1");
+        assertInitStep(it.next(), "other_step_2");
         assertInitStep(it.next(), "step_3?special");
     }
 
