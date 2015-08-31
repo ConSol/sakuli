@@ -37,6 +37,7 @@ import org.testng.annotations.Test;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -71,8 +72,8 @@ public class CommonResultServiceImplTest extends LoggerTest {
         TestSuite testSuite = new TestSuiteExampleBuilder()
                 .withId("LOG_TEST_SUITE").withState(testSuiteState)
                 .withException(testSuiteState.isError() ? new SakuliException("TEST") : null)
-                .withTestCases(Arrays.asList(new TestCaseExampleBuilder()
-                                .withTestCaseSteps(Arrays.asList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
+                .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
+                                .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
                                 .withState(testCaseState)
                                 .buildExample()
                 ))
@@ -137,4 +138,5 @@ public class CommonResultServiceImplTest extends LoggerTest {
             assertRegExMatch(string, regex);
         }
     }
+
 }

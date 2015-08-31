@@ -60,6 +60,9 @@
     <bean id="org.sakuli.services.forwarder.gearman.GearmanResultServiceImpl" class="org.sakuli.MockitoSpyFactoryBean">
         <constructor-arg value="org.sakuli.services.forwarder.gearman.GearmanResultServiceImpl"/>
     </bean>
+    <bean id="org.sakuli.services.common.CacheHandlingResultServiceImpl" class="org.sakuli.MockitoSpyFactoryBean">
+        <constructor-arg value="org.sakuli.services.common.CacheHandlingResultServiceImpl"/>
+    </bean>
     <!-- Mocked Beans -->
     <bean id="org.sakuli.dao.DaoTestSuite " class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.services.forwarder.database.dao.DaoTestSuite "/>

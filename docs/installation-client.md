@@ -67,13 +67,15 @@ Additionally, on **Windows**:
     
       `export SAKULI_HOME=__INST_DIR__/sakuli-vX.X.X/`
       
-* Additionally, on **Linux** you have to install tesseract manually: 
+* Additionally, on **Linux** you have to install `tesseract` (and maybe `wmctrl`) manually: 
 
         # Ubuntu
         sudo apt-get install tesseract-ocr
+        sudo apt-get install wmctrl
         # openSUSE
         sudo zypper install tesseract
-
+        sudo zypper install wmctrl
+        
 ### Sahi
 
 * Download **Sahi** from [http://sourceforge.net/projects/sahi/files/?source=navbar](http://sourceforge.net/projects/sahi/files/)

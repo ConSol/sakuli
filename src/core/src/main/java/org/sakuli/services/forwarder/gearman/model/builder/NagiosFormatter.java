@@ -16,21 +16,24 @@
  * limitations under the License.
  */
 
-package org.sakuli.services;
+package org.sakuli.services.forwarder.gearman.model.builder;
 
-import java.util.Comparator;
+import java.util.Locale;
 
 /**
- * @author Tobias Schneck
+ * Representing a set of formatting methods in the Nagios context.
+ *
+ * @author tschneck
+ *         Date: 8/26/15
  */
-public class PrioritizedServiceComparator<S extends PrioritizedService> implements Comparator<S> {
+public class NagiosFormatter {
 
-    @Override
-    public int compare(S o1, S o2) {
-        int result = -1 * Integer.compare(o1.getServicePriority(), o2.getServicePriority());
-        if (result == 0) {
-            result = Integer.compare(o1.hashCode(), o2.hashCode());
-        }
-        return result;
+
+    public static String formatToSec(float duration) {
+        return String.format(Locale.ENGLISH, "%.2fs", duration);
+    }
+
+    public static String formatToSec(int duration) {
+        return duration + "s";
     }
 }

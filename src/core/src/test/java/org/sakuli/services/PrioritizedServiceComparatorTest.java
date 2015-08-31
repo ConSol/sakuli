@@ -18,11 +18,12 @@
 
 package org.sakuli.services;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import static org.testng.Assert.assertEquals;
 
 public class PrioritizedServiceComparatorTest {
 
@@ -37,7 +38,25 @@ public class PrioritizedServiceComparatorTest {
         set.add(s3);
         set.add(s1);
 
-        Assert.assertEquals(set.first(), s3);
-        Assert.assertEquals(set.last(), s1);
+        assertEquals(set.size(), 3);
+        assertEquals(set.first(), s3);
+        assertEquals(set.last(), s1);
+    }
+
+    @Test
+    public void testCompareSamePriority() throws Exception {
+        PrioritizedService s1 = () -> 10;
+        PrioritizedService s2 = () -> 20;
+        PrioritizedService s3 = () -> 10;
+
+        SortedSet<PrioritizedService> set = new TreeSet<>(new PrioritizedServiceComparator<>());
+        set.add(s2);
+        set.add(s3);
+        set.add(s1);
+
+        assertEquals(set.size(), 3);
+        assertEquals(set.first().getServicePriority(), 20);
+        assertEquals(set.first(), s2);
+        assertEquals(set.last().getServicePriority(), 10);
     }
 }

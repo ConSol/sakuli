@@ -22,8 +22,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.gearman.client.*;
 import org.gearman.common.GearmanJobServerConnection;
 import org.gearman.common.GearmanNIOJobServerConnection;
-import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.services.common.AbstractResultService;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
@@ -44,10 +42,6 @@ import java.util.concurrent.Future;
 @Component
 public class GearmanResultServiceImpl extends AbstractResultService {
     private static final Logger logger = LoggerFactory.getLogger(GearmanResultServiceImpl.class);
-    @Autowired
-    private TestSuite testSuite;
-    @Autowired
-    private SakuliExceptionHandler exceptionHandler;
     @Autowired
     private GearmanProperties properties;
     @Autowired

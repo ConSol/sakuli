@@ -7,3 +7,5 @@ firefox
 .idea
 *.iml
 *.log
+*.sakuli-steps-cache
+sakuli_app

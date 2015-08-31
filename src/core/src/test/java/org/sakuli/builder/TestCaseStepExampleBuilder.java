@@ -20,6 +20,7 @@ package org.sakuli.builder;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.state.TestCaseStepState;
 
 import java.util.Date;
@@ -45,7 +46,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
 
     @Override
     public TestCaseStep buildExample() {
-        TestCaseStep step = new TestCaseStep();
+        TestCaseStep step = new TestCaseStepBuilder(name).build();
         step.setStartDate(startDate);
         step.setStopDate(stopDate);
         step.setWarningTime(warningTime);

@@ -3,6 +3,6 @@
 // ... define your tescase like:
 // folder-of-testcase http://www.startURL.de
 //
-//oxid_showcase/_tc.js http://99.99.99.16
-calculator/_tc.js http://99.99.99.16
-//barbone_wr_applet/_tc_new.js http://99.99.99.16
+oxid_showcase/_tc.js http://99.99.99.16
+calculator/_tc.js http://sahi.example.com/_s_/dyn/Driver_initialized
+barbone_wr_applet/_tc_new.js http://sahi.example.com/_s_/dyn/Driver_initialized

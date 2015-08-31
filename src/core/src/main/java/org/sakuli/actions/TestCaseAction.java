@@ -18,6 +18,7 @@
 
 package org.sakuli.actions;
 
+import org.apache.commons.lang.StringUtils;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
@@ -199,7 +200,7 @@ public class TestCaseAction {
         TestCaseStep newStep = new TestCaseStep();
         newStep.setId(stepName);
         for (TestCaseStep step : loader.getCurrentTestCase().getSteps()) {
-            if (step.equals(newStep)) {
+            if (StringUtils.equals(step.getId(), newStep.getId())) {
                 return step;
             }
         }
@@ -224,7 +225,6 @@ public class TestCaseAction {
      * @param e the original exception
      */
     public void handleException(Throwable e) {
-//        logger.debug("Java Backend - handle Throwable WITH the testcase id '" + loader.getCurrentTestCase().getId() + "'");
         loader.getExceptionHandler().handleException(e, false);
     }
 
@@ -232,7 +232,6 @@ public class TestCaseAction {
      * @param exceptionMessage String message
      */
     public void handleException(String exceptionMessage) {
-//        logger.debug("Java Backend - handle exception from String input WITH the testcase id '" + loader.getCurrentTestCase().getId() + "' and message: " + exceptionMessage);
         loader.getExceptionHandler().handleException(exceptionMessage, false);
     }
 

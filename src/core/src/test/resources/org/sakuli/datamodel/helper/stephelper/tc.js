@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2015 the original author or authors.
+ * Copyright 2013 - 2014 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +16,3 @@
  * limitations under the License.
  */
 
-package org.sakuli.services;
-
-import java.util.Comparator;
-
-/**
- * @author Tobias Schneck
- */
-public class PrioritizedServiceComparator<S extends PrioritizedService> implements Comparator<S> {
-
-    @Override
-    public int compare(S o1, S o2) {
-        int result = -1 * Integer.compare(o1.getServicePriority(), o2.getServicePriority());
-        if (result == 0) {
-            result = Integer.compare(o1.hashCode(), o2.hashCode());
-        }
-        return result;
-    }
-}

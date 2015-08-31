@@ -135,7 +135,7 @@ public class SahiConnector {
         }
     }
 
-    //TODO TS #100  refactor, write Test and document
+    //TODO TS #96  refactor, write Test and document
     protected String getInitJSString() {
         return String.format("var $includeFolder = '%s'; var $testSuiteFolder = '%s';",
                 getIncludeFolderJsPath(),

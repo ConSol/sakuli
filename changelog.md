@@ -2,6 +2,8 @@
 
 ### Version 1.0.0
 
+- - -
+
 ### Version 0.9.0
 * close #74 extract logging functions to separate javascript class Logger
 * close #70 rename sakuli.screenbased.* properties to sikuli.*
@@ -42,10 +44,27 @@
  - - -
  
 ### Version 0.4.9 (Bugfix Release)
- * close #92 exclude Base64 String in log output
- * modify documentation of warning / critical times
- * add testcase.endOfStep function without warning time
- * add #81 change numbering scheme for cases and steps to always three digits to expanded color array in PHP template
+* add #77 separate error state to identify the affected TestCaseStep on errors:
+    * modify SakuliExceptionHandler to find current Step and enable adding exception to the current step
+    * add error message output for exceptions in TestCaseSteps
+* add #31 determine all not executed TestCaseSteps, to secure that the nagios performance graphs are displayed correctly:
+    * introduce new TestCaseStepState INIT
+    * modify nagios RRD performance data output for initialized and not started steps to typ 'unknown'
+    * add caching mechanism the step information for not started steps implementation 
+    * call write cached steps information on every 'not error' result
+    * gearman forward: write unknown values to every result line if a suite, case or step entity has finished with errors or have even not been called
+    * database forwarder: write NULL instead of '0' at warning and critical times
+* add `takeScreenshot()` method to Region object to get the current region as screenshot
+* add troubleshooting for Nullpointer at `new Application("..").getRegion()` to documentation
+* fix PrioritizedServiceComparator so now 2 service with the same priority will also accepted
+* add jenkins-build badge
+* add #46 add dev-v0.4 read-the-docs & read-the-docs badge
+* add #96 add variable '$testSuiteFolder' fore more strait forward import handling // check TODO
+* fix dependency path of javafx for java7
+* close #92 exclude Base64 String in log output
+* modify documentation of warning / critical times
+* add testcase.endOfStep function without warning time
+* add #81 change numbering scheme for cases and steps to always three digits to expanded color array in PHP template
 
 ### Version 0.4.8
 * fix bug: test suite has stat 'OK' instead of 'RUNNING' during the execution

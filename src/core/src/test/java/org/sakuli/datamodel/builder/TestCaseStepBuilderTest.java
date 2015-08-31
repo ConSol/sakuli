@@ -16,21 +16,25 @@
  * limitations under the License.
  */
 
-package org.sakuli.services;
+package org.sakuli.datamodel.builder;
 
-import java.util.Comparator;
+import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.state.TestCaseStepState;
+import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
 
 /**
- * @author Tobias Schneck
+ * @author tschneck
+ *         Date: 8/21/15
  */
-public class PrioritizedServiceComparator<S extends PrioritizedService> implements Comparator<S> {
+public class TestCaseStepBuilderTest {
 
-    @Override
-    public int compare(S o1, S o2) {
-        int result = -1 * Integer.compare(o1.getServicePriority(), o2.getServicePriority());
-        if (result == 0) {
-            result = Integer.compare(o1.hashCode(), o2.hashCode());
-        }
-        return result;
+    @Test
+    public void testBuild() throws Exception {
+        TestCaseStep step = new TestCaseStepBuilder("step for unit test").build();
+        assertEquals(step.getId(), "step_for_unit_test");
+        assertEquals(step.getName(), "step_for_unit_test");
+        assertEquals(step.getState(), TestCaseStepState.INIT);
     }
 }

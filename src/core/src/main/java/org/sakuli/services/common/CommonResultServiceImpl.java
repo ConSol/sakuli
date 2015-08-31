@@ -20,10 +20,8 @@ package org.sakuli.services.common;
 
 import org.sakuli.actions.environment.Application;
 import org.sakuli.datamodel.TestCase;
-import org.sakuli.datamodel.TestSuite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Predicate;
@@ -37,8 +35,6 @@ import java.util.function.Predicate;
 @Component
 public class CommonResultServiceImpl extends AbstractResultService {
     private static Logger logger = LoggerFactory.getLogger(CommonResultServiceImpl.class);
-    @Autowired
-    private TestSuite testSuite;
 
     @Override
     public int getServicePriority() {

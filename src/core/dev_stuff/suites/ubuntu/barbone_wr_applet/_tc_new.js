@@ -24,12 +24,19 @@
  *************************************/
 
 _dynamicInclude($includeFolder);
-var testCase = new TestCase(80, 100);
-
+var testCase = new TestCase(0, 0);
+var screen = new Region();
 
 /******************************
  * Description of the test case
  ******************************/
+function closeEditor() {
+    editorApp.close(true);
+    if (screen.exists("gedit_close_without_saving", 1)) {
+        screen.find("gedit_close_without_saving").click();
+    }
+}
+
 try {
 
     var env = new Environment(false).setSimilarity(0.9);
@@ -61,41 +68,41 @@ try {
 
         env.keyDown(Key.ALT).type(Key.NUM0 + Key.NUM9 + Key.NUM2).keyUp(Key.ALT);
         env.keyDown(Key.SHIFT).type("keydown").keyUp(Key.SHIFT);
-        //env.write("#w2.#C.n#W1.#d3.").sleep(2).write("bla");
+        env.write("#w2.#C.n#W1.#d3.").sleep(2).write("bla");
 
         notepadRegion.paste("foobar(),.-;:");
         notepadRegion.paste(editorApp.getName());
+        testCase.endOfStep("paste and typing part");
 
         notepadRegion.highlight(2);
 
         env.setClipboard("clipboard");
-        var newNotpadRegion = new Region().find("gedit_doc_logo").grow(500, 300);
+        var newNotpadRegion = screen.find("gedit_doc_logo").grow(500, 300);
         newNotpadRegion.click();
         env.pasteClipboard().cleanClipboard().pasteClipboard();
         newNotpadRegion.click().paste("BLA BAL BAL");
+        testCase.endOfStep("some clipboard stuff");
 
+        var extractTextRegion = screen.find("gedit_doc_logo").move(-5, 60).setW(70);
+        //extractTextRegion.takeScreenShot();
+        newNotpadRegion.typeMasked(extractTextRegion.extractText());
+        testCase.endOfStep('OCR extracting text');
 
-        //var extractText = new Region().find("gedit_doc_logo").move(-5, 20).grow(50, 0).extractText();
-        //newNotpadRegion.typeMasked(extractText);
+        closeEditor();
+        testCase.endOfStep("external Application test", 10);
 
     } finally {
         //env.type(Key.ALT + Key.F4);
-        editorApp.close();
-        var exists = new Region().exists("gedit_close_without_saving", 3);
-        if (exists) {
-            exists.click();
-        }
-        env.sleep(1);
-        testCase.endOfStep("external Application test", 25);
+        closeEditor();
     }
 
     /***
      * NEW STEP
      ***/
-    _navigateTo("http://99.99.99.16/wr-applet", true);
+    //_navigateTo("http://99.99.99.16/wr-applet", true);
 //    var secWarn = testCase.wait("1_1_sec_warn.png", 20);
 //    testCase.clickOnRegion(testCase.findInRegion("1_1_sec_warn_execute", secWarn.below(300)));
-    testCase.endOfStep("securtiy warning", 25);
+//    testCase.endOfStep("securtiy warning", 25);
 
 
 //    //sakuli.takeScreenshot("/home/SAKULI/bevorIchAkzeptiere.png");
@@ -128,11 +135,11 @@ try {
 
 //    //click OK-Button
 //    testCase.click("4_ok_button");
-    Logger.logInfo("Sahi wait for 2 seconds!!!");
-    _wait(2000);
-    testCase.endOfStep("Type into amount 500", 20);
+//    env.logInfo("Sahi wait for 2 seconds!!!");
+//    _wait(2000);
+//    testCase.endOfStep("Type into amount 500", 20);
 
-    env.setClipboard("TEEEEEST");
+    //env.setClipboard("TEEEEEST");
 
 //    /***
 //     * NEW STEP

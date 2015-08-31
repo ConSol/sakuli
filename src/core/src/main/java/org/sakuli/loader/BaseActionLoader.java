@@ -22,6 +22,7 @@ import net.sf.sahi.report.Report;
 import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.properties.ActionProperties;
@@ -47,6 +48,13 @@ public interface BaseActionLoader {
      * Sets the current {@link TestCase} during execution of a {@link TestSuite}.
      */
     void setCurrentTestCase(TestCase testCase);
+
+    /**
+     * @return the first Step in state {@link org.sakuli.datamodel.state.TestCaseStepState#INIT}
+     * or {@link org.sakuli.datamodel.state.TestCaseStepState#ERRORS} in the current {@link TestCase},
+     * if there is one present.
+     */
+    TestCaseStep getCurrentTestCaseStep();
 
     ImageLib getImageLib();
 

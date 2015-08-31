@@ -19,6 +19,7 @@
 package org.sakuli.services.common;
 
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.services.ResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,10 +29,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class AbstractResultService implements ResultService {
 
     @Autowired
-    private TestSuite testSuite;
+    protected SakuliExceptionHandler exceptionHandler;
+    @Autowired
+    protected TestSuite testSuite;
 
     @Override
     public void refreshStates() {
         testSuite.refreshState();
     }
+
 }

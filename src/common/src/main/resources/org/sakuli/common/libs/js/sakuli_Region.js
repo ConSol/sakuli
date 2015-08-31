@@ -589,6 +589,25 @@ function initRegion(that, javaObject) {
     };
 
     /**
+     * Takes a screenshot of the current Region in the screen and saves it the current testcase folder
+     * with the assigned filename.
+     *
+     * @param {String} filename name of the screenshot, e.g. `region_screenshot`.
+     *                 Default: screenshot
+     *
+     * @return {String} file path to the created screenshot OR null on errors
+     * @memberOf Region
+     * @method takeScreenShot
+     */
+    that.takeScreenShot = function (filename) {
+        if (undefined == filename) {
+            filename = "screenshot";
+        }
+        var path = that.javaObject.takeScreenShot(filename);
+        return path != null ? path.toString() : null;
+    };
+
+    /**
      * Blocks the current testcase execution for x seconds
      *
      * @param {number} seconds to sleep

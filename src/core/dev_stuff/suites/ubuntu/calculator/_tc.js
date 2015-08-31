@@ -38,14 +38,15 @@ try {
     var appGedit = new Application("/usr/bin/gedit");
     try {
         appCalc.open();
-        screen.waitForImage("calculator.png", 20);
+        screen.waitForImage("gcalculator.png", 20);
         testCase.endOfStep("init");
 
         env.type("525");
         env.sleep(2);
-        appCalc.getRegion().find("plus.png").click().type("100");
+        var calcRegion = appCalc.getRegion();
+        calcRegion.find("plus.png").click().type("100");
         //appCalc.getRegion().find("plus.png").mouseMove().sleep(2).mouseDown(MouseButton.LEFT).sleep(1).mouseUp(MouseButton.LEFT).type("100");
-        appCalc.getRegion().find("result.png").click();
+        calcRegion.find("result.png").click();
         testCase.endOfStep("calculation", 12);
 
         appGedit.open();

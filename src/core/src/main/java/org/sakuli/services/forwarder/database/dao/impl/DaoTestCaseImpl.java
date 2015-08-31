@@ -70,8 +70,10 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
         tcParameters.addValue("guid", testSuite.getGuid());
         tcParameters.addValue("start", testCase.getStartDateAsUnixTimestamp());
         tcParameters.addValue("stop", testCase.getStopDateAsUnixTimestamp());
-        tcParameters.addValue("warning", testCase.getWarningTime());
-        tcParameters.addValue("critical", testCase.getCriticalTime());
+        int warningTime = testCase.getWarningTime();
+        tcParameters.addValue("warning", (warningTime != 0) ? warningTime : null);
+        int criticalTime = testCase.getCriticalTime();
+        tcParameters.addValue("critical", (criticalTime != 0) ? criticalTime : null);
         tcParameters.addValue("browser", testSuite.getBrowserInfo());
         tcParameters.addValue("lastpage", testCase.getLastURL());
 
@@ -115,13 +117,11 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
     public File getScreenShotFromDB(int dbPrimaryKey) {
         try {
             List l = getJdbcTemplate().query("select id, screenshot from sakuli_cases where id=" + dbPrimaryKey,
-                    new RowMapper() {
-                        public Object mapRow(ResultSet rs, int i) throws SQLException {
-                            Map results = new HashMap();
-                            InputStream blobBytes = lobHandler.getBlobAsBinaryStream(rs, "screenshot");
-                            results.put("BLOB", blobBytes);
-                            return results;
-                        }
+                    (rs, i) -> {
+                        Map results = new HashMap();
+                        InputStream blobBytes = lobHandler.getBlobAsBinaryStream(rs, "screenshot");
+                        results.put("BLOB", blobBytes);
+                        return results;
                     }
             );
             HashMap<String, InputStream> map = (HashMap<String, InputStream>) l.get(0);

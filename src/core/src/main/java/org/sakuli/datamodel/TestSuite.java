@@ -30,6 +30,8 @@ import org.springframework.util.CollectionUtils;
 import java.nio.file.Path;
 import java.util.*;
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 /**
  * @author tschneck Date: 10.06.13
  */
@@ -139,23 +141,21 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
 
     @Override
     public String getExceptionMessages(boolean flatFormatted) {
-        String errorMessages = super.getExceptionMessages(flatFormatted);
-        if (errorMessages == null) {
-            errorMessages = "";
+        String suiteErrorMessage = super.getExceptionMessages(flatFormatted);
+        if (suiteErrorMessage == null) {
+            suiteErrorMessage = "";
         }
-        if (!CollectionUtils.isEmpty(getTestCases())) {
-            for (TestCase testCase : getTestCasesAsSortedSet()) {
-                if (testCase.getExceptionMessages() != null) {
-                    if (flatFormatted) {
-                        errorMessages += " - ";
-                    } else {
-                        errorMessages += "\n";
-                    }
-                    errorMessages += "CASE '" + testCase.getId() + "': " + testCase.getExceptionMessages();
+        for (TestCase testCase : getTestCasesAsSortedSet()) {
+            final String tcErrorMessage = testCase.getExceptionMessages(flatFormatted);
+
+            if (isNotBlank(tcErrorMessage)) {
+                if (isNotBlank(suiteErrorMessage)) {
+                    suiteErrorMessage += flatFormatted ? " -- " : "\n";
                 }
+                suiteErrorMessage += "CASE '" + testCase.getId() + "': " + tcErrorMessage;
             }
         }
-        return errorMessages;
+        return suiteErrorMessage;
     }
 
     public String getAbsolutePathOfTestSuiteFile() {

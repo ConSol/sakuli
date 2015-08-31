@@ -20,18 +20,21 @@ package org.sakuli.loader;
 
 import net.sf.sahi.rhino.RhinoScriptRunner;
 import net.sf.sahi.session.Session;
+import org.joda.time.DateTime;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
+import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.testng.Assert;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -39,11 +42,12 @@ import java.io.IOException;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
+import static org.testng.Assert.*;
 
 /**
  * autor tschneck
  */
-public class BaseActionEnvironmentLoaderTest {
+public class BaseActionLoaderTest {
     @Mock
     private RhinoScriptRunner rhinoScriptRunner;
     @Mock
@@ -101,7 +105,7 @@ public class BaseActionEnvironmentLoaderTest {
         ArgumentCaptor<SakuliException> ac = ArgumentCaptor.forClass(SakuliException.class);
         testling.init(testCaseId, ".");
         verify(exceptionHandler).handleException(ac.capture());
-        Assert.assertEquals(ac.getValue().getMessage(), "cannot init rhino script runner with sakuli custom delay variable 'sakuli-delay-active'");
+        assertEquals(ac.getValue().getMessage(), "cannot init rhino script runner with sakuli custom delay variable 'sakuli-delay-active'");
         verify(session, never()).setVariable(anyString(), anyString());
     }
 
@@ -127,5 +131,47 @@ public class BaseActionEnvironmentLoaderTest {
         when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("test", testCaseId));
         testling.init(testCaseId, new String[0]);
         verify(exceptionHandler, times(1)).handleException(any(IOException.class));
+    }
+
+    @Test
+    public void testGetCurrenTestCase() throws Exception {
+        assertNull(testling.getCurrentTestCaseStep());
+        TestCase tc = new TestCase("test", "nocase");
+        ReflectionTestUtils.setField(testling, "currentTestCase", tc);
+        assertNotNull(testling.getCurrentTestCase());
+        assertNull(testling.getCurrentTestCaseStep());
+        DateTime creationDate = new DateTime();
+        tc.addStep(new TestCaseStepBuilder("step_ok")
+                .withState(TestCaseStepState.OK)
+                .withCreationDate(creationDate)
+                .build());
+        tc.addStep(new TestCaseStepBuilder("step_warning")
+                .withState(TestCaseStepState.WARNING)
+                .withCreationDate(creationDate.plusMillis(1))
+                .build());
+        assertNull(testling.getCurrentTestCaseStep());
+
+
+        tc.addStep(new TestCaseStepBuilder("step_init_1")
+                .withState(TestCaseStepState.INIT)
+                .withCreationDate(creationDate.plusMillis(10))
+                .build());
+        assertNotNull(testling.getCurrentTestCaseStep());
+        assertEquals(testling.getCurrentTestCaseStep().getName(), "step_init_1");
+
+        tc.addStep(new TestCaseStepBuilder("step_init_2")
+                .withState(TestCaseStepState.INIT)
+                .withCreationDate(creationDate.plusMillis(11))
+                .build());
+        assertNotNull(testling.getCurrentTestCaseStep());
+        assertEquals(testling.getCurrentTestCaseStep().getName(), "step_init_1");
+
+        //add step before other init state's
+        tc.addStep(new TestCaseStepBuilder("step_error")
+                .withState(TestCaseStepState.ERRORS)
+                .withCreationDate(creationDate.plusMillis(2))
+                .build());
+        assertNotNull(testling.getCurrentTestCaseStep());
+        assertEquals(testling.getCurrentTestCaseStep().getName(), "step_error");
     }
 }

@@ -18,6 +18,7 @@
 
 package org.sakuli.datamodel;
 
+import org.joda.time.DateTime;
 import org.sakuli.datamodel.state.SakuliState;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
@@ -57,6 +58,16 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
     protected int warningTime = -1;
     protected int criticalTime = -1;
     protected String id;
+
+    /**
+     * represent the creation date for this entity, to enable effective sorting after it.
+     * This is only for INTERNAL use. To get the date of starting this entity, see {@link #startDate}.
+     **/
+    private DateTime creationDate;
+
+    public AbstractTestDataEntity() {
+        creationDate = new DateTime();
+    }
 
     /**
      * set the times to the format "time in millisec / 1000"
@@ -230,6 +241,14 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         this.state = state;
     }
 
+    public DateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(DateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
     @Override
     public int compareTo(AbstractTestDataEntity abstractSakuliTest) {
         if (abstractSakuliTest == null) {
@@ -239,11 +258,18 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
             return 0;
         }
         Date startDate2 = abstractSakuliTest.getStartDate();
+
         if (this.startDate == null || startDate2 == null || this.startDate.compareTo(startDate2) == 0) {
-            if (id == null) {
-                return abstractSakuliTest.getId() != null ? 1 : 0;
+            boolean boothNull = this.startDate == null && startDate2 == null;
+            if (!boothNull) {
+                if (this.startDate == null) {
+                    return 1;
+                }
+                if (startDate2 == null) {
+                    return -1;
+                }
             }
-            return id.compareTo(abstractSakuliTest.id);
+            return creationDate.compareTo(abstractSakuliTest.getCreationDate());
         }
         return this.startDate.compareTo(startDate2);
     }

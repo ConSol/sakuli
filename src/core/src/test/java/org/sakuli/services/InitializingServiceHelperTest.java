@@ -22,7 +22,7 @@ public class InitializingServiceHelperTest extends AbstractServiceBaseTest {
 
     @Test
     public void testInvokeAllResultServices() throws Exception {
-        assertEquals(BeanLoader.loadMultipleBeans(ResultService.class).size(), 3);
+        assertEquals(BeanLoader.loadMultipleBeans(InitializingService.class).size(), 3);
         DatabaseInitializingServiceImpl databaseService = BeanLoader.loadBean(DatabaseInitializingServiceImpl.class);
         doNothing().when(databaseService).initTestSuite();
         GearmanInitializingServiceImpl gearmanService = BeanLoader.loadBean(GearmanInitializingServiceImpl.class);

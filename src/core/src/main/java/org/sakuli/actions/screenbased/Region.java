@@ -25,6 +25,9 @@ import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.Screen;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 /**
  * @author Tobias Schneck
  */
@@ -533,6 +536,24 @@ public class Region implements Action {
     public Region highlight() {
         regionImpl.highlight(getLoader().getSettings().DefaultHighlightTime);
         return this;
+    }
+
+    /**
+     * Takes a screenshot of the current Region in the screen and saves it the current testcase folder
+     * with the assigned filename.
+     *
+     * @param filename name of the screenshot file, e.g. `region_screenshot`
+     * @return {@link Path} to the created screenshot OR null on errors
+     */
+    @LogToResult
+    public Path takeScreenShot(String filename) {
+        Path tcfolder = getLoader().getCurrentTestCase().getTcFile().getParent();
+        try {
+            getLoader().getScreenshotActions().takeScreenshot(filename, tcfolder, regionImpl.getRect());
+        } catch (IOException e) {
+            getLoader().getExceptionHandler().handleException(e);
+        }
+        return null;
     }
 
     /**

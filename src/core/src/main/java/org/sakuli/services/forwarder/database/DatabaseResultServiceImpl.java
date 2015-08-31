@@ -19,8 +19,7 @@
 package org.sakuli.services.forwarder.database;
 
 import org.sakuli.datamodel.TestCase;
-import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.common.AbstractResultService;
 import org.sakuli.services.forwarder.database.dao.DaoTestCase;
@@ -31,6 +30,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+
+import java.util.SortedSet;
 
 /**
  * @author tschneck
@@ -47,10 +48,6 @@ public class DatabaseResultServiceImpl extends AbstractResultService {
     private DaoTestCaseStep daoTestCaseStep;
     @Autowired
     private DaoTestSuite daoTestSuite;
-    @Autowired
-    private TestSuite testSuite;
-    @Autowired
-    private SakuliExceptionHandler exceptionHandler;
 
     @Override
     public int getServicePriority() {
@@ -65,13 +62,14 @@ public class DatabaseResultServiceImpl extends AbstractResultService {
             daoTestSuite.saveTestSuiteToSahiJobs();
 
             if (!CollectionUtils.isEmpty(testSuite.getTestCases())) {
-                for (TestCase tc : testSuite.getTestCases().values()) {
+                for (TestCase tc : testSuite.getTestCasesAsSortedSet()) {
                     //write testcase and steps to DB
                     daoTestCase.saveTestCaseResult(tc);
 
                     logger.info("... try to save all STEPS for test case '" + tc.getId() + "'!");
-                    if (!CollectionUtils.isEmpty(tc.getSteps())) {
-                        daoTestCaseStep.saveTestCaseSteps(tc.getSteps(), tc.getDbPrimaryKey());
+                    SortedSet<TestCaseStep> steps = tc.getStepsAsSortedSet();
+                    if (!steps.isEmpty()) {
+                        daoTestCaseStep.saveTestCaseSteps(steps, tc.getDbPrimaryKey());
                         logger.info("all STEPS for '" + tc.getId() + "' saved!");
                     } else {
                         logger.info("no STEPS for '\" + tc.getId() +\"'found => no STEPS saved in DB!");

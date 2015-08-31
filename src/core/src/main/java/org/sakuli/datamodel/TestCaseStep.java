@@ -35,13 +35,22 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
      */
     @Override
     public void refreshState() {
+        //if a error set error
+        if (exception != null) {
+            state = TestCaseStepState.ERRORS;
+            return;
+        }
         //if a step exceed the runtime set WARNING
+        TestCaseStepState newState;
         if (warningTime > 0 && getDuration() > warningTime) {
-            state = TestCaseStepState.WARNING;
+            newState = TestCaseStepState.WARNING;
         } else if (startDate != null && stopDate != null) {
-            state = TestCaseStepState.OK;
+            newState = TestCaseStepState.OK;
         } else {
-            state = TestCaseStepState.INIT;
+            newState = TestCaseStepState.INIT;
+        }
+        if (state == null || newState.getErrorCode() > state.getErrorCode()) {
+            state = newState;
         }
     }
 

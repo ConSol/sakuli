@@ -21,7 +21,7 @@ package org.sakuli.services.forwarder.database.dao;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.services.forwarder.database.ProfileJdbcDb;
 
-import java.util.List;
+import java.util.SortedSet;
 
 /**
  * @author tschneck
@@ -30,8 +30,5 @@ import java.util.List;
 @ProfileJdbcDb
 public interface DaoTestCaseStep {
 
-    void saveTestCaseSteps(List<TestCaseStep> steps, int primaryKeyOfTestCase);
-
-    int getCountOfSahiSteps();
-
+    void saveTestCaseSteps(SortedSet<TestCaseStep> steps, int primaryKeyOfTestCase);
 }

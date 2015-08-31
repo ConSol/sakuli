@@ -24,6 +24,7 @@ import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.actions.screenbased.ScreenshotActions;
 import org.sakuli.actions.settings.ScreenBasedSettings;
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.actions.Screen;
@@ -151,6 +152,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     @Override
     public void setCurrentTestCase(TestCase testCase) {
         baseLoader.setCurrentTestCase(testCase);
+    }
+
+    @Override
+    public TestCaseStep getCurrentTestCaseStep() {
+        return baseLoader.getCurrentTestCaseStep();
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.sakuli.services;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.loader.BeanLoader;
+import org.sakuli.services.common.CacheHandlingResultServiceImpl;
 import org.sakuli.services.forwarder.database.DatabaseResultServiceImpl;
 import org.sakuli.services.forwarder.gearman.GearmanResultServiceImpl;
 import org.testng.annotations.Test;
@@ -20,9 +21,10 @@ public class ResultServiceHelperTest extends AbstractServiceBaseTest {
 
     @Test
     public void testInvokeAllResultServices() throws Exception {
-        assertEquals(BeanLoader.loadMultipleBeans(ResultService.class).size(), 3);
+        assertEquals(BeanLoader.loadMultipleBeans(ResultService.class).size(), 4);
         DatabaseResultServiceImpl databaseResultService = mockDatabaseResultService();
         GearmanResultServiceImpl gearmanResultService = mockGearmanResultService();
+        CacheHandlingResultServiceImpl cacheHandlingResultService = mockCacheHandlingResultService();
         TestSuite testSuite = BeanLoader.loadBean(TestSuite.class);
         testSuite.setState(TestSuiteState.RUNNING);
 
@@ -33,6 +35,8 @@ public class ResultServiceHelperTest extends AbstractServiceBaseTest {
         verify(databaseResultService).refreshStates();
         verify(gearmanResultService).saveAllResults();
         verify(gearmanResultService).refreshStates();
+        verify(cacheHandlingResultService).saveAllResults();
+        verify(cacheHandlingResultService).refreshStates();
     }
 
     private GearmanResultServiceImpl mockGearmanResultService() {
@@ -47,5 +51,12 @@ public class ResultServiceHelperTest extends AbstractServiceBaseTest {
         doNothing().when(databaseResultService).refreshStates();
         doNothing().when(databaseResultService).saveAllResults();
         return databaseResultService;
+    }
+
+    private CacheHandlingResultServiceImpl mockCacheHandlingResultService() {
+        CacheHandlingResultServiceImpl cacheHandlingResultService = BeanLoader.loadBean(CacheHandlingResultServiceImpl.class);
+        doNothing().when(cacheHandlingResultService).refreshStates();
+        doNothing().when(cacheHandlingResultService).saveAllResults();
+        return cacheHandlingResultService;
     }
 }

@@ -19,6 +19,7 @@
 package org.sakuli.datamodel;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliException;
@@ -165,7 +166,55 @@ public class TestSuiteTest {
         tc1.addException(new SakuliException(messageCase));
         testSuite.addTestCase(tc1.getId(), tc1);
         assertEquals(testSuite.getExceptionMessages(), message + "\n" + "CASE '" + tc1.getId() + "': " + messageCase);
-        assertEquals(testSuite.getExceptionMessages(true), message + " - CASE '" + tc1.getId() + "': " + messageCase);
+        assertEquals(testSuite.getExceptionMessages(true), message + " -- CASE '" + tc1.getId() + "': " + messageCase);
+    }
+
+    @Test
+    public void testGetExceptionMessageWithErrorInStep() {
+        TestSuite testSuite = new TestSuite();
+        String message = "suite-exception";
+        testSuite.addException(new SakuliException(message));
+        assertEquals(testSuite.getExceptionMessages(), message);
+        assertEquals(testSuite.getExceptionMessages(true), message);
+
+        TestCase tc1 = new TestCase("case1", "case1");
+        String messageCase = "case-exception";
+        tc1.addException(new SakuliException(messageCase));
+        testSuite.addTestCase(tc1.getId(), tc1);
+
+        TestCaseStep step1 = new TestCaseStepBuilder("step1").build();
+        String messageStep = "step-exception";
+        step1.addException(new SakuliException(messageStep));
+        tc1.addStep(step1);
+
+        assertEquals(testSuite.getExceptionMessages(),
+                message + "\n" + "CASE '" + tc1.getId() + "': " + messageCase
+                        + "\n\tSTEP '" + step1.getId() + "': " + messageStep
+        );
+        assertEquals(testSuite.getExceptionMessages(true),
+                message + " -- CASE '" + tc1.getId() + "': " + messageCase
+                        + " - STEP '" + step1.getId() + "': " + messageStep
+        );
+
+        tc1.exception = null;
+        assertEquals(testSuite.getExceptionMessages(),
+                message + "\n" + "CASE '" + tc1.getId() + "': "
+                        + "\n\tSTEP '" + step1.getId() + "': " + messageStep
+        );
+        assertEquals(testSuite.getExceptionMessages(true),
+                message + " -- CASE '" + tc1.getId() + "': "
+                        + "STEP '" + step1.getId() + "': " + messageStep
+        );
+
+        testSuite.exception = null;
+        assertEquals(testSuite.getExceptionMessages(),
+                "CASE '" + tc1.getId() + "': "
+                        + "\n\tSTEP '" + step1.getId() + "': " + messageStep
+        );
+        assertEquals(testSuite.getExceptionMessages(true),
+                "CASE '" + tc1.getId() + "': "
+                        + "STEP '" + step1.getId() + "': " + messageStep
+        );
     }
 }
 

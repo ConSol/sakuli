@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.aop.RhinoAspect;
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.LogResult;
 import org.sakuli.loader.ScreenActionLoader;
@@ -36,7 +37,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author tschneck Date: 12.07.13
@@ -83,10 +83,17 @@ public class SakuliExceptionHandler {
             result.add(testSuite.getException());
         }
         if (testSuite.getTestCases() != null) {
-            result.addAll(testSuite.getTestCases().values().stream()
-                    .filter(tc -> tc.getException() != null)
-                    .map(TestCase::getException)
-                    .collect(Collectors.toList()));
+            for (TestCase tc : testSuite.getTestCases().values()) {
+                if (tc.getException() != null) {
+                    result.add(tc.getException());
+                }
+                for (TestCaseStep step : tc.getSteps()) {
+                    if (step.getException() != null) {
+                        result.add(step.getException());
+                    }
+                }
+
+            }
         }
 
         return result;
@@ -120,6 +127,25 @@ public class SakuliExceptionHandler {
         }
         //retrun null if nothing matches
         return null;
+    }
+
+    static boolean containsException(TestSuite testSuite) {
+        if (testSuite.getException() != null) {
+            return true;
+        }
+        if (!CollectionUtils.isEmpty(testSuite.getTestCases())) {
+            for (TestCase tc : testSuite.getTestCases().values()) {
+                if (tc.getException() != null) {
+                    return true;
+                }
+                for (TestCaseStep step : tc.getSteps()) {
+                    if (step.getException() != null) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -199,29 +225,19 @@ public class SakuliExceptionHandler {
         return resumeExceptions.contains(e);
     }
 
-    private boolean containsException(TestSuite testSuite) {
-        if (testSuite.getException() != null) {
-            return true;
-        }
-        if (!CollectionUtils.isEmpty(testSuite.getTestCases())) {
-            for (TestCase tc : testSuite.getTestCases().values()) {
-                if (tc.getException() != null) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     /**
      * save the exception to the current testcase. If the current testcase is not reachale, then the exception will be
      * saved to the test suite.
      *
      * @param e any {@link SakuliException}
      */
-    private void saveException(SakuliException e) {
+    void saveException(SakuliException e) {
         if (loader.getCurrentTestCase() != null) {
-            loader.getCurrentTestCase().addException(e);
+            if (loader.getCurrentTestCaseStep() != null) {
+                loader.getCurrentTestCaseStep().addException(e);
+            } else {
+                loader.getCurrentTestCase().addException(e);
+            }
         } else {
             loader.getTestSuite().addException(e);
         }

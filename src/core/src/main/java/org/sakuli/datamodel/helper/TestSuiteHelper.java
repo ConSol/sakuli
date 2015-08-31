@@ -21,7 +21,6 @@ package org.sakuli.datamodel.helper;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.TestCase;
-import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.slf4j.Logger;
@@ -36,7 +35,6 @@ import java.nio.file.Paths;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author tschneck Date: 22.05.14
@@ -82,10 +80,9 @@ public class TestSuiteHelper {
                     TestCase tc = new TestCase(
                             TestCaseHelper.convertFolderPathToName(tcFileName),
                             TestCaseHelper.convertTestCaseFileToID(tcFileName));
-                    //TODO TS implemnt parser
-                    List<TestCaseStep> steps = TestCaseStepHelper.parseSteps(tcFile);
                     tc.setStartUrl(startURL);
                     tc.setTcFile(tcFile);
+                    tc.setSteps(TestCaseStepHelper.readCachedStepDefinitions(tcFile));
                     //set the Map with the test case id as key
                     tcMap.put(tc.getId(), tc);
                 } else {
