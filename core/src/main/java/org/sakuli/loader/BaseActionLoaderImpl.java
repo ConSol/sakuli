@@ -22,6 +22,7 @@ import net.sf.sahi.report.Report;
 import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.properties.ActionProperties;
@@ -40,6 +41,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 
 /**
  * @author Tobias Schneck
@@ -172,6 +174,23 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
 
     public void setCurrentTestCase(TestCase currentTestCase) {
         this.currentTestCase = currentTestCase;
+    }
+
+    @Override
+    public TestCaseStep getCurrentTestCaseStep() {
+        if (currentTestCase != null) {
+            SortedSet<TestCaseStep> steps = currentTestCase.getStepsAsSortedSet();
+            if (!steps.isEmpty()) {
+                for (TestCaseStep step : steps) {
+                    step.refreshState();
+                    //find first step with init state and returns it
+                    if (!step.getState().isFinishedWithoutErrors()) {
+                        return step;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     @Override

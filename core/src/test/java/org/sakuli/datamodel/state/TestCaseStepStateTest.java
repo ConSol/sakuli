@@ -31,6 +31,7 @@ public class TestCaseStepStateTest {
         return new Object[][]{
                 {OK, 0},
                 {WARNING, 1},
+                {ERRORS, 2},
                 {INIT, 3},
         };
 
@@ -42,9 +43,10 @@ public class TestCaseStepStateTest {
     }
 
     @Test
-    public void testFinishedWithuutErrors() throws Exception {
+    public void testFinishedWithoutErrors() throws Exception {
         assertTrue(OK.isFinishedWithoutErrors());
         assertTrue(WARNING.isFinishedWithoutErrors());
         assertFalse(INIT.isFinishedWithoutErrors());
+        assertFalse(ERRORS.isFinishedWithoutErrors());
     }
 }
