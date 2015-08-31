@@ -10,3 +10,4 @@ firefox
 *.iml
 *.log
 *.sakuli-steps-cache
+sakuli_app
