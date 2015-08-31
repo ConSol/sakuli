@@ -14,4 +14,5 @@ unzip $SAKULI_TARGET_DIR/sakuli-zipped-release-v$SAKULI_VERSION.zip -d $SAKULI_I
 
 echo "current dir $(dirname $0)"
 cp $(dirname $0)/start_*.sh $SAKULI_INST_FOLDER
+cp $(dirname $0)/run_*.sh $SAKULI_INST_FOLDER
 chmod +x $SAKULI_INST_FOLDER/*.sh
