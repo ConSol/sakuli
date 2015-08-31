@@ -25,6 +25,8 @@ import org.springframework.util.CollectionUtils;
 import java.nio.file.Path;
 import java.util.*;
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 /**
  * @author tschneck Date: 17.06.13
  */
@@ -187,5 +189,27 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
             return new TreeSet<>(steps);
         }
         return new TreeSet<>();
+    }
+
+    @Override
+    public String getExceptionMessages(boolean flatFormatted) {
+        String caseErrorMessage = super.getExceptionMessages(flatFormatted);
+        if (caseErrorMessage == null) {
+            caseErrorMessage = "";
+        }
+        for (TestCaseStep step : getStepsAsSortedSet()) {
+            final String stepErrorMessage = step.getExceptionMessages(flatFormatted);
+
+            if (isNotBlank(stepErrorMessage)) {
+                if (flatFormatted && isNotBlank(caseErrorMessage)) {
+                    caseErrorMessage += " - ";
+                }
+                if (!flatFormatted) {
+                    caseErrorMessage += "\n\t";
+                }
+                caseErrorMessage += "STEP '" + step.getId() + "': " + stepErrorMessage;
+            }
+        }
+        return caseErrorMessage;
     }
 }
