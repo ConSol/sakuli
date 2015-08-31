@@ -30,6 +30,15 @@ var screen = new Region();
 /******************************
  * Description of the test case
  ******************************/
+function closeEditor() {
+    if (screen.exists("gedit_doc_logo")) {
+        editorApp.closeApp();
+        if (screen.exists("gedit_close_without_saving", 1)) {
+            screen.find("gedit_close_without_saving").click();
+        }
+    }
+}
+
 try {
 
     var env = new Environment(false).setSimilarity(0.9);
@@ -49,7 +58,6 @@ try {
     var editorApp = new Application("gedit").setSleepTime(3);
     try {
         editorApp.open();
-
 
         var notepadRegion = editorApp.getRegion();
 
@@ -79,13 +87,12 @@ try {
         newNotpadRegion.typeMasked(extractTextRegion.extractText());
         testCase.endOfStep('OCR extracting text');
 
+        closeEditor();
+        testCase.endOfStep("external Application test", 10);
+
     } finally {
         //env.type(Key.ALT + Key.F4);
-        editorApp.closeApp();
-        if (screen.exists("gedit_close_without_saving", 1)) {
-            screen.find("gedit_close_without_saving").click();
-        }
-        testCase.endOfStep("external Application test", 25);
+        closeEditor();
     }
 
     /***
