@@ -58,7 +58,7 @@
         <test.group.ui>ui</test.group.ui>
         <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
         <!-- special sakuli-version 99x - change this later to latest stable version-->
-        <sikulixapi.version>1.1.991</sikulixapi.version>
+        <sikulixapi.version>1.1.992</sikulixapi.version>
         <sahi.version>5.0</sahi.version>
     </properties>
 
