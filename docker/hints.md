@@ -18,3 +18,9 @@ sudo chmod -R 755 /usr/share/fonts
 ### CentOs
 * Centos6: dbus id `/bin/dbus-uuidgen > /var/lib/dbus/machine-id`
 * Centos7: dbus id `/bin/dbus-uuidgen > /etc/machine-id`
+
+### build and start
+* Centos7: 
+  `docker build -t toschneck/centos-xfce-vnc . && docker run -d -p 5911:5901 toschneck/centos-xfce-vnc`
+* Ubuntu:
+  `docker build -t toschneck/ubuntu-xfce-vnc . && docker run -d -p 5912:5901 toschneck/ubuntu-xfce-vnc`

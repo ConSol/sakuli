@@ -3,10 +3,8 @@ FROM ubuntu:14.04
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2015-08-01
-
-ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
-ENV DISPLAY :1
+
 
 ########## SSH - SERVER
 #RUN apt-get install -y openssh-server
@@ -26,8 +24,9 @@ ENV DISPLAY :1
 RUN apt-key adv --recv-key --keyserver keyserver.ubuntu.com "3EE67F3D0FF405B2"
 RUN echo "deb http://packages.linuxmint.com/ rafaela main upstream import" >> /etc/apt/sources.list.d/mint.list \
     && echo "deb http://extra.linuxmint.com/ rafaela main " >> /etc/apt/sources.list.d/mint.list
-#    && apt-get update && apt-get -y dist-upgrade && apt-get upgrade -y
 
+##### Add Oracle JAVA ppa
+RUN apt-get -y install software-properties-common && add-apt-repository ppa:webupd8team/java -y
 
 ############### sakuli user
 # Add user sakuli to the image
@@ -37,17 +36,11 @@ RUN echo "sakuli:sakuli" | chpasswd
 
 ############### xvnc / xfce installation
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y supervisor xvfb
-RUN apt-get install -y xfce4
-RUN apt-get install -y vnc4server
-RUN apt-get install -y expect
-
-#RUN apt-mark hold initscripts udev plymouth mountall
-#RUN apt-get install -y mint-meta-xfce
+RUN apt-get install -y supervisor xfce4 vnc4server wget firefox
 
 RUN apt-get autoclean -y && apt-get autoremove -y
 
-
+ENV DISPLAY :1
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
 ENV VNC_PW sakuli
