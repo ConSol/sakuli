@@ -1,0 +1,13 @@
+
+# Sakuli docker container with all 'custom' configurations
+sakuli:
+  build: .
+  environment:
+  # set correct timezone
+  - TZ=Europe/Berlin
+  ports:
+  - 5911:5901
+  environment:
+  - SAKULI_TEST_SUITE=/root/test_suites/example_ubuntu
+  volumes:
+  - ~/git-files/sakuli/example_test_suites:/root/test_suites
