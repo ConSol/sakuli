@@ -23,10 +23,9 @@ import org.sakuli.datamodel.Builder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.state.TestCaseStepState;
-import org.sakuli.services.receiver.gearman.GearmanProperties;
-import org.sakuli.services.receiver.gearman.ProfileGearman;
-import org.sakuli.services.receiver.gearman.model.OutputState;
+import org.sakuli.services.forwarder.gearman.GearmanProperties;
+import org.sakuli.services.forwarder.gearman.ProfileGearman;
+import org.sakuli.services.forwarder.gearman.model.OutputState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
