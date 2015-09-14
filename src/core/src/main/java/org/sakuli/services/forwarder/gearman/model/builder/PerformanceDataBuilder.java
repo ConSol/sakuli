@@ -23,7 +23,6 @@ import org.sakuli.datamodel.Builder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
 import org.sakuli.services.forwarder.gearman.model.OutputState;
@@ -142,11 +141,11 @@ public class PerformanceDataBuilder implements Builder<String> {
         int j = 1;
         for (TestCaseStep step : testCaseSteps) {
             final String stepName = String.format("s_%03d_%03d_%s", countOfTestCase, j, step.getId());
-            if (TestCaseStepState.INIT.equals(step.getState())) {
+            if (step.getState().isFinishedWithoutErrors()) {
+                data = addPerformanceDataRow(data, stepName, step.getDuration(), step.getWarningTime(), 0);
+            } else {
                 //add data performance data with unknown state
                 data = addUnknownPerformanceDataRow(data, stepName);
-            } else {
-                data = addPerformanceDataRow(data, stepName, step.getDuration(), step.getWarningTime(), 0);
             }
             j++;
         }
