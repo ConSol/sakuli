@@ -58,6 +58,7 @@ try {
      * Step for Notepad
      ***********************/
     appNotepad.open();
+    appNotepad.getRegion().highlight();
     env.type("Welcome to")
         .type("99", Key.SHIFT)  //types on german keyboard "))"
         .type("Sakuli")
