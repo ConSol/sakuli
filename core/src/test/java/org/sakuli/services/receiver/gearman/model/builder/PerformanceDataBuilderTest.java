@@ -142,6 +142,22 @@ public class PerformanceDataBuilderTest {
     }
 
     @Test
+    public void testStepPerformanceDataUnknownDataOnError() throws Exception {
+        assertEquals(
+                PerformanceDataBuilder.addTestCaseStepPerformanceData(
+                        "",
+                        new TreeSet<>(Arrays.asList(
+                                new TestCaseStepExampleBuilder().withName("step1")
+                                        .withState(TestCaseStepState.OK).buildExample(),
+                                new TestCaseStepExampleBuilder().withName("step2")
+                                        .withState(TestCaseStepState.ERRORS).withStartDate(null).buildExample()
+                        )),
+                        5
+                ),
+                "s_005_001_step1=1.00s;2;;; s_005_002_step2=U;;;;");
+    }
+
+    @Test
     public void testGetPerformanceData() throws Exception {
         Date startDate = new GregorianCalendar(2014, 14, 7, 13, 0).getTime();
         TestSuite testSuiteExample = new TestSuiteExampleBuilder()
