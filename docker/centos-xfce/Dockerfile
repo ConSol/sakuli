@@ -6,7 +6,7 @@
 
 FROM centos:centos7
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2015-08-01
+ENV REFRESHED_AT 2015-09-14
 
 ENV JAVA_VERSION 8u60
 ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install

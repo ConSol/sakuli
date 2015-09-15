@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #resolve_vnc_connection
 VNC_IP=$(ip addr show eth0 | grep -Po 'inet \K[\d.]+')
@@ -13,6 +13,6 @@ echo "change vnc password!"
 echo -e "\nStart VNCSERVER on DISPLAY= $DISPLAY \n\t=> connect via VNC viewer wiht $VNC_IP:$VNC_PORT"
 vncserver $DISPLAY -depth $VNC_COL_DEPTH -geometry $VNC_RESOLUTION
 /etc/xdg/xfce4/xinitrc &
-sleep 5
+sleep 2
 $SAKULI_HOME/bin/sakuli.sh --run $SAKULI_TEST_SUITE
 tail -f $SAKULI_TEST_SUITE/_logs/_sakuli.log
