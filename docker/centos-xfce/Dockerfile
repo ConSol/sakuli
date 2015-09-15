@@ -1,16 +1,20 @@
-# "ported" by Adam Miller <maxamillion@fedoraproject.org> from
-#   https://github.com/fedora-cloud/Fedora-Dockerfiles
-#
-# Originally written for Fedora-Dockerfiles by
-#   scollier <emailscottcollier@gmail.com>
+# This Dockerfile is used to build an sakuli image based on Centos
 
 FROM centos:centos7
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2015-09-14
 
 ENV JAVA_VERSION 8u60
+
+ENV DISPLAY :1
+ENV VNC_COL_DEPTH 24
+ENV VNC_RESOLUTION 1280x1024
+ENV VNC_PW sakuli
+
 ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install
 ENV SAKULI_VERSION 0.9.1-SNAPSHOT
+ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
+ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_ubuntu
 
 # Install the appropriate software
 RUN yum -y update; yum clean all
@@ -61,18 +65,12 @@ RUN wget --directory-prefix=/root \
     && java -jar /root/install_sahi_v50_20141105.jar /root/install_sahi_local.config \
     && rm -fv /root/install_sahi*
 
-RUN yum clean all
 
 ### Install apps for testing
 RUN yum -y install gedit gnome-calculator
 
-
-ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
-ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_ubuntu
-ENV DISPLAY :1
-ENV VNC_COL_DEPTH 24
-ENV VNC_RESOLUTION 1280x1024
-ENV VNC_PW sakuli
+### CleanUp
+RUN yum clean all
 
 # xvnc server porst, if $DISPLAY=:1 port will be 5901
 EXPOSE 5901-5909
