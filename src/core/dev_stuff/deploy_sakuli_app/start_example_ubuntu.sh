@@ -6,6 +6,7 @@ SAKULI_VERSION=0.9.1-SNAPSHOT
 export SAKULI_HOME=$SAKULI_INST_FOLDER/sakuli/sakuli-v$SAKULI_VERSION
 SAHI_HOME=$SAKULI_PROJECT_HOME/sahi
 
+SUITE=example_test_suites/example_ubuntu
 SUITE=src/core/dev_stuff/suites/ubuntu
 
 VNC_DISPLAY=1
