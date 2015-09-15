@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #resolve_vnc_connection
 VNC_IP=$(ip addr show eth0 | grep -Po 'inet \K[\d.]+')
@@ -11,5 +11,6 @@ echo "change vnc password!"
 
 ##start vncserver and show logfile
 echo -e "\nStart VNCSERVER on DISPLAY= $DISPLAY \n\t=> connect via VNC viewer wiht $VNC_IP:$VNC_PORT"
-vncserver $DISPLAY -depth $VNC_COL_DEPTH -geometry $VNC_RESOLUTION && sleep 5
+vncserver $DISPLAY -depth $VNC_COL_DEPTH -geometry $VNC_RESOLUTION && sleep 2
+$SAKULI_HOME/bin/sakuli.sh --run $SAKULI_TEST_SUITE
 tail -f /root/.vnc/*$DISPLAY.log
