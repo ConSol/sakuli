@@ -3,7 +3,7 @@
 FROM ubuntu:14.04
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2015-09-14
+ENV REFRESHED_AT 2015-09-15
 ENV DEBIAN_FRONTEND noninteractive
 
 ENV JAVA_VERSION 8u60
@@ -19,19 +19,6 @@ ENV SAKULI_VERSION 0.9.1-SNAPSHOT
 ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
 ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_ubuntu
 
-########## SSH - SERVER
-#RUN apt-get install -y openssh-server
-#RUN mkdir /var/run/sshd
-#RUN echo 'root:sakuli' | chpasswd
-#RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-#
-## SSH login fix. Otherwise user is kicked off after login
-#RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-#
-#ENV NOTVISIBLE "in users profile"
-#RUN echo "export VISIBLE=now" >> /etc/profile
-#RUN echo "UseDNS no" >> /etc/ssh/sshd_config
-#EXPOSE 22
 
 ############### add linux-mint dependicies and update packages
 RUN apt-key adv --recv-key --keyserver keyserver.ubuntu.com "3EE67F3D0FF405B2"
@@ -53,9 +40,9 @@ RUN mkdir -p $JAVA_HOME \
     && update-alternatives --install "/usr/lib/firefox/browser/plugins/mozilla-javaplugin.so" "mozilla-javaplugin.so" "$JAVA_HOME/lib/amd64/libnpjp2.so" 1
 
 ### Install chrome browser
-RUN wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google.list \
-    && apt-get update && apt-get -y install google-chrome-stable
+RUN apt-get install -y chromium-browser chromium-browser-l10n chromium-codecs-ffmpeg \
+    && ln -s /usr/bin/chromium-browser /usr/bin/google-chrome \
+    && echo "alias chromium-browser='/usr/bin/chromium-browser --user-data-dir'" >> /root/.bashrc
 
 
 ### Install Sakuli
@@ -79,23 +66,15 @@ RUN wget --directory-prefix=/root \
     && java -jar /root/install_sahi_v50_20141105.jar /root/install_sahi_local.config \
     && rm -fv /root/install_sahi*
 
-############### sakuli user
-# Add user sakuli to the image
-#RUN adduser --quiet sakuli
-# Set password for the jenkins user (you may want to alter this).
-#RUN echo "sakuli:sakuli" | chpasswd
-
 ### Install apps for testing
 RUN apt-get -y install gedit gnome-calculator
 
-### CleanUp
-RUN apt-get autoclean -y && apt-get autoremove -y
-
 # xvnc server porst, if $DISPLAY=:1 port will be 5901
-EXPOSE 5901-5909
+EXPOSE 5901
 
 ADD .vnc /root/.vnc
 ADD .config /root/.config
+ADD Desktop /root/Desktop
 ADD scripts /root/scripts
 RUN chmod +x /root/.vnc/xstartup /etc/X11/xinit/xinitrc /root/scripts/*.sh
 
