@@ -2,7 +2,7 @@
 
 FROM centos:centos7
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2015-09-14
+ENV REFRESHED_AT 2015-09-15
 
 ENV JAVA_VERSION 8u60
 
@@ -33,8 +33,9 @@ RUN ln -s /usr/java/default/lib/amd64/libnpjp2.so /usr/lib64/mozilla/plugins/
 ADD repos /etc/yum.repos.d/
 RUN yum -y install google-chrome-stable \
     && echo "alias google-chrome='/usr/bin/google-chrome --user-data-dir'" >> /root/.bashrc \
-    && echo "alias google-chrome='/usr/bin/google-chrome --user-data-dir'" >> /etc/bashrc
+    && echo "alias google-chrome='/usr/bin/google-chrome -no-default-browser-check --user-data-dir'" >> /etc/bashrc
 
+#--no-default-browser-check
 ### Install Sakuli
 ##Install some native libaries
 RUN yum -y install \
@@ -64,6 +65,8 @@ RUN wget --directory-prefix=/root \
     #install sahi
     && java -jar /root/install_sahi_v50_20141105.jar /root/install_sahi_local.config \
     && rm -fv /root/install_sahi*
+#config chrome start 'without asking default browser'
+ADD .config/google-chrome /root/sakuli/sahi/userdata/browser/chrome/profiles/sahi0
 
 
 ### Install apps for testing
