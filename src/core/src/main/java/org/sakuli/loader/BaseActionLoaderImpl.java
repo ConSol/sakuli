@@ -75,7 +75,7 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
      */
     private TestCase currentTestCase;
     private RhinoScriptRunner rhinoScriptRunner;
-    private ImageLib imageLib;
+    private ImageLib imageLib = new ImageLib();
 
     @Override
     public void init(String testCaseID, String... imagePaths) {
@@ -102,13 +102,7 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
                 throw new SakuliException("Can't identify current test case in function init() in class SakuliBasedAction");
             }
             this.currentTestCase = testSuite.getTestCase(testCaseID);
-
-            //load the images for the screenbased actions
-            if (imagePaths == null || imagePaths.length <= 0) {
-                throw new SakuliException("To init the internal image library, the imagePaths have to be not null and have at least one file path!");
-            }
-            this.imageLib = new ImageLib();
-            imageLib.addImagesFromFolder(imagePaths);
+            addImagePaths(imagePaths);
 
             if (sakuliProperties.isLoadJavaScriptEngine()) {
                 //add the "sakuli-delay-active" var to the script runner context
@@ -121,8 +115,21 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
                 rhinoScriptRunner.getSession().setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, isRequestDelayActive);
                 LOGGER.info("set isRequestDelayActive={}", isRequestDelayActive);
             }
-        } catch (SakuliException | IOException e) {
+        } catch (SakuliException e) {
             exceptionHandler.handleException(e);
+        }
+    }
+
+    @Override
+    public void addImagePaths(Path... imagePaths) throws SakuliException {
+        //load the images for the screenbased actions
+        if (imagePaths == null || imagePaths.length <= 0) {
+            throw new SakuliException("To init the internal image library, the imagePaths have to be not null and have at least one file path!");
+        }
+        try {
+            imageLib.addImagesFromFolder(imagePaths);
+        } catch (IOException e) {
+            throw new SakuliException(e);
         }
     }
 

@@ -266,4 +266,23 @@ public class TestCaseActionTest extends BaseTest {
         assertFalse(ac.getValue() instanceof NonScreenshotException);
         assertTrue(ac.getValue() instanceof SakuliActionException);
     }
+
+    @Test
+    public void testAddImagePaths() throws Exception {
+        ArgumentCaptor path = ArgumentCaptor.forClass(Path.class);
+        testling.addImagePathsAsString("/home");
+        verify(loaderMock).addImagePaths((Path[]) path.capture());
+        assertEquals(path.getValue().toString(), "/home");
+    }
+
+    @Test
+    public void testAddRelativeImagePaths() throws Exception {
+        Path currenPath = Paths.get(".").toAbsolutePath().normalize();
+        sample.setTcFile(currenPath.resolve("tc.js"));
+        ArgumentCaptor path = ArgumentCaptor.forClass(Path.class);
+        String picfolderName = "my_pic_folder";
+        testling.addImagePathsAsString(picfolderName);
+        verify(loaderMock).addImagePaths((Path[]) path.capture());
+        assertEquals(path.getValue().toString(), currenPath.toString() + File.separator + picfolderName);
+    }
 }

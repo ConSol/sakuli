@@ -76,6 +76,22 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      *****************************************************************************************************/
 
     /**
+     * Adds the additional paths to the current image library of the TestCase.
+     * If a relative path is assigned, the current testcase folder will be used as current directory.
+     *
+     * @param {string} imagePaths one or more path strings
+     * @memberOf TestCase
+     * @method   addImagePaths
+     */
+    that.addImagePaths = function (imagePaths) {
+        if (imagePaths instanceof  String) {
+            that.javaObject.addImagePathsAsString(new Array(imagePaths));
+        } else {
+            that.javaObject.addImagePathsAsString(imagePaths);
+        }
+    };
+
+    /**
      * A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
      * particular runtime. Together with the test Case, a special "step" timer is started. Each time endOfStep is
      * called, the current timer value is read out, stored with the step name (first parameter) and gets resetted . If

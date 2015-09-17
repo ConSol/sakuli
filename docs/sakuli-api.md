@@ -4,6 +4,7 @@
 
 * [Sahi-API](#Sahi-API)
 * [TestCase](#TestCase)
+  * [TestCase.addImagePaths(imagePaths)](#TestCase.addImagePaths)
   * [TestCase.endOfStep(stepName, optWarningTime)](#TestCase.endOfStep)
   * [TestCase.handleException(e)](#TestCase.handleException)
   * [TestCase.saveResult()](#TestCase.saveResult)
@@ -130,6 +131,7 @@ var testCase = new TestCase(20,30, "path-to/image-folder-name");
 **Members**
 
 * [TestCase](#TestCase)
+  * [TestCase.addImagePaths(imagePaths)](#TestCase.addImagePaths)
   * [TestCase.endOfStep(stepName, optWarningTime)](#TestCase.endOfStep)
   * [TestCase.handleException(e)](#TestCase.handleException)
   * [TestCase.saveResult()](#TestCase.saveResult)
@@ -138,6 +140,15 @@ var testCase = new TestCase(20,30, "path-to/image-folder-name");
   * [TestCase.getTestCaseFolderPath()](#TestCase.getTestCaseFolderPath)
   * [TestCase.getTestSuiteFolderPath()](#TestCase.getTestSuiteFolderPath)
   * [TestCase.throwException(message, screenshot)](#TestCase.throwException)
+
+<a name="TestCase.addImagePaths"></a>
+##TestCase.addImagePaths(imagePaths)
+Adds the additional paths to the current image library of the TestCase.
+If a relative path is assigned, the current testcase folder will be used as current directory.
+
+**Params**
+
+- imagePaths `string` - one or more path strings  
 
 <a name="TestCase.endOfStep"></a>
 ##TestCase.endOfStep(stepName, optWarningTime)

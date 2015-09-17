@@ -23,6 +23,7 @@ import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.datamodel.helper.TestCaseHelper;
 import org.sakuli.datamodel.helper.TestCaseStepHelper;
@@ -40,6 +41,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 
 /**
@@ -92,6 +94,35 @@ public class TestCaseAction {
     public void initWithPaths(String testCaseID, int warningTime, int criticalTime, Path... imagePaths) {
         loader.init(testCaseID, imagePaths);
         initWarningAndCritical(warningTime, criticalTime);
+    }
+
+    /**
+     * Adds the additional paths to the current {@link ImageLib} object.
+     * If a relative path is assigned, the current testcase folder will be used as current directory.
+     *
+     * @param imagePaths one or more paths as {@link String} elements
+     * @throws SakuliException if an IO error occurs
+     */
+    public void addImagePathsAsString(String... imagePaths) throws SakuliException {
+        for (String path : imagePaths) {
+            //check if absolute path
+            if (!path.matches("(\\/\\S*|\\w:\\\\\\S*)")) {
+                addImagePaths(loader.getCurrentTestCase().getTcFile().getParent().resolve(path));
+            } else {
+                addImagePaths(Paths.get(path));
+            }
+        }
+    }
+
+    /**
+     * Adds the additional paths to the current {@link ImageLib} object.
+     *
+     * @param imagePaths one or more {@link Path} elements
+     * @throws SakuliException if an IO error occurs
+     */
+    @LogToResult
+    public void addImagePaths(Path... imagePaths) throws SakuliException {
+        loader.addImagePaths(imagePaths);
     }
 
     private void initWarningAndCritical(int warningTime, int criticalTime) {
