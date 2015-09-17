@@ -379,6 +379,34 @@ function initEnvironment(that, javaObject) {
         return that.javaObject.getOsIdentifier();
     };
 
+
+    /**
+     * Runs the assigned command on the host and returns the result. __Attention:__ this is OS depended feature! So be
+     * aware which os you are running, maybe us to check {@link Environment#isLinux()}  or {@link Environment#isWindows()}.
+     *
+     * @param {string} command OS depended command as {@link String}
+     * @param {boolean} optThrowException defines if an exception should be thrown, if the exit code != 0
+     * @return the result as `CommandLineResult` object, you can use the methods `result.getOutput()` and `result.getExitCode()`
+     * @example
+     *  ```
+     *  var app;
+     *  if(environmen.runCommand('uname --machine') == 'x86_64'){
+     *      //open app from other path
+     *      app = new Application('/lib64/appname');
+     *  } else {
+     *      app = new Application('/lib/appname');
+     *  }
+     *  ```
+     * @memberOf Environment
+     * @method runCommand
+     */
+    that.runCommand = function (command, optThrowException) {
+        if (undefined == optThrowException) {
+            optThrowException = Boolean(true);
+        }
+        return that.javaObject.runCommand(command, optThrowException);
+    };
+
     /*****************************************************************************************************
      * INTERNAL CLASS FUNCTIONS - NOT REACHABLE IN THE TEST CASE EXECUTION
      *****************************************************************************************************/

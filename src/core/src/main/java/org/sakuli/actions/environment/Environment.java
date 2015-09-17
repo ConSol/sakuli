@@ -21,10 +21,12 @@ package org.sakuli.actions.environment;
 import net.sf.sahi.util.OSUtils;
 import org.sakuli.actions.Action;
 import org.sakuli.actions.ModifySahiTimer;
+import org.sakuli.actions.environment.CommandLineUtil.CommandLineResult;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.screenbased.Region;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.actions.screenbased.TypingUtil;
+import org.sakuli.exceptions.SakuliException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.App;
@@ -68,6 +70,25 @@ public class Environment implements Action {
         this.resumeOnException = resumeOnException;
         this.loader = BeanLoader.loadScreenActionLoader();
         this.typingUtil = new TypingUtil<>(this);
+    }
+
+    /**
+     * Runs the assigned command on the host and returns the result. __Attention:__ this is OS depended feature! So be
+     * aware which os you are running, maybe us to check {@link Environment#isLinux()}  or {@link Environment#isWindows()}.
+     *
+     * @param command OS depended command as {@link CommandLineResult}
+     * @return the result as {@link String}
+     * @throws SakuliException if the command won't exit with value 0
+     */
+    public static CommandLineResult runCommand(String command) throws SakuliException {
+        return runCommand(command, true);
+    }
+
+    /**
+     * Equal to {@link #runCommand(String)}, but with option to avoid throwing an exception if the exit code != 0
+     */
+    public static CommandLineResult runCommand(String command, boolean throwException) throws SakuliException {
+        return CommandLineUtil.runCommand(command, throwException);
     }
 
     /**

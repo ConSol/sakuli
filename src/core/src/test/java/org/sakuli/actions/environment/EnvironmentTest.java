@@ -18,13 +18,16 @@
 
 package org.sakuli.actions.environment;
 
+import org.apache.commons.lang.StringUtils;
 import org.sakuli.BaseTest;
+import org.sakuli.exceptions.SakuliException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  * @author tschneck
@@ -51,6 +54,25 @@ public class EnvironmentTest extends BaseTest {
     public void testIsLinux() throws Exception {
         boolean linux = env.getOsIdentifier().equals("linux");
         assertEquals(env.isLinux(), linux);
+    }
+
+    @Test
+    public void testRunCmd() throws Exception {
+        CommandLineUtil.CommandLineResult result = Environment.runCommand("hostname");
+        assertTrue(StringUtils.isNotBlank(result.getOutput()));
+        assertEquals(result.getExitCode(), 0);
+    }
+
+    @Test
+    public void testRunCmdNoError() throws Exception {
+        CommandLineUtil.CommandLineResult result = Environment.runCommand("host?name", false);
+        assertTrue(StringUtils.isNotBlank(result.getOutput()));
+        assertEquals(result.getExitCode(), 2);
+    }
+
+    @Test(expectedExceptions = SakuliException.class)
+    public void testRunCmdException() throws Exception {
+        Environment.runCommand("host?name");
     }
 
 }

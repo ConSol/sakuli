@@ -47,6 +47,7 @@
   * [Environment.isWindows()](#Environment.isWindows)
   * [Environment.isLinux()](#Environment.isLinux)
   * [Environment.getOsIdentifier()](#Environment.getOsIdentifier)
+  * [Environment.runCommand(command, optThrowException)](#Environment.runCommand)
 * [Key](#Key)
 * [Logger](#Logger)
   * [Logger.logError(message)](#Logger.logError)
@@ -337,6 +338,7 @@ Environment - Represents the environment of the current test host.
   * [Environment.isWindows()](#Environment.isWindows)
   * [Environment.isLinux()](#Environment.isLinux)
   * [Environment.getOsIdentifier()](#Environment.getOsIdentifier)
+  * [Environment.runCommand(command, optThrowException)](#Environment.runCommand)
 
 <a name="Environment.setSimilarity"></a>
 ##Environment.setSimilarity(similarity)
@@ -565,6 +567,28 @@ wheel the given steps up.
 <a name="Environment.getOsIdentifier"></a>
 ##Environment.getOsIdentifier()
 **Returns**: `string` - identifier of the current OS  
+<a name="Environment.runCommand"></a>
+##Environment.runCommand(command, optThrowException)
+Runs the assigned command on the host and returns the result. __Attention:__ this is OS depended feature! So be
+aware which os you are running, maybe us to check `Environment#isLinux()`  or `Environment#isWindows()`.
+
+**Params**
+
+- command `string` - OS depended command as `String`  
+- optThrowException `boolean` - defines if an exception should be thrown, if the exit code != 0  
+
+**Returns**:  - the result as `CommandLineResult` object, you can use the methods `result.getOutput()` and `result.getExitCode()`  
+**Example**  
+```
+var app;
+if(environmen.runCommand('uname --machine') == 'x86_64'){
+    //open app from other path
+    app = new Application('/lib64/appname');
+} else {
+    app = new Application('/lib/appname');
+}
+```
+
 <a name="Key"></a>
 #Key
 Key - representing some Key constants which can be used in type functions as input text and as modifier keys.
