@@ -1,0 +1,26 @@
+
+# Sakuli docker container with all 'custom' configurations
+sakuli-centos-xfce:
+  image: consol/sakuli-centos-xfce
+  environment:
+  # set correct timezone
+  - TZ=Europe/Berlin
+  # set Sakuli test suite
+  - SAKULI_TEST_SUITE=/root/my_test_suites/example_xfce
+  ports:
+  - 5911:5901
+  volumes:
+  - ../example_test_suites:/root/my_test_suites
+
+
+sakuli-ubuntu-xfce:
+  image: consol/sakuli-ubuntu-xfce
+  environment:
+  # set correct timezone
+  - TZ=Europe/Berlin
+  # set Sakuli test suite
+  - SAKULI_TEST_SUITE=/root/my_test_suites/example_xfce
+  ports:
+  - 5912:5901
+  volumes:
+  - ../example_test_suites:/root/my_test_suites
