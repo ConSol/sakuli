@@ -17,7 +17,7 @@
  */
 
 _dynamicInclude($includeFolder);
-var testCase = new TestCase(60, 70);
+var testCase = new TestCase(20, 30);
 var env = new Environment();
 var screen = new Region();
 var appCalc = new Application("/usr/bin/gnome-calculator");
@@ -39,7 +39,7 @@ try {
     _highlight(_link("Test Pages"));
     _highlight(_link("Sample Application"));
 
-    testCase.endOfStep("Test Sahi landing page", 30);
+    testCase.endOfStep("Test Sahi landing page", 5);
     appCalc.open();
 
     screen.waitForImage("calculator.png", 5);
@@ -50,20 +50,21 @@ try {
     calcRegion.find("plus.png").click().type("100");
     calcRegion.find("result.png").click();
     screen.waitForImage("625", 10);
-    testCase.endOfStep("Calculation", 30);
+    testCase.endOfStep("Calculation", 10);
 
     appGedit.open();
     screen.waitForImage("gedit.png", 20);
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
-    testCase.endOfStep("Editor", 30);
+    testCase.endOfStep("Editor", 10);
     env.sleep(4);
 } catch (e) {
     testCase.handleException(e);
 } finally {
     appCalc.close(true);  //silent
     appGedit.close(true); //silent
-    if (screen.exists("close-without-saving", 1)) {
-        screen.find("close-without-saving").click();
+    var existsCloseWithoutSaving = screen.exists("close-without-saving", 1);
+    if (existsCloseWithoutSaving) {
+        existsCloseWithoutSaving.click();
     }
     testCase.saveResult();
 }

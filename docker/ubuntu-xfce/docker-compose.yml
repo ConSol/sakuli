@@ -1,9 +1,0 @@
-
-# Sakuli docker container with all 'custom' configurations
-sakuli:
-  build: .
-  environment:
-  # set correct timezone
-  - TZ=Europe/Berlin
-  ports:
-  - 5911:5901
