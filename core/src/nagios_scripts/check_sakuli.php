@@ -264,6 +264,8 @@ $def[0] .= rrd::comment(" \\n");
 
 # RRDtool does not allow to increment a CDEF var multiple times, as needed here. $suite_data_count is a counter for 
 # each data row which lets us create a new CDEF each time and use the last one for graphing. 
+
+# All CDEF vars for suite ticker are prefixed with "ts_" (TickerSuite)
 $def[0] .= rrd::cdef("ts_suite_unknown_total_0", "suite,UN,0,0,IF");
 $suite_data_count = 0;
 
@@ -463,6 +465,7 @@ foreach ($this->DS as $KEY=>$VAL) {
 		# - incomplete data -->  0 < case_unknown_total < case_data_count --> orange TICK (overwrites evt warn/crit TICKS)
 		# - no data at all  -->  case_unknown_total == case_data_count --> no TICK
 
+        # All CDEF vars for case ticker are prefixed with "tc_" (TickerCase)
 		# see comments in case tick
 
 		$def[$casecount_int] .= rrd::cdef("tc_case".$casecount."_unknown_total_0", "case".$casecount.",UN,0,0,IF");
