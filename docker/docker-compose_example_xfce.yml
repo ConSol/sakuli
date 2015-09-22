@@ -10,7 +10,10 @@ sakuli-example-centos:
   # set Sakuli test suite
   - SAKULI_TEST_SUITE=/root/my_test_suites/example_xfce
   ports:
+  #vnc
   - 5911:5901
+  #noVNC HTML client
+  - 6911:6901
 
 sakuli-example-ubuntu:
   image: consol/sakuli-ubuntu-xfce
@@ -22,4 +25,7 @@ sakuli-example-ubuntu:
   # set Sakuli test suite
   - SAKULI_TEST_SUITE=/root/my_test_suites/example_xfce
   ports:
+  #vnc
   - 5912:5901
+  #noVNC HTML client
+  - 6912:6901

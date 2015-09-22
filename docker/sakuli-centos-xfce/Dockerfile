@@ -2,7 +2,7 @@
 
 FROM consol/centos-xfce-vnc
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2015-09-18
+ENV REFRESHED_AT 2015-09-22
 
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
@@ -50,6 +50,8 @@ RUN yum -y install gedit gnome-calculator
 
 # xvnc server porst, if $DISPLAY=:1 port will be 5901
 EXPOSE 5901
+# novnc web port
+EXPOSE 6901
 
 ADD scripts/sakuli_startup.sh /root/scripts/
 RUN chmod +x /root/scripts/*.sh
