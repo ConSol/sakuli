@@ -24,7 +24,7 @@ Start vncserver for the first time to create a **session password**:
     Starting applications specified in __HOME__/.vnc/xstartup
     Log file is __HOME__/.vnc/sakulidemo:1.log
 
-`.vnc/xstartup` controls what to start within a xvnc session. Do not touch this file on OpenSUSE; on **Ubuntu** you have to replace its content with the following lines (because you are using  **gnome-session-fallback**, don't you…?): 
+`.vnc/xstartup` controls what to start within a xvnc session. Do not touch this file on OpenSUSE; on **Ubuntu** you have to replace its content with the following lines (because you are using  **gnome-session-fallback**, aren't you…?): 
 
     ~$ vim .vnc/xstartup  
     
