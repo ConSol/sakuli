@@ -68,9 +68,22 @@ public class PerformanceDataBuilder implements Builder<String> {
      * String)}
      */
     static String addPerformanceDataRow(String performanceData, String name, float duration, int warningTime, int criticalTime) {
-        String warningTimeString = (warningTime == 0) ? "" : String.valueOf(warningTime);
-        String criticalTimeString = (criticalTime == 0) ? "" : String.valueOf(criticalTime);
+        String warningTimeString = (warningTime > 0) ? String.valueOf(warningTime) : null;
+        String criticalTimeString = (criticalTime > 0) ? String.valueOf(criticalTime) : null;
         return addPerformanceDataRow(performanceData, name, NagiosFormatter.formatToSec(duration), warningTimeString, criticalTimeString);
+    }
+
+    /**
+     * Small wrapper for threshold data like`suite__warning` or `case__warning`.
+     */
+    static String addPerformanceDataRow4Threshold(String performanceData, String name, int warningTime, int criticalTime) {
+        if (warningTime > 0) {
+            performanceData = addPerformanceDataRow(performanceData, name + "__warning", NagiosFormatter.formatToSec(warningTime), null, null);
+        }
+        if (criticalTime > 0) {
+            performanceData = addPerformanceDataRow(performanceData, name + "__critical", NagiosFormatter.formatToSec(criticalTime), null, null);
+        }
+        return performanceData;
     }
 
     /**
@@ -91,6 +104,7 @@ public class PerformanceDataBuilder implements Builder<String> {
         OutputState outputState = OutputState.lookupSakuliState(testSuite.getState());
         String data = "";
         data = addPerformanceDataRow(data, "suite__state", String.valueOf(outputState.getErrorCode()), null, null);
+        data = addPerformanceDataRow4Threshold(data, "suite", testSuite.getWarningTime(), testSuite.getCriticalTime());
         final String suiteName = "suite_" + testSuite.getId();
         if (testSuite.getState() != null && testSuite.getState().isFinishedWithoutErrors()) {
             data = addPerformanceDataRow(data, suiteName, testSuite.getDuration(), testSuite.getWarningTime(), testSuite.getCriticalTime());
@@ -115,8 +129,10 @@ public class PerformanceDataBuilder implements Builder<String> {
         int i = 1;
         for (TestCase tc : testCases) {
             OutputState tcOutputState = OutputState.lookupSakuliState(tc.getState());
-            data = addPerformanceDataRow(data, String.format("c_%03d__state_%s", i, tc.getId()), String.valueOf(tcOutputState.getErrorCode()), null, null);
-            final String caseName = String.format("c_%03d_%s", i, tc.getId());
+            String prefix = String.format("c_%03d", i);
+            data = addPerformanceDataRow(data, prefix + "__state", String.valueOf(tcOutputState.getErrorCode()), null, null);
+            data = addPerformanceDataRow4Threshold(data, prefix, tc.getWarningTime(), tc.getCriticalTime());
+            final String caseName = prefix + "_" + tc.getId();
             if (tc.getState() != null && tc.getState().isFinishedWithoutErrors()) {
                 data = addPerformanceDataRow(data, caseName, tc.getDuration(), tc.getWarningTime(), tc.getCriticalTime());
             } else {

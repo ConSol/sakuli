@@ -98,6 +98,19 @@ public class PerformanceDataBuilderTest {
     }
 
     @Test
+    public void testAddThresholdPerformanceData() throws Exception {
+        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 0, 0), "");
+        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 0, -1), "");
+        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", -1, -1), "");
+        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 10, -1),
+                "suite__warning=10s;;;;");
+        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 10, 20),
+                "suite__warning=10s;;;; suite__critical=20s;;;;");
+        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 0, 20),
+                "suite__critical=20s;;;;");
+    }
+
+    @Test
     public void testBuild() throws Exception {
         GearmanPropertiesTestHelper.initMock(gearmanProperties);
         ReflectionTestUtils.setField(testling, "testSuite", new TestSuiteExampleBuilder().buildExample());
@@ -122,7 +135,7 @@ public class PerformanceDataBuilderTest {
                                 new TestCaseExampleBuilder().withState(TestCaseState.ERRORS).buildExample()
                         ))
                 ),
-                "c_001__state_UNIT_TEST_CASE_\\d*=2;;;; c_001_UNIT_TEST_CASE_\\d*=U;;;;.*");
+                "c_001__state=2;;;; c_001__warning=4s;;;; c_001__critical=5s;;;; c_001_UNIT_TEST_CASE_\\d*=U;;;;.*");
     }
 
     @Test
@@ -200,12 +213,16 @@ public class PerformanceDataBuilderTest {
         testSuiteExample.refreshState();
 
         assertEquals(PerformanceDataBuilder.getTestSuitePerformanceData(testSuiteExample), "suite__state=1;;;; " +
+                "suite__warning=100s;;;; " +
+                "suite__critical=150s;;;; " +
                 "suite_sakuli-123=120.00s;100;150;; " +
-                "c_001__state_case-warning=1;;;; " +
+                "c_001__state=1;;;; " +
+                "c_001__warning=19s;;;; " +
+                "c_001__critical=25s;;;; " +
                 "c_001_case-warning=20.00s;19;25;; " +
                 "s_001_001_step1=10.00s;9;;; " +
                 "s_001_002_step2=8.00s;10;;; " +
-                "c_002__state_case_with_no_steps=0;;;; " +
+                "c_002__state=0;;;; " +
                 "c_002_case_with_no_steps=15.00s;;;;");
     }
 
@@ -242,8 +259,12 @@ public class PerformanceDataBuilderTest {
         testSuiteExample.refreshState();
 
         assertEquals(PerformanceDataBuilder.getTestSuitePerformanceData(testSuiteExample), "suite__state=1;;;; " +
+                        "suite__warning=100s;;;; " +
+                        "suite__critical=150s;;;; " +
                         "suite_sakuli-123=120.00s;100;150;; " +
-                        "c_001__state_case-warning=1;;;; " +
+                        "c_001__state=1;;;; " +
+                        "c_001__warning=19s;;;; " +
+                        "c_001__critical=25s;;;; " +
                         "c_001_case-warning=20.00s;19;25;; " +
                         "s_001_001_step1=10.00s;9;;; " +
                         "s_001_002_step2_not_started=U;;;;"
