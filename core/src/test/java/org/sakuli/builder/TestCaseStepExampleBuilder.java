@@ -22,6 +22,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.state.TestCaseStepState;
+import org.sakuli.exceptions.SakuliException;
 
 import java.util.Date;
 
@@ -35,6 +36,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
     private int warningTime;
     private Date stopDate;
     private Date startDate;
+    private SakuliException exception;
 
     public TestCaseStepExampleBuilder() {
         this.state = TestCaseStepState.OK;
@@ -52,6 +54,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
         step.setWarningTime(warningTime);
         step.setName(name);
         step.setState(state);
+        step.addException(exception);
         return step;
     }
 
@@ -77,6 +80,11 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
 
     public TestCaseStepExampleBuilder withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public TestCaseStepExampleBuilder withExcpetion(SakuliException e) {
+        this.exception = e;
         return this;
     }
 }

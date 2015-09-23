@@ -165,8 +165,8 @@ public class TestSuiteTest {
         String messageCase = "case-exception";
         tc1.addException(new SakuliException(messageCase));
         testSuite.addTestCase(tc1.getId(), tc1);
-        assertEquals(testSuite.getExceptionMessages(), message + "\n" + "CASE '" + tc1.getId() + "': " + messageCase);
-        assertEquals(testSuite.getExceptionMessages(true), message + " -- CASE '" + tc1.getId() + "': " + messageCase);
+        assertEquals(testSuite.getExceptionMessages(), message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase);
+        assertEquals(testSuite.getExceptionMessages(true), message + " -- CASE \"" + tc1.getId() + "\": " + messageCase);
     }
 
     @Test
@@ -188,32 +188,32 @@ public class TestSuiteTest {
         tc1.addStep(step1);
 
         assertEquals(testSuite.getExceptionMessages(),
-                message + "\n" + "CASE '" + tc1.getId() + "': " + messageCase
-                        + "\n\tSTEP '" + step1.getId() + "': " + messageStep
+                message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase
+                        + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );
         assertEquals(testSuite.getExceptionMessages(true),
-                message + " -- CASE '" + tc1.getId() + "': " + messageCase
-                        + " - STEP '" + step1.getId() + "': " + messageStep
+                message + " -- CASE \"" + tc1.getId() + "\": " + messageCase
+                        + " - STEP \"" + step1.getId() + "\": " + messageStep
         );
 
         tc1.exception = null;
         assertEquals(testSuite.getExceptionMessages(),
-                message + "\n" + "CASE '" + tc1.getId() + "': "
-                        + "\n\tSTEP '" + step1.getId() + "': " + messageStep
+                message + "\n" + "CASE \"" + tc1.getId() + "\": "
+                        + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );
         assertEquals(testSuite.getExceptionMessages(true),
-                message + " -- CASE '" + tc1.getId() + "': "
-                        + "STEP '" + step1.getId() + "': " + messageStep
+                message + " -- CASE \"" + tc1.getId() + "\": "
+                        + "STEP \"" + step1.getId() + "\": " + messageStep
         );
 
         testSuite.exception = null;
         assertEquals(testSuite.getExceptionMessages(),
-                "CASE '" + tc1.getId() + "': "
-                        + "\n\tSTEP '" + step1.getId() + "': " + messageStep
+                "CASE \"" + tc1.getId() + "\": "
+                        + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );
         assertEquals(testSuite.getExceptionMessages(true),
-                "CASE '" + tc1.getId() + "': "
-                        + "STEP '" + step1.getId() + "': " + messageStep
+                "CASE \"" + tc1.getId() + "\": "
+                        + "STEP \"" + step1.getId() + "\": " + messageStep
         );
     }
 }

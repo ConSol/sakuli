@@ -82,6 +82,27 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         return modifiedString;
     }
 
+    private static String generateStepInformation(SortedSet<TestCaseStep> steps) {
+        StringBuilder sb = new StringBuilder();
+        Iterator<TestCaseStep> it = steps.iterator();
+        while (it.hasNext()) {
+            TestCaseStep step = it.next();
+            if (TestCaseStepState.WARNING.equals(step.getState())) {
+                sb.append("step \"")
+                        .append(step.getName())
+                        .append("\" (")
+                        .append(NagiosFormatter.formatToSec(step.getDuration()))
+                        .append(" /warn at ")
+                        .append(NagiosFormatter.formatToSec(step.getWarningTime()))
+                        .append(")");
+            }
+            if (it.hasNext()) {
+                sb.append(", ");
+            }
+        }
+        return sb.toString();
+    }
+
     @Override
     public NagiosOutput build() {
         NagiosOutput output = new NagiosOutput();
@@ -141,7 +162,6 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     protected PlaceholderMap getTextPlaceholder(TestCase testCase) {
         PlaceholderMap placeholderMap = new PlaceholderMap();
         OutputState outputState = OutputState.lookupSakuliState(testCase.getState());
-        ScreenshotDiv screenshotDiv = screenshotDivConverter.convert(testCase.getException());
         placeholderMap.put(STATE, outputState.name());
         placeholderMap.put(STATE_SHORT, outputState.getShortState());
         placeholderMap.put(STATE_DESC, (testCase.getState() == null)
@@ -155,7 +175,7 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         placeholderMap.put(WARN_THRESHOLD, String.valueOf(testCase.getWarningTime()));
         placeholderMap.put(CRITICAL_THRESHOLD, String.valueOf(testCase.getCriticalTime()));
         placeholderMap.put(ERROR_MESSAGE, testCase.getExceptionMessages(true));
-        placeholderMap.put(ERROR_SCREENSHOT, screenshotDiv != null ? screenshotDiv.getPayloadString() : null);
+        placeholderMap.put(ERROR_SCREENSHOT, generateTestCaseScreenshotsHTML(testCase));
         placeholderMap.put(STEP_INFORMATION, generateStepInformation(testCase.getStepsAsSortedSet()));
         placeholderMap.put(CASE_FILE, testCase.getTcFile() != null ? testCase.getTcFile().toString() : null);
         placeholderMap.put(CASE_START_URL, testCase.getStartUrl());
@@ -164,22 +184,20 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         return placeholderMap;
     }
 
-    private String generateStepInformation(SortedSet<TestCaseStep> steps) {
+    /**
+     * Generates '<div></div>' tag for the screenshots included in the {@link TestCase} and the suppressed {@link TestCaseStep}s.
+     */
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+    protected String generateTestCaseScreenshotsHTML(TestCase testCase) {
         StringBuilder sb = new StringBuilder();
-        Iterator<TestCaseStep> it = steps.iterator();
-        while (it.hasNext()) {
-            TestCaseStep step = it.next();
-            if (TestCaseStepState.WARNING.equals(step.getState())) {
-                sb.append("step \"")
-                        .append(step.getName())
-                        .append("\" (")
-                        .append(NagiosFormatter.formatToSec(step.getDuration()))
-                        .append(" /warn at ")
-                        .append(NagiosFormatter.formatToSec(step.getWarningTime()))
-                        .append(")");
-            }
-            if (it.hasNext()) {
-                sb.append(", ");
+        ScreenshotDiv caseDiv = screenshotDivConverter.convert(testCase.getException());
+        if (caseDiv != null) {
+            sb.append(caseDiv.getPayloadString());
+        }
+        for (TestCaseStep step : testCase.getStepsAsSortedSet()) {
+            ScreenshotDiv stepDiv = screenshotDivConverter.convert(step.getException());
+            if (stepDiv != null) {
+                sb.append(stepDiv.getPayloadString());
             }
         }
         return sb.toString();
