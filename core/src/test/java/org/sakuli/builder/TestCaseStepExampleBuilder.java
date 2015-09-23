@@ -83,7 +83,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
         return this;
     }
 
-    public TestCaseStepExampleBuilder withExcpetion(SakuliException e) {
+    public TestCaseStepExampleBuilder withException(SakuliException e) {
         this.exception = e;
         return this;
     }

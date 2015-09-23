@@ -93,7 +93,7 @@ public class TestCaseStepTest {
 
         testCase.setSteps(Collections.singletonList(
                 new TestCaseStepExampleBuilder()
-                        .withExcpetion(new SakuliException("STEP-EXCEPTION"))
+                        .withException(new SakuliException("STEP-EXCEPTION"))
                         .buildExample()));
         assertEquals(testCase.getExceptionMessages(true), "CASE-EXCEPTION - STEP \"step_for_unit_test\": STEP-EXCEPTION");
         assertEquals(testCase.getExceptionMessages(false), "CASE-EXCEPTION\n\tSTEP \"step_for_unit_test\": STEP-EXCEPTION");

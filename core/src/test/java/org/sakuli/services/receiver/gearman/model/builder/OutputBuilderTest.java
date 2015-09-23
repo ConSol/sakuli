@@ -156,7 +156,7 @@ public class OutputBuilderTest {
 
         String result = testling.formatTestSuiteSummaryStateMessage(testSuiteExample, propertiesExample);
         String lastRun = OutputBuilder.dateFormat.format(testSuiteExample.getStopDate());
-        assertEquals(result, "CRITICAL - [CRIT] Sakuli suite \"sakuli-123\" ran in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")");
+        assertEquals(result, "CRITICAL - [CRIT] Sakuli suite \"sakuli-123\" ran in 120.00 seconds - EXCEPTION: 'TEST-ERROR'. (Last suite run: " + lastRun + ")");
     }
 
     @Test
@@ -174,7 +174,7 @@ public class OutputBuilderTest {
         String result = testling.formatTestSuiteTableStateMessage(testSuiteExample, propertiesExample);
         String lastRun = OutputBuilder.dateFormat.format(testSuiteExample.getStopDate());
         assertEquals(result, "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli-123\" ran" +
-                " in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")</td></tr>");
+                " in 120.00 seconds - EXCEPTION: 'TEST-ERROR'. (Last suite run: " + lastRun + ")</td></tr>");
     }
 
     @Test
@@ -195,7 +195,7 @@ public class OutputBuilderTest {
 
         final String separator = "<div";
         assertEquals(result.substring(0, result.indexOf(separator)), "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli-123\" ran" +
-                " in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")");
+                " in 120.00 seconds - EXCEPTION: 'TEST-ERROR'. (Last suite run: " + lastRun + ")");
 
         String start_1 = "<div style=\"width:640px\" id=\"sakuli_screenshot\">" +
                 "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" " +
@@ -299,7 +299,7 @@ public class OutputBuilderTest {
                 .withTestCaseSteps(Collections.singletonList(
                         new TestCaseStepExampleBuilder()
                                 .withState(TestCaseStepState.ERRORS)
-                                .withExcpetion(new SakuliExceptionWithScreenshot("STEP-EXCEPTION-MESSAGE", screenshotPath))
+                                .withException(new SakuliExceptionWithScreenshot("STEP-EXCEPTION-MESSAGE", screenshotPath))
                                 .buildExample()
                 ))
                 .buildExample();
@@ -322,7 +322,7 @@ public class OutputBuilderTest {
                 .withTestCaseSteps(Collections.singletonList(
                         new TestCaseStepExampleBuilder()
                                 .withState(TestCaseStepState.ERRORS)
-                                .withExcpetion(new SakuliExceptionWithScreenshot("STEP-EXCEPTION-MESSAGE", screenshotPath))
+                                .withException(new SakuliExceptionWithScreenshot("STEP-EXCEPTION-MESSAGE", screenshotPath))
                                 .buildExample()
                 ))
                 .buildExample();

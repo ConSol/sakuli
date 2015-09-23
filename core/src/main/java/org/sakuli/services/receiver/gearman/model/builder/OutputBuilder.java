@@ -230,7 +230,7 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     private String generateStateSummary(TestSuiteState state) {
         StringBuilder summary = new StringBuilder(STATE_DESC.getPattern());
         if (state.isError()) {
-            summary.append(": \"").append(ERROR_MESSAGE.getPattern()).append("\"");
+            summary.append(": '").append(ERROR_MESSAGE.getPattern()).append("'");
         } else if (state.isWarning()) {
             summary.append(": threshold ").append(WARN_THRESHOLD.getPattern()).append("s");
         } else if (state.isCritical()) {
