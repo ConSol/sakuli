@@ -31,6 +31,7 @@ sakuli_usage() {
 
 exec_test() {
 	java -classpath $SAKULI_JARS/sakuli.jar:$SAKULI_JARS/* org.sakuli.starter.SakuliStarter $@
+	return $?
 }
 
 vnc_kill() {
@@ -87,5 +88,8 @@ done
 
 init_vnc
 exec_test $sakuli_args
+res=$?
+#echo "EXIT_STATE: $res"
 vnc_kill
+exit $res
 
