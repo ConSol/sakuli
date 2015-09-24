@@ -26,11 +26,15 @@
 package MySakuli;
 our @ISA = qw(DBD::MySQL::Server); 
 
-#use Data::Dumper;
-# use YAML;
+use Data::Dump qw(dump);
+#use YAML;
 use MIME::Base64;
 use Encode qw(encode); 
 use POSIX qw(strftime);
+
+# used by sub logit
+my $verbose = 1; 
+my $logfile="/tmp/check_sakuli.debug";
 
 # maps DB states to an understandable text string. 
 # 1) case /step name
@@ -141,12 +145,13 @@ sub nagios {
         my %params = @_;
         my $runtime = 0;
 	my $casecount= 0;
+	my $casecount3 = 0;
         foreach my $c_ref (@{$self->{cases}}) {
                 my $case_total_nagios_out = "";
                 my $case_total_nagios_result = 0;
                 my $case_duration_db_result = 0;
 		$casecount++;
-
+		$casecount3 = sprintf("%03d", $casecount);
                 $runtime += $c_ref->{duration};
 
 #		my $case_stale = (($self->{dbnow}) - ($c_ref->{time}) > $params{name2}) || 0;
@@ -182,28 +187,40 @@ sub nagios {
 		}
 		# 2.2 Step duration
 		my $stepcount = 0;
+		my $stepcount3 = 0;
 		foreach my $s_ref (@{$self->{steps}->{$c_ref->{id}}}) {
 			$stepcount++;
+			$stepcount3 = sprintf("%03d", $stepcount);
+			logit ("=== Step $stepcount3");
+			logit (dump($s_ref));
 			if (step_duration_result($s_ref->{duration}, $s_ref->{warning}) and not ($case_exception)) {
 				$case_total_nagios_out .= sprintf($CASE_DBSTATUS_2_TEXT{1}, $s_ref->{name},$s_ref->{duration},$s_ref->{warning});
 				$case_total_nagios_result = $CASE_DBSTATUS_2_NAGIOSSTATUS{worststate($case_duration_db_result,1)};
 			}
-			if ($case_stale or $case_exception) {
-				store_perfdata(sprintf("s_%d_%d_%s=%s;;;;",$casecount,$stepcount,$s_ref->{name}, "U"));
+			#if ($case_stale or $case_exception) {
+			if ($case_stale or ($s_ref->{duration} < 0 )) {
+				store_perfdata(sprintf("s_%03d_%03d_%s=%s;;;;",$casecount3,$stepcount3,$s_ref->{name}, "U"));
 			} else {
-				store_perfdata(sprintf("s_%d_%d_%s=%0.2fs;%d;;;",$casecount,$stepcount,$s_ref->{name}, $s_ref->{duration}, $s_ref->{warning}));
+				store_perfdata(sprintf("s_%03d_%03d_%s=%0.2fs;%s;;;",$casecount3,$stepcount3,$s_ref->{name}, $s_ref->{duration}, ($s_ref->{warning} ? $s_ref->{warning} : "")));
 			}
 		}
                 # final case result
                 $self->add_nagios($case_total_nagios_result, sprintf("%s %s", $STATELABELS{$case_total_nagios_result}, $case_total_nagios_out));
 		# Don't print out perfdata if exception
 		if ($case_exception) {
-	                store_perfdata(sprintf("c_%d_%s=%ss;;;;",$casecount,$c_ref->{name},"U"));
+	                store_perfdata(sprintf("c_%03d_%s=%ss;;;;",$casecount3,$c_ref->{name},"U"));
 		} else {
-	                store_perfdata(sprintf("c_%d_%s=%0.2fs;%d;%d;;",$casecount,$c_ref->{name},$c_ref->{duration},$c_ref->{warning},$c_ref->{critical}));
+	                store_perfdata(sprintf("c_%03d_%s=%0.2fs;%s;%s;;",
+				$casecount3,
+				$c_ref->{name},
+				$c_ref->{duration},
+				($c_ref->{warning} ? $c_ref->{warning}:""),
+				($c_ref->{critical} ? $c_ref->{critical}:"")
+				)
+			);
 		}
 		# add perfdata which only contains the state of this case result. 
-	        store_perfdata(sprintf("c_%dstate=%d;;;;",$casecount, $case_total_nagios_result));
+	        store_perfdata(sprintf("c_%03dstate=%d;;;;",$casecount3, $case_total_nagios_result));
         }
 	# determine the worst state of all cases 
 #	my $worst_suite;
@@ -249,7 +266,21 @@ sub nagios {
 		$self->add_nagios(
 			$suite_nagios_result,sprintf ($suite_nagios_out,$STATELABELS{$suite_nagios_result},$params{name}, $self->{suite}{duration})
 		);
-		store_perfdata(sprintf("suite_%s=%0.2fs;%d;%d;;",$params{name},$self->{suite}{duration},$self->{suite}{warning}, $self->{suite}{critical}),2);
+		# Suite result <= 5 respresent OK or WARN/CRIT for runtime reasons; however, the test _DID_ run properly from beginning to the end. 
+		# Suite result > 5, in contrast, represents an exception; only the first x steps were executed. For that reason, measuring the  
+		# total suite runtime makes non sense. 
+		if ($self->{suite}{result} > 5) {
+			store_perfdata(sprintf("suite_%s=%s;%d;%d;;",$params{name},"U",$self->{suite}{warning}, $self->{suite}{critical}),2);
+		} else {
+			store_perfdata(sprintf(
+				"suite_%s=%0.2fs;%s;%s;;",
+				$params{name},
+				$self->{suite}{duration},
+				($self->{suite}{warning} ? $self->{suite}->{warning} : ""), 
+				($self->{suite}{critical} ? $self->{suite}->{critical} : "")
+			),
+			2);
+		}
 	}
 	write_perfdata($self);
 
@@ -307,22 +338,28 @@ sub get_cases {
 			push @{$ret_steps->{$ret_cases->[-1]{id}}}, \%stephash;
 		}
 	}
+
+	logit(dump($ret_steps));
 	return ($ret_cases, $ret_steps);
 }
 
 sub case_duration_result {
         my ($value, $warn, $crit) = @_;
-        my $res;
+        my $res = 0;
+	($warn || $crit) || return 0;
         if (($warn>0) && ($crit>0)) {
                 if ($value > $warn) {
                         $res = ($value > $crit ? 3 : 2)
                 } else {$res = 0;}
         } else { $res = 0; }
+#        logit (sprintf "case_duration_result for %s, %s, %s: %d", $value, $warn, $crit, $res);
         return $res;
 }
 
 sub step_duration_result {
         my ($value, $warn) = @_;
+	my $res = 0; 
+	$warn || return 0;
         return ($value > $warn ? 1 : 0)
 }
 sub worststate {
@@ -352,4 +389,16 @@ sub write_perfdata {
 	foreach (@{$perfdata{'unordered'}}) {
 		$_self->add_perfdata($_);
 	}
+}
+
+
+sub logit
+{
+    return unless $verbose;
+    my $s = shift;
+    my $now = localtime();
+    my $fh;
+    open($fh, '>>', "$logfile") or die "$logfile: $!";
+    print $fh "$now $s\n";
+    close($fh);
 }

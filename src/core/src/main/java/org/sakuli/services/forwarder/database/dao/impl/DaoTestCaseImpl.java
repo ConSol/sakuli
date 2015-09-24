@@ -19,11 +19,11 @@
 package org.sakuli.services.forwarder.database.dao.impl;
 
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.services.forwarder.database.ProfileJdbcDb;
 import org.sakuli.services.forwarder.database.dao.DaoTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.core.support.SqlLobValue;
@@ -36,8 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.nio.file.Path;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.List;
@@ -78,17 +77,9 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
         tcParameters.addValue("lastpage", testCase.getLastURL());
 
         //try to save the screenshot
-        try {
-            if (testCase.getScreenShotPath() != null) {
-                final InputStream blobIs = Files.newInputStream(testCase.getScreenShotPath());
-                final int length = (int) testCase.getScreenShotPath().toFile().length();
-                tcParameters.addValue("screenshot", new SqlLobValue(blobIs, length, lobHandler), Types.BLOB);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        tcParameters.addValue("screenshot", getScreenshotAsSqlLobValue(testCase), Types.BLOB);
         tcParameters.addValue("duration", testCase.getDuration());
-        tcParameters.addValue("msg", testCase.getExceptionMessages());
+        tcParameters.addValue("msg", testCase.getExceptionMessages(true));
 
         //generate the sql-statement
         SimpleJdbcInsert insertTCResults = new SimpleJdbcInsert(getDataSource())
@@ -103,8 +94,37 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
         int dbPrimaryKey = insertTCResults.executeAndReturnKey(tcParameters).intValue();
 
         logger.info("test case '" + testCase.getId()
-                + "' has been written to 'sakuli_cases' with  primaryKey=" + dbPrimaryKey);
+                + "' has been written to 'sahi_cases' with  primaryKey=" + dbPrimaryKey);
         testCase.setDbPrimaryKey(dbPrimaryKey);
+    }
+
+    /**
+     * Determine the first available screenshot inside of the testcase and respectively in the assigned steps.
+     * For Details of the transformation, see {@link org.springframework.jdbc.support.lob.LobHandler}.
+     *
+     * @return a {@link SqlLobValue}
+     */
+    protected SqlLobValue getScreenshotAsSqlLobValue(TestCase testCase) {
+        try {
+            Path screenShotPath = testCase.getScreenShotPath();
+            if (screenShotPath == null) {
+                //get first step exception
+                for (TestCaseStep step : testCase.getStepsAsSortedSet()) {
+                    if (step.getScreenShotPath() != null) {
+                        screenShotPath = step.getScreenShotPath();
+                        break;
+                    }
+                }
+            }
+            if (screenShotPath != null) {
+                final InputStream blobIs = Files.newInputStream(screenShotPath);
+                final int length = (int) screenShotPath.toFile().length();
+                return new SqlLobValue(blobIs, length, lobHandler);
+            }
+            return null;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -64,7 +64,7 @@ public class GearmanResultServiceImpl extends AbstractResultService {
         NagiosCheckResult checkResult = nagiosCheckResultBuilder.build();
 
         String message = checkResult.getPayloadString();
-        logger.info("MESSAGE for GEARMAN:\n{}", ScreenshotDivConverter.removeBase64ImageDataString(message));
+        logGearmanMessage(message);
         try {
             GearmanJob job = creatJob(checkResult);
             gearmanClient.addJobServer(connection);
@@ -86,6 +86,23 @@ public class GearmanResultServiceImpl extends AbstractResultService {
             exceptionHandler.handleException(
                     NagiosExceptionBuilder.buildUnexpectedErrorException(e, hostname, port),
                     true);
+        }
+    }
+
+    /**
+     * Logs the assigned Gearman message as follow:
+     * <ul>
+     * <li>DEBUG: complete message with screenshot as BASE64 String</li>
+     * <li>INFO: message without screenshot to shrink the log entry</li>
+     * </ul>
+     *
+     * @param message as {@link String}
+     */
+    private void logGearmanMessage(String message) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("MESSAGE for GEARMAN:\n{}", message);
+        } else {
+            logger.info("MESSAGE for GEARMAN:\n{}", ScreenshotDivConverter.removeBase64ImageDataString(message));
         }
     }
 

@@ -23,6 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.sakuli.BaseTest;
 import org.sakuli.builder.TestCaseExampleBuilder;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
 import org.sakuli.builder.TestSuiteExampleBuilder;
@@ -155,7 +156,7 @@ public class OutputBuilderTest {
 
         String result = testling.formatTestSuiteSummaryStateMessage(testSuiteExample, propertiesExample);
         String lastRun = OutputBuilder.dateFormat.format(testSuiteExample.getStopDate());
-        assertEquals(result, "CRITICAL - [CRIT] Sakuli suite \"sakuli-123\" ran in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")");
+        assertEquals(result, "CRITICAL - [CRIT] Sakuli suite \"sakuli-123\" ran in 120.00 seconds - EXCEPTION: 'TEST-ERROR'. (Last suite run: " + lastRun + ")");
     }
 
     @Test
@@ -173,7 +174,7 @@ public class OutputBuilderTest {
         String result = testling.formatTestSuiteTableStateMessage(testSuiteExample, propertiesExample);
         String lastRun = OutputBuilder.dateFormat.format(testSuiteExample.getStopDate());
         assertEquals(result, "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli-123\" ran" +
-                " in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")</td></tr>");
+                " in 120.00 seconds - EXCEPTION: 'TEST-ERROR'. (Last suite run: " + lastRun + ")</td></tr>");
     }
 
     @Test
@@ -194,7 +195,7 @@ public class OutputBuilderTest {
 
         final String separator = "<div";
         assertEquals(result.substring(0, result.indexOf(separator)), "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli-123\" ran" +
-                " in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")");
+                " in 120.00 seconds - EXCEPTION: 'TEST-ERROR'. (Last suite run: " + lastRun + ")");
 
         String start_1 = "<div style=\"width:640px\" id=\"sakuli_screenshot\">" +
                 "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" " +
@@ -268,6 +269,68 @@ public class OutputBuilderTest {
                 .buildExample();
         assertEquals(testling.formatTestCaseTableStateMessage(testCase, properties),
                 String.format(htmlTemplate, "serviceCRITICAL", "[CRIT] case \"case-error\" EXCEPTION: EXCEPTION-MESSAGE"));
+    }
+
+    @Test
+    public void testFormatTestCaseTableStateMessageWithScreenshot() throws Exception {
+        Path screenshotPath = Paths.get(OutputBuilder.class.getResource("computer.png").toURI());
+        String htmlTemplate = "<tr valign=\"top\"><td class=\"%s\">%s<\\/td><\\/tr>";
+        GearmanProperties properties = GearmanPropertiesTestHelper.initMock(mock(GearmanProperties.class));
+
+        TestCase testCase = new TestCaseExampleBuilder().withState(TestCaseState.ERRORS)
+                .withId("case-error")
+                .withException(new SakuliExceptionWithScreenshot("EXCEPTION-MESSAGE", screenshotPath))
+                .buildExample();
+        String regex = String.format(htmlTemplate, "serviceCRITICAL", "\\[CRIT\\] case \"case-error\" EXCEPTION: EXCEPTION-MESSAGE" +
+                "<div.* src=\"data:image\\/png;base64,.*><\\/div>");
+        BaseTest.assertRegExMatch(testling.formatTestCaseTableStateMessage(testCase, properties),
+                regex);
+    }
+
+    @Test
+    public void testFormatTestCaseTableStateMessageWithScreenshotTestCase() throws Exception {
+        Path screenshotPath = Paths.get(OutputBuilder.class.getResource("computer.png").toURI());
+        String htmlTemplate = "<tr valign=\"top\"><td class=\"%s\">%s<\\/td><\\/tr>";
+        GearmanProperties properties = GearmanPropertiesTestHelper.initMock(mock(GearmanProperties.class));
+
+        TestCase testCase = new TestCaseExampleBuilder().withState(TestCaseState.ERRORS)
+                .withId("case-error")
+                .withException(new SakuliExceptionWithScreenshot("EXCEPTION-MESSAGE", screenshotPath))
+                .withTestCaseSteps(Collections.singletonList(
+                        new TestCaseStepExampleBuilder()
+                                .withState(TestCaseStepState.ERRORS)
+                                .withException(new SakuliExceptionWithScreenshot("STEP-EXCEPTION-MESSAGE", screenshotPath))
+                                .buildExample()
+                ))
+                .buildExample();
+        String regex = String.format(htmlTemplate,
+                "serviceCRITICAL", "\\[CRIT\\] case \"case-error\" EXCEPTION: EXCEPTION-MESSAGE" +
+                        " - STEP \"step_for_unit_test\": STEP-EXCEPTION-MESSAGE" +
+                        "<div.* src=\"data:image\\/png;base64,.*><\\/div>" +
+                        "<div.* src=\"data:image\\/png;base64,.*><\\/div>");
+        BaseTest.assertRegExMatch(testling.formatTestCaseTableStateMessage(testCase, properties), regex);
+    }
+
+    @Test
+    public void testFormatTestCaseTableStateMessageWithScreenshotOnylInTestCase() throws Exception {
+        Path screenshotPath = Paths.get(OutputBuilder.class.getResource("computer.png").toURI());
+        String htmlTemplate = "<tr valign=\"top\"><td class=\"%s\">%s<\\/td><\\/tr>";
+        GearmanProperties properties = GearmanPropertiesTestHelper.initMock(mock(GearmanProperties.class));
+
+        TestCase testCase = new TestCaseExampleBuilder().withState(TestCaseState.ERRORS)
+                .withId("case-error")
+                .withTestCaseSteps(Collections.singletonList(
+                        new TestCaseStepExampleBuilder()
+                                .withState(TestCaseStepState.ERRORS)
+                                .withException(new SakuliExceptionWithScreenshot("STEP-EXCEPTION-MESSAGE", screenshotPath))
+                                .buildExample()
+                ))
+                .buildExample();
+        String regex = String.format(htmlTemplate,
+                "serviceCRITICAL", "\\[CRIT\\] case \"case-error\" EXCEPTION: " +
+                        "STEP \"step_for_unit_test\": STEP-EXCEPTION-MESSAGE" +
+                        "<div.* src=\"data:image\\/png;base64,.*><\\/div>");
+        BaseTest.assertRegExMatch(testling.formatTestCaseTableStateMessage(testCase, properties), regex);
     }
 
     @Test
