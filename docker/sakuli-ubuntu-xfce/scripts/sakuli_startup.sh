@@ -8,3 +8,6 @@ find $SAKULI_TEST_SUITE -type d | while read dir ; do chmod 777 "$dir" ; done
 find $SAKULI_TEST_SUITE -type f | while read file ; do chmod 666 "$file" ; done
 
 $SAKULI_HOME/bin/sakuli.sh --run $SAKULI_TEST_SUITE
+res=$?
+echo "SAKULI_RETURN_VAL: $res"
+exit $res

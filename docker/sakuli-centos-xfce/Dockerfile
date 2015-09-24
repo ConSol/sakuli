@@ -2,7 +2,7 @@
 
 FROM consol/centos-xfce-vnc
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2015-09-22
+ENV REFRESHED_AT 2015-09-23
 
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
