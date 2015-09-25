@@ -23,8 +23,7 @@ $debug_log = "/tmp/pnp_check_sakuli.php.log";
 
 # Position vars
 $perf_pos_suite_state = 1;
-$perf_pos_suite_runtime = 2;
-
+$perf_pos_suite_runtime = 3;
 
 $col_invisible = '#00000000';
 
@@ -49,8 +48,8 @@ $col_step_area_opacity = "BB";
 
 # State colors
 $col_OK = "#008500";
-$col_WARN = "#ffdd00";
-$col_CRIT = "#ff0000";
+$col_warning = "#ffdd00";
+$col_critical = "#ff0000";
 $col_INCOMPL = "#ff8000"; # orange
 
 # CPU Usage color
@@ -143,7 +142,7 @@ $ds_name[0] = "Sakuli Suite '" . $suitename . "'";
 $opt[0] = "--vertical-label \"seconds\"  -l 0 --slope-mode --title \"$servicedesc (Sakuli Suite $suitename) on $hostname\" ";
 $def[0] = "";
 
-# Suite AREA ##########################################
+# Suite graph, Case AREA ##########################################
 foreach($this->DS as $k=>$v) {
 	# c_001_case1
 	# but do not match a _state_ label like 'c_001__state_demo_win7' (which contains two underscores)
@@ -171,7 +170,7 @@ foreach($this->DS as $k=>$v) {
 	}
 }
 
-# Suite Line ##########################################
+# Suite graph, Case LINE ##########################################
 
 $c_last_index = "";
 foreach($this->DS as $k=>$v) {
@@ -202,22 +201,25 @@ foreach($this->DS as $k=>$v) {
 $def[0] .= rrd::comment(" \\n");
 $def[0] .= rrd::comment("Sakuli Suite\g");
 
-if(($WARN[$perf_pos_suite_runtime] != "") || ($CRIT[$perf_pos_suite_runtime] != "")) {
-	$def[0] .= rrd::comment(" (\g");
+foreach($this->DS as $k=>$v) {
+	$before = "  (";
+	if (preg_match('/^suite__(warning|critical)/', $v['LABEL'], $matches)) {
+		$threshold = $matches[1];
+		if ($before == "") {
+			$before = ", "; 
+		}
+		$def[0] .= rrd::def("suite_".$threshold, $v["RRDFILE"], $v["DS"], "AVERAGE");
+		$def[0] .= rrd::comment($before .  "\g");
+		$def[0] .= rrd::line1("suite_".$threshold, ${"col_" . $threshold}, $threshold . "\g", 0);
+		$def[0] .= rrd::gprint("suite_".$threshold, "LAST", "%3.0lf s \g" );
+		$before = ""; 
+	}
+	if ($before == ""){
+		$def[0] .= rrd::comment(")\g");
+	}
 }
 
-if ($WARN[$perf_pos_suite_runtime] != "") {
-	$def[0] .= rrd::hrule($WARN[$perf_pos_suite_runtime], $col_WARN, "Warning  ".$WARN[$perf_pos_suite_runtime].$UNIT[$perf_pos_suite_runtime]);
-} 
-if($CRIT[$perf_pos_suite_runtime] != "") {
-	$def[0] .= rrd::hrule($CRIT[$perf_pos_suite_runtime], $col_CRIT, "Critical  ".$CRIT[$perf_pos_suite_runtime].$UNIT[$perf_pos_suite_runtime]."\g");
-} 
-
-if(($WARN[$perf_pos_suite_runtime] != "") || ($CRIT[$perf_pos_suite_runtime] != "")) {
-	$def[0] .= rrd::comment(")\g");
-}
-
-# Suite runtime on top ################################
+# Suite Graph, Suite runtime on top ################################
 $def[0] .= rrd::comment("\:\\n");
 $def[0] .= rrd::def("suite", $RRDFILE[$perf_pos_suite_runtime], $DS[$perf_pos_suite_runtime], "AVERAGE");
 if ($c_last_index != "") {
@@ -264,8 +266,6 @@ $def[0] .= rrd::comment(" \\n");
 
 # RRDtool does not allow to increment a CDEF var multiple times, as needed here. $suite_data_count is a counter for 
 # each data row which lets us create a new CDEF each time and use the last one for graphing. 
-
-# All CDEF vars for suite ticker are prefixed with "ts_" (TickerSuite)
 $def[0] .= rrd::cdef("ts_suite_unknown_total_0", "suite,UN,0,0,IF");
 $suite_data_count = 0;
 
@@ -307,8 +307,8 @@ foreach ($this->DS as $k=>$v) {
 		# else: if suite_state = 2 -> 1 = crit TICK
 		$def[0] .= rrd::cdef("ts_suite_state_critical", "ts_suite_incomplete,1,EQ,0,ts_suite_state,2,EQ,1,0,IF,IF") ;
 
-		$def[0] .= "TICK:ts_suite_state_warning".$col_WARN.$tick_opacity_warn.":".$tick_frac.":'case/suite warning ' " ;
-		$def[0] .= "TICK:ts_suite_state_critical".$col_CRIT.$tick_opacity_crit.":".$tick_frac.":'case/suite critical ' " ;
+		$def[0] .= "TICK:ts_suite_state_warning".$col_warning.$tick_opacity_warn.":".$tick_frac.":'case/suite warning ' " ;
+		$def[0] .= "TICK:ts_suite_state_critical".$col_critical.$tick_opacity_crit.":".$tick_frac.":'case/suite critical ' " ;
 	}
 }
 
@@ -350,7 +350,7 @@ foreach ($this->DS as $KEY=>$VAL) {
 		$ds_name[$casecount_int] = "Sakuli Case $casename";
 		$opt[$casecount_int] = "--vertical-label \"seconds\"  -l 0 -M --slope-mode --title \"$servicedesc (Sakuli case $casename) on $hostname\" ";
 		$def[$casecount_int] = "";
-		# CASE step AREA ########################################
+		# Case graph, step AREA ########################################
 		foreach ($this->DS as $k=>$v) {
 			# s_001_001_stepone
 			# s_001_002_steptwo
@@ -383,7 +383,7 @@ foreach ($this->DS as $KEY=>$VAL) {
 		$def[$casecount_int] .= rrd::cdef("case".$casecount."_maxplus", "case".$casecount."_max,".$tick_dist_factor.",*");
 		$def[$casecount_int] .= rrd::line1("case".$casecount."_maxplus", $col_invisible);
 
-		# CASE Step LINE #########################################################
+		# Case graph, step LINE #########################################################
 		$s_last_index = "";
 		foreach ($this->DS as $k=>$v) {
 			# s_001_001_stepone
@@ -408,23 +408,33 @@ foreach ($this->DS as $KEY=>$VAL) {
 				$s_last_index = $stepcount;
 			}
 		}
-		# CASE Warn/Crit ##########################################################
-		$def[$casecount_int] .= rrd::comment(" \\n");
-		$def[$casecount_int] .= rrd::comment("Case ".$casecount_int ."\g");
-		if(($VAL["WARN"] != "") || ($VAL["CRIT"] != "")) {
-			$def[$casecount_int] .= rrd::comment(" (\g");
-		}
-		if ($VAL["WARN"] != "") {
-			$def[$casecount_int] .= rrd::hrule($VAL["WARN"], $col_WARN, "Warning  ".$VAL["WARN"].$UNIT[$casecount_int]);
-		}
-		if ($VAL["CRIT"] != "") {
-			$def[$casecount_int] .= rrd::hrule($VAL["CRIT"], $col_CRIT, "Critical  ".$VAL["CRIT"].$UNIT[$casecount_int]."\g");
-		}
-		if(($VAL["WARN"] != "") || ($VAL["CRIT"] != "")) {
-			$def[$casecount_int] .= rrd::comment(")\g");
+
+               $def[$casecount_int] .= rrd::comment(" \\n");                                                                        
+               $def[$casecount_int] .= rrd::comment("Case ".$casecount_int ."\g");
+
+
+		# Case graph, Warn/Crit LINE  ##########################################################
+		foreach($this->DS as $k=>$v) {
+			$before = "  (";
+			if (preg_match('/^c_'.$casecount.'__(warning|critical)/', $v['LABEL'], $matches)) {
+				$threshold = $matches[1];
+				if ($before === "") {
+					$before = ", ";
+				}
+				$def[$casecount_int] .= rrd::def("case_".$casecount . "__" . $threshold, $v["RRDFILE"], $v["DS"], "AVERAGE");
+				$def[$casecount_int] .= rrd::comment($before .  "\g");
+				$def[$casecount_int] .= rrd::line1("case_".$casecount . "__" . $threshold, ${"col_" . $threshold}, $threshold . "\g", 0);
+				$def[$casecount_int] .= rrd::gprint("case_".$casecount . "__" . $threshold, "LAST", "%3.0lf s \g" );
+				$before = "";
+			}
+			if ($before === ""){
+				$def[$casecount_int] .= rrd::comment(")\g");
+			}
 		}
 
-		# CASE runtime on top ###########################################################
+
+
+		# Case graph, Case runtime on top ###########################################################
 		$def[$casecount_int] .= rrd::comment("\:\\n");
 	        $def[$casecount_int] .= rrd::def("case$casecount", $VAL['RRDFILE'], $VAL['DS'], "AVERAGE");
 		# not used anymore; formerly used to draw grey TICK-areas if any case is unknown to hide everything. 
@@ -433,20 +443,16 @@ foreach ($this->DS as $KEY=>$VAL) {
 			$def[$casecount_int] .= rrd::cdef("case_diff$casecount","case$casecount,s_line_stackbase$s_last_index,-");
 			# invisible line to stack upon
 			$def[$casecount_int] .= rrd::line1("s_line_stackbase$s_last_index", "#00000000");
-			#$def[$casecount_int] .= rrd::area   ("case_diff$casecount", $col_case_area[$casecount_int].$col_case_area_opacity, pad($casename,$label_max_length),1 );
 			$def[$casecount_int] .= rrd::area   ("case_diff$casecount", $col_case_runtime_area, pad($casename,$label_max_length),1 );
 			# invisible line to stack upon
 			$def[$casecount_int] .= rrd::line1("s_line_stackbase$s_last_index","#00000000");	
-			#$def[$casecount_int] .= rrd::line1   ("case_diff$casecount", $col_case_line[$casecount_int],"",1);
 			$def[$casecount_int] .= rrd::line1   ("case_diff$casecount", $col_case_runtime_line,"",1);
 		} else {
 			# no steps, no stacks
-			#$def[$casecount_int] .= rrd::area   ("case$casecount", $col_case_area[$casecount_int].$col_case_area_opacity, $casename );
 			$def[$casecount_int] .= rrd::area   ("case$casecount", $col_case_runtime_area, $casename );
-			#$def[$casecount_int] .= rrd::line1   ("case$casecount", $col_case_line[$casecount_int],"");
 			$def[$casecount_int] .= rrd::line1   ("case$casecount", $col_case_runtime_line,"");
 		}
-		# CASE legend #############################################
+		# Case graph, legend #############################################
 		$def[$casecount_int] .= rrd::gprint ("case$casecount", "LAST", "%3.2lf s LAST");
 		$def[$casecount_int] .= rrd::gprint ("case$casecount", "MAX", "%3.2lf s MAX ");
 		$def[$casecount_int] .= rrd::gprint ("case$casecount", "AVERAGE", "%3.2lf s AVG \j");
@@ -465,7 +471,6 @@ foreach ($this->DS as $KEY=>$VAL) {
 		# - incomplete data -->  0 < case_unknown_total < case_data_count --> orange TICK (overwrites evt warn/crit TICKS)
 		# - no data at all  -->  case_unknown_total == case_data_count --> no TICK
 
-        # All CDEF vars for case ticker are prefixed with "tc_" (TickerCase)
 		# see comments in case tick
 
 		$def[$casecount_int] .= rrd::cdef("tc_case".$casecount."_unknown_total_0", "case".$casecount.",UN,0,0,IF");
@@ -511,8 +516,8 @@ foreach ($this->DS as $KEY=>$VAL) {
 				# else: if case$casecount_state = 2 -> 1 = crit TICK
 				$def[$casecount_int] .= rrd::cdef("tc_case".$casecount."_state_critical", "tc_case".$casecount."_incomplete,1,EQ,0,tc_case".$casecount."_state,2,EQ,2,0,IF,IF") ;
 
-				$def[$casecount_int] .= "TICK:tc_case".$casecount."_state_warning".$col_WARN.$tick_opacity_warn.":".$tick_frac.":'step/case warning ' " ;
-				$def[$casecount_int] .= "TICK:tc_case".$casecount."_state_critical".$col_CRIT.$tick_opacity_crit.":".$tick_frac.":'step/case critical ' " ;
+				$def[$casecount_int] .= "TICK:tc_case".$casecount."_state_warning".$col_warning.$tick_opacity_warn.":".$tick_frac.":'step/case warning ' " ;
+				$def[$casecount_int] .= "TICK:tc_case".$casecount."_state_critical".$col_critical.$tick_opacity_crit.":".$tick_frac.":'step/case critical ' " ;
 			}
 		}
 
