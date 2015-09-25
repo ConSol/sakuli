@@ -1,16 +1,20 @@
 ## Change Log of Sakuli Releases
 
-
 - - -
 
 ### Version 0.4.9 (Bugfix Release)
+* add #106 add warn/crit thresholds as perfdata values for the Gearman results
+    * Adaption for 3-digit case/step ids
+    * PNP template with unknown perfdata support
+    * added TICKer for incomplete data, warn/crit states
+    * Changed color scheme
 * add #77 separate error state to identify the affected TestCaseStep on errors:
     * modify SakuliExceptionHandler to find current Step and enable adding exception to the current step
     * add error message output for exceptions in TestCaseSteps
 * add #31 determine all not executed TestCaseSteps, to secure that the nagios performance graphs are displayed correctly:
     * introduce new TestCaseStepState INIT
     * modify nagios RRD performance data output for initialized and not started steps to typ 'unknown'
-    * add caching mechanism the step information for not started steps implementation 
+    * add caching mechanism the step information for not started steps implementation
     * call write cached steps information on every 'not error' result
     * gearman forward: write unknown values to every result line if a suite, case or step entity has finished with errors or have even not been called
     * database forwarder: write NULL instead of '0' at warning and critical times
@@ -75,14 +79,14 @@
 ### Version 0.4.0
 * centralized the configuration of properties files:
 	* `_include/sakuli.properties` now contains all possible configuration options for Sakuli. These are the _default values_ for all tests
-	* `<test-suite>/testsuite.properties` contains the _test suite specific configuration options_. The only mandatory property here is the test suite identifier `testsuite.id`. All other properties are optional. 
-	* Options set in `testsuite.properties` will override the default settings in `sakuli.properties` 
+	* `<test-suite>/testsuite.properties` contains the _test suite specific configuration options_. The only mandatory property here is the test suite identifier `testsuite.id`. All other properties are optional.
+	* Options set in `testsuite.properties` will override the default settings in `sakuli.properties`
 * Proxy configuration options can now be set in `sakuli.properties` (defaults) or  `testsuite.properties` (suite specific)
 * Re-organized the folder structure of `sakuli-zipped-release-vX.X.X.zip` and source code directory.
 * Extended logging with more configuration possibilities (SLF4J with underlying logback-Logging)
 * Consolidation of the applicationContext files
-* Remove the program-based setting of system properties. 
-* The possibility to disable the "encryption interface" with new property `sakuli.encryption.interface.testmode=true` 
+* Remove the program-based setting of system properties.
+* The possibility to disable the "encryption interface" with new property `sakuli.encryption.interface.testmode=true`
 * Added a separate module for integration testing
 * Bugfixing and extended unit tests
 * documentation update
@@ -96,5 +100,5 @@
 
 * Gearman receiver: sent all data directly to your OMD/Nagios distribution. Currently it is missing that the screenshots
   will also be transferred. This will be fixed in the next version
-  
+
 * Bufixing in maven build, exception handling, testcase ids and  added some more unit tests
