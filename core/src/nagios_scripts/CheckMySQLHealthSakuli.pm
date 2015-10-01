@@ -26,14 +26,14 @@
 package MySakuli;
 our @ISA = qw(DBD::MySQL::Server); 
 
-use Data::Dump qw(dump);
+#use Data::Dump qw(dump);
 #use YAML;
 use MIME::Base64;
 use Encode qw(encode); 
 use POSIX qw(strftime);
 
 # used by sub logit
-my $verbose = 1; 
+my $verbose = 0; 
 my $logfile="/tmp/check_sakuli.debug";
 
 # maps DB states to an understandable text string. 
@@ -191,8 +191,8 @@ sub nagios {
 		foreach my $s_ref (@{$self->{steps}->{$c_ref->{id}}}) {
 			$stepcount++;
 			$stepcount3 = sprintf("%03d", $stepcount);
-			logit ("=== Step $stepcount3");
-			logit (dump($s_ref));
+            #logit ("=== Step $stepcount3");
+            #logit (dump($s_ref));
 			if (step_duration_result($s_ref->{duration}, $s_ref->{warning}) and not ($case_exception)) {
 				$case_total_nagios_out .= sprintf($CASE_DBSTATUS_2_TEXT{1}, $s_ref->{name},$s_ref->{duration},$s_ref->{warning});
 				$case_total_nagios_result = $CASE_DBSTATUS_2_NAGIOSSTATUS{worststate($case_duration_db_result,1)};
@@ -339,7 +339,7 @@ sub get_cases {
 		}
 	}
 
-	logit(dump($ret_steps));
+    #logit(dump($ret_steps));
 	return ($ret_cases, $ret_steps);
 }
 
