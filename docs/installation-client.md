@@ -34,7 +34,7 @@ We recommend to run Sakuli clients on virtual machines.
 ## Software installation 
 ### Java
 
-Sakuli versions including v0.4.7 need **Java JRE 7**; all newer versions are based on **Java JRE 8**.  
+Sakuli versions including v0.4.* need **Java JRE 7**; versions v0.9.* are based on **Java JRE 8**.
 
 Additionally, on **Windows**: 
 
