@@ -41,7 +41,7 @@ Create the system tables for the new database and start OMD afterwards. You shou
 
 Create the **Sakuli database**:
 
-	OMD[sakuli]:~$ mysql < __TEMP__/setup/database/create_sakuli_database.sql
+	OMD[sakuli]:~$ mysql < __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/database/create_sakuli_database.sql
 	
 Create the **database user**:
 
@@ -52,7 +52,7 @@ Create the **database user**:
 	  
 Check the connection with *check_mysql_health*: 
 
-	OMD[sakuli]:~$ 	~/lib/nagios/plugins/check_mysql_health -H __DB_IP__ --username __DB_USER__ --password __DB_PASSWORD__ --database sakuli --port __DB_PORT__ --mode connection-time
+	OMD[sakuli]:~$ 	lib/nagios/plugins/check_mysql_health -H __DB_IP__ --username __DB_USER__ --password __DB_PASSWORD__ --database sakuli --port __DB_PORT__ --mode connection-time
 	  OK - 0.24 seconds to connect as sakuli | connection_time=0.2366s;1;5
 
 ### create Nagios check
@@ -146,11 +146,14 @@ Re-scheduling this service should display the UNKNOWN message that the requested
 
 ### Database cleanup (optional)
 
-Create a OMD crontab entry for a automatic database cleanup: 
+Sakuli's database can get very large over time. Use the following database maintenance script to keep only the most recent data. 
+
+    OMD[sakuli]:~$ cp `__SAKULI_HOME__/bin/helper/mysql_purge.sh local/bin/`
+
+Create a OMD crontab entry for a automatic database cleanup of data older than 90 days: 
 
     OMD[sakuli]:~$ vim etc/cron.d/sakuli
-    
-    00 12 * * * $OMD_ROOT/sakuli/scripts/helper/mysql_purge.sh > /dev/null 2>&1 
+    00 12 * * * $OMD_ROOT/local/bin/mysql_purge.sh 90 > /dev/null 2>&1 
 
 After that, reload the OMD crontab: 
 
