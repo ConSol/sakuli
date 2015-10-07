@@ -144,6 +144,8 @@ Sakuli should now
 
 **Congratulations - you have installed Sakuli!**
 
+What next? Now go on to [prepare OMD](installation-omd.md) to receive results for the Sakuli check **example_ubuntu/opensuse/windows** [via Gearman](forwarder-gearman.md) or [from the MySQL result DB](forwarder-database.md). 
+
 # Upgrade process
 
 You can use several versions of Sakuli among side by side - just unzip the ZIP file as described above into `__INST_DIR__`: 

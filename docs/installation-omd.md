@@ -39,7 +39,7 @@ Depending on your environment, you can set up on of these two possible forwarder
     * + get results immediately
     * + PNP graphs
     * - no performance value history to do further reporting (despite reading the RRDs again; not recommended) 
-  * [Setting up the Sakuli **result database** in OMD](forwarder-database.md#omd-configuration)
+  * [Setting up the Sakuli **result database** in OMD](forwarder-database.md#omd-configuration) and let Nagios check the database
     * active check (against MySQL result database)
     * - results in Nagios always lag behind
     * + PNP graphs
