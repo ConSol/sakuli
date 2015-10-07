@@ -35,15 +35,15 @@ Sakuli will produce HTML formatted output. **HTML escaping** in Nagios must be t
 Depending on your environment, you can set up on of these two possible forwarder types. Each of them is documented on a single page.
 
   * [Setting up Nagios to **receive Gearman results** from Sakuli clients](forwarder-gearman.md#omd-configuration) (**recommended**)
-  ** passive check (via Gearmand result queue) 
-  ** + get results immediately
-  ** + PNP graphs
-  ** - no performance value history to do further reporting (despite reading the RRDs again; not recommended) 
+    * passive check (via Gearmand result queue) 
+    * + get results immediately
+    * + PNP graphs
+    * - no performance value history to do further reporting (despite reading the RRDs again; not recommended) 
   * [Setting up the Sakuli **result database** in OMD](forwarder-database.md#omd-configuration)
-  ** active check (against MySQL result database)
-  ** - results in Nagios always lag behind
-  ** + PNP graphs
-  ** + all suite/case/step performance values are stored in database and can be used for further reporting
+    * active check (against MySQL result database)
+    * - results in Nagios always lag behind
+    * + PNP graphs
+    * + all suite/case/step performance values are stored in database and can be used for further reporting
 
 ## PNP4Nagios
 ### RRD Storage Type
