@@ -34,8 +34,16 @@ Sakuli will produce HTML formatted output. **HTML escaping** in Nagios must be t
 ## Choose a forwarder
 Depending on your environment, you can set up on of these two possible forwarder types. Each of them is documented on a single page.
 
+  * [Setting up Nagios to **receive Gearman results** from Sakuli clients](forwarder-gearman.md#omd-configuration) (**recommended**)
+  ** passive check (via Gearmand result queue) 
+  ** + get results immediately
+  ** + PNP graphs
+  ** - no performance value history to do further reporting (despite reading the RRDs again; not recommended) 
   * [Setting up the Sakuli **result database** in OMD](forwarder-database.md#omd-configuration)
-  * [Setting up Nagios to **receive Gearman results** from Sakuli clients](forwarder-gearman.md#omd-configuration)
+  ** active check (against MySQL result database)
+  ** - results in Nagios always lag behind
+  ** + PNP graphs
+  ** + all suite/case/step performance values are stored in database and can be used for further reporting
 
 ## PNP4Nagios
 ### RRD Storage Type
@@ -50,6 +58,14 @@ Verify `RRD_STORAGE_TYPE` in `process_perfdata.cfg`:
 If this value is *"SINGLE"* on your system and you do not want to change it globally, use the *custom check_command* cfg file. PNP4Nagios will then use storage type *"MULTIPLE"* only for this check_command then:  
 
 	OMD[sakuli]:~$ cp __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/check_sakuli.cfg ~/etc/pnp4nagios/check_commands/
+
+### RRD heartbeat
+
+Each RRD file contains a heartbeat value, which determines how much time must pass without any new update, before RRDtool writes an UNKNOWN value (nan) into the data slot (the graph will have a gap then). In PNP4nagios heartbeat is defined at approx. 2 1/2 hours. If your Sakuli check runs only every 2 hours, this value will be fine. But for a 5 minute interval, this is way too long. As a consequence, the graph line will be continuously drawed even Sakuli did no check for two hours. Hence, always make sure to adapt the heartbeat to a value which is slightly higher than the interval of Sakuli checks (and indeally the same as [freshness_threshold](forwarder-gearman.md#create-a-nagios-service), if you use the gearman receiver): 
+
+    OMD[sakuli]:~$ cd ~/var/pnp4nagios/perfdata/sakulihost/
+    # Sakuli check interval: 2 minutes --> RRD heartbeat 3 minutes
+    OMD[sakuli]:~$ for file in `ls sakuli_e2e_webshop*.rrd`; do rrdtool tune $file --heartbeat 1:180; done
 
 ### install PNP graph template
 

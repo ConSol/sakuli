@@ -93,9 +93,10 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
 
     /**
      * A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
-     * particular runtime. Together with the test Case, a special "step" timer is started. Each time endOfStep is
-     * called, the current timer value is read out, stored with the step name (first parameter) and gets resetted . If
-     * the runtime exceeds the step threshold (second parameter), the step is saved with state "WARNING".
+     * particular runtime. When a case starts, Sakuli starts a "step" timer. It gets read out, stored with the 
+     * step name, and resetted each time endOfStep() is called. 
+     * If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state 
+     * "WARNING" (there is no CRITICAL state).
      * @param {String} stepName
      * @param {number} optWarningTime (optional) threshold in seconds, default = 0. If the threshold is set to 0,
      *                 the execution time will never exceed, so the state will be always OK!

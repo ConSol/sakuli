@@ -4,8 +4,8 @@ This page describes the common steps to **install and test** Sakuli on **Windows
 
 The default installation path of a particular Sakuli version is referenced as `%SAKULI_HOME%`, that is 
 
-- `%SAKULI_HOME%` on **Windows** (e.g. `C:\sakuli\sakuli-v0.6.0\`)
-- `$SAKULI_HOME` on **Linux** (e.g. `/home/e2e/sakuli/sakuli-v0.6.0/`)
+- `%SAKULI_HOME%` on **Windows** (e.g. `C:\sakuli\sakuli-v0.9.1\`)
+- `$SAKULI_HOME` on **Linux** (e.g. `/home/e2e/sakuli/sakuli-v0.9.1/`)
 
 **Conventions**: 
 
@@ -52,8 +52,8 @@ Additionally, on **Windows**:
 ### Sakuli 
 
 * Download **Sakuli** from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
-  * current **development** snapshot = `sakuli-v.0.6.0-SNAPSHOT.zip` 
-  * current **stable** version = highest version of `sakuli-zipped-release-vX.X.X.zip` 
+  * current **development** snapshot = `sakuli-vX.X.X-SNAPSHOT.zip` 
+  * current **stable** version = `sakuli-vX.X.X.zip` 
 * Unzip the downloaded archive into a folder of your choice; a folder `sakuli` will be created (referenced as `__INST_DIR__`). 
 * Set the environment variable `SAKULI_HOME`: 
   * **Windows**
@@ -67,20 +67,16 @@ Additionally, on **Windows**:
     
       `export SAKULI_HOME=__INST_DIR__/sakuli-vX.X.X/`
       
-* Additionally, on **Linux** you have to install `tesseract` (and maybe `wmctrl`) manually: 
+* Additional steps on **Linux**:
 
         # Ubuntu
-        sudo apt-get install tesseract-ocr
-        sudo apt-get install wmctrl
+        sudo apt-get install tesseract-ocr wmctrl xdotool
         # openSUSE
-        sudo zypper install tesseract
-        sudo zypper install wmctrl
+        sudo zypper install tesseract wmctrl xdotool
         
 ### Sahi
 
-* Download **Sahi** from [http://sourceforge.net/projects/sahi/files/?source=navbar](http://sourceforge.net/projects/sahi/files/)
-  * For **Sakuli < v0.6.0**, use version **0.44**
-  * For **Sakuli >= v0.6.0**, use version **0.5**
+* Download the latest version of **Sahi** from [http://sourceforge.net/projects/sahi/files/latest/download?source=files](http://sourceforge.net)
 * Unpack the downloaded file and start the installation by executing `java -jar __DOWNLOADED_JAR_FILE__`. In the installation assistant, set: 
   * Installation path: `__INST_DIR__/sahi`
   * select all packages to install
