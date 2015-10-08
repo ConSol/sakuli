@@ -237,14 +237,24 @@ Set the following properties (as global in the sakuli.properties) to define a pr
 
 #### Mozilla Firefox ####
 
-Edit `__SAHI_DIR__/config/ff_profile_template/prefs.js`: 
+Append the following lines to the Firefox default preference file: 
 
-    # Disable session restore functionality
+    vim __SAHI_DIR__/config/ff_profile_template/prefs.js
+
+    user_pref("browser.cache.disk.enable", false);
+    user_pref("browser.cache.disk.smart_size.enabled", false);
+    user_pref("browser.cache.memory.enable", false);
+    user_pref("browser.cache.offline.enable", false);
+    user_pref("browser.cache.offline.capacity", 0);
     user_pref("browser.sessionstore.max_tabs_undo",0);
     user_pref("browser.sessionstore.max_windows_undo",0);
-    # Disable user-rating in FF >=37
     user_pref("browser.selfsupport.url","");
-    
-To take these changes effect, you need to delete the firefox profile folders. Sahi will re-create them on the next run: 
+
+To take these changes effect, you need to delete the firefox profile folders *sahi0-9*.
 
     rm -rf __SAHI_DIR__/userdata/browser/ff/profiles/*
+
+Re-start Firefox from the Sahi dashboard. Check that 
+
+* the profile folder *sahi0-9* are created
+* while Firefox is running, there is **no** file `Invalidprefs.js` in *sahi0*. This would indicate that Firefox was not able to load the custom preferences. (In this case, Firefox won't even show up the Sahi start page, because the proxy setting *localhost:9999* is also defined as a *user_pref*.)
