@@ -84,13 +84,6 @@ This can be set globally in the registry **of your local host**:
 * [ HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client ]
 * "DisableDriveRedirection" (DWORD) => "1" 
 
-#### Disable Firefox' Plugin Container
-Plugins Container is a technique of Mozilla Firefox to run browser add-ons in a separate process than firefox.exe. This should ensure that a hanging add-on does not affect the browser process. But sometimes "Plugins Container" itself makes problems. Sakuli (better: Sahi) does not need any browser plugins - so, if you don't, disable Plugin Container: 
-
-* Start -> Control Panel -> System -> Advanced system settings
-* Advanced -> Environment Variables -> System variables
-	* Variable name: MOZ_DISABLE_OOP_PLUGINS
-	* Value: 1
  
 ##### Disable the "GUI-less" mode
 If you minimize the Remote Desktop window (the window that display the remote computer’s desktop), the operating system switches the remote session to a "GUI-less mode" which does not transfer any window data anymore. As a result, Sakuli is unable to interact with the tested application’s GUI, as the whole screen is not visible.
@@ -113,6 +106,15 @@ If you still get messages for crashed applications, try to:
 * "regedit"
 * [ HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\Windows Error Reporting ]
 * "DontShowUI" (DWORD) => "1"
+
+#### Disable Firefox' Plugin Container
+Plugins Container is a technique of Mozilla Firefox to run browser add-ons in a separate process than firefox.exe. This should ensure that a hanging add-on does not affect the browser process. But sometimes "Plugins Container" itself makes problems. Sakuli (better: Sahi) does not need any browser plugins - so, if you don't, disable Plugin Container: 
+
+* Start -> Control Panel -> System -> Advanced system settings
+* Advanced -> Environment Variables -> System variables
+	* Variable name: MOZ_DISABLE_OOP_PLUGINS
+	* Value: 1
+
 
 #### Using task scheduler
 
