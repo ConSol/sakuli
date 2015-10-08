@@ -144,19 +144,20 @@ To set the format and destination folder for screenshots taken by Sakuli:
 * **`sakuli.forwarder.gearman.nagios.output.screenshotDivWidth`**=`640px` - Screenshot dimensions for results sent to Gearmand
     
 ### RDP pecularities
-#### connection types
-There are several ways to connect to and work on a Sakuli client machine:
+#### things to know about connection types
+
+There are four ways to connect to and work on a Sakuli client machine:
 
 1. **VNC**
 2. **Console** of a virtualization platform (ESX, Virtualbox, etc.)
-3. **Remote Desktop**
+3. **Remote Desktop** (Windows)
 4. **local screen** 
 
-For case 1. and 2. there is nothing special to watch out for, except that the screen must not be locked (see the [installation manual](../docs/installation-windows.md)). The screen content will be the same as displays on the local screen (4.). 
+For case 1. and 2. there is nothing special to watch out for, except that the screen must not be locked (otherwise Sikuli will also see a locked screen). The screen content will be the same as displays on a local screen (4.). 
 
-For RDP, there are some special things to know. Connecting to the Sakuli test client via RDP **locks any existing local console session of that user** and **attaches (="moves") it to a RDP session**.
+For RDP on Windows there are some special things to know. Connecting to the Sakuli test client via RDP **locks any existing local console session of that user** and **attaches (="moves") it to a RDP session**.
 
-Sakuli will also run within that RDP session. But closing/disconnecting/logging of that RDP session will not unlock the local console session again. Sakuli will see the same as a regular user: the famous blue lock screen.
+Sakuli will just as well run within that RDP session. But closing/disconnecting/logging of that RDP session will not unlock the local console session again. Sakuli will see the same as a regular user: nothing but a locked screen. Read the next paragraph to learn how to avoid this. 
 
 #### LOGOFF.bat
 To log off a RDP session, right-click `%SAKULI_HOME%\bin\helper\LOGOFF.bat` and execute the script with administrator privileges. The script then
