@@ -16,14 +16,13 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
+# CONFIG SECTION  ########################################################
+# (Most of the) variables here define the layout and color scheme of the 
+# graph. Feel free to change. 
 
 isset($_GET['debug']) ? $DEBUG = $_GET['debug'] : $DEBUG = 0;
 $debug_log = "/tmp/pnp_check_sakuli.php.log";
 
-# Position vars
-$perf_pos_suite_state = 1;
-$perf_pos_suite_runtime = 3;
 
 $col_invisible = '#00000000';
 
@@ -66,20 +65,41 @@ $tick_opacity_warn = "AA";
 $tick_opacity_crit = "AA";
 $tick_opacity_incompl = "AA";
 
+# END CONFIG SECTION  ########################################################
+
+
 sort($this->DS);
 
-$suitename = preg_replace('/^suite_(.*)$/', '$1', $NAME[$perf_pos_suite_runtime]);
+# Position vars
+$perf_pos_suite_state = 0;
+$perf_pos_suite_warning = 0;
+$perf_pos_suite_critical = 0;
+$perf_pos_suite_runtime = 0;
 
-# Determine length of all labels
+
+$suitename = ""; 
 $label_max_length = 0;
 $labels = array();
 
-# Loop over case names
 foreach($this->DS as $k=>$v) {
+	# Push all labels into array to determine max_length
         if (preg_match('/(c|s)_(\d+)_(\d+_)?([a-zA-Z0-9].*)/', $v["LABEL"], $matches)) {
 		array_push($labels, strlen($matches[4]));
 	}
+	# Determine position of suite__warning, suite__critical and suite__state
+	if (preg_match('/^suite__(warning|critical|state)/', $v['LABEL'], $matches)) {
+		$suffix = $matches[1];
+		${"perf_pos_suite_" . $suffix} = $k; 		
+	}
+	# Determine position of suite runtime (containing also the suite name) 
+	if (preg_match('/^suite_([^_].*)$/', $v['LABEL'], $matches)) {
+		$suitename = $matches[1];
+		$perf_pos_suite_runtime = $k;
+	}
 }
+
+#throw new Kohana_exception(print_r($perf_pos_suite_runtime . $perf_pos_suite_warning . $perf_pos_suite_critical . $perf_pos_suite_state, TRUE));
+
 array_push($labels, strlen($suitename));
 $label_max_length = max($labels);
 
@@ -147,6 +167,7 @@ foreach($this->DS as $k=>$v) {
 	# c_001_case1
 	# but do not match a _state_ label like 'c_001__state_demo_win7' (which contains two underscores)
 	if (preg_match('/c_(\d+)_([a-zA-Z0-9].*)/', $v["LABEL"], $c_matches)) {
+
 		$casecount = $c_matches[1];
 		$casecount_int = intval($casecount);
 		$casename = $c_matches[2];
@@ -199,28 +220,10 @@ foreach($this->DS as $k=>$v) {
 
 # Suite Legend ########################################
 $def[0] .= rrd::comment(" \\n");
-$def[0] .= rrd::comment("Sakuli Suite\g");
-
-foreach($this->DS as $k=>$v) {
-	$before = "  (";
-	if (preg_match('/^suite__(warning|critical)/', $v['LABEL'], $matches)) {
-		$threshold = $matches[1];
-		if ($before == "") {
-			$before = ", "; 
-		}
-		$def[0] .= rrd::def("suite_".$threshold, $v["RRDFILE"], $v["DS"], "AVERAGE");
-		$def[0] .= rrd::comment($before .  "\g");
-		$def[0] .= rrd::line1("suite_".$threshold, ${"col_" . $threshold}, $threshold . "\g", 0);
-		$def[0] .= rrd::gprint("suite_".$threshold, "LAST", "%3.0lf s \g" );
-		$before = ""; 
-	}
-	if ($before == ""){
-		$def[0] .= rrd::comment(")\g");
-	}
-}
+$def[0] .= rrd::comment("Sakuli Suite\:\g");
+$def[0] .= rrd::comment(" \\n");
 
 # Suite Graph, Suite runtime on top ################################
-$def[0] .= rrd::comment("\:\\n");
 $def[0] .= rrd::def("suite", $RRDFILE[$perf_pos_suite_runtime], $DS[$perf_pos_suite_runtime], "AVERAGE");
 if ($c_last_index != "") {
 	$def[0] .= rrd::cdef("suite_diff", "suite,c_line_stackbase".$c_last_index.",UN,0,c_line_stackbase".$c_last_index.",IF,-");
@@ -236,10 +239,21 @@ if ($c_last_index != "") {
 	$def[0] .= rrd::line1("suite", $col_suite_runtime_line, "" );
 }
 
-# Suite Legend #########################################
 $def[0] .= rrd::gprint("suite", "LAST", "%3.2lf ".$UNIT[$perf_pos_suite_runtime]." LAST");
 $def[0] .= rrd::gprint("suite", "MAX", "%3.2lf ".$UNIT[$perf_pos_suite_runtime]." MAX ");
 $def[0] .= rrd::gprint("suite", "AVERAGE", "%3.2lf ".$UNIT[$perf_pos_suite_runtime]." AVG \j");
+
+
+foreach ( array("warning","critical") as $threshold) {
+	if (${"perf_pos_suite_" . $threshold} > 0 ) {
+		$def[0] .= rrd::def("suite_".$threshold, $this->DS[${"perf_pos_suite_" . $threshold}]["RRDFILE"], $this->DS[${"perf_pos_suite_" . $threshold}]["DS"], "AVERAGE");
+		$def[0] .= rrd::line1("suite_".$threshold, ${"col_" . $threshold}, $threshold . " at \g", 0);
+		$def[0] .= rrd::gprint("suite_".$threshold, "LAST", "%3.0lf s " );
+	}  
+}
+
+
+$def[0] .= rrd::comment(" \\n");
 $def[0] .= rrd::comment(" \\n");
 
 # invisible line above maximum (for space between MAX and TICKER) ############################	
@@ -248,7 +262,7 @@ $def[0] .= rrd::cdef("suite_maxplus", "suite_max,".$tick_dist_factor.",*");
 $def[0] .= rrd::line1("suite_maxplus", $col_invisible);
  
 ########################
-# TICKS for suite state (jumpmark for case: 1f183) 
+# TICKS for suite state
 ########################
 
 
@@ -294,23 +308,17 @@ $def[0] .= rrd::cdef("ts_suite_incomplete_gt0", "ts_suite_unknown_total_".$suite
 $def[0] .= rrd::cdef("ts_suite_incomplete_ltdatacount", "ts_suite_unknown_total_".$suite_data_count.",".$suite_data_count.",LT,1,0,IF");
 # if the sum of both comparisons is 2, both conditions are true and we really have incomplete data. This is when we want to have the TICK.
 $def[0] .= rrd::cdef("ts_suite_incomplete", "ts_suite_incomplete_gt0,ts_suite_incomplete_ltdatacount,+,2,EQ,1,0,IF");
-$def[0] .= "TICK:ts_suite_incomplete".$col_INCOMPL.$tick_opacity_incompl.":".$tick_frac.":'incomplete run' " ;
+$def[0] .= "TICK:ts_suite_incomplete".$col_INCOMPL.$tick_opacity_incompl.":".$tick_frac.":'  incomplete run' " ;
 
 # TICKS for warning/critical -> yellow/red  ##############################################
-foreach ($this->DS as $k=>$v) {
-	if (preg_match('/suite__state/', $v["LABEL"], $c_matches)) {
-		$def[0] .= rrd::def("ts_suite_state", $v['RRDFILE'], $v['DS'], "MAX") ;
-
-		# determine when this suite was warning/critical -> draw TICK line on top
-		$def[0] .= rrd::cdef("ts_suite_state_warning", "ts_suite_state,1,EQ,1,0,IF ") ;
-		# if incomplete data = 1 -> 0 = no crit TICK
-		# else: if suite_state = 2 -> 1 = crit TICK
-		$def[0] .= rrd::cdef("ts_suite_state_critical", "ts_suite_incomplete,1,EQ,0,ts_suite_state,2,EQ,1,0,IF,IF") ;
-
-		$def[0] .= "TICK:ts_suite_state_warning".$col_warning.$tick_opacity_warn.":".$tick_frac.":'case/suite warning ' " ;
-		$def[0] .= "TICK:ts_suite_state_critical".$col_critical.$tick_opacity_crit.":".$tick_frac.":'case/suite critical ' " ;
-	}
-}
+$def[0] .= rrd::def("ts_suite_state", $this->DS[$perf_pos_suite_state]["RRDFILE"], $this->DS[$perf_pos_suite_state]["DS"], "MAX") ;
+# determine when this suite was warning/critical -> draw TICK line on top
+$def[0] .= rrd::cdef("ts_suite_state_warning", "ts_suite_state,1,EQ,1,0,IF ") ;
+# if incomplete data = 1 -> 0 = no crit TICK
+# else: if suite_state = 2 -> 1 = crit TICK
+$def[0] .= rrd::cdef("ts_suite_state_critical", "ts_suite_incomplete,1,EQ,0,ts_suite_state,2,EQ,1,0,IF,IF") ;
+$def[0] .= "TICK:ts_suite_state_warning".$col_warning.$tick_opacity_warn.":".$tick_frac.":'  suite/case warning ' " ;
+$def[0] .= "TICK:ts_suite_state_critical".$col_critical.$tick_opacity_crit.":".$tick_frac.":'  suite/case critical \j' " ;
 
 
 # Suite last check time: black vertical line ##############################################
@@ -408,34 +416,13 @@ foreach ($this->DS as $KEY=>$VAL) {
 				$s_last_index = $stepcount;
 			}
 		}
-
-               $def[$casecount_int] .= rrd::comment(" \\n");                                                                        
-               $def[$casecount_int] .= rrd::comment("Case ".$casecount_int ."\g");
-
-
-		# Case graph, Warn/Crit LINE  ##########################################################
-		foreach($this->DS as $k=>$v) {
-			$before = "  (";
-			if (preg_match('/^c_'.$casecount.'__(warning|critical)/', $v['LABEL'], $matches)) {
-				$threshold = $matches[1];
-				if ($before === "") {
-					$before = ", ";
-				}
-				$def[$casecount_int] .= rrd::def("case_".$casecount . "__" . $threshold, $v["RRDFILE"], $v["DS"], "AVERAGE");
-				$def[$casecount_int] .= rrd::comment($before .  "\g");
-				$def[$casecount_int] .= rrd::line1("case_".$casecount . "__" . $threshold, ${"col_" . $threshold}, $threshold . "\g", 0);
-				$def[$casecount_int] .= rrd::gprint("case_".$casecount . "__" . $threshold, "LAST", "%3.0lf s \g" );
-				$before = "";
-			}
-			if ($before === ""){
-				$def[$casecount_int] .= rrd::comment(")\g");
-			}
-		}
-
-
+		
+		# Case Legend
+                $def[$casecount_int] .= rrd::comment(" \\n");                                                                        
+                $def[$casecount_int] .= rrd::comment("Case\:\g");
+		$def[$casecount_int] .= rrd::comment(" \\n");
 
 		# Case graph, Case runtime on top ###########################################################
-		$def[$casecount_int] .= rrd::comment("\:\\n");
 	        $def[$casecount_int] .= rrd::def("case$casecount", $VAL['RRDFILE'], $VAL['DS'], "AVERAGE");
 		# not used anymore; formerly used to draw grey TICK-areas if any case is unknown to hide everything. 
 		$def[$casecount_int] .= rrd::cdef("case".$casecount."_unknown", "case$casecount,UN,1,0,IF");
@@ -452,17 +439,31 @@ foreach ($this->DS as $KEY=>$VAL) {
 			$def[$casecount_int] .= rrd::area   ("case$casecount", $col_case_runtime_area, $casename );
 			$def[$casecount_int] .= rrd::line1   ("case$casecount", $col_case_runtime_line,"");
 		}
-		# Case graph, legend #############################################
+		
 		$def[$casecount_int] .= rrd::gprint ("case$casecount", "LAST", "%3.2lf s LAST");
 		$def[$casecount_int] .= rrd::gprint ("case$casecount", "MAX", "%3.2lf s MAX ");
 		$def[$casecount_int] .= rrd::gprint ("case$casecount", "AVERAGE", "%3.2lf s AVG \j");
+
+		$def[0] .= rrd::comment(" \\n");
+		# Case graph, Warn/Crit LINE  ##########################################################
+		foreach($this->DS as $k=>$v) {
+			if (preg_match('/^c_'.$casecount.'__(warning|critical)/', $v['LABEL'], $matches)) {
+				$threshold = $matches[1];
+				$def[$casecount_int] .= rrd::def("case_".$casecount . "__" . $threshold, $v["RRDFILE"], $v["DS"], "AVERAGE");
+				$def[$casecount_int] .= rrd::line1("case_".$casecount . "__" . $threshold, ${"col_" . $threshold}, $threshold . " at \g" , 0);
+				$def[$casecount_int] .= rrd::gprint("case_".$casecount . "__" . $threshold, "LAST", "%3.0lf s " );
+			}
+		}
+
+		$def[$casecount_int] .= rrd::comment(" \\n");
 		$def[$casecount_int] .= rrd::comment(" \\n");
 
+
 		#######################
-		# TICKS for case state (jumpmark for suite: 1f183)
+		# TICKS for case state
 		#######################
 
-		$def[$casecount_int] .= rrd::comment("State ticker legend\:\g");
+		$def[$casecount_int] .= rrd::comment("State ticker legend\:");
 		$def[$casecount_int] .= rrd::comment(" \\n");
 
 
@@ -501,7 +502,7 @@ foreach ($this->DS as $KEY=>$VAL) {
 		$def[$casecount_int] .= rrd::cdef("tc_case".$casecount."_incomplete_ltdatacount", "tc_case".$casecount."_unknown_total_".$case_data_count.",".$case_data_count.",LT,1,0,IF");
 		# if the sum of both comparisons is 2, both conditions are true and we really have incomplete data. This is when we want to have the TICK.
 		$def[$casecount_int] .= rrd::cdef("tc_case".$casecount."_incomplete", "tc_case".$casecount."_incomplete_gt0,tc_case".$casecount."_incomplete_ltdatacount,+,2,EQ,1,0,IF");
-		$def[$casecount_int] .= "TICK:tc_case".$casecount."_incomplete".$col_INCOMPL.$tick_opacity_incompl.":".$tick_frac.":'incomplete run' " ;
+		$def[$casecount_int] .= "TICK:tc_case".$casecount."_incomplete".$col_INCOMPL.$tick_opacity_incompl.":".$tick_frac.":'  incomplete run' " ;
 
 		# TICKS for warning/critical -> yellow/red  ##############################################
 		# - warning/critical -> yellow/red TICK line on top
@@ -516,8 +517,8 @@ foreach ($this->DS as $KEY=>$VAL) {
 				# else: if case$casecount_state = 2 -> 1 = crit TICK
 				$def[$casecount_int] .= rrd::cdef("tc_case".$casecount."_state_critical", "tc_case".$casecount."_incomplete,1,EQ,0,tc_case".$casecount."_state,2,EQ,2,0,IF,IF") ;
 
-				$def[$casecount_int] .= "TICK:tc_case".$casecount."_state_warning".$col_warning.$tick_opacity_warn.":".$tick_frac.":'step/case warning ' " ;
-				$def[$casecount_int] .= "TICK:tc_case".$casecount."_state_critical".$col_critical.$tick_opacity_crit.":".$tick_frac.":'step/case critical ' " ;
+				$def[$casecount_int] .= "TICK:tc_case".$casecount."_state_warning".$col_warning.$tick_opacity_warn.":".$tick_frac.":'  case/step warning ' " ;
+				$def[$casecount_int] .= "TICK:tc_case".$casecount."_state_critical".$col_critical.$tick_opacity_crit.":".$tick_frac.":'  case/step critical \j' " ;
 			}
 		}
 
