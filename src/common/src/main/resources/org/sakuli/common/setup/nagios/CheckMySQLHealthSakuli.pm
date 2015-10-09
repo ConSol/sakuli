@@ -246,7 +246,8 @@ sub nagios {
 		$self->{suite}{msg} =~ s/\|/,/g;
 		my $suite_nagios_out = sprintf($SUITE_DBSTATUS_2_TEXT{
 				$self->{suite}{result}},
-				$STATELABELS{$self->{suite}{result}},
+				#$STATELABELS{$self->{suite}{result}},
+				$STATELABELS{$suite_nagios_result},
 				$params{name},
 				$self->{suite}{id},
 				$self->{suite}{duration},
