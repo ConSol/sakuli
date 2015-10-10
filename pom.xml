@@ -171,7 +171,7 @@
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
-                    <version>0.0.22</version>
+                    <version>0.0.26</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
