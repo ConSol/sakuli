@@ -1,6 +1,7 @@
 <?php
 # PNP template for Sakuli checks 
-# Copyright (C) 2015 The Sakuli Team, <sakuli@consol.de>
+# Copyright (C) 2015 The Sakuli Team, <sakuli@consol.de>,
+# Simon Meggle, <simon.meggle@consol.de>
 # See https://github.com/ConSol/sakuli for more information. 
 
 #    This program is free software: you can redistribute it and/or modify
@@ -22,7 +23,6 @@
 
 isset($_GET['debug']) ? $DEBUG = $_GET['debug'] : $DEBUG = 0;
 $debug_log = "/tmp/pnp_check_sakuli.php.log";
-
 
 $col_invisible = '#00000000';
 
@@ -67,10 +67,12 @@ $tick_opacity_incompl = "AA";
 
 # END CONFIG SECTION  ########################################################
 
-
 sort($this->DS);
+# Indices of DS must match also $RRDFILE; hence, must must be sorted 
+# (this also makes $RRDFILE to start at 0 instead of 1)
+usort($RRDFILE, "f_strcmp");
 
-# Position vars
+# Position vars (DS & RRDFILE)
 $perf_pos_suite_state = 0;
 $perf_pos_suite_warning = 0;
 $perf_pos_suite_critical = 0;
@@ -80,6 +82,8 @@ $perf_pos_suite_runtime = 0;
 $suitename = ""; 
 $label_max_length = 0;
 $labels = array();
+
+$out = "";
 
 foreach($this->DS as $k=>$v) {
 	# Push all labels into array to determine max_length
@@ -98,7 +102,6 @@ foreach($this->DS as $k=>$v) {
 	}
 }
 
-#throw new Kohana_exception(print_r($perf_pos_suite_runtime . $perf_pos_suite_warning . $perf_pos_suite_critical . $perf_pos_suite_state, TRUE));
 
 array_push($labels, strlen($suitename));
 $label_max_length = max($labels);
@@ -225,14 +228,17 @@ $def[0] .= rrd::comment(" \\n");
 
 # Suite Graph, Suite runtime on top ################################
 $def[0] .= rrd::def("suite", $RRDFILE[$perf_pos_suite_runtime], $DS[$perf_pos_suite_runtime], "AVERAGE");
+
 if ($c_last_index != "") {
 	$def[0] .= rrd::cdef("suite_diff", "suite,c_line_stackbase".$c_last_index.",UN,0,c_line_stackbase".$c_last_index.",IF,-");
 	# invisible line to stack upon
 	$def[0] .= rrd::line1("c_line_stackbase".($c_last_index),"#00000000");
-	$def[0] .= rrd::area("suite_diff", $col_suite_runtime_area,pad($suitename, $label_max_length),1 );
+	###$def[0] .= rrd::area("suite_diff", $col_suite_runtime_area,pad($suitename, $label_max_length),1 );
+	$def[0] .= rrd::area("suite", $col_suite_runtime_area,pad($suitename, $label_max_length),1 );
 	# invisible line to stack upon
 	$def[0] .= rrd::line1("c_line_stackbase".($c_last_index),"#00000000");
-	$def[0] .= rrd::line1("suite_diff", $col_suite_runtime_line, "",1 );
+	###$def[0] .= rrd::line1("suite_diff", $col_suite_runtime_line, "",1 );
+	$def[0] .= rrd::line1("suite", $col_suite_runtime_line, "",1 );
 } else {
 	# no cases, no STACKing
 	$def[0] .= rrd::area("suite", $col_suite_runtime_area,$suitename );
@@ -547,8 +553,6 @@ foreach ($this->DS as $KEY=>$VAL) {
 	} # if (preg_match('/^c_(\d+)_([a-zA-Z0-9].*)/', $VAL['LABEL'], $c_matches))
 }
 
-#logit(print_r(@def), $DEBUG, $debug_log);
-#throw new Kohana_exception(print_r($def,TRUE));
 
 # Pad the string with spaces to ensure column alignment
 function pad ($str, $len) {
@@ -568,8 +572,20 @@ function logit ($msg, $debug, $debug_log) {
 	}
 }
 
+function f_strcmp($a, $b)
+{
+    return strcmp($a, $b);
+}
 
 #throw new Kohana_exception(print_r($def,TRUE));
 #throw new Kohana_exception(print_r($idxm1,TRUE));
 
+# 10 9 7 8
+#throw new Kohana_exception(print_r($perf_pos_suite_runtime . $perf_pos_suite_warning . $perf_pos_suite_critical . $perf_pos_suite_state, TRUE));
+#throw new Kohana_exception(print_r($this->DS, TRUE));
+#throw new Kohana_exception(print_r($perf_pos_suite_runtime, TRUE));
+#throw new Kohana_exception(print_r($RRDFILE, TRUE));
+
+#logit(print_r(@def), $DEBUG, $debug_log);
+#throw new Kohana_exception(print_r($def,TRUE));
 
