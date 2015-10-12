@@ -32,15 +32,15 @@ We recommend to run Sakuli clients on virtual machines.
 * the client should not have more than one physical screen 
 
 ## Software installation 
-### Java
+### Java JRE
 
-Sakuli versions including v0.4.* need **Java JRE 7**; all newer versions are based on **Java JRE 8**.  
+Sakuli versions including v0.4.* need **Java JRE 7**; all newer versions are based on **Java JRE 8**. In case you are bound to a specific (older?) Java version for any reason, perform a [http://www.oracle.com/technetwork/java/javase/jre-install-137694.html]("static" JRE installation) which will not affect the current JRE and PATH settings.
 
-Additionally, on **Windows**: 
+Typing "java" in a new command line window should now start the java interpreter. Otherwise check the PATH settings: 
 
 * From desktop, right-click *My Computer* and click *Properties*
 * In *System Properties*, click on *Advanced*
-* Edit the **system variable** **%PATH%** and add one of the following paths to the java binary: 
+* Ensure that the **system variable** **%PATH%** contains the correct path to the java binary:
   * Name: `PATH`
   * Value: 
     * `;C:\Program Files\Java\jre7/8\bin`
