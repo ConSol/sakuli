@@ -19,8 +19,9 @@ Generic Sakuli test starter.
 USAGE
 	sakuli_usage
 	cat <<HERE
- -V,--vnc			    start in headless (xVNC11) mode
- -D,--display			    display number in headless mode (default: 1)
+ -v,--vnc			    start in headless (xVNC11) mode
+ -d,--display			    display number in headless mode (default: 1)
+ -Dany.property.key=value           JVM option to set property on runtime
 HERE
 	exit 1
 }
@@ -30,7 +31,7 @@ sakuli_usage() {
 }
 
 exec_test() {
-	java -classpath $SAKULI_JARS/sakuli.jar:$SAKULI_JARS/* org.sakuli.starter.SakuliStarter $@
+	java "$1" -classpath $SAKULI_JARS/sakuli.jar:$SAKULI_JARS/* org.sakuli.starter.SakuliStarter "$2"
 	return $?
 }
 
@@ -57,7 +58,9 @@ init_vnc() {
 	vncserver $DISPLAY -depth $VNC_COL_DEPTH -geometry $VNC_RESOLUTION &
 }
 
-let lastindex=${#arguments[@]}-1
+let lastindex=${#arguments[@]}
+sakuli_args=""
+jvm_args=""
 i=0
 while [ $i -le $lastindex ]; do
 	case ${arguments[$i]} in
@@ -70,24 +73,33 @@ while [ $i -le $lastindex ]; do
 		"-?")
 			die_usage
 			;;
-		"-V" | "--vnc" )
+		"-v" | "--vnc" )
 			HEADLESS=true
 			let "i=$i+1"
 			;;
-		"-D" | "--display" )
+		"-d" | "--display" )
 			let "j=$i+1"
 			VNC_DISPLAY=${arguments[$j]}
 			let "i=$i+2"		
 			;;
 		*)
-			sakuli_args="$sakuli_args ${arguments[$i]}"
-			let "i=$i+1"		
+			# -Dsakuli.property.key=value
+			argi=${arguments[$i]}	
+			if [ "${argi:1:1}" == "D" ]; then
+				jvm_args="$jvm_args $argi"
+				let "i=$i+1"		
+			else  
+				let "j=$i+1"		
+				argj=${arguments[$j]}	
+				sakuli_args="$sakuli_args $argi $argj"
+				let "i=$i+2"		
+			fi
 			;;
 	esac
 done
 
 init_vnc
-exec_test $sakuli_args
+exec_test "$jvm_args" "$sakuli_args"
 res=$?
 #echo "EXIT_STATE: $res"
 vnc_kill
