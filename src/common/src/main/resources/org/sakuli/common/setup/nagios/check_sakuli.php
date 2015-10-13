@@ -21,6 +21,7 @@
 # (Most of the) variables here define the layout and color scheme of the 
 # graph. Feel free to change. 
 
+
 isset($_GET['debug']) ? $DEBUG = $_GET['debug'] : $DEBUG = 0;
 $debug_log = "/tmp/pnp_check_sakuli.php.log";
 
@@ -245,9 +246,9 @@ if ($c_last_index != "") {
 	$def[0] .= rrd::line1("suite", $col_suite_runtime_line, "" );
 }
 
-$def[0] .= rrd::gprint("suite", "LAST", "%3.2lf ".$UNIT[$perf_pos_suite_runtime]." LAST");
-$def[0] .= rrd::gprint("suite", "MAX", "%3.2lf ".$UNIT[$perf_pos_suite_runtime]." MAX ");
-$def[0] .= rrd::gprint("suite", "AVERAGE", "%3.2lf ".$UNIT[$perf_pos_suite_runtime]." AVG \j");
+$def[0] .= rrd::gprint("suite", "LAST", "%3.2lf s LAST");
+$def[0] .= rrd::gprint("suite", "MAX", "%3.2lf s MAX ");
+$def[0] .= rrd::gprint("suite", "AVERAGE", "%3.2lf s AVG \j");
 
 
 foreach ( array("warning","critical") as $threshold) {
