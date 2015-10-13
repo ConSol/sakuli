@@ -41,7 +41,7 @@ my $logfile="/tmp/check_sakuli.debug";
 # 2) duration
 # 3) threshold
 my %CASE_DBSTATUS_2_TEXT = (
-        0       => 'case "%s" (%0.2fs) ok',       
+        0       => 'case "%s" ran in %0.2fs - ok',       
         1       => ', step "%s" over runtime (%0.2fs/warn at %ds)',     
         2       => 'case "%s" over runtime (%0.2fs/warn at %ds)', 
         3       => 'case "%s" over runtime (%0.2fs/crit at %ds)', 
@@ -85,9 +85,9 @@ my %SUITE_DBSTATUS_2_TEXT = (
         0       => '%s Sakuli suite "%s" (ID: %d) ran in %0.2f seconds. (Last suite run: %s)',       
         1       => '%s Sakuli suite "%s" (ID: %d) ran ok (%0.2fs), but contains step(s) with exceeded runtime. (Last suite run: %s)',       
         2       => '%s Sakuli suite "%s" (ID: %d) ran ok (%0.2fs), but contains case(s) with exceeded runtime. (Last suite run: %s)',       
-        3       => '%s Sakuli suite "%s" (ID: %d) over runtime (%0.2fs/warn at %ds). (Last suite run: %s)',       
+        3       => '%s Sakuli suite "%s" (ID: %d) over runtime (%0.2fs/warn at %6$ds). (Last suite run: %s)',       
         4       => '%s Sakuli suite "%s" (ID: %d) ran ok (%0.2fs), but contains case(s) with exceeded runtime. (Last suite run: %s)',       
-        5       => '%s Sakuli suite "%s" (ID: %d) over runtime (%0.2fs/crit at %5$ds). (Last suite run: %s)',       
+        5       => '%s Sakuli suite "%s" (ID: %d) over runtime (%0.2fs/crit at %7$ds). (Last suite run: %s)',       
         6       => '%s Sakuli suite "%s" (ID: %d) EXCEPTION: "%8$s". (Last suite run: %5$s)',       
 );
 
@@ -157,7 +157,7 @@ sub nagios {
 #		my $case_stale = (($self->{dbnow}) - ($c_ref->{time}) > $params{name2}) || 0;
 		my $case_exception = ($c_ref->{result} == 4);
 
-                # 1. Fatal exception. The case crashed for whatever reason. Runtimes are useless. Screenshot available. 
+                # 1. Fatal exception. The case crashed for whatever reason. Apply screenshot if available. 
 		if ($case_exception) {
                         $case_total_nagios_result = $CASE_DBSTATUS_2_NAGIOSSTATUS{4};
 			$c_ref->{msg} =~ s/\|/,/g;
@@ -177,8 +177,7 @@ sub nagios {
 			}
 		
                 } 
-		# 2 Now we can assume to deal with a successful case. 
-		# 2.1 Case duration.
+		# 2.1 Case duration
 		$case_duration_db_result = case_duration_result($c_ref->{duration},$c_ref->{warning},$c_ref->{critical});
 		if (! $case_exception ) {   # only for DB states 0,2,3; an exception does not contain runtime information! 
 			$case_total_nagios_result = $CASE_DBSTATUS_2_NAGIOSSTATUS{$case_duration_db_result};
@@ -206,9 +205,9 @@ sub nagios {
 		}
                 # final case result
                 $self->add_nagios($case_total_nagios_result, sprintf("%s %s", $STATELABELS{$case_total_nagios_result}, $case_total_nagios_out));
-		# Don't print out perfdata if exception
+
 		if ($case_exception) {
-	                store_perfdata(sprintf("c_%03d_%s=%ss;;;;",$casecount3,$c_ref->{name},"U"));
+	                store_perfdata(sprintf("c_%03d_%s=%s;;;;",$casecount3,$c_ref->{name},"U"));
 		} else {
 	                store_perfdata(sprintf("c_%03d_%s=%0.2fs;%s;%s;;",
 				$casecount3,
@@ -221,13 +220,13 @@ sub nagios {
 		}
 		# add perfdata which only contains the state of this case result. 
 	        store_perfdata(sprintf("c_%03d__state=%d;;;;",$casecount3, $case_total_nagios_result));
-	        store_perfdata(sprintf("c_%03d__warning=%d;;;;",$casecount3, $c_ref->{warning})) if ($c_ref->{warning});
-	        store_perfdata(sprintf("c_%03d__critical=%d;;;;",$casecount3, $c_ref->{critical})) if ($c_ref->{critical});
+	        store_perfdata(sprintf("c_%03d__warning=%ds;;;;",$casecount3, $c_ref->{warning})) if ($c_ref->{warning});
+	        store_perfdata(sprintf("c_%03d__critical=%ds;;;;",$casecount3, $c_ref->{critical})) if ($c_ref->{critical});
         }
 	my $suite_nagios_result = $SUITE_DBSTATUS_2_NAGIOSSTATUS{ $self->{suite}{result} };
 	store_perfdata(sprintf("suite__state=%d;;;;",$suite_nagios_result ));
-	store_perfdata(sprintf("suite__warning=%d;;;;",$self->{suite}{warning} )) if ($self->{suite}{warning});
-	store_perfdata(sprintf("suite__critical=%d;;;;",$self->{suite}{critical} )) if ($self->{suite}{critical});
+	store_perfdata(sprintf("suite__warning=%ds;;;;",$self->{suite}{warning} )) if ($self->{suite}{warning});
+	store_perfdata(sprintf("suite__critical=%ds;;;;",$self->{suite}{critical} )) if ($self->{suite}{critical});
 
 	
 	if (($self->{dbnow}) - ($self->{suite}{time}) > $params{name2}) {
@@ -240,7 +239,8 @@ sub nagios {
 				strftime("%d.%m. %H:%M:%S", localtime($self->{suite}{time}))
 			)
 		);
-		store_perfdata(sprintf("suite_%s=%s;;;;",$params{name},"U"),2);
+		#store_perfdata(sprintf("suite_%s=%s;;;;",$params{name},"U"),2);
+		undef(%perfdata);
 	} else {
 		my $suite_exception = ($self->{suite}{result} == 6);
 		$self->{suite}{msg} =~ s/\|/,/g;
