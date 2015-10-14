@@ -31,7 +31,7 @@ sakuli_usage() {
 }
 
 exec_test() {
-	java "$1" -classpath $SAKULI_JARS/sakuli.jar:$SAKULI_JARS/* org.sakuli.starter.SakuliStarter "$2"
+	java $1 -classpath $SAKULI_JARS/sakuli.jar:$SAKULI_JARS/* org.sakuli.starter.SakuliStarter $2
 	return $?
 }
 
