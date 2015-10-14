@@ -23,8 +23,7 @@
 
 
 isset($_GET['debug']) ? $DEBUG = $_GET['debug'] : $DEBUG = 0;
-$debug_log = "/tmp/pnp_check_sakuli.php.log";
-
+$debug_log = "/tmp/pnp_check_sakuli.php_" . $this->MACRO['HOSTNAME'] . "_" . $this->MACRO['SERVICEDESC'] . ".log";
 $col_invisible = '#00000000';
 
 # Colors for the suite/case runtime overhead over cases/steps
