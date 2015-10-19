@@ -19,19 +19,20 @@ Generic Sakuli test starter.
 USAGE
 	sakuli_usage
 	cat <<HERE
- -v,--vnc			    start in headless (xVNC11) mode
- -d,--display			    display number in headless mode (default: 1)
- -Dany.property.key=value           JVM option to set property on runtime
+ -v,--vnc                           start in headless (xVNC11) mode
+ -d,--display                       display number in headless mode (default: 1)
+ -j,--javahome                      Java bin dir (overrides PATH)
+ -Dany.property.key=value           JVM option to set a property on runtime
 HERE
 	exit 1
 }
 
 sakuli_usage() {
-	java -classpath $SAKULI_JARS/sakuli.jar:$SAKULI_JARS/* org.sakuli.starter.SakuliStarter -help | grep -v "usage: sakuli"
+	${JAVAHOME}java -classpath $SAKULI_JARS/sakuli.jar:$SAKULI_JARS/* org.sakuli.starter.SakuliStarter -help | grep -v "usage: sakuli"
 }
 
 exec_test() {
-	java $1 -classpath $SAKULI_JARS/sakuli.jar:$SAKULI_JARS/* org.sakuli.starter.SakuliStarter $2
+	${JAVAHOME}java $1 -classpath $SAKULI_JARS/sakuli.jar:$SAKULI_JARS/* org.sakuli.starter.SakuliStarter $2
 	return $?
 }
 
@@ -80,6 +81,16 @@ while [ $i -le $lastindex ]; do
 		"-d" | "--display" )
 			let "j=$i+1"
 			VNC_DISPLAY=${arguments[$j]}
+			let "i=$i+2"		
+			;;
+		"-j" | "--javahome" )
+			let "j=$i+1"
+			JAVAHOME=$(echo ${arguments[$j]} | sed 's/\/$//')/ 
+			if [ ! -x "${JAVAHOME}/java" ]; then
+				echo "${JAVAHOME}/java is not executable!"
+				sakuli_usage	
+				exit 1
+			fi
 			let "i=$i+2"		
 			;;
 		*)
