@@ -34,7 +34,7 @@ We recommend to run Sakuli clients on virtual machines.
 ## Software installation 
 ### Java JRE
 
-Sakuli versions including v0.4.* need **Java JRE 7**; all newer versions are based on **Java JRE 8**. In case you are bound to a specific (older?) Java version for any reason, perform a [http://www.oracle.com/technetwork/java/javase/jre-install-137694.html]("static" JRE installation) which will not affect the current JRE and PATH settings.
+Sakuli versions including v0.4.* need **Java JRE 7**; all newer versions are based on **Java JRE 8**. In case you are bound to a specific (older?) Java version for any reason, perform a [static "in-place" JRE installation](http://www.oracle.com/technetwork/java/javase/jre-install-137694.html) which will not affect the current JRE and PATH settings.
 
 Typing "java" in a new command line window should now start the java interpreter. Otherwise check the PATH settings: 
 
