@@ -35,7 +35,7 @@ RUN wget --directory-prefix=/root \
     && rm -fv /root/install_sahi*
 
 ### Install apps for testing
-RUN apt-get -y install gedit gnome-calculator
+RUN apt-get update && apt-get -y install gedit gnome-calculator
 
 # xvnc server porst, if $DISPLAY=:1 port will be 5901
 EXPOSE 5901
