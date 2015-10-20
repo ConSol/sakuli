@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.4.10-SNAPSHOT</version>
+        <version>0.4.10</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>integration-test</artifactId>
-    <version>0.4.10-SNAPSHOT</version>
+    <version>0.4.10</version>
     <name>integration-test</name>
     <description>integration test modul for sakuli</description>
 
