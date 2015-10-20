@@ -6,7 +6,11 @@ echo http://github.com/ConSol/sakuli
 echo
 
 setLocal EnableDelayedExpansion
- 
+
+if "%SAKULI_HOME%" == "" (
+  SET SAKULI_HOME=..\
+)
+
 set SAKULI_JARS=%SAKULI_HOME%\libs\java
 set JAVAHOME=
 set SAKULI_PARAMS=
