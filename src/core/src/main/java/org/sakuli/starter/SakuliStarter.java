@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.util.AbstractMap;
 import java.util.Map.Entry;
 
@@ -83,6 +84,10 @@ public class SakuliStarter {
             .isRequired(false)
             .withLongOpt("interface")
             .create("i");
+    /**
+     * {@link System#exit(int)} value if the help is printed out. This value will be used in the `sakuli.sh` script.
+     */
+    private static final int SYSTEM_EXIT_VALUE_HELP = 100;
 
     /**
      * The Sakuli-Starter executes a specific sakuli-testsuite. A test suite has to contain as minimum following files:
@@ -127,15 +132,13 @@ public class SakuliStarter {
             } else {
                 printHelp(options);
             }
-        } catch (SakuliCipherException e) {
-            e.printStackTrace();
-            System.out.println("CIPHER ERROR: " + e.getMessage());
         } catch (ParseException e) {
             System.err.println("Parsing of command line failed: " + e.getMessage());
             printHelp(options);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error: " + e.getMessage());
+            System.exit(TestSuiteState.ERRORS.getErrorCode());
         }
     }
 
@@ -144,10 +147,16 @@ public class SakuliStarter {
     }
 
     private static void printHelp(Options options) {
-        System.out.println();
+        System.out.println("\n" +
+                        "Generic Sakuli test starter\n" +
+                        LocalDate.now().getYear() + " - The Sakuli team.\n" +
+                        "http://www.sakuli.org\n" +
+                        "https://github.com/ConSol/sakuli\n"
+        );
         HelpFormatter helpFormatter = new HelpFormatter();
         helpFormatter.setWidth(80);
         helpFormatter.printHelp("sakuli [options]", options);
+        System.exit(SYSTEM_EXIT_VALUE_HELP);
     }
 
     /**
