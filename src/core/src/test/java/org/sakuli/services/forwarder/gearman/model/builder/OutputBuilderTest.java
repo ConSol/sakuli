@@ -19,6 +19,7 @@
 package org.sakuli.services.forwarder.gearman.model.builder;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.joda.time.DateTime;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -28,6 +29,7 @@ import org.sakuli.builder.TestCaseExampleBuilder;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
@@ -46,9 +48,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -232,7 +232,7 @@ public class OutputBuilderTest {
                 .withWarningTime(5)
                 .buildExample();
         assertEquals(testling.formatTestCaseTableStateMessage(testCase, properties),
-                String.format(htmlTemplate, "serviceWARNING", "[WARN] case \"case-warning\" over runtime (5.50s /warning at 5s) "));
+                String.format(htmlTemplate, "serviceWARNING", "[WARN] case \"case-warning\" over runtime (5.50s /warning at 5s)"));
 
         testCase = new TestCaseExampleBuilder().withState(TestCaseState.WARNING_IN_STEP)
                 .withId("case-warning")
@@ -252,7 +252,7 @@ public class OutputBuilderTest {
                                 .buildExample()))
                 .buildExample();
         assertEquals(testling.formatTestCaseTableStateMessage(testCase, properties),
-                String.format(htmlTemplate, "serviceWARNING", "[WARN] case \"case-warning\" over runtime (3.00s /warning in step at 4s) step \"step-name\" (3.15s /warn at 3s), step \"step-name2\" (0.15s /warn at 1s)"));
+                String.format(htmlTemplate, "serviceWARNING", "[WARN] case \"case-warning\" over runtime (3.00s /warning in step at 4s), step \"step-name\" (3.15s /warn at 3s), step \"step-name2\" (0.15s /warn at 1s)"));
 
         testCase = new TestCaseExampleBuilder().withState(TestCaseState.CRITICAL)
                 .withId("case-critical")
@@ -261,7 +261,7 @@ public class OutputBuilderTest {
                 .withCriticalTime(7)
                 .buildExample();
         assertEquals(testling.formatTestCaseTableStateMessage(testCase, properties),
-                String.format(htmlTemplate, "serviceCRITICAL", "[CRIT] case \"case-critical\" over runtime (8.89s /critical at 7s) "));
+                String.format(htmlTemplate, "serviceCRITICAL", "[CRIT] case \"case-critical\" over runtime (8.89s /critical at 7s)"));
 
         testCase = new TestCaseExampleBuilder().withState(TestCaseState.ERRORS)
                 .withId("case-error")
@@ -428,5 +428,30 @@ public class OutputBuilderTest {
         assertEquals(textPlaceholder.get(SUITE_FOLDER), "");
         assertEquals(textPlaceholder.get(HOST), "");
         assertEquals(textPlaceholder.get(BROWSER_INFO), "");
+    }
+
+    @Test
+    public void testGenerateTestCaseStepInformation() throws Exception {
+        DateTime creationDate1 = new DateTime().minusSeconds(1);
+        DateTime creationDate2 = new DateTime();
+        assertEquals(OutputBuilder.generateStepInformation(new TreeSet<>()), "");
+
+        TestCaseStep stepWarning = new TestCaseStepExampleBuilder().withCreationDate(creationDate1).withState(TestCaseStepState.WARNING).buildExample();
+        assertEquals(OutputBuilder.generateStepInformation(new TreeSet<>(Collections.singletonList(stepWarning))),
+                ", step \"step_for_unit_test\" (1.00s /warn at 2s)");
+
+        TestCaseStep stepWarning2 = new TestCaseStepExampleBuilder().withCreationDate(creationDate2).withName("step_2").withState(TestCaseStepState.WARNING).buildExample();
+        SortedSet<TestCaseStep> input = new TreeSet<>();
+        input.add(stepWarning);
+        input.add(stepWarning2);
+        assertEquals(OutputBuilder.generateStepInformation(input),
+                ", step \"step_for_unit_test\" (1.00s /warn at 2s), step \"step_2\" (1.00s /warn at 2s)");
+
+        TestCaseStep ok = new TestCaseStepExampleBuilder().withCreationDate(creationDate1).withName("ok1").withState(TestCaseStepState.OK).buildExample();
+        TestCaseStep ok2 = new TestCaseStepExampleBuilder().withCreationDate(creationDate2).withName("ok2").withState(TestCaseStepState.OK).buildExample();
+        input = new TreeSet<>();
+        input.add(ok);
+        input.add(ok2);
+        assertEquals(OutputBuilder.generateStepInformation(input), "");
     }
 }

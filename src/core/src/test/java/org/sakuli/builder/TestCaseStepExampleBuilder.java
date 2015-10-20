@@ -19,6 +19,7 @@
 package org.sakuli.builder;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.joda.time.DateTime;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.state.TestCaseStepState;
@@ -37,6 +38,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
     private Date stopDate;
     private Date startDate;
     private SakuliException exception;
+    private DateTime creationDate;
 
     public TestCaseStepExampleBuilder() {
         this.state = TestCaseStepState.OK;
@@ -44,6 +46,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
         this.warningTime = 2;
         this.startDate = new Date();
         this.stopDate = DateUtils.addSeconds(startDate, 1);
+        this.creationDate = new DateTime();
     }
 
     @Override
@@ -55,6 +58,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
         step.setName(name);
         step.setState(state);
         step.addException(exception);
+        step.setCreationDate(creationDate);
         return step;
     }
 
@@ -85,6 +89,11 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
 
     public TestCaseStepExampleBuilder withException(SakuliException e) {
         this.exception = e;
+        return this;
+    }
+
+    public TestCaseStepExampleBuilder withCreationDate(DateTime creationDate) {
+        this.creationDate = creationDate;
         return this;
     }
 }

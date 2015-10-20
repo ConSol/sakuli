@@ -24,7 +24,6 @@ import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestCaseState;
-import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
@@ -39,7 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.SortedSet;
 
@@ -82,24 +80,18 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         return modifiedString;
     }
 
-    private static String generateStepInformation(SortedSet<TestCaseStep> steps) {
+    static String generateStepInformation(SortedSet<TestCaseStep> steps) {
         StringBuilder sb = new StringBuilder();
-        Iterator<TestCaseStep> it = steps.iterator();
-        while (it.hasNext()) {
-            TestCaseStep step = it.next();
-            if (TestCaseStepState.WARNING.equals(step.getState())) {
-                sb.append("step \"")
-                        .append(step.getName())
-                        .append("\" (")
-                        .append(NagiosFormatter.formatToSec(step.getDuration()))
-                        .append(" /warn at ")
-                        .append(NagiosFormatter.formatToSec(step.getWarningTime()))
-                        .append(")");
-            }
-            if (it.hasNext()) {
-                sb.append(", ");
-            }
-        }
+        steps.stream()
+                .filter(step -> step.getState().isWarning())
+                .forEach(step ->
+                        sb.append(", step \"")
+                                .append(step.getName())
+                                .append("\" (")
+                                .append(NagiosFormatter.formatToSec(step.getDuration()))
+                                .append(" /warn at ")
+                                .append(NagiosFormatter.formatToSec(step.getWarningTime()))
+                                .append(")"));
         return sb.toString();
     }
 
