@@ -145,12 +145,12 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
 
     protected void modifySahiProperties(Properties props) {
         if (writePropertiesToSahiConfig) {
-            String sahiConfigFolerPath = resolve(props.getProperty(SahiProxyProperties.PROXY_CONFIG_FOLDER), props);
+            String sahiConfigFolderPath = resolve(props.getProperty(SahiProxyProperties.PROXY_CONFIG_FOLDER), props);
 
-            String sahiPropConfig = Paths.get(sahiConfigFolerPath + SahiProxyProperties.SAHI_PROPERTY_FILE_APPENDER).normalize().toAbsolutePath().toString();
+            String sahiPropConfig = Paths.get(sahiConfigFolderPath + SahiProxyProperties.SAHI_PROPERTY_FILE_APPENDER).normalize().toAbsolutePath().toString();
             modifyPropertiesConfiguration(sahiPropConfig, SahiProxyProperties.userdataPropertyNames, props);
             modifySahiProxyPortPropertiesConfiguration(sahiPropConfig, props);
-            String sahiLogPropConfig = Paths.get(sahiConfigFolerPath + SahiProxyProperties.SAHI_LOG_PROPERTY_FILE_APPENDER).normalize().toAbsolutePath().toString();
+            String sahiLogPropConfig = Paths.get(sahiConfigFolderPath + SahiProxyProperties.SAHI_LOG_PROPERTY_FILE_APPENDER).normalize().toAbsolutePath().toString();
             modifyPropertiesConfiguration(sahiLogPropConfig, SahiProxyProperties.logPropertyNames, props);
         }
     }
