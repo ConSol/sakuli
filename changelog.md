@@ -4,6 +4,42 @@
 
 - - -
 
+### Version 0.9.1
+* fix #116 wrong comma in gearman output
+* sakuli.bat: added SAKULI_HOME fallback if env var not set #124
+* sakuli.bat: added javahome parameter, added JVM option passing #122
+* update sikuliX version to 1.1.993
+* Merge branch 'dev-v0.4' into dev
+* sakuli.sh: JVM options (-D) allowed. #75
+* Improve Nagios monitoring integration:
+    * check_sakuli.json: added first JSON template for grafana
+    * check_sakuli.php: logfile destination now contains hostname and service description
+    * check_sakuli.php: removed UNIT var. Everything is in seconds.
+    * CheckMySQLHealthSakuli.pm: no perfdata on stale result (fixes #120), small output improvements
+    * check_sakuli.php: fixed bug, Suite graph did not have correct value.
+    * CheckMySQLHealthSakuli.pm: adjust perfdata output as on gearman output (closes #106)
+    * Adapted mysql_purge.sh to new table names, added parameter. #10
+* Merge pull request #108 from sgbeal/master
+* Add Docker container `consol/sakuli-ubuntu-xfce` and `consol/sakuli-centos-xfce`, see #103:
+    * add return value to sakuli_startup.sh and add exit state to sakuli.sh script
+    * HTML5-VNC client (noVNC) enabled containers
+    * `docker-compose.yml` example for parallel test-execution
+    * add example_xfce_test for the docker-containers
+* fix PrioritizedServiceComparator so now 2 service with the same priority will also accepted
+* close #49 add Environment#runCommand method
+* add `takeScreenshot()` method to Region object to get the current region as screenshot
+* Merge pull request #99 from c-kr/dev
+* close #46 - add read the docs links and badge
+* improve the way to include additional image folders, #96:
+    * add method `addImagePaths` to the TestCase functions
+    * add variable '$testSuiteFolder' as global variable to JavaScript testcase.js for a more strait filepath handling
+* add optional parameter 'silent' to Application.close function to suppress exceptions
+* add OS identification functions 'isWindows', 'isLinux', 'getOsIdentifier' to Environment class
+* close #98 add source and javadoc files to maven build artifacts (on release-builds)
+* close #92 exclude Base64 String in log output
+* fix #95 state of suite/case/step is always 'OK', if no error occurs and warning + critical time is 0
+* close #81 Expanded color array in PHP template and change numbering scheme for cases and steps to 3-digits
+
 ### Version 0.9.0
 * close #74 extract logging functions to separate javascript class Logger
 * close #70 rename sakuli.screenbased.* properties to sikuli.*
