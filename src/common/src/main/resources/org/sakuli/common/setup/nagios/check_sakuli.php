@@ -24,6 +24,7 @@
 
 isset($_GET['debug']) ? $DEBUG = $_GET['debug'] : $DEBUG = 0;
 $debug_log = "/tmp/pnp_check_sakuli.php_" . $this->MACRO['HOSTNAME'] . "_" . $this->MACRO['SERVICEDESC'] . ".log";
+
 $col_invisible = '#00000000';
 
 # Colors for the suite/case runtime overhead over cases/steps
@@ -84,6 +85,7 @@ $label_max_length = 0;
 $labels = array();
 
 $out = "";
+
 
 foreach($this->DS as $k=>$v) {
 	# Push all labels into array to determine max_length
@@ -182,7 +184,7 @@ foreach($this->DS as $k=>$v) {
 		} else {
 			# all areas >1 are stacked upon a invisible line 
 			$def[0] .= rrd::line1("c_area_stackbase".lead3($casecount_int-1),"#00000000");
-			$def[0] .= rrd::area("c_area$casecount", $col_case_area[$casecount_int].$col_case_area_opacity, $casename, 1);
+			$def[0] .= rrd::area("c_area$casecount", $col_case_area[$casecount_int].$col_case_area_opacity, pad($casename, $label_max_length), 1);
 			# add value to stackbase
 			$def[0] .= rrd::cdef("c_area_stackbase$casecount", "c_area_stackbase".lead3($casecount_int-1).",c_area$casecount,+");
 		}
