@@ -37,9 +37,9 @@ try {
     if (testString != "TEST") {
         throw "NOT EQUAL " + testString + " to TEST";
     }
+    env.resetSimilarity();
 
-
-    var noEd = new RegionRectangle(0, 0, 50, 50).highlight(1).exists("notepad");
+    var noEd = new RegionRectangle(0, 0, 50, 50).highlight(1).exists("notepad_logo");
 
     if (noEd == null) {
         Logger.logInfo("NULL");
@@ -68,26 +68,26 @@ try {
      * NEW STEP
      ***/
     editorApp.setSleepTime(1).open().focus();
+    //
+    //
+    //var secWarn = new Region().waitForImage("1_1_sec_warn.png", 35)
+    //    .setH(900)
+    //    .highlight(2);
+    //secWarn.find("1_1_sec_warn_execute")
+    //    .click();
 
-
-    var secWarn = new Region().waitForImage("1_1_sec_warn.png", 35)
-        .setH(900)
-        .highlight(2);
-    secWarn.find("1_1_sec_warn_execute")
-        .click();
-
-    secWarn.highlight(2);
-    testCase.endOfStep("securtiy warning", 25);
+    //secWarn.highlight(2);
+    //testCase.endOfStep("securtiy warning", 25);
 
 
     var notepadRegion = editorApp.focus().getRegion();
-    notepadRegion.waitForImage("notepad", 5).highlight();
+    notepadRegion.waitForImage("notepad_logo", 5).highlight();
 
 
     env.setClipboard("... CLIPBORADTEST").pasteClipboard()
         .paste("  ... now differtent text")
         .pasteMasked(" ... now a masked Text!")
-        .pasteAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==")
+        //.pasteAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==")
         .type(Key.ENTER + Key.ENTER + "type a Text")
 
         .type("now MAX")
@@ -110,23 +110,23 @@ try {
     editorApp.focus();
     env.typeMasked(Key.ENTER + "a masked text" + Key.ENTER)
         .typeMasked("small" + Key.ENTER, Key.SHIFT)
-        .typeAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==")
-        .type(Key.ENTER)
-        .typeAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==", Key.SHIFT);
+        //.typeAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==")
+        .type(Key.ENTER);
+    //.typeAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==", Key.SHIFT);
 
     notepadRegion.move(0, 50).setH(40).deleteChars(100)
         .grow(20).grow(-18, -18)
         .typeMasked(Key.ENTER + "a masked text" + Key.ENTER)
         .typeMasked("small" + Key.ENTER, Key.SHIFT)
-        .typeAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==")
+        //.typeAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==")
         .type(Key.ENTER)
-        .typeAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==", Key.SHIFT)
+        //.typeAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==", Key.SHIFT)
         .paste("  ... now differtent text")
         .pasteMasked(" ... now a masked Text!")
-        .pasteAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==")
+        //.pasteAndDecrypt("YQfHiKymG9sI9zf9c5+Feg==")
     ;
 
-    editorApp.getRegion().exists("notepad").highlight(1);
+    editorApp.getRegion().find("notepad_logo").highlight(1);
 
     env.takeScreenshot(_resolvePath() + "\\..\\..\\test.png");
 
@@ -147,7 +147,7 @@ try {
     testCase.endOfStep("Type into amount 500", 20);
 
 
-    Logger.logError("DAS ERROR LOG");
+    //Logger.logError("DAS ERROR LOG");
 
 
     /************************************************
