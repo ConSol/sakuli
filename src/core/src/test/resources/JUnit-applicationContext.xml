@@ -49,9 +49,13 @@
         <property name="screenShotFolder" value="${sakuli.screenshot.dir}"/>
     </bean>
 
-    <bean id="baseLoader" class="org.sakuli.MockitoFactoryBean">
+    <bean id="org.sakuli.loader.BaseActionLoaderImpl" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.loader.BaseActionLoaderImpl">
         </constructor-arg>
+    </bean>
+
+    <bean id="org.sakuli.loader.ScreenActionLoader" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.loader.ScreenActionLoaderImpl"/>
     </bean>
 
 </beans>

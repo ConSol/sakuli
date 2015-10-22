@@ -37,6 +37,7 @@ import org.testng.annotations.Test;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 {TestSuiteState.ERRORS, TestCaseState.WARNING, "ERROR .* ERROR:"},
                 {TestSuiteState.WARNING_IN_CASE, TestCaseState.WARNING, "WARN .* WARNING_IN_CASE: Unit Test Case"},
                 {TestSuiteState.CRITICAL_IN_CASE, TestCaseState.CRITICAL, "WARN .* CRITICAL_IN_CASE: Unit Test Case"},
-                {TestSuiteState.WARNING_IN_STEP, TestCaseState.WARNING_IN_STEP, "WARN .* WARNING_IN_STEP: Unit Test Case -\\> step for unit test"}
+                {TestSuiteState.WARNING_IN_STEP, TestCaseState.WARNING_IN_STEP, "WARN .* WARNING_IN_STEP: Unit Test Case -\\> step_for_unit_test"}
         };
     }
 
@@ -71,8 +72,8 @@ public class CommonResultServiceImplTest extends LoggerTest {
         TestSuite testSuite = new TestSuiteExampleBuilder()
                 .withId("LOG_TEST_SUITE").withState(testSuiteState)
                 .withException(testSuiteState.isError() ? new SakuliException("TEST") : null)
-                .withTestCases(Arrays.asList(new TestCaseExampleBuilder()
-                                .withTestCaseSteps(Arrays.asList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
+                .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
+                                .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
                                 .withState(testCaseState)
                                 .buildExample()
                 ))
@@ -111,8 +112,8 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 "\tend time: .*",
                 "\tstart URL: http://www.start-url.com",
                 "\tlast URL: http://www.last-url.com",
-                "\t\t======== test case step \"step for unit test\" ended with " + stepState + " =================",
-                "\t\tname: step for unit test",
+                "\t\t======== test case step \"step_for_unit_test\" ended with " + stepState + " =================",
+                "\t\tname: step_for_unit_test",
                 "\t\tRESULT STATE: " + stepState,
                 "\t\tresult code: " + stepState.getErrorCode(),
                 "\t\tdb primary key: -1*",
@@ -137,4 +138,5 @@ public class CommonResultServiceImplTest extends LoggerTest {
             assertRegExMatch(string, regex);
         }
     }
+
 }

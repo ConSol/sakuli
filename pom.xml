@@ -22,7 +22,7 @@
 
     <groupId>org.sakuli</groupId>
     <artifactId>root</artifactId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>0.9.1</version>
     <packaging>pom</packaging>
 
     <name>sakuli-parent</name>
@@ -47,6 +47,8 @@
         <downloadJavadocs>true</downloadJavadocs>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- needed for no errors on javadoc generation (maven-javadoc-plugin) -->
+        <additionalparam>-Xdoclint:none</additionalparam>
         <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
@@ -55,7 +57,7 @@
         <test.group.ui>ui</test.group.ui>
         <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
         <!-- special sakuli-version 99x - change this later to latest stable version-->
-        <sikulixapi.version>1.1.990</sikulixapi.version>
+        <sikulixapi.version>1.1.993</sikulixapi.version>
         <sahi.version>5.0</sahi.version>
     </properties>
 
@@ -168,12 +170,27 @@
                 <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
-                    <version>0.0.22</version>
+                    <version>0.0.26</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>wagon-maven-plugin</artifactId>
                     <version>1.0-beta-5</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.8.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.3</version>
                 </plugin>
             </plugins>
 
@@ -193,7 +210,7 @@
         <connection>scm:git:git://github.com/ConSol/sakuli.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/ConSol/sakuli.git</developerConnection>
         <url>git://github.com/ConSol/sakuli.git</url>
-        <tag>HEAD</tag>
+        <tag>v0.9.1</tag>
     </scm>
 
     <issueManagement>
@@ -420,7 +437,22 @@
             <!-- well be needed for Functions like App() and so on...-->
             <dependency>
                 <groupId>com.sikulix</groupId>
-                <artifactId>sikulixapi-complete</artifactId>
+                <artifactId>sikulixapi</artifactId>
+                <version>${sikulixapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sikulix</groupId>
+                <artifactId>sikulixlibslux</artifactId>
+                <version>${sikulixapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sikulix</groupId>
+                <artifactId>sikulixlibsmac</artifactId>
+                <version>${sikulixapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sikulix</groupId>
+                <artifactId>sikulixlibswin</artifactId>
                 <version>${sikulixapi.version}</version>
             </dependency>
 

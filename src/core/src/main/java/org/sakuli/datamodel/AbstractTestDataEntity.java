@@ -18,6 +18,7 @@
 
 package org.sakuli.datamodel;
 
+import org.joda.time.DateTime;
 import org.sakuli.datamodel.state.SakuliState;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
@@ -57,6 +58,16 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
     protected int warningTime = -1;
     protected int criticalTime = -1;
     protected String id;
+
+    /**
+     * represent the creation date for this entity, to enable effective sorting after it.
+     * This is only for INTERNAL use. To get the date of starting this entity, see {@link #startDate}.
+     **/
+    private DateTime creationDate;
+
+    public AbstractTestDataEntity() {
+        creationDate = new DateTime();
+    }
 
     /**
      * set the times to the format "time in millisec / 1000"
@@ -152,6 +163,11 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return warningTime;
     }
 
+    /**
+     * If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
+     *
+     * @param warningTime time in seconds
+     */
     public void setWarningTime(int warningTime) {
         this.warningTime = warningTime;
     }
@@ -160,6 +176,11 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return criticalTime;
     }
 
+    /**
+     * If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
+     *
+     * @param criticalTime time in seconds
+     */
     public void setCriticalTime(int criticalTime) {
         this.criticalTime = criticalTime;
     }
@@ -220,18 +241,45 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         this.state = state;
     }
 
+    public DateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(DateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
     @Override
     public int compareTo(AbstractTestDataEntity abstractSakuliTest) {
         if (abstractSakuliTest == null) {
             return 1;
         }
-        if (startDate == null || startDate.compareTo(abstractSakuliTest.getStartDate()) == 0) {
-            if (id == null) {
-                return abstractSakuliTest.getId() != null ? 1 : 0;
-            }
-            return id.compareTo(abstractSakuliTest.id);
+        if (super.equals(abstractSakuliTest)) {
+            return 0;
         }
-        return startDate.compareTo(abstractSakuliTest.getStartDate());
+        Date startDate2 = abstractSakuliTest.getStartDate();
+
+        if (this.startDate == null || startDate2 == null || this.startDate.compareTo(startDate2) == 0) {
+            boolean boothNull = this.startDate == null && startDate2 == null;
+            if (!boothNull) {
+                if (this.startDate == null) {
+                    return 1;
+                }
+                if (startDate2 == null) {
+                    return -1;
+                }
+            }
+            return creationDate.compareTo(abstractSakuliTest.getCreationDate());
+        }
+        return this.startDate.compareTo(startDate2);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof AbstractTestDataEntity) {
+            return compareTo((AbstractTestDataEntity) obj) == 0;
+        }
+        return super.equals(obj);
     }
 
     @Override
@@ -247,4 +295,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
                 ;
     }
 
+    public String toStringShort() {
+        return String.format("%s [id = %s, name = %s]", this.getClass().getSimpleName(), id, name);
+    }
 }

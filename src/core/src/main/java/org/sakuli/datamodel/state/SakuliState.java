@@ -40,5 +40,7 @@ public interface SakuliState {
 
     boolean isError();
 
+    boolean isFinishedWithoutErrors();
+
     String getNagiosStateDescription();
 }

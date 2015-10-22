@@ -83,12 +83,16 @@ function initApplication(that, javaObject) {
     /**
      * Closes the already existing application.
      *
+     * @param {boolean} optSilent (optional) if true, no exception will be thrown on errors and stop the test execution.
      * @return this Application object.
      * @memberOf Application
      * @method close
      */
-    that.close = function () {
-        return update(that.javaObject.closeApp());
+    that.close = function (optSilent) {
+        if (undefined == optSilent) {
+            optSilent = Boolean(false);
+        }
+        return update(that.javaObject.closeApp(optSilent));
     };
 
     /**

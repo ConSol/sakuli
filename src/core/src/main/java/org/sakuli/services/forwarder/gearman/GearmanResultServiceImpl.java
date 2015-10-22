@@ -22,12 +22,11 @@ import org.apache.commons.codec.binary.Base64;
 import org.gearman.client.*;
 import org.gearman.common.GearmanJobServerConnection;
 import org.gearman.common.GearmanNIOJobServerConnection;
-import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.services.common.AbstractResultService;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosExceptionBuilder;
+import org.sakuli.services.forwarder.gearman.model.builder.ScreenshotDivConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +42,6 @@ import java.util.concurrent.Future;
 @Component
 public class GearmanResultServiceImpl extends AbstractResultService {
     private static final Logger logger = LoggerFactory.getLogger(GearmanResultServiceImpl.class);
-    @Autowired
-    private TestSuite testSuite;
-    @Autowired
-    private SakuliExceptionHandler exceptionHandler;
     @Autowired
     private GearmanProperties properties;
     @Autowired
@@ -69,7 +64,7 @@ public class GearmanResultServiceImpl extends AbstractResultService {
         NagiosCheckResult checkResult = nagiosCheckResultBuilder.build();
 
         String message = checkResult.getPayloadString();
-        logger.info("MESSAGE for GEARMAN:\n{}", message);
+        logGearmanMessage(message);
         try {
             GearmanJob job = creatJob(checkResult);
             gearmanClient.addJobServer(connection);
@@ -91,6 +86,23 @@ public class GearmanResultServiceImpl extends AbstractResultService {
             exceptionHandler.handleException(
                     NagiosExceptionBuilder.buildUnexpectedErrorException(e, hostname, port),
                     true);
+        }
+    }
+
+    /**
+     * Logs the assigned Gearman message as follow:
+     * <ul>
+     * <li>DEBUG: complete message with screenshot as BASE64 String</li>
+     * <li>INFO: message without screenshot to shrink the log entry</li>
+     * </ul>
+     *
+     * @param message as {@link String}
+     */
+    private void logGearmanMessage(String message) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("MESSAGE for GEARMAN:\n{}", message);
+        } else {
+            logger.info("MESSAGE for GEARMAN:\n{}", ScreenshotDivConverter.removeBase64ImageDataString(message));
         }
     }
 

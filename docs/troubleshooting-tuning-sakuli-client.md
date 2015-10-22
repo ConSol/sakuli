@@ -84,13 +84,6 @@ This can be set globally in the registry **of your local host**:
 * [ HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client ]
 * "DisableDriveRedirection" (DWORD) => "1" 
 
-#### Disable Firefox' Plugin Container
-Plugins Container is a technique of Mozilla Firefox to run browser add-ons in a separate process than firefox.exe. This should ensure that a hanging add-on does not affect the browser process. But sometimes "Plugins Container" itself makes problems. Sakuli (better: Sahi) does not need any browser plugins - so, if you don't, disable Plugin Container: 
-
-* Start -> Control Panel -> System -> Advanced system settings
-* Advanced -> Environment Variables -> System variables
-	* Variable name: MOZ_DISABLE_OOP_PLUGINS
-	* Value: 1
  
 ##### Disable the "GUI-less" mode
 If you minimize the Remote Desktop window (the window that display the remote computer’s desktop), the operating system switches the remote session to a "GUI-less mode" which does not transfer any window data anymore. As a result, Sakuli is unable to interact with the tested application’s GUI, as the whole screen is not visible.
@@ -108,7 +101,26 @@ Error reporting is enabled by default - you should turn off this service because
 * Change Action Center settings -> Problem reporting settings
 * Set "Never check for solutions"  
 
+If you still get messages for crashed applications, try to:
 
+* "regedit"
+* [ HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\Windows Error Reporting ]
+* "DontShowUI" (DWORD) => "1"
+
+#### Disable Firefox' Plugin Container
+Plugins Container is a technique of Mozilla Firefox to run browser add-ons in a separate process than firefox.exe. This should ensure that a hanging add-on does not affect the browser process. But sometimes "Plugins Container" itself makes problems. Sakuli (better: Sahi) does not need any browser plugins - so, if you don't, disable Plugin Container: 
+
+* Start -> Control Panel -> System -> Advanced system settings
+* Advanced -> Environment Variables -> System variables
+	* Variable name: MOZ_DISABLE_OOP_PLUGINS
+	* Value: 1
+
+
+#### Using task scheduler
+
+To execute your testcase regularly you can add new tasks to the windows task scheduler. As action, use this command to put the cmd window into the background to not disturb your tests:
+
+    cmd.exe /c start /min C:\sakuli\sakuli-v0.X.0\bin\sakuli.bat --run "C:\sakuli\example_test_suites\example_windows" ^& exit
 
 ## Troubleshooting
 
@@ -128,10 +140,15 @@ In `procs_to_kill.txt` you can define which processes should be killed before Sa
 
 ### Sikuli does not recognize images
 
-If Sikuli does not recognize regions on the screen, check the following list of possible reasons: 
+If Sikuli does not recognize regions on the screen or does recognize the wrong ones, check the following list of possible reasons: 
 
 * **Run the client's OS on a fixed resolution:** Some applications/OS scale window elements slightly depending on the resolution. for example, if you are running Sakuli within Virtualbox, the guest OS changes its resolution as soon as you resize the VM window. The dimensions of window elements can then slightly diverge by 1-2 pixels from the screenshots taken before. This difference is small for human's eyes, but a big one for Sikuli. Make sure to disable features like "Auto-Adjust Guest Display" and set the Client's desktop to a common resolution (e.g. 1024x768). Side note: the smaller you set the resolution, the less work has to be done by Sikuli. 
 * **Disable any image compression algorithms** in your screenshot capturing program (Greenshot, Shutter, …). Otherwise Sikuli will compare *compressed* pattern images with *umcompressed* image data on the screen, which will fail for sure.     
+* Sikuli uses a **[similarity](http://doc.sikuli.org/region.html)** value of **0.8 by default**. That value (range: 0-1) determines how many pixels on the screen have to match the pixels of a screenshot file. "0" means "no pixels at all" (not very useful), "1" means "all pixels". So set the similarity, use [setSimilarity](/docs/sakuli-api.md#Environment.setSimilarity) of the Environment class. 
+    * If Sikuli recognizes the **wrong region** for a given screenshot, try to **increase the similarity**, e.g. `env.setSimilarity(0.9);`. 
+    * If Sikuli does **not recognize** anything, try to slightly **decrease the similarity**, e.g. `env.setSimilarity(0.6)`. This should only be the case when you want Sikuli to "search for somethink *like*…". 
+    * **Important note:** we repeatedly noticed that results are best with a similarity of `0.99` instead of `1.0`. 
+
 
 ### Missing keystrokes on `type("...")` or failing `paste("...")`
 
@@ -140,3 +157,14 @@ Sikuli keyboard events (`type()`and `paste()`) on a Sahi-controlled browser inst
 For this reason, Sikuli type/paste methods first extend the Sahi status interval to the value of `sahi.proxy.onSikuliInput.delayPerKey` (in ms) which is long enough to execute _one_ keyboard action. For the method `type` (which is "press/release character by character""), a multiple if this value is chosen. Before leaving the paste/type method, the interval gets reset by Sakuli to the default Sahi status interval.
 
 This setting is not needed if Sikuli does keyboard actions on GUIs not controlled by Sahi.
+
+### `Application("...").getRegion()` returns `NULL` or an `NullPointerException`
+On **Ubuntu** or other **Linux** based OS check if the packe `wmctrl` is installed. If not install it via:
+	
+	sudo apt-get install wmctrl
+	
+### GUI test only
+ 
+ To start GUI test only you can use the sahi default domain as start URL 
+ `http://sahi.example.com/_s_/dyn/Driver_initialized` in the file `testsuite.suites`
+ and as browser phantomJS.

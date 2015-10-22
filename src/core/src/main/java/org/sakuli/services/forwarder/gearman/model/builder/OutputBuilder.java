@@ -24,7 +24,6 @@ import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestCaseState;
-import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
@@ -39,7 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.SortedSet;
 
@@ -56,13 +54,8 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     private static final String TABLE_FOOTER = "</table>";
     private static final String TABLE_ROW_HEADER = "<tr valign=\"top\"><td class=\"{{TD_CSS_CLASS}}\">";
     private static final String TABLE_ROW_FOOTER = "</td></tr>";
-    /**
-     * name = value; warning; critical
-     */
-    private static final String PERFORMANCE_DATA_TEMPLATE = "%s=%s;%s;%s;;";
+
     private static Logger logger = LoggerFactory.getLogger(OutputBuilder.class);
-    private String statusSummary;
-    private String performanceData;
 
     @Autowired
     private ScreenshotDivConverter screenshotDivConverter;
@@ -70,6 +63,8 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     private TestSuite testSuite;
     @Autowired
     private GearmanProperties gearmanProperties;
+    @Autowired
+    private PerformanceDataBuilder performanceDataBuilder;
 
     public static String replacePlaceHolder(String message, PlaceholderMap placeholderStringMap) {
         String modifiedString = message;
@@ -85,78 +80,27 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         return modifiedString;
     }
 
-    /**
-     * Add to the assigned 'performanceData' a new data set in respect of the template {@link
-     * #PERFORMANCE_DATA_TEMPLATE}.
-     */
-    public static String addPerformanceDataRow(String performanceData, String name, String value, String warning, String critical) {
-        performanceData = (performanceData == null) ? "" : performanceData;
-        name = (name == null) ? "" : StringUtils.replace(name.trim(), " ", "_");
-        value = (value == null) ? "" : value.trim();
-        warning = (warning == null) ? "" : warning.trim();
-        critical = (critical == null) ? "" : critical.trim();
-
-        //format string and remove not needed spaces at beginn and ending
-        return performanceData.concat(" ").concat(String.format(PERFORMANCE_DATA_TEMPLATE, name, value, warning, critical)).trim();
-    }
-
-    /**
-     * Small wrapper for non overview data for the {@link #addPerformanceDataRow(String, String, String, String,
-     * String)}
-     */
-    public static String addPerformanceDataRow(String performanceData, String name, float duration, int warningTime, int criticalTime) {
-        String warningTimeString = (warningTime == 0) ? "" : String.valueOf(warningTime);
-        String criticalTimeString = (criticalTime == 0) ? "" : String.valueOf(criticalTime);
-        return addPerformanceDataRow(performanceData, name, formatToSec(duration), warningTimeString, criticalTimeString);
-    }
-
-    public static String formatToSec(float duration) {
-        return String.format(Locale.ENGLISH, "%.2fs", duration);
-    }
-
-    public static String formatToSec(int duration) {
-        return duration + "s";
+    static String generateStepInformation(SortedSet<TestCaseStep> steps) {
+        StringBuilder sb = new StringBuilder();
+        steps.stream()
+                .filter(step -> step.getState().isWarning())
+                .forEach(step ->
+                        sb.append(", step \"")
+                                .append(step.getName())
+                                .append("\" (")
+                                .append(NagiosFormatter.formatToSec(step.getDuration()))
+                                .append(" /warn at ")
+                                .append(NagiosFormatter.formatToSec(step.getWarningTime()))
+                                .append(")"));
+        return sb.toString();
     }
 
     @Override
     public NagiosOutput build() {
-        extractData(testSuite, gearmanProperties);
         NagiosOutput output = new NagiosOutput();
-        output.setStatusSummary(statusSummary);
-        output.setPerformanceData(performanceData);
+        output.setStatusSummary(getStatusSummary(testSuite, gearmanProperties));
+        output.setPerformanceData(performanceDataBuilder.build());
         return output;
-    }
-
-    protected void extractData(TestSuite testSuite, GearmanProperties properties) {
-        statusSummary = getStatusSummary(testSuite, properties);
-        performanceData = getPerformanceData(testSuite) + " [" + properties.getNagiosCheckCommand() + "]";
-    }
-
-    /**
-     * Generates the performance data for the nagios server as an {@link String}.
-     *
-     * @param testSuite finshed {@link TestSuite}
-     * @return formatted payload string
-     */
-    protected String getPerformanceData(TestSuite testSuite) {
-        OutputState outputState = OutputState.lookupSakuliState(testSuite.getState());
-        String data = "";
-        data = addPerformanceDataRow(data, "suite__state", String.valueOf(outputState.getErrorCode()), null, null);
-        data = addPerformanceDataRow(data, "suite_" + testSuite.getId(), testSuite.getDuration(), testSuite.getWarningTime(), testSuite.getCriticalTime());
-
-        int i = 1;
-        for (TestCase tc : testSuite.getTestCasesAsSortedSet()) {
-            OutputState tcOutputState = OutputState.lookupSakuliState(tc.getState());
-            data = addPerformanceDataRow(data, "c_" + i + "__state_" + tc.getId(), String.valueOf(tcOutputState.getErrorCode()), null, null);
-            data = addPerformanceDataRow(data, "c_" + i + "_" + tc.getId(), tc.getDuration(), tc.getWarningTime(), tc.getCriticalTime());
-            int j = 1;
-            for (TestCaseStep step : tc.getStepsAsSortedSet()) {
-                data = addPerformanceDataRow(data, "s_" + i + "_" + j + "_" + step.getId(), step.getDuration(), step.getWarningTime(), 0);
-                j++;
-            }
-            i++;
-        }
-        return data;
     }
 
     /**
@@ -210,7 +154,6 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     protected PlaceholderMap getTextPlaceholder(TestCase testCase) {
         PlaceholderMap placeholderMap = new PlaceholderMap();
         OutputState outputState = OutputState.lookupSakuliState(testCase.getState());
-        ScreenshotDiv screenshotDiv = screenshotDivConverter.convert(testCase.getException());
         placeholderMap.put(STATE, outputState.name());
         placeholderMap.put(STATE_SHORT, outputState.getShortState());
         placeholderMap.put(STATE_DESC, (testCase.getState() == null)
@@ -224,7 +167,7 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         placeholderMap.put(WARN_THRESHOLD, String.valueOf(testCase.getWarningTime()));
         placeholderMap.put(CRITICAL_THRESHOLD, String.valueOf(testCase.getCriticalTime()));
         placeholderMap.put(ERROR_MESSAGE, testCase.getExceptionMessages(true));
-        placeholderMap.put(ERROR_SCREENSHOT, screenshotDiv != null ? screenshotDiv.getPayloadString() : null);
+        placeholderMap.put(ERROR_SCREENSHOT, generateTestCaseScreenshotsHTML(testCase));
         placeholderMap.put(STEP_INFORMATION, generateStepInformation(testCase.getStepsAsSortedSet()));
         placeholderMap.put(CASE_FILE, testCase.getTcFile() != null ? testCase.getTcFile().toString() : null);
         placeholderMap.put(CASE_START_URL, testCase.getStartUrl());
@@ -233,22 +176,20 @@ public class OutputBuilder implements Builder<NagiosOutput> {
         return placeholderMap;
     }
 
-    private String generateStepInformation(SortedSet<TestCaseStep> steps) {
+    /**
+     * Generates '<div></div>' tag for the screenshots included in the {@link TestCase} and the suppressed {@link TestCaseStep}s.
+     */
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+    protected String generateTestCaseScreenshotsHTML(TestCase testCase) {
         StringBuilder sb = new StringBuilder();
-        Iterator<TestCaseStep> it = steps.iterator();
-        while (it.hasNext()) {
-            TestCaseStep step = it.next();
-            if (TestCaseStepState.WARNING.equals(step.getState())) {
-                sb.append("step \"")
-                        .append(step.getName())
-                        .append("\" (")
-                        .append(formatToSec(step.getDuration()))
-                        .append(" /warn at ")
-                        .append(formatToSec(step.getWarningTime()))
-                        .append(")");
-            }
-            if (it.hasNext()) {
-                sb.append(", ");
+        ScreenshotDiv caseDiv = screenshotDivConverter.convert(testCase.getException());
+        if (caseDiv != null) {
+            sb.append(caseDiv.getPayloadString());
+        }
+        for (TestCaseStep step : testCase.getStepsAsSortedSet()) {
+            ScreenshotDiv stepDiv = screenshotDivConverter.convert(step.getException());
+            if (stepDiv != null) {
+                sb.append(stepDiv.getPayloadString());
             }
         }
         return sb.toString();
@@ -281,7 +222,7 @@ public class OutputBuilder implements Builder<NagiosOutput> {
     private String generateStateSummary(TestSuiteState state) {
         StringBuilder summary = new StringBuilder(STATE_DESC.getPattern());
         if (state.isError()) {
-            summary.append(": \"").append(ERROR_MESSAGE.getPattern()).append("\"");
+            summary.append(": '").append(ERROR_MESSAGE.getPattern()).append("'");
         } else if (state.isWarning()) {
             summary.append(": threshold ").append(WARN_THRESHOLD.getPattern()).append("s");
         } else if (state.isCritical()) {

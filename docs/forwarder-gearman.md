@@ -1,10 +1,10 @@
 # Gearman Forwarder
-This page describes how Sakuli can be configured to transmit its test results directly into the **Gearman queue** of the monitoring system. 
+This page describes how the results of the Sakuli tests **example_windows/ubuntu/opensuse** can be transmitted directly into the **Gearman result queue** of the monitoring system. 
 
 ![sakuli-db-forwarder](pics/sakuli-gearman.png)
 
-* Receiving Nagios **host**: property `sakuli.forwarder.gearman.nagios.hostname` (define globally or per suite)
-* Receiving Nagios **service**: property `testsuite.id` in `testsuite.properties` 
+* Nagios **host**: property `sakuli.forwarder.gearman.nagios.hostname` (define globally or per suite)
+* Nagios **service**: property `testsuite.id` in `testsuite.properties` 
 
 ## OMD Configuration
 
@@ -55,9 +55,9 @@ Create a check_command, which will be executed only if Nagios did not receive a 
 	}
 
 
-Create a host object for the host on which Sakuli checks will be executed: 
+Create a host object for the Sakuli client: 
 
-	vim ~/etc/nagios/conf.d/hosts.cfg
+    OMD[sakuli]:~$ vim etc/nagios/conf.d/hosts.cfg
 	
 	define host {
 	  host_name                      sakuli_client
@@ -66,10 +66,12 @@ Create a host object for the host on which Sakuli checks will be executed:
 	  use                            generic-host
 	}
 
-Create the following service object for the first test case (set the service name depending on your client's OS!): 
+Create the following service object for the first test case. *freshness_threshold* should be slightly higher than the interval Sakuli tests are planned (see also [RRD heartbeat](installation-omd.md#rrd-heartbeat) )
 
 	vim ~/etc/nagios/conf.d/services.cfg
-	
+
+    OMD[sakuli]:~$ vim etc/nagios/conf.d/services.cfg
+
 	define service {
 	  # service_description            example_windows
 	  # service_description            example_opensuse
@@ -77,9 +79,9 @@ Create the following service object for the first test case (set the service nam
 	  host_name                      sakuli_client
 	  use                            generic-service,srv-pnp
 	  active_checks_enabled          0
-	  check_command                  check_dummy!3!'Did not receive any Sakuli result within 30 minutes.'
+	  check_command                  check_dummy!3!'Did not receive any Sakuli result within 3 minutes.'
 	  check_freshness                1
-	  freshness_threshold            1800
+	  freshness_threshold            180
 	  passive_checks_enabled         1
 	}
 	
@@ -91,30 +93,37 @@ Now open Thruk; you should see now the Sakuli host with one service attached:
 
 ![omd_pending2](pics/omd-pending2.png) 
 
-The check is waiting now for check results from Sakuli clients. 
+The check is waiting now for check results from a Sakuli client. 
 
 
 
 
-## Sakuli Configuration
-Open `__SAKULI_HOME__\_include\sakuli.properties` on the Sakuli client: 
+## Sakuli gearman forwarder parameter
 
 ### Gearman parameters
+Set the global properties for the gearman receiver (unless you have multiple receivers): 
+
+    OMD[sakuli]: vim __SAKULI_HOME__/config/sakuli-default.properties
 
 	sakuli.forwarder.gearman.enabled=true
 	sakuli.forwarder.gearman.server.host=__GEARMAN_IP__
 	sakuli.forwarder.gearman.server.port=[Gearman Port defined in "omd config" (default:4730)]
 	sakuli.forwarder.gearman.server.queue=check_results
 	
-	# Nagios check settings
-	# default nagios host_name (can be overwritten in testsuite.properties) 
+	# Nagios host where all Sakuli services are defined on. If neccessary, override this value per test suite. 
+    # (Nagios service name is defined by testsuite.properties -> suiteID)
 	sakuli.forwarder.gearman.nagios.hostname=sakuli_client
-	# gets appended to the performance data in order to set the name of PNP4nagios template
 	sakuli.forwarder.gearman.nagios.check_command=check_sakuli
 
-## Test
+## Test result transmission to OMD
 
-Now execute the example test case again; the service should change its status then: 
+Execute the example test case again:
+
+* **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_ubuntu/` 
+* **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_opensuse/` 
+* **Windows**: `__SAKULI_HOME__\bin\sakuli.bat --run __INST_DIR__\example_test_suites\example_windows\`
+
+The service should change its status to:
 
 ![omd_pending2](pics/omd-ok.png) 
 

@@ -4,7 +4,8 @@
 
 * [Sahi-API](#Sahi-API)
 * [TestCase](#TestCase)
-  * [TestCase.endOfStep(stepName, warningTime)](#TestCase.endOfStep)
+  * [TestCase.addImagePaths(imagePaths)](#TestCase.addImagePaths)
+  * [TestCase.endOfStep(stepName, optWarningTime)](#TestCase.endOfStep)
   * [TestCase.handleException(e)](#TestCase.handleException)
   * [TestCase.saveResult()](#TestCase.saveResult)
   * [TestCase.getID()](#TestCase.getID)
@@ -16,7 +17,7 @@
   * [Application.open()](#Application.open)
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
-  * [Application.close()](#Application.close)
+  * [Application.close(optSilent)](#Application.close)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -44,6 +45,10 @@
   * [Environment.write(text)](#Environment.write)
   * [Environment.mouseWheelDown(steps)](#Environment.mouseWheelDown)
   * [Environment.mouseWheelUp(steps)](#Environment.mouseWheelUp)
+  * [Environment.isWindows()](#Environment.isWindows)
+  * [Environment.isLinux()](#Environment.isLinux)
+  * [Environment.getOsIdentifier()](#Environment.getOsIdentifier)
+  * [Environment.runCommand(command, optThrowException)](#Environment.runCommand)
 * [Key](#Key)
 * [Logger](#Logger)
   * [Logger.logError(message)](#Logger.logError)
@@ -90,6 +95,7 @@
   * [Region.setY(y)](#Region.setY)
   * [Region.getY()](#Region.getY)
   * [Region.highlight(seconds)](#Region.highlight)
+  * [Region.takeScreenShot(filename)](#Region.takeScreenShot)
   * [Region.sleep(seconds)](#Region.sleep)
   * [Region.extractText()](#Region.extractText)
 * [RegionRectangle](#RegionRectangle)
@@ -109,10 +115,12 @@ TestCase - initializes the Sakuli object and sets the warning and critical time 
 
 **Params**
 
-- warningTime `number` - threshold in seconds  
-- criticalTime `number` - threshold in seconds  
+- warningTime `number` - threshold in seconds. If the threshold is set to 0,
+                the execution time will never exceed, so the state will be always OK!  
+- criticalTime `number` - threshold in seconds. If the threshold is set to 0,
+                the execution time will never exceed, so the state will be always OK!  
 - optImagePathArray `Array.<String>` - (optional) Path or Array of Paths to the folder containing the image patterns
-    for these test cases.  
+                                    for these test cases.  
 
 **Returns**:  - an initialized Sakuli object.  
 **Example**  
@@ -123,7 +131,8 @@ var testCase = new TestCase(20,30, "path-to/image-folder-name");
 **Members**
 
 * [TestCase](#TestCase)
-  * [TestCase.endOfStep(stepName, warningTime)](#TestCase.endOfStep)
+  * [TestCase.addImagePaths(imagePaths)](#TestCase.addImagePaths)
+  * [TestCase.endOfStep(stepName, optWarningTime)](#TestCase.endOfStep)
   * [TestCase.handleException(e)](#TestCase.handleException)
   * [TestCase.saveResult()](#TestCase.saveResult)
   * [TestCase.getID()](#TestCase.getID)
@@ -132,17 +141,28 @@ var testCase = new TestCase(20,30, "path-to/image-folder-name");
   * [TestCase.getTestSuiteFolderPath()](#TestCase.getTestSuiteFolderPath)
   * [TestCase.throwException(message, screenshot)](#TestCase.throwException)
 
+<a name="TestCase.addImagePaths"></a>
+##TestCase.addImagePaths(imagePaths)
+Adds the additional paths to the current image library of the TestCase.
+If a relative path is assigned, the current testcase folder will be used as current directory.
+
+**Params**
+
+- imagePaths `string` - one or more path strings  
+
 <a name="TestCase.endOfStep"></a>
-##TestCase.endOfStep(stepName, warningTime)
+##TestCase.endOfStep(stepName, optWarningTime)
 A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
-particular runtime. Together with the test Case, a special "step" timer is started. Each time endOfStep is
-called, the current timer value is read out, stored with the step name (first parameter) and gets resetted . If
-the runtime exceeds the step threshold (second parameter), the step is saved with state "WARNING".
+particular runtime. When a case starts, Sakuli starts a "step" timer. It gets read out, stored with the 
+step name, and resetted each time endOfStep() is called. 
+If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state 
+"WARNING" (there is no CRITICAL state).
 
 **Params**
 
 - stepName `String`  
-- warningTime `number` - threshold in seconds  
+- optWarningTime `number` - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
+                the execution time will never exceed, so the state will be always OK!  
 
 <a name="TestCase.handleException"></a>
 ##TestCase.handleException(e)
@@ -232,7 +252,7 @@ var editor = new Application("gedit");
   * [Application.open()](#Application.open)
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
-  * [Application.close()](#Application.close)
+  * [Application.close(optSilent)](#Application.close)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -259,8 +279,12 @@ Focuses a specific window of the application.
 
 **Returns**:  - this Application object.  
 <a name="Application.close"></a>
-##Application.close()
+##Application.close(optSilent)
 Closes the already existing application.
+
+**Params**
+
+- optSilent `boolean` - (optional) if true, no exception will be thrown on errors and stop the test execution.  
 
 **Returns**:  - this Application object.  
 <a name="Application.setSleepTime"></a>
@@ -323,6 +347,10 @@ Environment - Represents the environment of the current test host.
   * [Environment.write(text)](#Environment.write)
   * [Environment.mouseWheelDown(steps)](#Environment.mouseWheelDown)
   * [Environment.mouseWheelUp(steps)](#Environment.mouseWheelUp)
+  * [Environment.isWindows()](#Environment.isWindows)
+  * [Environment.isLinux()](#Environment.isLinux)
+  * [Environment.getOsIdentifier()](#Environment.getOsIdentifier)
+  * [Environment.runCommand(command, optThrowException)](#Environment.runCommand)
 
 <a name="Environment.setSimilarity"></a>
 ##Environment.setSimilarity(similarity)
@@ -542,6 +570,37 @@ wheel the given steps up.
 
 - steps `number` - the number of steps  
 
+<a name="Environment.isWindows"></a>
+##Environment.isWindows()
+**Returns**: `boolean` - true, if the OS is any instance of an Windows based OS  
+<a name="Environment.isLinux"></a>
+##Environment.isLinux()
+**Returns**: `boolean` - true, if the OS is any instance of an Linux based OS  
+<a name="Environment.getOsIdentifier"></a>
+##Environment.getOsIdentifier()
+**Returns**: `string` - identifier of the current OS  
+<a name="Environment.runCommand"></a>
+##Environment.runCommand(command, optThrowException)
+Runs the assigned command on the host and returns the result. __Attention:__ this is OS depended feature! So be
+aware which os you are running, maybe us to check `Environment#isLinux()`  or `Environment#isWindows()`.
+
+**Params**
+
+- command `string` - OS depended command as `String`  
+- optThrowException `boolean` - defines if an exception should be thrown, if the exit code != 0  
+
+**Returns**:  - the result as `CommandLineResult` object, you can use the methods `result.getOutput()` and `result.getExitCode()`  
+**Example**  
+```
+var app;
+if(environmen.runCommand('uname --machine') == 'x86_64'){
+    //open app from other path
+    app = new Application('/lib64/appname');
+} else {
+    app = new Application('/lib/appname');
+}
+```
+
 <a name="Key"></a>
 #Key
 Key - representing some Key constants which can be used in type functions as input text and as modifier keys.
@@ -680,6 +739,7 @@ Region - Represents a region as a part of or the hole screen.
   * [Region.setY(y)](#Region.setY)
   * [Region.getY()](#Region.getY)
   * [Region.highlight(seconds)](#Region.highlight)
+  * [Region.takeScreenShot(filename)](#Region.takeScreenShot)
   * [Region.sleep(seconds)](#Region.sleep)
   * [Region.extractText()](#Region.extractText)
 
@@ -1029,6 +1089,17 @@ set the Y coordinate of the upper left corner.
 - seconds `number` - highlights this Region for x seconds
 or the default time  
 
+<a name="Region.takeScreenShot"></a>
+##Region.takeScreenShot(filename)
+Takes a screenshot of the current Region in the screen and saves it the current testcase folder
+with the assigned filename.
+
+**Params**
+
+- filename `String` - name of the screenshot, e.g. `region_screenshot`.
+                Default: screenshot  
+
+**Returns**: `String` - file path to the created screenshot OR null on errors  
 <a name="Region.sleep"></a>
 ##Region.sleep(seconds)
 Blocks the current testcase execution for x seconds

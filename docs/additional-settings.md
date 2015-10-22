@@ -144,19 +144,20 @@ To set the format and destination folder for screenshots taken by Sakuli:
 * **`sakuli.forwarder.gearman.nagios.output.screenshotDivWidth`**=`640px` - Screenshot dimensions for results sent to Gearmand
     
 ### RDP pecularities
-#### connection types
-There are several ways to connect to and work on a Sakuli client machine:
+#### things to know about connection types
+
+There are four ways to connect to and work on a Sakuli client machine:
 
 1. **VNC**
 2. **Console** of a virtualization platform (ESX, Virtualbox, etc.)
-3. **Remote Desktop**
+3. **Remote Desktop** (Windows)
 4. **local screen** 
 
-For case 1. and 2. there is nothing special to watch out for, except that the screen must not be locked (see the [installation manual](../docs/installation-windows.md)). The screen content will be the same as displays on the local screen (4.). 
+For case 1. and 2. there is nothing special to watch out for, except that the screen must not be locked (otherwise Sikuli will also see a locked screen). The screen content will be the same as displays on a local screen (4.). 
 
-For RDP, there are some special things to know. Connecting to the Sakuli test client via RDP **locks any existing local console session of that user** and **attaches (="moves") it to a RDP session**.
+For RDP on Windows there are some special things to know. Connecting to the Sakuli test client via RDP **locks any existing local console session of that user** and **attaches (="moves") it to a RDP session**.
 
-Sakuli will also run within that RDP session. But closing/disconnecting/logging of that RDP session will not unlock the local console session again. Sakuli will see the same as a regular user: the famous blue lock screen.
+Sakuli will just as well run within that RDP session. But closing/disconnecting/logging of that RDP session will not unlock the local console session again. Sakuli will see the same as a regular user: nothing but a locked screen. Read the next paragraph to learn how to avoid this. 
 
 #### LOGOFF.bat
 To log off a RDP session, right-click `%SAKULI_HOME%\bin\helper\LOGOFF.bat` and execute the script with administrator privileges. The script then
@@ -191,6 +192,8 @@ If the Sahi dashboard does not show any browser or if you want to add another br
 For **PhantomJS** please save [sahi.js](http://labs.consol.de/sakuli/install/3rd-party/phantom/sahi.js) into the folder `__SAHI_DIR__\phantomjs\` and use this option line: 
 
         	<options>--proxy=localhost:9999 __SAHI_DIR__\phantomjs\sahi.js</options> 
+
+Attention: PhantomJS 2 is currently unsupported. Use version 1.9.x
 	
 ### Browser selection 
 
@@ -235,14 +238,24 @@ Set the following properties (as global in the sakuli.properties) to define a pr
 
 #### Mozilla Firefox ####
 
-Edit `__SAHI_DIR__/config/ff_profile_template/prefs.js`: 
+Append the following lines to the Firefox default preference file: 
 
-    # Disable session restore functionality
+    vim __SAHI_DIR__/config/ff_profile_template/prefs.js
+
+    user_pref("browser.cache.disk.enable", false);
+    user_pref("browser.cache.disk.smart_size.enabled", false);
+    user_pref("browser.cache.memory.enable", false);
+    user_pref("browser.cache.offline.enable", false);
+    user_pref("browser.cache.offline.capacity", 0);
     user_pref("browser.sessionstore.max_tabs_undo",0);
     user_pref("browser.sessionstore.max_windows_undo",0);
-    # Disable user-rating in FF >=37
     user_pref("browser.selfsupport.url","");
-    
-To take these changes effect, you need to delete the firefox profile folders. Sahi will re-create them on the next run: 
+
+To take these changes effect, you need to delete the firefox profile folders *sahi0-9*.
 
     rm -rf __SAHI_DIR__/userdata/browser/ff/profiles/*
+
+Re-start Firefox from the Sahi dashboard. Check that 
+
+* the profile folder *sahi0-9* are created
+* while Firefox is running, there is **no** file `Invalidprefs.js` in *sahi0*. This would indicate that Firefox was not able to load the custom preferences. (In this case, Firefox won't even show up the Sahi start page, because the proxy setting *localhost:9999* is also defined as a *user_pref*.)

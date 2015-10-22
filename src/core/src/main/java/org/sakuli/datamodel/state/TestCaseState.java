@@ -19,6 +19,7 @@
 package org.sakuli.datamodel.state;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -112,12 +113,17 @@ public enum TestCaseState implements SakuliState {
         return this.equals(ERRORS);
     }
 
+    @Override
+    public boolean isFinishedWithoutErrors() {
+        return !Arrays.asList(ERRORS, INIT).contains(this);
+    }
+
     public List<TestCaseState> getWarningCodes() {
         return Arrays.asList(WARNING, WARNING_IN_STEP);
     }
 
     public List<TestCaseState> getOkCodes() {
-        return Arrays.asList(OK);
+        return Collections.singletonList(OK);
     }
 
     public List<TestCaseState> getCriticalCodes() {

@@ -18,12 +18,16 @@
 
 package org.sakuli.actions;
 
+import org.apache.commons.lang.StringUtils;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.datamodel.helper.TestCaseHelper;
+import org.sakuli.datamodel.helper.TestCaseStepHelper;
+import org.sakuli.datamodel.helper.TestDataEntityHelper;
 import org.sakuli.exceptions.SakuliActionException;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
@@ -37,6 +41,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 
 /**
@@ -44,7 +49,7 @@ import java.util.Date;
  */
 @Component
 public class TestCaseAction {
-    public static final String ERROR_NOT_SET_THRESHOLD_VARIABLE = "the %s threshold have to be set! If the %s threshold should NOT be considered, please set it to 0!";
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
@@ -63,8 +68,10 @@ public class TestCaseAction {
      * Set the warning and critical Time to the specific test case.
      *
      * @param testCaseID   current ID of the test case
-     * @param warningTime  warning threshold in seconds
-     * @param criticalTime critical threshold in seconds
+     * @param warningTime  warning threshold in seconds. If the threshold is set to 0,
+     *                     the execution time will never exceed, so the state will be always OK!
+     * @param criticalTime critical threshold in seconds. If the threshold is set to 0,
+     *                     the execution time will never exceed, so the state will be always OK!
      * @param imagePaths   multiple paths to images
      */
     @LogToResult(message = "init a new test case")
@@ -77,8 +84,10 @@ public class TestCaseAction {
      * Set the warning and critical Time to the specific test case.
      *
      * @param testCaseID   current ID of the test case
-     * @param warningTime  warning threshold in seconds
-     * @param criticalTime critical threshold in seconds
+     * @param warningTime  warning threshold in seconds. If the threshold is set to 0,
+     *                     the execution time will never exceed, so the state will be always OK!
+     * @param criticalTime critical threshold in seconds. If the threshold is set to 0,
+     *                     the execution time will never exceed, so the state will be always OK!
      * @param imagePaths   multiple paths to images
      */
     @LogToResult(message = "init a new test case")
@@ -87,41 +96,47 @@ public class TestCaseAction {
         initWarningAndCritical(warningTime, criticalTime);
     }
 
-    private void initWarningAndCritical(int warningTime, int criticalTime) {
-        if (checkWarningAndCrititicalTime(warningTime, criticalTime)) {
-            //if everything is ok set the times
-            loader.getCurrentTestCase().setWarningTime(warningTime);
-            loader.getCurrentTestCase().setCriticalTime(criticalTime);
+    /**
+     * Adds the additional paths to the current {@link ImageLib} object.
+     * If a relative path is assigned, the current testcase folder will be used as current directory.
+     *
+     * @param imagePaths one or more paths as {@link String} elements
+     * @throws SakuliException if an IO error occurs
+     */
+    public void addImagePathsAsString(String... imagePaths) throws SakuliException {
+        for (String path : imagePaths) {
+            //check if absolute path
+            if (!path.matches("(\\/\\S*|\\w:\\\\\\S*)")) {
+                addImagePaths(loader.getCurrentTestCase().getTcFile().getParent().resolve(path));
+            } else {
+                addImagePaths(Paths.get(path));
+            }
         }
     }
 
     /**
-     * Check if the warning time is set correctly:
-     * <ul>
-     * <li>Greater or equal then 0</li>
-     * <li>warning time > critical time</li>
-     * </ul>
+     * Adds the additional paths to the current {@link ImageLib} object.
      *
-     * @return true on success, on error - call {@link #handleException(String)} and return false!
+     * @param imagePaths one or more {@link Path} elements
+     * @throws SakuliException if an IO error occurs
      */
-    private boolean checkWarningAndCrititicalTime(int warningTime, int criticalTime) {
-        if (criticalTime < 0) {
-            handleException(getErrorNotSetTimeVariableMessage("critical"));
-        } else if (warningTime < 0) {
-            handleException(getErrorNotSetTimeVariableMessage("warning"));
-        } else {
-            if (warningTime > criticalTime) {
-                handleException("warning threshold must be less than critical threshold!");
-            } else {
-                return true;
-            }
-        }
-        return false;
+    @LogToResult
+    public void addImagePaths(Path... imagePaths) throws SakuliException {
+        loader.addImagePaths(imagePaths);
     }
 
-    private String getErrorNotSetTimeVariableMessage(String thersholdName) {
-        return String.format(ERROR_NOT_SET_THRESHOLD_VARIABLE, thersholdName, thersholdName);
+    private void initWarningAndCritical(int warningTime, int criticalTime) {
+        TestCase currentTestCase = loader.getCurrentTestCase();
+        String errormsg = TestDataEntityHelper.checkWarningAndCriticalTime(warningTime, criticalTime, currentTestCase.toStringShort());
+        if (errormsg != null) {
+            handleException(errormsg);
+        } else {
+            //if everything is ok set the times
+            currentTestCase.setWarningTime(warningTime);
+            currentTestCase.setCriticalTime(criticalTime);
+        }
     }
+
 
     /****************
      * TEST CASE HANDLING
@@ -180,25 +195,21 @@ public class TestCaseAction {
      * @param stepName    name of this step
      * @param startTime   start time in milliseconds
      * @param stopTime    end time in milliseconds
-     * @param warningTime warning threshold in seconds
+     * @param warningTime warning threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
      * @throws SakuliException
      */
     @LogToResult(message = "add a step to the current test case")
     public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime) throws SakuliException {
-
-        checkWarningAndCrititicalTime(loader.getCurrentTestCase().getWarningTime(), loader.getCurrentTestCase().getCriticalTime());
-        if (stepName.isEmpty() || stepName.equals("undefined")) {
+        if (stepName == null || stepName.isEmpty() || stepName.equals("undefined")) {
             handleException("Please set a Name - all values of the test case step need to be set!");
         }
-        if (warningTime < 0) {
-            handleException("warning time of test case step need to be greater or equal then 0!");
+        String errormsg = TestCaseStepHelper.checkWarningTime(warningTime, stepName);
+        if (errormsg != null) {
+            handleException(errormsg);
         }
 
-        //create a new step
-        TestCaseStep step = new TestCaseStep();
+        TestCaseStep step = findStep(stepName);
         try {
-
-            step.setName(stepName.replace(" ", "_"));
             step.setStartDate(new Date(Long.parseLong(startTime)));
             step.setStopDate(new Date(Long.parseLong(stopTime)));
             step.setWarningTime(warningTime);
@@ -214,6 +225,17 @@ public class TestCaseAction {
                 + "\" saved to test case \""
                 + loader.getCurrentTestCase().getId()
                 + "\"");
+    }
+
+    protected TestCaseStep findStep(String stepName) {
+        TestCaseStep newStep = new TestCaseStep();
+        newStep.setId(stepName);
+        for (TestCaseStep step : loader.getCurrentTestCase().getSteps()) {
+            if (StringUtils.equals(step.getId(), newStep.getId())) {
+                return step;
+            }
+        }
+        return newStep;
     }
 
     /**
@@ -234,7 +256,6 @@ public class TestCaseAction {
      * @param e the original exception
      */
     public void handleException(Throwable e) {
-//        logger.debug("Java Backend - handle Throwable WITH the testcase id '" + loader.getCurrentTestCase().getId() + "'");
         loader.getExceptionHandler().handleException(e, false);
     }
 
@@ -242,7 +263,6 @@ public class TestCaseAction {
      * @param exceptionMessage String message
      */
     public void handleException(String exceptionMessage) {
-//        logger.debug("Java Backend - handle exception from String input WITH the testcase id '" + loader.getCurrentTestCase().getId() + "' and message: " + exceptionMessage);
         loader.getExceptionHandler().handleException(exceptionMessage, false);
     }
 

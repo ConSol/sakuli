@@ -19,12 +19,14 @@
 package org.sakuli.datamodel;
 
 import org.sakuli.datamodel.state.TestCaseState;
-import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.SakuliException;
 import org.springframework.util.CollectionUtils;
 
 import java.nio.file.Path;
 import java.util.*;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.trimToEmpty;
 
 /**
  * @author tschneck Date: 17.06.13
@@ -60,6 +62,7 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
          */
         warningTime = -1;
         criticalTime = -1;
+        this.state = TestCaseState.INIT;
     }
 
     /**
@@ -69,29 +72,34 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
     public void refreshState() {
         if (exception != null) {
             state = TestCaseState.ERRORS;
-        } else {
-            boolean stepWarning = false;
-            if (steps != null) {
-                for (TestCaseStep step : steps) {
-                    step.refreshState();
-                    if (TestCaseStepState.WARNING.equals(step.getState())) {
+            return;
+        }
+        boolean stepWarning = false;
+        if (steps != null) {
+            for (TestCaseStep step : steps) {
+                step.refreshState();
+                switch (step.getState()) {
+                    case WARNING:
                         stepWarning = true;
-                    }
+                        break;
+                    case ERRORS:
+                        state = TestCaseState.ERRORS;
+                        return;
                 }
             }
-            TestCaseState newState;
-            if (criticalTime > 0 && getDuration() > criticalTime) {
-                newState = TestCaseState.CRITICAL;
-            } else if (warningTime > 0 && getDuration() > warningTime) {
-                newState = TestCaseState.WARNING;
-            } else if (stepWarning) {
-                newState = TestCaseState.WARNING_IN_STEP;
-            } else {
-                newState = TestCaseState.OK;
-            }
-            if (state == null || newState.getErrorCode() > state.getErrorCode()) {
-                state = newState;
-            }
+        }
+        TestCaseState newState;
+        if (criticalTime > 0 && getDuration() > criticalTime) {
+            newState = TestCaseState.CRITICAL;
+        } else if (warningTime > 0 && getDuration() > warningTime) {
+            newState = TestCaseState.WARNING;
+        } else if (stepWarning) {
+            newState = TestCaseState.WARNING_IN_STEP;
+        } else {
+            newState = TestCaseState.OK;
+        }
+        if (state == null || newState.getErrorCode() > state.getErrorCode()) {
+            state = newState;
         }
     }
 
@@ -104,10 +112,8 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
                 + "\n\tlast URL: " + this.getLastURL();
 
         //steps
-        if (!CollectionUtils.isEmpty(steps)) {
-            for (TestCaseStep step : getStepsAsSortedSet()) {
-                stout += step.getResultString();
-            }
+        for (TestCaseStep step : getStepsAsSortedSet()) {
+            stout += step.getResultString();
         }
         return stout;
     }
@@ -133,7 +139,7 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
     }
 
     public List<TestCaseStep> getSteps() {
-        return steps;
+        return steps == null ? new ArrayList<>() : steps;
     }
 
     public void setSteps(List<TestCaseStep> steps) {
@@ -144,7 +150,9 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
         if (steps == null) {
             steps = new ArrayList<>();
         }
-        steps.add(step);
+        if (!steps.contains(step)) {
+            steps.add(step);
+        }
         Collections.sort(steps);
     }
 
@@ -182,5 +190,24 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
             return new TreeSet<>(steps);
         }
         return new TreeSet<>();
+    }
+
+    @Override
+    public String getExceptionMessages(boolean flatFormatted) {
+        StringBuilder caseErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted)));
+        for (TestCaseStep step : getStepsAsSortedSet()) {
+            final String stepErrorMessage = step.getExceptionMessages(flatFormatted);
+
+            if (isNotBlank(stepErrorMessage)) {
+                if (flatFormatted && caseErrorMessage.length() > 0) {
+                    caseErrorMessage.append(" - ");
+                }
+                if (!flatFormatted) {
+                    caseErrorMessage.append("\n\t");
+                }
+                caseErrorMessage.append("STEP \"").append(step.getId()).append("\": ").append(stepErrorMessage);
+            }
+        }
+        return caseErrorMessage.toString();
     }
 }

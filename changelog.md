@@ -1,5 +1,45 @@
 ## Change Log of Sakuli Releases
 
+### Version 1.0.0
+
+- - -
+
+### Version 0.9.1
+* fix #116 wrong comma in gearman output
+* sakuli.bat: added SAKULI_HOME fallback if env var not set #124
+* sakuli.bat: added javahome parameter, added JVM option passing #122
+* update sikuliX version to 1.1.993
+* Merge branch 'dev-v0.4' into dev
+* sakuli.sh: JVM options (-D) allowed. #75
+* Improve Nagios monitoring integration:
+    * check_sakuli.json: added first JSON template for grafana
+    * check_sakuli.php: logfile destination now contains hostname and service description
+    * check_sakuli.php: removed UNIT var. Everything is in seconds.
+    * CheckMySQLHealthSakuli.pm: no perfdata on stale result (fixes #120), small output improvements
+    * check_sakuli.php: fixed bug, Suite graph did not have correct value.
+    * CheckMySQLHealthSakuli.pm: adjust perfdata output as on gearman output (closes #106)
+    * Adapted mysql_purge.sh to new table names, added parameter. #10
+* Merge pull request #108 from sgbeal/master
+* Add Docker container `consol/sakuli-ubuntu-xfce` and `consol/sakuli-centos-xfce`, see #103:
+    * add return value to sakuli_startup.sh and add exit state to sakuli.sh script
+    * HTML5-VNC client (noVNC) enabled containers
+    * `docker-compose.yml` example for parallel test-execution
+    * add example_xfce_test for the docker-containers
+* fix PrioritizedServiceComparator so now 2 service with the same priority will also accepted
+* close #49 add Environment#runCommand method
+* add `takeScreenshot()` method to Region object to get the current region as screenshot
+* Merge pull request #99 from c-kr/dev
+* close #46 - add read the docs links and badge
+* improve the way to include additional image folders, #96:
+    * add method `addImagePaths` to the TestCase functions
+    * add variable '$testSuiteFolder' as global variable to JavaScript testcase.js for a more strait filepath handling
+* add optional parameter 'silent' to Application.close function to suppress exceptions
+* add OS identification functions 'isWindows', 'isLinux', 'getOsIdentifier' to Environment class
+* close #98 add source and javadoc files to maven build artifacts (on release-builds)
+* close #92 exclude Base64 String in log output
+* fix #95 state of suite/case/step is always 'OK', if no error occurs and warning + critical time is 0
+* close #81 Expanded color array in PHP template and change numbering scheme for cases and steps to 3-digits
+
 ### Version 0.9.0
 * close #74 extract logging functions to separate javascript class Logger
 * close #70 rename sakuli.screenbased.* properties to sikuli.*
@@ -37,6 +77,35 @@
 * .#60 introduce a 'sakuli-default.properties' file to move the sakuli.properties to the test suite root
 * .#60 introduce new file system structure
 
+ - - -
+ 
+### Version 0.4.9 (Bugfix Release)
+* add #106 add warn/crit thresholds as perfdata values for the Gearman results
+    * Adaption for 3-digit case/step ids
+    * PNP template with unknown perfdata support
+    * added TICKer for incomplete data, warn/crit states
+    * Changed color scheme
+* add #77 separate error state to identify the affected TestCaseStep on errors:
+    * modify SakuliExceptionHandler to find current Step and enable adding exception to the current step
+    * add error message output for exceptions in TestCaseSteps
+* add #31 determine all not executed TestCaseSteps, to secure that the nagios performance graphs are displayed correctly:
+    * introduce new TestCaseStepState INIT
+    * modify nagios RRD performance data output for initialized and not started steps to typ 'unknown'
+    * add caching mechanism the step information for not started steps implementation
+    * call write cached steps information on every 'not error' result
+    * gearman forward: write unknown values to every result line if a suite, case or step entity has finished with errors or have even not been called
+    * database forwarder: write NULL instead of '0' at warning and critical times
+* add `takeScreenshot()` method to Region object to get the current region as screenshot
+* add troubleshooting for Nullpointer at `new Application("..").getRegion()` to documentation
+* fix PrioritizedServiceComparator so now 2 service with the same priority will also accepted
+* add jenkins-build badge
+* add #46 add dev-v0.4 read-the-docs & read-the-docs badge
+* add #96 add variable '$testSuiteFolder' fore more strait forward import handling // check TODO
+* fix dependency path of javafx for java7
+* close #92 exclude Base64 String in log output
+* modify documentation of warning / critical times
+* add testcase.endOfStep function without warning time
+* add #81 change numbering scheme for cases and steps to always three digits to expanded color array in PHP template
 
 ### Version 0.4.8
 * fix bug: test suite has stat 'OK' instead of 'RUNNING' during the execution
@@ -85,14 +154,14 @@
 ### Version 0.4.0
 * centralized the configuration of properties files:
 	* `_include/sakuli.properties` now contains all possible configuration options for Sakuli. These are the _default values_ for all tests
-	* `<test-suite>/testsuite.properties` contains the _test suite specific configuration options_. The only mandatory property here is the test suite identifier `testsuite.id`. All other properties are optional. 
-	* Options set in `testsuite.properties` will override the default settings in `sakuli.properties` 
+	* `<test-suite>/testsuite.properties` contains the _test suite specific configuration options_. The only mandatory property here is the test suite identifier `testsuite.id`. All other properties are optional.
+	* Options set in `testsuite.properties` will override the default settings in `sakuli.properties`
 * Proxy configuration options can now be set in `sakuli.properties` (defaults) or  `testsuite.properties` (suite specific)
 * Re-organized the folder structure of `sakuli-zipped-release-vX.X.X.zip` and source code directory.
 * Extended logging with more configuration possibilities (SLF4J with underlying logback-Logging)
 * Consolidation of the applicationContext files
-* Remove the program-based setting of system properties. 
-* The possibility to disable the "encryption interface" with new property `sakuli.encryption.interface.testmode=true` 
+* Remove the program-based setting of system properties.
+* The possibility to disable the "encryption interface" with new property `sakuli.encryption.interface.testmode=true`
 * Added a separate module for integration testing
 * Bugfixing and extended unit tests
 * documentation update
@@ -106,5 +175,5 @@
 
 * Gearman receiver: sent all data directly to your OMD/Nagios distribution. Currently it is missing that the screenshots
   will also be transferred. This will be fixed in the next version
-  
+
 * Bufixing in maven build, exception handling, testcase ids and  added some more unit tests

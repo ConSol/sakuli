@@ -6,9 +6,7 @@ For the following guide you need
 * Access to the issue-tracker tool (currently JIRA)
 * Git
 * Development environment (we advise IntelliJ IDEA)
-* Maven 3 
-
-  __attention for Ubuntu users!!!__ - don't use the default maven version over `apt-get install mvn`
+* Maven 3 ( __attention for Ubuntu users!!!__ - don't use the default maven version over `apt-get install mvn` ) 
 * Java JDK 1.7
   * Please use the original Oracle JDK - OpenJDK unfortunately won't work for the JavaFX based integration test, see [Java FX installation](java_fx_installation). 
   * Ensure that your `JAVA_HOME` system variable links to the correct jdk-version
@@ -71,7 +69,7 @@ For the following guide you need
 	* Tools
 	* Userdata
 
-###Database Setup (optional, onyl for DB forwarder necessary)
+###Database Setup (optional, only needed [database forwarder](../../docs/forwarder-database.md))
 Setup a local MySQL database to save the results of test case executions. The database won't be needed for running `mvn install`.
 
 * __User:__ `sakuli`
@@ -79,13 +77,14 @@ Setup a local MySQL database to save the results of test case executions. The da
 * __Database:__ `sakuli`
 * __SQL-Script:__ [create_sakuli_database](../../src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database)
 
-If you wan't to you use an Docker-Container for it, you can build and run it over the following commands:
+If you want to use a Docker-Container, you can build and run it with the following commands:
     
     cd src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database
     docker build -t=toschneck/mysql-sakuli .
     docker run --name mysql-sakuli -p 3306:3306 toschneck/mysql-sakuli
 
-###Development-Environment-Konfiguration
+###IDE configuration
+
 * Execute `mvn clean verify` to ensure that the setup is correct
 * Include the license header to your IDE
   * For IntelliJ see [Help](http://www.jetbrains.com/idea/webhelp/generating-and-updating-copyright-notice.html) or our predefined copyright configuration under [intellij/copyright](intellij/copyright).
@@ -115,9 +114,9 @@ If you wan't to you use an Docker-Container for it, you can build and run it ove
     ```-run <path to your Sakuli test suite folder> --sakuli_home <path to your "main" folder> --sahi_home <path to your sahi folder>```
     e.g. for the provided Win7 example use `-run ../sakuli_test_suites/example src/main/_include ../sahi`
 
-* To run the testng-Tets correctly and preventing wrong file paths, set the default TestNG config like follow:
+* To run the testng tests correctly and prevent wrong file paths, set the default TestNG config like follow:
   ![](../pics/intellij_testng_run_config.png)
 
-###Important note
+###Important note: startup error
 If you run your Sakuli test the first time, you might get a native library error, caused by Sikuli, saying that it could not find the correct native library to work with. At the same time, Sikuli already tried to fix the problem by modyfing PATH.  
 Just log out and in again, so that the modified PATH-Variable will be read. Sakuli should start now without any error. 

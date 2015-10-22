@@ -28,7 +28,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.util.List;
+import java.util.SortedSet;
 
 /**
  * @author tschneck
@@ -44,7 +44,7 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
     }
 
     @Override
-    public void saveTestCaseSteps(List<TestCaseStep> steps, int primaryKeyOfTestCase) {
+    public void saveTestCaseSteps(SortedSet<TestCaseStep> steps, int primaryKeyOfTestCase) {
         for (TestCaseStep step : steps) {
             logger.info("============== save STEP \"" + step.getName() + "\" ==============");
             MapSqlParameterSource stepParameters = new MapSqlParameterSource();
@@ -54,7 +54,8 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
             stepParameters.addValue("name", step.getName());
             stepParameters.addValue("start", step.getStartDateAsUnixTimestamp());
             stepParameters.addValue("stop", step.getStopDateAsUnixTimestamp());
-            stepParameters.addValue("warning", step.getWarningTime());
+            int warningTime = step.getWarningTime();
+            stepParameters.addValue("warning", (warningTime != 0) ? warningTime : null);
             stepParameters.addValue("duration", step.getDuration());
 
             logger.info("write the following values to 'sakuli_steps': "
@@ -72,10 +73,5 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
                     + "' has been written to 'sakuli_steps' with  primaryKey=" + dbPrimaryKey);
             step.setDbPrimaryKey(dbPrimaryKey);
         }
-    }
-
-    @Override
-    public int getCountOfSahiSteps() {
-        return this.getJdbcTemplate().queryForObject("select count(*) from sakuli_steps", Integer.class);
     }
 }

@@ -20,7 +20,9 @@ package org.sakuli;
 
 import net.sf.sahi.report.Report;
 import org.apache.commons.lang3.StringUtils;
+import org.mockito.internal.util.MockUtil;
 import org.sakuli.loader.BaseActionLoader;
+import org.sakuli.loader.BaseActionLoaderImpl;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.testng.annotations.AfterClass;
@@ -77,9 +79,11 @@ public abstract class BaseTest extends AbstractLogAwareTest {
         SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = getSahiFolderPath();
         BeanLoader.CONTEXT_PATH = getTestContextPath();
         BeanLoader.refreshContext();
-        loaderMock = BeanLoader.loadBean(BaseActionLoader.class);
-        reset(loaderMock);
-        when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
+        loaderMock = BeanLoader.loadBean(BaseActionLoaderImpl.class);
+        if (new MockUtil().isMock(loaderMock)) {
+            reset(loaderMock);
+            when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
+        }
     }
 
     @AfterClass(alwaysRun = true)

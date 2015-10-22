@@ -88,7 +88,24 @@ public class TestCaseTest {
         //should be still critical, because only higher values will be set
         Assert.assertEquals(TestCaseState.CRITICAL, testling.getState());
 
-
     }
 
+    @Test
+    public void testRefreshStateWithZeroWarningTime() throws Exception {
+        testling.refreshState();
+        Assert.assertEquals(TestCaseState.OK, testling.getState());
+
+        stepTestling.setState(TestCaseStepState.OK);
+        testling.addStep(stepTestling);
+        testling.refreshState();
+        Assert.assertEquals(TestCaseState.OK, testling.getState());
+
+        Date currentDate = new Date();
+        testling.setStartDate(new Date(currentDate.getTime() - TimeUnit.SECONDS.toMillis(5)));
+        testling.stopDate = currentDate;
+        testling.setWarningTime(0);
+        testling.setCriticalTime(0);
+        testling.refreshState();
+        Assert.assertEquals(TestCaseState.OK, testling.getState());
+    }
 }

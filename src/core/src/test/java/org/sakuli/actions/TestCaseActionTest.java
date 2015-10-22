@@ -38,16 +38,14 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.AssertJUnit.assertNotNull;
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.Assert.*;
 
 /**
  * @author tschneck Date: 25.07.13
@@ -68,6 +66,7 @@ public class TestCaseActionTest extends BaseTest {
         MockitoAnnotations.initMocks(this);
         testCases = new HashMap<>();
         testCases.put(sample.getId(), sample);
+        reset(loaderMock);
         when(loaderMock.getTestSuite()).thenReturn(testSuiteMock);
         when(loaderMock.getCurrentTestCase()).thenReturn(sample);
         when(loaderMock.getExceptionHandler()).thenReturn(exceptionHandlerMock);
@@ -124,31 +123,61 @@ public class TestCaseActionTest extends BaseTest {
         sample.setWarningTime(0);
         sample.setCriticalTime(0);
 
+        long now = new Date().getTime();
         testling.addTestCaseStep(
                 "step for JUnit",
-                "" + (new Date().getTime() - 3000),
-                "" + (new Date().getTime()),
+                "" + (now - 3000),
+                "" + now,
                 2 //warning
         );
         TestCaseStep step = testSuiteMock.getTestCases().get(sample.getId()).getSteps().get(0);
         assertNotNull(step);
         assertEquals(step.getName(), "step_for_JUnit");
-        assertTrue("duraion is correct", step.getDuration() > 2.9 && step.getDuration() < 3.1);
+        assertEquals(step.getDuration(), 3.0f, "duration is not correct");
         assertEquals(step.getState(), TestCaseStepState.WARNING);
 
         testling.addTestCaseStep(
                 "step2 for JUnit",
-                "" + (new Date().getTime() - 3000),
-                "" + (new Date().getTime()),
+                "" + (now + 300),
+                "" + (now + 4300),
                 5 //no warning
         );
         TestCaseStep step2 = testSuiteMock.getTestCases().get(sample.getId()).getSteps().get(1);
         assertNotNull(step2);
         assertEquals(step2.getName(), "step2_for_JUnit");
-        assertTrue("duraion is correct", step.getDuration() > 2.9 && step.getDuration() < 3.1);
+        assertEquals(step2.getDuration(), 4.0f, "duration is not correct");
         assertEquals(step2.getState(), TestCaseStepState.OK);
+    }
 
+    @Test
+    public void testAddTestCaseStepWithAlreadyInitializedStep() throws Throwable {
+        when(loaderMock.getCurrentTestCase()).thenReturn(sample);
+        sample.setWarningTime(0);
+        sample.setCriticalTime(0);
+        TestCaseStep predefinedStep = new TestCaseStep();
+        predefinedStep.setId("step for JUnit");
+        ArrayList<TestCaseStep> steps = new ArrayList<>();
+        steps.add(predefinedStep);
+        sample.setSteps(steps);
 
+        TestCaseStep step = testSuiteMock.getTestCases().get(sample.getId()).getSteps().get(0);
+        assertNotNull(step);
+        assertEquals(step.getName(), "step_for_JUnit");
+        step.refreshState();
+        assertEquals(step.getState(), TestCaseStepState.INIT);
+        long currentTime = new Date().getTime();
+        testling.addTestCaseStep(
+                "step for JUnit",
+                "" + (currentTime - 10000),
+                "" + currentTime,
+                9 //warning
+        );
+
+        assertEquals(sample.getSteps().size(), 1);
+        assertNotNull(step);
+        assertEquals(step.getName(), "step_for_JUnit");
+        assertEquals(step.getDuration(), 10.0f, "duration is not correct");
+        assertEquals(step.getState(), TestCaseStepState.WARNING);
     }
 
     @Test
@@ -172,6 +201,20 @@ public class TestCaseActionTest extends BaseTest {
     public void testInitTestCaseNonsensTimes() throws Exception {
         String tcID = sample.getId();
         testling.init(tcID, 5, 4, ".");
+        verify(exceptionHandlerMock, times(1)).handleException(anyString(), anyBoolean());
+    }
+
+    @Test
+    public void testInitZeroTimes() throws Exception {
+        String tcID = sample.getId();
+        testling.init(tcID, 0, 0, ".");
+        verify(exceptionHandlerMock, times(0)).handleException(anyString(), anyBoolean());
+    }
+
+    @Test
+    public void testInitOnlyNegativCriticalTimes() throws Exception {
+        String tcID = sample.getId();
+        testling.init(tcID, 0, -8, ".");
         verify(exceptionHandlerMock, times(1)).handleException(anyString(), anyBoolean());
     }
 
@@ -222,5 +265,24 @@ public class TestCaseActionTest extends BaseTest {
         assertFalse(ac.getValue() instanceof SakuliValidationException);
         assertFalse(ac.getValue() instanceof NonScreenshotException);
         assertTrue(ac.getValue() instanceof SakuliActionException);
+    }
+
+    @Test
+    public void testAddImagePaths() throws Exception {
+        ArgumentCaptor path = ArgumentCaptor.forClass(Path.class);
+        testling.addImagePathsAsString("/home");
+        verify(loaderMock).addImagePaths((Path[]) path.capture());
+        assertEquals(path.getValue().toString(), "/home");
+    }
+
+    @Test
+    public void testAddRelativeImagePaths() throws Exception {
+        Path currenPath = Paths.get(".").toAbsolutePath().normalize();
+        sample.setTcFile(currenPath.resolve("tc.js"));
+        ArgumentCaptor path = ArgumentCaptor.forClass(Path.class);
+        String picfolderName = "my_pic_folder";
+        testling.addImagePathsAsString(picfolderName);
+        verify(loaderMock).addImagePaths((Path[]) path.capture());
+        assertEquals(path.getValue().toString(), currenPath.toString() + File.separator + picfolderName);
     }
 }

@@ -1,5 +1,5 @@
 # Database Forwarder
-This page describes how Sakuli can be configured to write its test results into a **MySQL database** which is checked asynchronously by the monitoring system with *check_mysql_health*. 
+This page describes how the results of the Sakuli tests **example_windows/ubuntu/opensuse** can be written into a **MySQL database** which is then checked asynchronously by the monitoring system with *check_mysql_health*. 
 
 ![sakuli-db-forwarder](pics/sakuli-db.png)
  
@@ -41,7 +41,7 @@ Create the system tables for the new database and start OMD afterwards. You shou
 
 Create the **Sakuli database**:
 
-	OMD[sakuli]:~$ mysql < __TEMP__/setup/database/create_sakuli_database.sql
+	OMD[sakuli]:~$ mysql < __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/database/create_sakuli_database.sql
 	
 Create the **database user**:
 
@@ -52,7 +52,7 @@ Create the **database user**:
 	  
 Check the connection with *check_mysql_health*: 
 
-	OMD[sakuli]:~$ 	~/lib/nagios/plugins/check_mysql_health -H __DB_IP__ --username __DB_USER__ --password __DB_PASSWORD__ --database sakuli --port __DB_PORT__ --mode connection-time
+	OMD[sakuli]:~$ 	lib/nagios/plugins/check_mysql_health -H __DB_IP__ --username __DB_USER__ --password __DB_PASSWORD__ --database sakuli --port __DB_PORT__ --mode connection-time
 	  OK - 0.24 seconds to connect as sakuli | connection_time=0.2366s;1;5
 
 ### create Nagios check
@@ -65,8 +65,8 @@ The Perl module `CheckMySQLHealthSakuli.pm` enhances the functionality of *check
 
 Create a config directory for *check_mysql_health* and **copy the module** there: 
 
-	OMD[sakuli]:~$ mkdir ~/etc/check_mysql_health
-	OMD[sakuli]:~$ cp __TEMP__/setup/nagios/CheckMySQLHealthSakuli.pm ~/etc/check_mysql_health/
+	OMD[sakuli]:~$ mkdir etc/check_mysql_health
+	OMD[sakuli]:~$ cp __TEMP__/setup/nagios/CheckMySQLHealthSakuli.pm etc/check_mysql_health/
 
 ##### resource.cfg
 Set **USER macros** for static vars in `resource.cfg`, which makes it easy to use them in all nagios checks:  
@@ -83,12 +83,12 @@ Set **USER macros** for static vars in `resource.cfg`, which makes it easy to us
 	  # check_mysql_health module dir
 	  $USER15$=/opt/omd/sites/sakuli/etc/check_mysql_health/
 	  # database IP
-	  $USER16$=__DB_IP__  
+	  $USER16$=__MySQL_Database_IP__  
 	  
 ##### Nagios configuration
 Create a new **check_command**: 
 
-	vim ~/etc/nagios/conf.d/commands.cfg
+	OMD[sakuli]:~$ vim etc/nagios/conf.d/commands.cfg
 	
 	# check_command for Sakuli 
 	# --name = Suite ID
@@ -108,27 +108,28 @@ Create a new **check_command**:
         --with-mymodules-dyn-dir=$USER15$
 	}
 
-Create a **host object** for the host on which Sakuli checks will be executed: 
+Create a **host object** for Sakuli database checks (the checks are executed on the *local* machine, but belong logically to *sakuli_client*):
 
-	vim ~/etc/nagios/conf.d/hosts.cfg
+	OMD[sakuli]:~$ vim etc/nagios/conf.d/hosts.cfg
 	
 	define host {
-	  host_name                      win7sakuli
-	  alias                          Windows 7 Sakuli
-	  address                        __CLIENT_IP__
+	  host_name                      sakuli_client
+	  alias                          sakuli_client
+	  address                        __SAKULI_CLIENT_IP__
 	  use                            generic-host
 	}
 
-Create the following **service object** for the first test case: 
-<!--- fixme Anpassen fürs Minimalbeispiel -->
+Create the following **service object** for the first test case. Note the ARG2 in check_command: the database check will only evaluate the last result if it is max. 180 seconds old. If older, the check will return UNKNOWN. (For comparison: this is equivalent to "freshness_threshold" if you would use the [gearman forwarder](forwarder-gearman.md). In any case, you should set the [RRD heartbeat](installation-omd.md#rrd-heartbeat) to the same value to get a gap in the graph if recent client results are missing. ) 
 
-	vim ~/etc/nagios/conf.d/services.cfg
+	OMD[sakuli]:~$ vim etc/nagios/conf.d/services.cfg
 	
 	define service {
-	  service_description            sakuli_demo
-	  host_name                      win7sakuli
+      # service_description            example_windows
+      # service_description            example_opensuse
+      service_description            example_ubuntu
+	  host_name                      sakuli_client
 	  use                            generic-service,srv-pnp
-	  check_command                  check_sakuli!sakuli_demo!3600
+	  check_command                  check_sakuli!sakuli_demo!180
 	}
 	
 Reload OMD:
@@ -144,23 +145,11 @@ Re-scheduling this service should display the UNKNOWN message that the requested
 ![omd_unknown](pics/omd-unknown.png)
 
 
-### Database cleanup (optional)
+## Sakuli database forwarder parameter
 
-Create a OMD crontab entry for a automatic database cleanup: 
+Set the global properties for the database receiver (unless you have multiple receivers):
 
-    OMD[sakuli]:~$ vim etc/cron.d/sakuli
-    
-    00 12 * * * $OMD_ROOT/sakuli/scripts/helper/mysql_purge.sh > /dev/null 2>&1 
-
-After that, reload the OMD crontab: 
-
-    OMD[sakuli]:~$ omd reload crontab 
-    Removing Crontab...OK
-    Initializing Crontab...OK
-
-## Sakuli Configuration
-
-Open `sakuli.properties` on the Sakuli client and fill in the **database parameters** Sakuli should write the test results to:
+    OMD[sakuli]: vim __SAKULI_HOME__/config/sakuli-default.properties
 
     # DEFAULT: false
     sakuli.forwarder.database.enabled=true
@@ -173,4 +162,37 @@ Open `sakuli.properties` on the Sakuli client and fill in the **database paramet
     jdbc.pw=__DB_PW__
     jdbc.model=sakuli
     jdbc.url=jdbc:mysql://${jdbc.host}:${jdbc.port}/${jdbc.database}
+
+
+## Test result transmission to OMD
+
+Execute the example test case again:
+
+* **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_ubuntu/`
+* **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_opensuse/`
+* **Windows**: `__SAKULI_HOME__\bin\sakuli.bat --run __INST_DIR__\example_test_suites\example_windows\`
+
+The service should change its status to:
+
+![omd_pending2](pics/omd-db-ok.png)
+
+
+![omd_pending2](pics/omd-db-ok-details.png)
+
+## Database cleanup (optional)
+
+Sakuli's database can get very large over time. Use the following database maintenance script to keep only the most recent data. 
+
+    OMD[sakuli]:~$ cp `__SAKULI_HOME__/bin/helper/mysql_purge.sh local/bin/`
+
+Create a OMD crontab entry for a automatic database cleanup of data older than 90 days: 
+
+    OMD[sakuli]:~$ vim etc/cron.d/sakuli
+    00 12 * * * $OMD_ROOT/local/bin/mysql_purge.sh 90 > /dev/null 2>&1 
+
+After that, reload the OMD crontab: 
+
+    OMD[sakuli]:~$ omd reload crontab 
+    Removing Crontab...OK
+    Initializing Crontab...OK
 

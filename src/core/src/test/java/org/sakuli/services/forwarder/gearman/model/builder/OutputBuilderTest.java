@@ -19,14 +19,17 @@
 package org.sakuli.services.forwarder.gearman.model.builder;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.joda.time.DateTime;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.sakuli.BaseTest;
 import org.sakuli.builder.TestCaseExampleBuilder;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
@@ -45,9 +48,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -59,6 +60,8 @@ public class OutputBuilderTest {
     private TestSuite testSuite;
     @Mock
     private GearmanProperties gearmanProperties;
+    @Mock
+    private PerformanceDataBuilder performanceDataBuilder;
     @Spy
     @InjectMocks
     private ScreenshotDivConverter screenshotDivConverter;
@@ -77,26 +80,6 @@ public class OutputBuilderTest {
                 {"test message " + STATE.getPattern(), "test message OK"},
                 {"test message " + STATE.getPattern() + " with id \"" + ID.getPattern() + "\"", "test message OK with id \"sakuli-123\""},
         };
-    }
-
-    @DataProvider(name = "performanceDataRows")
-    public static Object[][] performanceDataRows() {
-        return new Object[][]{
-                {null, "name with space", null, null, null, "name_with_space=;;;;"},
-                {"name_with_space=;;;;", " second_name ", "0", "", "", "name_with_space=;;;; second_name=0;;;;"},
-                {" ", " warnIng ", " 15s ", " 10.5s ", " 11.0s ", "warnIng=15s;10.5s;11.0s;;"},
-                {"nam1=;;;; nam2=;;;;", "nam3", "0", "", "", "nam1=;;;; nam2=;;;; nam3=0;;;;"},
-        };
-
-    }
-
-    @DataProvider(name = "performanceDataRowsNonOverview")
-    public static Object[][] performanceDataRowsNonOverview() {
-        return new Object[][]{
-                {null, "name with space", 0f, 0, 0, "name_with_space=0.00s;;;;"},
-                {"name_with_space=;;;;", " second_name ", 12.5f, 10, 14, "name_with_space=;;;; second_name=12.50s;10;14;;"},
-        };
-
     }
 
     @BeforeMethod
@@ -118,77 +101,16 @@ public class OutputBuilderTest {
         assertEquals(OutputBuilder.replacePlaceHolder(testMessage, map), expectedMesaage);
     }
 
-    @Test(dataProvider = "performanceDataRows")
-    public void testAddPerformanceDataRow(String currentPerformanceData, String name, String value, String warning, String critical, String expectedData) throws Exception {
-        assertEquals(OutputBuilder.addPerformanceDataRow(currentPerformanceData, name, value, warning, critical), expectedData);
-    }
-
-    @Test(dataProvider = "performanceDataRowsNonOverview")
-    public void testAddPerformanceDataRow(String currentPerformanceData, String name, float duration, int warning, int critical, String expectedData) throws Exception {
-        assertEquals(OutputBuilder.addPerformanceDataRow(currentPerformanceData, name, duration, warning, critical), expectedData);
-    }
 
     @Test
     public void testBuild() throws Exception {
         GearmanPropertiesTestHelper.initMock(gearmanProperties);
         doReturn("STATUS").when(testling).getStatusSummary(testSuite, gearmanProperties);
-        doReturn("PERFORMANCE").when(testling).getPerformanceData(testSuite);
+        doReturn("PERFORMANCE").when(performanceDataBuilder).build();
 
         NagiosOutput result = testling.build();
         assertEquals(result.getStatusSummary(), "STATUS");
-        assertEquals(result.getPerformanceData(), "PERFORMANCE [check_sakuli_db_suite]");
-    }
-
-    @Test
-    public void testGetPerformanceData() throws Exception {
-        Date startDate = new GregorianCalendar(2014, 14, 7, 13, 0).getTime();
-        TestSuite testSuiteExample = new TestSuiteExampleBuilder()
-                .withId("sakuli-123")
-                .withStartDate(startDate)
-                .withStopDate(DateUtils.addSeconds(startDate, 120))
-                .withWarningTime(100)
-                .withCriticalTime(150)
-                .withTestCases(Arrays.asList(
-                        new TestCaseExampleBuilder().withState(TestCaseState.WARNING_IN_STEP)
-                                .withId("case-warning")
-                                .withStartDate(startDate)
-                                .withStopDate(DateUtils.addSeconds(startDate, 20))
-                                .withWarningTime(19)
-                                .withCriticalTime(25)
-                                .withTestCaseSteps(Arrays.asList(new TestCaseStepExampleBuilder()
-                                                .withName("step1")
-                                                .withState(TestCaseStepState.WARNING)
-                                                .withStartDate(startDate)
-                                                .withStopDate(DateUtils.addSeconds(startDate, 10))
-                                                .withWarningTime(9)
-                                                .buildExample(),
-                                        new TestCaseStepExampleBuilder()
-                                                .withName("step2")
-                                                .withState(TestCaseStepState.OK)
-                                                .withStartDate(DateUtils.addSeconds(startDate, 11))
-                                                .withStopDate(DateUtils.addSeconds(startDate, 19))
-                                                .withWarningTime(10)
-                                                .buildExample()))
-                                .buildExample(),
-                        new TestCaseExampleBuilder().withState(TestCaseState.OK)
-                                .withId("case with no steps")
-                                .withStartDate(DateUtils.addSeconds(startDate, 25))
-                                .withStopDate(DateUtils.addSeconds(startDate, 40))
-                                .withWarningTime(0)
-                                .withCriticalTime(0)
-                                .withTestCaseSteps(null)
-                                .buildExample()))
-                .buildExample();
-        testSuiteExample.refreshState();
-
-        assertEquals(testling.getPerformanceData(testSuiteExample), "suite__state=1;;;; " +
-                "suite_sakuli-123=120.00s;100;150;; " +
-                "c_1__state_case-warning=1;;;; " +
-                "c_1_case-warning=20.00s;19;25;; " +
-                "s_1_1_step1=10.00s;9;;; " +
-                "s_1_2_step2=8.00s;10;;; " +
-                "c_2__state_case_with_no_steps=0;;;; " +
-                "c_2_case_with_no_steps=15.00s;;;;");
+        assertEquals(result.getPerformanceData(), "PERFORMANCE");
     }
 
     @Test
@@ -234,7 +156,7 @@ public class OutputBuilderTest {
 
         String result = testling.formatTestSuiteSummaryStateMessage(testSuiteExample, propertiesExample);
         String lastRun = OutputBuilder.dateFormat.format(testSuiteExample.getStopDate());
-        assertEquals(result, "CRITICAL - [CRIT] Sakuli suite \"sakuli-123\" ran in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")");
+        assertEquals(result, "CRITICAL - [CRIT] Sakuli suite \"sakuli-123\" ran in 120.00 seconds - EXCEPTION: 'TEST-ERROR'. (Last suite run: " + lastRun + ")");
     }
 
     @Test
@@ -252,7 +174,7 @@ public class OutputBuilderTest {
         String result = testling.formatTestSuiteTableStateMessage(testSuiteExample, propertiesExample);
         String lastRun = OutputBuilder.dateFormat.format(testSuiteExample.getStopDate());
         assertEquals(result, "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli-123\" ran" +
-                " in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")</td></tr>");
+                " in 120.00 seconds - EXCEPTION: 'TEST-ERROR'. (Last suite run: " + lastRun + ")</td></tr>");
     }
 
     @Test
@@ -273,15 +195,20 @@ public class OutputBuilderTest {
 
         final String separator = "<div";
         assertEquals(result.substring(0, result.indexOf(separator)), "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli-123\" ran" +
-                " in 120.00 seconds - EXCEPTION: \"TEST-ERROR\". (Last suite run: " + lastRun + ")");
+                " in 120.00 seconds - EXCEPTION: 'TEST-ERROR'. (Last suite run: " + lastRun + ")");
 
-        String start = "<div style=\"width:640px\" id=\"sakuli_screenshot\">" +
+        String start_1 = "<div style=\"width:640px\" id=\"sakuli_screenshot\">" +
                 "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" " +
-                "src=\"data:image/png;base64,";
+                "src=\"";
+        String start = start_1 + "data:image/png;base64,";
         String end = "></div></td></tr>";
         String substring = result.substring(result.indexOf(separator));
         assertEquals(substring.substring(0, start.length()), start);
         assertEquals(substring.substring(substring.length() - end.length()), end);
+
+        //now check the remove function
+        String resultWithOutBase64Data = ScreenshotDivConverter.removeBase64ImageDataString(substring);
+        assertEquals(resultWithOutBase64Data, start_1 + "\" " + end);
     }
 
     @Test
@@ -305,7 +232,7 @@ public class OutputBuilderTest {
                 .withWarningTime(5)
                 .buildExample();
         assertEquals(testling.formatTestCaseTableStateMessage(testCase, properties),
-                String.format(htmlTemplate, "serviceWARNING", "[WARN] case \"case-warning\" over runtime (5.50s /warning at 5s) "));
+                String.format(htmlTemplate, "serviceWARNING", "[WARN] case \"case-warning\" over runtime (5.50s /warning at 5s)"));
 
         testCase = new TestCaseExampleBuilder().withState(TestCaseState.WARNING_IN_STEP)
                 .withId("case-warning")
@@ -319,13 +246,13 @@ public class OutputBuilderTest {
                         new TestCaseStepExampleBuilder()
                                 .withName("step-name2")
                                 .withState(TestCaseStepState.WARNING)
-                                .withStartDate(startDate)
-                                .withStopDate(DateUtils.addMilliseconds(startDate, 154))
+                                .withStartDate(DateUtils.addMilliseconds(startDate, 4000))
+                                .withStopDate(DateUtils.addMilliseconds(startDate, 4154))
                                 .withWarningTime(1)
                                 .buildExample()))
                 .buildExample();
         assertEquals(testling.formatTestCaseTableStateMessage(testCase, properties),
-                String.format(htmlTemplate, "serviceWARNING", "[WARN] case \"case-warning\" over runtime (3.00s /warning in step at 4s) step \"step-name\" (3.15s /warn at 3s), step \"step-name2\" (0.15s /warn at 1s)"));
+                String.format(htmlTemplate, "serviceWARNING", "[WARN] case \"case-warning\" over runtime (3.00s /warning in step at 4s), step \"step-name\" (3.15s /warn at 3s), step \"step-name2\" (0.15s /warn at 1s)"));
 
         testCase = new TestCaseExampleBuilder().withState(TestCaseState.CRITICAL)
                 .withId("case-critical")
@@ -334,7 +261,7 @@ public class OutputBuilderTest {
                 .withCriticalTime(7)
                 .buildExample();
         assertEquals(testling.formatTestCaseTableStateMessage(testCase, properties),
-                String.format(htmlTemplate, "serviceCRITICAL", "[CRIT] case \"case-critical\" over runtime (8.89s /critical at 7s) "));
+                String.format(htmlTemplate, "serviceCRITICAL", "[CRIT] case \"case-critical\" over runtime (8.89s /critical at 7s)"));
 
         testCase = new TestCaseExampleBuilder().withState(TestCaseState.ERRORS)
                 .withId("case-error")
@@ -345,11 +272,73 @@ public class OutputBuilderTest {
     }
 
     @Test
+    public void testFormatTestCaseTableStateMessageWithScreenshot() throws Exception {
+        Path screenshotPath = Paths.get(OutputBuilder.class.getResource("computer.png").toURI());
+        String htmlTemplate = "<tr valign=\"top\"><td class=\"%s\">%s<\\/td><\\/tr>";
+        GearmanProperties properties = GearmanPropertiesTestHelper.initMock(mock(GearmanProperties.class));
+
+        TestCase testCase = new TestCaseExampleBuilder().withState(TestCaseState.ERRORS)
+                .withId("case-error")
+                .withException(new SakuliExceptionWithScreenshot("EXCEPTION-MESSAGE", screenshotPath))
+                .buildExample();
+        String regex = String.format(htmlTemplate, "serviceCRITICAL", "\\[CRIT\\] case \"case-error\" EXCEPTION: EXCEPTION-MESSAGE" +
+                "<div.* src=\"data:image\\/png;base64,.*><\\/div>");
+        BaseTest.assertRegExMatch(testling.formatTestCaseTableStateMessage(testCase, properties),
+                regex);
+    }
+
+    @Test
+    public void testFormatTestCaseTableStateMessageWithScreenshotTestCase() throws Exception {
+        Path screenshotPath = Paths.get(OutputBuilder.class.getResource("computer.png").toURI());
+        String htmlTemplate = "<tr valign=\"top\"><td class=\"%s\">%s<\\/td><\\/tr>";
+        GearmanProperties properties = GearmanPropertiesTestHelper.initMock(mock(GearmanProperties.class));
+
+        TestCase testCase = new TestCaseExampleBuilder().withState(TestCaseState.ERRORS)
+                .withId("case-error")
+                .withException(new SakuliExceptionWithScreenshot("EXCEPTION-MESSAGE", screenshotPath))
+                .withTestCaseSteps(Collections.singletonList(
+                        new TestCaseStepExampleBuilder()
+                                .withState(TestCaseStepState.ERRORS)
+                                .withException(new SakuliExceptionWithScreenshot("STEP-EXCEPTION-MESSAGE", screenshotPath))
+                                .buildExample()
+                ))
+                .buildExample();
+        String regex = String.format(htmlTemplate,
+                "serviceCRITICAL", "\\[CRIT\\] case \"case-error\" EXCEPTION: EXCEPTION-MESSAGE" +
+                        " - STEP \"step_for_unit_test\": STEP-EXCEPTION-MESSAGE" +
+                        "<div.* src=\"data:image\\/png;base64,.*><\\/div>" +
+                        "<div.* src=\"data:image\\/png;base64,.*><\\/div>");
+        BaseTest.assertRegExMatch(testling.formatTestCaseTableStateMessage(testCase, properties), regex);
+    }
+
+    @Test
+    public void testFormatTestCaseTableStateMessageWithScreenshotOnylInTestCase() throws Exception {
+        Path screenshotPath = Paths.get(OutputBuilder.class.getResource("computer.png").toURI());
+        String htmlTemplate = "<tr valign=\"top\"><td class=\"%s\">%s<\\/td><\\/tr>";
+        GearmanProperties properties = GearmanPropertiesTestHelper.initMock(mock(GearmanProperties.class));
+
+        TestCase testCase = new TestCaseExampleBuilder().withState(TestCaseState.ERRORS)
+                .withId("case-error")
+                .withTestCaseSteps(Collections.singletonList(
+                        new TestCaseStepExampleBuilder()
+                                .withState(TestCaseStepState.ERRORS)
+                                .withException(new SakuliExceptionWithScreenshot("STEP-EXCEPTION-MESSAGE", screenshotPath))
+                                .buildExample()
+                ))
+                .buildExample();
+        String regex = String.format(htmlTemplate,
+                "serviceCRITICAL", "\\[CRIT\\] case \"case-error\" EXCEPTION: " +
+                        "STEP \"step_for_unit_test\": STEP-EXCEPTION-MESSAGE" +
+                        "<div.* src=\"data:image\\/png;base64,.*><\\/div>");
+        BaseTest.assertRegExMatch(testling.formatTestCaseTableStateMessage(testCase, properties), regex);
+    }
+
+    @Test
     public void testGetStatusSummary() throws Exception {
         TestSuite testSuite = new TestSuiteExampleBuilder()
                 .withState(TestSuiteState.OK)
                 .withId("TEST-SUITE-ID")
-                .withTestCases(Arrays.asList(new TestCaseExampleBuilder()
+                .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
                         .withId("TEST-CASE-ID")
                         .buildExample()))
                 .buildExample();
@@ -439,5 +428,30 @@ public class OutputBuilderTest {
         assertEquals(textPlaceholder.get(SUITE_FOLDER), "");
         assertEquals(textPlaceholder.get(HOST), "");
         assertEquals(textPlaceholder.get(BROWSER_INFO), "");
+    }
+
+    @Test
+    public void testGenerateTestCaseStepInformation() throws Exception {
+        DateTime creationDate1 = new DateTime().minusSeconds(1);
+        DateTime creationDate2 = new DateTime();
+        assertEquals(OutputBuilder.generateStepInformation(new TreeSet<>()), "");
+
+        TestCaseStep stepWarning = new TestCaseStepExampleBuilder().withCreationDate(creationDate1).withState(TestCaseStepState.WARNING).buildExample();
+        assertEquals(OutputBuilder.generateStepInformation(new TreeSet<>(Collections.singletonList(stepWarning))),
+                ", step \"step_for_unit_test\" (1.00s /warn at 2s)");
+
+        TestCaseStep stepWarning2 = new TestCaseStepExampleBuilder().withCreationDate(creationDate2).withName("step_2").withState(TestCaseStepState.WARNING).buildExample();
+        SortedSet<TestCaseStep> input = new TreeSet<>();
+        input.add(stepWarning);
+        input.add(stepWarning2);
+        assertEquals(OutputBuilder.generateStepInformation(input),
+                ", step \"step_for_unit_test\" (1.00s /warn at 2s), step \"step_2\" (1.00s /warn at 2s)");
+
+        TestCaseStep ok = new TestCaseStepExampleBuilder().withCreationDate(creationDate1).withName("ok1").withState(TestCaseStepState.OK).buildExample();
+        TestCaseStep ok2 = new TestCaseStepExampleBuilder().withCreationDate(creationDate2).withName("ok2").withState(TestCaseStepState.OK).buildExample();
+        input = new TreeSet<>();
+        input.add(ok);
+        input.add(ok2);
+        assertEquals(OutputBuilder.generateStepInformation(input), "");
     }
 }

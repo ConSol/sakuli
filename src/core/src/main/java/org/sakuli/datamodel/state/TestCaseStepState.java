@@ -18,6 +18,8 @@
 
 package org.sakuli.datamodel.state;
 
+import java.util.Arrays;
+
 /**
  * Enum which represents the Sahi-Case-Stati in file "sahi_return_codes"
  *
@@ -33,12 +35,22 @@ public enum TestCaseStepState implements SakuliState {
     /**
      * value = 1
      */
-    WARNING(1, "warning");
+    WARNING(1, "warning"),
+
+    /**
+     * value = 1
+     */
+    ERRORS(4, "EXCEPTION"),
+
+    /**
+     * state before the execution
+     */
+    INIT(-1, "initialized");
 
     private final int errorCode;
     private final String stateDescription;
 
-    private TestCaseStepState(int i, String stateDescription) {
+    TestCaseStepState(int i, String stateDescription) {
         this.errorCode = i;
         this.stateDescription = stateDescription;
     }
@@ -54,6 +66,8 @@ public enum TestCaseStepState implements SakuliState {
                 return 0;
             case WARNING:
                 return 1;
+            case ERRORS:
+                return 2;
         }
         return 3;
     }
@@ -80,7 +94,13 @@ public enum TestCaseStepState implements SakuliState {
 
     @Override
     public boolean isError() {
-        return false;
+        return this.equals(ERRORS);
     }
+
+    @Override
+    public boolean isFinishedWithoutErrors() {
+        return !Arrays.asList(INIT, ERRORS).contains(this);
+    }
+
 
 }

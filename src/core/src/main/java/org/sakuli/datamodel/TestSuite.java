@@ -18,7 +18,6 @@
 
 package org.sakuli.datamodel;
 
-import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestSuiteState;
@@ -29,6 +28,8 @@ import org.springframework.util.CollectionUtils;
 
 import java.nio.file.Path;
 import java.util.*;
+
+import static org.apache.commons.lang.StringUtils.*;
 
 /**
  * @author tschneck Date: 10.06.13
@@ -54,7 +55,7 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
         id = properties.getTestSuiteId();
         name = properties.getTestSuiteName();
         //if name is not set, use the id
-        if (StringUtils.isEmpty(name)) {
+        if (isEmpty(name)) {
             name = id;
         }
         warningTime = properties.getWarningTime();
@@ -139,23 +140,18 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
 
     @Override
     public String getExceptionMessages(boolean flatFormatted) {
-        String errorMessages = super.getExceptionMessages(flatFormatted);
-        if (errorMessages == null) {
-            errorMessages = "";
-        }
-        if (!CollectionUtils.isEmpty(getTestCases())) {
-            for (TestCase testCase : getTestCasesAsSortedSet()) {
-                if (testCase.getExceptionMessages() != null) {
-                    if (flatFormatted) {
-                        errorMessages += " - ";
-                    } else {
-                        errorMessages += "\n";
-                    }
-                    errorMessages += "CASE '" + testCase.getId() + "': " + testCase.getExceptionMessages();
+        StringBuilder suiteErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted)));
+        for (TestCase testCase : getTestCasesAsSortedSet()) {
+            final String tcErrorMessage = testCase.getExceptionMessages(flatFormatted);
+
+            if (isNotBlank(tcErrorMessage)) {
+                if (suiteErrorMessage.length() > 0) {
+                    suiteErrorMessage.append(flatFormatted ? " -- " : "\n");
                 }
+                suiteErrorMessage.append("CASE \"").append(testCase.getId()).append("\": ").append(tcErrorMessage);
             }
         }
-        return errorMessages;
+        return suiteErrorMessage.toString();
     }
 
     public String getAbsolutePathOfTestSuiteFile() {

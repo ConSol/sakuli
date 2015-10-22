@@ -4,8 +4,8 @@ This page describes the common steps to **install and test** Sakuli on **Windows
 
 The default installation path of a particular Sakuli version is referenced as `%SAKULI_HOME%`, that is 
 
-- `%SAKULI_HOME%` on **Windows** (e.g. `C:\sakuli\sakuli-v0.6.0\`)
-- `$SAKULI_HOME` on **Linux** (e.g. `/home/e2e/sakuli/sakuli-v0.6.0/`)
+- `%SAKULI_HOME%` on **Windows** (e.g. `C:\sakuli\sakuli-v0.9.1\`)
+- `$SAKULI_HOME` on **Linux** (e.g. `/home/e2e/sakuli/sakuli-v0.9.1/`)
 
 **Conventions**: 
 
@@ -32,15 +32,15 @@ We recommend to run Sakuli clients on virtual machines.
 * the client should not have more than one physical screen 
 
 ## Software installation 
-### Java
+### Java JRE
 
-Sakuli versions including v0.4.* need **Java JRE 7**; versions v0.9.* are based on **Java JRE 8**.
+Sakuli versions including v0.4.* need **Java JRE 7**; all newer versions are based on **Java JRE 8**. In case you are bound to a specific (older?) Java version for any reason, perform a [static "in-place" JRE installation](http://www.oracle.com/technetwork/java/javase/jre-install-137694.html) which will not affect the current JRE and PATH settings.
 
-Additionally, on **Windows**: 
+Typing "java" in a new command line window should now start the java interpreter. Otherwise check the PATH settings: 
 
 * From desktop, right-click *My Computer* and click *Properties*
 * In *System Properties*, click on *Advanced*
-* Edit the **system variable** **%PATH%** and add one of the following paths to the java binary: 
+* Ensure that the **system variable** **%PATH%** contains the correct path to the java binary:
   * Name: `PATH`
   * Value: 
     * `;C:\Program Files\Java\jre7/8\bin`
@@ -52,8 +52,8 @@ Additionally, on **Windows**:
 ### Sakuli 
 
 * Download **Sakuli** from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
-  * current **development** snapshot = `sakuli-v.0.6.0-SNAPSHOT.zip` 
-  * current **stable** version = highest version of `sakuli-zipped-release-vX.X.X.zip` 
+  * current **development** snapshot = `sakuli-vX.X.X-SNAPSHOT.zip` 
+  * current **stable** version = `sakuli-vX.X.X.zip` 
 * Unzip the downloaded archive into a folder of your choice; a folder `sakuli` will be created (referenced as `__INST_DIR__`). 
 * Set the environment variable `SAKULI_HOME`: 
   * **Windows**
@@ -67,18 +67,16 @@ Additionally, on **Windows**:
     
       `export SAKULI_HOME=__INST_DIR__/sakuli-vX.X.X/`
       
-* Additionally, on **Linux** you have to install tesseract manually: 
+* Additional steps on **Linux**:
 
         # Ubuntu
-        sudo apt-get install tesseract-ocr
+        sudo apt-get install tesseract-ocr wmctrl xdotool
         # openSUSE
-        sudo zypper install tesseract
-
+        sudo zypper install tesseract wmctrl xdotool
+        
 ### Sahi
 
-* Download **Sahi** from [http://sourceforge.net/projects/sahi/files/?source=navbar](http://sourceforge.net/projects/sahi/files/)
-  * For **Sakuli < v0.6.0**, use version **0.44**
-  * For **Sakuli >= v0.6.0**, use version **0.5**
+* Download the latest version of **Sahi** from [http://sourceforge.net/projects/sahi/files/latest/download?source=files](http://sourceforge.net)
 * Unpack the downloaded file and start the installation by executing `java -jar __DOWNLOADED_JAR_FILE__`. In the installation assistant, set: 
   * Installation path: `__INST_DIR__/sahi`
   * select all packages to install
@@ -104,6 +102,8 @@ All components below are optional but recommended:
 #### PhantomJS
 	
 Currently, *each* Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Browser configuration](./additional-settings.md#browser-configuration) for more information. 
+
+Attention: PhantomJS 2 is currently unsupported. Use version 1.9.x
 
 
 #### Screenshot tool 
@@ -143,6 +143,8 @@ Sakuli should now
 ![](pics/u_vnc_test.png)
 
 **Congratulations - you have installed Sakuli!**
+
+What next? Now go on to [prepare OMD](installation-omd.md) to receive results for the Sakuli check **example_ubuntu/opensuse/windows** [via Gearman](forwarder-gearman.md) or [from the MySQL result DB](forwarder-database.md). 
 
 # Upgrade process
 

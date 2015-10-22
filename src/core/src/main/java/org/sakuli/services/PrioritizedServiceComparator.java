@@ -27,6 +27,10 @@ public class PrioritizedServiceComparator<S extends PrioritizedService> implemen
 
     @Override
     public int compare(S o1, S o2) {
-        return -1 * Integer.compare(o1.getServicePriority(), o2.getServicePriority());
+        int result = -1 * Integer.compare(o1.getServicePriority(), o2.getServicePriority());
+        if (result == 0) {
+            result = Integer.compare(o1.hashCode(), o2.hashCode());
+        }
+        return result;
     }
 }

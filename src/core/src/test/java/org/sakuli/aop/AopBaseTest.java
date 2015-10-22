@@ -18,12 +18,9 @@
 
 package org.sakuli.aop;
 
-import org.sakuli.AbstractLogAwareTest;
 import org.sakuli.BaseTest;
 import org.sakuli.PropertyHolder;
 import org.sakuli.loader.BeanLoader;
-import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import java.nio.file.Path;
@@ -32,22 +29,23 @@ import java.nio.file.Paths;
 /**
  * @author tschneck Date: 23.09.14
  */
-public abstract class AopBaseTest extends AbstractLogAwareTest {
+public abstract class AopBaseTest extends BaseTest {
 
     protected Path logFile;
 
     @BeforeMethod(alwaysRun = true)
     public void setUp() throws Exception {
-        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = BaseTest.TEST_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = BaseTest.SAKULI_HOME_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = BaseTest.SAHI_FOLDER_PATH;
-        BeanLoader.CONTEXT_PATH = "aopTest-beanRefFactory.xml";
         logFile = Paths.get(BeanLoader.loadBean(PropertyHolder.class).getLogFile());
     }
 
-    @AfterMethod(alwaysRun = true)
-    public void tearDown() throws Exception {
-        BeanLoader.CONTEXT_PATH = BaseTest.TEST_CONTEXT_PATH;
+    @Override
+    protected String getTestFolderPath() {
+        return getResource("/_testsuite4aop");
     }
 
+    @Override
+    protected String getTestContextPath() {
+        return "aopTest-beanRefFactory.xml";
+    }
 }
+

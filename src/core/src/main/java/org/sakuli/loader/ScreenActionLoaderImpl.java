@@ -24,6 +24,7 @@ import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.actions.screenbased.ScreenshotActions;
 import org.sakuli.actions.settings.ScreenBasedSettings;
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.actions.Screen;
@@ -31,6 +32,7 @@ import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
+import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -114,6 +116,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     }
 
     @Override
+    public void addImagePaths(Path... imagePaths) throws SakuliException {
+        baseLoader.addImagePaths(imagePaths);
+    }
+
+    @Override
     public SakuliProperties getSakuliProperties() {
         return baseLoader.getSakuliProperties();
     }
@@ -151,6 +158,11 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     @Override
     public void setCurrentTestCase(TestCase testCase) {
         baseLoader.setCurrentTestCase(testCase);
+    }
+
+    @Override
+    public TestCaseStep getCurrentTestCaseStep() {
+        return baseLoader.getCurrentTestCaseStep();
     }
 
     @Override

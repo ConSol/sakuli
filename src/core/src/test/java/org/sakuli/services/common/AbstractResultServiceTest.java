@@ -53,4 +53,5 @@ public class AbstractResultServiceTest {
         testling.refreshStates();
         verify(testSuite).refreshState();
     }
+
 }

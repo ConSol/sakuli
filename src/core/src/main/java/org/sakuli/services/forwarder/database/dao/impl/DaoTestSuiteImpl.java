@@ -135,8 +135,10 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
         MapSqlParameterSource tcParameters = getInitialDataParameters();
         tcParameters.addValues(getGuidParameter().getValues());
         tcParameters.addValue("stop", testSuite.getStopDateAsUnixTimestamp());
-        tcParameters.addValue("warning", testSuite.getWarningTime());
-        tcParameters.addValue("critical", testSuite.getCriticalTime());
+        int warningTime = testSuite.getWarningTime();
+        tcParameters.addValue("warning", (warningTime != 0) ? warningTime : null);
+        int criticalTime = testSuite.getCriticalTime();
+        tcParameters.addValue("critical", (criticalTime != 0) ? criticalTime : null);
         tcParameters.addValue("duration", testSuite.getDuration());
         //try to save the screenshot
         try {

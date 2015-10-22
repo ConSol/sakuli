@@ -21,9 +21,8 @@ package org.sakuli.datamodel.state;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.sakuli.datamodel.state.TestCaseStepState.OK;
-import static org.sakuli.datamodel.state.TestCaseStepState.WARNING;
-import static org.testng.Assert.assertEquals;
+import static org.sakuli.datamodel.state.TestCaseStepState.*;
+import static org.testng.Assert.*;
 
 public class TestCaseStepStateTest {
 
@@ -32,6 +31,8 @@ public class TestCaseStepStateTest {
         return new Object[][]{
                 {OK, 0},
                 {WARNING, 1},
+                {ERRORS, 2},
+                {INIT, 3},
         };
 
     }
@@ -41,4 +42,11 @@ public class TestCaseStepStateTest {
         assertEquals(state.getNagiosErrorCode(), expectedErrorCode);
     }
 
+    @Test
+    public void testFinishedWithoutErrors() throws Exception {
+        assertTrue(OK.isFinishedWithoutErrors());
+        assertTrue(WARNING.isFinishedWithoutErrors());
+        assertFalse(INIT.isFinishedWithoutErrors());
+        assertFalse(ERRORS.isFinishedWithoutErrors());
+    }
 }

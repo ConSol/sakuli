@@ -80,9 +80,9 @@ public class TestSuiteHelper {
                     TestCase tc = new TestCase(
                             TestCaseHelper.convertFolderPathToName(tcFileName),
                             TestCaseHelper.convertTestCaseFileToID(tcFileName));
-
                     tc.setStartUrl(startURL);
                     tc.setTcFile(tcFile);
+                    tc.setSteps(TestCaseStepHelper.readCachedStepDefinitions(tcFile));
                     //set the Map with the test case id as key
                     tcMap.put(tc.getId(), tc);
                 } else {
@@ -116,7 +116,7 @@ public class TestSuiteHelper {
      *
      * @param source        source String
      * @param replaceString replace String without double new line
-     * @return
+     * @return modify String without empty lines
      */
     protected static String replaceEmptyLines(String source, String replaceString) {
         if (source != null) {

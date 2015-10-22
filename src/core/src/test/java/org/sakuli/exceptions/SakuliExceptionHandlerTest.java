@@ -27,6 +27,7 @@ import org.sakuli.BaseTest;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.actions.screenbased.ScreenshotActions;
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
@@ -248,7 +249,78 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         TestCase tc = new TestCase(null, null);
         tc.addException(new SakuliException("bla2"));
         ts.addTestCase(tc);
+
+        TestCaseStep step = new TestCaseStep();
+        step.addException(new SakuliException("bla3"));
+        tc.addStep(step);
         List<Throwable> allExceptions = SakuliExceptionHandler.getAllExceptions(ts);
-        assertEquals(allExceptions.size(), 2);
+        assertEquals(allExceptions.size(), 3);
+    }
+
+    @Test
+    public void testContainsExceptionsStep() throws Exception {
+        TestSuite ts = new TestSuite();
+        TestCase tc = new TestCase(null, null);
+        ts.addTestCase(tc);
+        TestCaseStep step = new TestCaseStep();
+        step.addException(new SakuliException("bla3"));
+        tc.addStep(step);
+        assertTrue(SakuliExceptionHandler.containsException(ts));
+    }
+
+    @Test
+    public void testContainsExceptionsCase() throws Exception {
+        TestSuite ts = new TestSuite();
+        TestCase tc = new TestCase(null, null);
+        tc.addException(new SakuliException("bla2"));
+        ts.addTestCase(tc);
+
+        TestCaseStep step = new TestCaseStep();
+        tc.addStep(step);
+        assertTrue(SakuliExceptionHandler.containsException(ts));
+    }
+
+    @Test
+    public void testContainsExceptionsSuite() throws Exception {
+        TestSuite ts = new TestSuite();
+        ts.addException(new SakuliException("bla"));
+        TestCase tc = new TestCase(null, null);
+        ts.addTestCase(tc);
+        TestCaseStep step = new TestCaseStep();
+        tc.addStep(step);
+        assertTrue(SakuliExceptionHandler.containsException(ts));
+    }
+
+    @Test
+    public void testSaveExceptionsInSuite() throws Exception {
+        TestSuite ts = new TestSuite();
+        when(loader.getTestSuite()).thenReturn(ts);
+        testling.saveException(new SakuliException("test"));
+        assertEquals(ts.getException().getMessage(), "test");
+    }
+
+    @Test
+    public void testSaveExceptionsInCase() throws Exception {
+        TestSuite ts = new TestSuite();
+        when(loader.getTestSuite()).thenReturn(ts);
+        TestCase tc = new TestCase(null, null);
+        when(loader.getCurrentTestCase()).thenReturn(tc);
+        testling.saveException(new SakuliException("test"));
+        assertNull(ts.getException());
+        assertEquals(tc.getException().getMessage(), "test");
+    }
+
+    @Test
+    public void testSaveExceptionsInStep() throws Exception {
+        TestSuite ts = new TestSuite();
+        when(loader.getTestSuite()).thenReturn(ts);
+        TestCase tc = new TestCase(null, null);
+        when(loader.getCurrentTestCase()).thenReturn(tc);
+        TestCaseStep step = new TestCaseStep();
+        when(loader.getCurrentTestCaseStep()).thenReturn(step);
+        testling.saveException(new SakuliException("test"));
+        assertNull(ts.getException());
+        assertNull(tc.getException());
+        assertEquals(step.getException().getMessage(), "test");
     }
 }

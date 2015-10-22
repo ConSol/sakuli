@@ -47,10 +47,12 @@ _include("sakuli_Logger.js");
  * var testCase = new TestCase(20,30, "path-to/image-folder-name");
  * ```
  *
- * @param {number} warningTime threshold in seconds
- * @param {number} criticalTime threshold in seconds
+ * @param {number} warningTime threshold in seconds. If the threshold is set to 0,
+ *                 the execution time will never exceed, so the state will be always OK!
+ * @param {number} criticalTime threshold in seconds. If the threshold is set to 0,
+ *                 the execution time will never exceed, so the state will be always OK!
  * @param {String[]} optImagePathArray (optional) Path or Array of Paths to the folder containing the image patterns
- *     for these test cases.
+ *                                     for these test cases.
  *
  * @returns an initialized Sakuli object.
  * @namespace TestCase
@@ -74,22 +76,43 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      *****************************************************************************************************/
 
     /**
+     * Adds the additional paths to the current image library of the TestCase.
+     * If a relative path is assigned, the current testcase folder will be used as current directory.
+     *
+     * @param {string} imagePaths one or more path strings
+     * @memberOf TestCase
+     * @method   addImagePaths
+     */
+    that.addImagePaths = function (imagePaths) {
+        if (imagePaths instanceof  String) {
+            that.javaObject.addImagePathsAsString(new Array(imagePaths));
+        } else {
+            that.javaObject.addImagePathsAsString(imagePaths);
+        }
+    };
+
+    /**
      * A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
-     * particular runtime. Together with the test Case, a special "step" timer is started. Each time endOfStep is
-     * called, the current timer value is read out, stored with the step name (first parameter) and gets resetted . If
-     * the runtime exceeds the step threshold (second parameter), the step is saved with state "WARNING".
+     * particular runtime. When a case starts, Sakuli starts a "step" timer. It gets read out, stored with the 
+     * step name, and resetted each time endOfStep() is called. 
+     * If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state 
+     * "WARNING" (there is no CRITICAL state).
      * @param {String} stepName
-     * @param {number} warningTime threshold in seconds
+     * @param {number} optWarningTime (optional) threshold in seconds, default = 0. If the threshold is set to 0,
+     *                 the execution time will never exceed, so the state will be always OK!
      * @memberOf TestCase
      * @method endOfStep
      */
-    that.endOfStep = function (stepName, warningTime) {
+    that.endOfStep = function (stepName, optWarningTime) {
+        if (undefined == optWarningTime) {
+            optWarningTime = 0;
+        }
         if (undefined == warningTime) {
             warningTime = 0;
         }
         var currentTime = (new Date()).getTime();
         //call the backend
-        that.javaObject.addTestCaseStep(stepName, that.stepStartTime, currentTime, warningTime);
+        that.javaObject.addTestCaseStep(stepName, that.stepStartTime, currentTime, optWarningTime);
         //set stepstart for the next step
         that.stepStartTime = currentTime;
     };
@@ -266,5 +289,3 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
     init();
     return that;
 }
-
-
