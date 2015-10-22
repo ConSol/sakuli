@@ -34,20 +34,15 @@ We recommend to run Sakuli clients on virtual machines.
 ## Software installation 
 ### Java JRE
 
-Sakuli versions including v0.4.* need **Java JRE 7**; all newer versions are based on **Java JRE 8**. In case you are bound to a specific (older?) Java version for any reason, perform a [static "in-place" JRE installation](http://www.oracle.com/technetwork/java/javase/jre-install-137694.html) which will not affect the current JRE and PATH settings.
+Sakuli v0.9.x and higher require **Java JRE >= 1.8**, obtainable from [http://www.java.com/de/download/manual.jsp](Oracle). On Ubuntu you can use [install_jre.sh](https://labs.consol.de/sakuli/install/3rd-party/install_jre.sh):
 
-Typing "java" in a new command line window should now start the java interpreter. Otherwise check the PATH settings: 
-
-* From desktop, right-click *My Computer* and click *Properties*
-* In *System Properties*, click on *Advanced*
-* Ensure that the **system variable** **%PATH%** contains the correct path to the java binary:
-  * Name: `PATH`
-  * Value: 
-    * `;C:\Program Files\Java\jre7/8\bin`
-    * or 
-	* `;C:\Program Files (x86)\Java\jre7/8\bin`
-	
-
+    root@sakulidemo:~# ./install.sh jre-8u60-linux-x64.tar.gz
+    Extracting jre-8u60-linux-x64.tar.gz...
+    Updating alternatives...
+    ...done. Java version is now:
+    java version "1.8.0_60"
+    Java(TM) SE Runtime Environment (build 1.8.0_60-b27)
+    Java HotSpot(TM) 64-Bit Server VM (build 25.60-b23, mixed mode)
 
 ### Sakuli 
 
