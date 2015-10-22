@@ -37,8 +37,8 @@ set count=0
 goto nextParam
  
 :execute
-echo executed command: "!JAVAHOME!java" %JAVA_PARAMS% -classpath %SAKULI_JARS%\sakuli.jar;%SAKULI_JARS%\* org.sakuli.starter.SakuliStarter %SAKULI_PARAMS%%
-"!JAVAHOME!java" %JAVA_PARAMS% -classpath %SAKULI_JARS%\sakuli.jar;%SAKULI_JARS%\* org.sakuli.starter.SakuliStarter %SAKULI_PARAMS%%
+echo executed command: "!JAVAHOME!java" %JAVA_PARAMS% -classpath %SAKULI_JARS%\sakuli.jar;%SAKULI_JARS%\* org.sakuli.starter.SakuliStarter %SAKULI_PARAMS%
+"!JAVAHOME!java" %JAVA_PARAMS% -classpath %SAKULI_JARS%\sakuli.jar;%SAKULI_JARS%\* org.sakuli.starter.SakuliStarter %SAKULI_PARAMS%
 IF NOT %ERRORLEVEL% == 100 goto end
  
 ::print usage if rc was 100 (=something went wrong, sakuli.jar showed up the usage)
