@@ -1,8 +1,9 @@
-' Simon Meggle, <simon.meggle@consol.de>
+'  http://www.sakuli.org
 
 ' SCRIPT:       sakuli_ctrl.vbs
-' DECRIPTION:   
-' USAGE: 		cscript.exe sakuli_ctrl.vbs sakuli|(suitename) DISABLE|ENABLE
+' DECRIPTION:   This script can place/remove lock files in a suite folder to prevent Sakuli from testing
+'               certain suites. Use on Windows only.
+' USAGE:        cscript.exe sakuli_ctrl.vbs sakuli|(suitename) DISABLE|ENABLE
 Dim usage
 usage = VbCrLf & "Usage: cscript.exe sakuli_ctrl.vbs sakuli|(suitename) DISABLE|ENABLE" & VbCrLf & _
 				 "11/2013 Simon Meggle, <simon.meggle@consol.de>" & VbCrLf & _
