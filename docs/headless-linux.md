@@ -71,7 +71,7 @@ You should see that Sakuli
 
 Add the following line to Sakuli's crontab: 
 
-    SAKULI_HOME=/opt/omd/sites/sakuli/sakuli/sakuli-v0.9.2-SNAPSHOT
+    SAKULI_HOME=__SAKULI_HOME__
     DISPLAY=:0.0
 
     */2 * * * * $SAKULI_HOME/bin/sakuli.sh --run $SAKULI_HOME/../example_test_suites/example_ubuntu/  --vnc 2>&1 > /dev/null
