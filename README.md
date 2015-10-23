@@ -18,7 +18,7 @@
 * [**Resources**](#resources)
     * [Demo](#demo-virtual-machine)
     * [Media](#media)
-    * [**Documentation**](./docs/README.md)
+    * [**Documentation**](./docs/index.md)
     * [Changelog](#changelog)
     * [Help](#help)
     
