@@ -5,4 +5,4 @@ site_description: Sakuli Documentation
 docs_dir: docs
 markdown_extensions: [toc,fenced_code]
 pages:
-  - Home: docs/README.md
+  - index: README.md
