@@ -13,6 +13,13 @@ ENV SAKULI_VERSION 0.9.2-SNAPSHOT
 ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
 ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
 
+ENV MYSQL_HOSTIP 192.168.122.35
+ENV GEARMAN_HOSTIP 192.168.122.35
+
+# Update hosts file to prevent reverse lookup timeouts
+RUN [ -n $MYSQL_HOSTIP ] && echo "$MYSQL_HOSTIP " >> /etc/hosts
+RUN [ -n $GEARMAN_HOSTIP ] && echo "$GEARMAN_HOSTIP " >> /etc/hosts
+
 ### Install Sakuli
 ##Install some native libaries
 RUN apt-get -y install libcv2.4 libtesseract3 wmctrl xdotool psmisc
