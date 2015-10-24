@@ -37,7 +37,7 @@ RUN wget --directory-prefix=/root \
 ### Install apps for testing
 RUN apt-get update && apt-get -y install gedit gnome-calculator
 
-# xvnc server porst, if $DISPLAY=:1 port will be 5901
+# xvnc server port, if $DISPLAY=:1 port will be 5901
 EXPOSE 5901
 # novnc web port
 EXPOSE 6901
