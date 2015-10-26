@@ -6,7 +6,7 @@
  2. Executes all unit tests
  3. Executes all **integration tests** (without UI-Tests)
  4. Adds the built maven artifacts to the local workspace
- 5. Builds the `sakuli-zipped-release-vX.X.X.zip` file locally
+ 5. Builds the `sakuli-vX.X.X.zip` file locally
  6. Deploys the maven artifacts to the local repository
  7. Deploys the maven artifacts to the remote labs.consol repository (if you have the permission for this)
 
@@ -31,7 +31,7 @@ Profiles can be added with option `-P`, followed by a parameter, e.g.
 * `ui-tests` Enables the UI based test in phase **integration-test** in the modul `integration-test` and `java-dsl`.
 * `generate-markdown` This profile will generate in the module **docs** the file [Sakuli-API](../sakuli-api.md).
    To use the profil behind a **HTTP/HTTPS** proxy, be aware that the following things are configured:
-    * include in your `$M2_HOME/settings.xml` the proxy tag:
+    * include in your `$M2_HOME/settings.xml` the proxy tag (if needed):
       ```
       <proxies>
           <proxy>
@@ -47,9 +47,9 @@ Profiles can be added with option `-P`, followed by a parameter, e.g.
     * configure your system **HTTP** and **HTTPS** proxy
         * for Ubuntu set in `bash.rc`:
           ```
-          export http_proxy=http://99.99.99.2:9998/
-          export https_proxy=http://99.99.99.2:9998/
-          export ftp_proxy=http://99.99.99.2:9998/
+          export http_proxy=http://proxy.company.com:8888/
+          export https_proxy=http://proxy.company.com:8888/
+          export ftp_proxy=http://proxy.company.com:8888/
           ```
 
 * `release-build` (internal use)
