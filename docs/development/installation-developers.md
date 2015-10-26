@@ -6,11 +6,10 @@ For the following guide you need
 * Access to the issue-tracker tool (currently JIRA)
 * Git
 * Development environment (we advise IntelliJ IDEA)
-* Maven 3 ( __attention for Ubuntu users!!!__ - don't use the default maven version over `apt-get install mvn` ) 
-* Java JDK 1.7
-  * Please use the original Oracle JDK - OpenJDK unfortunately won't work for the JavaFX based integration test, see [Java FX installation](java_fx_installation). 
+* Maven 3 ( __attention for Ubuntu users!!!__ - don't use the default maven version over `apt-get install mvn` )
+* Java JDK 1.8
+  * Please use the original Oracle JDK - OpenJDK unfortunately won't work for the JavaFX based integration test, see [Java FX installation](java_fx_installation).
   * Ensure that your `JAVA_HOME` system variable links to the correct jdk-version
-  * (JDK 1.8 is currently not supported in case that the aspectj-compiler-plugin won't work with it :-/ )
 
 
 ##Sakuli Setup
@@ -21,48 +20,37 @@ For the following guide you need
 ###Maven Settings
 * Ensure that you have at least installed maven 3, run `mvn --version`
 * Config the local maven settings `~/.m2/settings.xml` for your environment as follows:
-    
+
      ```
      <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                            http://maven.apache.org/xsd/settings-1.0.0.xsd">
-     <proxies>
-       <proxy>
-           <id>proxy</id>
-           <active>true</active>
-           <protocol>http</protocol>
-           <host>proxy.your-company.com</host>
-           <port>8080</port>
-           <nonProxyHosts>localhost</nonProxyHosts>
-       </proxy>
-     </proxies>
-     
+
      <server>
          <id>labs-consol-sakuli-install</id>
          <username>sakuli</username>
          <privateKey>${user.home}/.ssh/your-key-file</privateKey>
      </server>
- 
+
      <server>
          <id>labs-consol-sakuli-repository</id>
          <username>maven-repository</username>
          <privateKey>${user.home}/.ssh/your-key-file</privateKey>
      </server>
-     
+
      </settings>
-     
+
      ```
 
 ###Install Sahi
-* Change into the folder 'install/3rd-party' and execute the sahi JAR:
+* Download Sahi5 from https://labs.consol.de/sakuli/install/3rd-party and execute the sahi installation:
 
     ```
-    java -jar install_sahi_v44_20130429.jar
+    java -jar install_sahi_v50_20141105.jar.jar
     ```
 
-* Install Sahi into `<project-dir>/sahi`. Ensure that this path is set in `sahi.proxy.homePath` in file
-  `core/src/main/sakuli.properties`.
+* Install Sahi into `<project-dir>/sahi`. Ensure that this path is set in `sahi.proxy.homePath` in file `sakuli.properties`.
 
 * You only need to install the components
 	* Sahi Core
@@ -78,10 +66,10 @@ Setup a local MySQL database to save the results of test case executions. The da
 * __SQL-Script:__ [create_sakuli_database](../../src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database)
 
 If you want to use a Docker-Container, you can build and run it with the following commands:
-    
+
     cd src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database
-    docker build -t=toschneck/mysql-sakuli .
-    docker run --name mysql-sakuli -p 3306:3306 toschneck/mysql-sakuli
+    docker build -t=your-user/mysql-sakuli .
+    docker run --name mysql-sakuli -p 3306:3306 your-user/mysql-sakuli
 
 ###IDE configuration
 
@@ -110,13 +98,13 @@ If you want to use a Docker-Container, you can build and run it with the followi
   * __classpath of module:__ `sakuli-core`
   * __working directory:__ `$MODULE_DIR$`
   * __main class:__ `org.sakuli.starter.SakuliStarter`
-  * __program arguments:__ 
+  * __program arguments:__
     ```-run <path to your Sakuli test suite folder> --sakuli_home <path to your "main" folder> --sahi_home <path to your sahi folder>```
     e.g. for the provided Win7 example use `-run ../sakuli_test_suites/example src/main/_include ../sahi`
 
 * To run the testng tests correctly and prevent wrong file paths, set the default TestNG config like follow:
   ![](../pics/intellij_testng_run_config.png)
 
-###Important note: startup error
+### Important note: startup error
 If you run your Sakuli test the first time, you might get a native library error, caused by Sikuli, saying that it could not find the correct native library to work with. At the same time, Sikuli already tried to fix the problem by modyfing PATH.  
-Just log out and in again, so that the modified PATH-Variable will be read. Sakuli should start now without any error. 
+Just log out and in again, so that the modified PATH-Variable will be read. Sakuli should start now without any error.
