@@ -45,8 +45,8 @@ The latter two can be found in the following classes:
 * [Environment](sakuli-api.md#Environment)
 * [Region](sakuli-api.md#Region)
 * [Keys](sakuli-api.md#Key)
-* [MouseButton](sakuli-api#MouseButton)
-* [Logger](sakuli-api#Logger)
+* [MouseButton](sakuli-api.md#MouseButton)
+* [Logger](sakuli-api.md#Logger)
 
 ## How to contribute
 
