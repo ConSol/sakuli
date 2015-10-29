@@ -2,7 +2,7 @@
 
 FROM consol/centos-xfce-vnc
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2015-09-23
+ENV REFRESHED_AT 2015-10-29
 
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
@@ -41,18 +41,22 @@ RUN wget --directory-prefix=/root \
         > /root/install_sahi_local.config \
     #install sahi
     && java -jar /root/install_sahi_v50_20141105.jar /root/install_sahi_local.config \
+    # modify chrome startup options
+    && sed -e 's|--incognito|--incognito --no-default-browser-check --no-first-run --disable-infobars|g' -i /root/sakuli/sahi/config/browser_types/linux.xml \
     && rm -fv /root/install_sahi*
-#config chrome start 'without asking default browser'
-ADD .config/google-chrome /root/sakuli/sahi/userdata/browser/chrome/profiles/sahi0
 
 ### Install apps for testing
 RUN yum -y install gedit gnome-calculator
 
-# xvnc server porst, if $DISPLAY=:1 port will be 5901
+# xvnc server port, if $DISPLAY=:1 port will be 5901
 EXPOSE 5901
 # novnc web port
 EXPOSE 6901
 
 ADD scripts/sakuli_startup.sh /root/scripts/
 RUN chmod +x /root/scripts/*.sh
-CMD ["/root/scripts/sakuli_startup.sh"]
+
+# startup script
+ENTRYPOINT ["/root/scripts/sakuli_startup.sh"]
+# arguments for the sakuli_startup.sh script
+CMD ["--run $SAKULI_TEST_SUITE"]
