@@ -1,5 +1,6 @@
 # Sakuli example docker-compose.yml file with 2 different containers running the same tests in parallel
 
+# define the Sakuli test suite via environment variable 'SAKULI_TEST_SUITE'
 sakuli-example-centos:
   image: consol/sakuli-centos-xfce
   volumes:
@@ -15,15 +16,16 @@ sakuli-example-centos:
   #noVNC HTML client
   - 6911:6901
 
+# define the Sakuli test suite via CMD arguments
 sakuli-example-ubuntu:
   image: consol/sakuli-ubuntu-xfce
   volumes:
   - ../example_test_suites:/root/my_test_suites
+  # define Sakuli test suite and use chrome
+  command: "'--run /root/my_test_suites/example_xfce --browser chrome'"
   environment:
   # set correct timezone
   - TZ=Europe/Berlin
-  # set Sakuli test suite
-  - SAKULI_TEST_SUITE=/root/my_test_suites/example_xfce
   ports:
   #vnc
   - 5912:5901
