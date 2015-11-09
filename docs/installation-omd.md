@@ -65,7 +65,7 @@ Each RRD file contains a heartbeat value, which determines how much time must pa
 
     OMD[sakuli]:~$ cd ~/var/pnp4nagios/perfdata/sakulihost/
     # Sakuli check interval: 2 minutes --> RRD heartbeat 3 minutes
-    OMD[sakuli]:~$ for file in `ls sakuli_e2e_webshop*.rrd`; do rrdtool tune $file --heartbeat 1:180; done
+    OMD[sakuli]:~$ for file in sakuli_e2e_webshop*.rrd; do rrdtool tune $file --heartbeat 1:180; done
 
 ### install PNP graph template
 
