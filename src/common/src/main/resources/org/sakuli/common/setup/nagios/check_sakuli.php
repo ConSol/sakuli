@@ -235,12 +235,10 @@ if ($c_last_index != "") {
 	$def[0] .= rrd::cdef("suite_diff", "suite,c_line_stackbase".$c_last_index.",UN,0,c_line_stackbase".$c_last_index.",IF,-");
 	# invisible line to stack upon
 	$def[0] .= rrd::line1("c_line_stackbase".($c_last_index),"#00000000");
-	###$def[0] .= rrd::area("suite_diff", $col_suite_runtime_area,pad($suitename, $label_max_length),1 );
-	$def[0] .= rrd::area("suite", $col_suite_runtime_area,pad($suitename, $label_max_length),1 );
+	$def[0] .= rrd::area("suite_diff", $col_suite_runtime_area,pad($suitename, $label_max_length),1 );
 	# invisible line to stack upon
 	$def[0] .= rrd::line1("c_line_stackbase".($c_last_index),"#00000000");
-	###$def[0] .= rrd::line1("suite_diff", $col_suite_runtime_line, "",1 );
-	$def[0] .= rrd::line1("suite", $col_suite_runtime_line, "",1 );
+	$def[0] .= rrd::line1("suite_diff", $col_suite_runtime_line, "",1 );
 } else {
 	# no cases, no STACKing
 	$def[0] .= rrd::area("suite", $col_suite_runtime_area,$suitename );
