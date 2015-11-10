@@ -21,7 +21,7 @@ Each Sakuli docker image is installed with the following components:
 * [**Sahi OS**](http://sahi.co.in)
 * [**Sakuli**](https://github.com/ConSol/sakuli) in the latest stable version
 
-The running containers are accessible as follows:
+The running containers are accessible via:
 
 * __VNC viewer__:
   *  __`DOCKER_HOST:5901`__
@@ -29,9 +29,6 @@ The running containers are accessible as follows:
 * __noVNC HTML5 client__:
   * [http://localhost:6901/vnc_auto.html?password=sakuli]()
 
-The default password for VNC can be overridden by setting the environment variable `VNC_PW` on the command line, e.g.:
-
-      docker run -it -e "VNC_PW=my-new-password" ... ...
 
 ## Get Sakuli docker images
 
@@ -68,15 +65,17 @@ There is more than one way to integrate a custom testsuite in a container, discu
 
 ### 1) Mount an external suite folder and modify `CMD`
 
-Simply mount a folder on your host into the container and override `CMD` from Dockerfile (=argument for `ENTRYPOINT`).
+Mount a folder on your host into the container and override `CMD` from Dockerfile (=argument for `ENTRYPOINT`) with custom parameters for the Sakuli starter `sakuli.sh`.  In this way you can also instruct Sakuli e.g. to use another browser (`--browser chrome`). To get all possible command line parameters call `docker run consol/sakuli-ubuntu-xfce --help`.
 
-You can do this in two ways:
+
+CMD can be overrideen in two ways:
 
 #### 1.1) using the command line
 
-Set all parameters on the command line:
-
-    docker run -it -p 5901:5901 -p 6901:6901 -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites" consol/sakuli-centos-xfce '--run /my-sakuli-testsuites/suite_1'
+    ~$ docker run -it -p 5901:5901 -p 6901:6901   \\
+         -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites"   \\
+         consol/sakuli-centos-xfce   \\
+         '--run /my-sakuli-testsuites/suite_1'
 
 #### 1.2) using docker-compose
 A more elegant way is to pack all parameters into a [Docker Compose](https://docs.docker.com/compose/) file. Create `docker-compose.yml`:
@@ -95,54 +94,59 @@ When executed in the same directory as `docker-compose.yml`, a simple `docker-co
 
 `docker-compose rm -f` in contrast removes all currently stopped and running containers, which defined in the `docker-compose.yml`. Otherwise, if `docker-compose up` will called again, the test execution will reattach the instance and the start the test execution again in the same container instance.
 
-### 2) Mount your test suite and modify the environment variable `SAKULI_TEST_SUITE`
-Simply mount your local test suite folder to the container and override the environment variable `SAKULI_TEST_SUITE`:
+### 2) Mount an external suite folder and modify `SAKULI_TEST_SUITE`
+Mount a folder on your host into the container and override the environment variable `SAKULI_TEST_SUITE`.
 
-    docker run -it -p 5901:5901 -p 6901:6901 -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites" -e "SAKULI_TEST_SUITE=/my-sakuli-testsuites/suite_1" consol/sakuli-ubuntu-xfce
+#### 2.1) using the command line
 
-In the case of this example the `docker-compose.yml` would look like:
+    ~$ docker run -it -p 5901:5901 -p 6901:6901   \\
+         -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites"   \\
+         -e "SAKULI_TEST_SUITE=/my-sakuli-testsuites/suite_1"   \\
+         consol/sakuli-ubuntu-xfce
+
+#### 2.2) using docker-compose
+Similar to [#12-using-docker-compose](docker-compose in 1.2), the file `docker-compose.yml` would look like this:
 
     sakuli-example-ubuntu:
       image: consol/sakuli-ubuntu-xfce
+      ports:
+      - 5901:5901
+      - 6901:6901
       volumes:
-      # mount all suites
       - /home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites
       environment:
-      # set Sakuli test suite
       - SAKULI_TEST_SUITE=/my-sakuli-testsuites/suite_1
-      ports:
-      #vnc
-      - 5901:5901
-      #noVNC HTML client
-      - 6901:6901
 
-### Use `sakuli.sh` command line parameters
-Since `v0.9.2` it is possible to use the `sakuli.sh` command line parameters directly in the docker run command. Like for example to execute your test suite in the chrome browser modify your `docker run` command like:
 
-    docker run consol/sakuli-ubuntu-xfce '--run $SAKULI_TEST_SUITE --browser chrome'
-
-To use this option in the `docker-compose.yml` modify it like follow:
-
-    sakuli-example-ubuntu:
-      image: consol/sakuli-ubuntu-xfce
-      # use chrome
-      command: "'--run $SAKULI_TEST_SUITE --browser chrome'"
-
-To get all possible command line parameters call `docker run consol/sakuli-ubuntu-xfce --help`.
-
-### Override the VNC environment variables
+### Override VNC environment variables
 The following VNC environment variables can be overwritten at the `docker run` phase to customize your desktop environment inside the container:
 * `VNC_COL_DEPTH`, default: `24`
 * `VNC_RESOLUTION`, default: `1280x1024`
 * `VNC_PW`, default: `sakuli`
 
-For example, the variable `VNC_PW` could be set like this:
+For example, the password for VNC could be set like this:
 
-    docker run -it -p 5901:5901 -p 6901:6901 -e "VNC_PW=my-new-password" consol/sakuli-ubuntu-xfce
+    ~$ docker run -it -p 5901:5901 -p 6901:6901 -e "VNC_PW=my-new-password"  \\
+         consol/sakuli-ubuntu-xfce
 
 
 ## Further Information
-Further Information about the usage of Sakuli docker containers can be found at:
+Further information about the usage of Sakuli docker containers can be found at:
 
 * Presentation **[Containerized End-2-End-Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)**
 * Example project on GitHub **[ConSol/sakuli-example-testautomation-day](https://github.com/ConSol/sakuli-example-testautomation-day)**.
+
+## Contact
+For questions or maybe some hints, feel free to contact us via **[sakuli@consol.de](mailto:sakuli@consol.de)** or open an [issue](https://github.com/ConSol/sakuli/issues/new).
+
+The guys behind Sakuli:
+<table>
+<tr>
+<td>
+**ConSol* Consulting & Solutions Software GmbH** <br/>
+*Franziskanerstr. 38, D-81669 München* <br/>
+*Tel. +49-89-45841-100, Fax +49-89-45841-111*<br/>
+*Homepage: http://www.consol.de E-Mail: [info@consol.de](info@consol.de)*
+</td>
+</tr>
+<table>
