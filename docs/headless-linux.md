@@ -2,7 +2,10 @@
 
 Running Sakuli on the user desktop is nice, but has the drawback that the session gets highjacked on each Sakuli run. Moving the mouse e.g. can have negative effects on the test execution. 
 
-For that reason we advise to run Sakuli checks in a virtual display (="headless"), which is straightforward in Linux. 
+For that reason we advise to run Linux based Sakuli checks in in one of the following modes: 
+
+* in a virtual display (="headless"), which is straightforward in Linux (documented on this page)
+* in a [docker container](./docker-containers.md) (more scalable)
 
 ## Installing and configuring the VNC server
 
