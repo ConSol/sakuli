@@ -43,7 +43,7 @@ Alternatively, you can build this image from the sources:
 
 ## Start/test a Sakuli container
 
-Once you have pulled/built the image, you can start a container on top of it which binds port 5901/tcp and 6901/tcp to localhost:
+Once you have pulled/built the image, you can start a container on top of it which binds port 5901/tcp and 6901/tcp to localhost (on native docker installations; $DOCKER_IP on boot2docker):
 
       docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce
 
