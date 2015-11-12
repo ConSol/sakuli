@@ -2,7 +2,7 @@
 
 FROM consol/ubuntu-xfce-vnc
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2015-10-29
+ENV REFRESHED_AT 2015-11-12
 
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
