@@ -3,7 +3,7 @@
 /root/scripts/vnc_startup.sh
 
 # modify $SAKULI_TEST_SUITE permissions to ensure, that volume-mounted log files can be deleted afterwards
-chmod -r a+w $SAKULI_TEST_SUITE
+chmod -R a+rw $SAKULI_TEST_SUITE
 
 for i in "$@"
 do
