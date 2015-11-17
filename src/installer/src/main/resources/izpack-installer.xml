@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<!--
+  ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+  ~
+  ~ Copyright 2013 - 2015 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<izpack:installation xmlns:izpack="http://izpack.org/schema/installation"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     version="5.0"
+                     xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
+
+    <info>
+        <appname>sakuli</appname>
+        <appversion>${sakuli.version}</appversion>
+        <authors>
+            <author name="ConSol* Software GmbH" email="sakuli@consol.de"/>
+        </authors>
+        <url>http://www.sakuli.org</url>
+        <javaversion>1.8</javaversion>
+        <summarylogfilepath>$INSTALL_PATH/Uninstaller/installSummary.htm</summarylogfilepath>
+    </info>
+
+    <locale>
+        <langpack iso3="eng"/>
+        <langpack iso3="deu"/>
+    </locale>
+    <!--The gui preferences indication.-->
+    <guiprefs width="800" height="600" resizable="no">
+        <modifier key="useHeadingPanel" value="yes"/>
+
+        <!--<laf name="looks">-->
+        <!--<os family="windows"/>-->
+        <!--<param name="variant" value="windows"/>-->
+        <!--</laf>-->
+        <!--<laf name="metouia">-->
+        <!--<os family="unix"/>-->
+        <!--</laf>-->
+        <!--<modifier key="langDisplayType" value="native"/>-->
+        <modifier key="allXGap" value="0"/>
+        <modifier key="allYGap" value="0"/>
+        <modifier key="labelGap" value="2"/>
+        <modifier key="useButtonIcons" value="yes"/>
+        <modifier key="useHeadingPanel" value="yes"/>
+        <modifier key="useHeadingForSummary" value="yes"/>
+        <modifier key="headingLineCount" value="1"/>
+        <modifier key="headingFontSize" value="1.5"/>
+        <modifier key="headingBackgroundColor" value="0x00ffffff"/>
+        <modifier key="headingPanelCounter" value="text"/>
+        <!--<splash>images/peas_load.gif</splash>-->
+    </guiprefs>
+    <!--The locale section. Asks here to include the English and French langpacks.-->
+
+    <!--The Variables section.-->
+    <!--<dynamicvariables>-->
+    <!--<variable name="sakuli.version" environment="PATH" />-->
+    <!--&lt;!&ndash;    <variable name="sakuli.version" environment="PATH"/>&ndash;&gt;-->
+    <!--</dynamicvariables>-->
+    <variables>
+        <variable name="InstallerFrame.logfilePath" value="$INSTALL_PATH/Uninstaller/install.log"/>
+        <variable name="DesktopShortcutCheckboxEnabled" value="true"/>
+        <variable name="EXE_DIR" value="~tmp/"/>
+    </variables>
+    <!--The panels section. We indicate here which panels we want to use. The order will be respected.-->
+    <panels>
+        <panel classname="HelloPanel"/>
+        <panel classname="HTMLLicencePanel"/>
+        <panel classname="TargetPanel"/>
+        <panel classname="PacksPanel"/>
+        <panel classname="SummaryPanel"/>
+        <panel classname="InstallPanel"/>
+        <!--<panel classname="ProcessPanel"/>-->
+        <panel classname="FinishPanel"/>
+    </panels>
+    <!--The listeners section for CustomActions-->
+    <!--<listeners>-->
+    <!--<listener installer="SummaryLoggerInstallerListener"/>-->
+    <!--</listeners>-->
+    <!--The resources section. The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.-->
+    <resources>
+        <res id="packsLang.xml" src="langpacks/eng.xml"/>
+        <res id="CustomLangpack.xml_eng" src="langpacks/eng.xml"/>
+        <res id="CustomLangpack.xml_deu" src="langpacks/deu.xml"/>
+        <res id="HTMLLicencePanel.licence" src="${sakuli.install.src.core}/LICENSE-2.0.txt"/>
+        <!--<res id="TargetPanel.dir.windows" src="$HOME/sakuli"/>-->
+        <!--<res id="ProcessPanel.Spec.xml" src="./res/xml/ProcessPanelSpec.xml"/>-->
+        <res id="installer.langsel.img" src="${sakuli.install.src.core}/docs/pics/sakuli_logo_small.png"/>
+        <res id="Heading.image" src="${sakuli.install.src.core}/docs/pics/sakuli_logo_small.png"/>
+    </resources>
+    <!--The Natives section. We specify here our dll files and libraries.-->
+    <!--<jar src="./lib/dcp/dcp-resources.jar" stage="both"/>-->
+    <!--The Conditions section. We declare conditions used by packs.-->
+    <!--<conditions/>-->
+    <!--The packs section. We specify here our packs.-->
+
+    <!-- TODO TS: windows ask for permission if needed -->
+    <packs>
+        <!--<pack name="Install Sahi v5.0" required="yes" preselected="yes" hidden="false">-->
+        <!--<description>install_sahi_v50_20141105.jar</description>-->
+        <!--<file src="/home/tschneck/Downloads/test-ez/install_sahi_v50_20141105.jar" targetdir="$INSTALL_PATH/sahi" override="true"/>-->
+        <!--</pack>-->
+        <pack id="sakuli.core" name="Sakuli v${sakuli.version}" required="yes">
+            <description>Sakuli v${sakuli.version}</description>
+            <fileset dir="${sakuli.install.src.core}" targetdir="${INSTALL_PATH}/${sakuli.install.target.core}"
+                     override="true"/>
+        </pack>
+        <pack id="sakuli.examples" name="Sakuli Examples" required="no" preselected="true">
+            <description>Example testsuite for quick start into Sakuli</description>
+            <fileset dir="${sakuli.install.src.example}" targetdir="${INSTALL_PATH}/${sakuli.install.target.example}"
+                     override="true"/>
+        </pack>
+    </packs>
+</izpack:installation>
