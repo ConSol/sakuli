@@ -43,95 +43,95 @@
         <sakuli.install.target.example>example_test_suites</sakuli.install.target.example>
     </properties>
 
-    <profiles>
-        <profile>
-            <id>generate-installer</id>
-            <build>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                        <!--replace ${placeholders} -->
-                        <filtering>true</filtering>
-                    </resource>
-                </resources>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-dependency-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>unpack-sakuli-zip</id>
-                                <phase>validate</phase>
-                                <goals>
-                                    <goal>unpack</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${staging.dir}</outputDirectory>
-                                    <artifactItems>
-                                        <artifactItem>
-                                            <groupId>${project.groupId}</groupId>
-                                            <artifactId>core.zip</artifactId>
-                                            <version>${project.version}</version>
-                                            <type>zip</type>
-                                        </artifactItem>
-                                    </artifactItems>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <!-- copy and replace ${placeholders} -->
-                                <id>copy-install-resources</id>
-                                <phase>validate</phase>
-                                <goals>
-                                    <goal>resources</goal>
-                                </goals>
-                                <configuration>
-                                    <encoding>UTF-8</encoding>
-                                    <outputDirectory>${staging.dir}</outputDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <!--replace ${placeholders} -->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-sakuli-zip</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${staging.dir}</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>core.zip</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <!-- copy and replace ${placeholders} -->
+                        <id>copy-install-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                            <outputDirectory>${staging.dir}</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
-                    <plugin>
+            <plugin>
+                <groupId>org.codehaus.izpack</groupId>
+                <artifactId>izpack-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>izpack</goal>
+                        </goals>
+                        <configuration>
+                            <autoIncludeDevelopers>true</autoIncludeDevelopers>
+                            <autoIncludeUrl>true</autoIncludeUrl>
+                            <!--<outputDirectory>${project.build.directory}/install</outputDirectory>-->
+                            <!-- base for relative paths in izpack descriptor -->
+                            <baseDir>${staging.dir}</baseDir>
+                            <installFile>${staging.dir}/izpack-installer.xml</installFile>
+                            <finalName>${sakuli.install.name}-installer</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
                         <groupId>org.codehaus.izpack</groupId>
-                        <artifactId>izpack-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>izpack</goal>
-                                </goals>
-                                <configuration>
-                                    <autoIncludeDevelopers>true</autoIncludeDevelopers>
-                                    <autoIncludeUrl>true</autoIncludeUrl>
-                                    <!--<outputDirectory>${project.build.directory}/install</outputDirectory>-->
-                                    <!-- base for relative paths in izpack descriptor -->
-                                    <baseDir>${staging.dir}</baseDir>
-                                    <installFile>${staging.dir}/izpack-installer.xml</installFile>
-                                    <finalName>${sakuli.install.name}-installer</finalName>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.codehaus.izpack</groupId>
-                                <artifactId>izpack-panel</artifactId>
-                                <version>${izpack.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+                        <artifactId>izpack-panel</artifactId>
+                        <version>${izpack.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 
+    <profiles>
         <!--profil to deploy the zip file to labs.consol.de/sakuli/install-->
         <profile>
             <id>upload-release</id>
+            <properties>
+                <generate.installer>true</generate.installer>
+            </properties>
             <build>
                 <plugins>
                     <!-- wagon plugin to upload the zipped releases to the labs server -->
