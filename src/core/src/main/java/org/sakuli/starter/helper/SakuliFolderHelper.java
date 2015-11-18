@@ -23,9 +23,12 @@ import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -36,7 +39,7 @@ import java.util.List;
  *         Date: 13.03.15
  */
 public class SakuliFolderHelper {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(SakuliFolderHelper.class);
 
     /**
      * Validates the path to the test suite folder and ensure that it contains the files:
@@ -52,9 +55,9 @@ public class SakuliFolderHelper {
      * @throws FileNotFoundException if some of the above files are missing
      */
     public static String checkTestSuiteFolderAndSetContextVariables(String testSuiteFolderPath, String tempLogCache) throws FileNotFoundException {
-        Path testSuiteFolder = Paths.get(testSuiteFolderPath);
-        Path propertyFile = Paths.get(testSuiteFolderPath + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER);
-        Path suiteFile = Paths.get(testSuiteFolderPath + TestSuiteProperties.TEST_SUITE_SUITE_FILE_APPENDER);
+        Path testSuiteFolder = Paths.get(removeWindowsEscapeCharacters(testSuiteFolderPath)).normalize();
+        Path propertyFile = Paths.get(testSuiteFolder + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER);
+        Path suiteFile = Paths.get(testSuiteFolder + TestSuiteProperties.TEST_SUITE_SUITE_FILE_APPENDER);
 
         if (!Files.exists(testSuiteFolder)) {
             throw new FileNotFoundException("sakuli test suite folder \"" + testSuiteFolderPath + "\" does not exist!");
@@ -63,8 +66,29 @@ public class SakuliFolderHelper {
         } else if (!Files.exists(suiteFile)) {
             throw new FileNotFoundException("suite file \"" + TestSuiteProperties.TEST_SUITE_SUITE_FILE_NAME + "\" does not exist in folder: " + testSuiteFolderPath);
         }
-        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = testSuiteFolder.normalize().toAbsolutePath().toString();
+        SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = testSuiteFolder.toAbsolutePath().toString();
         return tempLogCache + "\nset property '" + TestSuiteProperties.TEST_SUITE_FOLDER + "' to \"" + SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE + "\"";
+    }
+
+    /**
+     * Method remove some not valid windows escape chars like ' or " . To prevent a {@link InvalidPathException}.
+     * <p/>
+     * {@code 'C:\PROGRA~1\.'  => C:\PROGRA~1\.}
+     * <br/>
+     * {@code "C:\PROGRA~1\."  => C:\PROGRA~1\. }
+     *
+     * @param path as {@link String}
+     * @return modified path as {@link String}
+     */
+    public static String removeWindowsEscapeCharacters(String path) {
+        String oldPath = path;
+        for (char c : Arrays.asList('\'', '\"')) {
+            path = StringUtils.remove(path, c);
+        }
+        if (!StringUtils.equals(oldPath, path)) {
+            LOGGER.debug("Path [{}] modified to [{}]", oldPath, path);
+        }
+        return path;
     }
 
     /**
@@ -77,16 +101,17 @@ public class SakuliFolderHelper {
      */
     public static String checkSakuliHomeFolderAndSetContextVariables(String sakuliMainFolderPath, String tempLogCache) throws FileNotFoundException {
         Path mainFolderPath;
+        sakuliMainFolderPath = removeWindowsEscapeCharacters(sakuliMainFolderPath);
         if (sakuliMainFolderPath != null) {
             mainFolderPath = Paths.get(sakuliMainFolderPath);
         } else {
             mainFolderPath = getAlternativeSakuliMainFolder();
         }
         if (!Files.exists(mainFolderPath)) {
-            throw new FileNotFoundException("SAKULI HOME folder \"" + sakuliMainFolderPath + "\" does not exist!");
+            throw new FileNotFoundException("SAKULI HOME folder \"" + mainFolderPath + "\" does not exist!");
         }
         if (!checkSubMainFolder(mainFolderPath)) {
-            throw new FileNotFoundException("the assigned SAKULI HOME foler \"" + sakuliMainFolderPath + "\" does not have a valid file structure! Please use the correct folder!");
+            throw new FileNotFoundException("the assigned SAKULI HOME folder \"" + mainFolderPath + "\" does not have a valid file structure! Please use the correct folder!");
         }
         SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = mainFolderPath.normalize().toAbsolutePath().toString();
         return tempLogCache + "\nset property '" + SakuliProperties.SAKULI_HOME_FOLDER + "' to \"" + SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE + "\"";
@@ -94,7 +119,7 @@ public class SakuliFolderHelper {
 
     private static Path getAlternativeSakuliMainFolder() throws FileNotFoundException {
         String envSakuliHome = System.getenv("SAKULI_HOME");
-        Path sakuli_home = StringUtils.isNotEmpty(envSakuliHome) ? Paths.get(envSakuliHome) : Paths.get(".");
+        Path sakuli_home = StringUtils.isNotEmpty(envSakuliHome) ? Paths.get(removeWindowsEscapeCharacters(envSakuliHome)) : Paths.get(".");
         if (Files.exists(sakuli_home) && checkSubMainFolder(sakuli_home)) {
             return sakuli_home;
         }
@@ -115,7 +140,7 @@ public class SakuliFolderHelper {
      * @throws FileNotFoundException if the folde doesn't exist
      */
     public static String checkSahiProxyHomeAndSetContextVariables(String sahiProxyHomePath, String tempLogCache) throws FileNotFoundException {
-        Path sahiFolder = Paths.get(sahiProxyHomePath);
+        Path sahiFolder = Paths.get(removeWindowsEscapeCharacters(sahiProxyHomePath));
         if (!Files.exists(sahiFolder)) {
             throw new FileNotFoundException("sahi folder \"" + sahiProxyHomePath + "\" does not exist!");
         }
