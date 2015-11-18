@@ -42,15 +42,6 @@
     <!--The gui preferences indication.-->
     <guiprefs width="800" height="600" resizable="no">
         <modifier key="useHeadingPanel" value="yes"/>
-
-        <!--<laf name="looks">-->
-        <!--<os family="windows"/>-->
-        <!--<param name="variant" value="windows"/>-->
-        <!--</laf>-->
-        <!--<laf name="metouia">-->
-        <!--<os family="unix"/>-->
-        <!--</laf>-->
-        <!--<modifier key="langDisplayType" value="native"/>-->
         <modifier key="allXGap" value="0"/>
         <modifier key="allYGap" value="0"/>
         <modifier key="labelGap" value="2"/>
@@ -61,20 +52,14 @@
         <modifier key="headingFontSize" value="1.5"/>
         <modifier key="headingBackgroundColor" value="0x00ffffff"/>
         <modifier key="headingPanelCounter" value="text"/>
-        <!--<splash>images/peas_load.gif</splash>-->
     </guiprefs>
-    <!--The locale section. Asks here to include the English and French langpacks.-->
 
-    <!--The Variables section.-->
-    <!--<dynamicvariables>-->
-    <!--<variable name="sakuli.version" environment="PATH" />-->
-    <!--&lt;!&ndash;    <variable name="sakuli.version" environment="PATH"/>&ndash;&gt;-->
-    <!--</dynamicvariables>-->
     <variables>
         <variable name="InstallerFrame.logfilePath" value="$INSTALL_PATH/Uninstaller/install.log"/>
         <variable name="DesktopShortcutCheckboxEnabled" value="true"/>
         <variable name="EXE_DIR" value="~tmp/"/>
     </variables>
+
     <!--The panels section. We indicate here which panels we want to use. The order will be respected.-->
     <panels>
         <panel classname="HelloPanel"/>
@@ -83,39 +68,100 @@
         <panel classname="PacksPanel"/>
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
-        <!--<panel classname="ProcessPanel"/>-->
         <panel classname="FinishPanel"/>
     </panels>
-    <!--The listeners section for CustomActions-->
-    <!--<listeners>-->
-    <!--<listener installer="SummaryLoggerInstallerListener"/>-->
-    <!--</listeners>-->
-    <!--The resources section. The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.-->
+
     <resources>
         <res id="packsLang.xml" src="langpacks/eng.xml"/>
         <res id="CustomLangpack.xml_eng" src="langpacks/eng.xml"/>
         <res id="CustomLangpack.xml_deu" src="langpacks/deu.xml"/>
         <res id="HTMLLicencePanel.licence" src="${sakuli.install.src.core}/LICENSE-2.0.txt"/>
-        <!--<res id="TargetPanel.dir.windows" src="$HOME/sakuli"/>-->
-        <!--<res id="ProcessPanel.Spec.xml" src="./res/xml/ProcessPanelSpec.xml"/>-->
         <res id="installer.langsel.img" src="${sakuli.install.src.core}/docs/pics/sakuli_logo_small.png"/>
         <res id="Heading.image" src="${sakuli.install.src.core}/docs/pics/sakuli_logo_small.png"/>
     </resources>
 
     <packs>
-        <!--<pack name="Install Sahi v5.0" required="yes" preselected="yes" hidden="false">-->
-        <!--<description>install_sahi_v50_20141105.jar</description>-->
-        <!--<file src="/home/tschneck/Downloads/test-ez/install_sahi_v50_20141105.jar" targetdir="$INSTALL_PATH/sahi" override="true"/>-->
-        <!--</pack>-->
         <pack id="sakuli.core" name="Sakuli v${sakuli.version}" required="yes">
             <description>Sakuli v${sakuli.version}</description>
-            <fileset dir="${sakuli.install.src.core}" targetdir="${INSTALL_PATH}/${sakuli.install.target.core}"
-                     override="true"/>
+            <fileset dir="${sakuli.install.src.core}" targetdir="${INSTALL_PATH}/${sakuli.install.target.core}"/>
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/sakuli.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/helper/encrypt_password.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/helper/mysql_purge.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+        </pack>
+        <pack id="sahi" name="Sahi OS v${sahi.version}" required="yes">
+            <description>Sahi OS v${sahi.version}, for more information see http://sahipro.com/sahi-open-source/
+            </description>
+            <fileset dir="install_sahi_v50_20141105" targetdir="${INSTALL_PATH}/sahi"/>
+            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/bin/dashboard.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/bin/sahi.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/tools/changeproxy.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/tools/revertproxy.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/bin/web.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/userdata/bin/start_dashboard.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/userdata/bin/start_sahi.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/userdata/bin/start_web.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/userdata/bin/testrunner.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
         </pack>
         <pack id="sakuli.examples" name="Sakuli Examples" required="no" preselected="true">
             <description>Example testsuite for quick start into Sakuli</description>
             <fileset dir="${sakuli.install.src.example}" targetdir="${INSTALL_PATH}/${sakuli.install.target.example}"
                      override="true"/>
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.example}/start_example_opensuse.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.example}/start_example_ubuntu.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.example}/start_example_xfce.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
         </pack>
+
+        <!-- TODO TS set installation as default through PATH variables + update documentation -->
     </packs>
 </izpack:installation>
