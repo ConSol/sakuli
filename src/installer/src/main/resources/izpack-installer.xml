@@ -32,6 +32,7 @@
         <url>http://www.sakuli.org</url>
         <javaversion>1.8</javaversion>
         <summarylogfilepath>$INSTALL_PATH/Uninstaller/installSummary.htm</summarylogfilepath>
+        <run-privileged condition="izpack.windowsinstall"/>
     </info>
 
     <locale>
@@ -100,13 +101,7 @@
         <res id="installer.langsel.img" src="${sakuli.install.src.core}/docs/pics/sakuli_logo_small.png"/>
         <res id="Heading.image" src="${sakuli.install.src.core}/docs/pics/sakuli_logo_small.png"/>
     </resources>
-    <!--The Natives section. We specify here our dll files and libraries.-->
-    <!--<jar src="./lib/dcp/dcp-resources.jar" stage="both"/>-->
-    <!--The Conditions section. We declare conditions used by packs.-->
-    <!--<conditions/>-->
-    <!--The packs section. We specify here our packs.-->
 
-    <!-- TODO TS: windows ask for permission if needed -->
     <packs>
         <!--<pack name="Install Sahi v5.0" required="yes" preselected="yes" hidden="false">-->
         <!--<description>install_sahi_v50_20141105.jar</description>-->
