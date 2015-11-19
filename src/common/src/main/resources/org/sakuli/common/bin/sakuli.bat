@@ -1,4 +1,4 @@
-@echo on
+@echo off
 
 REM set tests=c:\foo bar
 REM set java8bin=c:\foo bar\Java\jre1.8.0_40\bin\
