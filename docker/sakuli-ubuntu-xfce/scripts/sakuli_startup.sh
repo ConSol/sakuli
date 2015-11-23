@@ -5,28 +5,14 @@
 # modify $SAKULI_TEST_SUITE permissions to ensure, that volume-mounted log files can be deleted afterwards
 chmod -R a+rw $SAKULI_TEST_SUITE
 
-for i in "$@"
-do
-    echo -e "\n----------- resolve script arguments -------------"
-    echo -e "\narg_orig: $i"
-    i=$(eval echo $i)
-    echo "arg_resolved: $i"
-
-    case $i in
-        # if option starts with `-` the script arguments are interpreted as arguments for Sakuli
-        -*)
-        echo -e "\n------------------ START SAKULI ------------------"
-        $SAKULI_HOME/bin/sakuli.sh $i
-        ;;
-
-        *)
-        # unknown option ==> call command
-        echo -e "\n----------------- EXECUTE COMMAND ----------------"
-        echo -e "\ncmd: $i"
-        exec $i
-        ;;
-    esac
-done
+# argument of sakuli.sh start with a dash.
+# If not, assume that CMD was not meant as an argument
+# for sakuli.sh (=ENTRYPOINT). Hence, try to execute CMD standalone.
+if [ "${1:0:1}" == "-" ]; then
+        $SAKULI_HOME/bin/sakuli.sh $*
+else
+        exec $1
+fi
 
 res=$?
 echo "SAKULI_RETURN_VAL: $res"
