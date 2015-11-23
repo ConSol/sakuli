@@ -10,16 +10,13 @@ TAG  = $(shell git rev-parse --abbrev-ref HEAD|grep -v master)
 
 IMAGE=$(REPO):$(TAG)
 
-
-.PHONY: build bash start stop 
-
 build: 
 	docker build -t $(IMAGE) . 
 	docker images | grep '$(REPO)'
-start:
-	docker run -p 8888:80 -d -it $(IMAGE)
+run:
+	docker run -p 5901:5901 -it -d $(IMAGE)
 	docker images | grep '$(REPO)'
 echo:
 	echo $(IMAGE)
 bash: 
-	docker run --rm -p 8888:80 -it $(IMAGE) /bin/bash
+	docker run --rm -p 5901:5901 -it $(IMAGE) /bin/bash
