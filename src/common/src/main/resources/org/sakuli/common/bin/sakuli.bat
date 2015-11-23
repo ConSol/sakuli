@@ -9,7 +9,7 @@ if "%SAKULI_HOME%" == "" (
   SET SAKULI_HOME=..\
 )
 
-set SAKULI_JARS=%SAKULI_HOME%\libs\java
+set SAKULI_JARS="%SAKULI_HOME%\libs\java"
 set JAVAEXEC=java
 set SAKULI_PARAMS=
 set JAVA_PARAMS=
