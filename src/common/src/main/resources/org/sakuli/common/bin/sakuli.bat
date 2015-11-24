@@ -43,3 +43,4 @@ echo  -j,--javahome                      Java bin dir (overrides PATH)
 echo  -Dany.property.key=value           JVM option to set a property on runtime
 echo. 
 :end
+EXIT /b %ERRORLEVEL%
