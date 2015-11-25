@@ -39,6 +39,8 @@
         <sakuli.install.name>sakuli-v${sakuli.version}</sakuli.install.name>
         <sakuli.install.src.core>sakuli/${sakuli.install.name}</sakuli.install.src.core>
         <sakuli.install.target.core>${sakuli.install.name}</sakuli.install.target.core>
+        <sakuli.install.src.sahi>sakuli/sahi</sakuli.install.src.sahi>
+        <sakuli.install.target.sahi>sahi</sakuli.install.target.sahi>
         <sakuli.install.src.example>sakuli/example_test_suites</sakuli.install.src.example>
         <sakuli.install.target.example>example_test_suites</sakuli.install.target.example>
     </properties>
@@ -51,19 +53,8 @@
                     <resource>
                         <directory>src/main/resources</directory>
                         <!--replace ${placeholders} -->
-                        <excludes>
-                            <exclude>sahi/</exclude>
-                            <exclude>*.zip</exclude>
-                        </excludes>
                         <filtering>true</filtering>
                     </resource>
-                    <!--<resource>-->
-                    <!--<directory>src/main/resources</directory>-->
-                    <!--<includes>-->
-                    <!--<include>*.zip</include>-->
-                    <!--</includes>-->
-                    <!--<filtering>false</filtering>-->
-                    <!--</resource>-->
                 </resources>
                 <plugins>
                     <plugin>
@@ -83,12 +74,6 @@
                                             <groupId>${project.groupId}</groupId>
                                             <artifactId>core.zip</artifactId>
                                             <version>${project.version}</version>
-                                            <type>zip</type>
-                                        </artifactItem>
-                                        <artifactItem>
-                                            <groupId>net.sf.sahi</groupId>
-                                            <artifactId>sahi-install</artifactId>
-                                            <version>${sahi.version}</version>
                                             <type>zip</type>
                                         </artifactItem>
                                     </artifactItems>

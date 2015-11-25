@@ -103,40 +103,48 @@
         <pack id="sahi" name="Sahi OS v${sahi.version}" required="yes">
             <description>Sahi OS v${sahi.version}, for more information see http://sahipro.com/sahi-open-source/
             </description>
-            <fileset dir="install_sahi_v50_20141105" targetdir="${INSTALL_PATH}/sahi"/>
-            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/bin/dashboard.sh">
+            <fileset dir="${sakuli.install.src.sahi}" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}"/>
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/bin/dashboard.sh">
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
-            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/bin/sahi.sh">
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/bin/sahi.sh">
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
-            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/tools/changeproxy.sh">
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/tools/changeproxy.sh">
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
-            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/tools/revertproxy.sh">
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/tools/revertproxy.sh">
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
-            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/bin/web.sh">
+            <executable stage="never" keep="true" targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/bin/web.sh">
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
-            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/userdata/bin/start_dashboard.sh">
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/start_dashboard.sh">
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
-            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/userdata/bin/start_sahi.sh">
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/start_sahi.sh">
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
-            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/userdata/bin/start_web.sh">
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/start_web.sh">
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
-            <executable stage="never" keep="true" targetfile="$INSTALL_PATH/sahi/userdata/bin/testrunner.sh">
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/testrunner.sh">
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
