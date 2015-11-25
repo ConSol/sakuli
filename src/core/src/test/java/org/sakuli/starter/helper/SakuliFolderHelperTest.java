@@ -110,6 +110,8 @@ public class SakuliFolderHelperTest extends BaseTest {
     @Test(expectedExceptions = FileNotFoundException.class, expectedExceptionsMessageRegExp = "no valid SAKULI HOME folder specified - please configure one!")
     public void testCheckHomeFolderNotDefined() throws Exception {
         System.clearProperty("SAKULI_HOME");
+        String envSakuliHome = System.getenv("SAKULI_HOME");
+        assertTrue(envSakuliHome == null || envSakuliHome.equalsIgnoreCase("null"));
         SakuliFolderHelper.checkSakuliHomeFolderAndSetContextVariables(null, "");
     }
 

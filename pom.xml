@@ -94,6 +94,9 @@
                         <!-- exludes the package org.sakuli.integration-->
                         <exclude>**/integration/**/*</exclude>
                     </excludes>
+                    <environmentVariables>
+                        <SAKULI_HOME/>
+                    </environmentVariables>
                 </configuration>
             </plugin>
 
