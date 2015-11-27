@@ -53,6 +53,7 @@ function addSakuliHomeToPath() {
 	if ($oldPath -cmatch '.*sakuli-v.*' ){
 		echo "Value does already exist! Remove old value!"
 		removeSakuliHomeFromPath
+		$oldPath = getPathValue
 	}
 	echo "Add to user PATH: $sakuliPathValue"
 	$newPath = $oldPath;
@@ -150,3 +151,5 @@ if ($newSakuliHome) {
 	removeSakuliHomeFromPath
 }
 notifyWindowsEnvironmentChange
+echo "Environment update FINISHED!"
+exit

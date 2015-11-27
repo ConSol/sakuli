@@ -43,6 +43,8 @@
         <sakuli.install.target.sahi>sahi</sakuli.install.target.sahi>
         <sakuli.install.src.example>sakuli/example_test_suites</sakuli.install.src.example>
         <sakuli.install.target.example>example_test_suites</sakuli.install.target.example>
+        <sakuli.install.target.installerScripts>${sakuli.install.target.core}/bin/installer_scripts
+        </sakuli.install.target.installerScripts>
     </properties>
 
     <profiles>
