@@ -69,6 +69,7 @@
         <panel classname="PacksPanel"/>
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
+        <panel classname="ProcessPanel"/>
         <panel classname="FinishPanel"/>
     </panels>
 
@@ -79,12 +80,15 @@
         <res id="HTMLLicencePanel.licence" src="${sakuli.install.src.core}/LICENSE-2.0.txt"/>
         <res id="installer.langsel.img" src="${sakuli.install.src.core}/docs/pics/sakuli_logo_small.png"/>
         <res id="Heading.image" src="${sakuli.install.src.core}/docs/pics/sakuli_logo_small.png"/>
+        <res id="ProcessPanel.Spec.xml" src="ProcessPanel.Spec.xml"/>
     </resources>
 
+    <!-- ATTENTION: Using ProcessPanel.Spec.xml for executing scripts, as long as ${izpack.version} call each script twice! -->
     <packs>
         <pack id="sakuli.core" name="Sakuli v${sakuli.version}" required="yes">
             <description>Sakuli v${sakuli.version}</description>
             <fileset dir="${sakuli.install.src.core}" targetdir="${INSTALL_PATH}/${sakuli.install.target.core}"/>
+            <!-- mark files as executable -->
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/sakuli.sh">
                 <os family="unix"/>
@@ -105,6 +109,7 @@
             <description>Sahi OS v${sahi.version}, for more information see http://sahipro.com/sahi-open-source/
             </description>
             <fileset dir="${sakuli.install.src.sahi}" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}"/>
+            <!-- mark files as executable -->
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/bin/dashboard.sh">
                 <os family="unix"/>
@@ -150,19 +155,14 @@
                 <os family="mac"/>
             </executable>
         </pack>
-        <pack id="sakuli.win.env" name="Set as default version" preselected="true" required="false">
+        <pack id="sakuli.win.env" name="${package.name.set.default}" preselected="true" required="false">
             <description>Set 'SAKULI_HOME' to v${sakuli.version} and make it possible to execute 'sakuli.bat' from
                 CMD.
             </description>
             <os family="windows"/>
-            <!-- set SAKULI_HOME and PATH -->
-            <executable stage="postinstall" keep="true"
-                        targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_sakuli_home.bat">
-                <args>
-                    <arg value="${INSTALL_PATH}\${sakuli.install.target.core}"/>
-                </args>
-            </executable>
-            <!-- remove set environment pathes-->
+            <!-- INSTALLER: set SAKULI_HOME and PATH exute via 'ProcessPanel.Spec.xml-->
+
+            <!-- UNINSTALLER: remove set environment pathes-->
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_sakuli_home.bat">
             </executable>
@@ -187,31 +187,22 @@
                 <os family="mac"/>
             </executable>
         </pack>
-        <pack id="sakuli.win.firefox" name="Intstall Firefox-Portable v42" preselected="true" required="false">
+        <pack id="sakuli.win.firefox" name="${package.name.firefox.win}" preselected="true" required="false">
+            <!-- INSTALLER: trigger job in 'ProcessPanel.Spec.xml' -->
             <description>Download and install Firefox Portable to 'SAKULI_HOME\FirefoxPortable' and configure as browser
                 type 'firefox_portable'.
             </description>
             <fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"
                      override="true"/>
             <os family="windows"/>
-            <executable stage="postinstall" keep="true"
-                        targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/install_firefox_portable.bat">
-                <args>
-                    <arg value="${INSTALL_PATH}"/>
-                </args>
-            </executable>
         </pack>
-        <!-- update the permissions under windows to the installing user -->
-        <pack id="sakuli.win.permissions" name="Set user permissions" hidden="true" required="true">
-            <description>Update the permissions under windows to the installing user</description>
+        <pack id="sakuli.win.qres" name="Install QRes" preselected="true" required="false">
+            <!-- Anti-Virus-checked: https://www.virustotal.com/de/file/5b268a80e2a8a6972c457a99cfc6a41dbe7057772a0ff0ebfb9769870140376d/analysis/1448890652/-->
+            <description>QRes is a easy to use command line utility to change screen resolution, color depth, display
+                modes, refresh rate and so on.
+            </description>
+            <fileset dir="qres" targetdir="${INSTALL_PATH}/qres"/>
             <os family="windows"/>
-            <!-- update user permissions -->
-            <executable stage="postinstall" keep="true"
-                        targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_user_permissions.bat">
-                <args>
-                    <arg value="${INSTALL_PATH}"/>
-                </args>
-            </executable>
         </pack>
 
         <!-- TODO TS set installation as default through PATH variables for Linux + update documentation -->

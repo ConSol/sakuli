@@ -45,6 +45,9 @@
         <sakuli.install.target.example>example_test_suites</sakuli.install.target.example>
         <sakuli.install.target.installerScripts>${sakuli.install.target.core}/bin/installer_scripts
         </sakuli.install.target.installerScripts>
+        <package.name.set.default>Set as default version</package.name.set.default>
+        <package.name.firefox.win>Install Firefox Portable v42</package.name.firefox.win>
+        <package.name.userpermission.win>Set user permissions</package.name.userpermission.win>
     </properties>
 
     <profiles>
@@ -54,8 +57,17 @@
                 <resources>
                     <resource>
                         <directory>src/main/resources</directory>
+                        <excludes>
+                            <exclude>qres/</exclude>
+                        </excludes>
                         <!--replace ${placeholders} -->
                         <filtering>true</filtering>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>qres/</include>
+                        </includes>
                     </resource>
                 </resources>
                 <plugins>
