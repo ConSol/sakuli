@@ -405,7 +405,7 @@ function initRegion(that, javaObject) {
 
     /**
      * Set a offset to a specific Region and returns the new Region object.
-     * The offset function will move the Region's rectangle with x to the right and with y to the left.
+     * The offset function will move the Region's rectangle x pixels to the right and y pixels down.
      * The size of the rectangle will be the same.
      *
      * @param {number} offsetX x-value for the offset action
@@ -460,7 +460,7 @@ function initRegion(that, javaObject) {
     };
 
     /**
-     * @return  a new Region that is defined below the current region’s top border
+     * @return  a new Region that is defined below the current region’s bottom border
      * with a height of range number of pixels.
      * @param {number} range of pixels
      *
@@ -472,8 +472,8 @@ function initRegion(that, javaObject) {
     };
 
     /**
-     * @return  a new Region that is defined on the left the current region’s top border
-     * with a height of range number of pixels.
+     * @return  a new Region that is defined on the left the current region’s left border
+     * with a width of range number of pixels.
      * @param {number} range of pixels
      *
      * @memberOf Region
@@ -484,8 +484,8 @@ function initRegion(that, javaObject) {
     };
 
     /**
-     * @return  a new Region that is defined on the right the current region’s top border
-     * with a height of range number of pixels.
+     * @return  a new Region that is defined on the right the current region’s right border
+     * with a width of range number of pixels.
      * @param {number} range of pixels
      *
      * @memberOf Region
