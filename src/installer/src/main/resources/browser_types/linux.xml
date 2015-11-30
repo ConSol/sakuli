@@ -1,0 +1,23 @@
+<browserTypes>
+    <browserType>
+        <name>firefox</name>
+        <displayName>Firefox</displayName>
+        <icon>firefox.png</icon>
+        <path>/usr/bin/firefox</path>
+        <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
+        <processName>firefox</processName>
+        <capacity>5</capacity>
+    </browserType>
+
+    <browserType>
+        <name>chrome</name>
+        <displayName>Chrome</displayName>
+        <icon>chrome.png</icon>
+        <path>/usr/bin/google-chrome</path>
+        <options>--incognito --user-data-dir=$userDir/browser/chrome/profiles/sahi$threadNo
+            --proxy-server=localhost:9999 --disable-popup-blocking
+        </options>
+        <processName>chrome</processName>
+        <capacity>5</capacity>
+    </browserType>
+</browserTypes>

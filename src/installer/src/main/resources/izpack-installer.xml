@@ -187,6 +187,20 @@
                 <os family="mac"/>
             </executable>
         </pack>
+        <pack id="sakuli.win.firefox" name="Intstall Firefox-Portable v42" preselected="true" required="false">
+            <description>Download and install Firefox Portable to 'SAKULI_HOME\FirefoxPortable' and configure as browser
+                type 'firefox_portable'.
+            </description>
+            <fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"
+                     override="true"/>
+            <os family="windows"/>
+            <executable stage="postinstall" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/install_firefox_portable.bat">
+                <args>
+                    <arg value="${INSTALL_PATH}"/>
+                </args>
+            </executable>
+        </pack>
         <!-- update the permissions under windows to the installing user -->
         <pack id="sakuli.win.permissions" name="Set user permissions" hidden="true" required="true">
             <description>Update the permissions under windows to the installing user</description>
