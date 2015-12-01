@@ -158,7 +158,7 @@ public class SakuliPropertyPlaceholderConfigurerTest {
         PropertyHolder properties = BeanLoader.loadBean(PropertyHolder.class);
         Path tsFolder = Paths.get(properties.getTestSuiteFolder());
 
-        assertTrue(Files.exists(tsFolder), "test suite folder doesn't exists or have not been set correctly");
+        assertTrue(Files.exists(tsFolder), "test suite folder doesn't exists or is not set correctly");
         BaseTest.assertContains(tsFolder.toAbsolutePath().toString(), PPROPERTY_TEST_FOLDER_PATH);
     }
 
