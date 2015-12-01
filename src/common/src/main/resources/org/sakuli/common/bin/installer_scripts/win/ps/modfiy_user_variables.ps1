@@ -99,26 +99,7 @@ function removeSakuliHomeFromPath() {
 }
 
 function notifyWindowsEnvironmentChange(){
-	# see http://poshcode.org/2049
 	echo "Notify Windows about Environment Change!"
-#	
-#	if (-not ("win32.nativemethods" -as [type])) {
-#    	# import sendmessagetimeout from win32
-#    	add-type -Namespace Win32 -Name NativeMethods -MemberDefinition @"
-#[DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-#public static extern IntPtr SendMessageTimeout(
-#    IntPtr hWnd, uint Msg, UIntPtr wParam, string lParam,
-#    uint fuFlags, uint uTimeout, out UIntPtr lpdwResult);
-#"@
-#	}
-#
-#	$HWND_BROADCAST = [intptr]0xffff;
-#	$WM_SETTINGCHANGE = 0x1a;
-#	$result = [uintptr]::zero
-#
-#	# notify all windows of environment block change
-#	[win32.nativemethods]::SendMessageTimeout($HWND_BROADCAST, $WM_SETTINGCHANGE,
-#		[uintptr]::Zero, "Environment", 2, 5000, [ref]$result);
 
 Add-Type -TypeDefinition @"
     using System;
