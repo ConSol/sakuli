@@ -203,6 +203,11 @@
                     <artifactId>izpack-maven-plugin</artifactId>
                     <version>${izpack.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>com.googlecode.maven-download-plugin</groupId>
+                    <artifactId>download-maven-plugin</artifactId>
+                    <version>1.2.1</version>
+                </plugin>
             </plugins>
 
         </pluginManagement>

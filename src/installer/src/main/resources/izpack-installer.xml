@@ -187,22 +187,25 @@
                 <os family="mac"/>
             </executable>
         </pack>
-        <pack id="sakuli.win.firefox" name="${package.name.firefox.win}" preselected="true" required="false">
+        <pack id="sakuli.win.firefox" name="${package.name.firefox}" preselected="true" required="false">
             <!-- INSTALLER: trigger job in 'ProcessPanel.Spec.xml' -->
-            <description>Download and install Firefox Portable to 'SAKULI_HOME\FirefoxPortable' and configure as browser
+            <description>Install Firefox Portable ${package.name.firefox.version} to
+                'SAKULI_HOME\${sakuli.install.target.firefox}' and configure as browser
                 type 'firefox_portable'.
             </description>
+            <os family="windows"/>
             <fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"
                      override="true"/>
-            <os family="windows"/>
+            <!--Anti-Virus-checked: https://www.virustotal.com/de/file/ee06345a08531c07c1381ff6d8bb8acade45aa1c5d14ef9190727140dda81780/analysis/ -->
+            <fileset dir="${sakuli.install.src.firefox}" targetdir="${INSTALL_PATH}/${sakuli.install.target.firefox}"/>
         </pack>
         <pack id="sakuli.win.qres" name="Install QRes" preselected="true" required="false">
             <!-- Anti-Virus-checked: https://www.virustotal.com/de/file/5b268a80e2a8a6972c457a99cfc6a41dbe7057772a0ff0ebfb9769870140376d/analysis/1448890652/-->
             <description>QRes is a easy to use command line utility to change screen resolution, color depth, display
                 modes, refresh rate and so on.
             </description>
-            <fileset dir="qres" targetdir="${INSTALL_PATH}/qres"/>
             <os family="windows"/>
+            <fileset dir="qres" targetdir="${INSTALL_PATH}/qres"/>
         </pack>
 
         <!-- TODO TS set installation as default through PATH variables for Linux + update documentation -->

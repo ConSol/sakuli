@@ -43,10 +43,13 @@
         <sakuli.install.target.sahi>sahi</sakuli.install.target.sahi>
         <sakuli.install.src.example>sakuli/example_test_suites</sakuli.install.src.example>
         <sakuli.install.target.example>example_test_suites</sakuli.install.target.example>
+        <sakuli.install.src.firefox>FirefoxPortable</sakuli.install.src.firefox>
+        <sakuli.install.target.firefox>${sakuli.install.src.firefox}</sakuli.install.target.firefox>
         <sakuli.install.target.installerScripts>${sakuli.install.target.core}/bin/installer_scripts
         </sakuli.install.target.installerScripts>
         <package.name.set.default>Set as default version</package.name.set.default>
-        <package.name.firefox.win>Install Firefox Portable v42</package.name.firefox.win>
+        <package.name.firefox.version>v42</package.name.firefox.version>
+        <package.name.firefox>Install Firefox Portable ${package.name.firefox.version}</package.name.firefox>
         <package.name.userpermission.win>Set user permissions</package.name.userpermission.win>
     </properties>
 
@@ -91,6 +94,26 @@
                                             <type>zip</type>
                                         </artifactItem>
                                     </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.googlecode.maven-download-plugin</groupId>
+                        <artifactId>download-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unzip-firefox</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>wget</goal>
+                                </goals>
+                                <configuration>
+                                    <url>
+                                        https://labs.consol.de/sakuli/install/3rd-party/ff_portable/FirefoxPortable-${package.name.firefox.version}-windows.zip
+                                    </url>
+                                    <unpack>true</unpack>
+                                    <outputDirectory>${staging.dir}</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>
