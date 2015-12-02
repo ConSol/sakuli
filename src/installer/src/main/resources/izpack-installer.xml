@@ -159,13 +159,13 @@
             <description>Set 'SAKULI_HOME' to v${sakuli.version} and make it possible to execute 'sakuli.bat' from
                 CMD.
             </description>
-            <os family="windows"/>
-            <!-- INSTALLER: set SAKULI_HOME and PATH exute via 'ProcessPanel.Spec.xml-->
-
-            <!-- UNINSTALLER: remove set environment pathes-->
             <executable stage="uninstall" keep="true"
+
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_sakuli_home.bat">
             </executable>
+            <os family="windows"/>
+            <!-- INSTALLER: set SAKULI_HOME and PATH exute via 'ProcessPanel.Spec.xml-->
+            <!-- UNINSTALLER: remove set environment pathes-->
         </pack>
         <pack id="sakuli.examples" name="Sakuli Examples" required="no" preselected="true">
             <description>Example testsuite for quick start into Sakuli</description>
@@ -193,19 +193,19 @@
                 'SAKULI_HOME\${sakuli.install.target.firefox}' and configure as browser
                 type 'firefox_portable'.
             </description>
-            <os family="windows"/>
             <fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"
                      override="true"/>
-            <!--Anti-Virus-checked: https://www.virustotal.com/de/file/ee06345a08531c07c1381ff6d8bb8acade45aa1c5d14ef9190727140dda81780/analysis/ -->
             <fileset dir="${sakuli.install.src.firefox}" targetdir="${INSTALL_PATH}/${sakuli.install.target.firefox}"/>
+            <os family="windows"/>
+            <!--Anti-Virus-checked: https://www.virustotal.com/de/file/ee06345a08531c07c1381ff6d8bb8acade45aa1c5d14ef9190727140dda81780/analysis/ -->
         </pack>
         <pack id="sakuli.win.qres" name="Install QRes" preselected="true" required="false">
             <!-- Anti-Virus-checked: https://www.virustotal.com/de/file/5b268a80e2a8a6972c457a99cfc6a41dbe7057772a0ff0ebfb9769870140376d/analysis/1448890652/-->
             <description>QRes is a easy to use command line utility to change screen resolution, color depth, display
                 modes, refresh rate and so on.
             </description>
-            <os family="windows"/>
             <fileset dir="qres" targetdir="${INSTALL_PATH}/qres"/>
+            <os family="windows"/>
         </pack>
 
         <!-- TODO TS set installation as default through PATH variables for Linux + update documentation -->
