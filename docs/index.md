@@ -40,7 +40,7 @@ Sakuli provides methods of three different types:
 
 For documentation see
 
-* [Sahi](http://sahi.co.in/w/all-apis)
+* [Sahi-API](http://sahi.co.in/w/all-apis)
 * [TestCase](sakuli-api.md#TestCase)
 * [Application](sakuli-api.md#Application)
 * [Environment](sakuli-api.md#Environment)
