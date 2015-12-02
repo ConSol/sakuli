@@ -38,8 +38,9 @@ Sakuli provides methods of three different types:
 * JS methods which encapsulate a subset of the **Sikuli** Java API
 * JS methods of **Sakuli** framework itself (testcase stuff, exception handling, …)  
 
-The latter two can be found in the following classes:  
+For documentation see
 
+* [Sahi](http://sahi.co.in/w/all-apis)
 * [TestCase](sakuli-api.md#TestCase)
 * [Application](sakuli-api.md#Application)
 * [Environment](sakuli-api.md#Environment)
