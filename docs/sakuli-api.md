@@ -978,7 +978,7 @@ wheel the given steps up.
 <a name="Region.move"></a>
 ##Region.move(offsetX, offsetY)
 Set a offset to a specific Region and returns the new Region object.
-The offset function will move the Region's rectangle with x to the right and with y to the left.
+The offset function will move the Region's rectangle x pixels to the right and y pixels down.
 The size of the rectangle will be the same.
 
 **Params**
@@ -1020,7 +1020,7 @@ with a height of range number of pixels.
 
 - range `number` - of pixels  
 
-**Returns**:  - a new Region that is defined below the current region’s top border
+**Returns**:  - a new Region that is defined below the current region’s bottom border
 with a height of range number of pixels.  
 <a name="Region.left"></a>
 ##Region.left(range)
@@ -1028,16 +1028,16 @@ with a height of range number of pixels.
 
 - range `number` - of pixels  
 
-**Returns**:  - a new Region that is defined on the left the current region’s top border
-with a height of range number of pixels.  
+**Returns**:  - a new Region that is defined on the left the current region’s left border
+with a width of range number of pixels.  
 <a name="Region.right"></a>
 ##Region.right(range)
 **Params**
 
 - range `number` - of pixels  
 
-**Returns**:  - a new Region that is defined on the right the current region’s top border
-with a height of range number of pixels.  
+**Returns**:  - a new Region that is defined on the right the current region’s right border
+with a width of range number of pixels.  
 <a name="Region.setH"></a>
 ##Region.setH(height)
 set the height, based form the upper left corner downsides
