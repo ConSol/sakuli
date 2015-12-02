@@ -74,7 +74,7 @@
         </fileSet>
         <!-- copy unzipped sahi installation-->
         <fileSet>
-            <directory>${project.build.directory}/install_sahi_v50_20141105</directory>
+            <directory>${project.build.directory}/sahi</directory>
             <outputDirectory>/sahi</outputDirectory>
         </fileSet>
     </fileSets>

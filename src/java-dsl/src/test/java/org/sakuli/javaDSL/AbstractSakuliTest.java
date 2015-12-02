@@ -32,6 +32,7 @@ import org.sakuli.javaDSL.utils.SakuliJavaPropertyPlaceholderConfigurer;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.services.ResultServiceHelper;
+import org.sakuli.utils.ResourceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
@@ -40,8 +41,8 @@ import org.testng.annotations.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -68,9 +69,8 @@ public abstract class AbstractSakuliTest {
 
     public static Path resolveResource(Class<?> aClass, String resourceName) {
         try {
-            //should be the common src/test/resources folder
-            return Paths.get(aClass.getResource(resourceName).toURI());
-        } catch (URISyntaxException | NullPointerException e) {
+            return ResourceHelper.getClasspathResource(aClass, resourceName, "cannot resolve resource '" + resourceName + "' from classpath!");
+        } catch (NoSuchFileException e) {
             throw new SakuliRuntimeException("cannot resolve resource '" + resourceName + "' from classpath!", e);
         }
     }
@@ -109,7 +109,12 @@ public abstract class AbstractSakuliTest {
      * @return the installation folder of Sahi
      */
     protected String getSahiFolder() {
-        return null;
+        String packageName = "/sahi";
+        Path sahHomeFolder = resolveResource(AbstractSakuliTest.class, packageName);
+        if (Files.exists(sahHomeFolder)) {
+            return sahHomeFolder.normalize().toAbsolutePath().toString();
+        }
+        throw new SakuliRuntimeException("Cannot load SAHI_HOME folder! Should be normally under 'target/classes/" + packageName + "'");
     }
 
     @BeforeClass(alwaysRun = true)

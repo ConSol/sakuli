@@ -26,7 +26,6 @@ import org.sakuli.javaDSL.TestCaseInitParameter;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 /**
@@ -40,12 +39,6 @@ public class Example extends AbstractSakuliTest {
                 "my-example-test", "test1")
                 .withWarningTime(5)
                 .withCriticalTime(10);
-    }
-
-    @Override
-    protected String getSahiFolder() {
-        // sahi installation folder under the project root
-        return Paths.get("../../sahi").toAbsolutePath().normalize().toString();
     }
 
     @Test
