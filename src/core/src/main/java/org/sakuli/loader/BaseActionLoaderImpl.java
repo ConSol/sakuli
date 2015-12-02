@@ -123,13 +123,14 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
     @Override
     public void addImagePaths(Path... imagePaths) throws SakuliException {
         //load the images for the screenbased actions
-        if (imagePaths == null || imagePaths.length <= 0) {
-            throw new SakuliException("To init the internal image library, the imagePaths have to be not null and have at least one file path!");
-        }
-        try {
-            imageLib.addImagesFromFolder(imagePaths);
-        } catch (IOException e) {
-            throw new SakuliException(e);
+        if (imagePaths != null && imagePaths.length > 0) {
+            try {
+                imageLib.addImagesFromFolder(imagePaths);
+            } catch (IOException e) {
+                throw new SakuliException(e);
+            }
+        } else {
+            LOGGER.warn("No folder have been added to the test case image library!");
         }
     }
 

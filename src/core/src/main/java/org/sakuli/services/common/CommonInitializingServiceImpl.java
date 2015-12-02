@@ -18,6 +18,7 @@
 
 package org.sakuli.services.common;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.helper.TestSuiteHelper;
 import org.sakuli.datamodel.properties.SakuliProperties;
@@ -48,6 +49,15 @@ public class CommonInitializingServiceImpl implements InitializingService {
     @Autowired
     protected SakuliProperties sakuliProperties;
 
+    static void checkConfiguration(TestSuite testSuite) throws SakuliInitException {
+        if (StringUtils.isBlank(testSuite.getId())) {
+            throw new SakuliInitException(String.format(
+                    "The property '%s' have not been set. Please check your '%s' file",
+                    TestSuiteProperties.SUITE_ID,
+                    TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_NAME));
+        }
+    }
+
     @Override
     public int getServicePriority() {
         return 100;
@@ -58,6 +68,7 @@ public class CommonInitializingServiceImpl implements InitializingService {
      */
     @Override
     public void initTestSuite() throws SakuliInitException {
+        checkConfiguration(testSuite);
         logger.info("initialize test suite with id '{}'", testSuite.getId());
         testSuite.setState(TestSuiteState.RUNNING);
         testSuite.setStartDate(new Date());
