@@ -589,8 +589,8 @@ function initRegion(that, javaObject) {
     };
 
     /**
-     * Takes a screenshot of the current Region in the screen and saves it the current testcase folder
-     * with the assigned filename.
+     * Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
+     * filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
      *
      * @param {String} filename name of the screenshot, e.g. `region_screenshot`.
      *                 Default: screenshot

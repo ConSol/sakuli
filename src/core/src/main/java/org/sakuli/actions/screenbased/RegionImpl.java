@@ -21,6 +21,7 @@ package org.sakuli.actions.screenbased;
 import org.sakuli.actions.Action;
 import org.sakuli.datamodel.actions.ImageLibObject;
 import org.sakuli.exceptions.SakuliException;
+import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sikuli.basics.Settings;
 import org.sikuli.script.FindFailed;
@@ -30,12 +31,16 @@ import org.sikuli.script.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * @author Tobias Schneck
  */
 public class RegionImpl extends org.sikuli.script.Region implements Action {
 
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected static final Logger LOGGER = LoggerFactory.getLogger(RegionImpl.class);
     private final boolean resumeOnException;
     private ScreenActionLoader loader;
 
@@ -70,6 +75,19 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
             return new RegionImpl(region, resumeOnException, loader);
         }
         return null;
+    }
+
+    static Path resolveTakeScreenshotFolder(String filename, BaseActionLoader loader) {
+        Path path = Paths.get(filename);
+        if (path.isAbsolute()) {
+            return path;
+        }
+        Path folderPath = loader.getCurrentTestCase().getTcFile();
+        if (folderPath == null || !Files.exists(folderPath)) {
+            LOGGER.warn("The test case folder could be found => Fallback: Use test suite folder!");
+            folderPath = loader.getTestSuite().getTestSuiteFolder();
+        }
+        return folderPath.resolve(filename);
     }
 
     /**
@@ -290,7 +308,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
             loader.getExceptionHandler().handleException("text recognition is currently switched off", this, resumeOnException);
             return null;
         }
-        logger.info("Extracted text from region " + this + " is: " + erg);
+        LOGGER.info("Extracted text from region " + this + " is: " + erg);
         return erg;
     }
 
