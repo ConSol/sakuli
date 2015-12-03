@@ -32,12 +32,12 @@ try {
             env.paste(j + "#1-2-3-4-5-6-7-8-9-0-1-2-3-4-5-6-7-8-9-0-1-2-3-4-5-6-7-8-9-0");
             env.type(Key.ENTER);
         }
-        env.sleep(2);
-        for (k = 0; k < 3; k++) {
-            env.type(k + "#a-b-c-d-e-f-g-h-i-j-a-b-c-d-e-f-g-h-i-j-a-b-c-d-e-f-g-h-i-j");
-            env.type(Key.ENTER);
-        }
-        env.sleep(2);
+        //env.sleep(2);
+        //for (k = 0; k < 3; k++) {
+        //    env.type(k + "#a-b-c-d-e-f-g-h-i-j-a-b-c-d-e-f-g-h-i-j-a-b-c-d-e-f-g-h-i-j");
+        //    env.type(Key.ENTER);
+        //}
+        //env.sleep(2);
         screen.waitForImage("eval", 1).highlight();
         env.type("a", Key.CTRL);
         env.type(Key.DELETE)
