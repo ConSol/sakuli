@@ -15,7 +15,7 @@ $key = "SAKULI_HOME"
 $sakuliPathValue = "$newSakuliHome\bin"
 
 function setUserVarSakuliHome([string]$newValue){
-    echo "SET user environment variable $key: $newValue"
+    echo "SET user environment variable '$key': $newValue"
     Set-ItemProperty -Path 'Registry::HKEY_CURRENT_USER\Environment' -Name $key -Value $newValue
 }
 
