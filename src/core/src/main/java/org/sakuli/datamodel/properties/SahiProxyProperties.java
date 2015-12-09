@@ -52,8 +52,8 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String REQUEST_DELAY_MS = "sahi.proxy.onSikuliInput.delayPerKey";
     public static final String REQUEST_DELAY_REFRESH_MS = "sahi.proxy.onSikuliInput.delayBeforeInput";
     public static final String DEFAULT_PROXY_PORT = "9999";
-    public static final String DEFAULT_RECONNECT_SECONDS = "5";
-    public static final String DEFAULT_MAX_CONNECT_TRIES = "5";
+    public static final String DEFAULT_RECONNECT_SECONDS = "1";
+    public static final String DEFAULT_MAX_CONNECT_TRIES = "25";
 
     public static final String SAHI_PROPERTY_FILE_APPENDER = File.separator + "config" + File.separator + "userdata.properties";
     public static final String SAHI_LOG_PROPERTY_FILE_APPENDER = File.separator + "config" + File.separator + "log.properties";
