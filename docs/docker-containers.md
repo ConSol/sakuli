@@ -11,7 +11,7 @@ The repository's subfolder [./docker](https://github.com/ConSol/sakuli/tree/mast
 
 Each Sakuli docker image is installed with the following components:
 
-* Desktop environment [**Xfce4**](http://www.xfce.org)
+* Desktop environment (currently [**Xfce4**](http://www.xfce.org) only)
 * VNC-Server (default VNC port `5901`)
 * [**noVNC**](https://github.com/kanaka/noVNC) - HTML5 VNC client (default http port `6901`)
 * Java JRE 8
@@ -32,7 +32,7 @@ The running containers are accessible via:
 
 ## Get Sakuli docker images
 
-The following example command pulls the CentOS7 image from DockerHub:
+The following example command pulls the CentOS7 image from [DockerHub](https://hub.docker.com/r/consol/sakuli-centos-xfce/):
 
     docker pull consol/sakuli-centos-xfce
 
