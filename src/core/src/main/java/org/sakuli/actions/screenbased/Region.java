@@ -540,7 +540,7 @@ public class Region implements Action {
      * @return {@link Path} to the created screenshot OR null on errors
      */
     @LogToResult
-    public Path takeScreenShot(String filename) {
+    public Path takeScreenshot(String filename) {
         Path filePath = RegionImpl.resolveTakeScreenshotFolder(filename, getLoader());
         try {
             return getLoader().getScreenshotActions().takeScreenshot(

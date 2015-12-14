@@ -95,7 +95,7 @@
   * [Region.setY(y)](#Region.setY)
   * [Region.getY()](#Region.getY)
   * [Region.highlight(seconds)](#Region.highlight)
-  * [Region.takeScreenShot(filename)](#Region.takeScreenShot)
+  * [Region.takeScreenshot(filename)](#Region.takeScreenshot)
   * [Region.sleep(seconds)](#Region.sleep)
   * [Region.extractText()](#Region.extractText)
 * [RegionRectangle](#RegionRectangle)
@@ -739,7 +739,7 @@ Region - Represents a region as a part of or the hole screen.
   * [Region.setY(y)](#Region.setY)
   * [Region.getY()](#Region.getY)
   * [Region.highlight(seconds)](#Region.highlight)
-  * [Region.takeScreenShot(filename)](#Region.takeScreenShot)
+  * [Region.takeScreenshot(filename)](#Region.takeScreenshot)
   * [Region.sleep(seconds)](#Region.sleep)
   * [Region.extractText()](#Region.extractText)
 
@@ -1089,8 +1089,8 @@ set the Y coordinate of the upper left corner.
 - seconds `number` - highlights this Region for x seconds
 or the default time  
 
-<a name="Region.takeScreenShot"></a>
-##Region.takeScreenShot(filename)
+<a name="Region.takeScreenshot"></a>
+##Region.takeScreenshot(filename)
 Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
 filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
 

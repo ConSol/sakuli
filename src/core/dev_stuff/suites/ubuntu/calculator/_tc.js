@@ -53,9 +53,9 @@ try {
         screen.waitForImage("gedit.png", 20);
         //TODO TS check why getRegion don't work as expected!
         var reg = appCalc.focus().getRegion().grow(50).type(Key.ESC);
-        //reg.takeScreenShot("reg");
+        //reg.takeScreenshot("reg");
         var reg2 = new RegionRectangle(reg.getX(), reg.getY(), reg.getW(), reg.getH());
-        //reg.takeScreenShot("reg2");
+        //reg.takeScreenshot("reg2");
         reg2.waitForImage("gcalculator", 2);
         appGedit.focus();
         env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");

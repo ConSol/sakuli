@@ -597,13 +597,13 @@ function initRegion(that, javaObject) {
      *
      * @return {String} file path to the created screenshot OR null on errors
      * @memberOf Region
-     * @method takeScreenShot
+     * @method takeScreenshot
      */
-    that.takeScreenShot = function (filename) {
+    that.takeScreenshot = function (filename) {
         if (undefined == filename) {
             filename = "screenshot";
         }
-        var path = that.javaObject.takeScreenShot(filename);
+        var path = that.javaObject.takeScreenshot(filename);
         return path != null ? path.toString() : null;
     };
 
