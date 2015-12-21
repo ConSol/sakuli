@@ -72,7 +72,7 @@ public class Example extends AbstractSakuliTest {
 
         Assert.assertTrue(editor.getPID() > 0, "PID " + editor.getPID() + " <= 0");
         editor.getRegion().type("TEST it!");
-        editor.closeApp();
+        editor.kill();
     }
 
     private void highlightLink(String identifier) {

@@ -65,10 +65,10 @@ try {
     } finally {
 
         appCalc.close();
-        appGedit.close();
-        if (screen.exists("close-without-saving", 1)) {
-            screen.find("close-without-saving").click();
-        }
+        appGedit.kill();
+        //if (screen.exists("close-without-saving", 1)) {
+        //    screen.find("close-without-saving").click();
+        //}
         testCase.endOfStep("Close Calculator");
     }
 
