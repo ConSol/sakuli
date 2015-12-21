@@ -18,6 +18,7 @@
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
   * [Application.close(optSilent)](#Application.close)
+  * [Application.kill(optSilent)](#Application.kill)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -253,6 +254,7 @@ var editor = new Application("gedit");
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
   * [Application.close(optSilent)](#Application.close)
+  * [Application.kill(optSilent)](#Application.kill)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -285,6 +287,15 @@ Closes the already existing application.
 **Params**
 
 - optSilent `boolean` - (optional) if true, no exception will be thrown on errors and stop the test execution.  
+
+**Returns**:  - this Application object.  
+<a name="Application.kill"></a>
+##Application.kill(optSilent)
+Kill the already existing application hardly.
+
+**Params**
+
+- optSilent `boolean` - (optional) if true, no exception will be thrown on errors.  
 
 **Returns**:  - this Application object.  
 <a name="Application.setSleepTime"></a>
