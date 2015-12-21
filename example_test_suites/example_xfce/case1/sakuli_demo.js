@@ -60,11 +60,7 @@ try {
 } catch (e) {
     testCase.handleException(e);
 } finally {
-    appCalc.close(true);  //silent
-    appGedit.close(true); //silent
-    var existsCloseWithoutSaving = screen.exists("close-without-saving", 1);
-    if (existsCloseWithoutSaving) {
-        existsCloseWithoutSaving.click();
-    }
+    appCalc.close(true); //silent
+    appGedit.kill(true);  //silent, without exit prompt
     testCase.saveResult();
 }
