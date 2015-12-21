@@ -24,6 +24,7 @@ import org.sakuli.BaseTest;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.loader.BaseActionLoader;
+import org.sikuli.basics.Settings;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -77,7 +78,7 @@ public class RegionImplTest {
 
     @Test
     public void testResolveTakeScreenshotFolderAbsolutPath() throws Exception {
-        String filename = "/home/test";
+        String filename = Settings.isWindows() ? "C:\\test" : "/home/test";
         Path result = RegionImpl.resolveTakeScreenshotFolder(filename, loader);
         assertEquals(result.toString(), filename);
         verify(loader, never()).getTestSuite();

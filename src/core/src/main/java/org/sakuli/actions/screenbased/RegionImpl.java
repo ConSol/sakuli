@@ -19,6 +19,7 @@
 package org.sakuli.actions.screenbased;
 
 import org.sakuli.actions.Action;
+import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.actions.ImageLibObject;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.loader.BaseActionLoader;
@@ -82,7 +83,8 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         if (path.isAbsolute()) {
             return path;
         }
-        Path folderPath = loader.getCurrentTestCase().getTcFile();
+        TestCase currentTestCase = loader.getCurrentTestCase();
+        Path folderPath = currentTestCase != null ? currentTestCase.getTcFile() : null;
         if (folderPath == null || !Files.exists(folderPath)) {
             LOGGER.warn("The test case folder could be found => Fallback: Use test suite folder!");
             folderPath = loader.getTestSuite().getTestSuiteFolder();
