@@ -165,7 +165,6 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         SakuliForwarderException forwarderException = new SakuliForwarderException("FORWARDER_EXCEPTION");
 
         testling.handleException(forwarderException, true);
-        verify(screenshotActionsMock, never()).takeScreenshotAndHighlight(anyString(), any(Path.class), any(RegionImpl.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class), anyString());
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
@@ -181,7 +180,6 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         SakuliActionException sakuliActionException = new SakuliActionException("ACTION_EXCEPTION");
 
         testling.handleException(sakuliActionException, mock(RegionImpl.class), true);
-        verify(screenshotActionsMock).takeScreenshotAndHighlight(anyString(), any(Path.class), any(RegionImpl.class));
         verify(screenshotActionsMock).takeScreenshot(anyString(), any(Path.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class), anyString());
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
@@ -195,13 +193,11 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     public void testSakuliActionExceptionTakeSuccessfulScreenshotFromRegion() throws Exception {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
-        when(screenshotActionsMock.takeScreenshotAndHighlight(anyString(), any(Path.class), any(RegionImpl.class))).thenReturn(expectedScreenshotPath);
-        when(screenshotActionsMock.takeScreenshot(anyString(), any(Path.class))).thenReturn(null);
+        when(screenshotActionsMock.takeScreenshot(anyString(), any(Path.class))).thenReturn(expectedScreenshotPath);
         SakuliActionException sakuliActionException = new SakuliActionException("ACTION_EXCEPTION");
 
         testling.handleException(sakuliActionException, mock(RegionImpl.class), true);
-        verify(screenshotActionsMock).takeScreenshotAndHighlight(anyString(), any(Path.class), any(RegionImpl.class));
-        verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class));
+        verify(screenshotActionsMock).takeScreenshot(anyString(), any(Path.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class), anyString());
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
