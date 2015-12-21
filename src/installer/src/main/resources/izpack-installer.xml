@@ -164,7 +164,19 @@
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_sakuli_home.bat">
             </executable>
             <os family="windows"/>
-            <!-- INSTALLER: set SAKULI_HOME and PATH exute via 'ProcessPanel.Spec.xml-->
+            <!-- INSTALLER: set SAKULI_HOME and PATH execute via 'ProcessPanel.Spec.xml-->
+            <!-- UNINSTALLER: remove set environment pathes-->
+        </pack>
+        <pack id="sakuli.linux.env" name="${package.name.set.default}" preselected="true" required="false">
+            <description>Set 'SAKULI_HOME' to v${sakuli.version} in '.bashrc' and make it possible to execute
+                'sakuli.sh' from commandline.
+            </description>
+            <executable stage="uninstall" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_sakuli_home.sh">
+            </executable>
+            <os family="unix"/>
+            <os family="mac"/>
+            <!-- INSTALLER: set SAKULI_HOME and PATH execute via 'ProcessPanel.Spec.xml-->
             <!-- UNINSTALLER: remove set environment pathes-->
         </pack>
         <pack id="sakuli.examples" name="Sakuli Examples" required="no" preselected="true">

@@ -27,6 +27,13 @@
             <arg>${INSTALL_PATH}\${sakuli.install.target.core}</arg>
         </executefile>
     </job>
+    <job name="${package.name.set.default}" condition="izpack.selected.${package.name.set.default}">
+        <os family="unix"/>
+        <os family="mac"/>
+        <executefile name="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_sakuli_home.sh">
+            <arg>${INSTALL_PATH}/${sakuli.install.target.core}</arg>
+        </executefile>
+    </job>
 
     <job name="${package.name.userpermission.win}">
         <os family="windows"/>
