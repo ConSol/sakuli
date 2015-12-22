@@ -43,6 +43,14 @@
     </properties>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <excludes>
+                    <exclude>sahi/</exclude>
+                </excludes>
+            </resource>
+        </resources>
 
         <plugins>
             <!-- plugin for aspectj weaver to weave libraries -->
@@ -105,6 +113,29 @@
                                     <type>zip</type>
                                 </artifactItem>
                             </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- replace sahi prefs.js with custom file -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-custom-sahi-config-files</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/resources/sahi</directory>
+                                </resource>
+                            </resources>
+                            <overwrite>true</overwrite>
+                            <encoding>UTF-8</encoding>
+                            <outputDirectory>${project.build.directory}/sahi</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
