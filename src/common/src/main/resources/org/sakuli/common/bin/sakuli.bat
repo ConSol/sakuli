@@ -20,10 +20,10 @@ set count=0
   if "%param%" == "" goto execute
   set /A count+=1
   IF "%param%" == "-j" (
-        SET JAVAEXEC=%~2\java.exe
+        SET JAVAEXEC=%~2\bin\java.exe
         shift
   ) ELSE IF "%param%" == "--javahome" (
-        SET JAVAEXEC=%~2\java.exe
+        SET JAVAEXEC=%~2\bin\java.exe
         shift
   ) ELSE IF "%param:~0,2%" == "-D" (
         set JAVA_PARAMS=%JAVA_PARAMS% "%param%=%2"
