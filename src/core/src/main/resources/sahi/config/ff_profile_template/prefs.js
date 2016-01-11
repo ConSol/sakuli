@@ -121,3 +121,17 @@ user_pref("devtools.cache.disabled", true);
 user_pref("network.http.use-cache", false);
 user_pref("offline-apps.allow_by_default", false);
 user_pref("offline-apps.quota.max", false);
+// disable telemetry
+user_pref("toolkit.telemetry.unified", false);
+user_pref("toolkit.telemetry.unifiedIsOptIn", true);
+user_pref("toolkit.telemetry.optoutSample", false);
+user_pref("toolkit.telemetry.enabled", false);
+user_pref("toolkit.telemetry.server", "");
+user_pref("toolkit.telemetry.archive.enabled", false);
+user_pref("toolkit.telemetry.cachedClientID", "");
+// disable health report
+user_pref("datareporting.healthreport.uploadEnabled", false);
+user_pref("datareporting.healthreport.documentServerURI", "");
+user_pref("datareporting.healthreport.service.enabled", false);
+user_pref("datareporting.policy.dataSubmissionEnabled", false);
+user_pref("datareporting.policy.dataSubmissionEnabled.v2", false);
