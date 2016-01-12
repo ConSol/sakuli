@@ -30,6 +30,10 @@
  * `NUM1`, `NUM2`, `NUM3`, `NUM4`, `NUM5`, `NUM6`, `NUM7`, `NUM8`, `NUM9`, `SEPARATOR`, `NUM_LOCK`, `ADD`, `MINUS`,
  * `MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`
  *
+ * __Using `Key.ALTGR` on Unix:__
+ * To enable the key command `ALTGR` for unix systems please bind it to `CTRL + ALT`, for more information
+ * see [stackexchange.com - how-to-bind-altgr-to-ctrl-alt](http://unix.stackexchange.com/questions/157834/how-to-bind-altgr-to-ctrl-alt).
+ *
  * @example Closing an window over typing the short cut `ALT + F4`:
  * ```
  * env.type(Key.F4, Key.ALT);
