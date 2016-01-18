@@ -62,7 +62,7 @@ try {
         env.sleep(2);
         testCase.endOfStep("gedit paste", 20);
 
-        env.type(Key.ENTER + "Also tpye special characters like: # ß ! § $ & < > |");
+        env.type(Key.ENTER + "Also type special characters like: # ß ! § $ & < > |");
         env.sleep(2);
         testCase.endOfStep("type special characters");
         // finally close the calculator app!

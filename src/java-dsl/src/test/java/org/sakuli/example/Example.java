@@ -74,7 +74,7 @@ public class Example extends AbstractSakuliTest {
         Assert.assertTrue(editor.getPID() > 0, "PID " + editor.getPID() + " <= 0");
         editor.getRegion().type("TEST it!")
                 .type(Key.ENTER)
-                .type("Also tpye special characters like: # ß ! § $ & < > |");
+                .type("Also type special characters like: # ß ! § $ & < > |");
         editor.kill();
     }
 
