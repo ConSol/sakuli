@@ -20,6 +20,7 @@ package org.sakuli.example;
 
 import net.sf.sahi.util.OSUtils;
 import org.sakuli.actions.environment.Application;
+import org.sakuli.actions.screenbased.Key;
 import org.sakuli.actions.screenbased.Region;
 import org.sakuli.javaDSL.AbstractSakuliTest;
 import org.sakuli.javaDSL.TestCaseInitParameter;
@@ -71,7 +72,9 @@ public class Example extends AbstractSakuliTest {
         Application editor = new Application(executable).open();
 
         Assert.assertTrue(editor.getPID() > 0, "PID " + editor.getPID() + " <= 0");
-        editor.getRegion().type("TEST it!");
+        editor.getRegion().type("TEST it!")
+                .type(Key.ENTER)
+                .type("Also tpye special characters like: # ß ! § $ & < > |");
         editor.kill();
     }
 

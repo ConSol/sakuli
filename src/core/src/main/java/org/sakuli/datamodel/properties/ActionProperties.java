@@ -130,6 +130,13 @@ public class ActionProperties extends AbstractProperties {
         this.typeDelay = typeDelay;
     }
 
+    /**
+     * @return {@link #getTypeDelay()} converted in milliseconds
+     */
+    public int getTypeDelayMs() {
+        return new Double(typeDelay * 1000).intValue();
+    }
+
     public String getEncryptionInterface() {
         return encryptionInterface;
     }

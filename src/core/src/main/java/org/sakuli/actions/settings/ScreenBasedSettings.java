@@ -23,6 +23,7 @@ import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sikuli.basics.Debug;
 import org.sikuli.basics.Settings;
+import org.sikuli.script.RobotDesktop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,9 @@ public class ScreenBasedSettings extends Settings {
         ObserveScanRate = 10f;
 
         ClickDelay = props.getClickDelay();
-        TypeDelay = props.getTypeDelay();
+        RobotDesktop.stdAutoDelay = props.getTypeDelayMs();
+        //if stdAutoDelay is set TypeDelay is no longer needed!
+        TypeDelay = 0;
 
         OcrDataPath = sakuliProps.getTessDataLibFolder().toAbsolutePath().toString();
         OcrTextSearch = true;

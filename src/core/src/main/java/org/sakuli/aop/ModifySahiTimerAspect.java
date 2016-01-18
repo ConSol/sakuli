@@ -123,7 +123,7 @@ public class ModifySahiTimerAspect extends BaseSakuliAspect {
                 Object text = args[0];
                 if (text instanceof String) {
                     int length = ((String) text).length();
-                    int typeDelayMs = new Double(loader.getActionProperties().getTypeDelay() * 1000).intValue();
+                    int typeDelayMs = loader.getActionProperties().getTypeDelayMs();
 
                     return length * (typeDelayMs + deleay);
                 }
