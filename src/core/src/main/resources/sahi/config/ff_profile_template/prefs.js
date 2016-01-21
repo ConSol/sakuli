@@ -135,3 +135,10 @@ user_pref("datareporting.healthreport.documentServerURI", "");
 user_pref("datareporting.healthreport.service.enabled", false);
 user_pref("datareporting.policy.dataSubmissionEnabled", false);
 user_pref("datareporting.policy.dataSubmissionEnabled.v2", false);
+//history
+user_pref("browser.history_expire_days", 1);
+user_pref("browser.history_expire_days.mirror", 1);
+user_pref("browser.history_expire_days_min", 1);
+user_pref("browser.history_expire_sites", 1);
+user_pref("browser.history_expire_visits", 1);
+user_pref("dom.storage.enabled“, false);
