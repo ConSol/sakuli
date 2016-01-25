@@ -4,6 +4,8 @@
 
 - - -
 
+### Version 0.9.2
+
 ### Version 0.9.1
 * fix #116 wrong comma in gearman output
 * sakuli.bat: added SAKULI_HOME fallback if env var not set #124
