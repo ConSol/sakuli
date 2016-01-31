@@ -37,9 +37,10 @@
         <module>src/common</module>
         <module>src/core</module>
         <module>src/integration-test</module>
-        <module>src/docs</module>
         <module>src/java-dsl</module>
         <module>src/installer</module>
+        <module>src/docs</module>
+        <module>src/docs-structurizer</module>
     </modules>
 
     <properties>
