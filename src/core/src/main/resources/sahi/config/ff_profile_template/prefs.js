@@ -105,7 +105,7 @@ user_pref("browser.offline", false);
 user_pref("extensions.blocklist.enabled", false);
 user_pref("toolkit.telemetry.prompted", 2);
 user_pref("toolkit.telemetry.rejected", true);
-user_pref("toolkit.startup.max_resumed_crashes", 999999999);
+user_pref("toolkit.startup.max_resumed_crashes", -1);
 //custom firefox settings added by sakuli
 user_pref("browser.cache.disk.capacity", 0);
 user_pref("browser.cache.disk.enable", false);
