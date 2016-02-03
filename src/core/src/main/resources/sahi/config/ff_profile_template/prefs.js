@@ -142,3 +142,6 @@ user_pref("browser.history_expire_days_min", 1);
 user_pref("browser.history_expire_sites", 1);
 user_pref("browser.history_expire_visits", 1);
 user_pref("dom.storage.enabled", false);
+user_pref("places.history.enabled", false);
+user_pref("browser.send_pings", false);
+
