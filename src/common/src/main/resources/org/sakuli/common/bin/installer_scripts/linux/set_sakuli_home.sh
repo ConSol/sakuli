@@ -3,7 +3,7 @@
 function remove_sakuli_home {
     echo "remove 'SAKULI_HOME' from 'bash.rc'"
     unset SAKULI_HOME
-    sed -i '/export SAKULI_HOME/d' ~/.bashrc
+    [ -r ~/.bashrc ] && sed -i '/export SAKULI_HOME/d' ~/.bashrc
 }
 
 function set_sakuli_home {
@@ -19,7 +19,7 @@ function set_sakuli_home {
 
 function set_path {
     echo "$PATH"
-    if grep -q SAKULI_HOME/bin: ~/.bashrc; then
+    if grep -q SAKULI_HOME/bin: ~/.bashrc 2>/dev/null; then
         echo "no update of 'PATH' needed!"
     else
         echo "add 'SAKULI_HOME/bin' to PATH"
@@ -29,9 +29,9 @@ function set_path {
 }
 
 function remove_path {
-    if grep -q SAKULI_HOME/bin: ~/.bashrc; then
+    if grep -q SAKULI_HOME/bin: ~/.bashrc 2>/dev/null; then
         echo "remove 'SAKULI_HOME' from PATH"
-        sed -i '/SAKULI_HOME\/bin/d' ~/.bashrc
+        [ -r ~/.bashrc ] && sed -i '/SAKULI_HOME\/bin/d' ~/.bashrc
         PATH=${PATH/":$SAKULI_HOME"/} # delete any instances in the middle or at the end
         PATH=${PATH/"$SAKULI_HOME:"/} # delete any instances at the beginning
     else
