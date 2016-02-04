@@ -42,7 +42,8 @@
         <displayName>Chrome</displayName>
         <icon>chrome.png</icon>
         <path>/usr/bin/google-chrome</path>
-        <options>--incognito --user-data-dir=$userDir/browser/chrome/profiles/sahi$threadNo
+        <options>--incognito --no-default-browser-check --no-first-run --disable-infobars
+            --user-data-dir=$userDir/browser/chrome/profiles/sahi$threadNo
             --proxy-server=localhost:9999 --disable-popup-blocking
         </options>
         <processName>chrome</processName>

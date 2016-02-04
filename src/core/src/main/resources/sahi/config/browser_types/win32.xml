@@ -21,7 +21,7 @@
         <name>firefox</name>
         <displayName>Firefox</displayName>
         <icon>firefox.png</icon>
-        <path>$ProgramFiles (x86)\Mozilla Firefox\firefox.exe</path>
+        <path>$ProgramFiles\Mozilla Firefox\firefox.exe</path>
         <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
         <processName>firefox.exe</processName>
         <capacity>5</capacity>
@@ -41,7 +41,7 @@
         <name>ie</name>
         <displayName>IE</displayName>
         <icon>ie.png</icon>
-        <path>$ProgramFiles\Internet Explorer\iexplore.exe</path>
+        <path>$ProgramFiles (x86)\Internet Explorer\iexplore.exe</path>
         <options>-noframemerging</options>
         <processName>iexplore.exe</processName>
         <useSystemProxy>true</useSystemProxy>
@@ -49,21 +49,23 @@
     </browserType>
 
     <!-- <browserType>
-        <name>ie</name>
-        <displayName>IE 8</displayName>
-        <icon>ie.png</icon>
-        <path>$ProgramFiles (x86)\Internet Explorer\iexplore.exe</path>
-        <options>-noframemerging</options>
-        <processName>iexplore.exe</processName>
-        <useSystemProxy>true</useSystemProxy>
-        <capacity>5</capacity>
-    </browserType> -->
+       <name>ie</name>
+       <displayName>IE 8</displayName>
+       <icon>ie.png</icon>
+       <path>$ProgramFiles\Internet Explorer\iexplore.exe</path>
+       <options>-noframemerging</options>
+       <processName>iexplore.exe</processName>
+       <useSystemProxy>true</useSystemProxy>
+       <capacity>5</capacity>
+   </browserType>
+    -->
+
     <!--
     <browserType>
         <name>ie</name>
         <displayName>IE 7</displayName>
         <icon>ie.png</icon>
-        <path>$ProgramFiles (x86)\Internet Explorer\iexplore.exe</path>
+        <path>$ProgramFiles\Internet Explorer\iexplore.exe</path>
         <options></options>
         <processName>iexplore.exe</processName>
         <useSystemProxy>true</useSystemProxy>
@@ -76,7 +78,7 @@
         <name>ie</name>
         <displayName>IE 6</displayName>
         <icon>ie.png</icon>
-        <path>$ProgramFiles (x86)\Internet Explorer\iexplore.exe</path>
+        <path>$ProgramFiles\Internet Explorer\iexplore.exe</path>
         <options></options>
         <processName>iexplore.exe</processName>
         <useSystemProxy>true</useSystemProxy>
@@ -89,7 +91,8 @@
         <displayName>Chrome</displayName>
         <icon>chrome.png</icon>
         <path>$ProgramFiles (x86)\Google\Chrome\Application\chrome.exe</path>
-        <options>--incognito --user-data-dir=$userDir\browser\chrome\profiles\sahi$threadNo
+        <options>--incognito --no-default-browser-check --no-first-run --disable-infobars
+            --user-data-dir=$userDir\browser\chrome\profiles\sahi$threadNo
             --proxy-server=localhost:9999 --disable-popup-blocking
         </options>
         <processName>chrome.exe</processName>
@@ -100,7 +103,7 @@
         <name>safari</name>
         <displayName>Safari</displayName>
         <icon>safari.png</icon>
-        <path>$ProgramFiles (x86)\Safari\Safari.exe</path>
+        <path>$ProgramFiles\Safari\Safari.exe</path>
         <options></options>
         <processName>safari.exe</processName>
         <useSystemProxy>true</useSystemProxy>
@@ -111,7 +114,7 @@
         <name>opera</name>
         <displayName>Opera</displayName>
         <icon>opera.png</icon>
-        <path>$ProgramFiles (x86)\Opera\opera.exe</path>
+        <path>$ProgramFiles\Opera\opera.exe</path>
         <options></options>
         <processName>opera.exe</processName>
         <useSystemProxy>true</useSystemProxy>

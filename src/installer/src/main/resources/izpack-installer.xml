@@ -214,8 +214,8 @@
                 'SAKULI_HOME\${sakuli.install.target.firefox.win}' and configure as browser
                 type 'firefox_portable'.
             </description>
-            <fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"
-                     override="true"/>
+            <!--<fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"-->
+            <!--override="true"/>-->
             <fileset dir="${sakuli.install.src.firefox.win}"
                      targetdir="${INSTALL_PATH}/${sakuli.install.target.firefox.win}"/>
             <os family="windows"/>
@@ -226,8 +226,8 @@
                 'SAKULI_HOME\${sakuli.install.target.firefox.win}' and configure as browser
                 type 'firefox_portable'.
             </description>
-            <fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"
-                     override="true"/>
+            <!--<fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"-->
+            <!--override="true"/>-->
             <os family="unix"/>
             <!-- INSTALLER: Will executed via 'ProcessPanel.Spec.xml-->
         </pack>
