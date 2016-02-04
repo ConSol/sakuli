@@ -2,7 +2,7 @@
 
 FROM consol/centos-xfce-vnc
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2015-12-01
+ENV REFRESHED_AT 2016-02-04
 
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
@@ -26,14 +26,11 @@ RUN yum -y install \
     # xdotool
     http://li.nux.ro/download/nux/dextop/el7/x86_64/xdotool-2.20110530.1-7.el7.nux.x86_64.rpm \
     http://li.nux.ro/download/nux/dextop/el7/x86_64/libxdo-2.20110530.1-7.el7.nux.x86_64.rpm
-## Install sakuli zip
-RUN wget --directory-prefix=/root $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION.zip \
-    && unzip /root/sakuli-v$SAKULI_VERSION.zip -d /root \
-    && rm -fv /root/sakuli*.zip \
-    && chmod +x -v $(find /root/sakuli -name '*.sh') \
-    && echo "export PATH='$SAKULI_HOME/bin:$PATH'" >> /root/.bashrc
-## modify chrome startup options
-RUN sed -e 's|--incognito|--incognito --no-default-browser-check --no-first-run --disable-infobars|g' -i /root/sakuli/sahi/config/browser_types/linux.xml
+## Install sakuli
+ADD scripts/auto-install.xml /tmp/
+RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
+    && java -jar /tmp/sakuli-v$SAKULI_VERSION-installer.jar /tmp/auto-install.xml \
+    && rm -f sakuli*.jar auto-install.xml
 
 ### Install apps for testing
 RUN yum -y install gedit gnome-calculator

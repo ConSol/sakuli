@@ -24,6 +24,7 @@ modify_testsuite_permissions(){
 # for sakuli.sh (=ENTRYPOINT). Hence, try to execute CMD standalone.
 if [ "${1:0:1}" == "-" ]; then
         i=$(eval echo $*)
+        echo "call 'sakuli.sh $i'"
         $SAKULI_HOME/bin/sakuli.sh $i
 
         res=$?

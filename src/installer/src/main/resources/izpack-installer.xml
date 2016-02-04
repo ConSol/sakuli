@@ -241,6 +241,5 @@
             <os family="windows"/>
         </pack>
 
-        <!-- TODO TS update docker installation, update documentation -->
     </packs>
 </izpack:installation>
