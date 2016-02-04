@@ -1,7 +1,7 @@
 # Sakuli client installation
 
 This page describes the common steps to **install and test** Sakuli on **Windows** and **Linux** (Ubuntu Desktop 14.04 LTS/GNOME Fallback, OpenSUSE 13.2/KDE).
-  * For updating Sakuli, see **[Upgrade process](#upgrade-process)**. 
+  * For updating Sakuli, see **[Upgrade process](#upgrade-process)**.
   * For using **docker containers**, see **[Usage Sakuli Docker Containers](docker-containers.md)**.
 
 The default installation path of a particular Sakuli version is referenced as `%SAKULI_HOME%`, that is the *version* folder inside of the folder "sakuli":
@@ -157,7 +157,10 @@ Sakuli should now
 
 **Congratulations - you have installed Sakuli!**
 
-What next? Now go on to [prepare OMD](installation-omd.md) to receive results for the Sakuli check **example_ubuntu/opensuse/windows** [via Gearman](forwarder-gearman.md) or [from the MySQL result DB](forwarder-database.md).
+What next? Well, it depends...
+
+* To integrate Sakuli checks in a nagios based **monitoring environment like OMD**, go on to [prepare OMD](installation-omd.md).
+* Sakuli can also be integrated in **continuous integration environments like Jenkins**. Documentation is coming in the next time (...have one?)
 
 # Upgrade process
 
