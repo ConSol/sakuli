@@ -1,7 +1,7 @@
 # Sakuli client installation
 
 This page describes the common steps to **install and test** Sakuli on **Windows** and **Linux** (Ubuntu Desktop 14.04 LTS/GNOME Fallback, OpenSUSE 13.2/KDE).
-  * For updating Sakuli, see **[Upgrade process](#upgrade-process)**. FIXME
+  * For updating Sakuli, see **[Upgrade process](#upgrade-process)**. 
   * For using **docker containers**, see **[Usage Sakuli Docker Containers](docker-containers.md)**.
 
 The default installation path of a particular Sakuli version is referenced as `%SAKULI_HOME%`, that is the *version* folder inside of the folder "sakuli":
@@ -76,9 +76,7 @@ In the end you are able to generate a automatic installation script to install S
 
 Now is the right time to test if Sahi can start a Sahi-controlled browser. Execute `%SAKULI_HOME%/sahi/userdata/bin/start_dashboard.(sh|bat)` to open the **Sahi Dashboard**. It should now list all available browsers on this system (on Windows: also Firefox Portable).
 
-![db_browsers](./pics/w_sahi_dashboard_browsers.png)
-![db_browsers](./pics/u_sahi_dashboard_browsers.png)
-![db_browsers](./pics/s_sahi_dashboard_browsers.jpg)
+![dashboards](./pics/inst_dashboards.jpg)
 
 Click on any browser icon; it should start and present you the start page of Sahi:
 
@@ -102,6 +100,7 @@ and double-click on any white space. If you are getting a new window showing the
 ### Additional software
 
 #### additional packages on Linux
+(required)
 
 Install the following packages if you are on Linux:
 
