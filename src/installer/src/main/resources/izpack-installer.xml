@@ -104,6 +104,16 @@
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/install_firefox_portable.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_sakuli_home.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
         </pack>
         <pack id="sahi" name="Sahi OS v${sahi.version}" required="yes">
             <description>Sahi OS v${sahi.version}, for more information see http://sahipro.com/sahi-open-source/
@@ -155,19 +165,18 @@
                 <os family="mac"/>
             </executable>
         </pack>
-        <pack id="sakuli.win.env" name="${package.name.set.default}" preselected="true" required="false">
+        <pack id="sakuli.win.env" name="${package.name.set.default.win}" preselected="true" required="false">
             <description>Set 'SAKULI_HOME' to v${sakuli.version} and make it possible to execute 'sakuli.bat' from
                 CMD.
             </description>
             <executable stage="uninstall" keep="true"
-
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_sakuli_home.bat">
             </executable>
             <os family="windows"/>
             <!-- INSTALLER: set SAKULI_HOME and PATH execute via 'ProcessPanel.Spec.xml-->
             <!-- UNINSTALLER: remove set environment pathes-->
         </pack>
-        <pack id="sakuli.linux.env" name="${package.name.set.default}" preselected="true" required="false">
+        <pack id="sakuli.linux.env" name="${package.name.set.default.linux}" preselected="true" required="false">
             <description>Set 'SAKULI_HOME' to v${sakuli.version} in '.bashrc' and make it possible to execute
                 'sakuli.sh' from commandline.
             </description>
@@ -199,18 +208,30 @@
                 <os family="mac"/>
             </executable>
         </pack>
-        <pack id="sakuli.win.firefox" name="${package.name.firefox}" preselected="true" required="false">
+        <pack id="sakuli.win.firefox" name="${package.name.firefox.win}" preselected="true" required="false">
             <!-- INSTALLER: trigger job in 'ProcessPanel.Spec.xml' -->
-            <description>Install Firefox Portable ${package.name.firefox.version} to
-                'SAKULI_HOME\${sakuli.install.target.firefox}' and configure as browser
+            <description>Install Firefox Portable v${package.name.firefox.version} to
+                'SAKULI_HOME\${sakuli.install.target.firefox.win}' and configure as browser
                 type 'firefox_portable'.
             </description>
             <fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"
                      override="true"/>
-            <fileset dir="${sakuli.install.src.firefox}" targetdir="${INSTALL_PATH}/${sakuli.install.target.firefox}"/>
+            <fileset dir="${sakuli.install.src.firefox.win}"
+                     targetdir="${INSTALL_PATH}/${sakuli.install.target.firefox.win}"/>
             <os family="windows"/>
             <!--Anti-Virus-checked: https://www.virustotal.com/de/file/ee06345a08531c07c1381ff6d8bb8acade45aa1c5d14ef9190727140dda81780/analysis/ -->
         </pack>
+        <pack id="sakuli.linux.firefox" name="${package.name.firefox.linux}" preselected="true" required="false">
+            <description>Download and install Firefox Portable v${package.name.firefox.version} to
+                'SAKULI_HOME\${sakuli.install.target.firefox.win}' and configure as browser
+                type 'firefox_portable'.
+            </description>
+            <fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"
+                     override="true"/>
+            <os family="unix"/>
+            <!-- INSTALLER: Will executed via 'ProcessPanel.Spec.xml-->
+        </pack>
+
         <pack id="sakuli.win.qres" name="Install QRes" preselected="true" required="false">
             <!-- Anti-Virus-checked: https://www.virustotal.com/de/file/5b268a80e2a8a6972c457a99cfc6a41dbe7057772a0ff0ebfb9769870140376d/analysis/1448890652/-->
             <description>QRes is a easy to use command line utility to change screen resolution, color depth, display
@@ -220,6 +241,6 @@
             <os family="windows"/>
         </pack>
 
-        <!-- TODO TS set installation as default through PATH variables for Linux + update documentation -->
+        <!-- TODO TS update docker installation, update documentation -->
     </packs>
 </izpack:installation>

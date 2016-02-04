@@ -43,13 +43,18 @@
         <sakuli.install.target.sahi>sahi</sakuli.install.target.sahi>
         <sakuli.install.src.example>sakuli/example_test_suites</sakuli.install.src.example>
         <sakuli.install.target.example>example_test_suites</sakuli.install.target.example>
-        <sakuli.install.src.firefox>FirefoxPortable</sakuli.install.src.firefox>
-        <sakuli.install.target.firefox>${sakuli.install.src.firefox}</sakuli.install.target.firefox>
+        <sakuli.install.src.firefox.win>FirefoxPortable</sakuli.install.src.firefox.win>
+        <sakuli.install.target.firefox.win>${sakuli.install.src.firefox.win}</sakuli.install.target.firefox.win>
+        <sakuli.install.target.firefox.linux>.</sakuli.install.target.firefox.linux>
         <sakuli.install.target.installerScripts>${sakuli.install.target.core}/bin/installer_scripts
         </sakuli.install.target.installerScripts>
-        <package.name.set.default>Set as default version</package.name.set.default>
-        <package.name.firefox.version>v42</package.name.firefox.version>
-        <package.name.firefox>Install Firefox Portable ${package.name.firefox.version}</package.name.firefox>
+        <package.name.set.default.win>Set v${sakuli.version} default version</package.name.set.default.win>
+        <package.name.set.default.linux>Set v${sakuli.version} default version in .bashrc
+        </package.name.set.default.linux>
+        <package.name.firefox.version>42</package.name.firefox.version>
+        <package.name.firefox.win>Install Firefox Portable v${package.name.firefox.version}</package.name.firefox.win>
+        <package.name.firefox.linux>Download and install Firefox Portable v${package.name.firefox.version}
+        </package.name.firefox.linux>
         <package.name.userpermission.win>Set user permissions</package.name.userpermission.win>
     </properties>
 
@@ -110,7 +115,7 @@
                                 </goals>
                                 <configuration>
                                     <url>
-                                        https://labs.consol.de/sakuli/install/3rd-party/ff_portable/FirefoxPortable-${package.name.firefox.version}-windows.zip
+                                        https://labs.consol.de/sakuli/install/3rd-party/ff_portable/FirefoxPortable-v${package.name.firefox.version}-windows.zip
                                     </url>
                                     <unpack>true</unpack>
                                     <outputDirectory>${staging.dir}</outputDirectory>

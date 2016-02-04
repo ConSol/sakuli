@@ -21,13 +21,22 @@
                    version="5.0"
                    xsi:schemaLocation="http://izpack.org/schema/processing http://izpack.org/schema/5.0/izpack-processing-5.0.xsd">
 
-    <job name="${package.name.set.default}" condition="izpack.selected.${package.name.set.default}">
+    <job name="${package.name.firefox.linux}" condition="izpack.selected.${package.name.firefox.linux}">
+        <os family="unix"/>
+        <os family="mac"/>
+        <executefile name="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/install_firefox_portable.sh">
+            <arg>${package.name.firefox.version}.0</arg>
+            <arg>${INSTALL_PATH}/${sakuli.install.target.firefox.linux}</arg>
+        </executefile>
+    </job>
+
+    <job name="${package.name.set.default.win}" condition="izpack.selected.${package.name.set.default.win}">
         <os family="windows"/>
         <executefile name="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_sakuli_home.bat">
             <arg>${INSTALL_PATH}\${sakuli.install.target.core}</arg>
         </executefile>
     </job>
-    <job name="${package.name.set.default}" condition="izpack.selected.${package.name.set.default}">
+    <job name="${package.name.set.default.linux}" condition="izpack.selected.${package.name.set.default.linux}">
         <os family="unix"/>
         <os family="mac"/>
         <executefile name="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_sakuli_home.sh">
