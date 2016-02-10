@@ -36,6 +36,12 @@
             <arg>${INSTALL_PATH}\${sakuli.install.target.core}</arg>
         </executefile>
     </job>
+    <job name="${package.name.set.testing.vars.win}" condition="izpack.selected.${package.name.set.testing.vars.win}">
+        <os family="windows"/>
+        <executefile name="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_ui_testing_variables.bat">
+            <arg>set</arg>
+        </executefile>
+    </job>
     <job name="${package.name.set.default.linux}" condition="izpack.selected.${package.name.set.default.linux}">
         <os family="unix"/>
         <os family="mac"/>

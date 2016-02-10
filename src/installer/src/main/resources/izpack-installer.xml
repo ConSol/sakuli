@@ -18,7 +18,7 @@
   ~ limitations under the License.
   -->
 
-<izpack:installation xmlns:izpack="http://izpack.org/schema/installation"
+<izpack:installation xmlns:izpack="http://izpack.org/sfchema/installation"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                      version="5.0"
                      xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
@@ -188,6 +188,19 @@
             <!-- INSTALLER: set SAKULI_HOME and PATH execute via 'ProcessPanel.Spec.xml-->
             <!-- UNINSTALLER: remove set environment pathes-->
         </pack>
+
+        <pack id="sakuli.win.user.var" name="${package.name.set.testing.vars.win}" preselected="true" required="false">
+            <description>Set some entries in the Windows registry like:
+                * Firefox Defaults MOZ_DISABLE_OOP_PLUGINS, MOZ_DISABLE_AUTO_SAFE_MODE
+            </description>
+            <executable stage="uninstall" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_ui_testing_variables.bat">
+            </executable>
+            <os family="windows"/>
+            <!-- INSTALLER: set ui environment variables via 'ProcessPanel.Spec.xml-->
+            <!-- UNINSTALLER: remove variables from environment pathes-->
+        </pack>
+
         <pack id="sakuli.examples" name="Sakuli Examples" required="no" preselected="true">
             <description>Example testsuite for quick start into Sakuli</description>
             <fileset dir="${sakuli.install.src.example}" targetdir="${INSTALL_PATH}/${sakuli.install.target.example}"
@@ -214,8 +227,6 @@
                 'SAKULI_HOME\${sakuli.install.target.firefox.win}' and configure as browser
                 type 'firefox_portable'.
             </description>
-            <!--<fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"-->
-            <!--override="true"/>-->
             <fileset dir="${sakuli.install.src.firefox.win}"
                      targetdir="${INSTALL_PATH}/${sakuli.install.target.firefox.win}"/>
             <os family="windows"/>
@@ -226,8 +237,6 @@
                 'SAKULI_HOME\${sakuli.install.target.firefox.win}' and configure as browser
                 type 'firefox_portable'.
             </description>
-            <!--<fileset dir="browser_types" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}/config/browser_types"-->
-            <!--override="true"/>-->
             <os family="unix"/>
             <!-- INSTALLER: Will executed via 'ProcessPanel.Spec.xml-->
         </pack>
