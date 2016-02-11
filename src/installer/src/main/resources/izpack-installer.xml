@@ -21,7 +21,7 @@
 <izpack:installation xmlns:izpack="http://izpack.org/sfchema/installation"
                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                      version="5.0"
-                     xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
+>
 
     <info>
         <appname>sakuli</appname>
@@ -197,6 +197,19 @@
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_ui_testing_variables.bat">
             </executable>
             <os family="windows"/>
+            <!-- INSTALLER: set ui environment variables via 'ProcessPanel.Spec.xml-->
+            <!-- UNINSTALLER: remove variables from environment pathes-->
+        </pack>
+        <pack id="sakuli.linux.user.var" name="${package.name.set.testing.vars.linux}" preselected="true"
+              required="false">
+            <description>Set some entries in '.bashrc' like:
+                * Firefox Defaults MOZ_DISABLE_OOP_PLUGINS, MOZ_DISABLE_AUTO_SAFE_MODE
+            </description>
+            <executable stage="uninstall" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_ui_testing_variables.sh">
+            </executable>
+            <os family="unix"/>
+            <os family="mac"/>
             <!-- INSTALLER: set ui environment variables via 'ProcessPanel.Spec.xml-->
             <!-- UNINSTALLER: remove variables from environment pathes-->
         </pack>

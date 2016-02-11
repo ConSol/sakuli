@@ -28,7 +28,8 @@
         <pack index="1" selected="true"/>
         <pack index="2" selected="true"/>
         <pack index="3" selected="true"/>
-        <pack index="4" selected="false"/>
+        <pack index="4" selected="true"/>
+        <pack index="5" selected="false"/>
     </com.izforge.izpack.panels.packs.PacksPanel>
     <com.izforge.izpack.panels.summary.SummaryPanel id="SummaryPanel_4"/>
     <com.izforge.izpack.panels.install.InstallPanel id="InstallPanel_5"/>
