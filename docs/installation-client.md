@@ -1,6 +1,6 @@
 # Sakuli client installation
 
-This page describes the common steps to **install and test** Sakuli on **Windows** and **Linux** (Ubuntu Desktop 14.04 LTS/GNOME Fallback, OpenSUSE 13.2/KDE).
+This page describes the common steps to **install and test** Sakuli on **Windows** and **Linux**.
   * For updating Sakuli, see **[Upgrade process](#upgrade-process)**.
   * For using **docker containers**, see **[Usage Sakuli Docker Containers](docker-containers.md)**.
 
@@ -11,7 +11,7 @@ The default installation path of a particular Sakuli version is referenced as `%
 
 **Conventions**:
 
-- Wherever you see `%SAKULI_HOME%` in the instructions, replace it by the appropriate variable `$SAKULI_HOME` (**Linux**) respectively `%SAKULI_HOME%` (**Windows**).
+- Wherever you see `__SAKULI_HOME__` in the instructions, replace it by the appropriate variable `$SAKULI_HOME` (**Linux**) respectively `%SAKULI_HOME%` (**Windows**).
 - Values surrounded by underscores are have to be filled individually by you (e.g. `__IP_ADDRESS__`).
 - Unless stated otherwise, slashes/backslashes have to be used depending on the operating system.
 
@@ -20,11 +20,9 @@ The default installation path of a particular Sakuli version is referenced as `%
 We recommend to run Sakuli clients on virtual machines.
 
 * **OS**: **Windows** or **Linux** (Ubuntu Desktop 14.04 LTS, OpenSUSE 13.2).
-* **RAM**: 3GB+
+* **RAM**: 2GB+
 * **CPU**: dual-Core
 * if virtualized: **Hypervisor guest additions** for best performance
-* no local firewall running
-* a user account with **sudo/admin rights**
 * desktop appearance:
   * Set the desktop background to a homogenous color.
   * If you do not want to run Sakuli [headless](headless-linux.md), disable any screen locking mechanisms
@@ -61,20 +59,25 @@ After you have accepted the licence and choose the installation folder, select t
 
 ![inst_2](./pics/installer_2.png)
 
-* **1)** will set/update the environment variable `%SAKULI_HOME%` to this version.
-* **2)** will install one example test suite per OS which will help you to test and understand Sakuli.
-* **3)** will install Firefox Portable, which can be used solely for Sakuli Tests (Windows only)
-* **4)** will install [QRes](http://sourceforge.net/projects/qres/), a open source screen mode changer (Windows only)
+* **1)** will set/update the environment variable `__SAKULI_HOME__` to this version.
+* **2)** will set/update the environment to a recommend UI testing configuration. In examples disables the Firefox safe.
+* **3)** will install one example test suite per OS which will help you to test and understand Sakuli.
+* **4)** will install Firefox Portable, which can be used exclusively for Sakuli Tests.
+* **5)** will install [QRes](http://sourceforge.net/projects/qres/), a open source screen mode changer (Windows only)
 
 After the files have been copied, the installer updates the current user's environment.
 
-In the end you are able to generate a automatic installation script to install Sakuli unattendedly:
+In the end you are able to generate a automatic installation script to install Sakuli headles:
 
 ![inst_3](./pics/installer_3.png)
 
+Call the generated `auto-install.xml` via:
+
+    java -jar sakuli-vX.X.X-installer.jar auto-config.xml
+
 #### Test Sahi
 
-Now is the right time to test if Sahi can start a Sahi-controlled browser. Execute `%SAKULI_HOME%/sahi/userdata/bin/start_dashboard.(sh|bat)` to open the **Sahi Dashboard**. It should now list all available browsers on this system (on Windows: also Firefox Portable).
+Now is the right time to test if Sahi can start a Sahi-controlled browser. Execute `__SAKULI_HOME__/sahi/userdata/bin/start_dashboard.(sh|bat)` to open the **Sahi Dashboard**. It should now list all available browsers on this system (on Windows: also Firefox Portable).
 
 ![dashboards](./pics/inst_dashboards.jpg)
 
@@ -132,19 +135,20 @@ A good choice is
 #### Editor
 (optional)
 
-You're doing better if you do *not* use gEdit or Windows Notepad to edit Sakuli files.
+You're doing better if you do *not* use gEdit or Windows Notepad to edit Sakuli files. It is recommended to use an Editor with JavaScript support, e. g.:
 
 * on **Windows** install for instance [Notepad++](http://notepad-plus-plus.org/)
-* on **Linux** use [Bluefish](http://bluefish.openoffice.nl/index.html)
+* on **Linux** use [Atom](https://atom.io)
 
+It also possible to use professional programming IDEs like [IntelliJ](https://www.jetbrains.com/idea/), [Netbeans](https://netbeans.org/) or [Eclipse](https://eclipse.org).
 
 
 ## Test
 
-You are now ready to run the **first minimal Sakuli check** to see if Sakuli and its components are working well together. Execute the **Sakuli starter script** to start a test:
+You are now ready to run the **first minimal Sakuli test** to see if Sakuli and its components are working well together. Execute the **Sakuli starter script** to start a test:
 
-* **Ubuntu**: `__SAKULI_HOME__/../example_ubuntu/start_example_ubuntu.sh`
-* **openSUSE**: `__SAKULI_HOME__/../example_opensuse/start_example_opensuse.sh`
+* **Ubuntu**: `__SAKULI_HOME__/../example_test_suites/start_example_ubuntu.sh`
+* **openSUSE**: `__SAKULI_HOME__/../example_test_suites/start_example_opensuse.sh`
 * **Windows**: `__SAKULI_HOME__\..\example_test_suites\start_example_windows.bat`
 
 Sakuli should now
@@ -155,6 +159,13 @@ Sakuli should now
 
 ![](pics/u_vnc_test.png)
 
+You can also trigger the example tests interactively trough the command line starter (`sakuli.sh` for linux, `sakuli.bat` for windows):
+
+* **Ubuntu**: `sakuli.sh --run $SAKULI_HOME/../example_test_suites/example_ubuntu`
+* **openSUSE**: `sakuli.sh --run $SAKULI_HOME/../example_test_suites/example_opensuse`
+* **Windows**: `sakuli.bat --run "%SAKULI_HOME%\..\example_test_suites\example_windows"`
+
+
 **Congratulations - you have installed Sakuli!**
 
 What next? Well, it depends...
@@ -164,6 +175,6 @@ What next? Well, it depends...
 
 # Upgrade process
 
-Execute `%SAKULI_HOME%/../Uninstaller/uninstaller.jar` to remove the current installed version. This will only affect the files in `%SAKULI_HOME%`.
+Execute `__SAKULI_HOME__/../Uninstaller/uninstaller.jar` to remove the current installed version. This will only affect the files in `__SAKULI_HOME__`. The uninstaller removes all installed files, and resets the environment configuration.
 
 After that just install the new version.
