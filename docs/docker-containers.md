@@ -1,99 +1,152 @@
 # Usage of Sakuli Docker Containers
 
-## Architecture of the Container
-Each different container-image source file in the directory [./docker](https://github.com/ConSol/sakuli/tree/master/docker) contains a ready-to-use image with a headless VNC server and  already installed Sakuli.
-The different docker images can be found at [DockerHub]():
+Docker containers allow you to run a Sakuli test in an isolated environment, called "container", which is always started off from the same base image. This ensures that tests always run under equal conditions.
 
-* [consol/sakuli-centos-xfce](https://hub.docker.com/r/consol/sakuli-centos-xfce/)
-* [consol/sakuli-ubuntu-xfce](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/)
+## Container OS types
+The repository's subfolder [./docker](https://github.com/ConSol/sakuli/tree/master/docker) contains all source files Sakuli docker images are made of. Currently we provide images on  [DockerHub](https://hub.docker.com) for:
+* CentOS 7 ([consol/sakuli-centos-xfce](https://hub.docker.com/r/consol/sakuli-centos-xfce/))
+* Ubuntu 14.04 LTS ([consol/sakuli-ubuntu-xfce](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/))
 
-Preinstalled components of the docker images:
+## Architecture of Sakuli containers
 
-* UI session, e.g. `Xfce`
+Each Sakuli docker image is installed with the following components:
+
+* Desktop environment (currently [**Xfce4**](http://www.xfce.org) only)
 * VNC-Server (default VNC port `5901`)
-* [noVNC](https://github.com/kanaka/noVNC) - HTML5 VNC client (default http port `6901`)
+* [**noVNC**](https://github.com/kanaka/noVNC) - HTML5 VNC client (default http port `6901`)
 * Java JRE 8
-* Firefox + Java Plugin
-* Chrome (Java-Plugin is no longer supported)
-* Sakuli in the latest version
+* Browsers:
+  * Mozilla Firefox + Java Plugin
+  * Google Chrome (Java-Plugin is no longer supported)
+* [**Sahi OS**](http://sahi.co.in)
+* [**Sakuli**](https://github.com/ConSol/sakuli) in the latest stable version
 
-The running containers are accessible as follows:
+The running containers are accessible via:
 
-* connect via __VNC viewer `localhost:5901`__, default password: `sakuli`
-* connect via __noVNC HTML5 client__: [http://localhost:6901/vnc_auto.html?password=sakuli]()
+* __VNC viewer__:
+  *  __`DOCKER_HOST:5901`__
+  * default password: `sakuli`
+* __noVNC HTML5 client__:
+  * [http://localhost:6901/vnc_auto.html?password=sakuli]()
 
-## Current provided OS & UI containers:
-* **[consol/sakuli-centos-xfce](https://hub.docker.com/r/consol/sakuli-centos-xfce/)** - __Centos7 with `Xfce4` UI session:__
 
-  Run command with mapping to local port `5901` and `6901`:
+## Get Sakuli docker images
 
-      ### start the docker container
-      # vnc-port:    5901  => connect via VNC viewer localhost:5901
-      # webVNC-port: 6901  => connect via URL: http://localhost:6901/vnc_auto.html?password=sakuli
+The following example command pulls the CentOS7 image from [DockerHub](https://hub.docker.com/r/consol/sakuli-centos-xfce/):
+
+    docker pull consol/sakuli-centos-xfce
+
+Alternatively, you can build this image from the sources:
+
+    git clone https://github.com/ConSol/sakuli.git
+    docker build -t consol/sakuli-centos-xfce docker/sakuli-centos-xfce .
+
+## Start/test a Sakuli container
+
+Once you have pulled/built the image, you can start a container on top of it which binds port 5901/tcp and 6901/tcp to localhost (on native docker installations; $DOCKER_IP on boot2docker):
 
       docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce
 
-  Build image from scratch:
+The container will execute a small headless self-test and exit afterwards. Read on to learn how to execute your own test within this container.  
 
-      git clone https://github.com/ConSol/sakuli.git
-      docker build -t consol/sakuli-centos-xfce docker/sakuli-centos-xfce
+## Integrate custom test suites in a Sakuli container
+
+There are three important lines in the *Dockerfile* of each Sakuli image which define what has to be done on a container start:
+
+    ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
+    ENTRYPOINT ["/root/scripts/sakuli_startup.sh"]
+    CMD ["--run $SAKULI_TEST_SUITE"]
+
+* `ENTRYPOINT` is the command which is executed once the container is started with `docker run`.
+* `CMD` is the default argument for `ENTRYPOINT`, that is, to run a test suite set by a variable.
+* `ENV SAKULI_TEST_SUITE` is set to the path of a test suite which has to run when the container starts. By default, this is set to the built-in folder `/root/sakuli/example_test_suites/example_xfce`.
+
+There is more than one way to integrate a custom testsuite in a container, discussed in the following and assuming that you want to integrate a suite called `suite_1` located on your host at the path `/home/myuser/my-sakuli-testsuites`:
+
+### 1) Mount an external suite folder and modify `CMD`
+
+Mount a folder on your host into the container and override `CMD` from Dockerfile (=argument for `ENTRYPOINT`) with custom parameters for the Sakuli starter `sakuli.sh`.  In this way you can also instruct Sakuli e.g. to use another browser (`--browser chrome`). To get all possible command line parameters call `docker run consol/sakuli-ubuntu-xfce --help`.
 
 
-* **[consol/sakuli-ubuntu-xfce](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/)** - __Ubuntu 14.04 with `Xfce4` UI session:__
+CMD can be overrideen in two ways:
 
-  Run command with mapping to local port `5901` and `6901`:
+#### 1.1) using the command line
 
-      ### start the docker container
-      # vnc-port:    5901  => connect via VNC viewer localhost:5901
-      # webVNC-port: 6901  => connect via URL: http://localhost:6901/vnc_auto.html?password=sakuli
+    ~$ docker run -it -p 5901:5901 -p 6901:6901   \\
+         -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites"   \\
+         consol/sakuli-centos-xfce   \\
+         '--run /my-sakuli-testsuites/suite_1'
 
-      docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-ubuntu-xfce
+#### 1.2) using docker-compose
+A more elegant way is to pack all parameters into a [Docker Compose](https://docs.docker.com/compose/) file. Create `docker-compose.yml`:
 
-  Build image from scratch:
+    sakuli-example-ubuntu:
+      image: consol/sakuli-centos-xfce
+      ports:
+      - 5901:5901
+      - 6901:6901
+      volumes:
+      - /home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites
+      command: "'--run /my-sakuli-testsuites/suite_1'"
 
-      git clone https://github.com/ConSol/sakuli.git
-      docker build -t consol/sakuli-centos-xfce docker/sakuli-ubuntu-xfce
+When executed in the same directory as `docker-compose.yml`, a simple `docker-compose up` will bring up all containers.
+(Intentionally, `docker-compose` is made to bring up environments with *multiple* containers which are linked together; but even with one container it eases the parameter handling.)
 
-## Hints
-### Configure and mount a Sakuli testsuite
-The value of the environment variable `SAKULI_TEST_SUITE` defines which test suite will be run when the `docker run` command is called. Per default a Sakuli container executes the test suite "[example_xfce](https://github.com/ConSol/sakuli/tree/master/example_test_suites/example_xfce)" which have been already added to the docker image at the path `/root/sakuli/example_test_suites/example_xfce`.
+`docker-compose rm -f` in contrast removes all currently stopped and running containers, which defined in the `docker-compose.yml`. Otherwise, if `docker-compose up` will called again, the test execution will reattach the instance and the start the test execution again in the same container instance.
 
-To execute your own Sakuli test suite, you can simple mount your local test suite folder to the container and override the environment variable `SAKULI_TEST_SUITE`. In the following example we will mount and start a test suite called `suite_1` placed at the path `/home/myuser/my-sakuli-testsuites`:
+### 2) Mount an external suite folder and modify `SAKULI_TEST_SUITE`
+Mount a folder on your host into the container and override the environment variable `SAKULI_TEST_SUITE`.
 
-    docker run -it -p 5901:5901 -p 6901:6901 -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites" -e "SAKULI_TEST_SUITE=/my-sakuli-testsuites/suite_1" consol/sakuli-ubuntu-xfce
+#### 2.1) using the command line
 
-A more elegant way is the usage of [Docker Compose](https://docs.docker.com/compose/). In the case of this example the `docker-compose.yml` would look like:
+    ~$ docker run -it -p 5901:5901 -p 6901:6901   \\
+         -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites"   \\
+         -e "SAKULI_TEST_SUITE=/my-sakuli-testsuites/suite_1"   \\
+         consol/sakuli-ubuntu-xfce
+
+#### 2.2) using docker-compose
+Similar to [#12-using-docker-compose](docker-compose in 1.2), the file `docker-compose.yml` would look like this:
 
     sakuli-example-ubuntu:
       image: consol/sakuli-ubuntu-xfce
+      ports:
+      - 5901:5901
+      - 6901:6901
       volumes:
-      # mount all suites
       - /home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites
       environment:
-      # set Sakuli test suite
       - SAKULI_TEST_SUITE=/my-sakuli-testsuites/suite_1
-      ports:
-      #vnc
-      - 5901:5901
-      #noVNC HTML client
-      - 6901:6901
-
-To start the container call `docker-compose rm -f && docker-compose up` on the command line. The command `docker-compose rm -f` removes currently stopped containers of the docker-compose file. Otherwise we might reattach to such an instance and the startup process wouldn't come up correctly.
 
 
-### Override the VNC environment variables
+### Override VNC environment variables
 The following VNC environment variables can be overwritten at the `docker run` phase to customize your desktop environment inside the container:
 * `VNC_COL_DEPTH`, default: `24`
 * `VNC_RESOLUTION`, default: `1280x1024`
 * `VNC_PW`, default: `sakuli`
 
-For example, the variable `VNC_PW` could be set like this:
+For example, the password for VNC could be set like this:
 
-    docker run -it -p 5901:5901 -p 6901:6901 -e "VNC_PW=my-new-password" consol/sakuli-ubuntu-xfce
+    ~$ docker run -it -p 5901:5901 -p 6901:6901 -e "VNC_PW=my-new-password"  \\
+         consol/sakuli-ubuntu-xfce
 
 
 ## Further Information
-Further Information about the usage of Sakuli docker containers can be found at:
+Further information about the usage of Sakuli docker containers can be found at:
 
 * Presentation **[Containerized End-2-End-Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)**
 * Example project on GitHub **[ConSol/sakuli-example-testautomation-day](https://github.com/ConSol/sakuli-example-testautomation-day)**.
+
+## Contact
+For questions or maybe some hints, feel free to contact us via **[sakuli@consol.de](mailto:sakuli@consol.de)** or open an [issue](https://github.com/ConSol/sakuli/issues/new).
+
+The guys behind Sakuli:
+<table>
+<tr>
+<td>
+**ConSol* Consulting & Solutions Software GmbH** <br/>
+*Franziskanerstr. 38, D-81669 München* <br/>
+*Tel. +49-89-45841-100, Fax +49-89-45841-111*<br/>
+*Homepage: http://www.consol.de E-Mail: [info@consol.de](info@consol.de)*
+</td>
+</tr>
+<table>

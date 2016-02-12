@@ -56,28 +56,16 @@ public class ScreenshotActions {
     }
 
     /**
-     * Takes a screenshot of the current arrea and save in the given format;
+     * Takes a screenshot of the current display and save in the given format;
      *
      * @param message    Filename of the picture
      * @param folderPath Folder of the place, where the picture should be stored
-     * @param region     if not null, the region will be highlighted at the screenshot
      * @return {@link java.nio.file.Path} ot the screenshot.
      * @throws IOException
      */
-    public Path takeScreenshotAndHighlight(String message, Path folderPath, RegionImpl region) throws IOException {
-
-        //highlight if an valid region parameter is set
-        if (region != null) {
-            region.highlight(autohighlightSeconds);
-        }
-
+    public Path takeScreenshot(String message, Path folderPath) throws IOException {
         return createPictureFromBufferedImage(message, folderPath, screen.capture().getImage());
     }
-
-    public Path takeScreenshot(String message, Path folderPath) throws IOException {
-        return takeScreenshotAndHighlight(message, folderPath, null);
-    }
-
 
     /**
      * Takes a screenshot of the assigned area and save in the given format;

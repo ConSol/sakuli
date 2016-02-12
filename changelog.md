@@ -4,6 +4,47 @@
 
 - - -
 
+### Version 0.9.2
+* add setting some firefox variables (`MOZ_OOP_DISABLE_PLUGINS`, `MOZ_DISABLE_AUTO_SAFE_MODE`, `MOZ_DISABLE_SAFE_MODE_KEY`) for UI testing to the installer, see #158.
+* Executable JAR installer `sakuli-vX.X.X-installer.jar`, downloadable via [](https://labs.consol.de/sakuli/install/), see #24.
+  * The installer contains a complete Sakuli setup and the following options:
+    ![inst_2](docs/pics/installer_2.png)
+    * **1)** will set/update the environment variable `__SAKULI_HOME__` to this version.
+    * **2)** will set/update the environment to a recommend UI testing configuration. In examples disables the Firefox safe.
+    * **3)** will install one example test suite per OS which will help you to test and understand Sakuli.
+    * **4)** will install Firefox Portable, which can be used exclusively for Sakuli Tests.
+    * **5)** will install [QRes](http://sourceforge.net/projects/qres/), a open source screen mode changer (Windows only)
+  * modify docker images to new headless linux installer
+  * custom sahi `browser_types.xml` for firefox, firefox_portable, chrome
+* Property `sikuli.typeDelay` now also set the `RobotDesktop.stdAutoDelay` to make the delay more effective, default is `0.0`, #154.
+* issue #149 add `Application.kill()` to force closeting an app without "save prompts"
+* issue #94: disable highlighting in case of an exception
+* docker container: modify test suite permissions after test run in `sakuli_startup.sh`
+* Improve typing handling #154:
+    * typing all special characters via unicode keyboard shortcuts
+    * keyboard mapping only contains alphanumeric characters, so region.type now will work with all local keyboards, because of typing special characters via UFT-8
+    * Mac's currently not supports directly typing UFT-8 keys, by default  see https://en.wikipedia.org/wiki/Unicode_input#In_Mac_OS . Unicode typing will only be used if correct keyboard is activated.
+* improve takeScreenshot: now also can handle with absolute paths
+* rename `Region.takeScreenShot` to `Region.takeScreenshot`
+* fix #107: Fix Sikuli `LinuxUtil` Implementation of:
+  * Focus application
+  * Closing application
+  * Make  output and control of native commands more flexible
+* include Sahi base installation to java DSL, #24
+* modify properties, so that all default values are included
+    * add check that `testsuite.id` will be defined at least
+    * allow to write test without explicit image folder path, to enable java tests
+* added docker-container `sakuli-omd-labs-ubuntu` for a Sakuli preconfigered [OMD](http://omdistro.org/)  
+* sakuli.bat: added exitcode, fixes bug #128 (Errors with paths containing spaces)
+* fix #142: remove some not valid windows escape chars like `'` or `"` to prevent a InvalidPathException in SakuliStarter arguments
+* docker-containers.md: Added hint for boot2docker users.
+* check_sakuli.php: fixed #132 (suite runtime)
+* close #103: make docker-container able to override the running testsuite in `docker run`  `CMD` arguments  
+  * make the `sakuli.sh` command line parameters usable in `docker run`  `CMD` arguments, like for example `docker run consol/sakuli-centos-xfce '--run $SAKULI_TEST_SUITE --browser chrome'`
+* Added documentation how to configure HTTPS in Sahi. #53
+* Rename README.md to index.md in case of https://readthedocs.org/projects/sakuli/
+* headless-linux.md: Added crontab documentation.
+
 ### Version 0.9.1
 * fix #116 wrong comma in gearman output
 * sakuli.bat: added SAKULI_HOME fallback if env var not set #124
@@ -44,14 +85,14 @@
 * close #74 extract logging functions to separate javascript class Logger
 * close #70 rename sakuli.screenbased.* properties to sikuli.*
 * close #42 rename Application#closeApp to Application#close in javascript
-* close #27 modify 'non screenshot exception handling' // add TestCaseAction#throwException(message,screenshot) 
-* add mysql Dockefile for sakuli database forwarder setup, see #10 
+* close #27 modify 'non screenshot exception handling' // add TestCaseAction#throwException(message,screenshot)
+* add mysql Dockefile for sakuli database forwarder setup, see #10
 * close #10 rename table name from sahi to sakuli
 * rewritten documentation for sahi delay.
-* close #79 rename property `sahi.proxy.requestDelayOnSikuliInput.delayTime` -> `sahi.proxy.onSikuliInput.delayPerKey` and `sahi.proxy.requestDelayOnSikuliInput.refreshTime` -> `sahi.proxy.onSikuliInput.delayBeforeInput` 
+* close #79 rename property `sahi.proxy.requestDelayOnSikuliInput.delayTime` -> `sahi.proxy.onSikuliInput.delayPerKey` and `sahi.proxy.requestDelayOnSikuliInput.refreshTime` -> `sahi.proxy.onSikuliInput.delayBeforeInput`
 * finish JavaDSL to be fully supported of all Sakuli features also in Java
 * fix #11 custom sahi-port handling (use different ports for sahi-proxy)
-* close #7 update sahi-jar verison to sahi 5.0 
+* close #7 update sahi-jar verison to sahi 5.0
 
 - - -   
 
@@ -78,7 +119,7 @@
 * .#60 introduce new file system structure
 
  - - -
- 
+
 ### Version 0.4.9 (Bugfix Release)
 * add #106 add warn/crit thresholds as perfdata values for the Gearman results
     * Adaption for 3-digit case/step ids

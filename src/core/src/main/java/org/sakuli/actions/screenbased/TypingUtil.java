@@ -94,7 +94,7 @@ public class TypingUtil<A extends Action> {
      * Enters the given text one character/key after another using keyDown/keyUp.
      * <p>
      * About the usable Key constants see documentation of {@link org.sikuli.script.Key}.
-     * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+     * The function could also type UTF-8 unicode characters, if the OS supports it.
      * The text is entered at the current position of the focus.
      * </p>
      *
@@ -114,7 +114,7 @@ public class TypingUtil<A extends Action> {
      * The entered text will be masked at the logging.
      * <p>
      * About the usable Key constants see documentation of {@link org.sikuli.script.Key}.
-     * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+     * The function could also type UTF-8 unicode characters, if the OS supports it.
      * The text is entered at the current position of the focus.
      * </p>
      *
@@ -134,7 +134,7 @@ public class TypingUtil<A extends Action> {
      * The entered text will be masked at the logging. For the deatails of the decryption see {@link #decryptSecret(String)}.
      * <p>
      * About the usable Key constants see documentation of {@link org.sikuli.script.Key}.
-     * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+     * The function could also type UTF-8 unicode characters, if the OS supports it.
      * The text is entered at the current position of the focus.
      * </p>
      *

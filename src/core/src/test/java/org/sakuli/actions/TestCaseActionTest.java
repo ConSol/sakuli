@@ -272,7 +272,7 @@ public class TestCaseActionTest extends BaseTest {
         ArgumentCaptor path = ArgumentCaptor.forClass(Path.class);
         testling.addImagePathsAsString("/home");
         verify(loaderMock).addImagePaths((Path[]) path.capture());
-        assertEquals(path.getValue().toString(), "/home");
+        assertEquals(path.getValue().toString(), Paths.get("/home").normalize().toString());
     }
 
     @Test

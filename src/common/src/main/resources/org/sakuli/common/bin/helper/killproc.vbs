@@ -4,6 +4,8 @@
 ' DECRIPTION:   Kills all occurrences of a process, given by the FULL command line (as displayed in task manager)
 ' USAGE: 		cscript.exe killproc.vbs process.exe
 '				cscript.exe killproc.vbs -f procs_to_kill.txt
+' procs_to_kill.txt should be placed and referenced in a permanent folder (e.g. suite folder), because
+' in this directory it belongs to a specific Sakuli version. It gets unavailable on the next update. 
 
 Dim process, strComputer, fso, procfile, objShell, file_procstokill
 

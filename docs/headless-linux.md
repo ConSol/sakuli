@@ -2,7 +2,10 @@
 
 Running Sakuli on the user desktop is nice, but has the drawback that the session gets highjacked on each Sakuli run. Moving the mouse e.g. can have negative effects on the test execution. 
 
-For that reason we advise to run Sakuli checks in a virtual display (="headless"), which is straightforward in Linux. 
+For that reason we advise to run Linux based Sakuli checks in in one of the following modes: 
+
+* in a virtual display (="headless"), which is straightforward in Linux (documented on this page)
+* in a [docker container](./docker-containers.md) (more scalable)
 
 ## Installing and configuring the VNC server
 
@@ -56,8 +59,8 @@ You are now ready to run the **minimal Sakuli check** in **headless (=VNC)** mod
 
 On the **Ubuntu** desktop, open a terminal window and execute 
 
-* on **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_ubuntu/ --vnc --display 1` 
-* on **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_opensuse/` 
+* on **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_ubuntu/ --vnc` 
+* on **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_opensuse/ --vnc` 
  
 You should see that Sakuli
 
@@ -66,3 +69,12 @@ You should see that Sakuli
 3.  opens an **editor** and writes a **status message**
 
 ![](pics/u_vnc_test.png)
+
+## Scheduling by cron 
+
+Add the following line to Sakuli's crontab: 
+
+    SAKULI_HOME=__SAKULI_HOME__
+    DISPLAY=:0.0
+
+    */2 * * * * $SAKULI_HOME/bin/sakuli.sh --run $SAKULI_HOME/../example_test_suites/example_ubuntu/  --vnc 2>&1 > /dev/null

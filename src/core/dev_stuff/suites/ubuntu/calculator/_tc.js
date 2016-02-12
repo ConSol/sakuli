@@ -51,17 +51,28 @@ try {
 
         appGedit.open();
         screen.waitForImage("gedit.png", 20);
+        //TODO TS check why getRegion don't work as expected!
+        var reg = appCalc.focus().getRegion().grow(50).type(Key.ESC);
+        //reg.takeScreenshot("reg");
+        var reg2 = new RegionRectangle(reg.getX(), reg.getY(), reg.getW(), reg.getH());
+        //reg.takeScreenshot("reg2");
+        reg2.waitForImage("gcalculator", 2);
+        appGedit.focus();
         env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
-        env.sleep(4);
+        env.sleep(2);
         testCase.endOfStep("gedit paste", 20);
+
+        env.type(Key.ENTER + "Also type special characters like: # ß ! § $ & < > |");
+        env.sleep(2);
+        testCase.endOfStep("type special characters");
         // finally close the calculator app!
     } finally {
 
         appCalc.close();
-        appGedit.close();
-        if (screen.exists("close-without-saving", 1)) {
-            screen.find("close-without-saving").click();
-        }
+        appGedit.kill();
+        //if (screen.exists("close-without-saving", 1)) {
+        //    screen.find("close-without-saving").click();
+        //}
         testCase.endOfStep("Close Calculator");
     }
 

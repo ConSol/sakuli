@@ -1,13 +1,36 @@
 #!/bin/bash
 
-# call `vnc_startup.sh` from the root container
 /root/scripts/vnc_startup.sh
 
 # modify $SAKULI_TEST_SUITE permissions to ensure, that volume-mounted log files can be deleted afterwards
-find $SAKULI_TEST_SUITE -type d | while read dir ; do chmod 777 "$dir" ; done
-find $SAKULI_TEST_SUITE -type f | while read file ; do chmod 666 "$file" ; done
+modify_testsuite_permissions(){
+    while test $# -gt 0; do
+        case "$1" in
+            -r|--run)
+                shift #shift to suite parameter value
+                chmod -R a+rw $1
+                shift
+                ;;
+            *)
+                shift
+                continue
+                ;;
+        esac
+    done
+}
 
-$SAKULI_HOME/bin/sakuli.sh --run $SAKULI_TEST_SUITE
-res=$?
-echo "SAKULI_RETURN_VAL: $res"
-exit $res
+# argument of sakuli.sh start with a dash.
+# If not, assume that CMD was not meant as an argument
+# for sakuli.sh (=ENTRYPOINT). Hence, try to execute CMD standalone.
+if [ "${1:0:1}" == "-" ]; then
+        i=$(eval echo $*)
+        echo "call 'sakuli.sh $i'"
+        $SAKULI_HOME/bin/sakuli.sh $i
+
+        res=$?
+        echo "SAKULI_RETURN_VAL: $res"
+        modify_testsuite_permissions $i
+        exit $res
+else
+        exec $1
+fi

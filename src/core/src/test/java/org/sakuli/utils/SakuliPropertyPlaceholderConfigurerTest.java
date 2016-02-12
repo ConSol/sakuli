@@ -19,6 +19,7 @@
 package org.sakuli.utils;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang3.StringUtils;
 import org.mockito.ArgumentCaptor;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
@@ -105,7 +106,7 @@ public class SakuliPropertyPlaceholderConfigurerTest {
                 Paths.get(PPROPERTY_TEST_FOLDER_PATH).getParent().normalize().toAbsolutePath().toString() + SakuliProperties.SAKULI_PROPERTIES_FILE_APPENDER, true);
 
         assertNotNull(props.getProperty(SakuliProperties.SAKULI_HOME_FOLDER));
-        assertNull(props.getProperty(TestSuiteProperties.SUITE_ID));
+        assertTrue(StringUtils.isBlank(props.getProperty(TestSuiteProperties.SUITE_ID)));
     }
 
     @Test
@@ -158,7 +159,7 @@ public class SakuliPropertyPlaceholderConfigurerTest {
         PropertyHolder properties = BeanLoader.loadBean(PropertyHolder.class);
         Path tsFolder = Paths.get(properties.getTestSuiteFolder());
 
-        assertTrue(Files.exists(tsFolder), "test suite folder doesn't exists or have not been set correctly");
+        assertTrue(Files.exists(tsFolder), "test suite folder doesn't exists or is not set correctly");
         BaseTest.assertContains(tsFolder.toAbsolutePath().toString(), PPROPERTY_TEST_FOLDER_PATH);
     }
 

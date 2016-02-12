@@ -20,8 +20,11 @@ package org.sakuli.actions.environment;
 
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.screenbased.Region;
+import org.sakuli.exceptions.SakuliException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
+import org.sikuli.basics.Settings;
+import org.sikuli.natives.CommandExecutorHelper;
 import org.sikuli.script.App;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class Application extends App {
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     private final boolean resumeOnException;
 
@@ -80,11 +83,11 @@ public class Application extends App {
         }
         final int tries = 5;
         for (int i = 0; i < tries && this.getPID() <= 0; i++) {
-            logger.info("wait {} ms more for finish loading application {} - {} of {} tries",
+            LOGGER.info("wait {} ms more for finish loading application {} - {} of {} tries",
                     sleepMillis, this.getName(), i, tries);
             sleep(sleepMillis);
         }
-        logger.info("\"{}\" - PID: {}", this.getName(), this.getPID());
+        LOGGER.info("\"{}\" - PID: {}", this.getName(), this.getPID());
         return this;
     }
 
@@ -106,11 +109,11 @@ public class Application extends App {
      */
     @LogToResult(message = "focus application in window")
     public Application focusWindow(Integer windowNumber) {
-        logger.debug("Focus window \"" + windowNumber + "\" in application \"" + getName() + "\".");
+        LOGGER.debug("Focus window \"" + windowNumber + "\" in application \"" + getName() + "\".");
         App app = super.focus(windowNumber);
         sleep(sleepMillis);
         if (app == null) {
-            logger.warn("Application '{}' could not be focused! ... Please check if the application has been opened before or is already focused!", getName());
+            LOGGER.warn("Application '{}' could not be focused! ... Please check if the application has been opened before or is already focused!", getName());
             return this;
         }
         return this;
@@ -121,7 +124,6 @@ public class Application extends App {
      *
      * @return this {@link Application}.
      */
-    @LogToResult
     public Application closeApp() {
         return closeApp(false);
     }
@@ -134,16 +136,72 @@ public class Application extends App {
      */
     @LogToResult
     public Application closeApp(boolean silent) {
-        logger.info("Close application with name or path \"" + getName() + "\".");
+        LOGGER.info("Close application with name or path \"" + getName() + "\".");
         int retValue = -1;
         try {
             retValue = super.close();
         } catch (Throwable e) {
-            logger.error("ERROR in closing Application", e);
+            LOGGER.error("ERROR in closing Application", e);
         }
         if (!silent && retValue != 0) {
             loader.getExceptionHandler().handleException("Application '" + getName() + " could not be closed! ... Please check if the application has been opened before!", resumeOnException);
             return null;
+        }
+        return this;
+    }
+
+    /**
+     * Kill the already existing application hardly
+     *
+     * @return this {@link Application}.
+     */
+    public Application kill() {
+        return kill(false);
+    }
+
+    /**
+     * Kill the already existing application hardly.
+     *
+     * @param silent if true, no exception  will be thrown on errors.
+     * @return this {@link Application}.
+     */
+    @LogToResult
+    public Application kill(boolean silent) {
+        try {
+            if (getPID() < 1) {
+                return killAppName(getName());
+            }
+            return killAppPID(getPID());
+        } catch (SakuliException e) {
+            if (!silent) {
+                loader.getExceptionHandler().handleException(e);
+                return null;
+            }
+            LOGGER.debug(e.getMessage(), e);
+        }
+        return this;
+    }
+
+    private Application killAppName(String name) throws SakuliException {
+        try {
+            String cmd = String.format(
+                    Settings.isWindows() ? "Taskkill /IM \"%s\" /F" : "pkill \"%s\""
+                    , name);
+            CommandExecutorHelper.execute(cmd, 0);
+        } catch (Exception e) {
+            throw new SakuliException(e, String.format("could not kill application with name '%s'.", name));
+        }
+        return this;
+    }
+
+    private Application killAppPID(Integer pid) throws SakuliException {
+        try {
+            String cmd = String.format(
+                    Settings.isWindows() ? "Taskkill /PID %d /F" : "kill -9 %d"
+                    , pid);
+            CommandExecutorHelper.execute(cmd, 0);
+        } catch (Exception e) {
+            throw new SakuliException(e, String.format("could not kill application with PID '%d'.", pid));
         }
         return this;
     }
@@ -205,7 +263,7 @@ public class Application extends App {
         try {
             Thread.sleep(milli);
         } catch (InterruptedException e) {
-            logger.error("error during sleeping", e);
+            LOGGER.error("error during sleeping", e);
         }
     }
 

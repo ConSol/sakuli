@@ -84,7 +84,7 @@ try {
         testCase.endOfStep("some clipboard stuff");
 
         var extractTextRegion = screen.find("gedit_doc_logo").move(-5, 60).setW(70);
-        //extractTextRegion.takeScreenShot();
+        //extractTextRegion.takeScreenshot();
         newNotpadRegion.typeMasked(extractTextRegion.extractText());
         testCase.endOfStep('OCR extracting text');
 

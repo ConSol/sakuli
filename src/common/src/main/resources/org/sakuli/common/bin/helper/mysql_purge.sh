@@ -6,7 +6,7 @@
 
 if [ $# -ne 1 ]
 then
-        echo "Wrong number of argumentsi. Arg 1 must be the number of days db data should be kept."
+        echo "Wrong number of arguments. Arg 1 must be the number of days db data should be kept."
         exit 1
 fi
 

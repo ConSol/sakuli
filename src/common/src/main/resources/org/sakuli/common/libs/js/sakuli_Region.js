@@ -248,7 +248,7 @@ function initRegion(that, javaObject) {
      * Enters the given text one character/key after another using keyDown/keyUp.
      * <p/>
      * About the usable Key constants see documentation of Key.
-     * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+     * The function could also type UTF-8 unicode characters, if the OS supports it.
      * The text is entered at the current position of the focus.
      *
      * @param {String} text containing characters and/or Key constants
@@ -269,7 +269,7 @@ function initRegion(that, javaObject) {
      * The entered text will be masked at the logging.
      * <p/>
      * About the usable Key constants see documentation of Key.
-     * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+     * The function could also type UTF-8 unicode characters, if the OS supports it.
      * The text is entered at the current position of the focus.
      *
      * @param {String} text containing characters and/or Key constants
@@ -291,7 +291,7 @@ function initRegion(that, javaObject) {
      * The entered text will be masked at the logging. For the deatails of the decryption see decryptSecret(String).
      * <p/>
      * About the usable Key constants see documentation of Key.
-     * The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+     * The function could also type UTF-8 unicode characters, if the OS supports it.
      * The text is entered at the current position of the focus.
      *
      * @param {String} text containing characters and/or Key constants
@@ -405,7 +405,7 @@ function initRegion(that, javaObject) {
 
     /**
      * Set a offset to a specific Region and returns the new Region object.
-     * The offset function will move the Region's rectangle with x to the right and with y to the left.
+     * The offset function will move the Region's rectangle x pixels to the right and y pixels down.
      * The size of the rectangle will be the same.
      *
      * @param {number} offsetX x-value for the offset action
@@ -460,7 +460,7 @@ function initRegion(that, javaObject) {
     };
 
     /**
-     * @return  a new Region that is defined below the current region’s top border
+     * @return  a new Region that is defined below the current region’s bottom border
      * with a height of range number of pixels.
      * @param {number} range of pixels
      *
@@ -472,8 +472,8 @@ function initRegion(that, javaObject) {
     };
 
     /**
-     * @return  a new Region that is defined on the left the current region’s top border
-     * with a height of range number of pixels.
+     * @return  a new Region that is defined on the left the current region’s left border
+     * with a width of range number of pixels.
      * @param {number} range of pixels
      *
      * @memberOf Region
@@ -484,8 +484,8 @@ function initRegion(that, javaObject) {
     };
 
     /**
-     * @return  a new Region that is defined on the right the current region’s top border
-     * with a height of range number of pixels.
+     * @return  a new Region that is defined on the right the current region’s right border
+     * with a width of range number of pixels.
      * @param {number} range of pixels
      *
      * @memberOf Region
@@ -589,21 +589,21 @@ function initRegion(that, javaObject) {
     };
 
     /**
-     * Takes a screenshot of the current Region in the screen and saves it the current testcase folder
-     * with the assigned filename.
+     * Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
+     * filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
      *
      * @param {String} filename name of the screenshot, e.g. `region_screenshot`.
      *                 Default: screenshot
      *
      * @return {String} file path to the created screenshot OR null on errors
      * @memberOf Region
-     * @method takeScreenShot
+     * @method takeScreenshot
      */
-    that.takeScreenShot = function (filename) {
+    that.takeScreenshot = function (filename) {
         if (undefined == filename) {
             filename = "screenshot";
         }
-        var path = that.javaObject.takeScreenShot(filename);
+        var path = that.javaObject.takeScreenshot(filename);
         return path != null ? path.toString() : null;
     };
 

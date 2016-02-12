@@ -1,6 +1,6 @@
 # Installation guide for Sakuli - Developers
 
-##Requirements
+## Requirements
 For the following guide you need
 
 * Access to the issue-tracker tool (currently JIRA)
@@ -12,12 +12,12 @@ For the following guide you need
   * Ensure that your `JAVA_HOME` system variable links to the correct jdk-version
 
 
-##Sakuli Setup
-###Import
+## Sakuli Setup
+### Import
 * Check out the project via git
 * Import the project as a maven-project
 
-###Maven Settings
+### Maven Settings
 * Ensure that you have at least installed maven 3, run `mvn --version`
 * Config the local maven settings `~/.m2/settings.xml` for your environment as follows:
 
@@ -43,7 +43,7 @@ For the following guide you need
 
      ```
 
-###Install Sahi
+### Install Sahi
 * Download Sahi5 from https://labs.consol.de/sakuli/install/3rd-party and execute the sahi installation:
 
     ```
@@ -57,7 +57,7 @@ For the following guide you need
 	* Tools
 	* Userdata
 
-###Database Setup (optional, only needed [database forwarder](../../docs/forwarder-database.md))
+### Database Setup (optional, only needed [database forwarder](../../docs/forwarder-database.md))
 Setup a local MySQL database to save the results of test case executions. The database won't be needed for running `mvn install`.
 
 * __User:__ `sakuli`
@@ -71,7 +71,7 @@ If you want to use a Docker-Container, you can build and run it with the followi
     docker build -t=your-user/mysql-sakuli .
     docker run --name mysql-sakuli -p 3306:3306 your-user/mysql-sakuli
 
-###IDE configuration
+### IDE configuration
 
 * Execute `mvn clean verify` to ensure that the setup is correct
 * Include the license header to your IDE

@@ -18,6 +18,7 @@
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
   * [Application.close(optSilent)](#Application.close)
+  * [Application.kill(optSilent)](#Application.kill)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -95,7 +96,7 @@
   * [Region.setY(y)](#Region.setY)
   * [Region.getY()](#Region.getY)
   * [Region.highlight(seconds)](#Region.highlight)
-  * [Region.takeScreenShot(filename)](#Region.takeScreenShot)
+  * [Region.takeScreenshot(filename)](#Region.takeScreenshot)
   * [Region.sleep(seconds)](#Region.sleep)
   * [Region.extractText()](#Region.extractText)
 * [RegionRectangle](#RegionRectangle)
@@ -253,6 +254,7 @@ var editor = new Application("gedit");
   * [Application.focus()](#Application.focus)
   * [Application.focusWindow(windowNumber)](#Application.focusWindow)
   * [Application.close(optSilent)](#Application.close)
+  * [Application.kill(optSilent)](#Application.kill)
   * [Application.setSleepTime(seconds)](#Application.setSleepTime)
   * [Application.getRegion()](#Application.getRegion)
   * [Application.getRegionForWindow(windowNumber)](#Application.getRegionForWindow)
@@ -285,6 +287,15 @@ Closes the already existing application.
 **Params**
 
 - optSilent `boolean` - (optional) if true, no exception will be thrown on errors and stop the test execution.  
+
+**Returns**:  - this Application object.  
+<a name="Application.kill"></a>
+##Application.kill(optSilent)
+Kill the already existing application hardly.
+
+**Params**
+
+- optSilent `boolean` - (optional) if true, no exception will be thrown on errors.  
 
 **Returns**:  - this Application object.  
 <a name="Application.setSleepTime"></a>
@@ -456,7 +467,7 @@ combines pasteMasked(String) and decryptSecret(String).
 Enters the given text one character/key after another using keyDown/keyUp.
 <p/>
 About the usable Key constants see documentation of Key.
-The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+The function could also type UTF-8 unicode characters, if the OS supports it.
 The text is entered at the current position of the focus.
 
 **Params**
@@ -471,7 +482,7 @@ Enters the given text one character/key after another using keyDown/keyUp.
 The entered text will be masked at the logging.
 <p/>
 About the usable Key constants see documentation of Key.
-The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+The function could also type UTF-8 unicode characters, if the OS supports it.
 The text is entered at the current position of the focus.
 
 **Params**
@@ -486,7 +497,7 @@ Decrypt and enters the given text one character/key after another using keyDown/
 The entered text will be masked at the logging. For the details of the decryption see decryptSecret(String).
 <p/>
 About the usable Key constants see documentation of Key.
-The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+The function could also type UTF-8 unicode characters, if the OS supports it.
 The text is entered at the current position of the focus.
 
 **Params**
@@ -612,6 +623,10 @@ The following __Key__ values are possible:
 `SHIFT`, `CTRL`, `ALT`, `ALTGR`, `META`, `CMD`, `WIN`, `PRINTSCREEN`, `SCROLL_LOCK`, `PAUSE`, `CAPS_LOCK`, `NUM0`,
 `NUM1`, `NUM2`, `NUM3`, `NUM4`, `NUM5`, `NUM6`, `NUM7`, `NUM8`, `NUM9`, `SEPARATOR`, `NUM_LOCK`, `ADD`, `MINUS`,
 `MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`
+
+__Using `Key.ALTGR` on Unix:__
+To enable the keycommand `ALTGR` for unix systems please bind it to CTRL+ALT, for more information
+see [stackexchange.com - how-to-bind-altgr-to-ctrl-alt](http://unix.stackexchange.com/questions/157834/how-to-bind-altgr-to-ctrl-alt).
 
 **Example**  
 Closing an window over typing the short cut `ALT + F4`:
@@ -739,7 +754,7 @@ Region - Represents a region as a part of or the hole screen.
   * [Region.setY(y)](#Region.setY)
   * [Region.getY()](#Region.getY)
   * [Region.highlight(seconds)](#Region.highlight)
-  * [Region.takeScreenShot(filename)](#Region.takeScreenShot)
+  * [Region.takeScreenshot(filename)](#Region.takeScreenshot)
   * [Region.sleep(seconds)](#Region.sleep)
   * [Region.extractText()](#Region.extractText)
 
@@ -865,7 +880,7 @@ combines pasteMasked(String) and decryptSecret(String).
 Enters the given text one character/key after another using keyDown/keyUp.
 <p/>
 About the usable Key constants see documentation of Key.
-The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+The function could also type UTF-8 unicode characters, if the OS supports it.
 The text is entered at the current position of the focus.
 
 **Params**
@@ -880,7 +895,7 @@ Enters the given text one character/key after another using keyDown/keyUp.
 The entered text will be masked at the logging.
 <p/>
 About the usable Key constants see documentation of Key.
-The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+The function could also type UTF-8 unicode characters, if the OS supports it.
 The text is entered at the current position of the focus.
 
 **Params**
@@ -895,7 +910,7 @@ Decrypt and enters the given text one character/key after another using keyDown/
 The entered text will be masked at the logging. For the deatails of the decryption see decryptSecret(String).
 <p/>
 About the usable Key constants see documentation of Key.
-The function use a subset of a US-QWERTY PC keyboard layout to type the text.
+The function could also type UTF-8 unicode characters, if the OS supports it.
 The text is entered at the current position of the focus.
 
 **Params**
@@ -978,7 +993,7 @@ wheel the given steps up.
 <a name="Region.move"></a>
 ##Region.move(offsetX, offsetY)
 Set a offset to a specific Region and returns the new Region object.
-The offset function will move the Region's rectangle with x to the right and with y to the left.
+The offset function will move the Region's rectangle x pixels to the right and y pixels down.
 The size of the rectangle will be the same.
 
 **Params**
@@ -1020,7 +1035,7 @@ with a height of range number of pixels.
 
 - range `number` - of pixels  
 
-**Returns**:  - a new Region that is defined below the current region’s top border
+**Returns**:  - a new Region that is defined below the current region’s bottom border
 with a height of range number of pixels.  
 <a name="Region.left"></a>
 ##Region.left(range)
@@ -1028,16 +1043,16 @@ with a height of range number of pixels.
 
 - range `number` - of pixels  
 
-**Returns**:  - a new Region that is defined on the left the current region’s top border
-with a height of range number of pixels.  
+**Returns**:  - a new Region that is defined on the left the current region’s left border
+with a width of range number of pixels.  
 <a name="Region.right"></a>
 ##Region.right(range)
 **Params**
 
 - range `number` - of pixels  
 
-**Returns**:  - a new Region that is defined on the right the current region’s top border
-with a height of range number of pixels.  
+**Returns**:  - a new Region that is defined on the right the current region’s right border
+with a width of range number of pixels.  
 <a name="Region.setH"></a>
 ##Region.setH(height)
 set the height, based form the upper left corner downsides
@@ -1089,10 +1104,10 @@ set the Y coordinate of the upper left corner.
 - seconds `number` - highlights this Region for x seconds
 or the default time  
 
-<a name="Region.takeScreenShot"></a>
-##Region.takeScreenShot(filename)
-Takes a screenshot of the current Region in the screen and saves it the current testcase folder
-with the assigned filename.
+<a name="Region.takeScreenshot"></a>
+##Region.takeScreenshot(filename)
+Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
+filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
 
 **Params**
 

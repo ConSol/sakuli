@@ -20,13 +20,13 @@ package org.sakuli.example;
 
 import net.sf.sahi.util.OSUtils;
 import org.sakuli.actions.environment.Application;
+import org.sakuli.actions.screenbased.Key;
 import org.sakuli.actions.screenbased.Region;
 import org.sakuli.javaDSL.AbstractSakuliTest;
 import org.sakuli.javaDSL.TestCaseInitParameter;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 /**
@@ -40,12 +40,6 @@ public class Example extends AbstractSakuliTest {
                 "my-example-test", "test1")
                 .withWarningTime(5)
                 .withCriticalTime(10);
-    }
-
-    @Override
-    protected String getSahiFolder() {
-        // sahi installation folder under the project root
-        return Paths.get("../../sahi").toAbsolutePath().normalize().toString();
     }
 
     @Test
@@ -78,8 +72,10 @@ public class Example extends AbstractSakuliTest {
         Application editor = new Application(executable).open();
 
         Assert.assertTrue(editor.getPID() > 0, "PID " + editor.getPID() + " <= 0");
-        editor.getRegion().type("TEST it!");
-        editor.closeApp();
+        editor.getRegion().type("TEST it!")
+                .type(Key.ENTER)
+                .type("Also type special characters like: # ß ! § $ & < > | \\ /");
+        editor.kill();
     }
 
     private void highlightLink(String identifier) {

@@ -22,6 +22,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
@@ -89,9 +90,19 @@ public class CommonInitializingServiceImplTest {
     @Test(expectedExceptions = SakuliInitException.class, expectedExceptionsMessageRegExp = "Cannot read testsuite.suite.*")
     public void testInitExceptionForTestCase() throws Throwable {
         testSuiteProperties = spy(TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "unvalid", ""));
+        testSuiteProperties.setTestSuiteId("testid");
         ts = spy(new TestSuite(testSuiteProperties));
         MockitoAnnotations.initMocks(this);
         testling.initTestSuite();
     }
 
+    @Test
+    public void testCheckTestSuiteOk() throws Exception {
+        CommonInitializingServiceImpl.checkConfiguration(new TestSuiteExampleBuilder().buildExample());
+    }
+
+    @Test(expectedExceptions = SakuliInitException.class)
+    public void testCheckTestSuiteException() throws Exception {
+        CommonInitializingServiceImpl.checkConfiguration(new TestSuite());
+    }
 }

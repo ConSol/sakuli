@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.9.1</version>
+        <version>0.9.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>core</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2</version>
     <name>core</name>
 
     <description>core module for all sakuli functionality</description>
@@ -42,6 +42,14 @@
     </properties>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <excludes>
+                    <exclude>sahi/</exclude>
+                </excludes>
+            </resource>
+        </resources>
 
         <plugins>
             <!-- plugin for aspectj weaver to weave libraries -->
@@ -83,6 +91,55 @@
                 </configuration>
             </plugin>
 
+            <!-- unpack sahi to include into the zip assembly -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>unpack-sahi-zip</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>net.sf.sahi</groupId>
+                                    <artifactId>sahi-install</artifactId>
+                                    <version>${sahi.version}</version>
+                                    <type>zip</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- replace sahi prefs.js with custom file -->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-custom-sahi-config-files</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/resources/sahi</directory>
+                                </resource>
+                            </resources>
+                            <overwrite>true</overwrite>
+                            <encoding>UTF-8</encoding>
+                            <outputDirectory>${project.build.directory}/sahi</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- assemply plugin to build the sakuli-zipped-release.zip file -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -106,6 +163,29 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-zip-artifact</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>${project.groupId}</groupId>
+                            <artifactId>${project.artifactId}.zip</artifactId>
+                            <version>${project.version}</version>
+                            <packaging>zip</packaging>
+                            <file>${project.build.directory}/install/${sakuli.filename}.zip</file>
+                            <createChecksum>true</createChecksum>
+                            <generatePom>true</generatePom>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

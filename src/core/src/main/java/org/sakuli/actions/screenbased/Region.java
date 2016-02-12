@@ -151,7 +151,6 @@ public class Region implements Action {
         return update(regionImpl.clickMe());
     }
 
-
     /**
      * makes a double click on the center of the {@link Region}.
      *
@@ -162,7 +161,6 @@ public class Region implements Action {
     public Region doubleClick() {
         return update(regionImpl.doubleClickMe());
     }
-
 
     /**
      * makes a rigth click on the center of the {@link Region}.
@@ -224,7 +222,6 @@ public class Region implements Action {
         return update(regionImpl.mouseUp(mouseButton));
     }
 
-
     /**
      * Blocks and waits until a target which is specified by the optImageName is found in the hole {@link Screen} within
      * a given time period in seconds.
@@ -265,7 +262,6 @@ public class Region implements Action {
     public Region pasteAndDecrypt(String text) {
         return typingUtil.pasteAndDecrypt(text);
     }
-
 
     /**
      * See {@link TypingUtil#type(String, String)}.
@@ -377,7 +373,6 @@ public class Region implements Action {
         return typingUtil.mouseWheelUp(steps);
     }
 
-
     /**
      * Set a offset to a specific {@link Region} and returns the new {@link Region} object. The offset function will
      * move the Region's rectangle with x to the right and with y to the left. The size of the rectangle will be the
@@ -441,7 +436,6 @@ public class Region implements Action {
     public Region left(int range) {
         return update(regionImpl.left(range));
     }
-
 
     /**
      * @return a new {@link Region} that is defined on the right the current region’s top border with a height of range
@@ -539,17 +533,20 @@ public class Region implements Action {
     }
 
     /**
-     * Takes a screenshot of the current Region in the screen and saves it the current testcase folder
-     * with the assigned filename.
+     * Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
+     * filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
      *
      * @param filename name of the screenshot file, e.g. `region_screenshot`
      * @return {@link Path} to the created screenshot OR null on errors
      */
     @LogToResult
-    public Path takeScreenShot(String filename) {
-        Path tcfolder = getLoader().getCurrentTestCase().getTcFile().getParent();
+    public Path takeScreenshot(String filename) {
+        Path filePath = RegionImpl.resolveTakeScreenshotFolder(filename, getLoader());
         try {
-            getLoader().getScreenshotActions().takeScreenshot(filename, tcfolder, regionImpl.getRect());
+            return getLoader().getScreenshotActions().takeScreenshot(
+                    filePath.getFileName().toString(),
+                    filePath.getParent(),
+                    regionImpl.getRect());
         } catch (IOException e) {
             getLoader().getExceptionHandler().handleException(e);
         }

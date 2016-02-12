@@ -1,17 +1,17 @@
 # Sakuli client installation
 
-This page describes the common steps to **install and test** Sakuli on **Windows** and **Linux** (Ubuntu Desktop 14.04 LTS/GNOME Fallback, OpenSUSE 13.2/KDE).
+This page describes the common steps to **install and test** Sakuli on **Windows** and **Linux**.
   * For updating Sakuli, see **[Upgrade process](#upgrade-process)**.
   * For using **docker containers**, see **[Usage Sakuli Docker Containers](docker-containers.md)**.
 
-The default installation path of a particular Sakuli version is referenced as `%SAKULI_HOME%`, that is
+The default installation path of a particular Sakuli version is referenced as `%SAKULI_HOME%`, that is the *version* folder inside of the folder "sakuli":
 
-- `%SAKULI_HOME%` on **Windows** (e.g. `C:\sakuli\sakuli-v0.9.1\`)
+- `%SAKULI_HOME%` on **Windows** (e.g. `C:\Program Files\sakuli\sakuli-v0.9.1\`)
 - `$SAKULI_HOME` on **Linux** (e.g. `/home/e2e/sakuli/sakuli-v0.9.1/`)
 
 **Conventions**:
 
-- Wherever you see `%SAKULI_HOME%` in the instructions, replace it by the appropriate variable `$SAKULI_HOME` (**Linux**) respectively `%SAKULI_HOME%` (**Windows**).
+- Wherever you see `__SAKULI_HOME__` in the instructions, replace it by the appropriate variable `$SAKULI_HOME` (**Linux**) respectively `%SAKULI_HOME%` (**Windows**).
 - Values surrounded by underscores are have to be filled individually by you (e.g. `__IP_ADDRESS__`).
 - Unless stated otherwise, slashes/backslashes have to be used depending on the operating system.
 
@@ -20,11 +20,9 @@ The default installation path of a particular Sakuli version is referenced as `%
 We recommend to run Sakuli clients on virtual machines.
 
 * **OS**: **Windows** or **Linux** (Ubuntu Desktop 14.04 LTS, OpenSUSE 13.2).
-* **RAM**: 3GB+
+* **RAM**: 2GB+
 * **CPU**: dual-Core
 * if virtualized: **Hypervisor guest additions** for best performance
-* no local firewall running
-* a user account with **sudo/admin rights**
 * desktop appearance:
   * Set the desktop background to a homogenous color.
   * If you do not want to run Sakuli [headless](headless-linux.md), disable any screen locking mechanisms
@@ -36,72 +34,85 @@ We recommend to run Sakuli clients on virtual machines.
 ## Software installation
 ### Java JRE
 
-Sakuli versions including v0.4.* need **Java JRE 7**; all newer versions are based on **Java JRE 8**. In case you are bound to a specific (older?) Java version for any reason, perform a [static "in-place" JRE installation](http://www.oracle.com/technetwork/java/javase/jre-install-137694.html) which will not affect the current JRE and PATH settings.
+Sakuli v0.9.x and higher require **Java JRE >= 1.8**, obtainable from [http://www.java.com/de/download/manual.jsp](Oracle). On Ubuntu you can use [install_jre.sh](https://labs.consol.de/sakuli/install/3rd-party/install_jre.sh):
 
-Typing "java" in a new command line window should now start the java interpreter. Otherwise check the PATH settings: 
-
-* From desktop, right-click *My Computer* and click *Properties*
-* In *System Properties*, click on *Advanced*
-* Ensure that the **system variable** **%PATH%** contains the correct path to the java binary:
-  * Name: `PATH`
-  * Value: 
-    * `;C:\Program Files\Java\jre7/8\bin`
-    * or 
-	* `;C:\Program Files (x86)\Java\jre7/8\bin`
-	
-
+    root@sakulidemo:~# ./install.sh jre-8u60-linux-x64.tar.gz
+    Extracting jre-8u60-linux-x64.tar.gz...
+    Updating alternatives...
+    ...done. Java version is now:
+    java version "1.8.0_60"
+    Java(TM) SE Runtime Environment (build 1.8.0_60-b27)
+    Java HotSpot(TM) 64-Bit Server VM (build 25.60-b23, mixed mode)
 
 ### Sakuli
 
-* Download **Sakuli** from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
-  * current **development** snapshot = `sakuli-vX.X.X-SNAPSHOT.zip`
-  * current **stable** version = `sakuli-vX.X.X.zip`
-* Unzip the downloaded archive into a folder of your choice; a folder `sakuli` will be created (referenced as `__INST_DIR__`).
-* Set the environment variable `SAKULI_HOME`:
-  * **Windows**
-    * From desktop, right-click *My Computer* and click *Properties*
-    * In *System Properties*, click on *Advanced*
-  	* Create a new **user variable**:
-        * Name: `SAKULI_HOME`
-  	  * Value: `__INST_DIR__\sakuli-vX.X.X\`
-  * **Linux**
-    * Add to `~/.bashrc`:
+#### Installation
+* Download the **Sakuli Installer** from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install)
+  * current **development** snapshot = `sakuli-vX.X.X-SNAPSHOT-installer.jar`
+  * current **stable** version = `sakuli-vX.X.X-installer.jar`
 
-      `export SAKULI_HOME=__INST_DIR__/sakuli-vX.X.X/`
+Double-click on the downloaded .jar file (Windows) or execute `java -jar sakuli-vX.X.X-installer.jar`. You should be presented the welcome screen of the installer:
 
-* Additional steps on **Linux**:
+![inst_1](./pics/installer_1.png)
 
-        # Ubuntu
-        sudo apt-get install tesseract-ocr wmctrl xdotool
-        # openSUSE
-        sudo zypper install tesseract wmctrl xdotool
+After you have accepted the licence and choose the installation folder, select the packages to install:
 
-### Sahi
+![inst_2](./pics/installer_2.png)
 
-* Download the latest version of **Sahi** from [http://sourceforge.net/projects/sahi/files/latest/download?source=files](http://sourceforge.net)
-* Unpack the downloaded file and start the installation by executing `java -jar __DOWNLOADED_JAR_FILE__`. In the installation assistant, set:
-  * Installation path: `__INST_DIR__/sahi`
-  * select all packages to install
+* **1)** will set/update the environment variable `__SAKULI_HOME__` to this version.
+* **2)** will set/update the environment to a recommend UI testing configuration. In examples disables the Firefox safe.
+* **3)** will install one example test suite per OS which will help you to test and understand Sakuli.
+* **4)** will install Firefox Portable, which can be used exclusively for Sakuli Tests.
+* **5)** will install [QRes](http://sourceforge.net/projects/qres/), a open source screen mode changer (Windows only)
 
-Sahi can be tested now for the first time. Open *"Start Sahi"* from the applications menu of your OS.
+After the files have been copied, the installer updates the current user's environment.
 
-The **Sahi Dashboard** should now list all available browsers on this system. To use the minimal test cases (see below), we recommend to install Firefox, if not yet done. (see [Browser configuration](./additional-settings.md#browser-configuration)):
+In the end you are able to generate a automatic installation script to install Sakuli headles:
 
-![db_browsers](./pics/w_sahi_dashboard_browsers.jpg)
-![db_browsers](./pics/u_sahi_dashboard_browsers.png)
-![db_browsers](./pics/s_sahi_dashboard_browsers.jpg)
+![inst_3](./pics/installer_3.png)
 
-After clicking on a browser icon you should see the default start page of Sahi:
+Call the generated `auto-install.xml` via:
+
+    java -jar sakuli-vX.X.X-installer.jar auto-config.xml
+
+#### Test Sahi
+
+Now is the right time to test if Sahi can start a Sahi-controlled browser. Execute `__SAKULI_HOME__/sahi/userdata/bin/start_dashboard.(sh|bat)` to open the **Sahi Dashboard**. It should now list all available browsers on this system (on Windows: also Firefox Portable).
+
+![dashboards](./pics/inst_dashboards.jpg)
+
+Click on any browser icon; it should start and present you the start page of Sahi:
 
 ![sahi_start](../docs/pics/sahi_startpage.jpg)
 
-If neccessary, set the proxy Sahi is behind of: [Proxy settings](./sakuli-additional-settings.md#sahi-behind-a-proxy)
+At last, test the **Sahi Controller**:
+* on **Windows** press the ALT key
+* on **Linux** press the ALT+CTRL key
+
+and double-click on any white space. If you are getting a new window showing the "Sahi Controller", you're done. Close all browser windows and Sahi.
+
+![controller_linux](./pics/installer_4_l.png)
+
+![controller_windows](./pics/installer_4_w.png)
+
+**Additional documentation:**
+
+* If you are sitting behing a company proxy, refer to [Proxy settings](./sakuli-additional-settings.md#sahi-behind-a-proxy).
+* Refer to [Browser configuration](./additional-settings.md#browser-configuration)) for instructions how to register other browsers.
 
 ### Additional software
 
-All components below are optional but recommended:
+#### additional packages on Linux
+(required)
+
+Install the following packages if you are on Linux:
+
+* Ubuntu: `sudo apt-get install tesseract-ocr wmctrl xdotool`
+* openSUSE `sudo zypper install tesseract wmctrl xdotool`
+
 
 #### PhantomJS
+(optional)
 
 Currently, *each* Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like [PhantomJS](http://phantomjs.org). Refer to [Browser configuration](./additional-settings.md#browser-configuration) for more information.
 
@@ -109,6 +120,7 @@ Attention: PhantomJS 2 is currently unsupported. Use version 1.9.x
 
 
 #### Screenshot tool
+(optional)
 
 Use a screenshot tool which is able to
 
@@ -121,20 +133,23 @@ A good choice is
 * [Shutter](http://shutter-project.org/) on **Linux**.
 
 #### Editor
-You're doing better if you do *not* use gEdit or Windows Notepad to edit Sakuli files.
+(optional)
+
+You're doing better if you do *not* use gEdit or Windows Notepad to edit Sakuli files. It is recommended to use an Editor with JavaScript support, e. g.:
 
 * on **Windows** install for instance [Notepad++](http://notepad-plus-plus.org/)
-* on **Linux** use [Bluefish](http://bluefish.openoffice.nl/index.html)
+* on **Linux** use [Atom](https://atom.io)
 
+It also possible to use professional programming IDEs like [IntelliJ](https://www.jetbrains.com/idea/), [Netbeans](https://netbeans.org/) or [Eclipse](https://eclipse.org).
 
 
 ## Test
 
-You are now ready to run the **first minimal Sakuli check** to see if Sakuli and its components are working well together. Execute the **Sakuli starter script** to start a test:
+You are now ready to run the **first minimal Sakuli test** to see if Sakuli and its components are working well together. Execute the **Sakuli starter script** to start a test:
 
-* **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_ubuntu/`
-* **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_opensuse/`
-* **Windows**: `__SAKULI_HOME__\bin\sakuli.bat --run __INST_DIR__\example_test_suites\example_windows\`
+* **Ubuntu**: `__SAKULI_HOME__/../example_test_suites/start_example_ubuntu.sh`
+* **openSUSE**: `__SAKULI_HOME__/../example_test_suites/start_example_opensuse.sh`
+* **Windows**: `__SAKULI_HOME__\..\example_test_suites\start_example_windows.bat`
 
 Sakuli should now
 
@@ -144,18 +159,22 @@ Sakuli should now
 
 ![](pics/u_vnc_test.png)
 
+You can also trigger the example tests interactively trough the command line starter (`sakuli.sh` for linux, `sakuli.bat` for windows):
+
+* **Ubuntu**: `sakuli.sh --run $SAKULI_HOME/../example_test_suites/example_ubuntu`
+* **openSUSE**: `sakuli.sh --run $SAKULI_HOME/../example_test_suites/example_opensuse`
+* **Windows**: `sakuli.bat --run "%SAKULI_HOME%\..\example_test_suites\example_windows"`
+
+
 **Congratulations - you have installed Sakuli!**
 
-What next? Now go on to [prepare OMD](installation-omd.md) to receive results for the Sakuli check **example_ubuntu/opensuse/windows** [via Gearman](forwarder-gearman.md) or [from the MySQL result DB](forwarder-database.md).
+What next? Well, it depends...
+
+* To integrate Sakuli checks in a nagios based **monitoring environment like OMD**, go on to [prepare OMD](installation-omd.md).
+* Sakuli can also be integrated in **continuous integration environments like Jenkins**. Documentation is coming in the next time (...have one?)
 
 # Upgrade process
 
-You can use several versions of Sakuli among side by side - just unzip the ZIP file as described above into `__INST_DIR__`:
+Execute `__SAKULI_HOME__/../Uninstaller/uninstaller.jar` to remove the current installed version. This will only affect the files in `__SAKULI_HOME__`. The uninstaller removes all installed files, and resets the environment configuration.
 
-    `- sakuli
-     |- v0.4.8
-     |- v0.5.0
-     |- sahi
-     |- examples_test_suites
-
-Only change `%SAKULI_HOME%` to the new version and you are done.
+After that just install the new version.

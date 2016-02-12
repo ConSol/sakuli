@@ -40,10 +40,11 @@ try {
     screen.find("plus.png").highlight().click().type("100");
     screen.find("result.png").highlight().click();
 	screen.waitForImage("625",10).highlight();
+    env.resetSimilarity();
     testCase.endOfStep("Calculation",30);
 
     appNotepad.open();
-    screen.waitForImage("notepad.png", 20).highlight();
+    appNotepad.getRegion().waitForImage("notepad.png", 20).highlight();
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
     testCase.endOfStep("Editor",30);
     env.sleep(2);

@@ -56,7 +56,7 @@
 
         <!-- copy compiled jar -->
         <fileSet>
-            <directory>${basedir}/target</directory>
+            <directory>${project.build.directory}</directory>
             <includes>
                 <include>${project.jar.name}.jar</include>
             </includes>
@@ -71,6 +71,11 @@
                 <!-- excludes the whole _logs folder -->
                 <exclude>**/_logs/</exclude>
             </excludes>
+        </fileSet>
+        <!-- copy unzipped sahi installation-->
+        <fileSet>
+            <directory>${project.build.directory}/sahi</directory>
+            <outputDirectory>/sahi</outputDirectory>
         </fileSet>
     </fileSets>
 

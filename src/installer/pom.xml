@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+  ~
+  ~ Copyright 2013 - 2015 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sakuli</groupId>
+        <artifactId>root</artifactId>
+        <version>0.9.2</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>installer</artifactId>
+    <version>0.9.2</version>
+    <description>maven module to build the IzPack-Java Installer</description>
+
+    <properties>
+        <staging.dir>${project.build.directory}/staging</staging.dir>
+        <sakuli.version>${project.version}</sakuli.version>
+        <sakuli.install.name>sakuli-v${sakuli.version}</sakuli.install.name>
+        <sakuli.install.src.core>sakuli/${sakuli.install.name}</sakuli.install.src.core>
+        <sakuli.install.target.core>${sakuli.install.name}</sakuli.install.target.core>
+        <sakuli.install.src.sahi>sakuli/sahi</sakuli.install.src.sahi>
+        <sakuli.install.target.sahi>sahi</sakuli.install.target.sahi>
+        <sakuli.install.src.example>sakuli/example_test_suites</sakuli.install.src.example>
+        <sakuli.install.target.example>example_test_suites</sakuli.install.target.example>
+        <sakuli.install.src.firefox.win>FirefoxPortable</sakuli.install.src.firefox.win>
+        <sakuli.install.target.firefox.win>${sakuli.install.src.firefox.win}</sakuli.install.target.firefox.win>
+        <sakuli.install.target.firefox.linux>.</sakuli.install.target.firefox.linux>
+        <sakuli.install.target.installerScripts>${sakuli.install.target.core}/bin/installer_scripts
+        </sakuli.install.target.installerScripts>
+        <package.name.set.default.win>Set v${sakuli.version} as default version</package.name.set.default.win>
+        <package.name.set.default.linux>Set v${sakuli.version} as default version in .bashrc</package.name.set.default.linux>
+        <package.name.set.testing.vars.win>Modify user environment for testing</package.name.set.testing.vars.win>
+        <package.name.set.testing.vars.linux>Modify user environment in .bashrc for testing</package.name.set.testing.vars.linux>
+        <package.name.firefox.version>42</package.name.firefox.version>
+        <package.name.firefox.win>Install Firefox Portable v${package.name.firefox.version}</package.name.firefox.win>
+        <package.name.firefox.linux>Download and install Firefox Portable v${package.name.firefox.version}
+        </package.name.firefox.linux>
+        <package.name.userpermission.win>Set user permissions</package.name.userpermission.win>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>upload-release</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <excludes>
+                            <exclude>qres/</exclude>
+                        </excludes>
+                        <!--replace ${placeholders} -->
+                        <filtering>true</filtering>
+                    </resource>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>qres/</include>
+                        </includes>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack-sakuli-zip</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${staging.dir}</outputDirectory>
+                                    <artifactItems>
+                                        <artifactItem>
+                                            <groupId>${project.groupId}</groupId>
+                                            <artifactId>core.zip</artifactId>
+                                            <version>${project.version}</version>
+                                            <type>zip</type>
+                                        </artifactItem>
+                                    </artifactItems>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.googlecode.maven-download-plugin</groupId>
+                        <artifactId>download-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unzip-firefox</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>wget</goal>
+                                </goals>
+                                <configuration>
+                                    <url>
+                                        https://labs.consol.de/sakuli/install/3rd-party/ff_portable/FirefoxPortable-v${package.name.firefox.version}-windows.zip
+                                    </url>
+                                    <unpack>true</unpack>
+                                    <outputDirectory>${staging.dir}</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <!-- copy and replace ${placeholders} -->
+                                <id>copy-install-resources</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>resources</goal>
+                                </goals>
+                                <configuration>
+                                    <encoding>UTF-8</encoding>
+                                    <outputDirectory>${staging.dir}</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.codehaus.izpack</groupId>
+                        <artifactId>izpack-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>izpack</goal>
+                                </goals>
+                                <configuration>
+                                    <autoIncludeDevelopers>true</autoIncludeDevelopers>
+                                    <autoIncludeUrl>true</autoIncludeUrl>
+                                    <!--<outputDirectory>${project.build.directory}/install</outputDirectory>-->
+                                    <!-- base for relative paths in izpack descriptor -->
+                                    <baseDir>${staging.dir}</baseDir>
+                                    <installFile>${staging.dir}/izpack-installer.xml</installFile>
+                                    <finalName>${sakuli.install.name}-installer</finalName>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.codehaus.izpack</groupId>
+                                <artifactId>izpack-panel</artifactId>
+                                <version>${izpack.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+
+                    <!-- wagon plugin to upload the zipped releases to the labs server -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>wagon-maven-plugin</artifactId>
+                        <configuration>
+                            <serverId>labs-consol-sakuli-install</serverId>
+                            <url>scpexe://sakuli@labs.consol.de/</url>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>upload-installer</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>upload</goal>
+                                </goals>
+                                <configuration>
+                                    <fromDir>${project.build.directory}</fromDir>
+                                    <includes>${sakuli.install.name}-installer.jar</includes>
+                                    <toDir>/home/sakuli/htdocs/install</toDir>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

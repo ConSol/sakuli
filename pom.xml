@@ -22,7 +22,7 @@
 
     <groupId>org.sakuli</groupId>
     <artifactId>root</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2</version>
     <packaging>pom</packaging>
 
     <name>sakuli-parent</name>
@@ -38,6 +38,7 @@
         <module>src/integration-test</module>
         <module>src/docs</module>
         <module>src/java-dsl</module>
+        <module>src/installer</module>
     </modules>
 
     <properties>
@@ -57,8 +58,9 @@
         <test.group.ui>ui</test.group.ui>
         <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
         <!-- special sakuli-version 99x - change this later to latest stable version-->
-        <sikulixapi.version>1.1.994</sikulixapi.version>
+        <sikulixapi.version>1.1.997</sikulixapi.version>
         <sahi.version>5.0</sahi.version>
+        <izpack.version>5.0.6</izpack.version>
     </properties>
 
     <!-- Plugin CONFIG -->
@@ -91,6 +93,9 @@
                         <!-- exludes the package org.sakuli.integration-->
                         <exclude>**/integration/**/*</exclude>
                     </excludes>
+                    <environmentVariables>
+                        <SAKULI_HOME />
+                    </environmentVariables>
                 </configuration>
             </plugin>
 
@@ -192,6 +197,16 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>2.10.3</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.izpack</groupId>
+                    <artifactId>izpack-maven-plugin</artifactId>
+                    <version>${izpack.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.googlecode.maven-download-plugin</groupId>
+                    <artifactId>download-maven-plugin</artifactId>
+                    <version>1.2.1</version>
+                </plugin>
             </plugins>
 
         </pluginManagement>
@@ -210,7 +225,7 @@
         <connection>scm:git:git://github.com/ConSol/sakuli.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/ConSol/sakuli.git</developerConnection>
         <url>git://github.com/ConSol/sakuli.git</url>
-        <tag>v0.9.1</tag>
+        <tag>v0.9.2</tag>
     </scm>
 
     <issueManagement>

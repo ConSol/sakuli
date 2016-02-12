@@ -33,7 +33,8 @@ try {
 
 
 //Login
-    _navigateTo("http://99.99.99.16/shop");
+    //make ssh portforwarding `
+    _navigateTo("http://localhost:8001/shop");
     _highlight(_link("Anmelden"));
     _click(_link("Anmelden"));
     _highlight(_label("E-Mail-Adresse"));

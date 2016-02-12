@@ -238,18 +238,24 @@ Set the following properties (as global in the sakuli.properties) to define a pr
 
 #### Mozilla Firefox ####
 
-Append the following lines to the Firefox default preference file: 
+Append the following lines to the Firefox default preference file: : 
 
     vim __SAHI_DIR__/config/ff_profile_template/prefs.js
 
+    user_pref("browser.cache.disk.capacity", 0);
     user_pref("browser.cache.disk.enable", false);
     user_pref("browser.cache.disk.smart_size.enabled", false);
+    user_pref("browser.cache.disk_cache_ssl", false);
     user_pref("browser.cache.memory.enable", false);
-    user_pref("browser.cache.offline.enable", false);
     user_pref("browser.cache.offline.capacity", 0);
+    user_pref("browser.cache.offline.enable", false);
     user_pref("browser.sessionstore.max_tabs_undo",0);
     user_pref("browser.sessionstore.max_windows_undo",0);
     user_pref("browser.selfsupport.url","");
+    user_pref("devtools.cache.disabled", true);
+    user_pref("network.http.use-cache",false);
+    user_pref("offline-apps.allow_by_default",false);
+    user_pref("offline-apps.quota.max",false);
 
 To take these changes effect, you need to delete the firefox profile folders *sahi0-9*.
 

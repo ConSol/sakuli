@@ -286,19 +286,9 @@ public class SakuliExceptionHandler {
                 !(e instanceof NonScreenshotException)) {
             //try to get a screenshot
             try {
-                Path screenshot = null;
-                if (e instanceof SakuliActionException) {
-                    screenshot = loader.getScreenshotActions().takeScreenshotAndHighlight(
-                            e.getMessage(),
-                            loader.getActionProperties().getScreenShotFolder(),
-                            ((SakuliActionException) e).getLastRegion()
-                    );
-                }
-                if (screenshot == null) {
-                    screenshot = loader.getScreenshotActions().takeScreenshot(
-                            e.getMessage(),
-                            loader.getActionProperties().getScreenShotFolder());
-                }
+                Path screenshot = loader.getScreenshotActions().takeScreenshot(
+                        e.getMessage(),
+                        loader.getActionProperties().getScreenShotFolder());
                 return addResumeOnException(new SakuliExceptionWithScreenshot(e, screenshot), resumeToTestExcecution(e));
             } catch (IOException e2) {
                 logger.error("Screenshot could not be created", e2);

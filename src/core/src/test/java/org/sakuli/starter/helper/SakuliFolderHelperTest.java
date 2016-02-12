@@ -22,6 +22,7 @@ import org.sakuli.BaseTest;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.FileNotFoundException;
@@ -29,10 +30,23 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class SakuliFolderHelperTest extends BaseTest {
+
+    @DataProvider(name = "windowsPaths")
+    public static Object[][] windowsPaths() {
+        return new Object[][]{
+                {"C:\\Program Files (x86)"},
+                {"\"C:\\Program Files (x86)\""},
+                {"C:\\Program Files (x86)\\sakuli"},
+                {"\"C:\\Program Files (x86)\"\\sakuli"},
+                {"C:\\PROGRA~1\\."},
+                {"\"C:\\PROGRA~1\\.\""},
+                {"\'C:\\PROGRA~1\\.\'"},
+        };
+
+    }
 
     @Test
     public void testCheckSahiProxyHomeAndSetContextVariables() throws Exception {
@@ -96,6 +110,14 @@ public class SakuliFolderHelperTest extends BaseTest {
     @Test(expectedExceptions = FileNotFoundException.class, expectedExceptionsMessageRegExp = "no valid SAKULI HOME folder specified - please configure one!")
     public void testCheckHomeFolderNotDefined() throws Exception {
         System.clearProperty("SAKULI_HOME");
+        String envSakuliHome = System.getenv("SAKULI_HOME");
+        assertTrue(envSakuliHome == null || envSakuliHome.equalsIgnoreCase("null"));
         SakuliFolderHelper.checkSakuliHomeFolderAndSetContextVariables(null, "");
+    }
+
+    @Test(dataProvider = "windowsPaths")
+    public void testWindowsPaths(String path) throws Exception {
+        Path p = Paths.get(SakuliFolderHelper.removeWindowsEscapeCharacters(path)).normalize();
+        assertNotNull(p);
     }
 }

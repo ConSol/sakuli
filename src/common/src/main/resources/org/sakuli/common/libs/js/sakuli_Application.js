@@ -96,6 +96,21 @@ function initApplication(that, javaObject) {
     };
 
     /**
+     * Kill the already existing application hardly.
+     *
+     * @param {boolean} optSilent (optional) if true, no exception will be thrown on errors.
+     * @return this Application object.
+     * @memberOf Application
+     * @method kill
+     */
+    that.kill = function (optSilent) {
+        if (undefined == optSilent) {
+            optSilent = Boolean(false);
+        }
+        return update(that.javaObject.kill(optSilent));
+    };
+
+    /**
      * Sets the sleep time in seconds of the application actions to handle with long loading times.
      * The default sleep time is set to 1 seconds.
      *
