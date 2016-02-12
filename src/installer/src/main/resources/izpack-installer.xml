@@ -19,7 +19,6 @@
   -->
 
 <izpack:installation xmlns:izpack="http://izpack.org/sfchema/installation"
-                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                      version="5.0"
 >
 
@@ -191,7 +190,7 @@
 
         <pack id="sakuli.win.user.var" name="${package.name.set.testing.vars.win}" preselected="true" required="false">
             <description>Set some entries in the Windows registry like:
-                * Firefox Defaults MOZ_DISABLE_OOP_PLUGINS, MOZ_DISABLE_AUTO_SAFE_MODE
+                * Firefox Defaults MOZ_DISABLE_OOP_PLUGINS, MOZ_DISABLE_AUTO_SAFE_MODE, MOZ_DISABLE_SAFE_MODE_KEY
             </description>
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_ui_testing_variables.bat">
@@ -203,7 +202,7 @@
         <pack id="sakuli.linux.user.var" name="${package.name.set.testing.vars.linux}" preselected="true"
               required="false">
             <description>Set some entries in '.bashrc' like:
-                * Firefox Defaults MOZ_DISABLE_OOP_PLUGINS, MOZ_DISABLE_AUTO_SAFE_MODE
+                * Firefox Defaults MOZ_DISABLE_OOP_PLUGINS, MOZ_DISABLE_AUTO_SAFE_MODE, MOZ_DISABLE_SAFE_MODE_KEY
             </description>
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_ui_testing_variables.sh">
