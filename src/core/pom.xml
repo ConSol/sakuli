@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -47,7 +48,15 @@
                 <directory>${project.basedir}/src/main/resources</directory>
                 <excludes>
                     <exclude>sahi/</exclude>
+                    <exclude>version.txt</exclude>
                 </excludes>
+            </resource>
+            <resource>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>version.txt</include>
+                </includes>
             </resource>
         </resources>
 
@@ -185,6 +194,21 @@
                             <file>${project.build.directory}/install/${sakuli.filename}.zip</file>
                             <createChecksum>true</createChecksum>
                             <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <configuration>
+                            <generateGitPropertiesFile>false</generateGitPropertiesFile>
                         </configuration>
                     </execution>
                 </executions>

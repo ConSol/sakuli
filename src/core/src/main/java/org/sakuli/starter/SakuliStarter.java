@@ -28,12 +28,12 @@ import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.services.TeardownServiceHelper;
+import org.sakuli.starter.helper.CmdPrintHelper;
 import org.sakuli.starter.helper.SakuliFolderHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
 import java.util.AbstractMap;
 import java.util.Map.Entry;
 
@@ -44,6 +44,7 @@ public class SakuliStarter {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(SakuliStarter.class);
     private final static Option help = OptionBuilder.withDescription("display help").withLongOpt("help").create("h");
+    private final static Option version = OptionBuilder.withDescription("display current version").withLongOpt("version").create("v");
     private final static Option run = OptionBuilder
             .withArgName("test-suite-folder")
             .hasArg()
@@ -102,6 +103,7 @@ public class SakuliStarter {
         CommandLineParser parser = new PosixParser();
         Options options = new Options();
         options.addOption(help);
+        options.addOption(version);
         options.addOption(run);
         options.addOption(browser);
         options.addOption(sakuliHome);
@@ -129,12 +131,17 @@ public class SakuliStarter {
                 System.out.printf("\nEncrypted secret with interface '%s': %s", secret.getKey(), secret.getValue());
                 System.out.println("\n\n... now copy the secret to your testcase!");
                 System.exit(0);
+            } else if (cmd.hasOption(version.getLongOpt()) || cmd.hasOption(version.getOpt())) {
+                CmdPrintHelper.printVersion();
+                System.exit(0);
             } else {
-                printHelp(options);
+                CmdPrintHelper.printHelp(options);
+                System.exit(SYSTEM_EXIT_VALUE_HELP);
             }
         } catch (ParseException e) {
             System.err.println("Parsing of command line failed: " + e.getMessage());
-            printHelp(options);
+            CmdPrintHelper.printHelp(options);
+            System.exit(SYSTEM_EXIT_VALUE_HELP);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error: " + e.getMessage());
@@ -144,19 +151,6 @@ public class SakuliStarter {
 
     private static String getOptionValue(CommandLine cmd, Option option) {
         return option.getOpt() != null ? cmd.getOptionValue(option.getOpt()) : cmd.getOptionValue(option.getLongOpt());
-    }
-
-    private static void printHelp(Options options) {
-        System.out.println("\n" +
-                        "Generic Sakuli test starter\n" +
-                        LocalDate.now().getYear() + " - The Sakuli team.\n" +
-                        "http://www.sakuli.org\n" +
-                        "https://github.com/ConSol/sakuli\n"
-        );
-        HelpFormatter helpFormatter = new HelpFormatter();
-        helpFormatter.setWidth(80);
-        helpFormatter.printHelp("sakuli [options]", options);
-        System.exit(SYSTEM_EXIT_VALUE_HELP);
     }
 
     /**
