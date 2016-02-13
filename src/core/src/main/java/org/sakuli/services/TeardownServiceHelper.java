@@ -23,16 +23,13 @@ import org.sakuli.loader.BeanLoader;
 /**
  * @author Tobias Schneck
  */
-public class ResultServiceHelper {
+public class TeardownServiceHelper {
     /**
-     * Invokes save results for all active result services
+     * Invokes all {@link TeardownService}s, for example to save results.
      */
-    public static void invokeResultServices() {
-        BeanLoader.loadMultipleBeans(ResultService.class).values().stream()
+    public static void invokeTeardownServices() {
+        BeanLoader.loadMultipleBeans(TeardownService.class).values().stream()
                 .sorted(new PrioritizedServiceComparator<>())
-                .forEach(s -> {
-                    s.refreshStates();
-                    s.saveAllResults();
-                });
+                .forEach(TeardownService::triggerAction);
     }
 }

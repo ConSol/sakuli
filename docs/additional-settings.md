@@ -75,7 +75,9 @@ In general it is also possible to add your own Logback configuration under `__SA
 
 #### Log file rotation 
 
-On Linux you can configure **logrotate** to tidy up old log files: 
+* **`sakuli.log.maxAge`**`14` - Deletes all files that are older than (default) 14 days in the defined `sakuli.log.folder`.
+
+On Linux you can additional configure **logrotate** to tidy up old log files: 
 
     vim /etc/logrotate.d/sakuli
     

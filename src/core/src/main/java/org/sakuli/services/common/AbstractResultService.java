@@ -38,4 +38,9 @@ public abstract class AbstractResultService implements ResultService {
         testSuite.refreshState();
     }
 
+    @Override
+    public void triggerAction() {
+        this.refreshStates();
+        this.saveAllResults();
+    }
 }

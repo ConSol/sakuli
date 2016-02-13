@@ -27,7 +27,7 @@ import org.sakuli.exceptions.SakuliCipherException;
 import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
-import org.sakuli.services.ResultServiceHelper;
+import org.sakuli.services.TeardownServiceHelper;
 import org.sakuli.starter.helper.SakuliFolderHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -233,7 +233,8 @@ public class SakuliStarter {
             LOGGER.error("Unexpected error occurred:", e);
             System.exit(99);
         } finally {
-            ResultServiceHelper.invokeResultServices();
+            LOGGER.info("========== TEAR-DOWN SAKULI TEST SUITE '{}' ==========", result.getId());
+            TeardownServiceHelper.invokeTeardownServices();
 
             //finally shutdown context and return the result
             result = BeanLoader.loadBean(TestSuite.class);

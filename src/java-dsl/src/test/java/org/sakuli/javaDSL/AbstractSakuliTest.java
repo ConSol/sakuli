@@ -31,7 +31,7 @@ import org.sakuli.javaDSL.service.SahiInitializingService;
 import org.sakuli.javaDSL.utils.SakuliJavaPropertyPlaceholderConfigurer;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
-import org.sakuli.services.ResultServiceHelper;
+import org.sakuli.services.TeardownServiceHelper;
 import org.sakuli.utils.ResourceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +56,7 @@ import java.util.concurrent.TimeUnit;
 @Listeners(value = SakuliExceptionListener.class)
 public abstract class AbstractSakuliTest {
     public static final String SAKULI_TEST = "sakuli-test";
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractSakuliTest.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractSakuliTest.class);
     protected ExecutorService executorService;
     protected TestCaseAction testCaseAction;
     protected Browser browser;
@@ -94,7 +94,7 @@ public abstract class AbstractSakuliTest {
      * @throws FileNotFoundException
      */
     protected void initTestSuiteParameter() throws FileNotFoundException {
-        logger.info("............................INITIALIZE SAKULI-CONTEXT");
+        LOGGER.info("............................INITIALIZE SAKULI-CONTEXT");
         executorService = Executors.newCachedThreadPool();
         BeanLoader.CONTEXT_PATH = "java-dsl-beanRefFactory.xml";
         SakuliJavaPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = getTestSuiteFolder();
@@ -122,7 +122,7 @@ public abstract class AbstractSakuliTest {
         if (testSuite == null) {
             initTestSuiteParameter();
         }
-        logger.info("............................INITIALIZE TEST-CASE with {}", initParameter);
+        LOGGER.info("............................INITIALIZE TEST-CASE with {}", initParameter);
         String testCaseName = this.getClass().getSimpleName();
         initParameter = getTestCaseInitParameter();
         if (initParameter == null) {
@@ -141,7 +141,7 @@ public abstract class AbstractSakuliTest {
             initParameter.addImagePath(getTestCaseFolder().toString());
         }
         initTestCaseAction(initParameter);
-        logger.info("............................START TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
+        LOGGER.info("............................START TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
         counter = 0;
         startTimeCase = DateTime.now();
     }
@@ -187,7 +187,7 @@ public abstract class AbstractSakuliTest {
             executorService.awaitTermination(1, TimeUnit.MILLISECONDS);
         }
         String testCaseName = this.getClass().getSimpleName();
-        logger.info("............................ SAVE RESULTS OF TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
+        LOGGER.info("............................ SAVE RESULTS OF TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
         testCaseAction.saveResult(initParameter.getTestCaseId(),
                 String.valueOf(startTimeCase.getMillis()),
                 String.valueOf(DateTime.now().getMillis()),
@@ -236,16 +236,16 @@ public abstract class AbstractSakuliTest {
     @AfterSuite(alwaysRun = true)
     public void tearDown() throws Exception {
         if (testSuite != null) {
-            logger.info("............................ TEAR-DOWN SAKULI TEST SUITE '{}'", testSuite.getId());
+            LOGGER.info("========== TEAR-DOWN SAKULI TEST SUITE '{}' ==========", testSuite.getId());
             testSuite.setStopDate(DateTime.now().toDate());
-            ResultServiceHelper.invokeResultServices();
+            TeardownServiceHelper.invokeTeardownServices();
         }
         if (executorService != null) {
             executorService.shutdownNow();
         }
 
         if (StringUtils.isNotEmpty(browserProcessName) && !browserProcessName.equals("null")) {
-            logger.info("kill browser process '{}'", browserProcessName);
+            LOGGER.info("kill browser process '{}'", browserProcessName);
             ProcessHelper.killAll(browserProcessName);
         }
     }

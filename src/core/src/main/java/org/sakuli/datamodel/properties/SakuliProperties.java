@@ -39,6 +39,7 @@ public class SakuliProperties extends AbstractProperties {
     public static final String SUPPRESS_RESUMED_EXCEPTIONS = "sakuli.exception.suppressResumedExceptions";
     public static final String JAVASCRIPT_ENGINE = "sakuli.javascript.engine";
     public static final String LOG_FOLDER = "sakuli.log.folder";
+    public static final String LOG_MAX_AGE = "sakuli.log.maxAge";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
     public static final String LOG_LEVEL_SAKULI = "log.level.sakuli";
     public static final String LOG_LEVEL_SAHI = "log.level.sahi";
@@ -52,6 +53,8 @@ public class SakuliProperties extends AbstractProperties {
     public static final String TESSDATA_LIB_FOLDER_APPEDER = LIBS_FOLDER_APPEDER;
     private static final boolean SUPPRESS_RESUMED_EXCEPTIONS_DEFAULT = false;
     private static final boolean JAVASCRIPT_ENGINE_DEFAULT = true;
+    private static final int LOG_MAX_AGE_DEFAULT = 14;
+
     @Value("${" + SAKULI_HOME_FOLDER + "}")
     private String sakuliHomeFolderPropertyValue;
     private Path sakuliHomeFolder;
@@ -61,6 +64,8 @@ public class SakuliProperties extends AbstractProperties {
     private boolean loadJavaScriptEngine;
     @Value("${" + LOG_FOLDER + "}")
     private String logFolderPropertyValue;
+    @Value("${" + LOG_MAX_AGE + ":" + LOG_MAX_AGE_DEFAULT + "}")
+    private int logMaxAge;
     private Path logFolder;
     @Value("${" + LOG_PATTERN + "}")
     private String logPattern;
@@ -127,6 +132,14 @@ public class SakuliProperties extends AbstractProperties {
 
     public void setLogFolderPropertyValue(String logFolderPropertyValue) {
         this.logFolderPropertyValue = logFolderPropertyValue;
+    }
+
+    public int getLogMaxAge() {
+        return logMaxAge;
+    }
+
+    public void setLogMaxAge(int logMaxAge) {
+        this.logMaxAge = logMaxAge;
     }
 
     public Path getLogFolder() {

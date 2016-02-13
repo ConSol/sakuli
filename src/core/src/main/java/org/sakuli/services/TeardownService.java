@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2015 the original author or authors.
+ * Copyright 2013 - 2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,21 +18,15 @@
 
 package org.sakuli.services;
 
-import org.sakuli.datamodel.properties.SakuliProperties;
-
 /**
- * @author tschneck Date: 23.05.14
+ * @author tschneck
+ *         Date: 2/12/16
  */
-public interface ResultService extends TeardownService {
+public interface TeardownService extends PrioritizedService {
 
     /**
-     * refresh all states in the Sakuli test suite
+     * Triggers the different implementations of the {@link TeardownService}.
      */
-    void refreshStates();
-
-    /**
-     * Triggers that all current results will be saved, in consideration of the {@link SakuliProperties}.
-     */
-    void saveAllResults();
+    void triggerAction();
 
 }
