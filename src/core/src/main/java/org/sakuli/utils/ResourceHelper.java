@@ -18,7 +18,12 @@
 
 package org.sakuli.utils;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -47,5 +52,10 @@ public class ResourceHelper {
             exc.addSuppressed(e);
             throw exc;
         }
+    }
+
+    public static String getClasspathResourceAsStream(Class<?> classDef, String classPathResource) throws IOException {
+        InputStream in = classDef.getResourceAsStream(classPathResource);
+        return IOUtils.toString(in, StandardCharsets.UTF_8);
     }
 }

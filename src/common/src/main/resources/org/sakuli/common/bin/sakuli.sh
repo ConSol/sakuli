@@ -21,7 +21,7 @@ USAGE
         sakuli_usage
         cat <<HERE
  -l,--loop                          loop this suite, wait n seconds between executions (default: off)
- -v,--vnc                           start in headless (xVNC11) mode
+ -V,--vnc                           start in headless (xVNC11) mode
  -d,--display                       display number in headless mode (default: 1)
  -j,--javahome                      Java bin dir (overrides PATH)
  -Dany.property.key=value           JVM option to set a property on runtime
@@ -81,7 +81,7 @@ while [ $i -le $lastindex ]; do
                         LOOP=${arguments[$j]}
                         let "i=$i+2"
                         ;;
-                "-v" | "--vnc" )
+                "-V" | "--vnc" )
                         HEADLESS=true
                         let "i=$i+1"
                         ;;

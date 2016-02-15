@@ -20,12 +20,9 @@ package org.sakuli.starter.helper;
 
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
-import org.apache.commons.io.FileUtils;
 import org.sakuli.utils.ResourceHelper;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Path;
 import java.time.LocalDate;
 
 /**
@@ -40,8 +37,8 @@ public class CmdPrintHelper {
 
     public static void printVersion() throws IOException {
         printSakuliHeader();
-        Path versionFile = ResourceHelper.getClasspathResource(CmdPrintHelper.class, "/version.txt", "load 'version.txt' file");
-        System.out.println(FileUtils.readFileToString(versionFile.toFile(), Charset.forName("UTF-8")));
+        String versionOutput = ResourceHelper.getClasspathResourceAsStream(CmdPrintHelper.class, "/version.txt");
+        System.out.println(versionOutput);
     }
 
     public static void printHelp(Options options) {
