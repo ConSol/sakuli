@@ -4,6 +4,10 @@
 - Go 1.5
 
 #### Installation
+```bash
+go get github.com/ConSol/sakuli/src/common/src/main/resources/org/sakuli/common/starter/sakuli
+```
+
 - Own OS
 ```bash
 go build github.com/ConSol/sakuli/src/common/src/main/resources/org/sakuli/common/starter/sakuli
