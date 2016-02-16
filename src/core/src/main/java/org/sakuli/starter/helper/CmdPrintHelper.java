@@ -20,6 +20,7 @@ package org.sakuli.starter.helper;
 
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
+import org.apache.commons.lang3.StringUtils;
 import org.sakuli.utils.ResourceHelper;
 
 import java.io.IOException;
@@ -38,7 +39,10 @@ public class CmdPrintHelper {
     public static void printVersion() throws IOException {
         printSakuliHeader();
         String versionOutput = ResourceHelper.getClasspathResourceAsStream(CmdPrintHelper.class, "/version.txt");
-        System.out.println(versionOutput);
+        System.out.println(versionOutput + "\n\n--- Environment variables ---");
+        for (SakuliEnvVars v : SakuliEnvVars.values()) {
+            System.out.println(StringUtils.rightPad(v.name() + ":", 30) + System.getenv(v.name()));
+        }
     }
 
     public static void printHelp(Options options) {
