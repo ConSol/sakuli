@@ -190,14 +190,15 @@
             <!-- UNINSTALLER: remove set environment pathes-->
         </pack>
 
+        <!-- @formatter:off -->
         <pack id="sakuli.win.user.var" name="${package.name.set.testing.vars.win}" preselected="true"
               required="${package.set.testing.vars.required}">
             <description>Set entries in the Windows registry:
                 * Environment variables:
-                * Disable Firefox plugin container: MOZ_DISABLE_OOP_PLUGINS
-                * Disable Firefox safe mode: MOZ_DISABLE_AUTO_SAFE_MODE, MOZ_DISABLE_SAFE_MODE_KEY
+                    * Disable Firefox plugin container: MOZ_DISABLE_OOP_PLUGINS
+                    * Disable Firefox safe mode: MOZ_DISABLE_AUTO_SAFE_MODE, MOZ_DISABLE_SAFE_MODE_KEY
                 * Windows registry:
-                * ...
+                    * ...
             </description>
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_ui_testing_variables.bat">
@@ -206,9 +207,8 @@
             <!-- INSTALLER: set ui environment variables via 'ProcessPanel.Spec.xml-->
             <!-- UNINSTALLER: remove variables from environment pathes-->
         </pack>
-        <pack id="sakuli.linux.user.var" name="${package.name.set.testing.vars.linux}"
-              preselected="${package.set.testing.vars.required}"
-              required="false">
+        <pack id="sakuli.linux.user.var" name="${package.name.set.testing.vars.linux}" preselected="true"
+              required="${package.set.testing.vars.required}">
             <description>Set entries in '.bashrc':
                 * Firefox Defaults: MOZ_DISABLE_OOP_PLUGINS, MOZ_DISABLE_AUTO_SAFE_MODE, MOZ_DISABLE_SAFE_MODE_KEY
             </description>
@@ -220,6 +220,7 @@
             <!-- INSTALLER: set ui environment variables via 'ProcessPanel.Spec.xml-->
             <!-- UNINSTALLER: remove variables from environment pathes-->
         </pack>
+        <!-- @formatter:on -->
 
         <pack id="sakuli.examples" name="Sakuli Examples" required="no" preselected="${package.example.preselected}">
             <description>Example testsuite for quick start into Sakuli</description>
