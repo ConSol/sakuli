@@ -5,7 +5,7 @@
 - - -
 
 ### Version 0.9.2
-* add setting some firefox variables (`MOZ_OOP_DISABLE_PLUGINS`, `MOZ_DISABLE_AUTO_SAFE_MODE`, `MOZ_DISABLE_SAFE_MODE_KEY`) for UI testing to the installer, see #158.
+* add setting some firefox variables (`MOZ_DISABLE_OOP_PLUGINS`, `MOZ_DISABLE_AUTO_SAFE_MODE`, `MOZ_DISABLE_SAFE_MODE_KEY`) for UI testing to the installer, see #158.
 * Executable JAR installer `sakuli-vX.X.X-installer.jar`, downloadable via [](https://labs.consol.de/sakuli/install/), see #24.
   * The installer contains a complete Sakuli setup and the following options:
     ![inst_2](docs/pics/installer_2.png)
