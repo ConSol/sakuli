@@ -34,6 +34,7 @@
     <url>http://maven.apache.org</url>
 
     <modules>
+        <module>src/starter</module>
         <module>src/common</module>
         <module>src/core</module>
         <module>src/integration-test</module>

@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/ConSol/sakuli/src/common/src/main/resources/org/sakuli/common/starter/sakuli/execute"
-	"github.com/ConSol/sakuli/src/common/src/main/resources/org/sakuli/common/starter/sakuli/input"
+	"github.com/ConSol/sakuli/src/starter/src/main/go/org/sakuli/execute"
+	"github.com/ConSol/sakuli/src/starter/src/main/go/org/sakuli/input"
 	"os"
 	"path/filepath"
 	"time"

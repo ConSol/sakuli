@@ -2,7 +2,7 @@ package execute
 
 import (
 	"fmt"
-	"github.com/ConSol/sakuli/src/common/src/main/resources/org/sakuli/common/starter/sakuli/helper"
+	"github.com/ConSol/sakuli/src/starter/src/main/go/org/sakuli/helper"
 )
 
 //RunHandler runs external program with no parameters
