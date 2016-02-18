@@ -18,6 +18,7 @@
 
 package org.sakuli.starter.helper;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sakuli.BaseTest;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
@@ -96,8 +97,7 @@ public class SakuliFolderHelperTest extends BaseTest {
         Path path = Paths.get(BaseTest.SAKULI_HOME_FOLDER_PATH);
         assertTrue(Files.exists(path));
         SakuliFolderHelper.checkSakuliHomeFolderAndSetContextVariables(path.toString(), "");
-        assertEquals(SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE, path.normalize().toAbsolutePath().toString());
-
+        assertEquals(SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE, path.toAbsolutePath().normalize().toString());
     }
 
     @Test(expectedExceptions = FileNotFoundException.class, expectedExceptionsMessageRegExp = ".*not have a valid file structure! Please use the correct folder!")
@@ -111,13 +111,12 @@ public class SakuliFolderHelperTest extends BaseTest {
     public void testCheckHomeFolderNotDefined() throws Exception {
         System.clearProperty("SAKULI_HOME");
         String envSakuliHome = System.getenv("SAKULI_HOME");
-        assertTrue(envSakuliHome == null || envSakuliHome.equalsIgnoreCase("null"));
+        assertTrue(StringUtils.isBlank(envSakuliHome) || envSakuliHome.equalsIgnoreCase("null"));
         SakuliFolderHelper.checkSakuliHomeFolderAndSetContextVariables(null, "");
     }
 
     @Test(dataProvider = "windowsPaths")
     public void testWindowsPaths(String path) throws Exception {
-        Path p = Paths.get(SakuliFolderHelper.removeWindowsEscapeCharacters(path)).normalize();
-        assertNotNull(p);
+        assertNotNull(SakuliFolderHelper.normalizePath(path));
     }
 }
