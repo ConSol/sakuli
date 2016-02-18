@@ -40,6 +40,8 @@
         <project.jar.name>sakuli</project.jar.name>
         <sakuli.version.postfix>v${project.version}</sakuli.version.postfix>
         <sakuli.filename>${project.jar.name}-${sakuli.version.postfix}</sakuli.filename>
+        <project.build.unpacked-resources>${project.build.directory}/unpacked-resources
+        </project.build.unpacked-resources>
     </properties>
 
     <build>
@@ -112,13 +114,20 @@
                             <goal>unpack</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <outputDirectory>${project.build.unpacked-resources}</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>net.sf.sahi</groupId>
                                     <artifactId>sahi-install</artifactId>
                                     <version>${sahi.version}</version>
                                     <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.sakuli</groupId>
+                                    <artifactId>common</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -143,7 +152,7 @@
                             </resources>
                             <overwrite>true</overwrite>
                             <encoding>UTF-8</encoding>
-                            <outputDirectory>${project.build.directory}/sahi</outputDirectory>
+                            <outputDirectory>${project.build.unpacked-resources}/sahi</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>

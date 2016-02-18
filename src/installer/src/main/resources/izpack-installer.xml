@@ -92,6 +92,11 @@
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/sakuli">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/helper/encrypt_password.sh">
                 <os family="unix"/>
                 <os family="mac"/>

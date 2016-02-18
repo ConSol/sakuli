@@ -44,16 +44,6 @@
             <outputDirectory>/${sakuli.filename}/docs</outputDirectory>
         </fileSet>
 
-        <!-- create setup folder -->
-        <!-- copy database script to setup folder -->
-        <fileSet>
-            <directory>${project.parent.basedir}/src/common/src/main/resources/org/sakuli/common</directory>
-            <outputDirectory>/${sakuli.filename}</outputDirectory>
-            <excludes>
-                <exclude>META-INF</exclude>
-            </excludes>
-        </fileSet>
-
         <!-- copy compiled jar -->
         <fileSet>
             <directory>${project.build.directory}</directory>
@@ -72,10 +62,17 @@
                 <exclude>**/_logs/</exclude>
             </excludes>
         </fileSet>
-        <!-- copy unzipped sahi installation-->
+        <!-- copy unzipped resources (sahi installation, common files)-->
         <fileSet>
-            <directory>${project.build.directory}/sahi</directory>
+            <directory>${project.build.unpacked-resources}/sahi</directory>
             <outputDirectory>/sahi</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.unpacked-resources}/org/sakuli/common</directory>
+            <outputDirectory>/${sakuli.filename}</outputDirectory>
+            <excludes>
+                <exclude>META-INF</exclude>
+            </excludes>
         </fileSet>
     </fileSets>
 
