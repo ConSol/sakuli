@@ -126,10 +126,9 @@ To execute your testcase regularly you can add new tasks to the windows task sch
 
 ### Hanging applications
 
-TODO STARTER: change to preHook
-If you are testing applications which tend to hang/freeze, there is a solution (currently only for Windows) to "tidy up" stale processes on each start of Sakuli. Add this line to `sakuli.bat`:  
+If you are testing applications which tend to hang/freeze, there is a solution (currently only for Windows) to "tidy up" stale processes on each start of Sakuli. Use the flag `-preHook` flag to add the `killproc.vbs` script:  
 
-    cscript.exe %SAKULI_HOME%\bin\helper\killproc.vbs -f %SAKULI_HOME%\bin\helper\procs_to_kill.txt
+    sakuli -preHook 'cscript.exe %SAKULI_HOME%\bin\helper\killproc.vbs -f %SAKULI_HOME%\bin\helper\procs_to_kill.txt' run ...
     
 In `procs_to_kill.txt` you can define which processes should be killed before Sakuli starts a new check: 
 
