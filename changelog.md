@@ -143,7 +143,7 @@
 * fix PrioritizedServiceComparator so now 2 service with the same priority will also accepted
 * add jenkins-build badge
 * add #46 add dev-v0.4 read-the-docs & read-the-docs badge
-* add #96 add variable '$testSuiteFolder' fore more strait forward import handling // check TODO
+* add #96 add variable '$testSuiteFolder' fore more strait forward import handling
 * fix dependency path of javafx for java7
 * close #92 exclude Base64 String in log output
 * modify documentation of warning / critical times
