@@ -11,38 +11,46 @@ For that reason we advise to run Linux based Sakuli checks in in one of the foll
 
 On **Ubuntu**, first **install** vnc4server: 
 
-    sudo apt-get install vnc4server
+```bash
+sudo apt-get install vnc4server
+```
     
 Start vncserver for the first time to create a **session password**: 
+    
+```bash
+~$ vncserver
 
-    ~$ vncserver
+You will require a password to access your desktops.
+Password:
+Verify:
 
-    You will require a password to access your desktops.
-    Password:
-    Verify:
+New 'sakulidemo:1 (sakuli)' desktop is sakulidemo:1
 
-    New 'sakulidemo:1 (sakuli)' desktop is sakulidemo:1
-
-    Creating default startup script __HOME__/.vnc/xstartup
-    Starting applications specified in __HOME__/.vnc/xstartup
-    Log file is __HOME__/.vnc/sakulidemo:1.log
+Creating default startup script __HOME__/.vnc/xstartup
+Starting applications specified in __HOME__/.vnc/xstartup
+Log file is __HOME__/.vnc/sakulidemo:1.log
+```
 
 `.vnc/xstartup` controls what to start within a xvnc session. Do not touch this file on OpenSUSE; on **Ubuntu** you have to replace its content with the following lines (because you are using  **gnome-session-fallback**, aren't you…?): 
 
-    ~$ vim .vnc/xstartup  
-    
-    #!/bin/sh
-    export XKL_XMODMAP_DISABLE=1
-    unset SESSION_MANAGER
-    unset DBUS_SESSION_BUS_ADDRESS
+```bash
+~$ vim .vnc/xstartup  
 
-    gnome-panel &
-    gnome-settings-daemon &
-    metacity &
+#!/bin/sh
+export XKL_XMODMAP_DISABLE=1
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
 
-Restart the current vnc sesssion: 
+gnome-panel &
+gnome-settings-daemon &
+metacity &
+```
 
-    ~$ vncserver -kill :1 && vncserver
+Restart the current vnc sesssion:
+
+```bash
+~$ vncserver -kill :1 && vncserver
+```
     
 Now open a RDP client (on Ubuntu: *Applications - Internet - Remmina Remote Desktop Client*) and enter the connection data: 
 
@@ -60,12 +68,14 @@ You are now ready to run the **minimal Sakuli check** in **headless (=VNC)** mod
 On the **Ubuntu** desktop, open a terminal window and execute 
 
 * on **Ubuntu**: 
-    ```.bash
+
+    ```bash
     export DISPLAY=:1
     sakuli -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook'$SAKULI_HOME/bin/helper/vnc.sh -kill' run __INST_DIR__/example_test_suites/example_ubuntu/
     ```
 * on **openSUSE**: 
-    ```.bash
+
+    ```bash
     export DISPLAY=:1
     sakuli -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook'$SAKULI_HOME/bin/helper/vnc.sh -kill' run __INST_DIR__/example_test_suites/example_opensuse/ 
     ```
@@ -82,7 +92,9 @@ You should see that Sakuli
 
 Add the following line to Sakuli's crontab: 
 
-    SAKULI_HOME=__SAKULI_HOME__
-    DISPLAY=:1
-    
-    */2 * * * * $SAKULI_HOME/bin/sakuli -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook'$SAKULI_HOME/bin/helper/vnc.sh -kill' run $SAKULI_HOME/../example_test_suites/example_ubuntu 2>&1 > /dev/null
+```bash
+SAKULI_HOME=__SAKULI_HOME__
+DISPLAY=:1
+
+*/2 * * * * $SAKULI_HOME/bin/sakuli -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook'$SAKULI_HOME/bin/helper/vnc.sh -kill' run $SAKULI_HOME/../example_test_suites/example_ubuntu 2>&1 > /dev/null
+```
