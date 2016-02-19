@@ -85,7 +85,7 @@ public class SakuliStarter {
             .withLongOpt("interface")
             .create("i");
     /**
-     * {@link System#exit(int)} value if the help is printed out. This value will be used in the `sakuli.sh` script.
+     * {@link System#exit(int)} value if the help is printed out. This value will be used in the `sakuli` starter
      */
     private static final int SYSTEM_EXIT_VALUE_HELP = 100;
 

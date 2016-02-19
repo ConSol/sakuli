@@ -16,6 +16,6 @@ export DISPLAY=:$VNC_DISPLAY
 #vncserver should run!
 #vncserver $DISPLAY -depth 24 -geometry 1024x768 &
 
-$SAKULI_INST_FOLDER/sakuli/sakuli-v$SAKULI_VERSION/bin/sakuli.sh --run "$SAKULI_PROJECT_HOME/$SUITE"
+$SAKULI_INST_FOLDER/sakuli/sakuli-v$SAKULI_VERSION/bin/sakuli run "$SAKULI_PROJECT_HOME/$SUITE"
 
 #killall Xvnc4

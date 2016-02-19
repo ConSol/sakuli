@@ -120,12 +120,13 @@ Plugins Container is a technique of Mozilla Firefox to run browser add-ons in a 
 
 To execute your testcase regularly you can add new tasks to the windows task scheduler. As action, use this command to put the cmd window into the background to not disturb your tests:
 
-    cmd.exe /c start /min C:\sakuli\sakuli-v0.X.0\bin\sakuli.bat --run "C:\sakuli\example_test_suites\example_windows" ^& exit
+    cmd.exe /c start /min C:\sakuli\sakuli-v0.X.0\bin\sakuli.exe run "C:\sakuli\example_test_suites\example_windows" ^& exit
 
 ## Troubleshooting
 
 ### Hanging applications
 
+TODO STARTER: change to preHook
 If you are testing applications which tend to hang/freeze, there is a solution (currently only for Windows) to "tidy up" stale processes on each start of Sakuli. Add this line to `sakuli.bat`:  
 
     cscript.exe %SAKULI_HOME%\bin\helper\killproc.vbs -f %SAKULI_HOME%\bin\helper\procs_to_kill.txt

@@ -59,8 +59,9 @@ You are now ready to run the **minimal Sakuli check** in **headless (=VNC)** mod
 
 On the **Ubuntu** desktop, open a terminal window and execute 
 
-* on **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_ubuntu/ --vnc` 
-* on **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_opensuse/ --vnc` 
+TODO STARTER: change to pre/postHook
+* on **Ubuntu**: `__SAKULI_HOME__/bin/sakuli run __INST_DIR__/example_test_suites/example_ubuntu/ --vnc` 
+* on **openSUSE**: `__SAKULI_HOME__/bin/sakuli run __INST_DIR__/example_test_suites/example_opensuse/ --vnc` 
  
 You should see that Sakuli
 
@@ -76,5 +77,5 @@ Add the following line to Sakuli's crontab:
 
     SAKULI_HOME=__SAKULI_HOME__
     DISPLAY=:0.0
-
-    */2 * * * * $SAKULI_HOME/bin/sakuli.sh --run $SAKULI_HOME/../example_test_suites/example_ubuntu/  --vnc 2>&1 > /dev/null
+                                                                                                   #TODO STARTER change to prehook
+    */2 * * * * $SAKULI_HOME/bin/sakuli run $SAKULI_HOME/../example_test_suites/example_ubuntu/  --vnc 2>&1 > /dev/null

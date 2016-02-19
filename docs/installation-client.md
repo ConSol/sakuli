@@ -159,11 +159,11 @@ Sakuli should now
 
 ![](pics/u_vnc_test.png)
 
-You can also trigger the example tests interactively trough the command line starter (`sakuli.sh` for linux, `sakuli.bat` for windows):
+You can also trigger the example tests interactively trough the command line starter (`sakuli` for linux, `sakuli.exe` for windows):
 
-* **Ubuntu**: `sakuli.sh --run $SAKULI_HOME/../example_test_suites/example_ubuntu`
-* **openSUSE**: `sakuli.sh --run $SAKULI_HOME/../example_test_suites/example_opensuse`
-* **Windows**: `sakuli.bat --run "%SAKULI_HOME%\..\example_test_suites\example_windows"`
+* **Ubuntu**: `sakuli run $SAKULI_HOME/../example_test_suites/example_ubuntu`
+* **openSUSE**: `sakuli run $SAKULI_HOME/../example_test_suites/example_opensuse`
+* **Windows**: `sakuli.exe run "%SAKULI_HOME%\..\example_test_suites\example_windows"`
 
 
 **Congratulations - you have installed Sakuli!**

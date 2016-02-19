@@ -87,17 +87,7 @@
             <fileset dir="${sakuli.install.src.core}" targetdir="${INSTALL_PATH}/${sakuli.install.target.core}"/>
             <!-- mark files as executable -->
             <executable stage="never" keep="true"
-                        targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/sakuli.sh">
-                <os family="unix"/>
-                <os family="mac"/>
-            </executable>
-            <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/sakuli">
-                <os family="unix"/>
-                <os family="mac"/>
-            </executable>
-            <executable stage="never" keep="true"
-                        targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/helper/encrypt_password.sh">
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
@@ -170,7 +160,7 @@
         <pack id="sakuli.win.env" name="${package.name.set.default.win}" preselected="true"
               required="${package.set.default.required}">
             <!-- @formatter:off -->
-            <description>Set 'SAKULI_HOME' to v${sakuli.version} and make it possible to execute 'sakuli.bat' from CMD.</description>
+            <description>Set 'SAKULI_HOME' to v${sakuli.version} and make it possible to execute 'sakuli.exe' from CMD.</description>
             <!-- @formatter:on -->
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_sakuli_home.bat">
@@ -182,7 +172,7 @@
         <pack id="sakuli.linux.env" name="${package.name.set.default.linux}" preselected="true"
               required="${package.set.default.required}">
             <!-- @formatter:off -->
-            <description>Set 'SAKULI_HOME' to v${sakuli.version} in '.bashrc' and make it possible to execute 'sakuli.sh' from commandline.</description>
+            <description>Set 'SAKULI_HOME' to v${sakuli.version} in '.bashrc' and make it possible to execute 'sakuli' from commandline.</description>
             <!-- @formatter:on -->
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_sakuli_home.sh">

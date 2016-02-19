@@ -12,7 +12,7 @@ This page contains different topics regarding the configuration of both **Sakuli
    -> valid for **all test suites** within this folder
 2. as a **testsuite property** in `test-suites-folder/test-suite/testsuite.properties`
    -> valid for **all test cases** within a test suite 
-3. as a **Java VM option** `-Dsakuli.property.key=value`, appended to the Sakuli starter `sakuli.sh / sakuli.bat` 
+3. as a **Java VM option** `-D sakuli.property.key=value`, appended to the Sakuli starter `sakuli / sakuli.exe` 
    -> valid for a Sakuli starter execution
 
 We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file; your changes will not be preserved. 
@@ -109,23 +109,23 @@ You can decide whether Sakuli should automatically select an adapter...
 
 #### Encrypt a secret
 
-Use the generic Sakuli starter script to encrypt secrets on the command line: 
+Use the generic Sakuli starter to encrypt secrets on the command line: 
 
 On **Windows**:   
 
     # for autodetect=true
-    %SAKULI_HOME%/bin/sakuli.bat --encrypt somesecret [enter]
+    sakuli.exe encrypt somesecret [enter]
     
     # for autodetect=false, use eth3 
-    %SAKULI_HOME%/bin/sakuli.bat --encrypt somesecret --interface eth3 [enter] 
+    sakuli.exe encrypt somesecret -interface eth3 [enter] 
 
 On **Linux**: 
 
     # for autodetect=true
-    %SAKULI_HOME%/bin/sakuli.sh --encrypt somesecret [enter]
+    sakuli encrypt somesecret [enter]
 
     # for autodetect=false, use eth3 
-    %SAKULI_HOME%/bin/sakuli.sh --encrypt somesecret --interface eth3 [enter] 
+    sakuli encrypt somesecret -interface eth3 [enter] 
 
 #### Decrypt a secret
 
@@ -206,9 +206,9 @@ You may want to change the browser due to the following reasons:
     * just for curiosity :-)
     * to keep the browser in background while Sakuli tests a non-web application (e.g. fat client)  
 
-In addition to the possibilities described in [General note on property settings](./additional-settings.md#general-note-on-property-settings), `sakuli.bat/sakuli.sh` can also be given the parameter `-b`: 
+In addition to the possibilities described in [General note on property settings](./additional-settings.md#general-note-on-property-settings), `sakuli/sakuli.exe` can also be given the parameter `-browser`: 
 
-    %SAKULI_HOME%/bin/sakuli.sh -b chrome --run /path/to/suite 
+    sakuli -browser chrome run /path/to/suite 
 
 ### Sahi behind a proxy
 
