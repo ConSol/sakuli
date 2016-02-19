@@ -20,10 +20,7 @@ package org.sakuli.starter.helper;
 
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
-import org.apache.commons.lang3.StringUtils;
-import org.sakuli.utils.ResourceHelper;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
 /**
@@ -31,19 +28,6 @@ import java.time.LocalDate;
  *         Date: 2/13/16
  */
 public class CmdPrintHelper {
-    /**
-     * {@link System#exit(int)} value if the help is printed out. This value will be used in the `sakuli.sh` script.
-     */
-    private static final int SYSTEM_EXIT_VALUE_HELP = 100;
-
-    public static void printVersion() throws IOException {
-        printSakuliHeader();
-        String versionOutput = ResourceHelper.getClasspathResourceAsStream(CmdPrintHelper.class, "/version.txt");
-        System.out.println(versionOutput + "\n\n--- Environment variables ---");
-        for (SakuliEnvVars v : SakuliEnvVars.values()) {
-            System.out.println(StringUtils.rightPad(v.name() + ":", 30) + System.getenv(v.name()));
-        }
-    }
 
     public static void printHelp(Options options) {
         printSakuliHeader();
@@ -54,7 +38,7 @@ public class CmdPrintHelper {
 
     private static void printSakuliHeader() {
         System.out.println("\n" +
-                "Generic Sakuli test starter\n" +
+                "Sakuli JAR starter:\n" +
                 LocalDate.now().getYear() + " - The Sakuli team.\n" +
                 "http://www.sakuli.org\n" +
                 "https://github.com/ConSol/sakuli\n"

@@ -34,7 +34,6 @@ public class CmdPrintHelperTest {
      */
     @Test
     public void testPrint() throws Exception {
-        CmdPrintHelper.printVersion();
         CmdPrintHelper.printHelp(new Options());
     }
 

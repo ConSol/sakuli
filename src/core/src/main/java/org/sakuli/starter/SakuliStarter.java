@@ -44,7 +44,6 @@ public class SakuliStarter {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(SakuliStarter.class);
     private final static Option help = OptionBuilder.withDescription("display help").withLongOpt("help").create("h");
-    private final static Option version = OptionBuilder.withDescription("display current version").withLongOpt("version").create("v");
     private final static Option run = OptionBuilder
             .withArgName("test-suite-folder")
             .hasArg()
@@ -103,7 +102,6 @@ public class SakuliStarter {
         CommandLineParser parser = new PosixParser();
         Options options = new Options();
         options.addOption(help);
-        options.addOption(version);
         options.addOption(run);
         options.addOption(browser);
         options.addOption(sakuliHome);
@@ -130,9 +128,6 @@ public class SakuliStarter {
                 final Entry<String, String> secret = encryptSecret(strToEncrypt, ethInterface);
                 System.out.printf("\nEncrypted secret with interface '%s': %s", secret.getKey(), secret.getValue());
                 System.out.println("\n\n... now copy the secret to your testcase!");
-                System.exit(0);
-            } else if (cmd.hasOption(version.getLongOpt()) || cmd.hasOption(version.getOpt())) {
-                CmdPrintHelper.printVersion();
                 System.exit(0);
             } else {
                 CmdPrintHelper.printHelp(options);
