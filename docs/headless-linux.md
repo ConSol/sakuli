@@ -71,13 +71,13 @@ On the **Ubuntu** desktop, open a terminal window and execute
 
     ```bash
     export DISPLAY=:1
-    sakuli -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook'$SAKULI_HOME/bin/helper/vnc.sh -kill' run __INST_DIR__/example_test_suites/example_ubuntu/
+    sakuli -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook '$SAKULI_HOME/bin/helper/vnc.sh -kill' run __INST_DIR__/example_test_suites/example_ubuntu/
     ```
 * on **openSUSE**: 
 
     ```bash
     export DISPLAY=:1
-    sakuli -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook'$SAKULI_HOME/bin/helper/vnc.sh -kill' run __INST_DIR__/example_test_suites/example_opensuse/ 
+    sakuli -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook '$SAKULI_HOME/bin/helper/vnc.sh -kill' run __INST_DIR__/example_test_suites/example_opensuse/ 
     ```
  
 You should see that Sakuli
@@ -96,5 +96,5 @@ Add the following line to Sakuli's crontab:
 SAKULI_HOME=__SAKULI_HOME__
 DISPLAY=:1
 
-*/2 * * * * $SAKULI_HOME/bin/sakuli -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook'$SAKULI_HOME/bin/helper/vnc.sh -kill' run $SAKULI_HOME/../example_test_suites/example_ubuntu 2>&1 > /dev/null
+*/2 * * * * $SAKULI_HOME/bin/sakuli -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook '$SAKULI_HOME/bin/helper/vnc.sh -kill' run $SAKULI_HOME/../example_test_suites/example_ubuntu 2>&1 > /dev/null
 ```
