@@ -92,6 +92,11 @@
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/helper/vnc.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/helper/mysql_purge.sh">
                 <os family="unix"/>
                 <os family="mac"/>
@@ -103,6 +108,11 @@
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_sakuli_home.sh">
+                <os family="unix"/>
+                <os family="mac"/>
+            </executable>
+            <executable stage="never" keep="true"
+                        targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_ui_testing_variables.sh">
                 <os family="unix"/>
                 <os family="mac"/>
             </executable>
