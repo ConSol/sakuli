@@ -114,7 +114,7 @@ public class PerformanceDataBuilderTest {
     public void testBuild() throws Exception {
         GearmanPropertiesTestHelper.initMock(gearmanProperties);
         ReflectionTestUtils.setField(testling, "testSuite", new TestSuiteExampleBuilder().buildExample());
-        BaseTest.assertRegExMatch(testling.build(), "suite__state=\\d;;;; suite_UnitTest.*; \\[check_sakuli_db_suite\\]");
+        BaseTest.assertRegExMatch(testling.build(), "suite__state=\\d;;;; suite_UnitTest.*; \\[check_sakuli\\]");
     }
 
     @Test

@@ -35,7 +35,7 @@ public class GearmanProperties {
     public static final String SERVER_PORT = "sakuli.forwarder.gearman.server.port";
     public static final String NAGIOS_HOSTNAME = "sakuli.forwarder.gearman.nagios.hostname";
     public static final String NAGIOS_CHECK_COMMAND = "sakuli.forwarder.gearman.nagios.check_command";
-    public static final String NAGIOS_CHECK_COMMAND_DEFAULT = "check_sakuli_db_suite";
+    public static final String NAGIOS_CHECK_COMMAND_DEFAULT = "check_sakuli";
     public static final String NAGIOS_OUTPUT_SUITE_SUMMARY = "sakuli.forwarder.gearman.nagios.output.suite.summary";
     public static final String NAGIOS_OUTPUT_SUITE_TABLE = "sakuli.forwarder.gearman.nagios.output.suite.table";
     public static final String NAGIOS_OUTPUT_CASE_OK = "sakuli.forwarder.gearman.nagios.output.case.ok";

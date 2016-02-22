@@ -197,6 +197,6 @@ public class GearmanResultServiceImplTest extends BaseTest {
                 "c_5__state_error_case=2;;;; " +
                 "c_5_error_case=-1.00s;4;5;; " +
                 "s_5_1_step_for_unit_test=1.00s;2;;; " +
-                "[check_sakuli_db_suite]");
+                "[check_sakuli]");
     }
 }
