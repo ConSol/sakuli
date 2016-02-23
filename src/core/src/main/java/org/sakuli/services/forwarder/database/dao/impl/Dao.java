@@ -37,7 +37,7 @@ import java.util.Map;
  */
 
 public abstract class Dao extends NamedParameterJdbcDaoSupport {
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     protected TestSuite testSuite;
@@ -52,7 +52,7 @@ public abstract class Dao extends NamedParameterJdbcDaoSupport {
             }
             setDataSource(dataSource);
         } catch (Throwable e) {
-            logger.debug("Suppressed Exception for missing DB connection: ", e);
+            LOGGER.debug("Suppressed Exception for missing DB connection: ", e);
             throw new RuntimeException("Database is not reachable, please check your 'db.properties' !!!");
         }
     }
