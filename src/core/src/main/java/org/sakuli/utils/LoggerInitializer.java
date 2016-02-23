@@ -26,6 +26,7 @@ import org.apache.commons.logging.LogConfigurationException;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.org.lidalia.sysoutslf4j.context.LogLevel;
@@ -97,6 +98,9 @@ public class LoggerInitializer {
         }
 
         logger.info("set logback configuration file '{}'", configFilePath);
+        // Jersey uses java.util.logging - bridge to slf4
+        SLF4JBridgeHandler.removeHandlersForRootLogger();
+        SLF4JBridgeHandler.install();
     }
 
     protected String getConfigFile() {

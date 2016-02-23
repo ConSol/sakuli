@@ -394,6 +394,12 @@
                 <version>1.7.7</version>
                 <scope>runtime</scope>
             </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>1.7.7</version>
+            </dependency>
+
             <!-- will rout the system out from sikulX to logging over slf4j -->
             <dependency>
                 <groupId>uk.org.lidalia</groupId>
@@ -488,6 +494,18 @@
                         <artifactId>slf4j-log4j12</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <!-- JAX-RS 2 client -->
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>javax.ws.rs-api</artifactId>
+                <version>2.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>2.22.2</version>
             </dependency>
 
             <!-- Testing frameworks -->
