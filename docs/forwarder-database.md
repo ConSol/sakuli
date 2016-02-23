@@ -147,21 +147,20 @@ Re-scheduling this service should display the UNKNOWN message that the requested
 
 ## Sakuli database forwarder parameter
 
-Set the global properties for the database receiver (unless you have multiple receivers):
+Override the global properties for the database receiver (unless you have multiple receivers):
 
-    OMD[sakuli]: vim __SAKULI_HOME__/config/sakuli-default.properties
+    OMD[sakuli]: vim __SAKULI_TEST_SUITE__/sakuli.properties
 
     # DEFAULT: false
     sakuli.forwarder.database.enabled=true
-	
-	jdbc.driverClass=com.mysql.jdbc.Driver
-    jdbc.host=__DB_IP__
-    jdbc.port=__DB_PORT__
-    jdbc.database=sakuli
-    jdbc.user=__DB_USER__
-    jdbc.pw=__DB_PW__
-    jdbc.model=sakuli
-    jdbc.url=jdbc:mysql://${jdbc.host}:${jdbc.port}/${jdbc.database}
+
+	#DEFAULT: mysql
+	sakuli.forwarder.database.jdbc.driverClass=com.mysql.jdbc.Driver
+    sakuli.forwarder.database.host=__DB_IP__
+    sakuli.forwarder.database.port=__DB_PORT__
+    sakuli.forwarder.database=sakuli
+    sakuli.forwarder.database.user=__DB_USER__
+    sakuli.forwarder.database.password=__DB_PW__
 
 
 ## Test result transmission to OMD
