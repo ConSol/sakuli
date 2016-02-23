@@ -18,7 +18,9 @@
 
 package org.sakuli.services.forwarder.icinga2;
 
+import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.common.AbstractResultService;
+import org.sakuli.services.forwarder.icinga2.model.Icinga2Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +60,16 @@ public class Icinga2ResultServiceImpl extends AbstractResultService {
                 .request(MediaType.APPLICATION_JSON_TYPE)
                 .post(Entity.text(request));
 
-        //TODO check response if contains success
-        LOGGER.info("ICINGA Response:\n{}", response.readEntity(String.class));
-        LOGGER.info("======= FINISHED: SEND RESULTS TO ICINGA SERVER ======");
+        Icinga2Result result = response.readEntity(Icinga2Result.class);
+        if (result.isSuccess()) {
+            LOGGER.info("ICINGA Response: {}", result.getFirstElementAsString());
+            LOGGER.info("======= FINISHED: SEND RESULTS TO ICINGA SERVER ======");
+        } else {
+            exceptionHandler.handleException(new SakuliForwarderException(String.format(
+                    "Unexpected result of REST-POST to Incinga monitoring server (%s): %s",
+                    icinga2RestCient.getTargetCheckResult().getUri(),
+                    result.getFirstElementAsString())));
+        }
+
     }
 }

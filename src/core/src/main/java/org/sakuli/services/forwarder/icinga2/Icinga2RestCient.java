@@ -21,6 +21,7 @@ package org.sakuli.services.forwarder.icinga2;
 import org.apache.commons.io.IOUtils;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.glassfish.jersey.filter.LoggingFilter;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.sakuli.exceptions.SakuliRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +61,9 @@ public class Icinga2RestCient {
                 .sslContext(getTrustEverythingSSLContext())
                 .build()
                 .register(HttpAuthenticationFeature.basic(properties.getApiUsername(), properties.getApiPassword()))
-                .register(new ErrorResponseFilter());
+                .register(new ErrorResponseFilter())
+                .register(JacksonFeature.class);
+
         if (LOGGER.isDebugEnabled()) {
             icingaClient.register(LoggingFilter.class);
         }
@@ -110,7 +113,6 @@ public class Icinga2RestCient {
                 if (responseContext.hasEntity()) {
                     // get the "real" error message
                     String error = IOUtils.toString(responseContext.getEntityStream());
-
                     throw new IOException("[" + responseContext.getStatusInfo().getStatusCode() + "] " + responseContext.getStatusInfo() + ": " + error);
                 }
             }

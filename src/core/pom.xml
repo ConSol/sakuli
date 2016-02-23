@@ -430,6 +430,13 @@
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
         </dependency>
+        <!-- jackson json parser -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.22.2</version>
+        </dependency>
+
 
     </dependencies>
 
