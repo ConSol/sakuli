@@ -73,7 +73,7 @@ public class GearmanProperties {
     private String outputCaseCritical;
     @Value("${" + NAGIOS_OUTPUT_CASE_ERROR + ":" + NAGIOS_OUTPUT_CASE_ERROR_DEFAULT + "}")
     private String outputCaseError;
-    @Value("${" + NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH + ":" + NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH_DEFAULT)
+    @Value("${" + NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH + ":" + NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH_DEFAULT + "}")
     private String outputScreenshotDivWidth;
 
     //TODO write test with context
