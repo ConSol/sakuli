@@ -47,7 +47,7 @@ public class Icinga2RequestBuilder implements Builder<Icinga2Request> {
     }
 
     public Icinga2RequestBuilder withExitStatus(int exitStatus) {
-        request.setExit_status(0);
+        request.setExit_status(exitStatus);
         return this;
     }
 
