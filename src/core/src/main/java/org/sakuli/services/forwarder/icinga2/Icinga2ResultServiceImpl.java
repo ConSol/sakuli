@@ -18,9 +18,13 @@
 
 package org.sakuli.services.forwarder.icinga2;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.common.AbstractResultService;
+import org.sakuli.services.forwarder.icinga2.model.Icinga2Request;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Result;
+import org.sakuli.services.forwarder.icinga2.model.builder.Icinga2CheckResultBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +45,16 @@ public class Icinga2ResultServiceImpl extends AbstractResultService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Icinga2ResultServiceImpl.class);
     @Autowired
     private Icinga2RestCient icinga2RestCient;
+    @Autowired
+    private Icinga2CheckResultBuilder icinga2CheckResultBuilder;
+
+    public static String convertToJSON(Entity<?> entity) {
+        try {
+            return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(entity.getEntity());
+        } catch (JsonProcessingException e) {
+            return entity.getEntity().toString();
+        }
+    }
 
     @Override
     public int getServicePriority() {
@@ -49,16 +63,16 @@ public class Icinga2ResultServiceImpl extends AbstractResultService {
 
     @Override
     public void saveAllResults() {
-        //TODO create JSON from TestSuite object
         LOGGER.info("======= SEND RESULTS TO ICINGA SERVER ======");
-        String request = "{ \"check_source\": \"check_sakuli\", \"exit_status\": 0, \"performance_data\": [ \"s_001_001_Test_Sahi_landing_page=1.96s;15;;;\", \"s_001_002_Calculation=8.96s;30;;;\", \"s_001_003_Editor=8.38s;30;;;\", \"c_001_case1=25.22s;40;50;;\", \"c_001__state=0;;;;\", \"c_001__warning=40s;;;;\", \"c_001__critical=50s;;;;\", \"suite__state=0;;;;\", \"suite__warning=50s;;;;\", \"suite__critical=60s;;;;\" ], \"plugin_output\": \"Sakuli suite 'example_ubuntu_0' (ID: 25100) ran in 99.31 seconds.\" }";
-
-
         LOGGER.info("POST Sakuli results to '{}'", icinga2RestCient.getTargetCheckResult().getUri().toString());
-        LOGGER.debug("ICINGA Payload: {}", request);
+
+        Entity<Icinga2Request> payload = Entity.json(icinga2CheckResultBuilder.build());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("ICINGA Payload: {}", convertToJSON(payload));
+        }
         Response response = icinga2RestCient.getTargetCheckResult()
                 .request(MediaType.APPLICATION_JSON_TYPE)
-                .post(Entity.text(request));
+                .post(payload);
 
         Icinga2Result result = response.readEntity(Icinga2Result.class);
         if (result.isSuccess()) {
@@ -72,4 +86,5 @@ public class Icinga2ResultServiceImpl extends AbstractResultService {
         }
 
     }
+
 }

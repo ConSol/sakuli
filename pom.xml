@@ -54,6 +54,7 @@
         <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
+        <dependencies.jersey-client.version>2.22.2</dependencies.jersey-client.version>
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
         <test.group.ui>ui</test.group.ui>
@@ -95,7 +96,7 @@
                         <exclude>**/integration/**/*</exclude>
                     </excludes>
                     <environmentVariables>
-                        <SAKULI_HOME />
+                        <SAKULI_HOME/>
                     </environmentVariables>
                 </configuration>
             </plugin>
@@ -505,7 +506,13 @@
             <dependency>
                 <groupId>org.glassfish.jersey.core</groupId>
                 <artifactId>jersey-client</artifactId>
-                <version>2.22.2</version>
+                <version>${dependencies.jersey-client.version}</version>
+            </dependency>
+            <!-- jackson json parser -->
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
+                <version>${dependencies.jersey-client.version}</version>
             </dependency>
 
             <!-- Testing frameworks -->

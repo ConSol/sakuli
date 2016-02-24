@@ -16,19 +16,22 @@
  * limitations under the License.
  */
 
-package org.sakuli.datamodel;
+package org.sakuli.services.forwarder;
 
-/**
- * Marker interface for all converter.
- *
- * @author tschneck
- *         Date: 10.07.14
- */
-public interface Converter<T, V> {
+import org.sakuli.services.forwarder.gearman.TextPlaceholder;
+import org.testng.annotations.Test;
 
-    /**
-     * @return the built object of type T from typ V
-     */
-    T convert(V value);
+import static org.testng.Assert.assertEquals;
 
+public class PlaceholderMapTest {
+
+    @Test
+    public void testGet() throws Exception {
+        PlaceholderMap testling = new PlaceholderMap();
+        testling.put(TextPlaceholder.STEP_INFORMATION, "bla");
+        testling.put(TextPlaceholder.DURATION, null);
+
+        assertEquals(testling.get(TextPlaceholder.STEP_INFORMATION), "bla");
+        assertEquals(testling.get(TextPlaceholder.DURATION), "");
+    }
 }

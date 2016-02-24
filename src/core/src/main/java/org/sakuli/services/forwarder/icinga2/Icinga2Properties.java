@@ -35,6 +35,8 @@ public class Icinga2Properties {
     private static final String API_USERNAME = "sakuli.forwarder.icinga2.api.username";
     private static final String API_PASSWORD = "sakuli.forwarder.icinga2.api.password";
     private static final String API_URL = "sakuli.forwarder.icinga2.api.url";
+    private static final String TEMPLATE_SUITE_SUMMARY = "sakuli.forwarder.icinga2.output.suite.summary";
+
     @Value("${" + HOSTNAME + "}")
     private String hostName;
     @Value("${" + API_HOST + "}")
@@ -47,6 +49,8 @@ public class Icinga2Properties {
     private String apiPassword;
     @Value("${" + API_URL + "}")
     private String apiURL;
+    @Value("${" + TEMPLATE_SUITE_SUMMARY + "}")
+    private String templateSuiteSummary;
 
     public String getHostName() {
         return hostName;
@@ -94,5 +98,13 @@ public class Icinga2Properties {
 
     public void setApiURL(String apiURL) {
         this.apiURL = apiURL;
+    }
+
+    public String getTemplateSuiteSummary() {
+        return templateSuiteSummary;
+    }
+
+    public void setTemplateSuiteSummary(String templateSuiteSummary) {
+        this.templateSuiteSummary = templateSuiteSummary;
     }
 }

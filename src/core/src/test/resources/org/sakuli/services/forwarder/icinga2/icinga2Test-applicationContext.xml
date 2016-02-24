@@ -41,6 +41,6 @@
         </constructor-arg>
     </bean>
 
-    <context:component-scan base-package="org.sakuli.services.forwarder.icinga2"/>
+    <context:component-scan base-package="org.sakuli.services.forwarder"/>
 
 </beans>

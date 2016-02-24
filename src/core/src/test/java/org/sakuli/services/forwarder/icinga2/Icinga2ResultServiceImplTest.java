@@ -22,7 +22,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.services.forwarder.icinga2.model.Icinga2Request;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Result;
+import org.sakuli.services.forwarder.icinga2.model.builder.Icinga2CheckResultBuilder;
+import org.sakuli.services.forwarder.icinga2.model.builder.Icinga2RequestBuilder;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -56,6 +60,8 @@ public class Icinga2ResultServiceImplTest {
     private Response response;
     @Mock
     private SakuliExceptionHandler exceptionHandler;
+    @Mock
+    private Icinga2CheckResultBuilder icinga2CheckResultBuilder;
     @InjectMocks
     private Icinga2ResultServiceImpl testling;
 
@@ -72,8 +78,10 @@ public class Icinga2ResultServiceImplTest {
         map.put("status", "Successfully processed");
         result.setResults(Collections.singletonList(map));
         mockAndReturn(result);
+        when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
         testling.saveAllResults();
         verify(exceptionHandler, never()).handleException(any(Exception.class));
+        verify(icinga2CheckResultBuilder).build();
     }
 
     @Test
@@ -84,8 +92,10 @@ public class Icinga2ResultServiceImplTest {
         map.put("status", "Successfully processed");
         result.setResults(Collections.singletonList(map));
         mockAndReturn(result);
+        when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
         testling.saveAllResults();
         verify(exceptionHandler).handleException(any(Exception.class));
+        verify(icinga2CheckResultBuilder).build();
     }
 
     @Test
@@ -95,9 +105,43 @@ public class Icinga2ResultServiceImplTest {
         map.put("code", "200.00");
         map.put("status", "Unsuccessfully processed");
         result.setResults(Collections.singletonList(map));
+        when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
         mockAndReturn(result);
         testling.saveAllResults();
         verify(exceptionHandler).handleException(any(Exception.class));
+        verify(icinga2CheckResultBuilder).build();
+    }
+
+    @Test
+    public void testPrintJson() throws Exception {
+        String json = Icinga2ResultServiceImpl.convertToJSON(Entity.json(getRequestExample()));
+        Assert.assertEquals(json, "{\n" +
+                "  \"check_source\" : \"check_sakuli\",\n" +
+                "  \"exit_status\" : 0,\n" +
+                "  \"performance_data\" : [ \"suite__state=0;;;;\", \"suite__warning=50s;;;;\", \"suite__critical=60s;;;;\", \"suite_example_ubuntu_0=49.31s;50;60;;\", \"c_001__state=0;;;;\", \"c_001__warning=40s;;;;\", \"c_001__critical=50s;;;;\", \"c_001_case1=25.22s;40;50;;\", \"s_001_001_Test_Sahi_landing_page=1.96s;15;;;\", \"s_001_002_Calculation=8.96s;30;;;\", \"s_001_003_Editor=8.38s;30;;;\" ],\n" +
+                "  \"plugin_output\" : \"Sakuli suite 'example_ubuntu_0' (ID: 25100) ran in 49.31 seconds.\"\n" +
+                "}"
+        );
+
+    }
+
+    protected Icinga2Request getRequestExample() {
+        return new Icinga2RequestBuilder()
+                .withCheckSource("check_sakuli")
+                .withExitStatus(0)
+                .addPerformanceData("suite__state=0;;;;")
+                .addPerformanceData("suite__warning=50s;;;;")
+                .addPerformanceData("suite__critical=60s;;;;")
+                .addPerformanceData("suite_example_ubuntu_0=49.31s;50;60;;")
+                .addPerformanceData("c_001__state=0;;;;")
+                .addPerformanceData("c_001__warning=40s;;;;")
+                .addPerformanceData("c_001__critical=50s;;;;")
+                .addPerformanceData("c_001_case1=25.22s;40;50;;")
+                .addPerformanceData("s_001_001_Test_Sahi_landing_page=1.96s;15;;;")
+                .addPerformanceData("s_001_002_Calculation=8.96s;30;;;")
+                .addPerformanceData("s_001_003_Editor=8.38s;30;;;")
+                .withPluginOutput("Sakuli suite 'example_ubuntu_0' (ID: 25100) ran in 49.31 seconds.")
+                .build();
     }
 
     private void mockAndReturn(Icinga2Result result) {

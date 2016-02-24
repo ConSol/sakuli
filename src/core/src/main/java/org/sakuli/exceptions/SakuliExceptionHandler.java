@@ -187,11 +187,13 @@ public class SakuliExceptionHandler {
             logger.error(transformedException.getMessage(), transformedException);
             saveException(transformedException);
 
-            /**
-             * don't do this for errors from Sahi see implemenation of
-             * {@link RhinoAspect#
-             */
-            if (!(e instanceof SahiActionException)) {
+            // a {@link SakuliForwarderException}, should only added to the report and not stop sahi, because
+            // this error types only on already started the tear down of test suite.
+            if (e instanceof SakuliForwarderException) {
+                addExceptionToSahiReport(transformedException);
+            }
+            //stop the execution and add to report if the exception is not caused by Sahi
+            else if (!(e instanceof SahiActionException)) {
                 stopExecutionAndAddExceptionToSahiReport(transformedException);
             }
         }
