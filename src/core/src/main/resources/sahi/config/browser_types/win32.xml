@@ -15,7 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
+<!-- @formatter:off -->
 <browserTypes>
     <!-- INFO: $userDir will be resolved as the SAHI_HOME folder -->
     <browserType>
@@ -32,7 +32,7 @@
         <name>firefox_portable</name>
         <displayName>Firefox portable</displayName>
         <icon>firefox.png</icon>
-        <path>$userDir\..\FirefoxPortable\App\Firefox\firefox.exe</path>
+        <path>$userDir\..\..\FirefoxPortable\App\Firefox\firefox.exe</path>
         <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
         <processName>firefox.exe</processName>
         <capacity>5</capacity>
@@ -92,10 +92,7 @@
         <displayName>Chrome</displayName>
         <icon>chrome.png</icon>
         <path>$ProgramFiles (x86)\Google\Chrome\Application\chrome.exe</path>
-        <options>--incognito --no-default-browser-check --no-first-run --disable-infobars
-            --user-data-dir=$userDir\browser\chrome\profiles\sahi$threadNo
-            --proxy-server=localhost:9999 --disable-popup-blocking
-        </options>
+        <options>--incognito --user-data-dir="$userDir\browser\chrome\profiles\sahi$threadNo" --no-default-browser-check --no-first-run --disable-infobars --proxy-server=localhost:9999 --disable-popup-blocking</options>
         <processName>chrome.exe</processName>
         <capacity>5</capacity>
     </browserType>
@@ -122,5 +119,5 @@
         <capacity>1</capacity>
     </browserType>
 
-
 </browserTypes>
+<!-- @formatter:on -->
