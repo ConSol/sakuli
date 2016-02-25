@@ -132,6 +132,9 @@ A good choice is
 * [Greenshot](http://www.getgreenshot.org) on **Windows**  
 * [Shutter](http://shutter-project.org/) on **Linux**.
 
+Always make sure that screenshots are saved without compression. Sikuli uses a default similarity of 0.99, which internally means that "more than 99%" => 100% pixels must conincide. Decreasing similarity should only be neccessary if the pattern images are of poor quality or the region compared to always slightly differs from the pattern image. 
+
+
 #### Editor
 (optional)
 

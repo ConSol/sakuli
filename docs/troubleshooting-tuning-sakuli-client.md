@@ -144,11 +144,7 @@ If Sikuli does not recognize regions on the screen or does recognize the wrong o
 
 * **Run the client's OS on a fixed resolution:** Some applications/OS scale window elements slightly depending on the resolution. for example, if you are running Sakuli within Virtualbox, the guest OS changes its resolution as soon as you resize the VM window. The dimensions of window elements can then slightly diverge by 1-2 pixels from the screenshots taken before. This difference is small for human's eyes, but a big one for Sikuli. Make sure to disable features like "Auto-Adjust Guest Display" and set the Client's desktop to a common resolution (e.g. 1024x768). Side note: the smaller you set the resolution, the less work has to be done by Sikuli. 
 * **Disable any image compression algorithms** in your screenshot capturing program (Greenshot, Shutter, …). Otherwise Sikuli will compare *compressed* pattern images with *umcompressed* image data on the screen, which will fail for sure.     
-* Sikuli uses a **[similarity](http://doc.sikuli.org/region.html)** value of **0.8 by default**. That value (range: 0-1) determines how many pixels on the screen have to match the pixels of a screenshot file. "0" means "no pixels at all" (not very useful), "1" means "all pixels". So set the similarity, use [setSimilarity](/docs/sakuli-api.md#Environment.setSimilarity) of the Environment class. 
-    * If Sikuli recognizes the **wrong region** for a given screenshot, try to **increase the similarity**, e.g. `env.setSimilarity(0.9);`. 
-    * If Sikuli does **not recognize** anything, try to slightly **decrease the similarity**, e.g. `env.setSimilarity(0.6)`. This should only be the case when you want Sikuli to "search for somethink *like*…". 
-    * **Important note:** we repeatedly noticed that results are best with a similarity of `0.99` instead of `1.0`. 
-
+* Sikuli uses a **[similarity](http://doc.sikuli.org/region.html)** value of **0.99 by default**. That value (range: 0-0.99 determines that more than X percent of the region pixels have to match. If Sikuli does not recognize anything or the wrong regions, try to slightly **decrease the similarity**, e.g. `env.setSimilarity(0.6)`. Please note that a similarity of "1" would mean that "more than 100%" of the region pixels must match - which is completely wrong.
 
 ### Missing keystrokes on `type("...")` or failing `paste("...")`
 
