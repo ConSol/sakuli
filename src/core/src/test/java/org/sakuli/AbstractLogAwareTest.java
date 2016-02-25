@@ -124,6 +124,10 @@ public abstract class AbstractLogAwareTest {
         setSystemProperty(logLevel, "log.level.sikuli");
     }
 
+    public static void setSahiLogLevel(String logLevel) {
+        setSystemProperty(logLevel, "log.level.sahi");
+    }
+
     private static void waitForLogFile(Path file) {
         if (!Files.exists(file)) {
             try {
@@ -138,12 +142,14 @@ public abstract class AbstractLogAwareTest {
     public void setLogLevel() throws Exception {
         setSakuliLogLevel("DEBUG");
         setSikuliLogLevel("DEBUG");
+        setSahiLogLevel("DEBUG");
     }
 
     @AfterSuite(alwaysRun = true)
     public void removeLogLevel() throws Exception {
         setSakuliLogLevel(null);
         setSikuliLogLevel(null);
+        setSahiLogLevel(null);
     }
 
     protected synchronized void assertLastLine(Path logFile, String filter, LogLevel logLevel, String expectedMessage) throws IOException {

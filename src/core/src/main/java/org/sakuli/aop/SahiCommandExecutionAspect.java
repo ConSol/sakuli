@@ -22,13 +22,16 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.loader.BeanLoader;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * Aspect for the External Sahi Libary {@link net.sf.sahi}
@@ -39,8 +42,15 @@ import java.util.*;
 @Component
 public class SahiCommandExecutionAspect extends BaseSakuliAspect {
 
-    //TODO TS write TEST and comment
-    //"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --incognito --user-data-dir="C:/DATEN/git-files/sakuli/sahi/userdata/browser/chrome/profiles/sahi0" --no-default-browser-check --no-first-run --disable-infobars --proxy-server=localhost:9999 --disable-popup-blocking "http://sahi.example.com/_s_/dyn/Player_auto?startUrl=http%3A%2F%2Fsahi.example.com%2F_s_%2Fdyn%2FDriver_initialized__SahiAmpersandSahi__sahisid=sahi_44eb94b307a820415609523034635e99d939sahixb9a85c8c0dad2040b908ae00bf62f3b9774cx__SahiAmpersandSahi__isSingleSession=false"
+    /**
+     * Due to the fact, the parsing of the sahi method {@link net.sf.sahi.util.Utils#getCommandTokens(String)} won't
+     * work correctly, this {@link Around} advice use the Apache libary {@link CommandLine#parse(String)} to modify it.
+     * See http://community.sahipro.com/forums/discussion/8552/sahi-os-5-0-and-chrome-user-data-dir-containing-spaces-not-working.
+     *
+     * @param joinPoint     the {@link ProceedingJoinPoint} of the invoked method
+     * @param commandString the original argument as{@link String}
+     * @return the result of {@link CommandLine#parse(String)}
+     */
     @Around("execution(* net.sf.sahi.util.Utils.getCommandTokens(..)) && args(commandString)")
     public String[] getCommandTokens(ProceedingJoinPoint joinPoint, String commandString) {
         Logger LOGGER = getLogger(joinPoint);
@@ -50,7 +60,7 @@ public class SahiCommandExecutionAspect extends BaseSakuliAspect {
         try {
             Object result = joinPoint.proceed();
             if (result instanceof String[] && !Arrays.equals(tokens, (String[]) result)) {
-                LOGGER.info("MODIFYED SAHI COMMAND TOKENS: {} => {}", printArray((String[]) result), printArray(tokens));
+                LOGGER.info("MODIFIED SAHI COMMAND TOKENS: {} => {}", printArray((String[]) result), printArray(tokens));
             }
         } catch (Throwable e) {
             LOGGER.error("Exception during execution of JoinPoint net.sf.sahi.util.Utils.getCommandTokens", e);
@@ -58,12 +68,24 @@ public class SahiCommandExecutionAspect extends BaseSakuliAspect {
         return tokens;
     }
 
+    /**
+     * Catch exceptions that would have been droped from {@link net.sf.sahi.util.Utils} of all 'execute*' methods and
+     * forward it to the exception Handler
+     *
+     * @param joinPoint the {@link JoinPoint} of the invoked method
+     * @param error     any {@link Throwable} thrown of the Method
+     */
     @AfterThrowing(pointcut = "execution(* net.sf.sahi.util.Utils.execute*(..))", throwing = "error")
     public void catchSahiCommandExcecutionErrors(JoinPoint joinPoint, Throwable error) {
         BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(new SakuliInitException(error,
                 "Error executing command " + printArgs(joinPoint, true)));
     }
 
+    /**
+     * Because Sahi doesn't log the unmodified command call, do the logging over this advice.
+     *
+     * @param joinPoint the {@link JoinPoint} of the invoked method
+     */
     @Before("execution(* net.sf.sahi.util.Utils.execute*(..))")
     public void logSahiCommandExection(JoinPoint joinPoint) {
         getLogger(joinPoint).debug("SAHI command execution: {}", printArgs(joinPoint, true));
