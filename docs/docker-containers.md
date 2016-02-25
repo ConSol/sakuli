@@ -65,7 +65,12 @@ There is more than one way to integrate a custom testsuite in a container, discu
 
 ### 1) Mount an external suite folder and modify `CMD`
 
-Mount a folder on your host into the container and override `CMD` from Dockerfile (=argument for `ENTRYPOINT`) with custom parameters for the Sakuli starter `sakuli`.  In this way you can also instruct Sakuli e.g. to use another browser (`-browser chrome`). To get all possible command line parameters call `docker run consol/sakuli-ubuntu-xfce -help`.
+Mount a folder on your host into the container and override `CMD` from Dockerfile (=argument for `ENTRYPOINT`) with custom parameters for the Sakuli starter `sakuli`.  In this way you can also instruct Sakuli e.g. to use another browser (`-browser chrome`).
+ 
+    # running tests in chrome
+    ~$ docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce 'run "$SAKULI_TEST_SUITE" -browser chrome'   
+ 
+ To get all possible command line parameters call `docker run consol/sakuli-ubuntu-xfce -help`.
 
 
 CMD can be overrideen in two ways:
