@@ -319,6 +319,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+        </dependency>
+
         <!-- will rout the system out from sikulX to logging over slf4j -->
         <dependency>
             <groupId>uk.org.lidalia</groupId>
@@ -392,6 +397,23 @@
             <groupId>org.gearman</groupId>
             <artifactId>gearman-java</artifactId>
         </dependency>
+
+        <!-- JAX-RS 2 client -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+        </dependency>
+        <!-- jackson json parser -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 </project>

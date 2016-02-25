@@ -40,7 +40,7 @@ import java.util.SortedSet;
 @ProfileJdbcDb
 @Component
 public class DatabaseResultServiceImpl extends AbstractResultService {
-    private static Logger logger = LoggerFactory.getLogger(DatabaseResultServiceImpl.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(DatabaseResultServiceImpl.class);
 
     @Autowired
     private DaoTestCase daoTestCase;
@@ -56,7 +56,8 @@ public class DatabaseResultServiceImpl extends AbstractResultService {
 
     @Override
     public void saveAllResults() {
-        logger.info("try to save all results to the database");
+        LOGGER.info("======= SAVE RESULTS TO DATABASE ======");
+        ;
         try {
             daoTestSuite.saveTestSuiteResult();
             daoTestSuite.saveTestSuiteToSahiJobs();
@@ -66,16 +67,17 @@ public class DatabaseResultServiceImpl extends AbstractResultService {
                     //write testcase and steps to DB
                     daoTestCase.saveTestCaseResult(tc);
 
-                    logger.info("... try to save all STEPS for test case '" + tc.getId() + "'!");
+                    LOGGER.info("... try to save all STEPS for test case '" + tc.getId() + "'!");
                     SortedSet<TestCaseStep> steps = tc.getStepsAsSortedSet();
                     if (!steps.isEmpty()) {
                         daoTestCaseStep.saveTestCaseSteps(steps, tc.getDbPrimaryKey());
-                        logger.info("all STEPS for '" + tc.getId() + "' saved!");
+                        LOGGER.info("all STEPS for '" + tc.getId() + "' saved!");
                     } else {
-                        logger.info("no STEPS for '\" + tc.getId() +\"'found => no STEPS saved in DB!");
+                        LOGGER.info("no STEPS for '\" + tc.getId() +\"'found => no STEPS saved in DB!");
                     }
                 }
             }
+            LOGGER.info("======= FINISHED: SAVE RESULTS TO DATABASE ======");
         } catch (Throwable e) {
             exceptionHandler.handleException(
                     new SakuliForwarderException(e,

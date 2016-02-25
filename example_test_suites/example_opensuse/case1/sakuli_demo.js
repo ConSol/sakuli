@@ -32,7 +32,7 @@ try {
 
     testCase.endOfStep("Test Sahi landing page",30);
     appCalc.open();
-    screen.waitForImage("calculator.png", 20);
+    screen.waitForImage("calculator.png", 10);
 
     env.type("525");
     env.sleep(1);
@@ -41,11 +41,11 @@ try {
     env.type("100");
     env.sleep(1);
     screen.find("result.png").click();
-    screen.waitForImage("625",10);
+    screen.waitForImage("625", 5);
     testCase.endOfStep("Calculation",30);
 
     appKwrite.open();
-    screen.waitForImage("kwrite.png", 20);
+    screen.waitForImage("kwrite.png", 10);
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
     testCase.endOfStep("Editor",30);
     env.sleep(4);

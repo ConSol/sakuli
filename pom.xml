@@ -54,6 +54,7 @@
         <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
+        <dependencies.jersey-client.version>2.22.2</dependencies.jersey-client.version>
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
         <test.group.ui>ui</test.group.ui>
@@ -95,7 +96,7 @@
                         <exclude>**/integration/**/*</exclude>
                     </excludes>
                     <environmentVariables>
-                        <SAKULI_HOME />
+                        <SAKULI_HOME/>
                     </environmentVariables>
                 </configuration>
             </plugin>
@@ -394,6 +395,12 @@
                 <version>1.7.7</version>
                 <scope>runtime</scope>
             </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>1.7.7</version>
+            </dependency>
+
             <!-- will rout the system out from sikulX to logging over slf4j -->
             <dependency>
                 <groupId>uk.org.lidalia</groupId>
@@ -488,6 +495,24 @@
                         <artifactId>slf4j-log4j12</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <!-- JAX-RS 2 client -->
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>javax.ws.rs-api</artifactId>
+                <version>2.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.jersey.core</groupId>
+                <artifactId>jersey-client</artifactId>
+                <version>${dependencies.jersey-client.version}</version>
+            </dependency>
+            <!-- jackson json parser -->
+            <dependency>
+                <groupId>org.glassfish.jersey.media</groupId>
+                <artifactId>jersey-media-json-jackson</artifactId>
+                <version>${dependencies.jersey-client.version}</version>
             </dependency>
 
             <!-- Testing frameworks -->

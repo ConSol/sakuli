@@ -16,16 +16,15 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.forwarder.gearman.model.builder;
+package org.sakuli.services.forwarder;
 
 import org.apache.commons.lang.StringUtils;
-import org.sakuli.datamodel.Converter;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
 import org.sakuli.exceptions.SakuliForwarderException;
-import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
 import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
+import org.sakuli.services.forwarder.icinga2.ProfileIcinga2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Encoder;
@@ -39,14 +38,13 @@ import java.util.Arrays;
  * @author tschneck Date: 05.09.14
  */
 @ProfileGearman
+@ProfileIcinga2
 @Component
-public class ScreenshotDivConverter implements Converter<ScreenshotDiv, Throwable> {
+public class ScreenshotDivConverter {
 
     public static final String REGEX_SRC_DATA_IMAGE_BASE64 = "src=\"data:image\\/.*;base64,.*\"";
     @Autowired
     private SakuliExceptionHandler exceptionHandler;
-    @Autowired
-    private GearmanProperties gearmanProperties;
 
     public static String removeBase64ImageDataString(String string) {
         if (StringUtils.isNotEmpty(string)) {
@@ -55,8 +53,7 @@ public class ScreenshotDivConverter implements Converter<ScreenshotDiv, Throwabl
         return string;
     }
 
-    @Override
-    public ScreenshotDiv convert(Throwable e) {
+    public ScreenshotDiv convert(Throwable e, String divWidthPixel) {
         if (e != null) {
             String base64String = extractScreenshotAsBase64(e);
             String format = extractScreenshotFormat(e);
@@ -66,7 +63,7 @@ public class ScreenshotDivConverter implements Converter<ScreenshotDiv, Throwabl
                 screenshotDiv.setBase64screenshot(base64String);
                 String divID = ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID;
                 screenshotDiv.setId(divID);
-                screenshotDiv.setWidth(gearmanProperties.getOutputScreenshotDivWidth());
+                screenshotDiv.setWidth(divWidthPixel);
                 return screenshotDiv;
             }
         }

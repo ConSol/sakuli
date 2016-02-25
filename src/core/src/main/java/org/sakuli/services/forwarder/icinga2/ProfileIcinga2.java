@@ -16,19 +16,17 @@
  * limitations under the License.
  */
 
-package org.sakuli.datamodel;
+package org.sakuli.services.forwarder.icinga2;
+
+import org.sakuli.utils.SpringProfilesInitializer;
+import org.springframework.context.annotation.Profile;
 
 /**
- * Marker interface for all converter.
+ * Spring Profile constant for the Incinga2 forwarder components
  *
  * @author tschneck
- *         Date: 10.07.14
+ *         Date: 09.07.14
  */
-public interface Converter<T, V> {
-
-    /**
-     * @return the built object of type T from typ V
-     */
-    T convert(V value);
-
+@Profile(SpringProfilesInitializer.INCINGA2)
+public @interface ProfileIcinga2 {
 }

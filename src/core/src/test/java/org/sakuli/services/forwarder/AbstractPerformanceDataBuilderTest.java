@@ -16,13 +16,10 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.forwarder.gearman.model.builder;
+package org.sakuli.services.forwarder;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.sakuli.BaseTest;
 import org.sakuli.builder.TestCaseExampleBuilder;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
@@ -32,9 +29,6 @@ import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.services.forwarder.gearman.GearmanProperties;
-import org.sakuli.services.forwarder.gearman.GearmanPropertiesTestHelper;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -47,15 +41,7 @@ import static org.testng.Assert.assertEquals;
  * @author tschneck
  *         Date: 8/26/15
  */
-public class PerformanceDataBuilderTest {
-
-    @Mock
-    private TestSuite testSuite;
-    @Mock
-    private GearmanProperties gearmanProperties;
-    @Spy
-    @InjectMocks
-    private PerformanceDataBuilder testling;
+public class AbstractPerformanceDataBuilderTest {
 
     @DataProvider(name = "performanceDataRows")
     public static Object[][] performanceDataRows() {
@@ -84,43 +70,36 @@ public class PerformanceDataBuilderTest {
 
     @Test(dataProvider = "performanceDataRows")
     public void testAddPerformanceDataRow(String currentPerformanceData, String name, String value, String warning, String critical, String expectedData) throws Exception {
-        assertEquals(PerformanceDataBuilder.addPerformanceDataRow(currentPerformanceData, name, value, warning, critical), expectedData);
+        assertEquals(AbstractPerformanceDataBuilder.addPerformanceDataRow(currentPerformanceData, name, value, warning, critical), expectedData);
     }
 
     @Test(dataProvider = "performanceDataRowsNonOverview")
     public void testAddPerformanceDataRow(String currentPerformanceData, String name, float duration, int warning, int critical, String expectedData) throws Exception {
-        assertEquals(PerformanceDataBuilder.addPerformanceDataRow(currentPerformanceData, name, duration, warning, critical), expectedData);
+        assertEquals(AbstractPerformanceDataBuilder.addPerformanceDataRow(currentPerformanceData, name, duration, warning, critical), expectedData);
     }
 
     @Test
     public void testAddUnknonwPerformanceData() throws Exception {
-        assertEquals(PerformanceDataBuilder.addUnknownPerformanceDataRow("", "my_name_test"), "my_name_test=U;;;;");
+        assertEquals(AbstractPerformanceDataBuilder.addUnknownPerformanceDataRow("", "my_name_test"), "my_name_test=U;;;;");
     }
 
     @Test
     public void testAddThresholdPerformanceData() throws Exception {
-        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 0, 0), "");
-        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 0, -1), "");
-        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", -1, -1), "");
-        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 10, -1),
+        assertEquals(AbstractPerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 0, 0), "");
+        assertEquals(AbstractPerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 0, -1), "");
+        assertEquals(AbstractPerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", -1, -1), "");
+        assertEquals(AbstractPerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 10, -1),
                 "suite__warning=10s;;;;");
-        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 10, 20),
+        assertEquals(AbstractPerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 10, 20),
                 "suite__warning=10s;;;; suite__critical=20s;;;;");
-        assertEquals(PerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 0, 20),
+        assertEquals(AbstractPerformanceDataBuilder.addPerformanceDataRow4Threshold("", "suite", 0, 20),
                 "suite__critical=20s;;;;");
-    }
-
-    @Test
-    public void testBuild() throws Exception {
-        GearmanPropertiesTestHelper.initMock(gearmanProperties);
-        ReflectionTestUtils.setField(testling, "testSuite", new TestSuiteExampleBuilder().buildExample());
-        BaseTest.assertRegExMatch(testling.build(), "suite__state=\\d;;;; suite_UnitTest.*; \\[check_sakuli_db_suite\\]");
     }
 
     @Test
     public void testSuitePerformanceDataUnknownData() throws Exception {
         BaseTest.assertRegExMatch(
-                PerformanceDataBuilder.getTestSuitePerformanceData(
+                AbstractPerformanceDataBuilder.getTestSuitePerformanceData(
                         new TestSuiteExampleBuilder().withState(TestSuiteState.ERRORS).buildExample()
                 ),
                 "suite__state=2;;;; suite_UnitTest_\\d*=U;;;;.*");
@@ -129,7 +108,7 @@ public class PerformanceDataBuilderTest {
     @Test
     public void testCasePerformanceDataUnknownData() throws Exception {
         BaseTest.assertRegExMatch(
-                PerformanceDataBuilder.addTestCasePerformanceData(
+                AbstractPerformanceDataBuilder.addTestCasePerformanceData(
                         "",
                         new TreeSet<>(Collections.singletonList(
                                 new TestCaseExampleBuilder().withState(TestCaseState.ERRORS).buildExample()
@@ -141,7 +120,7 @@ public class PerformanceDataBuilderTest {
     @Test
     public void testStepPerformanceDataUnknownData() throws Exception {
         assertEquals(
-                PerformanceDataBuilder.addTestCaseStepPerformanceData(
+                AbstractPerformanceDataBuilder.addTestCaseStepPerformanceData(
                         "",
                         new TreeSet<>(Arrays.asList(
                                 new TestCaseStepExampleBuilder().withName("step1")
@@ -157,7 +136,7 @@ public class PerformanceDataBuilderTest {
     @Test
     public void testStepPerformanceDataUnknownDataOnError() throws Exception {
         assertEquals(
-                PerformanceDataBuilder.addTestCaseStepPerformanceData(
+                AbstractPerformanceDataBuilder.addTestCaseStepPerformanceData(
                         "",
                         new TreeSet<>(Arrays.asList(
                                 new TestCaseStepExampleBuilder().withName("step1")
@@ -212,7 +191,7 @@ public class PerformanceDataBuilderTest {
                 .buildExample();
         testSuiteExample.refreshState();
 
-        assertEquals(PerformanceDataBuilder.getTestSuitePerformanceData(testSuiteExample), "suite__state=1;;;; " +
+        assertEquals(AbstractPerformanceDataBuilder.getTestSuitePerformanceData(testSuiteExample), "suite__state=1;;;; " +
                 "suite__warning=100s;;;; " +
                 "suite__critical=150s;;;; " +
                 "suite_sakuli-123=120.00s;100;150;; " +
@@ -258,16 +237,16 @@ public class PerformanceDataBuilderTest {
                 .buildExample();
         testSuiteExample.refreshState();
 
-        assertEquals(PerformanceDataBuilder.getTestSuitePerformanceData(testSuiteExample), "suite__state=1;;;; " +
-                        "suite__warning=100s;;;; " +
-                        "suite__critical=150s;;;; " +
-                        "suite_sakuli-123=120.00s;100;150;; " +
-                        "c_001__state=1;;;; " +
-                        "c_001__warning=19s;;;; " +
-                        "c_001__critical=25s;;;; " +
-                        "c_001_case-warning=20.00s;19;25;; " +
-                        "s_001_001_step1=10.00s;9;;; " +
-                        "s_001_002_step2_not_started=U;;;;"
+        assertEquals(AbstractPerformanceDataBuilder.getTestSuitePerformanceData(testSuiteExample), "suite__state=1;;;; " +
+                "suite__warning=100s;;;; " +
+                "suite__critical=150s;;;; " +
+                "suite_sakuli-123=120.00s;100;150;; " +
+                "c_001__state=1;;;; " +
+                "c_001__warning=19s;;;; " +
+                "c_001__critical=25s;;;; " +
+                "c_001_case-warning=20.00s;19;25;; " +
+                "s_001_001_step1=10.00s;9;;; " +
+                "s_001_002_step2_not_started=U;;;;"
         );
     }
 }

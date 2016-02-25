@@ -49,11 +49,11 @@ try {
     var calcRegion = appCalc.getRegion();
     calcRegion.find("plus.png").click().type("100");
     calcRegion.find("result.png").click();
-    screen.waitForImage("625", 10);
+    screen.waitForImage("625", 5);
     testCase.endOfStep("Calculation", 10);
 
     appGedit.open();
-    screen.waitForImage("gedit.png", 20);
+    screen.waitForImage("gedit.png", 10);
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
     testCase.endOfStep("Editor", 10);
     env.sleep(4);

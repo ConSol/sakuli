@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2015 the original author or authors.
+ * Copyright 2013 - 2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,37 +16,29 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.forwarder.gearman.model.builder;
-
-import org.apache.commons.lang.StringUtils;
-import org.sakuli.datamodel.Builder;
-import org.sakuli.datamodel.TestCase;
-import org.sakuli.datamodel.TestCaseStep;
-import org.sakuli.datamodel.TestSuite;
-import org.sakuli.services.forwarder.gearman.GearmanProperties;
-import org.sakuli.services.forwarder.gearman.ProfileGearman;
-import org.sakuli.services.forwarder.gearman.model.OutputState;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.SortedSet;
+package org.sakuli.services.forwarder;
 
 /**
  * @author tschneck
- *         Date: 8/26/15
+ * Date: 2/23/16
  */
-@ProfileGearman
-@Component
-public class PerformanceDataBuilder implements Builder<String> {
+
+import org.apache.commons.lang.StringUtils;
+import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.TestSuite;
+import org.sakuli.services.forwarder.gearman.model.builder.NagiosFormatter;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.SortedSet;
+
+public abstract class AbstractPerformanceDataBuilder {
     /**
      * name = value; warning; critical
      */
     private static final String PERFORMANCE_DATA_TEMPLATE = "%s=%s;%s;%s;;";
-
     @Autowired
-    private TestSuite testSuite;
-    @Autowired
-    private GearmanProperties gearmanProperties;
+    protected TestSuite testSuite;
 
     /**
      * Add to the assigned 'performanceData' a new data set in respect of the template {@link
@@ -166,15 +158,5 @@ public class PerformanceDataBuilder implements Builder<String> {
             j++;
         }
         return data;
-    }
-
-    /**
-     * Generates the performance data for the nagios server as an {@link String}.
-     *
-     * @return formatted payload string
-     */
-    @Override
-    public String build() {
-        return getTestSuitePerformanceData(testSuite) + " [" + gearmanProperties.getNagiosCheckCommand() + "]";
     }
 }
