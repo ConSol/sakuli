@@ -23,9 +23,7 @@ import net.sf.sahi.report.ResultType;
 import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.apache.commons.lang.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.*;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.datamodel.actions.LogResult;
 import org.sakuli.loader.BaseActionLoader;
@@ -222,41 +220,4 @@ public class RhinoAspect extends BaseSakuliAspect {
 
     }
 
-    private String printArgs(JoinPoint joinPoint, boolean logArgs) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("[");
-        Iterator iterator = Arrays.asList(joinPoint.getArgs()).iterator();
-        while (iterator.hasNext()) {
-            Object o = iterator.next();
-            if (logArgs) {
-                if (o != null) {
-                    if (o instanceof Object[]) {
-                        builder.append(printArray((Object[]) o));
-                    } else {
-                        builder.append(o.toString());
-                    }
-                } else {
-                    builder.append("NULL");
-                }
-            } else {
-                builder.append("****");
-            }
-            if (iterator.hasNext()) {
-                builder.append(", ");
-            }
-        }
-        return builder.append("]").toString();
-    }
-
-    private String printArray(Object[] objects) {
-        StringBuilder sb = new StringBuilder("[");
-        for (Object o : objects) {
-            if (sb.toString().length() > 1) {
-                sb.append(", ");
-            }
-            sb.append(o.toString());
-        }
-        sb.append("]");
-        return sb.toString();
-    }
 }
