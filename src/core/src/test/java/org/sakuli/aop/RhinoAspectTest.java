@@ -18,11 +18,9 @@
 
 package org.sakuli.aop;
 
-import net.sf.sahi.playback.SahiScript;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.report.ResultType;
 import net.sf.sahi.report.TestResult;
-import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.sakuli.actions.TestCaseAction;
@@ -109,14 +107,6 @@ public class RhinoAspectTest extends AopBaseTest {
         assertNotNull(sahiReport);
         sahiReport.addResult("TEST-ENTRY", resultTyp.getName(), "bla", "TEST-ENTRY");
         verifySahiReport(resultTyp, lisSize);
-    }
-
-    private void initMocks() {
-        SakuliExceptionHandler sakuliExceptionHandler = BeanLoader.loadBean(SakuliExceptionHandler.class);
-        reset(sakuliExceptionHandler);
-        SahiScript sahiScriptMock = mock(SahiScript.class);
-        when(sahiScriptMock.jsString()).thenReturn("");
-        new RhinoScriptRunner(sahiScriptMock);
     }
 
     private void verifySahiReport(ResultType resultTyp, int initialListSize) {

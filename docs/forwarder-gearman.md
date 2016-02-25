@@ -121,7 +121,7 @@ Execute the example test case again:
 
 * **Ubuntu**: `sakuli run __INST_DIR__/example_test_suites/example_ubuntu/` 
 * **openSUSE**: `sakuli run __INST_DIR__/example_test_suites/example_opensuse/` 
-* **Windows**: `sakuli.exe run __INST_DIR__\example_test_suites\example_windows\`
+* **Windows**: `sakuli run __INST_DIR__\example_test_suites\example_windows\`
 
 The service should change its status to:
 

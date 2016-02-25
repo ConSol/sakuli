@@ -60,7 +60,7 @@ After you have accepted the licence and choose the installation folder, select t
 ![inst_2](./pics/installer_2.png)
 
 * **1)** will set/update the environment variable `__SAKULI_HOME__` to this version.
-* **2)** will set/update the environment to a recommend UI testing configuration. In examples disables the Firefox safe.
+* **2)** will set/update environment settings which have proved as best practice for UI tests.
 * **3)** will install one example test suite per OS which will help you to test and understand Sakuli.
 * **4)** will install Firefox Portable, which can be used exclusively for Sakuli Tests.
 * **5)** will install [QRes](http://sourceforge.net/projects/qres/), a open source screen mode changer (Windows only)
@@ -132,6 +132,9 @@ A good choice is
 * [Greenshot](http://www.getgreenshot.org) on **Windows**  
 * [Shutter](http://shutter-project.org/) on **Linux**.
 
+Always make sure that screenshots are saved without compression. Sikuli uses a default similarity of 0.99, which internally means that "more than 99%" => 100% pixels must conincide. Decreasing similarity should only be neccessary if the pattern images are of poor quality or the region compared to always slightly differs from the pattern image. 
+
+
 #### Editor
 (optional)
 
@@ -145,11 +148,11 @@ It also possible to use professional programming IDEs like [IntelliJ](https://ww
 
 ## Test
 
-You are now ready to run the **first minimal Sakuli test** to see if Sakuli and its components are working well together. Execute the **Sakuli starter script** to start a test:
+You are now ready to run the **first minimal Sakuli test** to see if Sakuli and its components are working well together. Open a new terminal to start a test:
 
-* **Ubuntu**: `__SAKULI_HOME__/../example_test_suites/start_example_ubuntu.sh`
-* **openSUSE**: `__SAKULI_HOME__/../example_test_suites/start_example_opensuse.sh`
-* **Windows**: `__SAKULI_HOME__\..\example_test_suites\start_example_windows.bat`
+* **Ubuntu**: `sakuli run __INST_DIR__/example_test_suites/example_ubuntu/`
+* **openSUSE**: `sakuli run __INST_DIR__/example_test_suites/example_opensuse/`
+* **Windows**: `sakuli run __INST_DIR__\example_test_suites\example_windows\`
 
 Sakuli should now
 
@@ -158,13 +161,6 @@ Sakuli should now
 3.  open an **editor** and write a **status message**
 
 ![](pics/u_vnc_test.png)
-
-You can also trigger the example tests interactively trough the command line starter (`sakuli` for linux, `sakuli.exe` for windows):
-
-* **Ubuntu**: `sakuli run $SAKULI_HOME/../example_test_suites/example_ubuntu`
-* **openSUSE**: `sakuli run $SAKULI_HOME/../example_test_suites/example_opensuse`
-* **Windows**: `sakuli.exe run "%SAKULI_HOME%\..\example_test_suites\example_windows"`
-
 
 **Congratulations - you have installed Sakuli!**
 
