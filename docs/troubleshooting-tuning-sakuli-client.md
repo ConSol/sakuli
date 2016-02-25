@@ -43,34 +43,6 @@ Windows 7 comes by default with an "aero" theme, which is quite awkward for Siku
 Furthermore, change the colors of **active** and **inactive** title bars to **non gradient**: 
 ![titlebars](pics/w_titlebar.jpg)
 
-#### Enable Window Activation
-Windows does not allow per default to bring an application in the foreground. This must be allowed for Sakuli: 
-
-* Start -> "regedit"
-* [ HKEY_CURRENT_USER\Control Panel\Desktop ]
-* "ForegroundLockTimeout" (DWORD) => "0" (default = 30d40xh)
-
-#### Disable Window Animation
-Disable the animation of window minimize/maximize actions: 
-
-* "regedit"
-* [HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics ]
-* "MinAnimate" (String) => "0" 
-
-#### Disable Cleartype
-ClearType ("antialiasing" / "Font Smoothing"), is a technology that is used to display computer fonts with clear and with smooth edges. The MS Terminal Services Client (RDP client) enables this feature depending on the available bandwidth, which means that screenshots made within RDP sessions may be taken without ClearType, but during the test execution on the local console, they are compared with the desktop displayed in ClearType. Although we only had problems with RDP and Cleartype, it is a good idea to disable ClearType completely:
-
-* "regedit"
-* [ HKEY_CURRENT_USER\Control Panel\Desktop ]
-* "FontSmoothingType" (DWORD) => "0" 
-
-#### Disable all visual effects
-* Start -> Control Panel -> System -> Advanced
-* Performance -> Settings -> Visual Effects -> Custom
-* Disable everything: 
-
-![visualeffects](pics/w_visualeffects.jpg)
-
 #### RDP related settings
 The following steps have only to be done if you are accessing the Sakuli Client via RDP. 
 ##### Disable Clipboard Sharing
@@ -94,33 +66,7 @@ To disable the "GUI-less" mode **on your local host**:
 * [ HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client ]
 * "RemoteDesktop_SuppressWhenMinimized" (DWORD) => "2"
 
-#### Disable Error reporting service
-Error reporting is enabled by default - you should turn off this service because it can display messages (about crashes applications, e.g. when Sakuli kills an application in the end of a test), which remain on the screen until somebody clicks them away. 
 
-* Start -> Control Panel -> System and Security -> Action center
-* Change Action Center settings -> Problem reporting settings
-* Set "Never check for solutions"  
-
-If you still get messages for crashed applications, try to:
-
-* "regedit"
-* [ HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\Windows Error Reporting ]
-* "DontShowUI" (DWORD) => "1"
-
-#### Disable Firefox' Plugin Container
-Plugins Container is a technique of Mozilla Firefox to run browser add-ons in a separate process than firefox.exe. This should ensure that a hanging add-on does not affect the browser process. But sometimes "Plugins Container" itself makes problems. Sakuli (better: Sahi) does not need any browser plugins - so, if you don't, disable Plugin Container: 
-
-* Start -> Control Panel -> System -> Advanced system settings
-* Advanced -> Environment Variables -> System variables
-	* Variable name: MOZ_DISABLE_OOP_PLUGINS
-	* Value: 1
-
-
-#### Using task scheduler
-
-To execute your testcase regularly you can add new tasks to the windows task scheduler. As action, use this command to put the cmd window into the background to not disturb your tests:
-
-    cmd.exe /c start /min C:\sakuli\sakuli-v0.X.0\bin\sakuli.bat --run "C:\sakuli\example_test_suites\example_windows" ^& exit
 
 ## Troubleshooting
 
@@ -137,9 +83,9 @@ We do not know any Firefox settings which can prevent the creation of SQLITE wri
 
 ### Hanging applications
 
-If you are testing applications which tend to hang/freeze, there is a solution (currently only for Windows) to "tidy up" stale processes on each start of Sakuli. Add this line to `sakuli.bat`:  
+If you are testing applications which tend to hang/freeze, you can run a "tidy-up"-Script by using the **pre-Hook** option of Sakuli:   
 
-    cscript.exe %SAKULI_HOME%\bin\helper\killproc.vbs -f %SAKULI_HOME%\bin\helper\procs_to_kill.txt
+    sakuli run __INST_DIR__/example_test_suites/example_ubuntu/ -preHook 'cscript.exe %SAKULI_HOME%\bin\helper\killproc.vbs -f %SAKULI_HOME%\bin\helper\procs_to_kill.txt'
     
 In `procs_to_kill.txt` you can define which processes should be killed before Sakuli starts a new check: 
 
@@ -170,8 +116,8 @@ On **Ubuntu** or other **Linux** based OS check if the packe `wmctrl` is install
 	
 	sudo apt-get install wmctrl
 	
-### GUI test only
+### GUI-only tests
  
- To start GUI test only you can use the sahi default domain as start URL 
- `http://sahi.example.com/_s_/dyn/Driver_initialized` in the file `testsuite.suites`
- and as browser phantomJS.
+If you want to run tests which do not include any web technology, you can use phantomJS instead of firefox/chrome/IE and use  the Sahi default start URL `http://sahi.example.com/_s_/dyn/Driver_initialized`.
+
+(Reason: Sakuli depends on Sahi running, which in turn needs a running browser instance. Using PhantomJS for this, hides the browser window completely.)

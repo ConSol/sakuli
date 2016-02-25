@@ -167,9 +167,9 @@ Override the global properties for the database receiver (unless you have multip
 
 Execute the example test case again:
 
-* **Ubuntu**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_ubuntu/`
-* **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_opensuse/`
-* **Windows**: `__SAKULI_HOME__\bin\sakuli.bat --run __INST_DIR__\example_test_suites\example_windows\`
+* **Ubuntu**: `sakuli run __INST_DIR__/example_test_suites/example_ubuntu/`
+* **openSUSE**: `sakuli run __INST_DIR__/example_test_suites/example_opensuse/`
+* **Windows**: `sakuli run __INST_DIR__\example_test_suites\example_windows\`
 
 The service should change its status to:
 

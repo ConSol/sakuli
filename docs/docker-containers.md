@@ -55,7 +55,7 @@ There are three important lines in the *Dockerfile* of each Sakuli image which d
 
     ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
     ENTRYPOINT ["/root/scripts/sakuli_startup.sh"]
-    CMD ["--run $SAKULI_TEST_SUITE"]
+    CMD ["run $SAKULI_TEST_SUITE"]
 
 * `ENTRYPOINT` is the command which is executed once the container is started with `docker run`.
 * `CMD` is the default argument for `ENTRYPOINT`, that is, to run a test suite set by a variable.
@@ -65,7 +65,7 @@ There is more than one way to integrate a custom testsuite in a container, discu
 
 ### 1) Mount an external suite folder and modify `CMD`
 
-Mount a folder on your host into the container and override `CMD` from Dockerfile (=argument for `ENTRYPOINT`) with custom parameters for the Sakuli starter `sakuli.sh`.  In this way you can also instruct Sakuli e.g. to use another browser (`--browser chrome`). To get all possible command line parameters call `docker run consol/sakuli-ubuntu-xfce --help`.
+Mount a folder on your host into the container and override `CMD` from Dockerfile (=argument for `ENTRYPOINT`) with custom parameters for the Sakuli starter `sakuli`.  In this way you can also instruct Sakuli e.g. to use another browser (`-browser chrome`). To get all possible command line parameters call `docker run consol/sakuli-ubuntu-xfce -help`.
 
 
 CMD can be overrideen in two ways:
@@ -75,7 +75,7 @@ CMD can be overrideen in two ways:
     ~$ docker run -it -p 5901:5901 -p 6901:6901   \\
          -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites"   \\
          consol/sakuli-centos-xfce   \\
-         '--run /my-sakuli-testsuites/suite_1'
+         'run /my-sakuli-testsuites/suite_1'
 
 #### 1.2) using docker-compose
 A more elegant way is to pack all parameters into a [Docker Compose](https://docs.docker.com/compose/) file. Create `docker-compose.yml`:
@@ -87,7 +87,7 @@ A more elegant way is to pack all parameters into a [Docker Compose](https://doc
       - 6901:6901
       volumes:
       - /home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites
-      command: "'--run /my-sakuli-testsuites/suite_1'"
+      command: "'run /my-sakuli-testsuites/suite_1'"
 
 When executed in the same directory as `docker-compose.yml`, a simple `docker-compose up` will bring up all containers.
 (Intentionally, `docker-compose` is made to bring up environments with *multiple* containers which are linked together; but even with one container it eases the parameter handling.)

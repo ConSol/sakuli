@@ -12,8 +12,8 @@ This page contains different topics regarding the configuration of both **Sakuli
    -> valid for **all test suites** within this folder
 2. as a **testsuite property** in `test-suites-folder/test-suite/testsuite.properties`
    -> valid for **all test cases** within a test suite 
-3. as a **Java VM option** `-Dsakuli.property.key=value`, appended to the Sakuli starter `sakuli.sh / sakuli.bat` 
-   -> valid for a Sakuli starter execution
+3. as a **Java VM option** like  `-D testsuite.browser=chrome`, as option of the Sakuli starter
+   -> valid for only one run
 
 We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file; your changes will not be preserved. 
 
@@ -109,23 +109,18 @@ You can decide whether Sakuli should automatically select an adapter...
 
 #### Encrypt a secret
 
-Use the generic Sakuli starter script to encrypt secrets on the command line: 
+To encrypt secrets on the command line, Sakuli uses the MAC address of a NIC on the local machine (Windows/Linux). The following command lets Sakuli decide which NIC will be used: 
 
-On **Windows**:   
+    sakuli encrypt foo
+    =========== Calling Sakuli JAR: java -classpath C:\Program Files (x86)\sakuli\sakuli-v0.9.3-SNAPSHOT\libs\jav\sakuli.jar;C:\Program Files (x86)\sakuli\sakuli-v0.9.3-SNAPSHOT\libs\java\* org.sakuli.starter.SakuliStarter --sakuli_home C:\Program Files (x86)\sakuli\sakuli-v0.9.3-SNAPSHOT --encrypt foo ===========
 
-    # for autodetect=true
-    %SAKULI_HOME%/bin/sakuli.bat --encrypt somesecret [enter]
+    String to Encrypt: foo
+    ...
+    Encrypted secret with interface 'eth3': CKXIAZmO7rSoBVMGgJZPDQ==
+   
+    ... now copy the secret to your testcase!
     
-    # for autodetect=false, use eth3 
-    %SAKULI_HOME%/bin/sakuli.bat --encrypt somesecret --interface eth3 [enter] 
-
-On **Linux**: 
-
-    # for autodetect=true
-    %SAKULI_HOME%/bin/sakuli.sh --encrypt somesecret [enter]
-
-    # for autodetect=false, use eth3 
-    %SAKULI_HOME%/bin/sakuli.sh --encrypt somesecret --interface eth3 [enter] 
+Add `-interface eth0` to select eth0 as salt interface.  Add `-interface list` to get a list of all available adapters. 
 
 #### Decrypt a secret
 
@@ -146,7 +141,7 @@ To set the format and destination folder for screenshots taken by Sakuli:
 * **`sakuli.forwarder.gearman.nagios.output.screenshotDivWidth`**=`640px` - Screenshot dimensions for results sent to Gearmand
     
 ### RDP pecularities
-#### things to know about connection types
+#### things to know
 
 There are four ways to connect to and work on a Sakuli client machine:
 
@@ -206,9 +201,9 @@ You may want to change the browser due to the following reasons:
     * just for curiosity :-)
     * to keep the browser in background while Sakuli tests a non-web application (e.g. fat client)  
 
-In addition to the possibilities described in [General note on property settings](./additional-settings.md#general-note-on-property-settings), `sakuli.bat/sakuli.sh` can also be given the parameter `-b`: 
+In addition to the possibilities described in [General note on property settings](./additional-settings.md#general-note-on-property-settings), the generic Sakuli starter `sakuli` can also be given the parameter `-b`: 
 
-    %SAKULI_HOME%/bin/sakuli.sh -b chrome --run /path/to/suite 
+    sakuli -b chrome --run /path/to/suite 
 
 ### Sahi behind a proxy
 
@@ -236,34 +231,3 @@ Set the following properties (as global in the sakuli.properties) to define a pr
 	# There is only one bypass list for both secure and insecure.
 	ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.verisign.com
 
-### Sahi browser profile tuning
-
-#### Mozilla Firefox ####
-
-Append the following lines to the Firefox default preference file: : 
-
-    vim __SAHI_DIR__/config/ff_profile_template/prefs.js
-
-    user_pref("browser.cache.disk.capacity", 0);
-    user_pref("browser.cache.disk.enable", false);
-    user_pref("browser.cache.disk.smart_size.enabled", false);
-    user_pref("browser.cache.disk_cache_ssl", false);
-    user_pref("browser.cache.memory.enable", false);
-    user_pref("browser.cache.offline.capacity", 0);
-    user_pref("browser.cache.offline.enable", false);
-    user_pref("browser.sessionstore.max_tabs_undo",0);
-    user_pref("browser.sessionstore.max_windows_undo",0);
-    user_pref("browser.selfsupport.url","");
-    user_pref("devtools.cache.disabled", true);
-    user_pref("network.http.use-cache",false);
-    user_pref("offline-apps.allow_by_default",false);
-    user_pref("offline-apps.quota.max",false);
-
-To take these changes effect, you need to delete the firefox profile folders *sahi0-9*.
-
-    rm -rf __SAHI_DIR__/userdata/browser/ff/profiles/*
-
-Re-start Firefox from the Sahi dashboard. Check that 
-
-* the profile folder *sahi0-9* are created
-* while Firefox is running, there is **no** file `Invalidprefs.js` in *sahi0*. This would indicate that Firefox was not able to load the custom preferences. (In this case, Firefox won't even show up the Sahi start page, because the proxy setting *localhost:9999* is also defined as a *user_pref*.)
