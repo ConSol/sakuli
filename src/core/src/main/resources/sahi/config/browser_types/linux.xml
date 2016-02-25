@@ -17,6 +17,7 @@
   -->
 
 <browserTypes>
+    <!-- INFO: $userDir will be resolved as the SAHI_HOME folder -->
     <browserType>
         <name>firefox</name>
         <displayName>Firefox</displayName>
@@ -31,7 +32,7 @@
         <name>firefox_portable</name>
         <displayName>Firefox portable</displayName>
         <icon>firefox.png</icon>
-        <path>$SAKULI_HOME/../firefox/firefox</path>
+        <path>$userDir/../firefox/firefox</path>
         <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
         <processName>firefox</processName>
         <capacity>5</capacity>
