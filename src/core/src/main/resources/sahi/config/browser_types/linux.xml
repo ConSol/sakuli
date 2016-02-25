@@ -32,7 +32,7 @@
         <name>firefox_portable</name>
         <displayName>Firefox portable</displayName>
         <icon>firefox.png</icon>
-        <path>$userDir/../firefox/firefox</path>
+        <path>$userDir/../../firefox/firefox</path>
         <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
         <processName>firefox</processName>
         <capacity>5</capacity>
