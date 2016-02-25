@@ -124,6 +124,17 @@ To execute your testcase regularly you can add new tasks to the windows task sch
 
 ## Troubleshooting
 
+### Growing Firefox profile folder
+
+If you experience that the Sahi profile folders `sahi0-9` of Mozilla Firefox (located in `sahi\userdata\browser\ff\profiles`) are getting bigger and bigger: this is caused by two bugs: 
+
+* [https://bugzilla.mozilla.org/show_bug.cgi?id=85788](https://bugzilla.mozilla.org/show_bug.cgi?id=85788)
+* [https://bugzilla.mozilla.org/show_bug.cgi?id=686237](https://bugzilla.mozilla.org/show_bug.cgi?id=686237)
+
+We do not know any Firefox settings which can prevent the creation of SQLITE writeahead-logs (if *you* do, please let us know). The only pragmatic solution at the moment is to delete all SQLITE files periodically or before each Sakuli run (e.g. by running as a preHook). `%SAKULI_HOME%\bin\helper\ff_purge_profile.bat` contains an example for windows. 
+
+
+
 ### Hanging applications
 
 If you are testing applications which tend to hang/freeze, there is a solution (currently only for Windows) to "tidy up" stale processes on each start of Sakuli. Add this line to `sakuli.bat`:  
