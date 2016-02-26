@@ -165,3 +165,4 @@ At this point we want to thank all contributors, which helped to move this great
 Very special thanks to all customers which always nourish this project with new ideas and impulses and make it possible in the first place to give it back to the community as Open Source Software. Thumbs up!
 
 * LIDL Stiftung & Co. KG
+* Deutsche Pfandbriefbank AG
