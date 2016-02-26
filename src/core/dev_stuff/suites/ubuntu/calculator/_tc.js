@@ -44,6 +44,11 @@ try {
         env.type("525");
         env.sleep(2);
         var calcRegion = appCalc.getRegion();
+        env.setSimilarity(0.1);
+        if (!calcRegion.exists("plus", 2)) {
+            Logger.logWarning("PLUS not detected!");
+        }
+        env.resetSimilarity();
         calcRegion.find("plus.png").click().type("100");
         //appCalc.getRegion().find("plus.png").mouseMove().sleep(2).mouseDown(MouseButton.LEFT).sleep(1).mouseUp(MouseButton.LEFT).type("100");
         calcRegion.find("result.png").click();
