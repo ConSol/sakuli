@@ -19,6 +19,7 @@
 package org.sakuli.aop;
 
 import net.sf.sahi.util.Utils;
+import org.apache.commons.exec.CommandLine;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliInitException;
@@ -34,6 +35,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 
 /**
+ * Test for {@link SahiCommandExecutionAspect}
  * @author tschneck
  *         Date: 2/25/16
  */
@@ -68,6 +70,18 @@ public class SahiCommandExecutionAspectTest extends AopBaseTest {
         Assert.assertEquals(it.next(), "--no-first-run");
         Assert.assertEquals(it.next(), "--disable-infobars");
         Assert.assertEquals(it.next(), "--proxy-server=localhost:9999");
+    }
+
+    @Test
+    public void testGetCommandTokenNotModifySH() throws Exception {
+        String cmd = "sh -c 'ps -ef | grep firefox | grep -v grep'";
+        String[] parsed = Utils.getCommandTokens(cmd);
+        Iterator<String> it = Arrays.asList(parsed).iterator();
+        Assert.assertEquals(it.next(), "sh");
+        Assert.assertEquals(it.next(), "-c");
+        Assert.assertEquals(it.next(), "ps -ef | grep firefox | grep -v grep");
+        //DOUBLE check so the CommanLine.parse really didn't called
+        Assert.assertEquals(CommandLine.parse(cmd).getArguments()[1], "\"ps -ef | grep firefox | grep -v grep\"");
     }
 
     @Test

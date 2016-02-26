@@ -60,6 +60,11 @@ public class SahiCommandExecutionAspect extends BaseSakuliAspect {
         try {
             Object result = joinPoint.proceed();
             if (result instanceof String[] && !Arrays.equals(tokens, (String[]) result)) {
+                if (commandString.startsWith("sh -c \'")) { //exclude this kind of arguments, because the won't parsed correctly
+                    //LOGGER.info("SAHI-RESULT {}", printArray((Object[]) result));
+                    //LOGGER.info("SAKULI-RESULT {}", printArray(tokens));
+                    return (String[]) result;
+                }
                 LOGGER.info("MODIFIED SAHI COMMAND TOKENS: {} => {}", printArray((String[]) result), printArray(tokens));
             }
         } catch (Throwable e) {
