@@ -63,7 +63,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
     @BeforeMethod
     public void init() {
         super.init();
-        doNothing().when(testling).cleanClipboard();
+        doNothing().when(testling).cleanUp();
     }
 
     @Test(dataProvider = "states")

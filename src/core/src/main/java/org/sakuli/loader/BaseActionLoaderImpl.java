@@ -31,6 +31,7 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.utils.CleanUpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,9 +116,14 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
                 rhinoScriptRunner.getSession().setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, isRequestDelayActive);
                 LOGGER.info("set isRequestDelayActive={}", isRequestDelayActive);
             }
+            cleanUp();
         } catch (SakuliException e) {
             exceptionHandler.handleException(e);
         }
+    }
+
+    protected void cleanUp() {
+        CleanUpHelper.releaseAllModifiers();
     }
 
     @Override
