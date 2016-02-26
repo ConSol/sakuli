@@ -60,15 +60,26 @@ try {
         appGedit.focus();
         env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
         env.sleep(2);
-        testCase.endOfStep("gedit paste", 20);
+        testCase.endOfStep("gedit paste", 1);
 
+        env.type(Key.ENTER + "Also type special characters like: # ß ! § $ & < > |");
+        env.type(Key.ENTER);
+        env.keyDown(Key.SHIFT);
+        env.type("uppercase");    //Upper would remove the keyDown effekt!
+        env.keyUp(Key.SHIFT);
         env.type(Key.ENTER + "Also type special characters like: # ß ! § $ & < > |");
         env.sleep(2);
         testCase.endOfStep("type special characters");
+
+        env.keyDown(Key.ALT);
+        appGedit.getRegion().grow(100).find("print").click();
+        env.sleep(3);
+
+        env.keyDown(Key.SHIFT);
         // finally close the calculator app!
     } finally {
 
-        appCalc.close();
+        appCalc.close(true);
         appGedit.kill();
         //if (screen.exists("close-without-saving", 1)) {
         //    screen.find("close-without-saving").click();
