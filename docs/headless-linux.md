@@ -67,18 +67,8 @@ You are now ready to run the **minimal Sakuli check** in **headless (=VNC)** mod
 
 On the **Ubuntu** desktop, open a terminal window and execute 
 
-* on **Ubuntu**: 
-
-    ```bash
-    export DISPLAY=:1
-    sakuli run __INST_DIR__/example_test_suites/example_ubuntu/ -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook '$SAKULI_HOME/bin/helper/vnc.sh -kill'
-    ```
-* on **openSUSE**: 
-
-    ```bash
-    export DISPLAY=:1
-    sakuli run __INST_DIR__/example_test_suites/example_opensuse/ -preHook $SAKULI_HOME/bin/helper/vnc.sh -postHook '$SAKULI_HOME/bin/helper/vnc.sh -kill' 
-    ```
+* on **Ubuntu**: `sakuli run __INST_DIR__/example_test_suites/example_ubuntu/ --vnc` 
+* on **openSUSE**: `__SAKULI_HOME__/bin/sakuli.sh --run __INST_DIR__/example_test_suites/example_opensuse/ --vnc` 
  
 You should see that Sakuli
 

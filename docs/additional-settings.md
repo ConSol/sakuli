@@ -203,7 +203,7 @@ You may want to change the browser due to the following reasons:
 
 In addition to the possibilities described in [General note on property settings](./additional-settings.md#general-note-on-property-settings), the generic Sakuli starter `sakuli/sakuli.exe` can also be given the parameter `-browser`: 
 
-    sakuli -browser chrome --run /path/to/suite 
+    sakuli run /path/to/suite -browser chrome 
 
 ### Sahi behind a proxy
 
