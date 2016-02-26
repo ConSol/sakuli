@@ -22,7 +22,6 @@ import org.mockito.*;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
 import org.sakuli.exceptions.SakuliForwarderException;
-import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosOutputBuilder;
 import org.testng.annotations.BeforeMethod;
@@ -39,6 +38,7 @@ import static org.testng.Assert.*;
 
 public class ScreenshotDivConverterTest {
 
+    private static final String SCREENSHOT_DIV_WIDTH_DEFAULT = "640px";
     private final String base64String = "iVBORw0KGgoAAAANSUhEUgAAAE4AAAAQCAIAAAA3TN7NAAAAA3NCSVQICAjb4U/gAAAAGXRFWHRT" +
             "b2Z0d2FyZQBnbm9tZS1zY3JlZW5zaG907wO/PgAABPdJREFUSInllX9MU1cUx89997YIVGgV2bIh" +
             "AwXJWBSxAwRECuPHQAGVkMkQM4W5AYpMxR/RwRSjcYrBwVRANjEiDAY4lOAQg4zfY7gtGDPZ1HT8" +
@@ -79,14 +79,14 @@ public class ScreenshotDivConverterTest {
     @Test
     public void testBuild() throws Exception {
         final ScreenshotDivConverter screenshotDivConverter = new ScreenshotDivConverter();
-        assertNull(screenshotDivConverter.convert(null, GearmanProperties.NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH_DEFAULT));
+        assertNull(screenshotDivConverter.convert(null, SCREENSHOT_DIV_WIDTH_DEFAULT));
     }
 
     @Test
     public void testWithException() throws Exception {
         Path screenshotPath = Paths.get(NagiosOutputBuilder.class.getResource("computer.png").toURI());
         assertTrue(Files.exists(screenshotPath));
-        ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath), GearmanProperties.NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH_DEFAULT);
+        ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath), SCREENSHOT_DIV_WIDTH_DEFAULT);
         assertNotNull(result);
         assertEquals(result.getId(), ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID);
         assertEquals(result.getWidth(), "640px");
@@ -120,7 +120,7 @@ public class ScreenshotDivConverterTest {
         ArgumentCaptor<Throwable> excpCaptor = ArgumentCaptor.forClass(Throwable.class);
         doNothing().when(sakuliExceptionHandler).handleException(excpCaptor.capture());
 
-        ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath), GearmanProperties.NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH_DEFAULT);
+        ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath), SCREENSHOT_DIV_WIDTH_DEFAULT);
         assertNull(result);
         verify(sakuliExceptionHandler).handleException(any(SakuliForwarderException.class));
         Throwable excp = excpCaptor.getValue();

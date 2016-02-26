@@ -47,6 +47,7 @@ public enum TextPlaceholder {
     CASE_START_URL("{{case_start_URL}}"),
     CASE_LAST_URL("{{case_last_URL}}"),
     STEP_INFORMATION("{{step_information}}"),
+    CASE_INFORMATION("{{case_information}}"),
     //just for internal usage
     TD_CSS_CLASS("{{TD_CSS_CLASS}}");
 

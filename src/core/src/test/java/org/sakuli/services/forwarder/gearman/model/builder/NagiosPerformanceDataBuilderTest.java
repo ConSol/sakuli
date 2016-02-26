@@ -24,8 +24,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.sakuli.BaseTest;
 import org.sakuli.builder.TestSuiteExampleBuilder;
+import org.sakuli.services.forwarder.MonitoringPropertiesTestHelper;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
-import org.sakuli.services.forwarder.gearman.GearmanPropertiesTestHelper;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -50,7 +50,7 @@ public class NagiosPerformanceDataBuilderTest {
 
     @Test
     public void testBuild() throws Exception {
-        GearmanPropertiesTestHelper.initMock(gearmanProperties);
+        MonitoringPropertiesTestHelper.initMock(gearmanProperties);
         ReflectionTestUtils.setField(testling, "testSuite", new TestSuiteExampleBuilder().buildExample());
         BaseTest.assertRegExMatch(testling.build(), "suite__state=\\d;;;; suite_UnitTest.*; \\[check_sakuli\\]");
     }

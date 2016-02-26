@@ -23,7 +23,6 @@ import org.sakuli.datamodel.Builder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.services.forwarder.AbstractOutputBuilder;
-import org.sakuli.services.forwarder.OutputState;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
 import org.sakuli.services.forwarder.gearman.model.NagiosOutput;
@@ -36,17 +35,24 @@ import org.springframework.stereotype.Component;
 @ProfileGearman
 @Component
 public class NagiosOutputBuilder extends AbstractOutputBuilder implements Builder<NagiosOutput> {
-    private static final String TABLE_HEADER = "<table style=\"border-collapse: collapse;\">";
-    private static final String TABLE_FOOTER = "</table>";
 
+    protected static final String TABLE_ROW_HEADER = "<tr valign=\"top\"><td class=\"{{TD_CSS_CLASS}}\">";
+    protected static final String TABLE_ROW_FOOTER = "</td></tr>";
+    protected static final String TABLE_HEADER = "<table style=\"border-collapse: collapse;\">";
+    protected static final String TABLE_FOOTER = "</table>";
     @Autowired
     private GearmanProperties gearmanProperties;
     @Autowired
     private NagiosPerformanceDataBuilder nagiosPerformanceDataBuilder;
 
     @Override
+    protected int getSummaryMaxLength() {
+        return gearmanProperties.getTemplateSuiteSummaryMaxLength();
+    }
+
+    @Override
     protected String getOutputScreenshotDivWidth() {
-        return gearmanProperties.getOutputScreenshotDivWidth();
+        return gearmanProperties.getTemplateScreenshotDivWidth();
     }
 
     @Override
@@ -64,20 +70,34 @@ public class NagiosOutputBuilder extends AbstractOutputBuilder implements Builde
      * @return formatted payload string
      */
     protected String getStatusSummary(TestSuite testSuite, GearmanProperties properties) {
-        OutputState outputState = OutputState.lookupSakuliState(testSuite.getState());
         StringBuilder sb = new StringBuilder();
-        sb.append(outputState.name())
-                .append(" - ")
-                .append(StringUtils.remove(formatTestSuiteSummaryStateMessage(testSuite, properties.getOutputSuiteSummary()), "\n"))
+        sb.append(StringUtils.remove(formatTestSuiteSummaryStateMessage(testSuite, properties.getTemplateSuiteSummary()), "\n"))
                 .append(NagiosOutput.DETAILS_SEPARATOR)
                 .append(TABLE_HEADER)
-                .append(StringUtils.remove(formatTestSuiteTableStateMessage(testSuite, properties.getOutputSuiteTable()), "\n"));
+                .append(StringUtils.remove(formatTestSuiteTableStateMessage(testSuite, properties.getTemplateSuiteTable()), "\n"));
 
         for (TestCase tc : testSuite.getTestCasesAsSortedSet()) {
-            sb.append(formatTestCaseTableStateMessage(tc, properties.lookUpOutputString(tc.getState())));
+            sb.append(formatTestCaseTableStateMessage(tc, properties.lookUpTemplate(tc.getState())));
         }
         sb.append(TABLE_FOOTER);
         return sb.toString();
     }
 
+    protected String formatTestSuiteTableStateMessage(TestSuite testSuite, String templateSuiteTable) {
+        String unfilledResult = TABLE_ROW_HEADER
+                + templateSuiteTable
+                + TABLE_ROW_FOOTER;
+        String result = replacePlaceHolder(unfilledResult, getTextPlaceholder(testSuite));
+        LOGGER.debug("{{xxx}} patterns in template '{}' replaced with message '{}'", unfilledResult, result);
+        return result;
+    }
+
+    protected String formatTestCaseTableStateMessage(TestCase tc, String templateCaseOutput) {
+        String unfilledResult = TABLE_ROW_HEADER
+                + templateCaseOutput
+                + TABLE_ROW_FOOTER;
+        String result = replacePlaceHolder(unfilledResult, getTextPlaceholder(tc));
+        LOGGER.debug("{{xxx}} patterns in template '{}' replaced with message '{}'", unfilledResult, result);
+        return result;
+    }
 }

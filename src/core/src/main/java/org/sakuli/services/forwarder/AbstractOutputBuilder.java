@@ -24,6 +24,7 @@ import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestSuiteState;
+import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.forwarder.gearman.TextPlaceholder;
 import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosFormatter;
@@ -35,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.SortedSet;
+import java.util.stream.Collectors;
 
 import static org.sakuli.services.forwarder.gearman.TextPlaceholder.*;
 
@@ -43,16 +45,17 @@ import static org.sakuli.services.forwarder.gearman.TextPlaceholder.*;
  *         Date: 2/24/16
  */
 public abstract class AbstractOutputBuilder {
-    public final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM HH:mm:ss");
-    protected static final String TABLE_ROW_HEADER = "<tr valign=\"top\"><td class=\"{{TD_CSS_CLASS}}\">";
-    protected static final String TABLE_ROW_FOOTER = "</td></tr>";
-    protected static Logger logger = LoggerFactory.getLogger(NagiosOutputBuilder.class);
+    public final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.YY HH:mm:ss");
+    protected static Logger LOGGER = LoggerFactory.getLogger(NagiosOutputBuilder.class);
     @Autowired
     protected ScreenshotDivConverter screenshotDivConverter;
     @Autowired
     protected TestSuite testSuite;
 
     public static String replacePlaceHolder(String message, PlaceholderMap placeholderStringMap) {
+        if (StringUtils.isBlank(message)) {
+            throw new SakuliRuntimeException("Template for resolving test suite output is EMPTY!");
+        }
         String modifiedString = message;
         for (TextPlaceholder key : placeholderStringMap.keySet()) {
             modifiedString = StringUtils.replace(modifiedString, key.getPattern(), placeholderStringMap.get(key));
@@ -68,34 +71,60 @@ public abstract class AbstractOutputBuilder {
 
     static String generateStepInformation(SortedSet<TestCaseStep> steps) {
         StringBuilder sb = new StringBuilder();
-        steps.stream()
-                .filter(step -> step.getState().isWarning())
-                .forEach(step ->
-                        sb.append(", step \"")
-                                .append(step.getName())
-                                .append("\" (")
+        steps.stream().filter(step -> step.getState().isWarning() || step.getState().isError())
+                .forEach(step -> {
+                    sb.append(", step \"").append(step.getName()).append("\" ");
+                    if (step.getState().isError()) {
+                        sb.append("EXCEPTION: ").append(step.getExceptionMessages(true));
+                    } else {
+                        sb.append("over runtime (")
                                 .append(NagiosFormatter.formatToSec(step.getDuration()))
-                                .append(" /warn at ")
+                                .append("/warn at ")
                                 .append(NagiosFormatter.formatToSec(step.getWarningTime()))
-                                .append(")"));
+                                .append(")");
+                    }
+                });
         return sb.toString();
     }
 
-    protected abstract String getOutputScreenshotDivWidth();
-
-    protected String formatTestSuiteTableStateMessage(TestSuite testSuite, String templateSuiteTable) {
-        String unfilledResult = TABLE_ROW_HEADER
-                + templateSuiteTable
-                + TABLE_ROW_FOOTER;
-        String result = replacePlaceHolder(unfilledResult, getTextPlaceholder(testSuite));
-        logger.debug("{{xxx}} patterns in string '{}' replaced with message '{}'", unfilledResult, result);
-        return result;
+    static String generateCaseInformation(SortedSet<TestCase> cases) {
+        StringBuilder sb = new StringBuilder();
+        cases.stream().filter(c -> c.getState().isWarning() || c.getState().isCritical() || c.getState().isError())
+                .forEach(c -> {
+                    sb.append(", case \"").append(c.getName()).append("\" ");
+                    if (c.getState().isError()) {
+                        sb.append("EXCEPTION: ").append(c.getExceptionMessages(true));
+                    } else {
+                        sb.append("over runtime (").append(NagiosFormatter.formatToSec(c.getDuration()));
+                        if (c.getState().isCritical()) {
+                            sb.append("/crit at ").append(NagiosFormatter.formatToSec(c.getCriticalTime()));
+                        } else {
+                            sb.append("/warn at ").append(NagiosFormatter.formatToSec(c.getWarningTime()));
+                        }
+                        sb.append(")");
+                    }
+                });
+        return sb.toString();
     }
 
+    protected static String cutTo(String string, int summaryMaxLength) {
+        if (string != null && string.length() > summaryMaxLength) {
+            return StringUtils.substring(string, 0, summaryMaxLength) + " ...";
+        }
+        return string;
+    }
+
+    protected abstract int getSummaryMaxLength();
+
+    protected abstract String getOutputScreenshotDivWidth();
+
     protected String formatTestSuiteSummaryStateMessage(TestSuite testSuite, String templateSuiteSummary) {
+        if (StringUtils.isBlank(templateSuiteSummary)) {
+            throw new SakuliRuntimeException("Template for resolving test suite output is EMPTY!");
+        }
         String result = replacePlaceHolder(templateSuiteSummary, getTextPlaceholder(testSuite));
-        logger.debug("{{xxx}} patterns in string '{}' replaced with message '{}'", templateSuiteSummary, result);
-        return result;
+        LOGGER.debug("{{xxx}} patterns in template '{}' replaced with message '{}'", templateSuiteSummary, result);
+        return cutTo(result, getSummaryMaxLength());
     }
 
     protected PlaceholderMap getTextPlaceholder(TestSuite testSuite) {
@@ -119,28 +148,42 @@ public abstract class AbstractOutputBuilder {
         placeholderMap.put(HOST, testSuite.getHost());
         placeholderMap.put(BROWSER_INFO, testSuite.getBrowserInfo());
         placeholderMap.put(TD_CSS_CLASS, "service" + outputState.name());
+        placeholderMap.put(CASE_INFORMATION, generateCaseInformation(testSuite.getTestCasesAsSortedSet()));
+        placeholderMap.put(STEP_INFORMATION,
+                testSuite.getTestCasesAsSortedSet().stream()
+                        .map(c -> generateStepInformation(c.getStepsAsSortedSet()))
+                        .collect(Collectors.joining()));
         return placeholderMap;
     }
 
     private String generateStateSummary(TestSuiteState state) {
-        StringBuilder summary = new StringBuilder(STATE_DESC.getPattern());
-        if (state.isError()) {
-            summary.append(": '").append(ERROR_MESSAGE.getPattern()).append("'");
-        } else if (state.isWarning()) {
-            summary.append(": threshold ").append(WARN_THRESHOLD.getPattern()).append("s");
-        } else if (state.isCritical()) {
-            summary.append(": threshold ").append(CRITICAL_THRESHOLD.getPattern()).append("s");
+        StringBuilder summary = new StringBuilder(state.isError() ? "" : STATE_DESC.getPattern());
+        switch (state) {
+            case OK:
+                summary.append(" (").append(DURATION.getPattern()).append("s)");
+                break;
+            case WARNING_IN_STEP:
+                summary.append(STEP_INFORMATION.getPattern());
+                break;
+            case WARNING_IN_CASE:
+                summary.append(CASE_INFORMATION.getPattern());
+                break;
+            case WARNING_IN_SUITE:
+                summary.append(" (").append(DURATION.getPattern()).append("s/warn at ").append(WARN_THRESHOLD.getPattern()).append("s)");
+                break;
+            case CRITICAL_IN_CASE:
+                summary.append(CASE_INFORMATION.getPattern());
+                break;
+            case CRITICAL_IN_SUITE:
+                summary.append(" (").append(DURATION.getPattern()).append("s/crit at ").append(CRITICAL_THRESHOLD.getPattern()).append("s)");
+                break;
+            case ERRORS:
+                summary.append("(").append(DURATION.getPattern()).append("s) ").append(STATE_DESC.getPattern()).append(": '").append(ERROR_MESSAGE.getPattern()).append("'");
+                break;
+            default:
+                break;
         }
         return summary.toString();
-    }
-
-    protected String formatTestCaseTableStateMessage(TestCase tc, String templateCaseOutput) {
-        String unfilledResult = TABLE_ROW_HEADER
-                + templateCaseOutput
-                + TABLE_ROW_FOOTER;
-        String result = replacePlaceHolder(unfilledResult, getTextPlaceholder(tc));
-        logger.debug("{{xxx}} patterns in string '{}' replaced with message '{}'", unfilledResult, result);
-        return result;
     }
 
     protected PlaceholderMap getTextPlaceholder(TestCase testCase) {

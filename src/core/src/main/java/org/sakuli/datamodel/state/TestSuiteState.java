@@ -52,7 +52,7 @@ public enum TestSuiteState implements SakuliState {
     /**
      * value = 4
      */
-    CRITICAL_IN_CASE(4, "critical case"),
+    CRITICAL_IN_CASE(4, "critical in case"),
 
     /**
      * value = 4

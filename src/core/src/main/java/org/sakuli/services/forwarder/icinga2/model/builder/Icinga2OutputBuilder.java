@@ -19,6 +19,7 @@
 package org.sakuli.services.forwarder.icinga2.model.builder;
 
 import org.sakuli.datamodel.Builder;
+import org.sakuli.datamodel.TestCase;
 import org.sakuli.services.forwarder.AbstractOutputBuilder;
 import org.sakuli.services.forwarder.icinga2.Icinga2Properties;
 import org.sakuli.services.forwarder.icinga2.ProfileIcinga2;
@@ -33,8 +34,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class Icinga2OutputBuilder extends AbstractOutputBuilder implements Builder<String> {
 
+    public static final String ICINGA_SEPARATOR = "\n";
     @Autowired
     private Icinga2Properties properties;
+
+    @Override
+    protected int getSummaryMaxLength() {
+        return properties.getTemplateSuiteSummaryMaxLength();
+    }
 
     @Override
     protected String getOutputScreenshotDivWidth() {
@@ -45,6 +52,17 @@ public class Icinga2OutputBuilder extends AbstractOutputBuilder implements Build
 
     @Override
     public String build() {
-        return formatTestSuiteSummaryStateMessage(testSuite, properties.getTemplateSuiteSummary());
+        StringBuilder sb = new StringBuilder();
+        sb.append(formatTestSuiteSummaryStateMessage(testSuite, properties.getTemplateSuiteSummary()))
+                .append(ICINGA_SEPARATOR);
+
+        for (TestCase tc : testSuite.getTestCasesAsSortedSet()) {
+            String template = properties.lookUpTemplate(tc.getState());
+            String result = replacePlaceHolder(template, getTextPlaceholder(tc));
+            LOGGER.debug("{{xxx}} patterns in template '{}' replaced with message '{}'", template, result);
+            sb.append(result);
+        }
+        return sb.toString();
     }
+
 }

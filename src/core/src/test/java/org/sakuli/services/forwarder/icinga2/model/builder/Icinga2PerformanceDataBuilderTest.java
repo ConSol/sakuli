@@ -58,7 +58,7 @@ public class Icinga2PerformanceDataBuilderTest {
         assertEquals(it.next(), "c_001__warning=4s;;;;");
         assertEquals(it.next(), "c_001__critical=5s;;;;");
         assertRegExMatch(it.next(), "c_001_UNIT_TEST_CASE_\\d*=3.00s;4;5;;");
-        assertEquals(it.next(), "s_001_001_step_for_unit_test=1.00s;2;;;");
+        assertEquals(it.next(), "s_001_001_step_for_unit_test=3.00s;4;;;");
         assertFalse(it.hasNext());
     }
 

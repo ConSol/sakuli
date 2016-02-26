@@ -23,8 +23,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.services.forwarder.MonitoringPropertiesTestHelper;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
-import org.sakuli.services.forwarder.gearman.GearmanPropertiesTestHelper;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosOutputBuilder;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -52,7 +52,7 @@ public class NagiosCheckResultTest {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(testling, "testSuite", new TestSuiteExampleBuilder().buildExample());
         when(nagiosOutputBuilder.build()).thenReturn(new NagiosOutput());
-        GearmanPropertiesTestHelper.initMock(gearmanProperties);
+        MonitoringPropertiesTestHelper.initMock(gearmanProperties);
     }
 
     @Test

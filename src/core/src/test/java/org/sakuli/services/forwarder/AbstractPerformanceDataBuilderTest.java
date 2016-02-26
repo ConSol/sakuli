@@ -130,7 +130,7 @@ public class AbstractPerformanceDataBuilderTest {
                         )),
                         5
                 ),
-                "s_005_001_step1=1.00s;2;;; s_005_002_step2=U;;;;");
+                "s_005_001_step1=3.00s;4;;; s_005_002_step2=U;;;;");
     }
 
     @Test
@@ -146,7 +146,7 @@ public class AbstractPerformanceDataBuilderTest {
                         )),
                         5
                 ),
-                "s_005_001_step1=1.00s;2;;; s_005_002_step2=U;;;;");
+                "s_005_001_step1=3.00s;4;;; s_005_002_step2=U;;;;");
     }
 
     @Test
