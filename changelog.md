@@ -4,8 +4,76 @@
 
 - - -
 
+### Version 0.9.3
+
+* Move to a new binary starter for Windows and Linux (sakuli.exe / sakuli), #150:
+    * Change syntax from the new starter to:
+    
+    ```bash
+    Usage: sakuli[.exe] COMMAND ARGUMENT [OPTIONS]
+    
+           sakuli -help
+           sakuli -version
+           sakuli run <sakuli suite path> [OPTIONS]
+           sakuli encrypt <secret> [OPTIONS]
+    
+    Commands:
+           run 	   <sakuli suite path>
+           encrypt 	   <secret>
+    
+    Options:
+           -loop	   <seconds>	  Loop this suite, wait n seconds between
+                                      executions, 0 means no loops (default: 0)
+           -javaHome   <folder>       Java bin dir (overrides PATH)
+           -javaOption <java option>  JVM option parameter, e.g. '-agentlib:...'
+           -preHook    <programpath>  A program which will be executed before a
+                                      suite run (can be added multiple times)
+           -postHook   <programpath>  A program which will be executed after a
+                                      suite run (can be added multiple times)
+           -D 	   <JVM option>   JVM option to set a property at runtime,
+                                      overrides file based properties
+           -browser    <browser>      Browser for the test execution
+                                      (default: Firefox)
+           -interface  <interface>    Network interface card name, used by
+                                      command 'encrypt' as salt
+           -sahiHome   <folder>       Sahi installation folder
+           -version                   Version info
+           -help                      This help text
+
+    ```
+    
+    * modify VNC dokumentation  to flag `-preHook` and `postHook`
+    * change documentation and docker scripts to new starter syntax `sakuli run TEST_SUITE [OPTION]`
+    * add binaries `sakuli` and `sakuli.exe` from repo https://github.com/ConSol/sakuli-go-wrapper
+    * remove `sakuli.sh/sakuli.bat`
+* Add new forwarder module `Icinga2`, see #145: 
+    * Rest client to send the results to Icinga2 API 
+    * new property `sakuli.forwarder.gearman.nagios.template.suite.summary.maxLength` to cut to long output due to error messages
+    * introduce `sakuli.forwarder.icinga2` properties // consolidate `sakuli.forwarder.database` properties
+* close #118 improved output of nagios messages
+* close #151 add a bunch of Windows registry settings to the installer, to improve the test stability.  Disables graphical effects, screen saver and error reporting.
+* fix #135 Environment similarity: 
+  * Extract constant Environment#DEFAULT_SIMILARITY to `sakuli-default.properties` as `sakuli.environment.similarity.default`:
+  * Set default similarity to `0.99`
+* close #163: add clean up method, which release all modifier keys before a test case will startet and at the teardown phase
+* fix #162: release keys didn't work correctly => update to sikulix version 1.1.998 and add function "run as admin" to dev suites
+* add an Around Aspect to `net.sf.sahi.util.Utils.getCommandTokens` to fix parsing errors during calling native commands, see http://community.sahipro.com/forums/discussion/8552/sahi-os-5-0-and-chrome-user-data-dir-containing-spaces-not-working
+* Documentation how to solve increasing sahi profile folders. Closes #164.
+* reduce wait times for example test suites
+* fix `firefox_portable` executable path in `browser.xml`: replace it with $userDir relativ path
+* consolidate forwarder properties: adjust `jdbc.*` properties to `sakuli.forwarder.database.*` properties
+* improve logging of database receiver
+* fix #153 `sakuli.log.maxAge` error, is smaller then 1
+* check_sakuli.php: added wrapper for function declarations to fix errors in PNP basket (cannot redefine...)
+* cl: update installer with special cl installer preselected options
+* close #155: add environment variables to --version output
+* fix for #158: linux installer correct firefox var to `MOZ_DISABLE_OOP_PLUGINS`
+* Added ff_purge_profile.bat to helper scripts (delete sqlite file before each run)
+* close #155: add -version parameter to Sakuli starter (sakuli / sakuli.exe)
+* close #153 log data rotation: * add a property sakuli.log.maxAge in days (default 14 days) * deletes all files that are older than the defined days in the folder `sakuli.log.folder`
+
 ### Version 0.9.2
-* add setting some firefox variables (`MOZ_OOP_DISABLE_PLUGINS`, `MOZ_DISABLE_AUTO_SAFE_MODE`, `MOZ_DISABLE_SAFE_MODE_KEY`) for UI testing to the installer, see #158.
+* add setting some firefox variables (`MOZ_DISABLE_OOP_PLUGINS`, `MOZ_DISABLE_AUTO_SAFE_MODE`, `MOZ_DISABLE_SAFE_MODE_KEY`) for UI testing to the installer, see #158.
 * Executable JAR installer `sakuli-vX.X.X-installer.jar`, downloadable via [](https://labs.consol.de/sakuli/install/), see #24.
   * The installer contains a complete Sakuli setup and the following options:
     ![inst_2](docs/pics/installer_2.png)
@@ -141,7 +209,7 @@
 * fix PrioritizedServiceComparator so now 2 service with the same priority will also accepted
 * add jenkins-build badge
 * add #46 add dev-v0.4 read-the-docs & read-the-docs badge
-* add #96 add variable '$testSuiteFolder' fore more strait forward import handling // check TODO
+* add #96 add variable '$testSuiteFolder' fore more strait forward import handling
 * fix dependency path of javafx for java7
 * close #92 exclude Base64 String in log output
 * modify documentation of warning / critical times

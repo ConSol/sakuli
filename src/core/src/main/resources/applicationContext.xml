@@ -49,10 +49,10 @@
     <beans profile="JDBC_DB">
         <!-- Definiert die DataSource -->
         <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-            <property name="driverClassName" value="${jdbc.driverClass}"/>
-            <property name="url" value="${jdbc.url}"/>
-            <property name="username" value="${jdbc.user}"/>
-            <property name="password" value="${jdbc.pw}"/>
+            <property name="driverClassName" value="${sakuli.forwarder.database.jdbc.driverClass}"/>
+            <property name="url" value="${sakuli.forwarder.database.jdbc.url}"/>
+            <property name="username" value="${sakuli.forwarder.database.user}"/>
+            <property name="password" value="${sakuli.forwarder.database.password}"/>
             <property name="connectionProperties">
                 <props>
                     <prop key="autoCommit">true</prop>

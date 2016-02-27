@@ -63,6 +63,9 @@
     <bean id="org.sakuli.services.common.CacheHandlingResultServiceImpl" class="org.sakuli.MockitoSpyFactoryBean">
         <constructor-arg value="org.sakuli.services.common.CacheHandlingResultServiceImpl"/>
     </bean>
+    <bean id="org.sakuli.services.common.LogCleanUpResultServiceImpl" class="org.sakuli.MockitoSpyFactoryBean">
+        <constructor-arg value="org.sakuli.services.common.LogCleanUpResultServiceImpl"/>
+    </bean>
     <!-- Mocked Beans -->
     <bean id="org.sakuli.dao.DaoTestSuite " class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.services.forwarder.database.dao.DaoTestSuite "/>

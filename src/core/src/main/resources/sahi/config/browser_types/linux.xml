@@ -15,8 +15,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
+<!-- @formatter:off -->
 <browserTypes>
+    <!-- INFO: $userDir will be resolved as the SAHI_HOME folder -->
     <browserType>
         <name>firefox</name>
         <displayName>Firefox</displayName>
@@ -31,7 +32,7 @@
         <name>firefox_portable</name>
         <displayName>Firefox portable</displayName>
         <icon>firefox.png</icon>
-        <path>$SAKULI_HOME/../firefox/firefox</path>
+        <path>$userDir/../../firefox/firefox</path>
         <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
         <processName>firefox</processName>
         <capacity>5</capacity>
@@ -42,11 +43,9 @@
         <displayName>Chrome</displayName>
         <icon>chrome.png</icon>
         <path>/usr/bin/google-chrome</path>
-        <options>--incognito --no-default-browser-check --no-first-run --disable-infobars
-            --user-data-dir=$userDir/browser/chrome/profiles/sahi$threadNo
-            --proxy-server=localhost:9999 --disable-popup-blocking
-        </options>
+        <options>--incognito --user-data-dir=$userDir/browser/chrome/profiles/sahi$threadNo --no-default-browser-check --no-first-run --disable-infobars --proxy-server=localhost:9999 --disable-popup-blocking</options>
         <processName>chrome</processName>
         <capacity>5</capacity>
     </browserType>
 </browserTypes>
+<!-- @formatter:on -->

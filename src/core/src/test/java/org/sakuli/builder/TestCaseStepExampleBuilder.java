@@ -43,9 +43,9 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
     public TestCaseStepExampleBuilder() {
         this.state = TestCaseStepState.OK;
         this.name = "step for unit test";
-        this.warningTime = 2;
+        this.warningTime = 4;
         this.startDate = new Date();
-        this.stopDate = DateUtils.addSeconds(startDate, 1);
+        this.stopDate = DateUtils.addSeconds(startDate, 3);
         this.creationDate = new DateTime();
     }
 

@@ -56,7 +56,7 @@ public class NagiosCheckResultBuilder implements Builder<NagiosCheckResult> {
     @Autowired
     private GearmanProperties gearmanProperties;
     @Autowired
-    private OutputBuilder outputBuilder;
+    private NagiosOutputBuilder nagiosOutputBuilder;
 
 
     @Override
@@ -92,7 +92,7 @@ public class NagiosCheckResultBuilder implements Builder<NagiosCheckResult> {
         finishTime = testSuite.getStopDateAsUnixTimestamp();
         returnCode = String.valueOf(testSuite.getState().getNagiosErrorCode());
         serviceDesc = testSuite.getId();
-        output = outputBuilder.build();
+        output = nagiosOutputBuilder.build();
     }
 
 

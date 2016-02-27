@@ -18,8 +18,8 @@
 
 package org.sakuli.services.common;
 
-import org.sakuli.actions.environment.Application;
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.utils.CleanUpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -34,7 +34,7 @@ import java.util.function.Predicate;
  */
 @Component
 public class CommonResultServiceImpl extends AbstractResultService {
-    private static Logger logger = LoggerFactory.getLogger(CommonResultServiceImpl.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(CommonResultServiceImpl.class);
 
     @Override
     public int getServicePriority() {
@@ -43,8 +43,8 @@ public class CommonResultServiceImpl extends AbstractResultService {
 
     @Override
     public void saveAllResults() {
-        cleanClipboard();
-        logger.info(testSuite.getResultString()
+        cleanUp();
+        LOGGER.info(testSuite.getResultString()
                 + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
                 + testSuite.getState() + " ======================\n");
         switch (testSuite.getState()) {
@@ -59,7 +59,7 @@ public class CommonResultServiceImpl extends AbstractResultService {
                 break;
             case ERRORS:
                 String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages();
-                logger.error(errorMsg + "\n");
+                LOGGER.error(errorMsg + "\n");
                 break;
         }
     }
@@ -71,14 +71,15 @@ public class CommonResultServiceImpl extends AbstractResultService {
                     if (tc.getState().isWarningInStep()) {
                         tc.getSteps().stream()
                                 .filter(s -> s.getState().isWarning())
-                                .forEach(s -> logger.warn("{}: {}", testSuite.getState(), tc.getName() + " -> " + s.getName()));
+                                .forEach(s -> LOGGER.warn("{}: {}", testSuite.getState(), tc.getName() + " -> " + s.getName()));
                     } else {
-                        logger.warn("{}: {}", testSuite.getState(), tc.getName());
+                        LOGGER.warn("{}: {}", testSuite.getState(), tc.getName());
                     }
                 });
     }
 
-    protected void cleanClipboard() {
-        Application.setClipboard(" ");
+    public void cleanUp() {
+        CleanUpHelper.cleanClipboard();
+        CleanUpHelper.releaseAllModifiers();
     }
 }

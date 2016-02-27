@@ -34,6 +34,7 @@ import java.nio.file.Paths;
 @Component
 public class ActionProperties extends AbstractProperties {
 
+    public static final String DEFAULT_REGION_SIMILARITY = "sakuli.environment.similarity.default";
     public static final String TAKE_SCREENSHOTS = "sakuli.screenshot.onError";
     public static final String AUTO_HIGHLIGHT_ENABLED = "sakuli.autoHighlight.enabled";
     public static final String DEFAULT_HIGHLIGHT_SEC = "sakuli.highlight.seconds";
@@ -46,6 +47,8 @@ public class ActionProperties extends AbstractProperties {
     public static final String SCREENSHOT_FORMAT_PROPERTY = "sakuli.screenshot.format";
     protected static final String ENCRYPTION_INTERFACE_DEFAULT = "null";
     protected static final String ENCRYPTION_INTERFACE_AUTODETECT_DEFAULT = "true";
+    @Value("${" + DEFAULT_REGION_SIMILARITY + "}")
+    private double defaultRegionSimilarity;
     @Value("${" + TAKE_SCREENSHOTS + "}")
     private boolean takeScreenshots;
     @Value("${" + AUTO_HIGHLIGHT_ENABLED + "}")
@@ -78,6 +81,14 @@ public class ActionProperties extends AbstractProperties {
                 Files.createDirectories(screenShotFolder);
             }
         }
+    }
+
+    public double getDefaultRegionSimilarity() {
+        return defaultRegionSimilarity;
+    }
+
+    public void setDefaultRegionSimilarity(double defaultRegionSimilarity) {
+        this.defaultRegionSimilarity = defaultRegionSimilarity;
     }
 
     public boolean isTakeScreenshots() {

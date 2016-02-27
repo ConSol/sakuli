@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.9.2</version>
+        <version>0.9.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>installer</artifactId>
-    <version>0.9.2</version>
+    <version>0.9.3</version>
     <description>maven module to build the IzPack-Java Installer</description>
 
     <properties>
@@ -48,16 +48,38 @@
         </sakuli.install.target.installerScripts>
         <package.name.set.default.win>Set v${sakuli.version} as default version</package.name.set.default.win>
         <package.name.set.default.linux>Set v${sakuli.version} as default version in .bashrc</package.name.set.default.linux>
-        <package.name.set.testing.vars.win>Modify user environment for testing</package.name.set.testing.vars.win>
-        <package.name.set.testing.vars.linux>Modify user environment in .bashrc for testing</package.name.set.testing.vars.linux>
+        <package.name.set.testing.vars.win>Windows environment modifications</package.name.set.testing.vars.win>
+        <package.name.set.testing.vars.linux>.bashrc modifications</package.name.set.testing.vars.linux>
         <package.name.firefox.version>42</package.name.firefox.version>
         <package.name.firefox.win>Install Firefox Portable v${package.name.firefox.version}</package.name.firefox.win>
         <package.name.firefox.linux>Download and install Firefox Portable v${package.name.firefox.version}
         </package.name.firefox.linux>
         <package.name.userpermission.win>Set user permissions</package.name.userpermission.win>
+        <!-- preselected -->
+        <package.example.preselected>true</package.example.preselected>
+        <package.firefox.preselected>false</package.firefox.preselected>
+        <!--required -->
+        <package.set.default.required>false</package.set.default.required>
+        <package.set.testing.vars.required>false</package.set.testing.vars.required>
+        <package.firefox.required>false</package.firefox.required>
+        <package.qres.required>false</package.qres.required>
     </properties>
 
     <profiles>
+        <profile>
+            <id>cl</id>
+            <properties>
+                <!-- preselected -->
+                <package.example.preselected>false</package.example.preselected>
+                <package.firefox.preselected>true</package.firefox.preselected>
+                <!--required -->
+                <package.set.default.required>true</package.set.default.required>
+                <package.set.testing.vars.required>true</package.set.testing.vars.required>
+                <package.firefox.required>true</package.firefox.required>
+                <package.qres.required>true</package.qres.required>
+            </properties>
+        </profile>
+
         <profile>
             <id>upload-release</id>
             <build>

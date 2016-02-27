@@ -63,7 +63,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
     @BeforeMethod
     public void init() {
         super.init();
-        doNothing().when(testling).cleanClipboard();
+        doNothing().when(testling).cleanUp();
     }
 
     @Test(dataProvider = "states")
@@ -117,8 +117,8 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 "\t\tRESULT STATE: " + stepState,
                 "\t\tresult code: " + stepState.getErrorCode(),
                 "\t\tdb primary key: -1*",
-                "\t\tduration: 1.0 sec.",
-                "\t\twarning time: 2 sec.",
+                "\t\tduration: 3.0 sec.",
+                "\t\twarning time: 4 sec.",
                 "\t\tstart time: .*",
                 "\t\tend time: .*",
                 "===========  SAKULI Testsuite \"LOG_TEST_SUITE\" execution FINISHED - " + testSuiteState + " ======================",

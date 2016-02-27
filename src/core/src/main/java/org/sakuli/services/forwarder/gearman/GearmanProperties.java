@@ -18,7 +18,7 @@
 
 package org.sakuli.services.forwarder.gearman;
 
-import org.sakuli.datamodel.state.TestCaseState;
+import org.sakuli.services.forwarder.AbstractMonitoringTemplateProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -27,56 +27,115 @@ import org.springframework.stereotype.Component;
  */
 @ProfileGearman
 @Component
-public class GearmanProperties {
-    public static final String SERVICE_TYPE_DEFAULT = "passive";
-    public static final String SERVER_QUEUE_DEFAULT = "check_results";
-    public static final String SERVER_QUEUE = "sakuli.forwarder.gearman.server.queue";
-    public static final String SERVER_HOST = "sakuli.forwarder.gearman.server.host";
-    public static final String SERVER_PORT = "sakuli.forwarder.gearman.server.port";
-    public static final String NAGIOS_HOSTNAME = "sakuli.forwarder.gearman.nagios.hostname";
-    public static final String NAGIOS_CHECK_COMMAND = "sakuli.forwarder.gearman.nagios.check_command";
-    public static final String NAGIOS_CHECK_COMMAND_DEFAULT = "check_sakuli_db_suite";
-    public static final String NAGIOS_OUTPUT_SUITE_SUMMARY = "sakuli.forwarder.gearman.nagios.output.suite.summary";
-    public static final String NAGIOS_OUTPUT_SUITE_TABLE = "sakuli.forwarder.gearman.nagios.output.suite.table";
-    public static final String NAGIOS_OUTPUT_CASE_OK = "sakuli.forwarder.gearman.nagios.output.case.ok";
-    public static final String NAGIOS_OUTPUT_CASE_WARNING = "sakuli.forwarder.gearman.nagios.output.case.warning";
-    public static final String NAGIOS_OUTPUT_CASE_CRITICAL = "sakuli.forwarder.gearman.nagios.output.case.critical";
-    public static final String NAGIOS_OUTPUT_CASE_ERROR = "sakuli.forwarder.gearman.nagios.output.case.error";
-    public static final String NAGIOS_OUTPUT_SUITE_SUMMARY_DEFAULT = "{{state}} - {{state_short}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}})";
-    public static final String NAGIOS_OUTPUT_SUITE_TABLE_DEFAULT = "{{state_short}} Sakuli suite \"{{id}}\" ran in {{duration}} seconds - {{suite_summary}}. (Last suite run: {{stop_date}}){{error_screenshot}}";
-    public static final String NAGIOS_OUTPUT_CASE_OK_DEFAULT = "{{state_short}} case \"{{id}}\" ran in {{duration}}s - {{state_description}}";
-    public static final String NAGIOS_OUTPUT_CASE_WARNING_DEFAULT = "{{state_short}} case \"{{id}}\" over runtime ({{duration}}s /{{state_description}} at {{warning_threshold}}s){{step_information}}";
-    public static final String NAGIOS_OUTPUT_CASE_CRITICAL_DEFAULT = "{{state_short}} case \"{{id}}\" over runtime ({{duration}}s /{{state_description}} at {{critical_threshold}}s){{step_information}}";
-    public static final String NAGIOS_OUTPUT_CASE_ERROR_DEFAULT = "{{state_short}} case \"{{id}}\" {{state_description}}: {{error_message}}{{error_screenshot}}";
-    public static final String NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH = "sakuli.forwarder.gearman.nagios.output.screenshotDivWidth";
-    public static final String NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH_DEFAULT = "640px";
+public class GearmanProperties extends AbstractMonitoringTemplateProperties {
+    protected static final String TEMPLATE_SUITE_SUMMARY = "sakuli.forwarder.gearman.nagios.template.suite.summary";
+    protected static final String TEMPLATE_SUITE_SUMMARY_MAX_LENGTH = "sakuli.forwarder.gearman.nagios.template.suite.summary.maxLength";
+    protected static final String TEMPLATE_CASE_OK = "sakuli.forwarder.gearman.nagios.template.case.ok";
+    protected static final String TEMPLATE_CASE_WARNING = "sakuli.forwarder.gearman.nagios.template.case.warning";
+    protected static final String TEMPLATE_CASE_WARNING_IN_STEP = "sakuli.forwarder.gearman.nagios.template.case.warningInStep";
+    protected static final String TEMPLATE_CASE_CRITICAL = "sakuli.forwarder.gearman.nagios.template.case.critical";
+    protected static final String TEMPLATE_CASE_ERROR = "sakuli.forwarder.gearman.nagios.template.case.error";
+    private static final String SERVICE_TYPE_DEFAULT = "passive";
+    private static final String SERVER_QUEUE = "sakuli.forwarder.gearman.server.queue";
+    private static final String SERVER_HOST = "sakuli.forwarder.gearman.server.host";
+    private static final String SERVER_PORT = "sakuli.forwarder.gearman.server.port";
+    private static final String NAGIOS_HOSTNAME = "sakuli.forwarder.gearman.nagios.hostname";
+    private static final String NAGIOS_CHECK_COMMAND = "sakuli.forwarder.gearman.nagios.check_command";
+    private static final String TEMPLATE_SUITE_TABLE = "sakuli.forwarder.gearman.nagios.template.suite.table";
+    private static final String TEMPLATE_SCREENSHOT_DIV_WIDTH = "sakuli.forwarder.gearman.nagios.template.screenshotDivWidth";
+    @Value("${" + TEMPLATE_SUITE_SUMMARY + "}")
+    private String templateSuiteSummary;
+    @Value("${" + TEMPLATE_SUITE_SUMMARY_MAX_LENGTH + "}")
+    private int templateSuiteSummaryMaxLength;
+    @Value("${" + TEMPLATE_CASE_OK + "}")
+    private String templateCaseOk;
+    @Value("${" + TEMPLATE_CASE_WARNING + "}")
+    private String templateCaseWarning;
+    @Value("${" + TEMPLATE_CASE_WARNING_IN_STEP + "}")
+    private String templateCaseWarningInStep;
+    @Value("${" + TEMPLATE_CASE_CRITICAL + "}")
+    private String templateCaseCritical;
+    @Value("${" + TEMPLATE_CASE_ERROR + "}")
+    private String templateCaseError;
     private String serviceType = SERVICE_TYPE_DEFAULT;
-    @Value("${" + SERVER_QUEUE + ":" + SERVER_QUEUE_DEFAULT + "}")
+    @Value("${" + SERVER_QUEUE + "}")
     private String serverQueue;
     @Value("${" + SERVER_HOST + "}")
     private String serverHost;
     @Value("${" + SERVER_PORT + "}")
     private int serverPort;
-    @Value("${" + NAGIOS_HOSTNAME + ":null}")
+    @Value("${" + NAGIOS_HOSTNAME + "}")
     private String nagiosHost;
-    @Value("${" + NAGIOS_CHECK_COMMAND + ":" + NAGIOS_CHECK_COMMAND_DEFAULT + "}")
+    @Value("${" + NAGIOS_CHECK_COMMAND + "}")
     private String nagiosCheckCommand;
-    @Value("${" + NAGIOS_OUTPUT_SUITE_SUMMARY + ":" + NAGIOS_OUTPUT_SUITE_SUMMARY_DEFAULT + "}")
-    private String outputSuiteSummary;
-    @Value("${" + NAGIOS_OUTPUT_SUITE_TABLE + ":" + NAGIOS_OUTPUT_SUITE_TABLE_DEFAULT + "}")
-    private String outputSuiteTable;
-    @Value("${" + NAGIOS_OUTPUT_CASE_OK + ":" + NAGIOS_OUTPUT_CASE_OK_DEFAULT + "}")
-    private String outputCaseOk;
-    @Value("${" + NAGIOS_OUTPUT_CASE_WARNING + ":" + NAGIOS_OUTPUT_CASE_WARNING_DEFAULT + "}")
-    private String outputCaseWarning;
-    @Value("${" + NAGIOS_OUTPUT_CASE_CRITICAL + ":" + NAGIOS_OUTPUT_CASE_CRITICAL_DEFAULT + "}")
-    private String outputCaseCritical;
-    @Value("${" + NAGIOS_OUTPUT_CASE_ERROR + ":" + NAGIOS_OUTPUT_CASE_ERROR_DEFAULT + "}")
-    private String outputCaseError;
-    @Value("${" + NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH + ":" + NAGIOS_OUTPUT_SCREENSHOT_DIV_WIDTH_DEFAULT)
-    private String outputScreenshotDivWidth;
+    @Value("${" + TEMPLATE_SUITE_TABLE + "}")
+    private String templateSuiteTable;
+    @Value("${" + TEMPLATE_SCREENSHOT_DIV_WIDTH + "}")
+    private String templateScreenshotDivWidth;
 
-    //TODO write test with context
+    @Override
+    public String getTemplateSuiteSummary() {
+        return templateSuiteSummary;
+    }
+
+    public void setTemplateSuiteSummary(String templateSuiteSummary) {
+        this.templateSuiteSummary = templateSuiteSummary;
+    }
+
+    @Override
+    public int getTemplateSuiteSummaryMaxLength() {
+        return templateSuiteSummaryMaxLength;
+    }
+
+    public void setTemplateSuiteSummaryMaxLength(int templateSuiteSummaryMaxLength) {
+        this.templateSuiteSummaryMaxLength = templateSuiteSummaryMaxLength;
+    }
+
+    @Override
+    public String getTemplateCaseOk() {
+        return templateCaseOk;
+    }
+
+    public void setTemplateCaseOk(String templateCaseOk) {
+        this.templateCaseOk = templateCaseOk;
+    }
+
+    @Override
+    public String getTemplateCaseWarning() {
+        return templateCaseWarning;
+    }
+
+    public void setTemplateCaseWarning(String templateCaseWarning) {
+        this.templateCaseWarning = templateCaseWarning;
+    }
+
+    @Override
+    public String getTemplateCaseWarningInStep() {
+        return templateCaseWarningInStep;
+    }
+
+    public void setTemplateCaseWarningInStep(String templateCaseWarningInStep) {
+        this.templateCaseWarningInStep = templateCaseWarningInStep;
+    }
+
+    @Override
+    public String getTemplateCaseCritical() {
+        return templateCaseCritical;
+    }
+
+    public void setTemplateCaseCritical(String templateCaseCritical) {
+        this.templateCaseCritical = templateCaseCritical;
+    }
+
+    @Override
+    public String getTemplateCaseError() {
+        return templateCaseError;
+    }
+
+    public void setTemplateCaseError(String templateCaseError) {
+        this.templateCaseError = templateCaseError;
+    }
+
     public String getServiceType() {
         return serviceType;
     }
@@ -117,54 +176,6 @@ public class GearmanProperties {
         this.nagiosHost = nagiosHost;
     }
 
-    public String getOutputSuiteSummary() {
-        return outputSuiteSummary;
-    }
-
-    public void setOutputSuiteSummary(String outputSuiteSummary) {
-        this.outputSuiteSummary = outputSuiteSummary;
-    }
-
-    public String getOutputSuiteTable() {
-        return outputSuiteTable;
-    }
-
-    public void setOutputSuiteTable(String outputSuiteTable) {
-        this.outputSuiteTable = outputSuiteTable;
-    }
-
-    public String getOutputCaseOk() {
-        return outputCaseOk;
-    }
-
-    public void setOutputCaseOk(String outputCaseOk) {
-        this.outputCaseOk = outputCaseOk;
-    }
-
-    public String getOutputCaseError() {
-        return outputCaseError;
-    }
-
-    public void setOutputCaseError(String outputCaseError) {
-        this.outputCaseError = outputCaseError;
-    }
-
-    public String getOutputCaseCritical() {
-        return outputCaseCritical;
-    }
-
-    public void setOutputCaseCritical(String outputCaseCritical) {
-        this.outputCaseCritical = outputCaseCritical;
-    }
-
-    public String getOutputCaseWarning() {
-        return outputCaseWarning;
-    }
-
-    public void setOutputCaseWarning(String outputCaseWarning) {
-        this.outputCaseWarning = outputCaseWarning;
-    }
-
     public String getNagiosCheckCommand() {
         return nagiosCheckCommand;
     }
@@ -173,24 +184,19 @@ public class GearmanProperties {
         this.nagiosCheckCommand = nagiosCheckCommand;
     }
 
-    public String getOutputScreenshotDivWidth() {
-        return outputScreenshotDivWidth;
+    public String getTemplateSuiteTable() {
+        return templateSuiteTable;
     }
 
-    public void setOutputScreenshotDivWidth(String outputScreenshotDivWidth) {
-        this.outputScreenshotDivWidth = outputScreenshotDivWidth;
+    public void setTemplateSuiteTable(String templateSuiteTable) {
+        this.templateSuiteTable = templateSuiteTable;
     }
 
-    public String lookUpOutputString(TestCaseState state) {
-        if (state == null || state.isError()) {
-            return outputCaseError;
-        } else if (state.isOk()) {
-            return outputCaseOk;
-        } else if (state.isWarning()) {
-            return outputCaseWarning;
-        } else if (state.isCritical()) {
-            return outputCaseCritical;
-        }
-        return null;
+    public String getTemplateScreenshotDivWidth() {
+        return templateScreenshotDivWidth;
+    }
+
+    public void setTemplateScreenshotDivWidth(String templateScreenshotDivWidth) {
+        this.templateScreenshotDivWidth = templateScreenshotDivWidth;
     }
 }

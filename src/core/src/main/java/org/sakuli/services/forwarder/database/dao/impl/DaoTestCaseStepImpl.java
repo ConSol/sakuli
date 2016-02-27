@@ -46,7 +46,7 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
     @Override
     public void saveTestCaseSteps(SortedSet<TestCaseStep> steps, int primaryKeyOfTestCase) {
         for (TestCaseStep step : steps) {
-            logger.info("============== save STEP \"" + step.getName() + "\" ==============");
+            LOGGER.info("============== save STEP \"" + step.getName() + "\" ==============");
             MapSqlParameterSource stepParameters = new MapSqlParameterSource();
             stepParameters.addValue("sakuli_cases_id", primaryKeyOfTestCase);
             stepParameters.addValue("result", step.getState().getErrorCode());
@@ -58,7 +58,7 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
             stepParameters.addValue("warning", (warningTime != 0) ? warningTime : null);
             stepParameters.addValue("duration", step.getDuration());
 
-            logger.info("write the following values to 'sakuli_steps': "
+            LOGGER.debug("write the following values to 'sakuli_steps': "
                     + stepParameters.getValues()
                     + "\n now execute ....");
 
@@ -69,7 +69,7 @@ public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
 
             //execute the sql-statement and save the primary key
             int dbPrimaryKey = insertStepResults.executeAndReturnKey(stepParameters).intValue();
-            logger.info("test case step '" + step.getName()
+            LOGGER.info("test case step '" + step.getName()
                     + "' has been written to 'sakuli_steps' with  primaryKey=" + dbPrimaryKey);
             step.setDbPrimaryKey(dbPrimaryKey);
         }

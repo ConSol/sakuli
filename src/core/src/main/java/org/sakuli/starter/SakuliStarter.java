@@ -27,13 +27,13 @@ import org.sakuli.exceptions.SakuliCipherException;
 import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
-import org.sakuli.services.ResultServiceHelper;
+import org.sakuli.services.TeardownServiceHelper;
+import org.sakuli.starter.helper.CmdPrintHelper;
 import org.sakuli.starter.helper.SakuliFolderHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
 import java.util.AbstractMap;
 import java.util.Map.Entry;
 
@@ -85,7 +85,7 @@ public class SakuliStarter {
             .withLongOpt("interface")
             .create("i");
     /**
-     * {@link System#exit(int)} value if the help is printed out. This value will be used in the `sakuli.sh` script.
+     * {@link System#exit(int)} value if the help is printed out. This value will be used in the `sakuli` starter
      */
     private static final int SYSTEM_EXIT_VALUE_HELP = 100;
 
@@ -130,11 +130,13 @@ public class SakuliStarter {
                 System.out.println("\n\n... now copy the secret to your testcase!");
                 System.exit(0);
             } else {
-                printHelp(options);
+                CmdPrintHelper.printHelp(options);
+                System.exit(SYSTEM_EXIT_VALUE_HELP);
             }
         } catch (ParseException e) {
             System.err.println("Parsing of command line failed: " + e.getMessage());
-            printHelp(options);
+            CmdPrintHelper.printHelp(options);
+            System.exit(SYSTEM_EXIT_VALUE_HELP);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error: " + e.getMessage());
@@ -144,19 +146,6 @@ public class SakuliStarter {
 
     private static String getOptionValue(CommandLine cmd, Option option) {
         return option.getOpt() != null ? cmd.getOptionValue(option.getOpt()) : cmd.getOptionValue(option.getLongOpt());
-    }
-
-    private static void printHelp(Options options) {
-        System.out.println("\n" +
-                        "Generic Sakuli test starter\n" +
-                        LocalDate.now().getYear() + " - The Sakuli team.\n" +
-                        "http://www.sakuli.org\n" +
-                        "https://github.com/ConSol/sakuli\n"
-        );
-        HelpFormatter helpFormatter = new HelpFormatter();
-        helpFormatter.setWidth(80);
-        helpFormatter.printHelp("sakuli [options]", options);
-        System.exit(SYSTEM_EXIT_VALUE_HELP);
     }
 
     /**
@@ -233,7 +222,8 @@ public class SakuliStarter {
             LOGGER.error("Unexpected error occurred:", e);
             System.exit(99);
         } finally {
-            ResultServiceHelper.invokeResultServices();
+            LOGGER.info("========== TEAR-DOWN SAKULI TEST SUITE '{}' ==========", result.getId());
+            TeardownServiceHelper.invokeTeardownServices();
 
             //finally shutdown context and return the result
             result = BeanLoader.loadBean(TestSuite.class);

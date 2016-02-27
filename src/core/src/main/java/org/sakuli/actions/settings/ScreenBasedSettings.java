@@ -18,7 +18,6 @@
 
 package org.sakuli.actions.settings;
 
-import org.sakuli.actions.environment.Environment;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sikuli.basics.Debug;
@@ -39,19 +38,20 @@ import java.security.InvalidParameterException;
 @Component
 public class ScreenBasedSettings extends Settings {
     private static final Logger LOGGER = LoggerFactory.getLogger(ScreenBasedSettings.class);
-    private double curMinSimilarity = Environment.DEFAULT_SIMILARITY;
     private ActionProperties props;
     private SakuliProperties sakuliProps;
+    private double currentSimilarity;
 
     @Autowired
     public ScreenBasedSettings(ActionProperties props, SakuliProperties sakuliProps) {
         this.props = props;
         this.sakuliProps = sakuliProps;
+        restetMinSimilarity();
     }
 
     @PostConstruct
     public void setDefaults() {
-        MinSimilarity = curMinSimilarity;
+        setMinSimilarity(currentSimilarity);
 
         WaitScanRate = 10f;
         ObserveScanRate = 10f;
@@ -92,7 +92,13 @@ public class ScreenBasedSettings extends Settings {
     }
 
     public void setMinSimilarity(double minSimilarity) {
-        curMinSimilarity = minSimilarity;
+        currentSimilarity = minSimilarity;
         MinSimilarity = minSimilarity;
+        CheckLastSeenSimilar = (float) minSimilarity;
+
+    }
+
+    public void restetMinSimilarity() {
+        setMinSimilarity(props.getDefaultRegionSimilarity());
     }
 }

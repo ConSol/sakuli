@@ -29,13 +29,17 @@ public class ForwarderProperties extends AbstractProperties {
 
     public static final String DATABASE_ENABLED = "sakuli.forwarder.database.enabled";
     public static final String GEARMAN_ENABLED = "sakuli.forwarder.gearman.enabled";
+    public static final String ICINGA_ENABLED = "sakuli.forwarder.icinga2.enabled";
     protected static final boolean DATABASE_ENABLED_DEFAULT = false;
     protected static final boolean GEARMAN_ENABLED_DEFAULT = false;
+    protected static final boolean ICINGA_ENABLED_DEFAULT = false;
 
     @Value("${" + DATABASE_ENABLED + ":" + DATABASE_ENABLED_DEFAULT + "}")
     private boolean databaseEnabled;
     @Value("${" + GEARMAN_ENABLED + ":" + GEARMAN_ENABLED_DEFAULT + "}")
     private boolean gearmanEnabled;
+    @Value("${" + ICINGA_ENABLED + ":" + ICINGA_ENABLED_DEFAULT + "}")
+    private boolean icinga2Enabled;
 
     public boolean isDatabaseEnabled() {
         return databaseEnabled;
@@ -51,5 +55,13 @@ public class ForwarderProperties extends AbstractProperties {
 
     public void setGearmanEnabled(boolean gearmanEnabled) {
         this.gearmanEnabled = gearmanEnabled;
+    }
+
+    public boolean isIcinga2Enabled() {
+        return icinga2Enabled;
+    }
+
+    public void setIcinga2Enabled(boolean icinga2Enabled) {
+        this.icinga2Enabled = icinga2Enabled;
     }
 }

@@ -25,6 +25,7 @@
 _dynamicInclude($includeFolder);
 var testCase = new TestCase(60, 70);
 var env = new Environment();
+var screen = new Region();
 var appNotepad = new Application("notepad.exe");
 var appCalc = new Application("calc.exe");
 
@@ -45,8 +46,7 @@ function switchWindow() {
  * Go back to notepad
  **************/
 function backToNotepad() {
-    switchWindow();
-    env.type("Finish!\n\n");
+    return appNotepad.focus();
 }
 
 
@@ -58,35 +58,41 @@ try {
      * Step for Notepad
      ***********************/
     appNotepad.open();
-    appNotepad.getRegion().highlight();
+    env.keyDown(Key.SHIFT);
+    screen.find("notepad++").rightClick();
+    screen.waitForImage("run_as_admin",5).highlight();
+    env.keyUp(Key.SHIFT);
+
+    backToNotepad().getRegion().highlight();
     env.type("Welcome to")
         .type("99", Key.SHIFT)  //types on german keyboard "))"
         .type("Sakuli")
         .type("88", Key.SHIFT)  //types on german keyboard "(("
         .type(Key.ENTER + Key.ENTER);
-    env.keyDown(Key.ALT).type(Key.NUM0 + Key.NUM9 + Key.NUM2).keyUp(Key.ALT).type("\n\n");
 
+    //env.keyDown(Key.ALT).type(Key.NUM0 + Key.NUM9 + Key.NUM2).keyUp(Key.ALT).type("\n\n");
     env.type("I will help you to test your projects, like webapplications...\n");
+    appNotepad.getRegion().type("\nmichael.bopp").type("q", Key.ALTGR).type("lidl.com");
     env.sleep(2);
     testCase.endOfStep("notepad", 20);
 
     /************************
      * Step for labs.consol
      ***********************/
-    switchWindow();
-    _navigateTo($cl_home);
-    _highlight(_link($cl_projekte));
-    _click(_link($cl_projekte));
-    Logger.logInfo("LAST-URL: " + testCase.getLastURL());
-    env.sleep(5);
-    env.takeScreenshot("testscreenshot.png");    //will be saved in the test suite folder
-    _highlight(_link($cl_c_mysql_h));
-    _click(_link($cl_c_mysql_h));
-    _highlight(_link($cl_c_oracle_h));
-    _click(_link($cl_c_oracle_h));
-    _setValue(_textbox("s"), "nagios");
-    _click(_link("Home[1]"));
-    testCase.endOfStep("project", 20);
+    //switchWindow();
+    //_navigateTo($cl_home);
+    //_highlight(_link($cl_projekte));
+    //_click(_link($cl_projekte));
+    //Logger.logInfo("LAST-URL: " + testCase.getLastURL());
+    //env.sleep(5);
+    //env.takeScreenshot("testscreenshot.png");    //will be saved in the test suite folder
+    //_highlight(_link($cl_c_mysql_h));
+    //_click(_link($cl_c_mysql_h));
+    //_highlight(_link($cl_c_oracle_h));
+    //_click(_link($cl_c_oracle_h));
+    //_setValue(_textbox("s"), "nagios");
+    //_click(_link("Home[1]"));
+    //testCase.endOfStep("project", 20);
 
 
     /*****************
@@ -104,13 +110,12 @@ try {
     appCalc.open();
     env.sleep(2);
     testCase.endOfStep("open_calc", 5);
-    env.setSimilarity(0.5);
+    env.setSimilarity(0.99);
     var calculatorRegion = appCalc.getRegion();
     calculatorRegion.type("525");
     env.sleep(2);
     calculatorRegion.find("plus.png").click().type("100");
     calculatorRegion.find("calculate.png").click();
-    backToNotepad();
     testCase.endOfStep("calculate 525 +100", 20);
 
     /************************************************
@@ -119,7 +124,8 @@ try {
 } catch (e) {
     testCase.handleException(e);
 } finally {
-    appNotepad.close();
-    appCalc.close();
+    // appNotepad.close(true);
+    new Application("Editor").kill();
+    appCalc.close(true);
     testCase.saveResult();
 }

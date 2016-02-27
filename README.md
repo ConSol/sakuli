@@ -145,3 +145,24 @@ The guys behind Sakuli:
 </td>
 </tr>
 <table>
+
+## Thanks
+
+### Contributors 
+
+At this point we want to thank all contributors, which helped to move this great project by submitting code, writing documentation, or adapting other tools to play well together with Sakuli. 
+
+* Tobias Schneck - Sakuli Team / Project Leader, Core Development
+* Simon Meggle - Sakuli Team / Project Leader, Monitoring Integration
+* Thomas Rothenbacher
+* Sven Nierlein 
+* Philip Griesbacher - Sakuli Go Starter 
+
+(did we forget you? Please poke us): 
+
+### Valued supporters
+
+Very special thanks to all customers which always nourish this project with new ideas and impulses and make it possible in the first place to give it back to the community as Open Source Software. Thumbs up!
+
+* LIDL Stiftung & Co. KG
+* Deutsche Pfandbriefbank AG

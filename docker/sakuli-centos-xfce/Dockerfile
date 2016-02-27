@@ -2,14 +2,14 @@
 
 FROM consol/centos-xfce-vnc
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2016-02-04
+ENV REFRESHED_AT 2016-02-19
 
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
 ENV VNC_PW sakuli
 
 ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install
-ENV SAKULI_VERSION 0.9.2
+ENV SAKULI_VERSION 0.9.3
 ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
 ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
 
@@ -46,4 +46,4 @@ RUN chmod +x /root/scripts/*.sh
 # startup script
 ENTRYPOINT ["/root/scripts/sakuli_startup.sh"]
 # arguments for the sakuli_startup.sh script
-CMD ["--run $SAKULI_TEST_SUITE"]
+CMD ["run $SAKULI_TEST_SUITE"]

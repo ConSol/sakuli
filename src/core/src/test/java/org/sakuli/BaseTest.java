@@ -79,6 +79,10 @@ public abstract class BaseTest extends AbstractLogAwareTest {
         SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = getSahiFolderPath();
         BeanLoader.CONTEXT_PATH = getTestContextPath();
         BeanLoader.refreshContext();
+        initBaseActionLoader();
+    }
+
+    protected void initBaseActionLoader() {
         loaderMock = BeanLoader.loadBean(BaseActionLoaderImpl.class);
         if (new MockUtil().isMock(loaderMock)) {
             reset(loaderMock);

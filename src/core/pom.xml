@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.9.2</version>
+        <version>0.9.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>core</artifactId>
-    <version>0.9.2</version>
+    <version>0.9.3</version>
     <name>core</name>
 
     <description>core module for all sakuli functionality</description>
@@ -39,6 +39,8 @@
         <project.jar.name>sakuli</project.jar.name>
         <sakuli.version.postfix>v${project.version}</sakuli.version.postfix>
         <sakuli.filename>${project.jar.name}-${sakuli.version.postfix}</sakuli.filename>
+        <project.build.unpacked-resources>${project.build.directory}/unpacked-resources
+        </project.build.unpacked-resources>
     </properties>
 
     <build>
@@ -103,13 +105,20 @@
                             <goal>unpack</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <outputDirectory>${project.build.unpacked-resources}</outputDirectory>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>net.sf.sahi</groupId>
                                     <artifactId>sahi-install</artifactId>
                                     <version>${sahi.version}</version>
                                     <type>zip</type>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.sakuli</groupId>
+                                    <artifactId>common</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
                                 </artifactItem>
                             </artifactItems>
                         </configuration>
@@ -134,7 +143,7 @@
                             </resources>
                             <overwrite>true</overwrite>
                             <encoding>UTF-8</encoding>
-                            <outputDirectory>${project.build.directory}/sahi</outputDirectory>
+                            <outputDirectory>${project.build.unpacked-resources}/sahi</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -309,6 +318,11 @@
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jul-to-slf4j</artifactId>
+        </dependency>
+
         <!-- will rout the system out from sikulX to logging over slf4j -->
         <dependency>
             <groupId>uk.org.lidalia</groupId>
@@ -382,6 +396,23 @@
             <groupId>org.gearman</groupId>
             <artifactId>gearman-java</artifactId>
         </dependency>
+
+        <!-- JAX-RS 2 client -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+        </dependency>
+        <!-- jackson json parser -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 </project>

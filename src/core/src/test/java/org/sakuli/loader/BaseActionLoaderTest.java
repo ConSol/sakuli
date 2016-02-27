@@ -21,10 +21,7 @@ package org.sakuli.loader;
 import net.sf.sahi.rhino.RhinoScriptRunner;
 import net.sf.sahi.session.Session;
 import org.joda.time.DateTime;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.builder.TestCaseStepBuilder;
@@ -63,6 +60,7 @@ public class BaseActionLoaderTest {
     @Mock
     private SakuliProperties sakuliProperties;
 
+    @Spy
     @InjectMocks
     private BaseActionLoaderImpl testling;
 
@@ -70,6 +68,7 @@ public class BaseActionLoaderTest {
     public void init() {
         MockitoAnnotations.initMocks(this);
         when(rhinoScriptRunner.getSession()).thenReturn(session);
+        doNothing().when(testling).cleanUp();
     }
 
     @Test

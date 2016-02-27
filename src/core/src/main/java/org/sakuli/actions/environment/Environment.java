@@ -26,6 +26,7 @@ import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.screenbased.Region;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.actions.screenbased.TypingUtil;
+import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
@@ -48,7 +49,6 @@ import java.nio.file.Paths;
  */
 public class Environment implements Action {
 
-    public static final double DEFAULT_SIMILARITY = 0.8;
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final boolean resumeOnException;
     private ScreenActionLoader loader;
@@ -95,14 +95,13 @@ public class Environment implements Action {
      * set a new default similarity of the screen capturing methods. To reset the similarty call {@link
      * #resetSimilarity()}.
      *
-     * @param similarity double value between 0 and 1, default = {@link #DEFAULT_SIMILARITY}
+     * @param similarity double value between 0 and 1, default = {@link ActionProperties#defaultRegionSimilarity}
      * @return this {@link Environment} or NULL on errors.
      */
     @LogToResult(message = "set similarity level", logClassInstance = false)
-    public Environment setSimilarity(Double similarity) {
+    public Environment setSimilarity(double similarity) {
         if (similarity >= 0 && similarity <= 1) {
             this.loader.getSettings().setMinSimilarity(similarity);
-            logger.info("The similarity level have been set to " + similarity);
         } else {
             loader.getExceptionHandler().handleException("The similartiy must be a double value between 0 and 1!", resumeOnException);
             return null;
@@ -111,13 +110,15 @@ public class Environment implements Action {
     }
 
     /**
-     * Resets the current similarty of the screen capturing methods to the original default value of {@link
-     * #DEFAULT_SIMILARITY}.
+     * Resets the current similarty of the screen capturing methods to the original default value of
+     * {@link ActionProperties#defaultRegionSimilarity}.
      *
      * @return this {@link Environment} or NULL on errors.
      */
+    @LogToResult(message = "reset similarity level to default")
     public Environment resetSimilarity() {
-        return setSimilarity(DEFAULT_SIMILARITY);
+        this.loader.getSettings().restetMinSimilarity();
+        return this;
     }
 
     /**

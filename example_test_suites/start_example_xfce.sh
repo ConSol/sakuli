@@ -7,4 +7,4 @@ if [ -z "$SAKULI_HOME" ]; then
 fi
 
 basedir=`dirname $0`
-$SAKULI_HOME/bin/sakuli.sh --run "$basedir/example_xfce"
+$SAKULI_HOME/bin/sakuli run "$basedir/example_xfce"

@@ -41,6 +41,7 @@ import java.util.List;
 public class SpringProfilesInitializer implements InitializingBean, ApplicationContextAware {
     public static final String JDBC_DB = "JDBC_DB";
     public static final String GEARMAN = "GEARMAN";
+    public static final String INCINGA2 = "ICINGA2";
     private static final Logger logger = LoggerFactory.getLogger(SpringProfilesInitializer.class);
     private ConfigurableApplicationContext ctx;
     @Autowired
@@ -70,6 +71,9 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
         }
         if (forwarderProperties.isGearmanEnabled()) {
             profileNames.add(GEARMAN);
+        }
+        if (forwarderProperties.isIcinga2Enabled()) {
+            profileNames.add(INCINGA2);
         }
         return profileNames.toArray(new String[profileNames.size()]);
     }

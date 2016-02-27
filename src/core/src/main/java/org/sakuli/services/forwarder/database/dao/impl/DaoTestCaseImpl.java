@@ -57,7 +57,7 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
 
     @Override
     public void saveTestCaseResult(final TestCase testCase) {
-        logger.info("Save results for test case \"" + testCase.getId() + "\"");
+        LOGGER.info("Save results for test case \"" + testCase.getId() + "\"");
 
         //create a map for the sql parameters
         MapSqlParameterSource tcParameters = new MapSqlParameterSource();
@@ -87,13 +87,13 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
                 .usingGeneratedKeyColumns("id");
 
 
-        logger.info("write the following values to 'sakuli_cases': "
+        LOGGER.debug("write the following values to 'sakuli_cases': "
                 + tcParameters.getValues()
                 + " => now execute ....");
 
         int dbPrimaryKey = insertTCResults.executeAndReturnKey(tcParameters).intValue();
 
-        logger.info("test case '" + testCase.getId()
+        LOGGER.info("test case '" + testCase.getId()
                 + "' has been written to 'sahi_cases' with  primaryKey=" + dbPrimaryKey);
         testCase.setDbPrimaryKey(dbPrimaryKey);
     }

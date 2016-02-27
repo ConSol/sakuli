@@ -30,7 +30,6 @@ import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.loader.BeanLoader;
-import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -126,7 +125,7 @@ public class SakuliPropertyPlaceholderConfigurerTest {
 
         assertNotNull(props.getProperty(SakuliProperties.SAKULI_HOME_FOLDER));
         assertNull(props.getProperty(TestSuiteProperties.SUITE_ID));
-        assertEquals(props.getProperty(GearmanProperties.SERVER_HOST), "test-gearman-host");
+        assertEquals(props.getProperty("sakuli.forwarder.gearman.server.host"), "test-gearman-host");
     }
 
     @Test

@@ -19,13 +19,14 @@
 package org.sakuli.builder;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.joda.time.DateTime;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.exceptions.SakuliException;
 
 import java.nio.file.Path;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class TestCaseExampleBuilder implements ExampleBuilder<TestCase> {
     private Path testCaseFile;
     private String lastURL;
     private String startURL;
+    private DateTime creationDate;
 
 
     public TestCaseExampleBuilder() {
@@ -60,7 +62,7 @@ public class TestCaseExampleBuilder implements ExampleBuilder<TestCase> {
         criticalTime = 5;
         startURL = "http://www.start-url.com";
         lastURL = "http://www.last-url.com";
-        steps = Arrays.asList(new TestCaseStepExampleBuilder().buildExample());
+        steps = Collections.singletonList(new TestCaseStepExampleBuilder().buildExample());
     }
 
     @Override
@@ -76,6 +78,9 @@ public class TestCaseExampleBuilder implements ExampleBuilder<TestCase> {
         testCase.setStartUrl(startURL);
         testCase.setLastURL(lastURL);
         testCase.setSteps(steps);
+        if (creationDate != null) {
+            testCase.setCreationDate(creationDate);
+        }
         return testCase;
     }
 
@@ -127,6 +132,11 @@ public class TestCaseExampleBuilder implements ExampleBuilder<TestCase> {
 
     public TestCaseExampleBuilder withTestCaseFile(Path testCaseFile) {
         this.testCaseFile = testCaseFile;
+        return this;
+    }
+
+    public TestCaseExampleBuilder withCreationDate(DateTime creationDate) {
+        this.creationDate = creationDate;
         return this;
     }
 }

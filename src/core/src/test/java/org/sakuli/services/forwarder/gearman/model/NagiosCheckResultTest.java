@@ -23,10 +23,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.services.forwarder.MonitoringPropertiesTestHelper;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
-import org.sakuli.services.forwarder.gearman.GearmanPropertiesTestHelper;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
-import org.sakuli.services.forwarder.gearman.model.builder.OutputBuilder;
+import org.sakuli.services.forwarder.gearman.model.builder.NagiosOutputBuilder;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -43,7 +43,7 @@ public class NagiosCheckResultTest {
     @Mock
     private GearmanProperties gearmanProperties;
     @Mock
-    private OutputBuilder outputBuilder;
+    private NagiosOutputBuilder nagiosOutputBuilder;
     @InjectMocks
     private NagiosCheckResultBuilder testling;
 
@@ -51,9 +51,8 @@ public class NagiosCheckResultTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(testling, "testSuite", new TestSuiteExampleBuilder().buildExample());
-//        when(testSuite.getState()).thenReturn(TestSuiteState.OK);
-        when(outputBuilder.build()).thenReturn(new NagiosOutput());
-        GearmanPropertiesTestHelper.initMock(gearmanProperties);
+        when(nagiosOutputBuilder.build()).thenReturn(new NagiosOutput());
+        MonitoringPropertiesTestHelper.initMock(gearmanProperties);
     }
 
     @Test

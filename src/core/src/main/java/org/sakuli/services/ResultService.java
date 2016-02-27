@@ -23,7 +23,7 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 /**
  * @author tschneck Date: 23.05.14
  */
-public interface ResultService extends PrioritizedService {
+public interface ResultService extends TeardownService {
 
     /**
      * refresh all states in the Sakuli test suite
