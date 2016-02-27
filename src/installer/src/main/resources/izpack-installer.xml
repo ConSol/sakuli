@@ -196,12 +196,17 @@
         <!-- @formatter:off -->
         <pack id="sakuli.win.user.var" name="${package.name.set.testing.vars.win}" preselected="true"
               required="${package.set.testing.vars.required}">
-            <description>Set entries in the Windows registry:
+            <description>Set entries in the Windows registry (on uninstall, the changes will reverted):
                 * Environment variables:
                     * Disable Firefox plugin container: MOZ_DISABLE_OOP_PLUGINS
                     * Disable Firefox safe mode: MOZ_DISABLE_AUTO_SAFE_MODE, MOZ_DISABLE_SAFE_MODE_KEY
                 * Windows registry:
-                    * ...
+                    * Disable graphical effects, screen saver and error reporting:
+                      'HKEY_CURRENT_USER\Control Panel\Desktop', 'ForegroundLockTimeout' -> '0'
+                      'HKEY_CURRENT_USER\Control Panel\Desktop', 'FontSmoothingType' -> '0'
+                      'HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics', 'MinAnimate' -> '0'
+                      'HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects', 'VisualFXSetting' -> '2'
+                      'HKEY_CURRENT_USER\Software\Microsoft\Windows\Windows Error Reporting', 'Disabled' -> '1'
             </description>
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_ui_testing_variables.bat">
@@ -212,7 +217,7 @@
         </pack>
         <pack id="sakuli.linux.user.var" name="${package.name.set.testing.vars.linux}" preselected="true"
               required="${package.set.testing.vars.required}">
-            <description>Set entries in '.bashrc':
+            <description>Set entries in '.bashrc' (on uninstall, the changes will reverted):
                 * Firefox Defaults: MOZ_DISABLE_OOP_PLUGINS, MOZ_DISABLE_AUTO_SAFE_MODE, MOZ_DISABLE_SAFE_MODE_KEY
             </description>
             <executable stage="uninstall" keep="true"
