@@ -98,12 +98,11 @@ The check is waiting now for check results from a Sakuli client.
 
 
 
-## Sakuli gearman forwarder parameter
+## Sakuli gearman forwarder configuration
 
-### Gearman parameters
-Set the global properties for the gearman receiver (unless you have multiple receivers): 
+On the Sakuli client you must set the global properties for the gearman receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):. 
 
-    OMD[sakuli]: vim __SAKULI_HOME__/config/sakuli-default.properties
+    __INST_DIR__/example_test_suites/sakuli.properties:
 
 	sakuli.forwarder.gearman.enabled=true
 	sakuli.forwarder.gearman.server.host=__GEARMAN_IP__
