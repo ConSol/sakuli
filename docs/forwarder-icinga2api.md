@@ -2,7 +2,7 @@
 
 This page describes how the results of Sakuli tests can be sent to the [REST API](http://docs.icinga.org/icinga2/snapshot/doc/module/icinga2/chapter/icinga2-api) of an [Icinga2](https://www.icinga.org/) monitoring instance. 
 
-![sakuli-db-forwarder](pics/sakuli-icinga2.png)
+![sakuli-icinga2](pics/sakuli-icinga2.png)
 
 ## Icinga2 configuration
 
@@ -12,7 +12,7 @@ The steps to enable the Icinga2 API are described in the [REST API documentation
 
 ### Create a Icinga2 service
 
-Create a **check_command**, which will be executed only if Icinga did not receive a Sakuli result within the last 30 minutes. This ensures that you get a notification even if no passive check results arrive in Nagios at all:   
+Create a **check_command**, which will be executed only if Icinga did not receive a Sakuli result within a certain time. This ensures that you get a notification even if no passive check results arrive in Icinga at all:   
 
 	vim /etc/icinga2/conf.d/commands.conf
 	
@@ -41,7 +41,7 @@ Create a **host** object for the Sakuli client:
        address = [IP]
     }
 
-Create the following **service** object for the first test case. *freshness_threshold* should be slightly higher than the interval Sakuli tests are planned (see also [RRD heartbeat](installation-omd.md#rrd-heartbeat) )
+Create the following **service** object for the first test case. *freshness_threshold* should be slightly higher than the interval Sakuli tests are planned (if you are using PNP4Nagios, see also [RRD heartbeat](installation-omd.md#rrd-heartbeat) )
 
     object Service "sakuli_demo" {
       import "generic-service"
@@ -60,7 +60,7 @@ Reload Icinga2:
        
 Now open Icingaweb2; you should see the Sakuli host with the service *"sakuli_demo"* attached: 
 
-![omd_pending2](pics/icingaweb2-pending2.png) 
+![icingaweb2-pending2](pics/icingaweb2-pending2.png) 
 
 The check is waiting now for check results from a Sakuli client. 
 
@@ -68,21 +68,33 @@ The check is waiting now for check results from a Sakuli client.
 
 ## Sakuli Icinga2 forwarder parameter
 
-On the Sakuli client you must set the global properties for the Icinga2 receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):. 
+On the Sakuli client you must set the global properties for the Icinga2 receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):
+sakuli.forwarder.icinga2.enabled=false
 
-    __INST_DIR__/example_test_suites/sakuli.properties:
+    sakuli.forwarder.icinga2.api.host=__ICINGA_IP__
+    sakuli.forwarder.icinga2.api.port=5665
+    sakuli.forwarder.icinga2.api.username=icingasakuli
+    sakuli.forwarder.icinga2.api.password=icingasakuli
+    sakuli.forwarder.icinga2.hostname=sakuliclient01
+    
+## Graph settings
+Icinga2 integration is very new; we did not yet dive into the configuration of Graphite or Grafana graphs. The only supported graphing solution is PNP4Nagios. Nevertheless you are welcome to contribute graph templates for  Grafana and/or Graphite!
 
-	sakuli.forwarder.gearman.enabled=true
-	sakuli.forwarder.gearman.server.host=__GEARMAN_IP__
-	sakuli.forwarder.gearman.server.port=[Gearman Port defined in "omd config" (default:4730)]
-	sakuli.forwarder.gearman.server.queue=check_results
-	
-	# Nagios host where all Sakuli services are defined on. If neccessary, override this value per test suite. 
-    # (Nagios service name is defined by testsuite.properties -> suiteID)
-	sakuli.forwarder.gearman.nagios.hostname=sakuli_client
-	sakuli.forwarder.gearman.nagios.check_command=check_sakuli
+### PNP4Nagios
 
-## Test result transmission to OMD
+Set the RRD storage type of PNP to MULTIPLE, which creates one RRD file per perfdata label: 
+
+    echo "RRD_STORAGE_TYPE = MULTIPLE" > /etc/pnp4nagios/check_commands/check_sakuli.cfg
+
+Copy the PNP graph template `check_sakuli.php` from `%SAKULI_HOME%/setup/nagios/` on the client to `/usr/share/nagios/html/pnp4nagios/templates/` on the Icinga2 server. 
+
+### Grafana
+tbd
+
+### Graphite
+tbd
+
+## Test result transmission to Icinga2
 
 Execute the example test case again:
 
@@ -91,7 +103,7 @@ Execute the example test case again:
 * **Windows 7**: `sakuli run __INST_DIR__\example_test_suites\example_windows7\`
 * **Windows 8**: `sakuli run __INST_DIR__\example_test_suites\example_windows8\`
 
-The service should change its status to:
+The service in Icnga2 should change its status to:
 
 ![omd_pending2](pics/omd-ok.png) 
 

@@ -96,8 +96,6 @@ Now open Thruk; you should see now the Sakuli host with one service attached:
 The check is waiting now for check results from a Sakuli client. 
 
 
-
-
 ## Sakuli gearman forwarder configuration
 
 On the Sakuli client you must set the global properties for the gearman receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):. 

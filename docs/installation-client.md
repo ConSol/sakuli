@@ -67,11 +67,13 @@ After you have accepted the licence and choose the installation folder, select t
 
 After the files have been copied, the installer updates the current user's environment.
 
-In the end you are able to generate a automatic installation script to install Sakuli headles:
+If you have installed Sakuli on Windows, reboot now to take the registry changes effect (e.g. disabled Cleartype fonts). 
+
+In the end you are offered to generate a automatic installation script to install Sakuli headless:
 
 ![inst_3](./pics/installer_3.png)
 
-Call the generated `auto-install.xml` via:
+A headless installation (e.g. when building Docker images) can be executed with:
 
     java -jar sakuli-vX.X.X-installer.jar auto-config.xml
 

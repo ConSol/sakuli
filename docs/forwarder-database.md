@@ -147,7 +147,7 @@ Re-scheduling this service should display the UNKNOWN message that the requested
 
 ## Sakuli database forwarder parameter
 
-On the Sakuli client you must set the global properties for the database receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):. 
+On the Sakuli client you must set the global properties for the database receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):
 
     __INST_DIR__/example_test_suites/sakuli.properties:
 
