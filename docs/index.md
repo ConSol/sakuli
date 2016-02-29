@@ -15,6 +15,7 @@ Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs
   * [to OMD (Nagios/Icinga2/Shinken)](installation-omd.md)
     * [via **Gearman**](forwarder-gearman.md)
     * [via **Database**](forwarder-database.md)
+    * [via **Icinga2**](forwarder-icinga2api.md)
 
 ### Advanced topics###
 
