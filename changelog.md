@@ -50,6 +50,7 @@
     * Rest client to send the results to Icinga2 API 
     * new property `sakuli.forwarder.gearman.nagios.template.suite.summary.maxLength` to cut to long output due to error messages
     * introduce `sakuli.forwarder.icinga2` properties // consolidate `sakuli.forwarder.database` properties
+* Separate examples for Window 7 and Windows 8
 * close #118 improved output of nagios messages
 * close #151 add a bunch of Windows registry settings to the installer, to improve the test stability.  Disables graphical effects, screen saver and error reporting.
 * fix #135 Environment similarity: 
