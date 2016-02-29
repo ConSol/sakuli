@@ -2,7 +2,7 @@
 
 FROM consol/ubuntu-xfce-vnc
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2016-02-19
+ENV REFRESHED_AT 2016-02-28
 
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
@@ -15,7 +15,7 @@ ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
 
 ### Install Sakuli
 ##Install some native libaries
-RUN apt-get -y install libcv2.4 libtesseract3 wmctrl xdotool psmisc
+RUN apt-get update && apt-get -y install libcv2.4 libtesseract3 wmctrl xdotool psmisc
 ## Install sakuli
 ADD scripts/auto-install.xml /tmp/
 RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \

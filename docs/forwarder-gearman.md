@@ -1,5 +1,5 @@
 # Gearman Forwarder
-This page describes how the results of the Sakuli tests **example_windows/ubuntu/opensuse** can be transmitted directly into the **Gearman result queue** of the monitoring system. 
+This page describes how the results of the Sakuli tests **example_windows7/ubuntu/opensuse** can be transmitted directly into the **Gearman result queue** of the monitoring system. 
 
 ![sakuli-db-forwarder](pics/sakuli-gearman.png)
 
@@ -73,7 +73,7 @@ Create the following service object for the first test case. *freshness_threshol
     OMD[sakuli]:~$ vim etc/nagios/conf.d/services.cfg
 
 	define service {
-	  # service_description            example_windows
+	  # service_description            example_windows7
 	  # service_description            example_opensuse
 	  service_description            example_ubuntu
 	  host_name                      sakuli_client
@@ -96,14 +96,11 @@ Now open Thruk; you should see now the Sakuli host with one service attached:
 The check is waiting now for check results from a Sakuli client. 
 
 
+## Sakuli gearman forwarder configuration
 
+On the Sakuli client you must set the global properties for the gearman receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):. 
 
-## Sakuli gearman forwarder parameter
-
-### Gearman parameters
-Set the global properties for the gearman receiver (unless you have multiple receivers): 
-
-    OMD[sakuli]: vim __SAKULI_HOME__/config/sakuli-default.properties
+    __INST_DIR__/example_test_suites/sakuli.properties:
 
 	sakuli.forwarder.gearman.enabled=true
 	sakuli.forwarder.gearman.server.host=__GEARMAN_IP__
@@ -121,7 +118,8 @@ Execute the example test case again:
 
 * **Ubuntu**: `sakuli run __INST_DIR__/example_test_suites/example_ubuntu/` 
 * **openSUSE**: `sakuli run __INST_DIR__/example_test_suites/example_opensuse/` 
-* **Windows**: `sakuli run __INST_DIR__\example_test_suites\example_windows\`
+* **Windows7**: `sakuli run __INST_DIR__\example_test_suites\example_windows7\`
+* **Windows8**: `sakuli run __INST_DIR__\example_test_suites\example_windows8\`
 
 The service should change its status to:
 
