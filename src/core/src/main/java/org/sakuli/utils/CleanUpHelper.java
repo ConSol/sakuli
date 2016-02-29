@@ -38,7 +38,7 @@ public class CleanUpHelper {
         IRobot robot = BeanLoader.loadScreenActionLoader().getScreen().getRobot();
         LOGGER.debug("release all modifier keys!");
 
-        Arrays.asList(Key.C_CTRL, Key.C_ALT, Key.C_ALTGR, Key.C_SHIFT, Key.C_WIN, Key.C_CAPS_LOCK, Key.C_CONTEXT)
+        Arrays.asList(Key.C_CTRL, Key.C_ALT, Key.C_ALTGR, Key.C_SHIFT, Key.C_WIN, Key.C_CAPS_LOCK)
                 .forEach(i -> robot.typeChar(i, IRobot.KeyMode.RELEASE_ONLY));
     }
 
