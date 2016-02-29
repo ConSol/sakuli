@@ -88,7 +88,8 @@ Execute the example test case again:
 
 * **Ubuntu**: `sakuli run __INST_DIR__/example_test_suites/example_ubuntu/` 
 * **openSUSE**: `sakuli run __INST_DIR__/example_test_suites/example_opensuse/` 
-* **Windows**: `sakuli run __INST_DIR__\example_test_suites\example_windows\`
+* **Windows 7**: `sakuli run __INST_DIR__\example_test_suites\example_windows7\`
+* **Windows 8**: `sakuli run __INST_DIR__\example_test_suites\example_windows8\`
 
 The service should change its status to:
 

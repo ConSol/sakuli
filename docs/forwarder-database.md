@@ -1,5 +1,5 @@
 # Database Forwarder
-This page describes how the results of the Sakuli tests **example_windows/ubuntu/opensuse** can be written into a **MySQL database** which is then checked asynchronously by the monitoring system with *check_mysql_health*. 
+This page describes how the results of the Sakuli tests **example_windows7/ubuntu/opensuse** can be written into a **MySQL database** which is then checked asynchronously by the monitoring system with *check_mysql_health*. 
 
 ![sakuli-db-forwarder](pics/sakuli-db.png)
  
@@ -124,7 +124,7 @@ Create the following **service object** for the first test case. Note the ARG2 i
 	OMD[sakuli]:~$ vim etc/nagios/conf.d/services.cfg
 	
 	define service {
-      # service_description            example_windows
+      # service_description            example_windows7
       # service_description            example_opensuse
       service_description            example_ubuntu
 	  host_name                      sakuli_client
@@ -169,7 +169,8 @@ Execute the example test case again:
 
 * **Ubuntu**: `sakuli run __INST_DIR__/example_test_suites/example_ubuntu/`
 * **openSUSE**: `sakuli run __INST_DIR__/example_test_suites/example_opensuse/`
-* **Windows**: `sakuli run __INST_DIR__\example_test_suites\example_windows\`
+* **Windows 7**: `sakuli run __INST_DIR__\example_test_suites\example_windows7\`
+* **Windows 8**: `sakuli run __INST_DIR__\example_test_suites\example_windows8\`
 
 The service should change its status to:
 
