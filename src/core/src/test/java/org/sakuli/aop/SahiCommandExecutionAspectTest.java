@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -93,6 +94,17 @@ public class SahiCommandExecutionAspectTest extends AopBaseTest {
             //exception have nothing to with the test
         }
         verify(exceptionHandler).handleException(any(SakuliInitException.class));
+    }
+
+    @Test
+    public void testCatchSahiCommandExcecutionErrorsKeytool() throws Exception {
+        SakuliExceptionHandler exceptionHandler = BeanLoader.loadBean(SakuliExceptionHandler.class);
+        try {
+            Utils.executeAndGetProcess(new String[]{"keytool", "arg1", "arg2"});
+        } catch (Exception e) {
+            //exception have nothing to with the test
+        }
+        verify(exceptionHandler, never()).handleException(any(SakuliInitException.class));
     }
 
     @Test
