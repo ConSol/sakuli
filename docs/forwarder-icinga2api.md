@@ -105,9 +105,8 @@ Execute the example test case again:
 
 The service in Icnga2 should change its status to:
 
-![omd_pending2](pics/omd-ok.png) 
 
 
-![omd_pending2](pics/omd-ok-details.png) 
+![icinga_ok](pics/icinga_ok.png)  
 
 
