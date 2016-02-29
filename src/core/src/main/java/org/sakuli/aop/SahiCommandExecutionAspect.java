@@ -18,6 +18,7 @@
 
 package org.sakuli.aop;
 
+import net.sf.sahi.config.Configuration;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
@@ -75,15 +76,21 @@ public class SahiCommandExecutionAspect extends BaseSakuliAspect {
 
     /**
      * Catch exceptions that would have been droped from {@link net.sf.sahi.util.Utils} of all 'execute*' methods and
-     * forward it to the exception Handler
+     * forward it to the exception Handler.
+     *
+     * Exceptions which thrown by missing "keytool" command, will be ignored , due to the internal exception handling
+     * strategie at the point {@link Configuration#getKeytoolPath()}.
      *
      * @param joinPoint the {@link JoinPoint} of the invoked method
      * @param error     any {@link Throwable} thrown of the Method
      */
     @AfterThrowing(pointcut = "execution(* net.sf.sahi.util.Utils.execute*(..))", throwing = "error")
     public void catchSahiCommandExcecutionErrors(JoinPoint joinPoint, Throwable error) {
-        BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(new SakuliInitException(error,
-                "Error executing command " + printArgs(joinPoint, true)));
+        String argString = printArgs(joinPoint, true);
+        if (!argString.contains("keytool")) {
+            BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(new SakuliInitException(error,
+                    "Error executing command " + argString));
+        }
     }
 
     /**
