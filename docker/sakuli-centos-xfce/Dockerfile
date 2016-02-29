@@ -9,7 +9,7 @@ ENV VNC_RESOLUTION 1280x1024
 ENV VNC_PW sakuli
 
 ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install
-ENV SAKULI_VERSION 0.9.3
+ENV SAKULI_VERSION 0.9.4-SNAPSHOT
 ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
 ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
 
