@@ -1,0 +1,1 @@
+"C:\\Program Files\\Java\\jre1.8.0_73\\bin\\keytool" -genkey -alias location.services.mozilla.com -keypass "sahipassword" -storepass "sahipassword" -keyalg RSA -keystore "C:\\Program Files\\sakuli\\sahi\\userdata\\certs\\location_services_mozilla_com" -dname "CN=location.services.mozilla.com, OU=Sahi, O=Sahi, L=Bangalore, S=Karnataka, C=IN" -validity 3650
