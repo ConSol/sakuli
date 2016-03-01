@@ -42,7 +42,7 @@ try {
     testCase.endOfStep("Test Sahi landing page", 5);
     appCalc.open();
 
-    screen.waitForImage("calculator.png", 5);
+    screen.waitForImage("calculator.png", 5).mouseMove();
 
     env.type("525");
     env.sleep(2);
