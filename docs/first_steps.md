@@ -1,6 +1,6 @@
 # Tutorial: first steps
 
-In this tutorial requires that you have [installed the Sakuli client](installation-client.md) on a Windows or Linux operating system and that the [functionality test](./installation-client.md#test) finished successfully. The steps described here are written for a windows based test, but apply for all operating systems.  
+This tutorial requires that you have [installed the Sakuli client](installation-client.md) on a Windows or Linux operating system and that the [functionality test](./installation-client.md#test) finished successfully. The steps described here are written for a windows based test, but apply for all operating systems.  
 
 As you perhaps know from the [documentation preface](../README.md#concept-of-sakuli), Sakuli is not a new automation tool, but "only" combines two existent tools, so that both can be used line-by-line in one test case. This offers you a great flexibility e.g. when writing web tests which contain hurldes like Java/Flash content or even off-browser elements. 
 
@@ -76,16 +76,18 @@ What happened? Sahi, acting as a proxy, opened the https page, and delivered it 
 To check if there are more certificicates to accept (not all of them you are asked for!), close the browser and the Sahi cmd window. Start the Sahi dashboard from `__INSTALL_DIR__/sahi/userdata/bin/start_dashboard.bat/.sh` and follow the instructions   in [Sahi HTTPS](sahi-https.md#mozilla-firefox).
 
 ## record Sahi steps
+*Goals: use the Sahi Controller to identify elements on the page, write Sahi methods* 
+
 Now it's time to let Sahi check some content on the page. 
 
 There are two ways to get Sahi instructions into `sakuli_page.js`: 
 
-- copy& paste from the Sahi Controller
-- record by the Sahi Controller
+- copy & paste from the Sahi Controller
+- record by the Sahi Controller, copy & paste from the file 
 
 ### copy/paste
 
-Start the test suite again; the Sakuli web page should appear and the test should hold for 1000 seconds (see `env.sleep(1000)`in the script!). The "sleep" statement is a nice trick when writing long tests; wherever you put a 1000s sleep in, the test will execute until this position and wait. Think of it like a breakpoint in programming interfaces. 
+Start the test suite again; the Sakuli web page should appear and the test should hold for 1000 seconds (see `env.sleep(1000)`in the script!). The "sleep" statement is a nice trick when writing long tests; wherever you put a 1000s sleep in, the test will execute until this position and wait. Think of it like a breakpoint when debugging a program. 
 
 Open the Sahi Controller (hold the ALT key and doubleclick anywhere on the page) to open this window: 
 
@@ -127,9 +129,12 @@ Remark: actions like clicks are written to file automatically. All other actions
 
 ![append](pics/tutorial_append.png)
 
-## record Sikuli steps
+After you have clicked on "stop", open the recorded file, copy everything and paste the lines in to the Sakuli script file. 
 
-Sikuli's part in this case will be to add the page as a bookmark and after that remove this bookmark again. Insert the "sleep"  line again as the very first statement within the "try"-block. Run the test again, it should hold as soon the Sakuli page has loaded. 
+## record Sikuli steps
+*Goals: learn to take screenshots for Sikuli and write Sikuli code*
+
+Sikuli's part in this case will be to add the page as a bookmark and after that remove this bookmark again (do not ask for the sense - it's only a demo). Insert the "sleep"  line again as the very first statement within the "try"-block. Run the test again, it should hold as soon the Sakuli page has loaded. 
 
 Adding a page as a bookmark is (in firefox) to click on the star icon in the menu bar: 
 
@@ -150,6 +155,10 @@ The returned region gets then highlighted and clicked. (For the interested ones:
 
 When you run the test, you will see that Sikuli clicks on the star to bookmark the page. To un-bookmark, we have to click again on the st... - wait, not *this* star we already know. Got the difference? Now the star has changed its color to blue. So we have to take a new screenshot `star_blue.png`:
 
+![star_blue](pics/tutorial_star_blue2.png)
+
+**CAUTION**: This is a nice example for the little traps to fall in when writing e2e tests. Remember that Sikuli has moved the mouse pointer to the (disabled) star to click it. Due to the fact that the mouse did not leave this position, the blue star will still have a "hover" / "mouseover" state. Set your screenshot editor (e.g. Greenshot/Shutter) to a capture delay of ~3s and move the mouse over the star before the picture is taken. You have got the **wrong** image if it looks like this: 
+
 ![star_blue](pics/tutorial_star_blue.png)
 
 The line to click the blue star is not that hard to guess: 
@@ -162,17 +171,17 @@ You will see that there is one more step to do - to un-bookmark, Sikuli has to c
 
 ![entfernen](pics/tutorial_entfernen.png)
 
-So take a screenshot of (only) the "remove"-Button, save it as "remove.png" and add the third line to the test: 
+So take a screenshot of (only) the "remove"-Button, save it as `remove.png` and add the third line to the test: 
 
 ```
 screen.waitForImage("remove",10).click();
 ```
-You might ask why we did not highlight the button first as we did in the steps before. The reason is that the highlight function acts as a separate process. It becomes the active application (you see this process for about one second in the task bar) and takes over the focus from firefox. The menu to delete a bookmark is volatile and gets hidden again as soon the focus is away. In this case, we have to do without the highlight. 
+You might ask why we did not highlight the button first as we did in the steps before. The reason is that the highlight function acts as a separate process in the OS. It becomes the active application (you see this process for about one second in the task bar) and takes over the focus from firefox. The menu to delete a bookmark is volatile and gets hidden again as soon the focus is away. In this case, we have to do without the highlight. 
 
 The complete code looks now: 
 
 ![code_complete](pics/tutorial_code_complete.png)
 
-This code isn't very sensful, but it demonstrates how Sakuli makes it possible to use two completely different automation tools in one single test file. We are sure you have better fields of application! :-) 
+This code isn't very sensful, but it demonstrates how Sakuli makes it possible to use two completely different automation tools in one single test file. We are sure you have better fields of application - **have fun with Sakuli :-) **
 
 ![mov](pics/sakuli-first-steps.gif)
