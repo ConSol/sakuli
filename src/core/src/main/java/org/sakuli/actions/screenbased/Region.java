@@ -223,6 +223,17 @@ public class Region implements Action {
     }
 
     /**
+     * Drag from region's current position and drop at given targetRegion and using the left mouse.
+     *
+     * @param targetRegion {@link Region} object of the target
+     * @return the tragetRegion or null on failure
+     */
+    @ModifySahiTimer
+    @LogToResult
+    public Region dragAndDropTo(Region targetRegion) {
+        return update(regionImpl.dragAndDropTo(targetRegion.getRegionImpl()));
+    }
+    /**
      * Blocks and waits until a target which is specified by the optImageName is found in the hole {@link Screen} within
      * a given time period in seconds.
      *

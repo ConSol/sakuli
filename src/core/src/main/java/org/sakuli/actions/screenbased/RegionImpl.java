@@ -248,6 +248,25 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     }
 
     /**
+     * wrapper for {@link #drag(Object)} and {@link #dropAt(Object)}).
+     */
+    public RegionImpl dragAndDropTo(org.sikuli.script.Region targetRegion) {
+
+        try {
+            int ret = this.drag(targetRegion);
+            int ret2 = this.dropAt(targetRegion);
+            if (ret == 1 && ret2 == 1) {
+                return toRegion(targetRegion);
+            }
+        } catch (FindFailed e) {
+            LOGGER.error("Find on 'drag and drop' faild", e);
+        }
+        loader.getExceptionHandler().handleException("Could not execute 'drag and drop' sucessfully' from "
+                + this + "to " + targetRegion, resumeOnException);
+        return null;
+    }
+
+    /**
      * {@link Region#waitForImage(String, int)} ()}
      */
     public RegionImpl waitForImage(String imageName, int seconds) {
