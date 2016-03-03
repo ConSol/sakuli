@@ -192,6 +192,24 @@ function initRegion(that, javaObject) {
     };
 
     /**
+     * Drag from region's current position and drop at given targetRegion and using the left mouse.
+     *
+     * @example move the bubble button 20px to the rigth:
+     * ```
+     *  var bubble = screen.find("bubble.png");
+     *  bubble.dragAndDropTo(bubble.right(20));
+     * ```
+     *
+     * @param {Region} targetRegion target where to drop
+     * @returns the Region or NULL on failure
+     * @memberOf Region
+     * @method dragAndDropTo
+     */
+    that.dragAndDropTo = function (targetRegion) {
+        return update(that.javaObject.dragAndDropTo(targetRegion.javaObject));
+    };
+
+    /**
      * Blocks and waits until a target which is specified by the optImageName is found in the hole
      * Screen within a given time period in seconds.
      *

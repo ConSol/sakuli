@@ -67,6 +67,7 @@
   * [Region.mouseMove()](#Region.mouseMove)
   * [Region.mouseDown(mouseButton)](#Region.mouseDown)
   * [Region.mouseUp(mouseButton)](#Region.mouseUp)
+  * [Region.dragAndDropTo(targetRegion)](#Region.dragAndDropTo)
   * [Region.waitForImage(imageName, seconds)](#Region.waitForImage)
   * [Region.paste(text)](#Region.paste)
   * [Region.pasteMasked(text)](#Region.pasteMasked)
@@ -625,7 +626,7 @@ The following __Key__ values are possible:
 `MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`
 
 __Using `Key.ALTGR` on Unix:__
-To enable the keycommand `ALTGR` for unix systems please bind it to CTRL+ALT, for more information
+To enable the key command `ALTGR` for unix systems please bind it to `CTRL + ALT`, for more information
 see [stackexchange.com - how-to-bind-altgr-to-ctrl-alt](http://unix.stackexchange.com/questions/157834/how-to-bind-altgr-to-ctrl-alt).
 
 **Example**  
@@ -725,6 +726,7 @@ Region - Represents a region as a part of or the hole screen.
   * [Region.mouseMove()](#Region.mouseMove)
   * [Region.mouseDown(mouseButton)](#Region.mouseDown)
   * [Region.mouseUp(mouseButton)](#Region.mouseUp)
+  * [Region.dragAndDropTo(targetRegion)](#Region.dragAndDropTo)
   * [Region.waitForImage(imageName, seconds)](#Region.waitForImage)
   * [Region.paste(text)](#Region.paste)
   * [Region.pasteMasked(text)](#Region.pasteMasked)
@@ -833,6 +835,22 @@ Press and release the right mouse button vor 3 seconds on a specified region:
 ```
 var region = new Region().find("your-pattern.png");
 region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+```
+
+<a name="Region.dragAndDropTo"></a>
+##Region.dragAndDropTo(targetRegion)
+Drag from region's current position and drop at given targetRegion and using the left mouse.
+
+**Params**
+
+- targetRegion <code>[Region](#Region)</code> - target where to drop  
+
+**Returns**:  - the Region or NULL on failure  
+**Example**  
+move the bubble button 20px to the rigth:
+```
+var bubble = screen.find("bubble.png");
+bubble.dragAndDropTo(bubble.right(20));
 ```
 
 <a name="Region.waitForImage"></a>

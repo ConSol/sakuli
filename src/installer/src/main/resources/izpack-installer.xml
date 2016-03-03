@@ -67,6 +67,14 @@
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
         <panel classname="ProcessPanel"/>
+        <panel classname="HTMLInfoPanel" id="HTMLInfoPanel.info"
+               condition="izpack.selected.${package.name.set.testing.vars.win}">
+            <os family="windows"/>
+            <configuration>
+                <param name="console-text-paging" value="true"/>
+                <param name="console-text-wordwrap" value="false"/>
+            </configuration>
+        </panel>
         <panel classname="FinishPanel"/>
     </panels>
 
@@ -78,6 +86,9 @@
         <res id="installer.langsel.img" src="${sakuli.install.src.core}/docs/pics/sakuli_logo_small.png"/>
         <res id="Heading.image" src="${sakuli.install.src.core}/docs/pics/sakuli_logo_small.png"/>
         <res id="ProcessPanel.Spec.xml" src="ProcessPanel.Spec.xml"/>
+        <res id="HTMLInfoPanel.info" src="reboot-hint.html"/>
+        <res id="HTMLInfoPanel.info_deu" src="reboot-hint.html_deu"/>
+        <res id="reboot-logo.png" src="pic/reboot-logo.png"/>
     </resources>
 
     <!-- ATTENTION: Using ProcessPanel.Spec.xml for executing scripts, as long as ${izpack.version} call each script twice! -->

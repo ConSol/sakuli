@@ -167,9 +167,14 @@ Sakuli should now
 
 **Congratulations - you have installed Sakuli!**
 
+# Next steps
+
 What next? Well, it depends...
 
-* To integrate Sakuli checks in a nagios based **monitoring environment like OMD**, go on to [prepare OMD](installation-omd.md).
+* Read our [first-steps tutorial](first-steps.md) and learn to handle Sakuli
+* Integrate Sakuli results in monitoring systems: 
+  * [Open Monitoring Distribution (OMD)](installation-omd.md).
+  * [Icinga2](forwarder-icinga2.md)
 * Sakuli can also be integrated in **continuous integration environments like Jenkins**. Documentation is coming in the next time (...have one?)
 
 # Upgrade process

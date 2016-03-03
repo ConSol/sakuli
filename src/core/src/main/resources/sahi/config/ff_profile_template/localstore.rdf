@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+    $Id$
+    $HeadURL$
+
+    Purpose: Set the Firefox window to maximized. This file would be copied
+             over on every login, thereby preventing the window from coming up
+             sized smaller. Users are able to size it themselves during their
+             browsing session however.
+-->
+<RDF:RDF xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="chrome://browser/content/browser.xul#sidebar-title"
+                   value="" />
+  <RDF:Description RDF:about="chrome://browser/content/browser.xul#main-window"
+                   sizemode="maximized" />
+  <RDF:Description RDF:about="chrome://browser/content/browser.xul">
+    <NC:persist RDF:resource="chrome://browser/content/browser.xul#main-window"/>
+    <NC:persist RDF:resource="chrome://browser/content/browser.xul#sidebar-box"/>
+    <NC:persist RDF:resource="chrome://browser/content/browser.xul#sidebar-title"/>
+  </RDF:Description>
+</RDF:RDF>

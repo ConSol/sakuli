@@ -36,14 +36,14 @@ Depending on your environment, you can set up on of these two possible forwarder
 
   * [Setting up Nagios to **receive Gearman results** from Sakuli clients](forwarder-gearman.md#omd-configuration) (**recommended**)
     * passive check (via Gearmand result queue) 
-    * + get results immediately
-    * + PNP graphs
-    * - no performance value history to do further reporting (despite reading the RRDs again; not recommended) 
+    * \+ get results immediately
+    * \+ PNP graphs
+    * \- no performance value history to do further reporting (despite reading the RRDs again; not recommended) 
   * [Setting up the Sakuli **result database** in OMD](forwarder-database.md#omd-configuration) and let Nagios check the database
     * active check (against MySQL result database)
-    * - results in Nagios always lag behind
-    * + PNP graphs
-    * + all suite/case/step performance values are stored in database and can be used for further reporting
+    * \- results in Nagios always lag behind
+    * \+ PNP graphs
+    * \+ all suite/case/step performance values are stored in database and can be used for further reporting
 
 ## PNP4Nagios
 ### RRD Storage Type

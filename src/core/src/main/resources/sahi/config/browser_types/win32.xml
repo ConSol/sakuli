@@ -92,7 +92,7 @@
         <displayName>Chrome</displayName>
         <icon>chrome.png</icon>
         <path>$ProgramFiles (x86)\Google\Chrome\Application\chrome.exe</path>
-        <options>--incognito --user-data-dir="$userDir/browser/chrome/profiles/sahi$threadNo" --no-default-browser-check --no-first-run --disable-infobars --proxy-server=localhost:9999 --disable-popup-blocking</options>
+        <options>--incognito --user-data-dir="$userDir/browser/chrome/profiles/sahi$threadNo" --start-maximized --no-default-browser-check --no-first-run --disable-infobars --proxy-server=localhost:9999 --disable-popup-blocking</options>
         <processName>chrome.exe</processName>
         <capacity>5</capacity>
     </browserType>
