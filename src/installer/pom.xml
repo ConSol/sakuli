@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>0.9.4-SNAPSHOT</version>
+        <version>1.0.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>installer</artifactId>
-    <version>0.9.4-SNAPSHOT</version>
+    <version>1.0.0</version>
     <description>maven module to build the IzPack-Java Installer</description>
 
     <properties>
