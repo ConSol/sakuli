@@ -1,6 +1,18 @@
 ## Change Log of Sakuli Releases
 
 ### Version 1.0.0
+* First step tutorial and https documentation. Fixes #161, fixes #53 partially.
+* fix #32 highlight function on linux does not work (in underlying SikuliX library)
+* close #102 add method `dragAndDropTo` to the `Region` object
+* Changed order of properties.
+* Improve example_xfce:
+    * Replaced calculator screenshot by a small one.
+    * add mouse move action to example_xfce
+* close #139 remove PDF als download content type, to enable to use the browser PDF viewer
+* close #139 add start chrome + firefox maximised (firefox have to hold the file `localstore.rdf` in his profile folder)
+* close #168 add reboot hint if user install the package `Windows environement changes` 
+* update the installer translation to the recommend one from https://github.com/izpack/izpack/tree/master/izpack-core/src/main/resources/com/izforge/izpack/bin/langpacks/installer
+* fix maven snapshot repository path of the `labs.consol.de` maven-repository
 
 - - -
 
