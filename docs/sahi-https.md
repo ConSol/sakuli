@@ -52,7 +52,7 @@ The following page contains a list of all so far trusted and untrusted domains a
 
 ![certs](pics/tutorial_certs.png)
 
-You can close every opened tab when it is displaying "Sucesyfully connected" for the domain: 
+You can close every opened tab when it is displaying "Successfully connected" for the domain: 
 
 ![connected](pics/tutorial_connected.png)
 
@@ -60,7 +60,6 @@ Now go back to the SSL Manager overview and click the "refresh" button. Every pr
 
 ![refresh](pics/tutorial_refresh.png) 
 
-"#### Internet Explorer ####
-TBD
+#### Internet Explorer ####
 
-
+See Sahi description [Configer SSL in Sahi](http://sahipro.com/docs/using-sahi/sahi-configuration-basic.html#Configure%20SSL).

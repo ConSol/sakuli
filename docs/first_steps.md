@@ -89,7 +89,7 @@ There are two ways to get Sahi instructions into `sakuli_page.js`:
 
 Start the test suite again; the Sakuli web page should appear and the test should hold for 1000 seconds (see `env.sleep(1000)`in the script!). The "sleep" statement is a nice trick when writing long tests; wherever you put a 1000s sleep in, the test will execute until this position and wait. Think of it like a breakpoint when debugging a program. 
 
-Open the Sahi Controller (hold the ALT key and doubleclick anywhere on the page) to open this window: 
+Open the Sahi Controller (hold the `ALT` key on Windows or `CTRL + ALT` on Linux and doubleclick anywhere on the page) to open this window: 
 
 ![controller](pics/tutorial_contoller.png)
 
@@ -131,10 +131,10 @@ Remark: actions like clicks are written to file automatically. All other actions
 
 After you have clicked on "stop", open the recorded file, copy everything and paste the lines in to the Sakuli script file. 
 
-## record Sikuli steps
-*Goals: learn to take screenshots for Sikuli and write Sikuli code*
+## Create GUI aware actions
+*Goals: learn to take screenshots for GUI pattern detection and write code to detect Regions on your Screen*
 
-Sikuli's part in this case will be to add the page as a bookmark and after that remove this bookmark again (do not ask for the sense - it's only a demo). Insert the "sleep"  line again as the very first statement within the "try"-block. Run the test again, it should hold as soon the Sakuli page has loaded. 
+The GUI-Actions described in the [Sakuli-API documentation](sakuli-api.md) are implemented on top of the [Sikuli-API](https://github.com/RaiMan/SikuliX-2014). As example we will add the page as a bookmark and after that remove this bookmark again (do not ask for the sense - it's only a demo). Insert the "sleep"  line again as the very first statement within the "try"-block. Run the test again, it should hold as soon the Sakuli page has loaded. 
 
 Adding a page as a bookmark is (in firefox) to click on the star icon in the menu bar: 
 
@@ -157,7 +157,7 @@ When you run the test, you will see that Sikuli clicks on the star to bookmark t
 
 ![star_blue](pics/tutorial_star_blue2.png)
 
-**CAUTION**: This is a nice example for the little traps to fall in when writing e2e tests. Remember that Sikuli has moved the mouse pointer to the (disabled) star to click it. Due to the fact that the mouse did not leave this position, the blue star will still have a "hover" / "mouseover" state. Set your screenshot editor (e.g. Greenshot/Shutter) to a capture delay of ~3s and move the mouse over the star before the picture is taken. You have got the **wrong** image if it looks like this: 
+**CAUTION**: This is a nice example for the little traps to fall in when writing e2e tests. Remember that Sakuli has moved the mouse pointer to the (disabled) star to click it. Due to the fact that the mouse did not leave this position, the blue star will still have a "hover" / "mouseover" state. Set your screenshot editor (e.g. [Greenshot](http://getgreenshot.org/) / [Shutter](http://shutter-project.org/) to a capture delay of ~3s and move the mouse over the star before the picture is taken. You have got the **wrong** image if it looks like this: 
 
 ![star_blue](pics/tutorial_star_blue.png)
 
@@ -182,6 +182,6 @@ The complete code looks now:
 
 ![code_complete](pics/tutorial_code_complete.png)
 
-This code isn't very sensful, but it demonstrates how Sakuli makes it possible to use two completely different automation tools in one single test file. We are sure you have better fields of application - **have fun with Sakuli :-) **
+This code isn't very sensful, but it demonstrates how Sakuli makes it possible to use two completely different automation tools in one single test file. We are sure you have better fields of application - **have fun with Sakuli :-)**
 
 ![mov](pics/sakuli-first-steps.gif)
