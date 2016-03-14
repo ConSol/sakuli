@@ -9,3 +9,4 @@ firefox
 *.log
 *.sakuli-steps-cache
 sakuli_app
+.DS_Store
