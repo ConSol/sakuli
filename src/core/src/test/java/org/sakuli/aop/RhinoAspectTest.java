@@ -157,7 +157,7 @@ public class RhinoAspectTest extends AopBaseTest {
         when(logToResult.message()).thenReturn(sampleMessage);
         when(logToResult.logArgs()).thenReturn(true);
         when(logToResult.level()).thenReturn(logLevel);
-        RhinoAspect testling = new RhinoAspect();
+        RhinoAspect testling = BeanLoader.loadBean(RhinoAspect.class);
 
         testling.addActionLog(jp, logToResult);
         assertLastLine(logFile, className, logLevel,
@@ -243,7 +243,7 @@ public class RhinoAspectTest extends AopBaseTest {
         LogToResult annotation = mock(LogToResult.class);
         when(annotation.logArgsOnly()).thenReturn(true);
         when(annotation.logArgs()).thenReturn(true);
-        StringBuilder result = new RhinoAspect().createLoggingString(jp, annotation);
+        StringBuilder result = BeanLoader.loadBean(RhinoAspect.class).createLoggingString(jp, annotation);
         assertEquals(result.toString(), "TEST, arguments");
     }
 }

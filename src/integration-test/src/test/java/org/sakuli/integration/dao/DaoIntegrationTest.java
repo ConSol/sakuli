@@ -24,6 +24,7 @@ import org.mockito.MockitoAnnotations;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.LogResult;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.integration.IntegrationTest;
@@ -61,6 +62,8 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
     protected TestSuite testSuiteMock;
     @Mock
     protected SakuliExceptionHandler sakuliExceptionHandlerMock;
+    @Mock
+    private SakuliProperties sakuliProperties;
 
     protected abstract D createTestling() throws SakuliException;
 

@@ -19,9 +19,11 @@
 package org.sakuli.services.common;
 
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.utils.CleanUpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Predicate;
@@ -36,6 +38,13 @@ import java.util.function.Predicate;
 public class CommonResultServiceImpl extends AbstractResultService {
     private static Logger LOGGER = LoggerFactory.getLogger(CommonResultServiceImpl.class);
 
+    private SakuliProperties sakuliProperties;
+
+    @Autowired
+    public CommonResultServiceImpl(SakuliProperties sakuliProperties) {
+        this.sakuliProperties = sakuliProperties;
+    }
+
     @Override
     public int getServicePriority() {
         return 0;
@@ -44,7 +53,7 @@ public class CommonResultServiceImpl extends AbstractResultService {
     @Override
     public void saveAllResults() {
         cleanUp();
-        LOGGER.info(testSuite.getResultString()
+        LOGGER.info(testSuite.getResultString(sakuliProperties)
                 + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
                 + testSuite.getState() + " ======================\n");
         switch (testSuite.getState()) {
@@ -58,7 +67,7 @@ public class CommonResultServiceImpl extends AbstractResultService {
                 logTestCaseStateDetailInfo(tc -> tc.getState().isCritical());
                 break;
             case ERRORS:
-                String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages();
+                String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages(false, sakuliProperties.getLogExceptionFormat());
                 LOGGER.error(errorMsg + "\n");
                 break;
         }

@@ -29,6 +29,7 @@ import org.sakuli.builder.TestCaseStepExampleBuilder;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
@@ -60,6 +61,8 @@ public class NagiosOutputBuilderTest {
     private GearmanProperties gearmanProperties;
     @Mock
     private NagiosPerformanceDataBuilder nagiosPerformanceDataBuilder;
+    @Mock
+    private SakuliProperties sakuliProperties;
     @Spy
     @InjectMocks
     private ScreenshotDivConverter screenshotDivConverter;

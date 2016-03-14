@@ -18,7 +18,9 @@
 
 package org.sakuli.datamodel;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.SakuliState;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
@@ -30,6 +32,8 @@ import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author tschneck
@@ -134,13 +138,42 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return exception;
     }
 
-    public String getExceptionMessages() {
-        return getExceptionMessages(false);
+    public String getExceptionMessages(boolean flatFormatted, String exceptionFormat) {
+        if (exception != null) {
+            String msg = format(exception.getMessage());
+            //add suppressed exceptions
+            for (Throwable ee : exception.getSuppressed()) {
+                if (flatFormatted) {
+                    msg += " --  Suppressed EXCEPTION: " + format(ee.getMessage());
+                } else {
+                    msg += "\n\t\t Suppressed EXCEPTION: " + format(ee.getMessage());
+                }
+            }
+
+            if (StringUtils.isNotEmpty(exceptionFormat)) {
+                Pattern p = Pattern.compile(exceptionFormat);
+                Matcher m = p.matcher(msg);
+                if (m.find()) {
+                    msg = m.group(1);
+                }
+            }
+
+            if (flatFormatted) {
+                msg = StringUtils.replace(msg, "\n", " ");
+                msg = StringUtils.replace(msg, "\t", " ");
+            }
+
+            return msg;
+        } else {
+            return null;
+        }
     }
 
-
-    public String getExceptionMessages(boolean flatFormatted) {
-        return SakuliExceptionHandler.getAllExceptionMessages(exception, flatFormatted);
+    private static String format(String message) {
+        if (message != null && message.contains(":")) {
+            return message.substring(message.indexOf(":") + 1);
+        }
+        return message;
     }
 
     public String getName() {
@@ -202,7 +235,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return SakuliExceptionHandler.getScreenshotFile(exception);
     }
 
-    protected String getResultString() {
+    protected String getResultString(SakuliProperties sakuliProperties) {
         String stout = "\nname: " + this.getName()
                 + "\nRESULT STATE: " + this.getState();
         if (this.getState() != null) {
@@ -210,7 +243,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         }
         //if no exception is there, don't print it
         if (this.exception != null) {
-            stout += "\nERRORS:" + this.getExceptionMessages();
+            stout += "\nERRORS:" + this.getExceptionMessages(false, sakuliProperties.getLogExceptionFormat());
             if (this.exception instanceof SakuliExceptionWithScreenshot) {
                 stout += "\nERROR - SCREENSHOT: "
                         + this.getScreenShotPath().toFile().getAbsolutePath();

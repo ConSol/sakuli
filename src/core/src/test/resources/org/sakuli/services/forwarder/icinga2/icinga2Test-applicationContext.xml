@@ -41,6 +41,10 @@
         </constructor-arg>
     </bean>
 
+    <bean id="org.sakuli.datamodel.properties.SakuliProperties" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.datamodel.properties.SakuliProperties"/>
+    </bean>
+
     <context:component-scan base-package="org.sakuli.services.forwarder"/>
 
 </beans>

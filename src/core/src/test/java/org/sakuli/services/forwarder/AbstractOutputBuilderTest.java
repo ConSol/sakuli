@@ -30,6 +30,7 @@ import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
@@ -60,6 +61,8 @@ public class AbstractOutputBuilderTest {
     private TestSuite testSuite;
     @Mock
     private AbstractMonitoringTemplateProperties properties = new GearmanProperties();
+    @Mock
+    private SakuliProperties sakuliProperties;
     @Spy
     @InjectMocks
     private AbstractOutputBuilder testling = new AbstractOutputBuilder() {
@@ -233,17 +236,17 @@ public class AbstractOutputBuilderTest {
     public void testGenerateTestCaseStepInformation() throws Exception {
         DateTime creationDate1 = new DateTime().minusSeconds(1);
         DateTime creationDate2 = new DateTime();
-        assertEquals(AbstractOutputBuilder.generateStepInformation(new TreeSet<>()), "");
+        assertEquals(AbstractOutputBuilder.generateStepInformation(new TreeSet<>(), sakuliProperties), "");
 
         TestCaseStep stepWarning = new TestCaseStepExampleBuilder().withCreationDate(creationDate1).withState(TestCaseStepState.WARNING).buildExample();
-        assertEquals(AbstractOutputBuilder.generateStepInformation(new TreeSet<>(Collections.singletonList(stepWarning))),
+        assertEquals(AbstractOutputBuilder.generateStepInformation(new TreeSet<>(Collections.singletonList(stepWarning)), sakuliProperties),
                 ", step \"step_for_unit_test\" over runtime (3.00s/warn at 4s)");
 
         TestCaseStep stepWarning2 = new TestCaseStepExampleBuilder().withCreationDate(creationDate2).withName("step_2").withState(TestCaseStepState.WARNING).buildExample();
         SortedSet<TestCaseStep> input = new TreeSet<>();
         input.add(stepWarning);
         input.add(stepWarning2);
-        assertEquals(AbstractOutputBuilder.generateStepInformation(input),
+        assertEquals(AbstractOutputBuilder.generateStepInformation(input, sakuliProperties),
                 ", step \"step_for_unit_test\" over runtime (3.00s/warn at 4s), step \"step_2\" over runtime (3.00s/warn at 4s)");
 
         TestCaseStep ok = new TestCaseStepExampleBuilder().withCreationDate(creationDate1).withName("ok1").withState(TestCaseStepState.OK).buildExample();
@@ -251,24 +254,24 @@ public class AbstractOutputBuilderTest {
         input = new TreeSet<>();
         input.add(ok);
         input.add(ok2);
-        assertEquals(AbstractOutputBuilder.generateStepInformation(input), "");
+        assertEquals(AbstractOutputBuilder.generateStepInformation(input, sakuliProperties), "");
     }
 
     @Test
     public void testGenerateTestCaseInformation() throws Exception {
         DateTime creationDate1 = new DateTime().minusSeconds(1);
         DateTime creationDate2 = new DateTime();
-        assertEquals(AbstractOutputBuilder.generateCaseInformation(new TreeSet<>()), "");
+        assertEquals(AbstractOutputBuilder.generateCaseInformation(new TreeSet<>(), sakuliProperties), "");
 
         TestCase caseWarning = new TestCaseExampleBuilder().withCreationDate(creationDate1).withState(TestCaseState.WARNING).buildExample();
-        assertEquals(AbstractOutputBuilder.generateCaseInformation(new TreeSet<>(Collections.singletonList(caseWarning))),
+        assertEquals(AbstractOutputBuilder.generateCaseInformation(new TreeSet<>(Collections.singletonList(caseWarning)), sakuliProperties),
                 ", case \"Unit Test Case\" over runtime (3.00s/warn at 4s)");
 
         TestCase caseWarning2 = new TestCaseExampleBuilder().withCreationDate(creationDate2).withName("case_2").withState(TestCaseState.WARNING).buildExample();
         SortedSet<TestCase> input = new TreeSet<>();
         input.add(caseWarning);
         input.add(caseWarning2);
-        assertEquals(AbstractOutputBuilder.generateCaseInformation(input),
+        assertEquals(AbstractOutputBuilder.generateCaseInformation(input, sakuliProperties),
                 ", case \"Unit Test Case\" over runtime (3.00s/warn at 4s), case \"case_2\" over runtime (3.00s/warn at 4s)");
 
         TestCase ok = new TestCaseExampleBuilder().withCreationDate(creationDate1).withName("ok1").withState(TestCaseState.OK).buildExample();
@@ -276,6 +279,6 @@ public class AbstractOutputBuilderTest {
         input = new TreeSet<>();
         input.add(ok);
         input.add(ok2);
-        assertEquals(AbstractOutputBuilder.generateCaseInformation(input), "");
+        assertEquals(AbstractOutputBuilder.generateCaseInformation(input, sakuliProperties), "");
     }
 }

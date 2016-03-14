@@ -55,7 +55,6 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
     public final static String QUALIFIER = "baseLoader";
     public static final Logger LOGGER = LoggerFactory.getLogger(BaseActionLoader.class);
 
-
     @Autowired
     private SakuliExceptionHandler exceptionHandler;
     @Autowired

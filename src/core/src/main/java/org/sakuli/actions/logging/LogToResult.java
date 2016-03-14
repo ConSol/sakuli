@@ -24,7 +24,7 @@ import java.lang.annotation.*;
 
 /**
  * This Annotation should be used do log actions in the package {@link org.sakuli.actions}.
- * All annoted methods or constructor will be called by the aspect
+ * All annotated methods or constructors will be called by the aspect
  * {@link org.sakuli.aop.RhinoAspect}.
  *
  * @author Tobias Schneck

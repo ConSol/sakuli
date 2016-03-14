@@ -20,8 +20,10 @@ package org.sakuli.datamodel;
 
 
 import org.joda.time.DateTime;
+import org.sakuli.BaseTest;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
 import org.sakuli.datamodel.builder.TestCaseStepBuilder;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -31,7 +33,7 @@ import java.util.*;
 /**
  * @author tschneck Date: 19.07.13
  */
-public class AbstractTestDataEntityTest {
+public class AbstractTestDataEntityTest extends BaseTest {
     private AbstractTestDataEntity testling;
 
     @BeforeMethod
@@ -42,7 +44,7 @@ public class AbstractTestDataEntityTest {
             }
 
             @Override
-            public String getResultString() {
+            public String getResultString(SakuliProperties sakuliProperties) {
                 return null;
             }
         };
@@ -63,11 +65,11 @@ public class AbstractTestDataEntityTest {
     public void testAddException() throws Exception {
         testling.addException(new Exception("test"));
         Assert.assertNotNull(testling.getException());
-        Assert.assertTrue(testling.getExceptionMessages().contains("test"));
+        Assert.assertTrue(testling.getExceptionMessages(false, "").contains("test"));
 
         testling.addException(new Exception("SuppressedTest"));
         Assert.assertNotNull(testling.getException().getSuppressed());
-        Assert.assertTrue(testling.getExceptionMessages().contains("SuppressedTest"));
+        Assert.assertTrue(testling.getExceptionMessages(false, "").contains("SuppressedTest"));
     }
 
     @Test

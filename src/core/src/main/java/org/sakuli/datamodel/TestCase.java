@@ -18,6 +18,7 @@
 
 package org.sakuli.datamodel;
 
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.exceptions.SakuliException;
 import org.springframework.util.CollectionUtils;
@@ -104,16 +105,16 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
     }
 
     @Override
-    public String getResultString() {
+    public String getResultString(SakuliProperties sakuliProperties) {
         String stout = "\n\t======== test case \"" + getId() + "\" ended with " + getState() + " ================="
                 + "\n\ttest case id: " + this.getId()
-                + super.getResultString().replace("\n", "\n\t")
+                + super.getResultString(sakuliProperties).replace("\n", "\n\t")
                 + "\n\tstart URL: " + this.getStartUrl()
                 + "\n\tlast URL: " + this.getLastURL();
 
         //steps
         for (TestCaseStep step : getStepsAsSortedSet()) {
-            stout += step.getResultString();
+            stout += step.getResultString(sakuliProperties);
         }
         return stout;
     }
@@ -193,10 +194,10 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
     }
 
     @Override
-    public String getExceptionMessages(boolean flatFormatted) {
-        StringBuilder caseErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted)));
+    public String getExceptionMessages(boolean flatFormatted, String exceptionFormat) {
+        StringBuilder caseErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted, exceptionFormat)));
         for (TestCaseStep step : getStepsAsSortedSet()) {
-            final String stepErrorMessage = step.getExceptionMessages(flatFormatted);
+            final String stepErrorMessage = step.getExceptionMessages(flatFormatted, exceptionFormat);
 
             if (isNotBlank(stepErrorMessage)) {
                 if (flatFormatted && caseErrorMessage.length() > 0) {

@@ -88,15 +88,15 @@ public class TestCaseStepTest {
     @Test
     public void testGetExceptionMessage() throws Exception {
         TestCase testCase = new TestCaseExampleBuilder().withException(new SakuliException("CASE-EXCEPTION")).buildExample();
-        assertEquals(testCase.getExceptionMessages(true), "CASE-EXCEPTION");
-        assertEquals(testCase.getExceptionMessages(false), "CASE-EXCEPTION");
+        assertEquals(testCase.getExceptionMessages(true, ""), "CASE-EXCEPTION");
+        assertEquals(testCase.getExceptionMessages(false, ""), "CASE-EXCEPTION");
 
         testCase.setSteps(Collections.singletonList(
                 new TestCaseStepExampleBuilder()
                         .withException(new SakuliException("STEP-EXCEPTION"))
                         .buildExample()));
-        assertEquals(testCase.getExceptionMessages(true), "CASE-EXCEPTION - STEP \"step_for_unit_test\": STEP-EXCEPTION");
-        assertEquals(testCase.getExceptionMessages(false), "CASE-EXCEPTION\n\tSTEP \"step_for_unit_test\": STEP-EXCEPTION");
+        assertEquals(testCase.getExceptionMessages(true, ""), "CASE-EXCEPTION - STEP \"step_for_unit_test\": STEP-EXCEPTION");
+        assertEquals(testCase.getExceptionMessages(false, ""), "CASE-EXCEPTION\n\tSTEP \"step_for_unit_test\": STEP-EXCEPTION");
 
     }
 }

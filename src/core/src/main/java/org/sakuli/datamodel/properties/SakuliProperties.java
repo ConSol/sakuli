@@ -42,6 +42,7 @@ public class SakuliProperties extends AbstractProperties {
     public static final String LOG_FOLDER = "sakuli.log.folder";
     public static final String LOG_MAX_AGE = "sakuli.log.maxAge";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
+    public static final String LOG_EXCEPTION_FORMAT = "sakuli.log.exception.format";
     public static final String LOG_LEVEL_SAKULI = "log.level.sakuli";
     public static final String LOG_LEVEL_SAHI = "log.level.sahi";
     public static final String LOG_LEVEL_SIKULI = "log.level.sikuli";
@@ -71,6 +72,8 @@ public class SakuliProperties extends AbstractProperties {
     private Path logFolder;
     @Value("${" + LOG_PATTERN + "}")
     private String logPattern;
+    @Value("${" + LOG_EXCEPTION_FORMAT + "}")
+    private String logExceptionFormat;
     @Value("${" + LOG_LEVEL_SAKULI + ":}")
     private String logLevelSakuli;
     @Value("${" + LOG_LEVEL_SAHI + ":}")
@@ -161,6 +164,14 @@ public class SakuliProperties extends AbstractProperties {
 
     public void setLogPattern(String logPattern) {
         this.logPattern = logPattern;
+    }
+
+    public String getLogExceptionFormat() {
+        return logExceptionFormat;
+    }
+
+    public void setLogExceptionFormat(String logExceptionFormat) {
+        this.logExceptionFormat = logExceptionFormat;
     }
 
     public Path getConfigFolder() {

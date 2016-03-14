@@ -18,35 +18,30 @@
 
 package org.sakuli.services.common;
 
+import org.mockito.Mock;
 import org.sakuli.LoggerTest;
-import org.sakuli.builder.TestCaseExampleBuilder;
-import org.sakuli.builder.TestCaseStepExampleBuilder;
-import org.sakuli.builder.TestSuiteExampleBuilder;
+import org.sakuli.builder.*;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.state.TestCaseState;
-import org.sakuli.datamodel.state.TestCaseStepState;
-import org.sakuli.datamodel.state.TestSuiteState;
+import org.sakuli.datamodel.properties.SakuliProperties;
+import org.sakuli.datamodel.state.*;
 import org.sakuli.exceptions.SakuliException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 
 public class CommonResultServiceImplTest extends LoggerTest {
 
-    private CommonResultServiceImpl testling = spy(new CommonResultServiceImpl());
+    @Mock
+    private SakuliProperties sakuliProperties;
+
+    private CommonResultServiceImpl testling;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @DataProvider(name = "states")
@@ -63,6 +58,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
     @BeforeMethod
     public void init() {
         super.init();
+        testling = spy(new CommonResultServiceImpl(sakuliProperties));
         doNothing().when(testling).cleanUp();
     }
 
@@ -82,7 +78,91 @@ public class CommonResultServiceImplTest extends LoggerTest {
         Path logfile = Paths.get(properties.getLogFile());
         testling.saveAllResults();
         String lastLineOfLogFile = getLastLineOfLogFile(logfile, testSuiteState.isError() ? 42 : 39);
-        List<String> regExes = Arrays.asList(
+        List<String> regExes = getValidationExpressions(testSuiteState, testCaseState, stepState, stateOutputRegex, "TEST");
+
+        List<String> strings = Arrays.asList(lastLineOfLogFile.split("\n"));
+        Iterator<String> regExIterator = regExes.iterator();
+        for (String string : strings) {
+            String regex = regExIterator.next();
+            while (regex == null && regExIterator.hasNext()) {
+                regex = regExIterator.next();
+            }
+            logger.debug("\nREGEX: {}\n |\n - STR: {}", regex, string);
+            assertRegExMatch(string, regex);
+        }
+    }
+
+    @Test
+    public void testSaveAllResultsWithErrorFormat() throws Exception {
+        reset(sakuliProperties);
+        when(sakuliProperties.getLogExceptionFormat()).thenReturn("TypeError(.*)");
+
+        TestCaseStepState stepState = TestCaseStepState.WARNING;
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS)
+                .withException(new SakuliException("Something went wrong!\n"+
+                        "Now some important information:\n" +
+                        "TypeError el is undefined\n" +
+                        "Some details are here ..."))
+                .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
+                        .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
+                        .withState(TestCaseState.WARNING)
+                        .buildExample()
+                ))
+                .buildExample();
+        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
+        Path logfile = Paths.get(properties.getLogFile());
+        testling.saveAllResults();
+        String lastLineOfLogFile = getLastLineOfLogFile(logfile, 42);
+        List<String> regExes = getValidationExpressions(TestSuiteState.ERRORS, TestCaseState.WARNING, stepState, "ERROR .* ERROR:", "el is undefined");
+
+        List<String> strings = Arrays.asList(lastLineOfLogFile.split("\n"));
+        Iterator<String> regExIterator = regExes.iterator();
+        for (String string : strings) {
+            String regex = regExIterator.next();
+            while (regex == null && regExIterator.hasNext()) {
+                regex = regExIterator.next();
+            }
+            logger.debug("\nREGEX: {}\n |\n - STR: {}", regex, string);
+            assertRegExMatch(string, regex);
+        }
+    }
+
+    @Test
+    public void testSaveAllResultsWithErrorFormatNotMatching() throws Exception {
+        reset(sakuliProperties);
+        when(sakuliProperties.getLogExceptionFormat()).thenReturn("TypeError(.*)");
+
+        TestCaseStepState stepState = TestCaseStepState.WARNING;
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS)
+                .withException(new SakuliException("Something went wrong!"))
+                .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
+                        .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
+                        .withState(TestCaseState.WARNING)
+                        .buildExample()
+                ))
+                .buildExample();
+        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
+        Path logfile = Paths.get(properties.getLogFile());
+        testling.saveAllResults();
+        String lastLineOfLogFile = getLastLineOfLogFile(logfile, 42);
+        List<String> regExes = getValidationExpressions(TestSuiteState.ERRORS, TestCaseState.WARNING, stepState, "ERROR .* ERROR:", "Something went wrong!");
+
+        List<String> strings = Arrays.asList(lastLineOfLogFile.split("\n"));
+        Iterator<String> regExIterator = regExes.iterator();
+        for (String string : strings) {
+            String regex = regExIterator.next();
+            while (regex == null && regExIterator.hasNext()) {
+                regex = regExIterator.next();
+            }
+            logger.debug("\nREGEX: {}\n |\n - STR: {}", regex, string);
+            assertRegExMatch(string, regex);
+        }
+    }
+
+    private List<String> getValidationExpressions(TestSuiteState testSuiteState, TestCaseState testCaseState, TestCaseStepState testCaseStepState, String stateOutputRegex, String errorMessage) {
+        return Arrays.asList(
                 "INFO.*",
                 "=========== RESULT of SAKULI Testsuite \"LOG_TEST_SUITE\" - " + testSuiteState + " =================",
                 "test suite id: LOG_TEST_SUITE",
@@ -90,7 +170,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 "name: Unit Test Sample Test Suite",
                 "RESULT STATE: " + testSuiteState,
                 "result code: " + testSuiteState.getErrorCode(),
-                testSuiteState.isError() ? "ERRORS:TEST" : null,
+                testSuiteState.isError() ? "ERRORS:" + errorMessage : null,
                 "db primary key: -1",
                 "duration: 120.0 sec.",
                 "warning time: 0 sec.",
@@ -112,10 +192,10 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 "\tend time: .*",
                 "\tstart URL: http://www.start-url.com",
                 "\tlast URL: http://www.last-url.com",
-                "\t\t======== test case step \"step_for_unit_test\" ended with " + stepState + " =================",
+                "\t\t======== test case step \"step_for_unit_test\" ended with " + testCaseStepState + " =================",
                 "\t\tname: step_for_unit_test",
-                "\t\tRESULT STATE: " + stepState,
-                "\t\tresult code: " + stepState.getErrorCode(),
+                "\t\tRESULT STATE: " + testCaseStepState,
+                "\t\tresult code: " + testCaseStepState.getErrorCode(),
                 "\t\tdb primary key: -1*",
                 "\t\tduration: 3.0 sec.",
                 "\t\twarning time: 4 sec.",
@@ -124,19 +204,8 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 "===========  SAKULI Testsuite \"LOG_TEST_SUITE\" execution FINISHED - " + testSuiteState + " ======================",
                 "",
                 stateOutputRegex,
-                testSuiteState.isError() ? "TEST.*" : null
+                testSuiteState.isError() ? errorMessage + ".*" : null
         );
-
-        List<String> strings = Arrays.asList(lastLineOfLogFile.split("\n"));
-        Iterator<String> regExIterator = regExes.iterator();
-        for (String string : strings) {
-            String regex = regExIterator.next();
-            while (regex == null && regExIterator.hasNext()) {
-                regex = regExIterator.next();
-            }
-            logger.debug("\nREGEX: {}\n |\n - STR: {}", regex, string);
-            assertRegExMatch(string, regex);
-        }
     }
 
 }

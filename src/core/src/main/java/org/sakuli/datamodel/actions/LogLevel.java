@@ -31,7 +31,7 @@ public enum LogLevel {
 
     private ResultType resultType;
 
-    private LogLevel(ResultType resultType) {
+    LogLevel(ResultType resultType) {
         this.resultType = resultType;
     }
 

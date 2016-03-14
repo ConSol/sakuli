@@ -41,7 +41,9 @@
 
     <bean id="org.sakuli.datamodel.TestSuite" class="org.sakuli.builder.TestSuiteExampleFactory"/>
     <bean id="org.sakuli.services.common.CommonResultServiceImpl"
-          class="org.sakuli.services.common.CommonResultServiceMockImpl"/>
+          class="org.sakuli.services.common.CommonResultServiceMockImpl">
+        <constructor-arg ref="org.sakuli.datamodel.properties.SakuliProperties"></constructor-arg>
+    </bean>
     <bean class="org.sakuli.services.common.CommonInitializingServiceImpl"/>
 
     <!-- spyed Beans -->

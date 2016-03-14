@@ -72,6 +72,11 @@ The logging verbosity of all compoments *Sakuli, Sahi, Sikuli, Spring* - and *Ja
 
 In general it is also possible to add your own Logback configuration under `__SAKULI_HOME__/config/sakuli-log-config.xml`. For more information about the Logback syntax please refer to the [Logback manual](http://logback.qos.ch/manual/configuration.html).
 
+#### Log exception format
+
+* **`sakuli.log.exception.format`**`=TypeError (.*)`  -  Format string 
+
+Optional custom exception message logging format expression. Regular expression that formats all exception messages before they get printed to results.
 
 #### Log file rotation 
 

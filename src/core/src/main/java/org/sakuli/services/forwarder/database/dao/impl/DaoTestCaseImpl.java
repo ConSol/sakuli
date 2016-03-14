@@ -20,6 +20,7 @@ package org.sakuli.services.forwarder.database.dao.impl;
 
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.services.forwarder.database.ProfileJdbcDb;
 import org.sakuli.services.forwarder.database.dao.DaoTestCase;
@@ -32,15 +33,11 @@ import org.springframework.stereotype.Component;
 import javax.imageio.ImageIO;
 import javax.sql.DataSource;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Types;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author tschneck
@@ -49,6 +46,9 @@ import java.util.Map;
 @ProfileJdbcDb
 @Component
 public class DaoTestCaseImpl extends Dao implements DaoTestCase {
+
+    @Autowired
+    private SakuliProperties sakuliProperties;
 
     @Autowired
     public DaoTestCaseImpl(DataSource dataSource) throws SakuliException {
@@ -79,7 +79,7 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
         //try to save the screenshot
         tcParameters.addValue("screenshot", getScreenshotAsSqlLobValue(testCase), Types.BLOB);
         tcParameters.addValue("duration", testCase.getDuration());
-        tcParameters.addValue("msg", testCase.getExceptionMessages(true));
+        tcParameters.addValue("msg", testCase.getExceptionMessages(true, sakuliProperties.getLogExceptionFormat()));
 
         //generate the sql-statement
         SimpleJdbcInsert insertTCResults = new SimpleJdbcInsert(getDataSource())

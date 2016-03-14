@@ -19,6 +19,7 @@
 package org.sakuli.datamodel;
 
 import org.apache.commons.lang.StringUtils;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.SakuliException;
 
@@ -55,9 +56,9 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
     }
 
     @Override
-    public String getResultString() {
+    public String getResultString(SakuliProperties sakuliProperties) {
         return "\n\t\t======== test case step \"" + this.getName() + "\" ended with " + getState() + " ================="
-                + super.getResultString().replace("\n", "\n\t\t");
+                + super.getResultString(sakuliProperties).replace("\n", "\n\t\t");
     }
 
     @Override

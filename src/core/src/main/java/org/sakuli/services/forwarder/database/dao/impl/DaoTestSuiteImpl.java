@@ -18,6 +18,7 @@
 
 package org.sakuli.services.forwarder.database.dao.impl;
 
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.services.forwarder.database.ProfileJdbcDb;
 import org.sakuli.services.forwarder.database.dao.DaoTestSuite;
@@ -40,6 +41,9 @@ import java.sql.Types;
 @ProfileJdbcDb
 @Component
 public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
+
+    @Autowired
+    private SakuliProperties sakuliProperties;
 
     @Autowired
     public DaoTestSuiteImpl(DataSource dataSource) throws SakuliException {
@@ -150,7 +154,7 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        tcParameters.addValue("msg", testSuite.getExceptionMessages());
+        tcParameters.addValue("msg", testSuite.getExceptionMessages(false, sakuliProperties.getLogExceptionFormat()));
         return tcParameters;
     }
 }

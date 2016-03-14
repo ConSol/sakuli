@@ -18,6 +18,7 @@
 
 package org.sakuli.datamodel;
 
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestSuiteState;
@@ -123,26 +124,26 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
     }
 
     @Override
-    public String getResultString() {
+    public String getResultString(SakuliProperties sakuliProperties) {
         String stout = "\n=========== RESULT of SAKULI Testsuite \"" + getId() + "\" - " + getState() + " ================="
                 + "\ntest suite id: " + this.getId()
                 + "\nguid: " + this.getGuid()
-                + super.getResultString()
+                + super.getResultString(sakuliProperties)
                 + "\ndb primary key of job table: " + this.getDbJobPrimaryKey()
                 + "\nbrowser: " + this.getBrowserInfo();
         if (!CollectionUtils.isEmpty(testCases)) {
             for (TestCase tc : getTestCasesAsSortedSet()) {
-                stout += tc.getResultString();
+                stout += tc.getResultString(sakuliProperties);
             }
         }
         return stout;
     }
 
     @Override
-    public String getExceptionMessages(boolean flatFormatted) {
-        StringBuilder suiteErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted)));
+    public String getExceptionMessages(boolean flatFormatted, String exceptionFormat) {
+        StringBuilder suiteErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted, exceptionFormat)));
         for (TestCase testCase : getTestCasesAsSortedSet()) {
-            final String tcErrorMessage = testCase.getExceptionMessages(flatFormatted);
+            final String tcErrorMessage = testCase.getExceptionMessages(flatFormatted, exceptionFormat);
 
             if (isNotBlank(tcErrorMessage)) {
                 if (suiteErrorMessage.length() > 0) {
