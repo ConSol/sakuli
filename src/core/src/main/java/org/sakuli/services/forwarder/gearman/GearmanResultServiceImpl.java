@@ -69,7 +69,7 @@ public class GearmanResultServiceImpl extends AbstractResultService {
             GearmanJob job = creatJob(checkResult);
             gearmanClient.addJobServer(connection);
 
-            //send results to geraman
+            //send results to gearman
             Future<GearmanJobResult> future = gearmanClient.submit(job);
             GearmanJobResult result = future.get();
             if (result.jobSucceeded()) {

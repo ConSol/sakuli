@@ -153,8 +153,15 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
             if (StringUtils.isNotEmpty(exceptionFormat)) {
                 Pattern p = Pattern.compile(exceptionFormat);
                 Matcher m = p.matcher(msg);
-                if (m.find()) {
-                    msg = m.group(1);
+                String formatted = "";
+                while (m.find()) {
+                    for (int i = 1; i <= m.groupCount(); i++) {
+                        formatted += m.group(i);
+                    }
+                }
+
+                if (StringUtils.isNotBlank(formatted)) {
+                    msg = formatted;
                 }
             }
 

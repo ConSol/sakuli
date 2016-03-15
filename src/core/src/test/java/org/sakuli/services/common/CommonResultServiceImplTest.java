@@ -54,6 +54,16 @@ public class CommonResultServiceImplTest extends LoggerTest {
         };
     }
 
+    @DataProvider(name = "errors")
+    public static Object[][] errors() {
+        return new Object[][]{
+                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nSome details are here ...", "TypeError(.*)", "el is undefined"},
+                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nTypeError another el is undefined\nSome details are here ...", "TypeError(.*)", "el is undefined another el is undefined"},
+                {"Something went wrong!\nNow some important information:\nTypeError el is undefined AccessError another el is not accessible\nSome details are here ...", "TypeError(.*).*AccessError\\ (.*)", "el is undefined another el is not accessible"},
+                {"Something went wrong!", "TypeError(.*)", "Something went wrong!"},
+        };
+    }
+
     @Override
     @BeforeMethod
     public void init() {
@@ -82,28 +92,18 @@ public class CommonResultServiceImplTest extends LoggerTest {
 
         List<String> strings = Arrays.asList(lastLineOfLogFile.split("\n"));
         Iterator<String> regExIterator = regExes.iterator();
-        for (String string : strings) {
-            String regex = regExIterator.next();
-            while (regex == null && regExIterator.hasNext()) {
-                regex = regExIterator.next();
-            }
-            logger.debug("\nREGEX: {}\n |\n - STR: {}", regex, string);
-            assertRegExMatch(string, regex);
-        }
+        verifyOutputLines(strings, regExIterator);
     }
 
-    @Test
-    public void testSaveAllResultsWithErrorFormat() throws Exception {
+    @Test(dataProvider = "errors")
+    public void testSaveAllResultsWithErrorFormat(String exceptionMessage, String formatExpression, String errorResult) throws Exception {
         reset(sakuliProperties);
-        when(sakuliProperties.getLogExceptionFormat()).thenReturn("TypeError(.*)");
+        when(sakuliProperties.getLogExceptionFormat()).thenReturn(formatExpression);
 
         TestCaseStepState stepState = TestCaseStepState.WARNING;
         TestSuite testSuite = new TestSuiteExampleBuilder()
                 .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS)
-                .withException(new SakuliException("Something went wrong!\n"+
-                        "Now some important information:\n" +
-                        "TypeError el is undefined\n" +
-                        "Some details are here ..."))
+                .withException(new SakuliException(exceptionMessage))
                 .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
                         .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
                         .withState(TestCaseState.WARNING)
@@ -114,44 +114,15 @@ public class CommonResultServiceImplTest extends LoggerTest {
         Path logfile = Paths.get(properties.getLogFile());
         testling.saveAllResults();
         String lastLineOfLogFile = getLastLineOfLogFile(logfile, 42);
-        List<String> regExes = getValidationExpressions(TestSuiteState.ERRORS, TestCaseState.WARNING, stepState, "ERROR .* ERROR:", "el is undefined");
+        List<String> regExes = getValidationExpressions(TestSuiteState.ERRORS, TestCaseState.WARNING, stepState, "ERROR .* ERROR:", errorResult);
 
         List<String> strings = Arrays.asList(lastLineOfLogFile.split("\n"));
         Iterator<String> regExIterator = regExes.iterator();
-        for (String string : strings) {
-            String regex = regExIterator.next();
-            while (regex == null && regExIterator.hasNext()) {
-                regex = regExIterator.next();
-            }
-            logger.debug("\nREGEX: {}\n |\n - STR: {}", regex, string);
-            assertRegExMatch(string, regex);
-        }
+        verifyOutputLines(strings, regExIterator);
     }
 
-    @Test
-    public void testSaveAllResultsWithErrorFormatNotMatching() throws Exception {
-        reset(sakuliProperties);
-        when(sakuliProperties.getLogExceptionFormat()).thenReturn("TypeError(.*)");
-
-        TestCaseStepState stepState = TestCaseStepState.WARNING;
-        TestSuite testSuite = new TestSuiteExampleBuilder()
-                .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS)
-                .withException(new SakuliException("Something went wrong!"))
-                .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
-                        .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
-                        .withState(TestCaseState.WARNING)
-                        .buildExample()
-                ))
-                .buildExample();
-        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
-        Path logfile = Paths.get(properties.getLogFile());
-        testling.saveAllResults();
-        String lastLineOfLogFile = getLastLineOfLogFile(logfile, 42);
-        List<String> regExes = getValidationExpressions(TestSuiteState.ERRORS, TestCaseState.WARNING, stepState, "ERROR .* ERROR:", "Something went wrong!");
-
-        List<String> strings = Arrays.asList(lastLineOfLogFile.split("\n"));
-        Iterator<String> regExIterator = regExes.iterator();
-        for (String string : strings) {
+    private void verifyOutputLines(List<String> lines, Iterator<String> regExIterator) {
+        for (String string : lines) {
             String regex = regExIterator.next();
             while (regex == null && regExIterator.hasNext()) {
                 regex = regExIterator.next();
