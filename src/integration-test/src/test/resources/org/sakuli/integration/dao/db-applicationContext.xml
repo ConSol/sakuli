@@ -27,12 +27,10 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:annotation-config/>
-    <context:component-scan base-package="org.sakuli.services"/>
     <context:component-scan base-package="org.sakuli.exceptions"/>
     <context:component-scan base-package="org.sakuli.actions"/>
     <context:component-scan base-package="org.sakuli.aop"/>
     <context:component-scan base-package="org.sakuli.utils"/>
-    <context:component-scan base-package="org.sakuli.starter"/>
 
     <bean id="org.sakuli.datamodel.TestSuite" class="org.sakuli.datamodel.TestSuite"/>
     <bean id="org.sakuli.datamodel.properties.TestSuiteProperties" class="org.sakuli.datamodel.properties.TestSuiteProperties"/>
