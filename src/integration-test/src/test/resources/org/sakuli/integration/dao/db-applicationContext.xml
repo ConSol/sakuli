@@ -27,7 +27,6 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:annotation-config/>
-    <context:component-scan base-package="org.sakuli.datamodel"/>
     <context:component-scan base-package="org.sakuli.services"/>
     <context:component-scan base-package="org.sakuli.exceptions"/>
     <context:component-scan base-package="org.sakuli.actions"/>
@@ -35,6 +34,13 @@
     <context:component-scan base-package="org.sakuli.utils"/>
     <context:component-scan base-package="org.sakuli.starter"/>
 
+    <bean id="org.sakuli.datamodel.TestSuite" class="org.sakuli.datamodel.TestSuite"/>
+    <bean id="org.sakuli.datamodel.properties.TestSuiteProperties" class="org.sakuli.datamodel.properties.TestSuiteProperties"/>
+
+    <bean id="org.sakuli.datamodel.properties.SakuliProperties" class="org.sakuli.datamodel.properties.SakuliProperties"/>
+    <bean id="org.sakuli.datamodel.properties.ForwarderProperties" class="org.sakuli.datamodel.properties.ForwarderProperties"/>
+    <bean id="org.sakuli.datamodel.properties.ActionProperties" class="org.sakuli.datamodel.properties.ActionProperties"/>
+    <bean id="org.sakuli.datamodel.properties.SahiProxyProperties" class="org.sakuli.datamodel.properties.SahiProxyProperties"/>
     <bean class="org.sakuli.loader.BaseActionLoaderImpl"/>
     <bean id="propertyResolver"
           class="org.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
@@ -54,6 +60,9 @@
 
     <bean id="org.sakuli.loader.ScreenActionLoader" class="org.mockito.Mockito" factory-method="mock">
         <constructor-arg value="org.sakuli.loader.ScreenActionLoader"/>
+    </bean>
+    <bean id="org.sakuli.datamodel.actions.Screen" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.sakuli.datamodel.actions.Screen"/>
     </bean>
 
     <!-- defines the init scripts -->
