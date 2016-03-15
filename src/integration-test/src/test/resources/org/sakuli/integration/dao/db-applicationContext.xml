@@ -30,12 +30,12 @@
     <context:component-scan base-package="org.sakuli.datamodel"/>
     <context:component-scan base-package="org.sakuli.services"/>
     <context:component-scan base-package="org.sakuli.exceptions"/>
-    <context:component-scan base-package="org.sakuli.loader"/>
     <context:component-scan base-package="org.sakuli.actions"/>
     <context:component-scan base-package="org.sakuli.aop"/>
     <context:component-scan base-package="org.sakuli.utils"/>
     <context:component-scan base-package="org.sakuli.starter"/>
 
+    <bean class="org.sakuli.loader.BaseActionLoaderImpl"/>
     <bean id="propertyResolver"
           class="org.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
         <property name="fileEncoding" value="UTF-8"/>
@@ -52,11 +52,14 @@
         </property>
     </bean>
 
+    <bean id="org.sakuli.loader.ScreenActionLoader" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="org.sakuli.loader.ScreenActionLoader"/>
+    </bean>
+
     <!-- defines the init scripts -->
     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
         <jdbc:script location="classpath*:create_derby_db.sql"/>
     </jdbc:initialize-database>
-
 
     <!-- Definiert die DataSource -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
