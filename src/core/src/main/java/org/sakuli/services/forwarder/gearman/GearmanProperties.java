@@ -39,6 +39,8 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private static final String SERVER_QUEUE = "sakuli.forwarder.gearman.server.queue";
     private static final String SERVER_HOST = "sakuli.forwarder.gearman.server.host";
     private static final String SERVER_PORT = "sakuli.forwarder.gearman.server.port";
+    private static final String CACHE_ENABLED = "sakuli.forwarder.gearman.cache.enabled";
+    private static final String JOB_INTERVAL = "sakuli.forwarder.gearman.job.interval";
     private static final String NAGIOS_HOSTNAME = "sakuli.forwarder.gearman.nagios.hostname";
     private static final String NAGIOS_CHECK_COMMAND = "sakuli.forwarder.gearman.nagios.check_command";
     private static final String TEMPLATE_SUITE_TABLE = "sakuli.forwarder.gearman.nagios.template.suite.table";
@@ -64,6 +66,10 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private String serverHost;
     @Value("${" + SERVER_PORT + "}")
     private int serverPort;
+    @Value("${" + CACHE_ENABLED + "}")
+    private boolean cacheEnabled;
+    @Value("${" + JOB_INTERVAL + "}")
+    private long jobInterval;
     @Value("${" + NAGIOS_HOSTNAME + "}")
     private String nagiosHost;
     @Value("${" + NAGIOS_CHECK_COMMAND + "}")
@@ -166,6 +172,22 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
 
     public void setServerPort(int serverPort) {
         this.serverPort = serverPort;
+    }
+
+    public boolean isCacheEnabled() {
+        return cacheEnabled;
+    }
+
+    public long getJobInterval() {
+        return this.jobInterval;
+    }
+
+    public void setJobInterval(long jobInterval) {
+        this.jobInterval = jobInterval;
+    }
+
+    public void setCacheEnabled(boolean cacheEnabled) {
+        this.cacheEnabled = cacheEnabled;
     }
 
     public String getNagiosHost() {

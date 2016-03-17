@@ -85,12 +85,13 @@
         <bean class="org.sakuli.services.forwarder.database.DatabaseResultServiceImpl"/>
     </beans>
     <beans profile="GEARMAN">
+        <bean class="org.sakuli.services.forwarder.gearman.GearmanCacheService"/>
         <bean class="org.sakuli.services.forwarder.gearman.GearmanResultServiceImpl"/>
         <bean id="org.sakuli.services.forwarder.gearman.GearmanProperties"
               class="org.sakuli.MockitoFactoryBean">
             <constructor-arg value="org.sakuli.services.forwarder.gearman.GearmanProperties"/>
         </bean>
-        <bean id="org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilderr"
+        <bean id="org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder"
               class="org.sakuli.MockitoFactoryBean">
             <constructor-arg value="org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder"/>
         </bean>

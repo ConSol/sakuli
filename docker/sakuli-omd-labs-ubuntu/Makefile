@@ -24,7 +24,7 @@ build-local:
 	docker build -t $(LOCAL_REPO):$(TAG) .
 	docker images | grep '$(LOCAL_REPO)'
 start-local:
-	docker run -p 8443:443 -d $(LOCAL_REPO):$(TAG)
+	docker run -p 8443:443 -p 4730:4730 -d $(LOCAL_REPO):$(TAG)
 	docker images | grep '$(LOCAL_REPO)'
 echo-local:
 	echo $(LOCAL_REPO):$(TAG)

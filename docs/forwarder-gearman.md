@@ -106,6 +106,8 @@ On the Sakuli client you must set the global properties for the gearman receiver
 	sakuli.forwarder.gearman.server.host=__GEARMAN_IP__
 	sakuli.forwarder.gearman.server.port=[Gearman Port defined in "omd config" (default:4730)]
 	sakuli.forwarder.gearman.server.queue=check_results
+	sakuli.forwarder.gearman.cache.enabled=true
+	sakuli.forwarder.gearman.job.interval=1000
 	
 	# Nagios host where all Sakuli services are defined on. If neccessary, override this value per test suite. 
     # (Nagios service name is defined by testsuite.properties -> suiteID)
