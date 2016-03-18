@@ -19,16 +19,31 @@
 package org.sakuli.services.forwarder.gearman.model;
 
 /**
- * Represents the scrrenshot div TAG in nagios output.
+ * Represents the screenshot div TAG in nagios output.
  *
  * @author tschneck
  *         Date: 05.09.14
  */
 public class ScreenshotDiv implements NagiosPayloadString {
     public static final String DEFAULT_SAKULI_SCREENSHOT_DIV_ID = "sakuli_screenshot";
-    private static final String DIV_HEADER = "<div style=\"width:%s\" id=\"%s\">";
-    private static final String DIV_FOOTER = "</div>";
-    private static final String IMG_TAG = "<img style=\"width:98%%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" src=\"data:image/%s;base64,%s\" >";
+
+    private static final String STYLE_TEMPLATE = "<style>" +
+                ".modalDialog {position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 99999;opacity:0;pointer-events: none;}" +
+                ".modalDialog:target {opacity:1;pointer-events: auto;}" +
+                ".modalDialog > div {width: auto;margin: 20px auto;overflow: scroll;border: 2px solid #333}" +
+                ".close {background: #aaa;color: #fff;line-height: 25px;position: absolute;right: 10px;text-align: center;top: 25px;width: 65px;text-decoration: none;font-weight: bold;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;}" +
+                ".close:hover {background: #333;}" +
+            "</style>";
+
+    private static final String TEMPLATE = "<div id=\"openModal\" class=\"modalDialog\">" +
+                "<div>" +
+                    "<a href=\"#close\" title=\"Close\" class=\"close\">Close X</a>" +
+                    "<img style=\"width:100%%;\" src=\"data:image/%s;base64,%s\" >" +
+                "</div>" +
+            "</div>" +
+            "<div style=\"width:%s\" id=\"%s\">" +
+                "<a href=\"#openModal\"><img style=\"width:98%%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px;cursor:-webkit-zoom-in; cursor:-moz-zoom-in;\" src=\"data:image/%s;base64,%s\" ></a>" +
+            "</div>";
 
     /**
      * Width of HTML DIV tag, e.g. "640px"
@@ -81,9 +96,7 @@ public class ScreenshotDiv implements NagiosPayloadString {
 
     @Override
     public String getPayloadString() {
-        return String.format(DIV_HEADER, width, id)
-                + String.format(IMG_TAG, format, base64screenshot)
-                + DIV_FOOTER;
+        return STYLE_TEMPLATE + String.format(TEMPLATE, format, base64screenshot, width, id, format, base64screenshot);
     }
 
 }

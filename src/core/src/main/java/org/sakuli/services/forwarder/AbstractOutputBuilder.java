@@ -27,7 +27,6 @@ import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.forwarder.gearman.TextPlaceholder;
 import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosFormatter;
-import org.sakuli.services.forwarder.gearman.model.builder.NagiosOutputBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,8 @@ import static org.sakuli.services.forwarder.gearman.TextPlaceholder.*;
  */
 public abstract class AbstractOutputBuilder {
     public final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.YY HH:mm:ss");
-    protected static Logger LOGGER = LoggerFactory.getLogger(NagiosOutputBuilder.class);
+    protected Logger LOGGER = LoggerFactory.getLogger(getClass());
+
     @Autowired
     protected ScreenshotDivConverter screenshotDivConverter;
     @Autowired
