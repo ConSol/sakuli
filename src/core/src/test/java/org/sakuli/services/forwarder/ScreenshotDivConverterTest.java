@@ -139,9 +139,17 @@ public class ScreenshotDivConverterTest {
         testling.setBase64screenshot("00001111");
 
         String result = ScreenshotDivConverter.removeBase64ImageDataString(testling.getPayloadString());
-        assertEquals(result, "<div style=\"width:600px\" id=\"test-id\">" +
-                "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" " +
-                "src=\"\" >" +
+        assertEquals(result, "<div id=\"openModal\" class=\"modalDialog\">" +
+                    "<div>" +
+                        "<a href=\"#close\" title=\"Close\" class=\"close\">Close X</a>" +
+                        "<img style=\"width:100%;\" src=\"\" >" +
+                    "</div>" +
+                "</div>" +
+                "<div style=\"width:600px\" id=\"test-id\">" +
+                    "<a href=\"#openModal\">" +
+                        "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px;cursor:-webkit-zoom-in; cursor:-moz-zoom-in;\" " +
+                        "src=\"\" >" +
+                    "</a>" +
                 "</div>");
 
         String srcString2 = "blas\nblakdfakdfjie";

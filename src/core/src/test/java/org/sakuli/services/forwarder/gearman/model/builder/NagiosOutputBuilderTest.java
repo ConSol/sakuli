@@ -40,6 +40,7 @@ import org.sakuli.services.forwarder.MonitoringPropertiesTestHelper;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.model.NagiosOutput;
+import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -106,18 +107,24 @@ public class NagiosOutputBuilderTest {
         assertEquals(result.substring(0, result.indexOf(separator)), "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli-123\"" +
                 " (120.00s) EXCEPTION: 'TEST-ERROR'. (Last suite run: " + lastRun + ")");
 
-        String start_1 = "<div style=\"width:640px\" id=\"sakuli_screenshot\">" +
-                "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px\" " +
+        String start_1 = "<div id=\"openModal\" class=\"modalDialog\">" +
+                "<div><a href=\"#close\" title=\"Close\" class=\"close\">Close X</a>" +
+                "<img style=\"width:100%;\" " +
                 "src=\"";
         String start = start_1 + "data:image/png;base64,";
-        String end = "></div></td></tr>";
+        String end = "</a></div></td></tr>";
         String substring = result.substring(result.indexOf(separator));
         assertEquals(substring.substring(0, start.length()), start);
         assertEquals(substring.substring(substring.length() - end.length()), end);
 
         //now check the remove function
         String resultWithOutBase64Data = ScreenshotDivConverter.removeBase64ImageDataString(substring);
-        assertEquals(resultWithOutBase64Data, start_1 + "\" " + end);
+        assertEquals(resultWithOutBase64Data, start_1 + "\" ></div></div>" +
+                "<div style=\"width:640px\" id=\"sakuli_screenshot\">" +
+                    "<a href=\"#openModal\">" +
+                        "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px;cursor:-webkit-zoom-in; cursor:-moz-zoom-in;\" src=\"\" >" +
+                    "</a>" +
+                "</div></td></tr>");
     }
 
 
@@ -275,6 +282,7 @@ public class NagiosOutputBuilderTest {
         String lastRun = AbstractOutputBuilder.dateFormat.format(testSuite.getStopDate());
         String expectedHTML =
                 "[OK] Sakuli suite \"TEST-SUITE-ID\" ok (120.00s). (Last suite run: " + lastRun + ")\\\\n" +
+                        ScreenshotDiv.STYLE_TEMPLATE +
                         "<table style=\"border-collapse: collapse;\">" +
                         "<tr valign=\"top\">" +
                         "<td class=\"serviceOK\">[OK] Sakuli suite \"TEST-SUITE-ID\" ok (120.00s). (Last suite run: " + lastRun + ")" +

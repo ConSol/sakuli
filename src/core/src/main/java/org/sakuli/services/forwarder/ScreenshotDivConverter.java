@@ -42,13 +42,14 @@ import java.util.Arrays;
 @Component
 public class ScreenshotDivConverter {
 
-    public static final String REGEX_SRC_DATA_IMAGE_BASE64 = "src=\"data:image\\/.*;base64,.*\"";
+    public static final String REGEX_SRC_DATA_IMAGE_BASE64 = "src=\"data:image\\/[\\w]{3,4};base64,[^\\s]*\" >";
+
     @Autowired
     private SakuliExceptionHandler exceptionHandler;
 
     public static String removeBase64ImageDataString(String string) {
         if (StringUtils.isNotEmpty(string)) {
-            return string.replaceAll(REGEX_SRC_DATA_IMAGE_BASE64, "src=\"\"");
+            return string.replaceAll(REGEX_SRC_DATA_IMAGE_BASE64, "src=\"\" >");
         }
         return string;
     }

@@ -27,7 +27,7 @@ package org.sakuli.services.forwarder.gearman.model;
 public class ScreenshotDiv implements NagiosPayloadString {
     public static final String DEFAULT_SAKULI_SCREENSHOT_DIV_ID = "sakuli_screenshot";
 
-    private static final String STYLE_TEMPLATE = "<style>" +
+    public static final String STYLE_TEMPLATE = "<style>" +
                 ".modalDialog {position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 99999;opacity:0;pointer-events: none;}" +
                 ".modalDialog:target {opacity:1;pointer-events: auto;}" +
                 ".modalDialog > div {width: auto;margin: 20px auto;overflow: scroll;border: 2px solid #333}" +
@@ -96,7 +96,7 @@ public class ScreenshotDiv implements NagiosPayloadString {
 
     @Override
     public String getPayloadString() {
-        return STYLE_TEMPLATE + String.format(TEMPLATE, format, base64screenshot, width, id, format, base64screenshot);
+        return String.format(TEMPLATE, format, base64screenshot, width, id, format, base64screenshot);
     }
 
 }
