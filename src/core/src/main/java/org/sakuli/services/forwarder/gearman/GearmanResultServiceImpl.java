@@ -83,7 +83,7 @@ public class GearmanResultServiceImpl extends AbstractResultService {
             }
 
             while (!results.isEmpty()) {
-                NagiosCheckResult checkResult = results.remove(results.size() - 1);
+                NagiosCheckResult checkResult = results.get(results.size() - 1);
                 if (logger.isDebugEnabled()) {
                     logger.debug(String.format("Sending result to Gearman server %s:%s", checkResult.getQueueName(), checkResult.getUuid()));
                 }
@@ -94,6 +94,7 @@ public class GearmanResultServiceImpl extends AbstractResultService {
                 //send results to gearman
                 Future<GearmanJobResult> future = gearmanClient.submit(job);
                 GearmanJobResult result = future.get();
+                results.remove(results.size() - 1);
                 if (result.jobSucceeded()) {
                     if (logger.isDebugEnabled()) {
                         logger.debug(String.format("Successfully sent result to Gearman server %s:%s", checkResult.getQueueName(), checkResult.getUuid()));

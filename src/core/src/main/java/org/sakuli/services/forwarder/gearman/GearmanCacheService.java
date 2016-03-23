@@ -74,7 +74,7 @@ public class GearmanCacheService {
                     } else if (line.startsWith(CACHE_SEPARATOR)) {
                         resultBuilder = new StringBuilder();
                         queueName = line.substring(CACHE_SEPARATOR.length() + 1, line.indexOf(":"));
-                        uuid = line.substring(line.indexOf(":")).trim();
+                        uuid = line.substring(line.indexOf(":") + 1).trim();
                     } else if (StringUtils.isNotEmpty(line)) {
                         resultBuilder.append(line + System.lineSeparator());
                     }
