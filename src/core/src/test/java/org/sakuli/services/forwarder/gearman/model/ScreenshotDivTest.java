@@ -32,9 +32,9 @@ public class ScreenshotDivTest {
         testling.setBase64screenshot("00001111");
 
         assertEquals(testling.getPayloadString(), "<div id=\"test-id\">" +
-                    "<div id=\"openModal\" class=\"modalDialog\">" +
+                    "<div id=\"openModal_test-id\" class=\"modalDialog\">" +
                         "<a href=\"#close\" title=\"Close\" class=\"close\">Close X</a>" +
-                        "<a href=\"#openModal\"><img class=\"screenshot\" src=\"data:image/jpg;base64,00001111\" ></a>" +
+                        "<a href=\"#openModal_test-id\"><img class=\"screenshot\" src=\"data:image/jpg;base64,00001111\" ></a>" +
                     "</div>" +
                 "</div>");
     }

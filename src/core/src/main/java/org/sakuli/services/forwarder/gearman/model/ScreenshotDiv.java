@@ -39,9 +39,9 @@ public class ScreenshotDiv implements NagiosPayloadString {
 
     private static final String TEMPLATE =
             "<div id=\"%s\">" +
-                "<div id=\"openModal\" class=\"modalDialog\">" +
+                "<div id=\"openModal_%s\" class=\"modalDialog\">" +
                     "<a href=\"#close\" title=\"Close\" class=\"close\">Close X</a>" +
-                    "<a href=\"#openModal\"><img class=\"screenshot\" src=\"data:image/%s;base64,%s\" ></a>" +
+                    "<a href=\"#openModal_%s\"><img class=\"screenshot\" src=\"data:image/%s;base64,%s\" ></a>" +
                 "</div>" +
             "</div>";
 
@@ -84,7 +84,7 @@ public class ScreenshotDiv implements NagiosPayloadString {
 
     @Override
     public String getPayloadString() {
-        return String.format(TEMPLATE, id, format, base64screenshot);
+        return String.format(TEMPLATE, id, id, id, format, base64screenshot);
     }
 
 }

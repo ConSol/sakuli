@@ -62,8 +62,7 @@ public class ScreenshotDivConverter {
                 ScreenshotDiv screenshotDiv = new ScreenshotDiv();
                 screenshotDiv.setFormat(format);
                 screenshotDiv.setBase64screenshot(base64String);
-                String divID = ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID;
-                screenshotDiv.setId(divID);
+                screenshotDiv.setId(ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID + screenshotDiv.hashCode());
                 return screenshotDiv;
             }
         }

@@ -19,25 +19,16 @@
 package org.sakuli.services.forwarder.gearman.model.builder;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.sakuli.BaseTest;
-import org.sakuli.builder.TestCaseExampleBuilder;
-import org.sakuli.builder.TestCaseStepExampleBuilder;
-import org.sakuli.builder.TestSuiteExampleBuilder;
+import org.sakuli.builder.*;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.datamodel.state.TestCaseState;
-import org.sakuli.datamodel.state.TestCaseStepState;
-import org.sakuli.datamodel.state.TestSuiteState;
+import org.sakuli.datamodel.state.*;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
-import org.sakuli.services.forwarder.AbstractOutputBuilder;
-import org.sakuli.services.forwarder.MonitoringPropertiesTestHelper;
-import org.sakuli.services.forwarder.ScreenshotDivConverter;
+import org.sakuli.services.forwarder.*;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.model.NagiosOutput;
 import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
@@ -47,9 +38,7 @@ import org.testng.annotations.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -107,10 +96,13 @@ public class NagiosOutputBuilderTest {
         assertEquals(result.substring(0, result.indexOf(separator)), "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli-123\"" +
                 " (120.00s) EXCEPTION: 'TEST-ERROR'. (Last suite run: " + lastRun + ")");
 
-        String start_1 = "<div id=\"sakuli_screenshot\">" +
-                "<div id=\"openModal\" class=\"modalDialog\">" +
+        String screenshotHash = result.substring(result.indexOf(ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID) + ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID.length());
+        screenshotHash = screenshotHash.substring(0, screenshotHash.indexOf("\">"));
+
+        String start_1 = "<div id=\"sakuli_screenshot" + screenshotHash + "\">" +
+                "<div id=\"openModal_sakuli_screenshot" + screenshotHash + "\" class=\"modalDialog\">" +
                     "<a href=\"#close\" title=\"Close\" class=\"close\">Close X</a>" +
-                    "<a href=\"#openModal\"><img class=\"screenshot\" src=\"";
+                    "<a href=\"#openModal_sakuli_screenshot" + screenshotHash + "\"><img class=\"screenshot\" src=\"";
         String start = start_1 + "data:image/png;base64,";
         String end = "</a></div></div></td></tr>";
         String substring = result.substring(result.indexOf(separator));

@@ -86,9 +86,10 @@ public class ScreenshotDivConverterTest {
     public void testWithException() throws Exception {
         Path screenshotPath = Paths.get(NagiosOutputBuilder.class.getResource("computer.png").toURI());
         assertTrue(Files.exists(screenshotPath));
+
         ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath));
         assertNotNull(result);
-        assertEquals(result.getId(), ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID);
+        assertEquals(result.getId(), ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID + result.hashCode());
         assertEquals(result.getBase64screenshot(), base64String);
         assertEquals(result.getFormat(), "png");
         verify(sakuliExceptionHandler, never()).handleException(any(Exception.class));
@@ -138,9 +139,9 @@ public class ScreenshotDivConverterTest {
 
         String result = ScreenshotDivConverter.removeBase64ImageDataString(testling.getPayloadString());
         assertEquals(result, "<div id=\"test-id\">" +
-                    "<div id=\"openModal\" class=\"modalDialog\">" +
+                    "<div id=\"openModal_test-id\" class=\"modalDialog\">" +
                         "<a href=\"#close\" title=\"Close\" class=\"close\">Close X</a>" +
-                        "<a href=\"#openModal\"><img class=\"screenshot\" src=\"\" ></a>" +
+                        "<a href=\"#openModal_test-id\"><img class=\"screenshot\" src=\"\" ></a>" +
                     "</div>" +
                 "</div>");
 
