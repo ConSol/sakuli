@@ -54,7 +54,7 @@ public class ScreenshotDivConverter {
         return string;
     }
 
-    public ScreenshotDiv convert(Throwable e, String divWidthPixel) {
+    public ScreenshotDiv convert(Throwable e) {
         if (e != null) {
             String base64String = extractScreenshotAsBase64(e);
             String format = extractScreenshotFormat(e);
@@ -64,7 +64,6 @@ public class ScreenshotDivConverter {
                 screenshotDiv.setBase64screenshot(base64String);
                 String divID = ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID;
                 screenshotDiv.setId(divID);
-                screenshotDiv.setWidth(divWidthPixel);
                 return screenshotDiv;
             }
         }

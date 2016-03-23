@@ -27,22 +27,15 @@ public class ScreenshotDivTest {
     @Test
     public void testGetPayloadString() throws Exception {
         ScreenshotDiv testling = new ScreenshotDiv();
-        testling.setWidth("600px");
         testling.setId("test-id");
         testling.setFormat("jpg");
         testling.setBase64screenshot("00001111");
 
-        assertEquals(testling.getPayloadString(), "<div id=\"openModal\" class=\"modalDialog\">" +
-                    "<div>" +
+        assertEquals(testling.getPayloadString(), "<div id=\"test-id\">" +
+                    "<div id=\"openModal\" class=\"modalDialog\">" +
                         "<a href=\"#close\" title=\"Close\" class=\"close\">Close X</a>" +
-                        "<img style=\"width:100%;\" src=\"data:image/jpg;base64,00001111\" >" +
+                        "<a href=\"#openModal\"><img class=\"screenshot\" src=\"data:image/jpg;base64,00001111\" ></a>" +
                     "</div>" +
-                "</div>" +
-                "<div style=\"width:600px\" id=\"test-id\">" +
-                    "<a href=\"#openModal\">" +
-                        "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px;cursor:-webkit-zoom-in; cursor:-moz-zoom-in;\" " +
-                        "src=\"data:image/jpg;base64,00001111\" >" +
-                    "</a>" +
                 "</div>");
     }
 }

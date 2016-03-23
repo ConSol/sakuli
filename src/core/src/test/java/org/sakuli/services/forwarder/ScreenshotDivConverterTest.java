@@ -79,17 +79,16 @@ public class ScreenshotDivConverterTest {
     @Test
     public void testBuild() throws Exception {
         final ScreenshotDivConverter screenshotDivConverter = new ScreenshotDivConverter();
-        assertNull(screenshotDivConverter.convert(null, SCREENSHOT_DIV_WIDTH_DEFAULT));
+        assertNull(screenshotDivConverter.convert(null));
     }
 
     @Test
     public void testWithException() throws Exception {
         Path screenshotPath = Paths.get(NagiosOutputBuilder.class.getResource("computer.png").toURI());
         assertTrue(Files.exists(screenshotPath));
-        ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath), SCREENSHOT_DIV_WIDTH_DEFAULT);
+        ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath));
         assertNotNull(result);
         assertEquals(result.getId(), ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID);
-        assertEquals(result.getWidth(), "640px");
         assertEquals(result.getBase64screenshot(), base64String);
         assertEquals(result.getFormat(), "png");
         verify(sakuliExceptionHandler, never()).handleException(any(Exception.class));
@@ -120,7 +119,7 @@ public class ScreenshotDivConverterTest {
         ArgumentCaptor<Throwable> excpCaptor = ArgumentCaptor.forClass(Throwable.class);
         doNothing().when(sakuliExceptionHandler).handleException(excpCaptor.capture());
 
-        ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath), SCREENSHOT_DIV_WIDTH_DEFAULT);
+        ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath));
         assertNull(result);
         verify(sakuliExceptionHandler).handleException(any(SakuliForwarderException.class));
         Throwable excp = excpCaptor.getValue();
@@ -133,23 +132,16 @@ public class ScreenshotDivConverterTest {
     @Test
     public void testRemoveBase64Data() throws Exception {
         ScreenshotDiv testling = new ScreenshotDiv();
-        testling.setWidth("600px");
         testling.setId("test-id");
         testling.setFormat("jpg");
         testling.setBase64screenshot("00001111");
 
         String result = ScreenshotDivConverter.removeBase64ImageDataString(testling.getPayloadString());
-        assertEquals(result, "<div id=\"openModal\" class=\"modalDialog\">" +
-                    "<div>" +
+        assertEquals(result, "<div id=\"test-id\">" +
+                    "<div id=\"openModal\" class=\"modalDialog\">" +
                         "<a href=\"#close\" title=\"Close\" class=\"close\">Close X</a>" +
-                        "<img style=\"width:100%;\" src=\"\" >" +
+                        "<a href=\"#openModal\"><img class=\"screenshot\" src=\"\" ></a>" +
                     "</div>" +
-                "</div>" +
-                "<div style=\"width:600px\" id=\"test-id\">" +
-                    "<a href=\"#openModal\">" +
-                        "<img style=\"width:98%;border:2px solid gray;display: block;margin-left:auto;margin-right:auto;margin-bottom:4px;cursor:-webkit-zoom-in; cursor:-moz-zoom-in;\" " +
-                        "src=\"\" >" +
-                    "</a>" +
                 "</div>");
 
         String srcString2 = "blas\nblakdfakdfjie";

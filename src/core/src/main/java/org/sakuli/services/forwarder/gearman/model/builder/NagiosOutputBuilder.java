@@ -74,7 +74,7 @@ public class NagiosOutputBuilder extends AbstractOutputBuilder implements Builde
         StringBuilder sb = new StringBuilder();
         sb.append(StringUtils.remove(formatTestSuiteSummaryStateMessage(testSuite, properties.getTemplateSuiteSummary()), "\n"))
                 .append(NagiosOutput.DETAILS_SEPARATOR)
-                .append(ScreenshotDiv.STYLE_TEMPLATE)
+                .append(String.format(ScreenshotDiv.STYLE_TEMPLATE, getOutputScreenshotDivWidth()))
                 .append(TABLE_HEADER)
                 .append(StringUtils.remove(formatTestSuiteTableStateMessage(testSuite, properties.getTemplateSuiteTable()), "\n"));
 
