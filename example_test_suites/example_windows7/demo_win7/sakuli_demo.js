@@ -52,6 +52,6 @@ try {
     testCase.handleException(e);
 } finally {
     appCalc.close(true);      //silent
-    appNotepad.close(true);   //silent
+    appNotepad.kill(true);   //silent
     testCase.saveResult();
 }
