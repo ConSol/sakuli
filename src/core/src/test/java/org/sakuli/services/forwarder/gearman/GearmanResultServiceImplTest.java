@@ -255,6 +255,8 @@ public class GearmanResultServiceImplTest extends BaseTest {
         doReturn(connection).when(testling).getGearmanConnection(host, port);
         when(gearmanClient.addJobServer(connection)).thenReturn(false);
 
+        when(gearmanCacheService.getCachedResults()).thenReturn(Arrays.asList());
+
         doAnswer(invocationOnMock -> {
             Assert.assertEquals(((List)invocationOnMock.getArguments()[0]).size(), 1L);
             return null;
@@ -264,7 +266,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
 
         //checks
         verify(gearmanCacheService).cacheResults(anyList());
-        verify(gearmanCacheService, never()).getCachedResults();
+        verify(gearmanCacheService).getCachedResults();
         verify(exceptionHandler).handleException(any(Throwable.class), eq(true));
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
@@ -273,7 +275,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
     }
 
     @Test
-    public void testSaveAllResultsConnectionFailedAddCacheResults() throws Exception {
+    public void testSaveAllResultsJobSubmitFailedAddCacheResults() throws Exception {
         when(properties.getServiceType()).thenReturn("passive");
         final String queueName = "check_results";
         when(properties.getServerQueue()).thenReturn(queueName);
@@ -307,6 +309,53 @@ public class GearmanResultServiceImplTest extends BaseTest {
             Assert.assertEquals(results.get(0), newResult);
             Assert.assertEquals(results.get(1), mockedResult1);
             Assert.assertEquals(results.get(2), mockedResult2);
+            return null;
+        }).when(gearmanCacheService).cacheResults(anyList());
+
+        testling.saveAllResults();
+
+        //checks
+        verify(gearmanCacheService).cacheResults(anyList());
+        verify(gearmanCacheService).getCachedResults();
+        verify(exceptionHandler).handleException(any(Throwable.class), eq(true));
+        verify(testling).getGearmanClient();
+        verify(testling).getGearmanConnection(host, port);
+        verify(gearmanClient).addJobServer(connection);
+        verify(gearmanClient).shutdown();
+    }
+
+    @Test
+    public void testSaveAllResultsConnectionFailedAddCacheResults() throws Exception {
+        when(properties.getServiceType()).thenReturn("passive");
+        final String queueName = "check_results";
+        when(properties.getServerQueue()).thenReturn(queueName);
+        final String host = "99.99.99.20";
+        when(properties.getServerHost()).thenReturn(host);
+        final int port = 4730;
+        when(properties.getServerPort()).thenReturn(port);
+        when(properties.getNagiosHost()).thenReturn("win7sakuli");
+        when(properties.isCacheEnabled()).thenReturn(true);
+
+        GearmanClient gearmanClient = mock(GearmanClientImpl.class);
+        doReturn(gearmanClient).when(testling).getGearmanClient();
+        GearmanJobServerConnection connection = mock(GearmanJobServerConnection.class);
+        doReturn(connection).when(testling).getGearmanConnection(host, port);
+        GearmanJob job = mock(GearmanJob.class);
+        doReturn(job).when(testling).creatJob(any(NagiosCheckResult.class));
+        when(gearmanClient.addJobServer(connection)).thenReturn(false);
+
+        NagiosCheckResult mockedResult1 = Mockito.mock(NagiosCheckResult.class);
+        when(gearmanCacheService.getCachedResults()).thenReturn(Arrays.asList(mockedResult1));
+
+        NagiosCheckResult newResult = new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult);
+        when(checkResultBuilder.build()).thenReturn(newResult);
+
+        doAnswer(invocationOnMock -> {
+            List<NagiosCheckResult> results = ((List)invocationOnMock.getArguments()[0]);
+            Assert.assertEquals(results.size(), 2L);
+
+            Assert.assertEquals(results.get(0), newResult);
+            Assert.assertEquals(results.get(1), mockedResult1);
             return null;
         }).when(gearmanCacheService).cacheResults(anyList());
 
