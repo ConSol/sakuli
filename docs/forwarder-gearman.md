@@ -95,6 +95,33 @@ Now open Thruk; you should see now the Sakuli host with one service attached:
 
 The check is waiting now for check results from a Sakuli client. 
 
+### Adapt perfdata spooling
+
+By default, the timestamp on which perfdata are getting stored in RRDTOOL comes from *service_perfdata_template*, which can be found in `~/etc/nagios/nagios.d/pnp4nagios.cfg`: 
+
+    service_perfdata_file_template=DATATYPE::SERVICEPERFDATA\tTIMET::$TIMET$\tHOSTNAME::$HOSTNAME$ ... ...
+
+Using the [Nagios macro](https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/macrolist.html#timet) `$TIMET$` (= current timestamp) as the perfdata time is absolutely ok as long as there is no network outage between the Sakuli client and OMD. But if Sakuli cannot send the result to gearmand, it appends the result to `.gearman_cache` within the Suite folder and tries to send first the cached results before the current result.
+
+With the template above, cached check results would get false (=current) timestamp. To prevent this, replace `$TIMET$` by `$LASTSERVICECHECK$`. 
+
+    service_perfdata_file_template=DATATYPE::SERVICEPERFDATA\tTIMET::$LASTSERVICECHECK$\tHOSTNAME::$HOSTNAME$ ... ...
+
+Now, the performance data of a cached check result like this one in `.gearman_cache`
+
+```
+======= check_results:sakuli_ubuntu__2016_03_24_12_34_08_716
+type=passive
+host_name=sakuli_client
+start_time=1458800000.000
+finish_time=1458822225.000
+return_code=0
+service_description=sakuli_ubuntu
+output=[OK] Cache-result 5 | foobar=112;333;444;;
+=======
+```
+will get stored in RRD correclty with the timestamp of "start_time" = 1458800000. 
+
 
 ## Sakuli gearman forwarder configuration
 
@@ -106,6 +133,7 @@ On the Sakuli client you must set the global properties for the gearman receiver
 	sakuli.forwarder.gearman.server.host=__GEARMAN_IP__
 	sakuli.forwarder.gearman.server.port=[Gearman Port defined in "omd config" (default:4730)]
 	sakuli.forwarder.gearman.server.queue=check_results
+	
 	sakuli.forwarder.gearman.cache.enabled=true
 	sakuli.forwarder.gearman.job.interval=1000
 	
