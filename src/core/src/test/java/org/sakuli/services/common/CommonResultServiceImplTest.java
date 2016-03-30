@@ -59,7 +59,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
         return new Object[][]{
                 {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nSome details are here ...", "TypeError(.*)", "el is undefined"},
                 {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nTypeError another el is undefined\nSome details are here ...", "TypeError(.*)", "el is undefined another el is undefined"},
-                {"Something went wrong!\nNow some important information:\nTypeError el is undefined AccessError another el is not accessible\nSome details are here ...", "TypeError(.*).*AccessError\\ (.*)", "el is undefined another el is not accessible"},
+                {"Something went wrong!\nNow some important information:\nTypeError el is undefined AccessError another el is not accessible\nSome details are here ...", "TypeError(.*).*AccessError\\s(.*)", "el is undefined another el is not accessible"},
                 {"Something went wrong!", "TypeError(.*)", "Something went wrong!"},
         };
     }

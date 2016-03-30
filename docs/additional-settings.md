@@ -74,9 +74,21 @@ In general it is also possible to add your own Logback configuration under `__SA
 
 #### Log exception format
 
-* **`sakuli.log.exception.format`**`=TypeError (.*)`  -  Format string 
+* **`sakuli.log.exception.format`**`=TypeError (.*)`  -  Format regular expression 
 
-Optional custom exception message logging format expression. Regular expression that formats all exception messages before they get printed to results.
+Optional custom exception message logging format expression. This is a regular expression that formats all exception messages before they get printed to results or forwarded to external systems like OMD Gearman. The regular expression works on groups that identify
+the part of the message that should be included. You can use multiple groups in order to extract multiple message snippets to the final result
+
+For example if we have following error message given:
+
+    Something went wrong!
+    Now some important information:
+    TypeError el is undefined AccessError el is not accessible
+    Some more details follow now ...
+    
+We can extract the important information with this regular expression: **TypeError(.*).*AccessError\s(.*)**
+
+Now we get the final error message: **el is undefined el is not accessible**
 
 #### Log file rotation 
 
