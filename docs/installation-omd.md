@@ -74,7 +74,7 @@ Copy the PNP4nagios graph template into the templates folder:
 	OMD[sakuli]:~$ cp __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/check_sakuli.php ~/etc/pnp4nagios/templates/
 
 
-### Include CPU/Memory metrics in Sakuli graphs (optional) 
+### Include CPU/Memory metrics in Sakuli PNP graphs (optional) 
 
 If Sakuli reports a long check runtime, it is good to know the CPU/Memory metrics on the Sakuli client machine, because CPU/IO bottlenecks affect Sakuli tests, too.
  

@@ -159,3 +159,58 @@ The service should change its status to:
 ![omd_pending2](pics/omd-ok-details.png) 
 
 
+## Screenshot history (optional)
+
+Since Sakuli v1.0.0, exception messages containing a screenshot also provide a CSS based magnifier/lightbox option to enlarge the currently displayed image. This perfect if you can live with the fact that a screenshot is only visible for the time until the next result arrives - which will update the service output and the embedded image. 
+
+Since version v1.2.0 it is possible to view also a screenshot history. (This has been tested in OMD; for other monitoring systems you might have to adapt the SSI.)
+
+Each Sakuli check is combined with an event handler script, which saves the base64 encoded image to the local file system if the result is CRITICAL and the output contains the pattern "EXCEPTION". The monitoring web frontend (in OMD: Thruk) then can load these images into a lightbox. 
+
+### event handler
+
+Copy the event handler script to the local plugin directory
+
+    OMD[sakuli]:~$ cp __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/screenshot_lightbox/eh_sakuli_screenshot.sh ~/local/lib/nagios/plugins/
+    
+and define a command: 
+
+    vim ~/etc/nagios/conf.d/commands.cfg
+    
+    define command {
+        command_name                   eh_sakuli_screenshot
+        command_line                   $USER2$/eh_sakuli_screenshot.sh $SERVICESTATE$ $HOSTNAME$ $SERVICEDESC$ $LASTSERVICECHECK$
+    }  
+    
+Th eventhandler script also deletes screenshots older than 30 days. Change that to your needings. 
+
+Now connect the event handler command to every Sakuli service: 
+
+    define service {
+        service_description            sakuli_ubuntu
+        host_name                      sakuli_client
+        use                            generic-service,srv-pnp
+        ...
+        ...
+        event_handler                  eh_sakuli_screenshot
+    }
+
+Reload the monitoring core. 
+
+### screenshot directory
+
+Create the screenshot directory: 
+
+    OMD[sakuli]:~$ mkdir -p ${OMD_ROOT}/var/sakuli/screenshots
+
+Install the Apache configuration file:  
+
+    OMD[sakuli]:~$ cp __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/screenshot_lightbox/sakuli_screenshots.conf ~/etc/apache/conf.d/sakuli_screenshots.conf
+ 
+### Thruk SSI 
+   
+Open `__TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/screenshot_lightbox/extinfo-header.ssi.add` and follow the instructions how to add the JavaScript/CSS/HTML to `extinfo-header.ssi`.
+
+From now, clicking on a screenshot opens the lightbox which show the last event. Use the buttons on the bottom right corner to browse through all previous events: 
+
+![screenshot_history](pics/screenshot-history.png)
