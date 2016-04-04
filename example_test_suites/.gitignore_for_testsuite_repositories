@@ -1,0 +1,13 @@
+target
+**/integration-test/temp-db-sakuli
+**/install/*.zip
+**/_logs
+/sahi*/
+firefox
+.idea
+*.iml
+*.log
+*.sakuli-steps-cache
+*.gearman-cache
+sakuli_app
+.DS_Store
