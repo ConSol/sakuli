@@ -38,6 +38,6 @@ case $STATE in
 esac
 
 # Clean up all screenshot directories older than X days
-for d in $(find $IMG_ROOT -mindepth 3 -maxdepth 3 -mtime +30 -type d); do rm -rf $d; done
+for d in $(find $IMG_ROOT -mindepth 3 -maxdepth 3 -mtime +$DAYS -type d); do rm -rf $d; done
 
 exit 0
