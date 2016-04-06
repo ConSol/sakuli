@@ -182,7 +182,7 @@ and define a command:
         command_line                   $USER2$/eh_sakuli_screenshot.sh $SERVICESTATE$ $HOSTNAME$ $SERVICEDESC$ $LASTSERVICECHECK$
     }  
     
-The eventhandler script also deletes screenshots older than 30 days. If you want to override this, define the number of days to keep screenshots as a custom macro (e.g. `$USER12`) and use this variable as fifth parameter: 
+The eventhandler script also deletes screenshots older than 30 days. If you want to override this, define the number of days to keep screenshots as a custom macro (e.g. `$USER12$`) and use this variable as fifth parameter: 
 
         command_line                   $USER2$/eh_sakuli_screenshot.sh $SERVICESTATE$ $HOSTNAME$ $SERVICEDESC$ $LASTSERVICECHECK$ $USER12$
 
