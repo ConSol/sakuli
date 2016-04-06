@@ -21,6 +21,8 @@ package org.sakuli.services.forwarder.gearman;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
+import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.gearman.model.NagiosCachedCheckResult;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
 import org.slf4j.Logger;
@@ -28,7 +30,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,14 +46,12 @@ import java.util.List;
 @Component
 public class GearmanCacheService {
 
-    private static Logger logger = LoggerFactory.getLogger(GearmanCacheService.class);
-
     private static final String CACHE_FILE = ".gearman-cache";
     private static final String CACHE_SEPARATOR = "=======";
     private static final String CHARSET_NAME = "UTF-8";
-
+    private static Logger logger = LoggerFactory.getLogger(GearmanCacheService.class);
     @Autowired
-    private GearmanProperties properties;
+    private SakuliExceptionHandler exceptionHandler;
 
     @Autowired
     private TestSuiteProperties testSuiteProperties;
@@ -65,22 +67,21 @@ public class GearmanCacheService {
         if (Files.exists(cacheFile)) {
             try {
                 List<String> lines = FileUtils.readLines(cacheFile.toFile(), Charset.forName(CHARSET_NAME));
-                StringBuilder resultBuilder = null;
+                StringBuilder resultBuilder = new StringBuilder();
                 String queueName = "";
                 String uuid = "";
                 for (String line : lines) {
                     if (line.trim().equals(CACHE_SEPARATOR)) {
                         results.add(new NagiosCachedCheckResult(queueName, uuid, resultBuilder.toString()));
                     } else if (line.startsWith(CACHE_SEPARATOR)) {
-                        resultBuilder = new StringBuilder();
                         queueName = line.substring(CACHE_SEPARATOR.length() + 1, line.indexOf(":"));
                         uuid = line.substring(line.indexOf(":") + 1).trim();
                     } else if (StringUtils.isNotEmpty(line)) {
-                        resultBuilder.append(line + System.lineSeparator());
+                        resultBuilder.append(line).append(System.lineSeparator());
                     }
                 }
             } catch (IOException e) {
-                logger.error(String.format("Failed to read Gearman cache file '%s'", cacheFile), e);
+                exceptionHandler.handleException(new SakuliForwarderException(e, String.format("Failed to read Gearman cache file '%s'", cacheFile)), true);
             }
         }
 
@@ -107,7 +108,7 @@ public class GearmanCacheService {
 
             fos.flush();
         } catch (IOException e) {
-            logger.error("Failed to write Gearman cache file", e);
+            exceptionHandler.handleException(new SakuliForwarderException(e, "Failed to write Gearman cache file"), true);
         }
     }
 }
