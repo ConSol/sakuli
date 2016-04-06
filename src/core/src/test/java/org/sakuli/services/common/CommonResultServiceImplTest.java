@@ -20,19 +20,28 @@ package org.sakuli.services.common;
 
 import org.mockito.Mock;
 import org.sakuli.LoggerTest;
-import org.sakuli.builder.*;
+import org.sakuli.builder.TestCaseExampleBuilder;
+import org.sakuli.builder.TestCaseStepExampleBuilder;
+import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.datamodel.state.*;
+import org.sakuli.datamodel.state.TestCaseState;
+import org.sakuli.datamodel.state.TestCaseStepState;
+import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -61,6 +70,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nTypeError another el is undefined\nSome details are here ...", "TypeError(.*)", "el is undefined another el is undefined"},
                 {"Something went wrong!\nNow some important information:\nTypeError el is undefined AccessError another el is not accessible\nSome details are here ...", "TypeError(.*).*AccessError\\s(.*)", "el is undefined another el is not accessible"},
                 {"Something went wrong!", "TypeError(.*)", "Something went wrong!"},
+                {"Something went wrong: take a look at it!", "", "Something went wrong: take a look at it!"},
         };
     }
 

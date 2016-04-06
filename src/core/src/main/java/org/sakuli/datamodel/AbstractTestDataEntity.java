@@ -140,13 +140,13 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
 
     public String getExceptionMessages(boolean flatFormatted, String exceptionFormat) {
         if (exception != null) {
-            String msg = format(exception.getMessage());
+            String msg = exception.getMessage();
             //add suppressed exceptions
             for (Throwable ee : exception.getSuppressed()) {
                 if (flatFormatted) {
-                    msg += " --  Suppressed EXCEPTION: " + format(ee.getMessage());
+                    msg += " --  Suppressed EXCEPTION: " + ee.getMessage();
                 } else {
-                    msg += "\n\t\t Suppressed EXCEPTION: " + format(ee.getMessage());
+                    msg += "\n\t\t Suppressed EXCEPTION: " + ee.getMessage();
                 }
             }
 
@@ -174,13 +174,6 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         } else {
             return null;
         }
-    }
-
-    private static String format(String message) {
-        if (message != null && message.contains(":")) {
-            return message.substring(message.indexOf(":") + 1);
-        }
-        return message;
     }
 
     public String getName() {
