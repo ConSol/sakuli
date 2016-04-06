@@ -18,7 +18,6 @@
 
 package org.sakuli.services.forwarder.database.dao.impl;
 
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.services.forwarder.database.ProfileJdbcDb;
 import org.sakuli.services.forwarder.database.dao.DaoTestSuite;
@@ -41,9 +40,6 @@ import java.sql.Types;
 @ProfileJdbcDb
 @Component
 public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
-
-    @Autowired
-    private SakuliProperties sakuliProperties;
 
     @Autowired
     public DaoTestSuiteImpl(DataSource dataSource) throws SakuliException {

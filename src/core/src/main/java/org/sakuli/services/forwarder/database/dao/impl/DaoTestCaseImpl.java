@@ -20,7 +20,6 @@ package org.sakuli.services.forwarder.database.dao.impl;
 
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.services.forwarder.database.ProfileJdbcDb;
 import org.sakuli.services.forwarder.database.dao.DaoTestCase;
@@ -33,11 +32,15 @@ import org.springframework.stereotype.Component;
 import javax.imageio.ImageIO;
 import javax.sql.DataSource;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.Types;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author tschneck
@@ -46,9 +49,6 @@ import java.util.*;
 @ProfileJdbcDb
 @Component
 public class DaoTestCaseImpl extends Dao implements DaoTestCase {
-
-    @Autowired
-    private SakuliProperties sakuliProperties;
 
     @Autowired
     public DaoTestCaseImpl(DataSource dataSource) throws SakuliException {
