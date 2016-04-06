@@ -182,8 +182,9 @@ and define a command:
         command_line                   $USER2$/eh_sakuli_screenshot.sh $SERVICESTATE$ $HOSTNAME$ $SERVICEDESC$ $LASTSERVICECHECK$
     }  
     
-The eventhandler script also deletes screenshots older than 30 days. 
-TODO SM: Override default value via env variable! 
+The eventhandler script also deletes screenshots older than 30 days. If you want to override this, define the number of days to keep screenshots as a custom macro (e.g. `$USER12`) and use this variable as fifth parameter: 
+
+        command_line                   $USER2$/eh_sakuli_screenshot.sh $SERVICESTATE$ $HOSTNAME$ $SERVICEDESC$ $LASTSERVICECHECK$ $USER12$
 
 Now connect the event handler command to every Sakuli service: 
 
@@ -209,7 +210,8 @@ Install the Apache configuration file:
     OMD[sakuli]:~$ cp __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/screenshot_lightbox/sakuli_screenshots.conf ~/etc/apache/conf.d/sakuli_screenshots.conf
  
 ### Thruk SSI 
-TODO SM: SSI begriff erklären
+
+SSI (Server Side Include) is a technique to include additional code delivered by the web server. You have to extend Thruks SSI files with some HTML/CSS/JS, to make the lightbox working. Upcoming versions of Thruk will support custom SSI files, too ([commit](https://github.com/sni/Thruk/commit/1183f28071855a76d43ec49bd60aaba316d7fcb0)).
    
 Open `__TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/screenshot_lightbox/extinfo-header.ssi.add` and follow the instructions how to add the JavaScript/CSS/HTML to `extinfo-header.ssi`.
 
