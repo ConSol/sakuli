@@ -161,13 +161,13 @@ The service should change its status to:
 
 ## Screenshot history (optional)
 
-Since Sakuli v1.0.0, exception messages containing a screenshot also provide a CSS based magnifier/lightbox option to enlarge the currently displayed image. This perfect if you can live with the fact that a screenshot is only visible for the time until the next result arrives - which will update the service output and the embedded image. 
+Since Sakuli v1.1.0, exception messages containing a screenshot also provide a CSS based magnifier/lightbox option to enlarge the currently displayed image. This perfect if you can live with the fact that a screenshot is only visible for the time until the next result arrives - which will update the service output and the embedded image. 
 
-Since version v1.2.0 it is possible to view also a screenshot history. (This has been tested in OMD; for other monitoring systems you might have to adapt the SSI.)
+It is also possible to view a screenshot history. (This has been tested in OMD; for other monitoring systems you might have to adapt the SSI.)
 
 Each Sakuli check is combined with an event handler script, which saves the base64 encoded image to the local file system if the result is CRITICAL and the output contains the pattern "EXCEPTION". The monitoring web frontend (in OMD: Thruk) then can load these images into a lightbox. 
 
-### event handler
+### configure event handler (OMD system)
 
 Copy the event handler script to the local plugin directory
 
@@ -182,7 +182,8 @@ and define a command:
         command_line                   $USER2$/eh_sakuli_screenshot.sh $SERVICESTATE$ $HOSTNAME$ $SERVICEDESC$ $LASTSERVICECHECK$
     }  
     
-Th eventhandler script also deletes screenshots older than 30 days. Change that to your needings. 
+The eventhandler script also deletes screenshots older than 30 days. 
+TODO SM: Override default value via env variable! 
 
 Now connect the event handler command to every Sakuli service: 
 
@@ -208,6 +209,7 @@ Install the Apache configuration file:
     OMD[sakuli]:~$ cp __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/screenshot_lightbox/sakuli_screenshots.conf ~/etc/apache/conf.d/sakuli_screenshots.conf
  
 ### Thruk SSI 
+TODO SM: SSI begriff erklären
    
 Open `__TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/screenshot_lightbox/extinfo-header.ssi.add` and follow the instructions how to add the JavaScript/CSS/HTML to `extinfo-header.ssi`.
 

@@ -37,6 +37,7 @@ case $STATE in
 esac
 
 # Clean up all screenshot directories older than 30 days
+# TODO SM: override 30 days as env variable?
 for d in $(find $IMG_ROOT -mindepth 3 -maxdepth 3 -mtime +30 -type d); do rm -rf $d; done
 
 
