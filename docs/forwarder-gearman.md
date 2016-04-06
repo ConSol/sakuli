@@ -211,6 +211,6 @@ Install the Apache configuration file:
    
 Open `__TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/screenshot_lightbox/extinfo-header.ssi.add` and follow the instructions how to add the JavaScript/CSS/HTML to `extinfo-header.ssi`.
 
-From now, clicking on a screenshot opens the lightbox which show the last event. Use the buttons on the bottom right corner to browse through all previous events: 
+From now, clicking on a screenshot opens the lightbox which shows the last event. Use the buttons on the bottom right corner or the arrow keys to browse through all previous events; press Esc to close the lightbox again: 
 
 ![screenshot_history](pics/screenshot-history.png)
