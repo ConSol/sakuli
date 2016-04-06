@@ -146,7 +146,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
                 if (flatFormatted) {
                     msg += " --  Suppressed EXCEPTION: " + ee.getMessage();
                 } else {
-                    msg += "\n\t\t Suppressed EXCEPTION: " + ee.getMessage();
+                    msg += "\n\t\tSuppressed EXCEPTION: " + ee.getMessage();
                 }
             }
 
