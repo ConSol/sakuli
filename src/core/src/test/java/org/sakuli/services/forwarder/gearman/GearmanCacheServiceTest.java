@@ -84,6 +84,19 @@ public class GearmanCacheServiceTest extends BaseTest {
         Assert.assertEquals(results.get(0).getQueueName(), "check_results");
         Assert.assertEquals(results.get(0).getUuid(), newResult.getUuid());
         Assert.assertEquals(results.get(0).getPayloadString().trim(), newResult.getPayloadString().trim());
+
+        NagiosCheckResult newResult2 = checkResultBuilder.build();
+        results.add(newResult2);
+
+        testling.cacheResults(results);
+        results = testling.getCachedResults();
+        Assert.assertEquals(results.size(), 2L);
+        Assert.assertEquals(results.get(0).getQueueName(), "check_results");
+        Assert.assertEquals(results.get(0).getUuid(), newResult.getUuid());
+        Assert.assertEquals(results.get(0).getPayloadString().trim(), newResult.getPayloadString().trim());
+        Assert.assertEquals(results.get(1).getQueueName(), "check_results");
+        Assert.assertEquals(results.get(1).getUuid(), newResult2.getUuid());
+        Assert.assertEquals(results.get(1).getPayloadString().trim(), newResult2.getPayloadString().trim());
     }
 
     @Test
@@ -96,16 +109,20 @@ public class GearmanCacheServiceTest extends BaseTest {
             Assert.assertEquals(originalResults.size(), 2L);
             Assert.assertEquals(originalResults.get(0).getQueueName(), "check_results");
             Assert.assertEquals(originalResults.get(0).getUuid(), "example_xfce__2016_03_23_14_00_00_000");
+            Assert.assertTrue(originalResults.get(0).getPayloadString().contains("[OK] case \"case1\""));
             Assert.assertEquals(originalResults.get(1).getQueueName(), "check_results");
             Assert.assertEquals(originalResults.get(1).getUuid(), "example_xfce__2016_03_23_15_00_00_000");
+            Assert.assertTrue(originalResults.get(1).getPayloadString().contains("[OK] case \"case2\""));
 
             testling.cacheResults(originalResults);
             List<NagiosCheckResult> results = testling.getCachedResults();
             Assert.assertEquals(results.size(), 2L);
             Assert.assertEquals(results.get(0).getQueueName(), "check_results");
             Assert.assertEquals(results.get(0).getUuid(), "example_xfce__2016_03_23_14_00_00_000");
+            Assert.assertTrue(results.get(0).getPayloadString().contains("[OK] case \"case1\""));
             Assert.assertEquals(results.get(1).getQueueName(), "check_results");
             Assert.assertEquals(results.get(1).getUuid(), "example_xfce__2016_03_23_15_00_00_000");
+            Assert.assertTrue(results.get(1).getPayloadString().contains("[OK] case \"case2\""));
 
             NagiosCheckResult newResult = checkResultBuilder.build();
             results.add(0, newResult);
@@ -118,8 +135,10 @@ public class GearmanCacheServiceTest extends BaseTest {
             Assert.assertEquals(results.get(0).getPayloadString().trim(), newResult.getPayloadString().trim());
             Assert.assertEquals(results.get(1).getQueueName(), "check_results");
             Assert.assertEquals(results.get(1).getUuid(), "example_xfce__2016_03_23_14_00_00_000");
+            Assert.assertTrue(results.get(1).getPayloadString().contains("[OK] case \"case1\""));
             Assert.assertEquals(results.get(2).getQueueName(), "check_results");
             Assert.assertEquals(results.get(2).getUuid(), "example_xfce__2016_03_23_15_00_00_000");
+            Assert.assertTrue(results.get(2).getPayloadString().contains("[OK] case \"case2\""));
         } finally {
             testling.cacheResults(originalResults);
         }
