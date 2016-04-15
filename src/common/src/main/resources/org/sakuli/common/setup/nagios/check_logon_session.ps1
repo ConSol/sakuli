@@ -1,5 +1,5 @@
 <#
-12/2013 Simon Meggle, ConSol GmbH, simon.meggle@consol.de
+12/2013 Simon Meggle, ConSol Software GmbH, simon.meggle@consol.de
 .SYNOPSIS
    Check logon state of a certain user
 .DESCRIPTION
