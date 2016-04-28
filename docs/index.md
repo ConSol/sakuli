@@ -2,10 +2,10 @@
 
 # Documentation
 
-Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs.org)**.
-* Stable version (latest tagged `vX.X.X` documentation) [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=stable)](http://sakuli.readthedocs.org/en/stable/)
-* Latest verison (documentation on `master` branch, with corrections) [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=latest)](http://sakuli.readthedocs.org/en/latest/)
-* Dev version (current development version on `dev` branch) [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=dev)](http://sakuli.readthedocs.org/en/dev/)
+Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs.io)**.
+* Stable version (latest tagged `vX.X.X` documentation) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=stable)](http://sakuli.readthedocs.io/en/stable/)
+* Latest verison (documentation on `master` branch, with corrections) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=latest)](http://sakuli.readthedocs.io/en/latest/)
+* Dev version (current development version on `dev` branch) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=dev)](http://sakuli.readthedocs.io/en/dev/)
 
 ## Usage
 ### Basic setup

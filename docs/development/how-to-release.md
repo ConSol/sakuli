@@ -2,7 +2,7 @@
 
 ## (Jenkins CI) Perform a new official release
 * Go to [Jenkins - Sakuli_perform_release](http://labs-build.consol.de/job/Sakuli_perform_release/) and execute the job and set the parameters `REL_VERSION` and `DEV_VERSION`
-* Update the tag `stable` at [read-the-docs](https://readthedocs.org/projects/sakuli/).
+* Update the tag `stable` at [read-the-docs](https://readthedocs.io/projects/sakuli/).
 * Create a new taged verison on [DockerHub](https://hub.docker.com/) with same `REL_VERSION` for the following images:
 	* [consol/sakuli-centos-xfce](https://hub.docker.com/r/consol/sakuli-centos-xfce/~/settings/automated-builds/)
 	* [consol/sakuli-ubuntu-xfce](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/~/settings/automated-builds/)
