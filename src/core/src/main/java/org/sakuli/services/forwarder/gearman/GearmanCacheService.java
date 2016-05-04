@@ -49,6 +49,7 @@ public class GearmanCacheService {
     private static final String CACHE_FILE = ".gearman-cache";
     private static final String CACHE_SEPARATOR = "=======";
     private static final String CHARSET_NAME = "UTF-8";
+    private static final String LINE_SEPARATOR = "\n";
     private static Logger logger = LoggerFactory.getLogger(GearmanCacheService.class);
     @Autowired
     private SakuliExceptionHandler exceptionHandler;
@@ -78,7 +79,7 @@ public class GearmanCacheService {
                         queueName = line.substring(CACHE_SEPARATOR.length() + 1, line.indexOf(":"));
                         uuid = line.substring(line.indexOf(":") + 1).trim();
                     } else if (StringUtils.isNotEmpty(line)) {
-                        resultBuilder.append(line).append(System.lineSeparator());
+                        resultBuilder.append(line).append(LINE_SEPARATOR);
                     }
                 }
             } catch (IOException e) {
