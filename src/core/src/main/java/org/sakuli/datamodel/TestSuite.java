@@ -140,10 +140,10 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
     }
 
     @Override
-    public String getExceptionMessages(boolean flatFormatted, String exceptionFormat) {
-        StringBuilder suiteErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted, exceptionFormat)));
+    public String getExceptionMessages(boolean flatFormatted, String[] formatExpressions) {
+        StringBuilder suiteErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted, formatExpressions)));
         for (TestCase testCase : getTestCasesAsSortedSet()) {
-            final String tcErrorMessage = testCase.getExceptionMessages(flatFormatted, exceptionFormat);
+            final String tcErrorMessage = testCase.getExceptionMessages(flatFormatted, formatExpressions);
 
             if (isNotBlank(tcErrorMessage)) {
                 if (suiteErrorMessage.length() > 0) {

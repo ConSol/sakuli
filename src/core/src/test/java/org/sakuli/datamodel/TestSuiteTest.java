@@ -158,15 +158,15 @@ public class TestSuiteTest {
         TestSuite testSuite = new TestSuite();
         String message = "suite-exception";
         testSuite.addException(new SakuliException(message));
-        assertEquals(testSuite.getExceptionMessages(false, ""), message);
-        assertEquals(testSuite.getExceptionMessages(true, ""), message);
+        assertEquals(testSuite.getExceptionMessages(false, new String[] {}), message);
+        assertEquals(testSuite.getExceptionMessages(true, new String[] {}), message);
 
         TestCase tc1 = new TestCase("case1", "case1");
         String messageCase = "case-exception";
         tc1.addException(new SakuliException(messageCase));
         testSuite.addTestCase(tc1.getId(), tc1);
-        assertEquals(testSuite.getExceptionMessages(false, ""), message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase);
-        assertEquals(testSuite.getExceptionMessages(true, ""), message + " -- CASE \"" + tc1.getId() + "\": " + messageCase);
+        assertEquals(testSuite.getExceptionMessages(false, new String[] {}), message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase);
+        assertEquals(testSuite.getExceptionMessages(true, new String[] {}), message + " -- CASE \"" + tc1.getId() + "\": " + messageCase);
     }
 
     @Test
@@ -174,8 +174,8 @@ public class TestSuiteTest {
         TestSuite testSuite = new TestSuite();
         String message = "suite-exception";
         testSuite.addException(new SakuliException(message));
-        assertEquals(testSuite.getExceptionMessages(false, ""), message);
-        assertEquals(testSuite.getExceptionMessages(true, ""), message);
+        assertEquals(testSuite.getExceptionMessages(false, new String[] {}), message);
+        assertEquals(testSuite.getExceptionMessages(true, new String[] {}), message);
 
         TestCase tc1 = new TestCase("case1", "case1");
         String messageCase = "case-exception";
@@ -187,31 +187,31 @@ public class TestSuiteTest {
         step1.addException(new SakuliException(messageStep));
         tc1.addStep(step1);
 
-        assertEquals(testSuite.getExceptionMessages(false, ""),
+        assertEquals(testSuite.getExceptionMessages(false, new String[] {}),
                 message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase
                         + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );
-        assertEquals(testSuite.getExceptionMessages(true, ""),
+        assertEquals(testSuite.getExceptionMessages(true, new String[] {}),
                 message + " -- CASE \"" + tc1.getId() + "\": " + messageCase
                         + " - STEP \"" + step1.getId() + "\": " + messageStep
         );
 
         tc1.exception = null;
-        assertEquals(testSuite.getExceptionMessages(false, ""),
+        assertEquals(testSuite.getExceptionMessages(false, new String[] {}),
                 message + "\n" + "CASE \"" + tc1.getId() + "\": "
                         + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );
-        assertEquals(testSuite.getExceptionMessages(true, ""),
+        assertEquals(testSuite.getExceptionMessages(true, new String[] {}),
                 message + " -- CASE \"" + tc1.getId() + "\": "
                         + "STEP \"" + step1.getId() + "\": " + messageStep
         );
 
         testSuite.exception = null;
-        assertEquals(testSuite.getExceptionMessages(false, ""),
+        assertEquals(testSuite.getExceptionMessages(false, new String[] {}),
                 "CASE \"" + tc1.getId() + "\": "
                         + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );
-        assertEquals(testSuite.getExceptionMessages(true, ""),
+        assertEquals(testSuite.getExceptionMessages(true, new String[] {}),
                 "CASE \"" + tc1.getId() + "\": "
                         + "STEP \"" + step1.getId() + "\": " + messageStep
         );

@@ -90,6 +90,12 @@ We can extract the important information with this regular expression: **TypeErr
 
 Now we get the final error message: **el is undefined el is not accessible**
 
+The log exception format property supports multiple expression values. You can use a JSON array syntax when having more than one regular expression that should be evaluated.
+
+* **`sakuli.log.exception.format`**`=["TypeError(.*)", "AccessError(.*)", "OtherError(.*)"]`  -  Multiple format regular expressions 
+
+All regular expressions in the list are evaluated in sequence and the results get combined to a single formatted exception message.
+
 #### Log file rotation 
 
 * **`sakuli.log.maxAge`**`14` - Deletes all files that are older than (default) 14 days in the defined `sakuli.log.folder`.

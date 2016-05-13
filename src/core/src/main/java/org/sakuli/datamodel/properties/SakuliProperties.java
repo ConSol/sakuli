@@ -18,13 +18,16 @@
 
 package org.sakuli.datamodel.properties;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.sakuli.exceptions.SakuliInitException;
+import org.sakuli.exceptions.SakuliRuntimeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -166,8 +169,19 @@ public class SakuliProperties extends AbstractProperties {
         this.logPattern = logPattern;
     }
 
-    public String getLogExceptionFormat() {
-        return logExceptionFormat;
+    public String[] getLogExceptionFormat() {
+        if (StringUtils.hasText(logExceptionFormat) &&
+                logExceptionFormat.startsWith("[") && logExceptionFormat.endsWith("]")) {
+            try {
+                return new JsonFactory().setCodec(new ObjectMapper()).createParser(logExceptionFormat).readValueAs(String[].class);
+            } catch (IOException e) {
+                throw new SakuliRuntimeException("Found invalid log exception format pattern", e);
+            }
+        } else if (StringUtils.hasText(logExceptionFormat)) {
+            return new String[] { logExceptionFormat };
+        } else {
+            return new String[] {};
+        }
     }
 
     public void setLogExceptionFormat(String logExceptionFormat) {

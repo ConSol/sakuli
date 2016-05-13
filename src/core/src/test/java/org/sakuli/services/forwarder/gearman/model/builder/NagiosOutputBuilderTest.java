@@ -42,6 +42,7 @@ import java.util.*;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 public class NagiosOutputBuilderTest {
@@ -65,6 +66,8 @@ public class NagiosOutputBuilderTest {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(testling, "screenshotDivConverter", screenshotDivConverter);
         MonitoringPropertiesTestHelper.initMock(gearmanProperties);
+
+        when(sakuliProperties.getLogExceptionFormat()).thenReturn(new String[] {});
     }
 
     @Test

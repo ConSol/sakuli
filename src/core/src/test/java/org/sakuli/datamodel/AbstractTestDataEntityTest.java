@@ -65,11 +65,11 @@ public class AbstractTestDataEntityTest extends BaseTest {
     public void testAddException() throws Exception {
         testling.addException(new Exception("test"));
         Assert.assertNotNull(testling.getException());
-        Assert.assertTrue(testling.getExceptionMessages(false, "").contains("test"));
+        Assert.assertTrue(testling.getExceptionMessages(false, new String[] {}).contains("test"));
 
         testling.addException(new Exception("SuppressedTest"));
         Assert.assertNotNull(testling.getException().getSuppressed());
-        Assert.assertTrue(testling.getExceptionMessages(false, "").contains("SuppressedTest"));
+        Assert.assertTrue(testling.getExceptionMessages(false, new String[] {}).contains("SuppressedTest"));
     }
 
     @Test

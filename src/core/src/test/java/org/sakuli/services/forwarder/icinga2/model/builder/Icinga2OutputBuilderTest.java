@@ -42,6 +42,8 @@ import org.testng.annotations.Test;
 import java.util.Collections;
 import java.util.Date;
 
+import static org.mockito.Mockito.when;
+
 /**
  * @author tschneck
  *         Date: 2/24/16
@@ -61,6 +63,8 @@ public class Icinga2OutputBuilderTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         MonitoringPropertiesTestHelper.initMonitoringMock(properties);
+
+        when(sakuliProperties.getLogExceptionFormat()).thenReturn(new String[] {});
     }
 
     @Test

@@ -66,11 +66,12 @@ public class CommonResultServiceImplTest extends LoggerTest {
     @DataProvider(name = "errors")
     public static Object[][] errors() {
         return new Object[][]{
-                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nSome details are here ...", "TypeError(.*)", "el is undefined"},
-                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nTypeError another el is undefined\nSome details are here ...", "TypeError(.*)", "el is undefined another el is undefined"},
-                {"Something went wrong!\nNow some important information:\nTypeError el is undefined AccessError another el is not accessible\nSome details are here ...", "TypeError(.*).*AccessError\\s(.*)", "el is undefined another el is not accessible"},
-                {"Something went wrong!", "TypeError(.*)", "Something went wrong!"},
-                {"Something went wrong: take a look at it!", "", "Something went wrong: take a look at it!"},
+                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nSome details are here ...", new String[] { "TypeError(.*)" }, "el is undefined"},
+                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nTypeError another el is undefined\nSome details are here ...", new String[] { "TypeError(.*)" }, "el is undefined another el is undefined"},
+                {"Something went wrong!\nNow some important information:\nTypeError el is undefined AccessError another el is not accessible\nSome details are here ...", new String[] { "TypeError(.*).*AccessError\\s(.*)" }, "el is undefined another el is not accessible"},
+                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nAccessError another el is not accessible\nSome details are here ...", new String[] { "TypeError(.*)", "AccessError(.*)" }, "el is undefined another el is not accessible"},
+                {"Something went wrong!", new String[] { "TypeError(.*)" }, "Something went wrong!"},
+                {"Something went wrong: take a look at it!", new String[] {}, "Something went wrong: take a look at it!"},
         };
     }
 
@@ -84,6 +85,9 @@ public class CommonResultServiceImplTest extends LoggerTest {
 
     @Test(dataProvider = "states")
     public void testSaveAllResults(TestSuiteState testSuiteState, TestCaseState testCaseState, String stateOutputRegex) throws Exception {
+        reset(sakuliProperties);
+        when(sakuliProperties.getLogExceptionFormat()).thenReturn(new String[] {});
+
         TestCaseStepState stepState = TestCaseStepState.WARNING;
         TestSuite testSuite = new TestSuiteExampleBuilder()
                 .withId("LOG_TEST_SUITE").withState(testSuiteState)
@@ -106,9 +110,9 @@ public class CommonResultServiceImplTest extends LoggerTest {
     }
 
     @Test(dataProvider = "errors")
-    public void testSaveAllResultsWithErrorFormat(String exceptionMessage, String formatExpression, String errorResult) throws Exception {
+    public void testSaveAllResultsWithErrorFormat(String exceptionMessage, String[] formatExpressions, String errorResult) throws Exception {
         reset(sakuliProperties);
-        when(sakuliProperties.getLogExceptionFormat()).thenReturn(formatExpression);
+        when(sakuliProperties.getLogExceptionFormat()).thenReturn(formatExpressions);
 
         TestCaseStepState stepState = TestCaseStepState.WARNING;
         TestSuite testSuite = new TestSuiteExampleBuilder()

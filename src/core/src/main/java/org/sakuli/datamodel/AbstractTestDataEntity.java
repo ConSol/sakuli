@@ -138,7 +138,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return exception;
     }
 
-    public String getExceptionMessages(boolean flatFormatted, String exceptionFormat) {
+    public String getExceptionMessages(boolean flatFormatted, String[] formatExpressions) {
         if (exception != null) {
             String msg = exception.getMessage();
             //add suppressed exceptions
@@ -150,19 +150,19 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
                 }
             }
 
-            if (StringUtils.isNotEmpty(exceptionFormat)) {
-                Pattern p = Pattern.compile(exceptionFormat);
+            String formatted = "";
+            for (String formatExpression : formatExpressions) {
+                Pattern p = Pattern.compile(formatExpression);
                 Matcher m = p.matcher(msg);
-                String formatted = "";
                 while (m.find()) {
                     for (int i = 1; i <= m.groupCount(); i++) {
                         formatted += m.group(i);
                     }
                 }
+            }
 
-                if (StringUtils.isNotBlank(formatted)) {
-                    msg = formatted;
-                }
+            if (StringUtils.isNotBlank(formatted)) {
+                msg = formatted;
             }
 
             if (flatFormatted) {

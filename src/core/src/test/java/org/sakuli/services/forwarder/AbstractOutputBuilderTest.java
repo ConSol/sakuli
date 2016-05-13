@@ -49,6 +49,7 @@ import java.util.Date;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static org.mockito.Mockito.when;
 import static org.sakuli.services.forwarder.gearman.TextPlaceholder.*;
 import static org.testng.Assert.assertEquals;
 
@@ -100,6 +101,8 @@ public class AbstractOutputBuilderTest {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(testling, "screenshotDivConverter", screenshotDivConverter);
         MonitoringPropertiesTestHelper.initMonitoringMock(properties);
+
+        when(sakuliProperties.getLogExceptionFormat()).thenReturn(new String[] {});
     }
 
     @Test(dataProvider = "placeholder")
