@@ -88,15 +88,15 @@ public class TestCaseStepTest {
     @Test
     public void testGetExceptionMessage() throws Exception {
         TestCase testCase = new TestCaseExampleBuilder().withException(new SakuliException("CASE-EXCEPTION")).buildExample();
-        assertEquals(testCase.getExceptionMessages(true, new String[] {}), "CASE-EXCEPTION");
-        assertEquals(testCase.getExceptionMessages(false, new String[] {}), "CASE-EXCEPTION");
+        assertEquals(testCase.getExceptionMessages(true, Collections.emptyMap()), "CASE-EXCEPTION");
+        assertEquals(testCase.getExceptionMessages(false, Collections.emptyMap()), "CASE-EXCEPTION");
 
         testCase.setSteps(Collections.singletonList(
                 new TestCaseStepExampleBuilder()
                         .withException(new SakuliException("STEP-EXCEPTION"))
                         .buildExample()));
-        assertEquals(testCase.getExceptionMessages(true, new String[] {}), "CASE-EXCEPTION - STEP \"step_for_unit_test\": STEP-EXCEPTION");
-        assertEquals(testCase.getExceptionMessages(false, new String[] {}), "CASE-EXCEPTION\n\tSTEP \"step_for_unit_test\": STEP-EXCEPTION");
+        assertEquals(testCase.getExceptionMessages(true, Collections.emptyMap()), "CASE-EXCEPTION - STEP \"step_for_unit_test\": STEP-EXCEPTION");
+        assertEquals(testCase.getExceptionMessages(false, Collections.emptyMap()), "CASE-EXCEPTION\n\tSTEP \"step_for_unit_test\": STEP-EXCEPTION");
 
     }
 }

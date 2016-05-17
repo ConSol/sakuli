@@ -67,7 +67,7 @@ public class CommonResultServiceImpl extends AbstractResultService {
                 logTestCaseStateDetailInfo(tc -> tc.getState().isCritical());
                 break;
             case ERRORS:
-                String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages(false, sakuliProperties.getLogExceptionFormat());
+                String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages(false, sakuliProperties.getLogExceptionFormatMappings());
                 LOGGER.error(errorMsg + "\n");
                 break;
         }

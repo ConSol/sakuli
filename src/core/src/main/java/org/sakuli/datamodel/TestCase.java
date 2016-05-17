@@ -194,7 +194,7 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
     }
 
     @Override
-    public String getExceptionMessages(boolean flatFormatted, String[] formatExpressions) {
+    public String getExceptionMessages(boolean flatFormatted, Map<String, String> formatExpressions) {
         StringBuilder caseErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted, formatExpressions)));
         for (TestCaseStep step : getStepsAsSortedSet()) {
             final String stepErrorMessage = step.getExceptionMessages(flatFormatted, formatExpressions);

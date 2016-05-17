@@ -102,7 +102,7 @@ public class AbstractOutputBuilderTest {
         ReflectionTestUtils.setField(testling, "screenshotDivConverter", screenshotDivConverter);
         MonitoringPropertiesTestHelper.initMonitoringMock(properties);
 
-        when(sakuliProperties.getLogExceptionFormat()).thenReturn(new String[] {});
+        when(sakuliProperties.getLogExceptionFormatMappings()).thenReturn(Collections.emptyMap());
     }
 
     @Test(dataProvider = "placeholder")

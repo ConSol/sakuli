@@ -29,24 +29,43 @@ public class SakuliPropertiesTest {
     @Test
     public void testGetLogExceptionFormat() throws Exception {
         SakuliProperties testling = new SakuliProperties();
-        Assert.assertEquals(testling.getLogExceptionFormat(), new String[]{ });
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().size(), 0L);
 
         testling.setLogExceptionFormat("");
-        Assert.assertEquals(testling.getLogExceptionFormat(), new String[]{ });
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().size(), 0L);
 
         testling.setLogExceptionFormat("[]");
-        Assert.assertEquals(testling.getLogExceptionFormat(), new String[]{ });
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().size(), 0L);
 
         testling.setLogExceptionFormat("Some format expression");
-        Assert.assertEquals(testling.getLogExceptionFormat(), new String[]{ "Some format expression" });
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().size(), 1L);
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().get("Some format expression"), "");
+
+        testling.setLogExceptionFormat("Some format expression=>Custom free text");
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().size(), 1L);
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().get("Some format expression"), "Custom free text");
 
         testling.setLogExceptionFormat("[foo");
-        Assert.assertEquals(testling.getLogExceptionFormat(), new String[]{ "[foo" });
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().size(), 1L);
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().get("[foo"), "");
 
         testling.setLogExceptionFormat("foo]");
-        Assert.assertEquals(testling.getLogExceptionFormat(), new String[]{ "foo]" });
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().size(), 1L);
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().get("foo]"), "");
 
         testling.setLogExceptionFormat("[\"Some format expression\", \"Another format expression\"]");
-        Assert.assertEquals(testling.getLogExceptionFormat(), new String[]{ "Some format expression", "Another format expression" });
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().size(), 2L);
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().get("Some format expression"), "");
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().get("Another format expression"), "");
+
+        testling.setLogExceptionFormat("[\"Some format expression=>Custom text1\", \"Another format expression=>Custom text2\"]");
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().size(), 2L);
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().get("Some format expression"), "Custom text1");
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().get("Another format expression"), "Custom text2");
+
+        testling.setLogExceptionFormat("[\"Some format expression => Custom text1\", \"Another format expression => Custom text2\"]");
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().size(), 2L);
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().get("Some format expression"), "Custom text1");
+        Assert.assertEquals(testling.getLogExceptionFormatMappings().get("Another format expression"), "Custom text2");
     }
 }

@@ -64,7 +64,7 @@ public class Icinga2OutputBuilderTest {
         MockitoAnnotations.initMocks(this);
         MonitoringPropertiesTestHelper.initMonitoringMock(properties);
 
-        when(sakuliProperties.getLogExceptionFormat()).thenReturn(new String[] {});
+        when(sakuliProperties.getLogExceptionFormatMappings()).thenReturn(Collections.emptyMap());
     }
 
     @Test

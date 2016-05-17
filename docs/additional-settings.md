@@ -96,6 +96,16 @@ The log exception format property supports multiple expression values. You can u
 
 All regular expressions in the list are evaluated in sequence and the results get combined to a single formatted exception message.
 
+We can also use custom error messages in order to customize the resulting exception log message. You can map the exception log format expressions to a custom text like this:
+ 
+* **`sakuli.log.exception.format`**`=["TypeError(.*) => Type error: %s", "AccessError(.*) => Access error: %s", "OtherError.* => Some other error occurred"]`  -  Multiple format regular expressions with custom text mappings
+ 
+The exception log expression is mapped to a custom text using the "=>" operator. So the regular expression 'TypeError(.*)' is mapped to the custom message 'Type error: %s'. The custom text is able to use regular expression back 
+references. Just use simple Java message format parameters (e.g. '%s') in your custom error message in order to reference regular expression groups as back reference.
+ 
+Multiple back references are supported, too. Respectively use indices when using the Java String format parameters in your custom error message ('%1s', '%2s' and so on). When no regular expression group is used you can simple map 
+the regular expression match to a custom message as shown in the expression: 'OtherError.* => Some other error occurred'.
+
 #### Log file rotation 
 
 * **`sakuli.log.maxAge`**`14` - Deletes all files that are older than (default) 14 days in the defined `sakuli.log.folder`.

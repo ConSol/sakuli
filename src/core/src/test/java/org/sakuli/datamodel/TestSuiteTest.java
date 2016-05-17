@@ -26,10 +26,7 @@ import org.sakuli.exceptions.SakuliException;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.Test;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.*;
@@ -158,15 +155,15 @@ public class TestSuiteTest {
         TestSuite testSuite = new TestSuite();
         String message = "suite-exception";
         testSuite.addException(new SakuliException(message));
-        assertEquals(testSuite.getExceptionMessages(false, new String[] {}), message);
-        assertEquals(testSuite.getExceptionMessages(true, new String[] {}), message);
+        assertEquals(testSuite.getExceptionMessages(false, Collections.emptyMap()), message);
+        assertEquals(testSuite.getExceptionMessages(true, Collections.emptyMap()), message);
 
         TestCase tc1 = new TestCase("case1", "case1");
         String messageCase = "case-exception";
         tc1.addException(new SakuliException(messageCase));
         testSuite.addTestCase(tc1.getId(), tc1);
-        assertEquals(testSuite.getExceptionMessages(false, new String[] {}), message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase);
-        assertEquals(testSuite.getExceptionMessages(true, new String[] {}), message + " -- CASE \"" + tc1.getId() + "\": " + messageCase);
+        assertEquals(testSuite.getExceptionMessages(false, Collections.emptyMap()), message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase);
+        assertEquals(testSuite.getExceptionMessages(true, Collections.emptyMap()), message + " -- CASE \"" + tc1.getId() + "\": " + messageCase);
     }
 
     @Test
@@ -174,8 +171,8 @@ public class TestSuiteTest {
         TestSuite testSuite = new TestSuite();
         String message = "suite-exception";
         testSuite.addException(new SakuliException(message));
-        assertEquals(testSuite.getExceptionMessages(false, new String[] {}), message);
-        assertEquals(testSuite.getExceptionMessages(true, new String[] {}), message);
+        assertEquals(testSuite.getExceptionMessages(false, Collections.emptyMap()), message);
+        assertEquals(testSuite.getExceptionMessages(true, Collections.emptyMap()), message);
 
         TestCase tc1 = new TestCase("case1", "case1");
         String messageCase = "case-exception";
@@ -187,31 +184,31 @@ public class TestSuiteTest {
         step1.addException(new SakuliException(messageStep));
         tc1.addStep(step1);
 
-        assertEquals(testSuite.getExceptionMessages(false, new String[] {}),
+        assertEquals(testSuite.getExceptionMessages(false, Collections.emptyMap()),
                 message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase
                         + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );
-        assertEquals(testSuite.getExceptionMessages(true, new String[] {}),
+        assertEquals(testSuite.getExceptionMessages(true, Collections.emptyMap()),
                 message + " -- CASE \"" + tc1.getId() + "\": " + messageCase
                         + " - STEP \"" + step1.getId() + "\": " + messageStep
         );
 
         tc1.exception = null;
-        assertEquals(testSuite.getExceptionMessages(false, new String[] {}),
+        assertEquals(testSuite.getExceptionMessages(false, Collections.emptyMap()),
                 message + "\n" + "CASE \"" + tc1.getId() + "\": "
                         + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );
-        assertEquals(testSuite.getExceptionMessages(true, new String[] {}),
+        assertEquals(testSuite.getExceptionMessages(true, Collections.emptyMap()),
                 message + " -- CASE \"" + tc1.getId() + "\": "
                         + "STEP \"" + step1.getId() + "\": " + messageStep
         );
 
         testSuite.exception = null;
-        assertEquals(testSuite.getExceptionMessages(false, new String[] {}),
+        assertEquals(testSuite.getExceptionMessages(false, Collections.emptyMap()),
                 "CASE \"" + tc1.getId() + "\": "
                         + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );
-        assertEquals(testSuite.getExceptionMessages(true, new String[] {}),
+        assertEquals(testSuite.getExceptionMessages(true, Collections.emptyMap()),
                 "CASE \"" + tc1.getId() + "\": "
                         + "STEP \"" + step1.getId() + "\": " + messageStep
         );

@@ -67,7 +67,7 @@ public class NagiosOutputBuilderTest {
         ReflectionTestUtils.setField(testling, "screenshotDivConverter", screenshotDivConverter);
         MonitoringPropertiesTestHelper.initMock(gearmanProperties);
 
-        when(sakuliProperties.getLogExceptionFormat()).thenReturn(new String[] {});
+        when(sakuliProperties.getLogExceptionFormatMappings()).thenReturn(Collections.emptyMap());
     }
 
     @Test

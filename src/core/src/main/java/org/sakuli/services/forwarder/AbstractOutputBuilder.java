@@ -76,7 +76,7 @@ public abstract class AbstractOutputBuilder {
                 .forEach(step -> {
                     sb.append(", step \"").append(step.getName()).append("\" ");
                     if (step.getState().isError()) {
-                        sb.append("EXCEPTION: ").append(step.getExceptionMessages(true, sakuliProperties.getLogExceptionFormat()));
+                        sb.append("EXCEPTION: ").append(step.getExceptionMessages(true, sakuliProperties.getLogExceptionFormatMappings()));
                     } else {
                         sb.append("over runtime (")
                                 .append(NagiosFormatter.formatToSec(step.getDuration()))
@@ -94,7 +94,7 @@ public abstract class AbstractOutputBuilder {
                 .forEach(c -> {
                     sb.append(", case \"").append(c.getName()).append("\" ");
                     if (c.getState().isError()) {
-                        sb.append("EXCEPTION: ").append(c.getExceptionMessages(true, sakuliProperties.getLogExceptionFormat()));
+                        sb.append("EXCEPTION: ").append(c.getExceptionMessages(true, sakuliProperties.getLogExceptionFormatMappings()));
                     } else {
                         sb.append("over runtime (").append(NagiosFormatter.formatToSec(c.getDuration()));
                         if (c.getState().isCritical()) {
@@ -144,7 +144,7 @@ public abstract class AbstractOutputBuilder {
         placeholderMap.put(WARN_THRESHOLD, String.valueOf(testSuite.getWarningTime()));
         placeholderMap.put(CRITICAL_THRESHOLD, String.valueOf(testSuite.getCriticalTime()));
         placeholderMap.put(ERROR_SCREENSHOT, screenshotDiv != null ? screenshotDiv.getPayloadString() : null);
-        placeholderMap.put(ERROR_MESSAGE, testSuite.getExceptionMessages(true, sakuliProperties.getLogExceptionFormat()));
+        placeholderMap.put(ERROR_MESSAGE, testSuite.getExceptionMessages(true, sakuliProperties.getLogExceptionFormatMappings()));
         placeholderMap.put(SUITE_FOLDER, testSuite.getTestSuiteFolder() != null ? testSuite.getTestSuiteFolder().toString() : null);
         placeholderMap.put(HOST, testSuite.getHost());
         placeholderMap.put(BROWSER_INFO, testSuite.getBrowserInfo());
@@ -202,7 +202,7 @@ public abstract class AbstractOutputBuilder {
         placeholderMap.put(STOP_DATE, (testCase.getStopDate() == null) ? "xx" : dateFormat.format(testCase.getStopDate()));
         placeholderMap.put(WARN_THRESHOLD, String.valueOf(testCase.getWarningTime()));
         placeholderMap.put(CRITICAL_THRESHOLD, String.valueOf(testCase.getCriticalTime()));
-        placeholderMap.put(ERROR_MESSAGE, testCase.getExceptionMessages(true, sakuliProperties.getLogExceptionFormat()));
+        placeholderMap.put(ERROR_MESSAGE, testCase.getExceptionMessages(true, sakuliProperties.getLogExceptionFormatMappings()));
         placeholderMap.put(ERROR_SCREENSHOT, generateTestCaseScreenshotsHTML(testCase));
         placeholderMap.put(STEP_INFORMATION, generateStepInformation(testCase.getStepsAsSortedSet(), sakuliProperties));
         placeholderMap.put(CASE_FILE, testCase.getTcFile() != null ? testCase.getTcFile().toString() : null);

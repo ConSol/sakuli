@@ -30,6 +30,7 @@ import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.*;
 
 /**
  * @author tschneck Date: 09.05.14
@@ -169,23 +170,39 @@ public class SakuliProperties extends AbstractProperties {
         this.logPattern = logPattern;
     }
 
-    public String[] getLogExceptionFormat() {
-        if (StringUtils.hasText(logExceptionFormat) &&
-                logExceptionFormat.startsWith("[") && logExceptionFormat.endsWith("]")) {
-            try {
-                return new JsonFactory().setCodec(new ObjectMapper()).createParser(logExceptionFormat).readValueAs(String[].class);
-            } catch (IOException e) {
-                throw new SakuliRuntimeException("Found invalid log exception format pattern", e);
-            }
-        } else if (StringUtils.hasText(logExceptionFormat)) {
-            return new String[] { logExceptionFormat };
-        } else {
-            return new String[] {};
-        }
+    public String getLogExceptionFormat() {
+        return logExceptionFormat;
     }
 
     public void setLogExceptionFormat(String logExceptionFormat) {
         this.logExceptionFormat = logExceptionFormat;
+    }
+
+    public Map<String, String> getLogExceptionFormatMappings() {
+        String[] formatExpressions;
+        if (StringUtils.hasText(logExceptionFormat) &&
+                logExceptionFormat.startsWith("[") && logExceptionFormat.endsWith("]")) {
+            try {
+                formatExpressions = new JsonFactory().setCodec(new ObjectMapper()).createParser(logExceptionFormat).readValueAs(String[].class);
+            } catch (IOException e) {
+                throw new SakuliRuntimeException("Found invalid log exception format pattern", e);
+            }
+        } else if (StringUtils.hasText(logExceptionFormat)) {
+            formatExpressions = new String[] { logExceptionFormat };
+        } else {
+            formatExpressions = new String[] {};
+        }
+
+        Map<String, String> formatMappings = new LinkedHashMap<>();
+        for (String formatExpression : formatExpressions) {
+            if (formatExpression.contains("=>")) {
+                formatMappings.put(formatExpression.substring(0, formatExpression.indexOf("=>")).trim(), formatExpression.substring(formatExpression.indexOf("=>") + 2).trim());
+            } else {
+                formatMappings.put(formatExpression, "");
+            }
+        }
+
+        return formatMappings;
     }
 
     public Path getConfigFolder() {

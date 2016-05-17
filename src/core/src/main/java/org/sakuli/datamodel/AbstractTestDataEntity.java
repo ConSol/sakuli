@@ -32,6 +32,7 @@ import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -138,7 +139,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return exception;
     }
 
-    public String getExceptionMessages(boolean flatFormatted, String[] formatExpressions) {
+    public String getExceptionMessages(boolean flatFormatted, Map<String, String> formatExpressions) {
         if (exception != null) {
             String msg = exception.getMessage();
             //add suppressed exceptions
@@ -151,12 +152,25 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
             }
 
             String formatted = "";
-            for (String formatExpression : formatExpressions) {
-                Pattern p = Pattern.compile(formatExpression);
+            for (Map.Entry<String, String> formatExpression : formatExpressions.entrySet()) {
+                Pattern p = Pattern.compile(formatExpression.getKey());
                 Matcher m = p.matcher(msg);
                 while (m.find()) {
-                    for (int i = 1; i <= m.groupCount(); i++) {
-                        formatted += m.group(i);
+                    if (StringUtils.isNotEmpty(formatExpression.getValue())) {
+                        if (m.groupCount() > 0) {
+                            Object[] parameters = new Object[m.groupCount()];
+                            for (int i = 0; i < m.groupCount(); i++) {
+                                parameters[i] = m.group(i + 1);
+                            }
+
+                            formatted += String.format(formatExpression.getValue(), parameters);
+                        } else {
+                            formatted += formatExpression.getValue();
+                        }
+                    } else {
+                        for (int i = 1; i <= m.groupCount(); i++) {
+                            formatted += m.group(i);
+                        }
                     }
                 }
             }
@@ -243,7 +257,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         }
         //if no exception is there, don't print it
         if (this.exception != null) {
-            stout += "\nERRORS:" + this.getExceptionMessages(false, sakuliProperties.getLogExceptionFormat());
+            stout += "\nERRORS:" + this.getExceptionMessages(false, sakuliProperties.getLogExceptionFormatMappings());
             if (this.exception instanceof SakuliExceptionWithScreenshot) {
                 stout += "\nERROR - SCREENSHOT: "
                         + this.getScreenShotPath().toFile().getAbsolutePath();
