@@ -109,10 +109,14 @@ public class GearmanResultServiceImpl extends AbstractResultService {
             Future<GearmanJobResult> future = gearmanClient.submit(job);
             GearmanJobResult result = future.get();
             if (result.jobSucceeded()) {
-                while (gearmanClient.getJobStatus(job).isRunning()) {
-                    logger.debug("Waiting for result job to finish");
+                do {
+                    if (gearmanClient.getJobStatus(job).isRunning()) {
+                        logger.debug("Waiting for result job to finish");
+                    }
+
                     sleep(properties.getJobInterval());
-                }
+                } while (gearmanClient.getJobStatus(job).isRunning());
+
                 if (logger.isDebugEnabled()) {
                     logger.debug(String.format("Successfully sent result to Gearman server %s:%s",
                             checkResult.getQueueName(), checkResult.getUuid()));
