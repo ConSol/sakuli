@@ -25,14 +25,10 @@ import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.gearman.model.NagiosCachedCheckResult;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,7 +46,6 @@ public class GearmanCacheService {
     private static final String CACHE_SEPARATOR = "=======";
     private static final String CHARSET_NAME = "UTF-8";
     private static final String LINE_SEPARATOR = "\n";
-    private static Logger logger = LoggerFactory.getLogger(GearmanCacheService.class);
     @Autowired
     private SakuliExceptionHandler exceptionHandler;
 
@@ -99,13 +94,13 @@ public class GearmanCacheService {
         File output = new File(cacheFile.toUri());
         try (FileOutputStream fos = new FileOutputStream(output)) {
             for (NagiosCheckResult result : results) {
-                fos.write((CACHE_SEPARATOR + " " + result.getQueueName() + ":" + result.getUuid() + System.lineSeparator()).getBytes(CHARSET_NAME));
-                fos.write((result.getPayloadString() + System.lineSeparator()).getBytes(CHARSET_NAME));
-                fos.write((CACHE_SEPARATOR + System.lineSeparator()).getBytes(CHARSET_NAME));
+                fos.write((CACHE_SEPARATOR + " " + result.getQueueName() + ":" + result.getUuid() + LINE_SEPARATOR).getBytes(CHARSET_NAME));
+                fos.write((result.getPayloadString().trim() + LINE_SEPARATOR).getBytes(CHARSET_NAME));
+                fos.write((CACHE_SEPARATOR + LINE_SEPARATOR).getBytes(CHARSET_NAME));
             }
 
             if (results.isEmpty()) {
-                fos.write(System.lineSeparator().getBytes(CHARSET_NAME));
+                fos.write(LINE_SEPARATOR.getBytes(CHARSET_NAME));
             }
 
             fos.flush();
