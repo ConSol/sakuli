@@ -1,0 +1,7 @@
+# Sakuli bash functions
+
+# Browser profile folders can be provisioned before test execution.
+# Executed IN THE ROOT of a suite folder either manually (for test creation) or by the startup script. 
+sync_browser_profile() {
+        cp -R ./ff_profile_template/* $SAKULI_HOME/../sahi/config/ff_profile_template 2>/dev/null
+}

@@ -1,36 +1,35 @@
 #!/bin/bash
 
-/root/scripts/vnc_startup.sh
+# source common functions
+. ~/scripts/.sakuli_functions
 
-# modify $SAKULI_TEST_SUITE permissions to ensure, that volume-mounted log files can be deleted afterwards
-modify_testsuite_permissions(){
-    while test $# -gt 0; do
-        case "$1" in
-            run)
-                shift #shift to suite parameter value
-                chmod -R a+rw $1
-                shift
-                ;;
-            *)
-                shift
-                continue
-                ;;
-        esac
-    done
+# start VNC server
+vnc_init() {
+        /root/scripts/vnc_startup.sh
 }
 
-# A command of $SAKULI_HOME/bin/sakuli start with `run` or `encrypt` and a option with a dash.
-# If not, assume that CMD was not meant as an argument
-# for sakuli (=ENTRYPOINT). Hence, try to execute CMD standalone.
-if [ "${1:0:1}" == "-" ] || [ "${1:0:3}" == "run" ] || [ "${1:0:7}" == "encrypt" ]; then
-        i=$(eval echo $*)
-        echo "call 'sakuli $i'"
-        $SAKULI_HOME/bin/sakuli $i
+if [ ! $# -gt 0 ]; then
+        echo "Wrong number of arguments!"
+        sakuli -help
+        exit 1
+fi
 
+# Sakuli starter COMMANDs start with `run` or `encrypt` and a option with a dash.
+# If not, assume that CMD was not meant as an argument for sakuli (=ENTRYPOINT).
+if [[ $1 =~ run|encrypt|help|version ]]; then
+        if [ "$1" == "run" ]; then
+                pushd $2; sync_browser_profile; popd
+                vnc_init
+        fi
+        echo "Executing: 'sakuli $@'"
+        $SAKULI_HOME/bin/sakuli $@
         res=$?
         echo "SAKULI_RETURN_VAL: $res"
-        modify_testsuite_permissions $i
+        # modify $SAKULI_TEST_SUITE permissions to ensure that volume-mounted log files can be deleted afterwards
+        [ "$1" == "run" ] && chmod -R a+rw $2
         exit $res
 else
+        # Do not execute Sakuli but any other command
+        vnc_init
         exec $1
 fi

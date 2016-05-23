@@ -31,6 +31,7 @@ EXPOSE 5901
 EXPOSE 6901
 
 ADD scripts/sakuli_startup.sh /root/scripts/
+ADD scripts/.sakuli_functions /root/scripts/
 RUN chmod +x /root/scripts/*.sh
 
 # startup script
