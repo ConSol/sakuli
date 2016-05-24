@@ -1,38 +1,40 @@
 #!/bin/bash
 
-echo "$@"
-
 # source common functions
 . ~/scripts/.sakuli_functions
+
+main() {
+	# If arg 1 is not one of the four possible Sakuli COMMANDs, execute as it is. 
+	if [[ $1 =~ encrypt|help|version ]]; then
+		echo "Executing: 'sakuli $@'"
+		$SAKULI_HOME/bin/sakuli "$@"
+		exit $?
+	elif [ "$1" == "run" ]; then
+		[ ! -d $2 ] && echo "ERROR: Suite directory $2 not found. Check docker volumes." && exit 2
+		pushd $2; sync_browser_profile; popd
+		vnc_init
+		echo "Executing: 'sakuli $@'"
+		$SAKULI_HOME/bin/sakuli "$@"
+		res=$?
+		echo "SAKULI_RETURN_VAL: $res"
+		# modify $SAKULI_TEST_SUITE permissions to ensure that volume-mounted log files can be deleted afterwards
+		chmod -R a+rw $2
+		exit $res
+	else
+		# execute any other command, init VNC anyway
+		vnc_init
+		exec $1
+	fi
+}
 
 # start VNC server
 vnc_init() {
         /root/scripts/vnc_startup.sh
 }
 
-if [ ! $# -gt 0 ]; then
-        echo "Wrong number of arguments!"
-        sakuli -help
-        exit 1
-fi
-
-# Sakuli starter COMMANDs start with `run` or `encrypt` and a option with a dash.
-# If not, assume that CMD was not meant as an argument for sakuli (=ENTRYPOINT).
-if [[ $1 =~ run|encrypt|help|version ]]; then
-#        if [ "$1" == "run" ]; then
-                pushd $2; sync_browser_profile; popd
-                vnc_init
-#       fi
-        echo "Executing: 'sakuli $@'"
-echo "$@"
-        $SAKULI_HOME/bin/sakuli "$@"
-        res=$?
-        echo "SAKULI_RETURN_VAL: $res"
-        # modify $SAKULI_TEST_SUITE permissions to ensure that volume-mounted log files can be deleted afterwards
-        [ "$1" == "run" ] && chmod -R a+rw $2
-        exit $res
+if [ $# -gt 0 ]; then
+	main "$@"
 else
-        # Do not execute Sakuli but any other command
-        vnc_init
-        exec $1
+        echo "No argument given; fallback to run demo suite example_xfce."
+	main run /root/sakuli/example_test_suites/example_xfce
 fi
