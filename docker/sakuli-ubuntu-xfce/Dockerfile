@@ -37,4 +37,4 @@ RUN chmod +x /root/scripts/*.sh
 # startup script
 ENTRYPOINT ["/root/scripts/sakuli_startup.sh"]
 # arguments for the sakuli_startup.sh script
-CMD ["run $SAKULI_TEST_SUITE"]
+CMD ["run /root/suite"]
