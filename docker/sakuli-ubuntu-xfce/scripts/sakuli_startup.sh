@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# source common functions
-. ~/scripts/.sakuli_functions
-
 main() {
 	# If arg 1 is not one of the four possible Sakuli COMMANDs, execute as it is. 
 	if [[ $1 =~ encrypt|help|version ]]; then
@@ -10,8 +7,6 @@ main() {
 		$SAKULI_HOME/bin/sakuli "$@"
 		exit $?
 	elif [ "$1" == "run" ]; then
-		[ ! -d $2 ] && echo "ERROR: Suite directory $2 not found. Check docker volumes." && exit 2
-		pushd $2; sync_browser_profile; popd
 		vnc_init
 		echo "Executing: 'sakuli $@'"
 		$SAKULI_HOME/bin/sakuli "$@"
