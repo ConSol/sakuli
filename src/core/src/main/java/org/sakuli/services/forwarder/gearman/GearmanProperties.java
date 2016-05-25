@@ -43,6 +43,7 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private static final String JOB_INTERVAL = "sakuli.forwarder.gearman.job.interval";
     private static final String NAGIOS_HOSTNAME = "sakuli.forwarder.gearman.nagios.hostname";
     private static final String NAGIOS_CHECK_COMMAND = "sakuli.forwarder.gearman.nagios.check_command";
+    private static final String NAGIOS_SERVICE_DESCRIPTION = "sakuli.forwarder.gearman.nagios.service_description";
     private static final String TEMPLATE_SUITE_TABLE = "sakuli.forwarder.gearman.nagios.template.suite.table";
     private static final String TEMPLATE_SCREENSHOT_DIV_WIDTH = "sakuli.forwarder.gearman.nagios.template.screenshotDivWidth";
     @Value("${" + TEMPLATE_SUITE_SUMMARY + "}")
@@ -74,6 +75,8 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private String nagiosHost;
     @Value("${" + NAGIOS_CHECK_COMMAND + "}")
     private String nagiosCheckCommand;
+    @Value("${" + NAGIOS_SERVICE_DESCRIPTION + "}")
+    private String nagiosServiceDescription;
     @Value("${" + TEMPLATE_SUITE_TABLE + "}")
     private String templateSuiteTable;
     @Value("${" + TEMPLATE_SCREENSHOT_DIV_WIDTH + "}")
@@ -202,8 +205,16 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
         return nagiosCheckCommand;
     }
 
+    public String getNagiosServiceDescription() {
+        return nagiosServiceDescription;
+    }
+
     public void setNagiosCheckCommand(String nagiosCheckCommand) {
         this.nagiosCheckCommand = nagiosCheckCommand;
+    }
+
+    public void setNagiosServiceDescription(String nagiosServiceDescription) {
+        this.nagiosServiceDescription = nagiosServiceDescription;
     }
 
     public String getTemplateSuiteTable() {

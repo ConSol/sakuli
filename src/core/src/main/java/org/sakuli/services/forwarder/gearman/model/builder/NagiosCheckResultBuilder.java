@@ -27,6 +27,7 @@ import org.sakuli.services.forwarder.gearman.model.NagiosOutput;
 import org.sakuli.services.forwarder.gearman.model.PayLoadFields;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -91,7 +92,13 @@ public class NagiosCheckResultBuilder implements Builder<NagiosCheckResult> {
         startTime = testSuite.getStartDateAsUnixTimestamp();
         finishTime = testSuite.getStopDateAsUnixTimestamp();
         returnCode = String.valueOf(testSuite.getState().getNagiosErrorCode());
-        serviceDesc = testSuite.getId();
+
+        if (StringUtils.hasText(gearmanProperties.getNagiosServiceDescription())) {
+            serviceDesc = gearmanProperties.getNagiosServiceDescription();
+        } else {
+            serviceDesc = testSuite.getId();
+        }
+
         output = nagiosOutputBuilder.build();
     }
 

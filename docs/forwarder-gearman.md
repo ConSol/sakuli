@@ -139,8 +139,10 @@ On the Sakuli client you must set the global properties for the gearman receiver
 	
 	# Nagios host where all Sakuli services are defined on. If neccessary, override this value per test suite. 
     # (Nagios service name is defined by testsuite.properties -> suiteID)
+    # (Nagios service description is optional, default value is defined by testsuite.properties -> suiteID)
 	sakuli.forwarder.gearman.nagios.hostname=sakuli_client
 	sakuli.forwarder.gearman.nagios.check_command=check_sakuli
+	sakuli.forwarder.gearman.nagios.service_description=service_description
 
 ## Test result transmission to OMD
 
