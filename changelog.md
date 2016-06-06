@@ -1,5 +1,11 @@
 ## Change Log of Sakuli Releases
 
+### Version 1.0.1 (Bugfix)
+
+* fix #190:  fix Docker centos image:  use tagged version `consol/centos-xfce-vnc:1.0.1`
+* Use consistent file naming and fix broken links in docs
+* fix example_xfce for new centos 7 version
+
 ### Version 1.0.0
 * First step tutorial and https documentation. Fixes #161, fixes #53 partially.
 * fix #32 highlight function on linux does not work (in underlying SikuliX library)
