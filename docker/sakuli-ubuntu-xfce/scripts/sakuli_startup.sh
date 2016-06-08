@@ -12,7 +12,7 @@ main() {
 		$SAKULI_HOME/bin/sakuli "$@"
 		res=$?
 		echo "SAKULI_RETURN_VAL: $res"
-		# modify $SAKULI_TEST_SUITE permissions to ensure that volume-mounted log files can be deleted afterwards
+		# modify testsuite folder permissions to ensure that volume-mounted log files can be deleted afterwards
 		chmod -R a+rw $2
 		exit $res
 	else
@@ -28,8 +28,12 @@ vnc_init() {
 }
 
 if [ $# -gt 0 ]; then
+	# pass all parameters
 	main "$@"
 else
-        echo "No argument given; fallback to run demo suite example_xfce."
-	main run /root/sakuli/example_test_suites/example_xfce
+	# no parameters
+	# - run the suite defined by $SAKULI_TEST_SUITE, if set
+	# or
+	# - run the example_xfce case (fallback)
+	main run ${SAKULI_TEST_SUITE:-/root/sakuli/example_test_suites/example_xfce}
 fi
