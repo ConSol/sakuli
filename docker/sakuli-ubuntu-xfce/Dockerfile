@@ -33,5 +33,14 @@ EXPOSE 6901
 ADD scripts/sakuli_startup.sh /root/scripts/
 RUN chmod +x /root/scripts/*.sh
 
-# startup script
+### Sakuli startup script
+# no parameters:
+# - run the suite defined by $SAKULI_TEST_SUITE, if set
+# paramters:
+# - run a Sakuli test suite like the example_xfce case via:
+#   docker run consol/sakuli-ubuntu-xfce run /root/sakuli/example_test_suites/example_xfce
+# - help:
+#   docker run consol/sakuli-ubuntu-xfce help
+# - start a bash (or any other command):
+#   docker run -it consol/sakuli-ubuntu-xfce bash
 ENTRYPOINT ["/root/scripts/sakuli_startup.sh"]
