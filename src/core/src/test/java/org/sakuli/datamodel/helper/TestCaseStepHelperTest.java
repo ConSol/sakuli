@@ -49,7 +49,7 @@ import static org.testng.Assert.*;
  */
 public class TestCaseStepHelperTest {
 
-    public static final String CACHEFILE_NAME = "stephelper/" + TestCaseStepHelper.SAKULI_STEPS_CACHE_FILE;
+    public static final String CACHEFILE_NAME = "stephelper/" + TestCaseStepHelper.STEPS_CACHE_FILE;
 
     @BeforeMethod
     public void setUp() throws Exception {
@@ -70,7 +70,7 @@ public class TestCaseStepHelperTest {
     public void testParseSteps() throws Throwable {
         Path tcFile = getResource("stephelper/tc.js");
         FileUtils.writeStringToFile(
-                tcFile.getParent().resolve(TestCaseStepHelper.SAKULI_STEPS_CACHE_FILE).toFile(),
+                tcFile.getParent().resolve(TestCaseStepHelper.STEPS_CACHE_FILE).toFile(),
                 "z_step_1\nother_step_2\nstep_3?special\n",
                 Charset.forName("UTF-8"));
         List<TestCaseStep> steps = TestCaseStepHelper.readCachedStepDefinitions(tcFile);
@@ -98,7 +98,7 @@ public class TestCaseStepHelperTest {
     }
 
     @Test
-    public void testWritCachedStepsError() throws Throwable {
+    public void testWriteCachedStepsError() throws Throwable {
         Path tcFile = getResource("stephelper/tc.js");
         TestSuite testSuite = mock(TestSuite.class);
         TestCase tc = mock(TestCase.class);

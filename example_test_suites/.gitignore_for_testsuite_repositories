@@ -7,7 +7,6 @@ firefox
 .idea
 *.iml
 *.log
-*.sakuli-steps-cache
-*.gearman-cache
+.cache
 sakuli_app
 .DS_Store
