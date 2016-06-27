@@ -169,7 +169,18 @@ public class Environment implements Action {
      */
     @LogToResult(message = "sleep and do nothing for x seconds", logClassInstance = false)
     public Environment sleep(Integer seconds) {
-        return typingUtil.sleep(seconds);
+        return typingUtil.sleep(seconds * 1000);
+    }
+
+    /**
+     * Blocks the current testcase execution for x seconds
+     *
+     * @param seconds to sleep
+     * @return this {@link Environment} or NULL on errors.
+     */
+    @LogToResult(message = "sleep and do nothing for x seconds", logClassInstance = false)
+    public Environment sleep(Double seconds) {
+        return typingUtil.sleep((int) (seconds * 1000));
     }
 
     /**
