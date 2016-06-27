@@ -51,6 +51,12 @@ For documentation see
 * [MouseButton](sakuli-api.md#MouseButton)
 * [Logger](sakuli-api.md#Logger)
 
+## Sakuli Java API
+
+In addition to the JavaScript APIs Sakuli provides a Java DSL for writing tests in Java. This Sakuli Java API enables users to write
+Sakuli tests in pure Java unit tests using JUnit or TestNG. The good news about that is that you are still able to access any
+native application UI with screen related actions. The API is documented in [Java DSL](java-dsl.md).
+
 ## How to contribute
 
 * [Installation instructions for **developers**](development/installation-developers.md)
