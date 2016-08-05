@@ -634,7 +634,7 @@ function initRegion(that, javaObject) {
      * @method sleep
      */
     that.sleep = function (seconds) {
-        return update(that.javaObject.sleep(seconds));
+        return update(that.javaObject.sleep(Packages.java.lang.Double.valueOf(seconds)));
     };
 
     /**

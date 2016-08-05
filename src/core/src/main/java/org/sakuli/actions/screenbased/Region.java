@@ -577,6 +577,17 @@ public class Region implements Action {
     }
 
     /**
+     * Blocks the current testcase execution for x seconds
+     *
+     * @param seconds to sleep
+     * @return this {@link Region} or NULL on errors.
+     */
+    @LogToResult(message = "sleep and do nothing for x seconds", logClassInstance = false)
+    public Region sleep(Double seconds) {
+        return typingUtil.sleep((long) (seconds * 1000L));
+    }
+
+    /**
      * Blocks the current testcase execution for x milliseconds
      *
      * @param milliseconds to sleep
