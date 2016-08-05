@@ -87,6 +87,8 @@ Episode 9 of the ***ConSol Monitoring Minutes*** shows the main features of Saku
 
 ### Slides
 
+<script async class="speakerdeck-embed" data-id="1025a369967c47228e56435f21fdd0eb" data-ratio="1.37265415549598" src="//speakerdeck.com/assets/embed.js"></script>
+
 2014: [End-to-end testing
 for web sites and common UIs with full Nagios integration](https://rawgit.com/toschneck/presentation/sakuli-dev-day-presentation/index.html#/) (Tobias Schneck)
 
@@ -120,9 +122,24 @@ March 1, 2016: [Icinga Camp, Berlin](https://www.icinga.org/community/events/ici
 
 March 3, 2016: [Allianz Arena München](https://www.consol.de/von-monitoring-bis-managed-service/) (Simon Meggle)
 
-March 8-10, 2016: [JavaLand](http://www.javaland.eu/de/home/) (Tobias Schneck)
+March 8-10, 2016: [JavaLand, Brühl](http://www.javaland.eu/de/home/) (Tobias Schneck)
 
-Q3 2016: [JUGM](http://www.jugm.de/) (Tobias Schneck)
+June 27, 2016 [Meetup during the ContainerDays, Hamburg](http://www.meetup.com/de-DE/Docker-Hamburg/events/229808506) (Tobias Schneck)
+
+July 25, 2016: [JUG München](http://www.jugm.de/) (Tobias Schneck)
+
+August 31, 2016: [Herbstcampus 2016, Nuremberg](http://www.herbstcampus.de/programm.php) (Tobias Schneck)
+
+September 30, 2016: [JUG Saxony Day, Dresden](http://www.jug-saxony-day.org/) (Tobias Schneck)
+
+November 3, 2016: [Software QS-Tag 2016, Nuremberg](https://www.qs-tag.de) (Tobias Schneck)
+
+November 16, 2016: [ContainerConf 2016, Mannheim](http://www.containerconf.de/) (Tobias Schneck)
+
+---
+
+30 January - 3 February, 2017: [OOP 2017, Munich](http://www.oop-konferenz.de/) (Tobias Schneck)
+
 
 ## Changelog
 
@@ -154,9 +171,11 @@ At this point we want to thank all contributors, which helped to move this great
 
 * Tobias Schneck - Sakuli Team / Project Leader, Core Development
 * Simon Meggle - Sakuli Team / Project Leader, Monitoring Integration
-* Thomas Rothenbacher
+* Christoph Deppisch - Sakuli Team / Core Development
+* Lukas Höfer - Sakuli Team / Consultant
 * Sven Nierlein 
 * Philip Griesbacher - Sakuli Go Starter 
+* Thomas Rothenbacher
 
 (did we forget you? Please poke us): 
 
