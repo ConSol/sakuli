@@ -24,7 +24,7 @@
         <appname>sakuli</appname>
         <appversion>${sakuli.version}</appversion>
         <authors>
-            <author name="ConSol* Software GmbH" email="sakuli@consol.de"/>
+            <author name="ConSol Software GmbH" email="sakuli@consol.de"/>
         </authors>
         <url>http://www.sakuli.org</url>
         <javaversion>1.8</javaversion>
