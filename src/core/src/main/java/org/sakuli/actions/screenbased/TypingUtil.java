@@ -303,7 +303,7 @@ public class TypingUtil<A extends Action> {
      * @param milliseconds to sleep
      * @return this {@link A} or NULL on errors.
      */
-    public A sleep(Integer milliseconds) {
+    public A sleep(Long milliseconds) {
         try {
             TimeUnit.MILLISECONDS.sleep(milliseconds);
         } catch (InterruptedException e) {

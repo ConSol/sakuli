@@ -20,6 +20,7 @@ package org.sakuli.actions.screenbased;
 
 import org.sakuli.actions.Action;
 import org.sakuli.actions.ModifySahiTimer;
+import org.sakuli.actions.environment.Environment;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
@@ -572,18 +573,18 @@ public class Region implements Action {
      */
     @LogToResult(message = "sleep and do nothing for x seconds", logClassInstance = false)
     public Region sleep(Integer seconds) {
-        return typingUtil.sleep(seconds * 1000);
+        return typingUtil.sleep(seconds * 1000L);
     }
 
     /**
-     * Blocks the current testcase execution for x seconds
+     * Blocks the current testcase execution for x milliseconds
      *
-     * @param seconds to sleep
-     * @return this {@link Region} or NULL on errors.
+     * @param milliseconds to sleep
+     * @return this {@link Environment} or NULL on errors.
      */
-    @LogToResult(message = "sleep and do nothing for x seconds", logClassInstance = false)
-    public Region sleep(Double seconds) {
-        return typingUtil.sleep((int) (seconds * 1000));
+    @LogToResult(message = "sleep and do nothing for x milliseconds", logClassInstance = false)
+    public Region sleepMs(Integer milliseconds) {
+        return typingUtil.sleep(Long.valueOf(milliseconds));
     }
 
     /**
