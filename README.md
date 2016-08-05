@@ -9,8 +9,6 @@
 
 **-> [Download](http://labs.consol.de/sakuli/install/)**
 
-**-> [Docker Images](./docs/docker-containers.md)**
-
 **TABLE OF CONTENTS**
 
 * [**Introduction**](#Introduction)
@@ -19,7 +17,7 @@
     * [Why Sakuli](#why-sakuli)
 * [**Resources**](#resources)
     * [**Documentation**](./docs/index.md)
-    * [**Docker Images**](./docs/docker-containers.md)**
+    * [**Docker Images**](./docs/docker-containers.md)
     * [Exampel projects](#example-projects-on-github)
     * [Demo](#demo-virtual-machine)
     * [Media](#media)
