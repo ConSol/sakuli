@@ -98,6 +98,18 @@ function initEnvironment(that, javaObject) {
     };
 
     /**
+     * Blocks the current testcase execution for x milliseconds
+     *
+     * @param {number} milliseconds to sleep
+     * @return this Environment or NULL on errors.
+     * @memberOf Environment
+     * @method sleepMs
+     */
+    that.sleepMs = function (milliseconds) {
+        return update(that.javaObject.sleepMs(milliseconds));
+    };
+
+    /**
      * @return the current content of the clipboard as String or NULL on errors
      * @memberOf Environment
      * @method getClipboard
