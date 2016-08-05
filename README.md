@@ -16,12 +16,15 @@
     * [History](#history-of-sakuli)
     * [Why Sakuli](#why-sakuli)
 * [**Resources**](#resources)
+    * [**Documentation**](./docs/index.md)
+    * [**Docker Images**](./docs/docker-containers.md)
+    * [Exampel projects](#example-projects-on-github)
     * [Demo](#demo-virtual-machine)
     * [Media](#media)
     * [Events](#events)
-    * [**Documentation**](./docs/index.md)
     * [Changelog](#changelog)
     * [Help](#help)
+    * [Thanks](#thanks)
 
 
 
@@ -32,7 +35,7 @@
 
 **Sakuli** depends on **Java** and should run on most OS; **Windows**, **Ubuntu  Linux (14.04 LTS)** and **OpenSUSE 13.2** are currently proved.  
 
-The **Sakuli** project brings together two Open-Source end-to-end testing tools which perfectly fit together: **Sahi** ([http://www.sahi.co.in/]([http://www.sahi.co.in/)) for **web-based tests** (by injecting JavaScript code into the browser), as well as the screenshot-based testing tool **Sikuli** ([http://www.sikuli.org](http://www.sikuli.org)), which allows the execution of **keyboard and mouse actions** on screen areas that have been defined by previously recorded screenshots and are recognized using the OpenCV engine.
+The **Sakuli** project brings together two Open-Source end-to-end testing tools which perfectly fit together: **Sahi** ([http://www.sahi.co.in/]([http://www.sahi.co.in/)) for **web-based tests** (by injecting JavaScript code into the browser), as well as the screenshot-based testing tool **Sikuli** ([http://sikulix.com/](http://sikulix.com/)), which allows the execution of **keyboard and mouse actions** on screen areas that have been defined by previously recorded screenshots and are recognized using the OpenCV engine.
 
 Sakuli accesses both tools via its **Java API** and makes it possible to **use them simultaneously**. For example, web tests can be done very performant with Sahi (where a screenshot-based approach would be at best the second choice), whereas "off-DOM"-content can be catched with Sikuli. Whenever a web test comes into a situation which Sahi can't handle (e.g. a PIN dialogue for a smartcard login), use a Sikuli command. On the other hand, pure tests of fat client applications can be easily be setup by using only the Sikuli functions of Sakuli.
 
@@ -61,6 +64,10 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 
 # Resources
 
+## Example projects on GitHub
+ * **[toschneck/sakuli-example-bakery-testing](https://github.com/toschneck/sakuli-example-bakery-testing)**
+ * **[ConSol/sakuli-example-testautomation-day](https://github.com/ConSol/sakuli-example-testautomation-day)**
+
 ## Demo virtual machine
 
 ![d](./docs/pics/appliance_collage.jpg)
@@ -71,7 +78,7 @@ Use this demo appliance to see all the features of Sakuli in action. *sakulidemo
 
 User accounts: *root/root* and *sakuli/sakuli*.
 
-It is recommended to fix the VM's resolution to 1024x768px.
+It is recommended to fix the VM's resolution to 1024x768px for this demo. In general Sakuli does not relies on any resolution limitation.
 
 Don't use this in production.
 
@@ -79,13 +86,24 @@ Don't use this in production.
 
 ### YouTube
 
+#### Monitoring Minutes
+
 Episode 9 of the ***ConSol Monitoring Minutes*** shows the main features of Sakuli in 15 minutes. The machine used in this video is an instance of our demo appliance (see above).   
 
-[End2End Monitoring mit Sakuli und Nagios - ConSol* Monitoring Minutes 9](https://www.youtube.com/watch?v=S6NROEOYF6w)
+[End2End Monitoring mit Sakuli und Nagios - ConSol Monitoring Minutes 9](https://www.youtube.com/watch?v=S6NROEOYF6w)
 
-![youtube](./docs/pics/monitoring_minutes_sakuli_300.png)
+![youtube e2e monitoring](./docs/pics/monitoring_minutes_sakuli_300.png)
+
+#### End-2-End-Testing
+
+[Sakuli End-2-End-Testing - Lightning Talk - Agile Testing Meetup (June 2015)](https://www.youtube.com/watch?v=JjRGlkN8BKo)
+
+![youtube e2e testing](./docs/pics/youtube_e2e_testing_agile_testing_meetup.png)
+
 
 ### Slides
+
+2016: [Containerized End-2-End-Testing - ContainerDays 2016 Hamburg](https://speakerdeck.com/toschneck/containerized-end-2-end-testing-containerdays-2016-in-hamburg) (Tobias Schneck)
 
 2014: [End-to-end testing
 for web sites and common UIs with full Nagios integration](https://rawgit.com/toschneck/presentation/sakuli-dev-day-presentation/index.html#/) (Tobias Schneck)
@@ -93,36 +111,52 @@ for web sites and common UIs with full Nagios integration](https://rawgit.com/to
 
 
 ## Publications
-
-2/2015: [IT Administrator](http://www.it-administrator.de): [End2End-Monitoring mit dem Open Source-Tool Sakuli](http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/179023.html) (Simon Meggle)
-
-5/2015: [Heise Developer](http://www.heise.de/developer/meldung/End-to-End-Application-Monitoring-mit-Sakuli-2729493.html)
+2/2016: [Success Story: pbb Deutsche Pfandbriefbank: Monitoring with Sakuli](https://www.consol.com/fileadmin/pdf/news/success_stories/ConSol_SuccessStory_Monitoring-Sakuli_Pfandbriefbank_eng.pdf)
 
 2/2016: [IT Administrator](http://www.it-administrator.de): ["Den Anwender simuliert"](http://shop.heinemann-verlag.de/it-administrator/einzelhefte/139/ausgabe-februar-2016-it-support-und-troubleshooting) (Simon Meggle)
 
+5/2015: [Heise Developer](http://www.heise.de/developer/meldung/End-to-End-Application-Monitoring-mit-Sakuli-2729493.html)
+
+2/2015: [IT Administrator](http://www.it-administrator.de): [End2End-Monitoring mit dem Open Source-Tool Sakuli](http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/179023.html) (Simon Meggle)
+
 ## Events
 
-March 28, 2015: [LinuxTag Augsburg](https://www.luga.de/Aktionen/LIT-2015/) (Simon Meggle)
-
-May 14, 2015: [OpenTechSummit](http://2015.opentechsummit.net/) (Simon Meggle)
-
-June 22, 2015: [Agile Testing Munich](http://www.meetup.com/de-DE/Agile-Testing-Munich/events/222659146/?eventId=222659146) (Tobias Schneck)
-
-October 13, 2015: [Testing & Integration Day, Allianz Arena Munich](https://www.consol.de/testing-integration-day-mit-redhat/) (Tobias Schneck)
-
-October 24, 2015: [Ubucon Berlin](http://ubucon.de/2015/) (Simon Meggle)
+30 January - 3 February, 2017: [OOP 2017, Munich](http://www.oop-konferenz.de/) (Tobias Schneck)
 
 ---
 
-January 26, 2016: [Linux-Stamtisch München](https://www.xing.com/communities/groups/linux-stammtisch-muenchen-1057878) (Tobias Schneck)
+November 16, 2016: [ContainerConf 2016, Mannheim](http://www.containerconf.de/) (Tobias Schneck)
 
-March 1, 2016: [Icinga Camp, Berlin](https://www.icinga.org/community/events/icinga-camp-berlin/) (Simon Meggle)
+November 3, 2016: [Software QS-Tag 2016, Nuremberg](https://www.qs-tag.de) (Tobias Schneck)
+
+September 30, 2016: [JUG Saxony Day, Dresden](http://www.jug-saxony-day.org/) (Tobias Schneck)
+
+August 31, 2016: [Herbstcampus 2016, Nuremberg](http://www.herbstcampus.de/programm.php) (Tobias Schneck)
+
+July 25, 2016: [JUG München](http://www.jugm.de/) (Tobias Schneck)
+
+June 27, 2016 [Meetup during the ContainerDays, Hamburg](http://www.meetup.com/de-DE/Docker-Hamburg/events/229808506) (Tobias Schneck)
+
+March 8-10, 2016: [JavaLand, Brühl](http://www.javaland.eu/de/home/) (Tobias Schneck)
 
 March 3, 2016: [Allianz Arena München](https://www.consol.de/von-monitoring-bis-managed-service/) (Simon Meggle)
 
-March 8-10, 2016: [JavaLand](http://www.javaland.eu/de/home/) (Tobias Schneck)
+March 1, 2016: [Icinga Camp, Berlin](https://www.icinga.org/community/events/icinga-camp-berlin/) (Simon Meggle)
 
-Q3 2016: [JUGM](http://www.jugm.de/) (Tobias Schneck)
+January 26, 2016: [Linux-Stamtisch München](https://www.xing.com/communities/groups/linux-stammtisch-muenchen-1057878) (Tobias Schneck)
+
+---
+
+October 24, 2015: [Ubucon Berlin](http://ubucon.de/2015/) (Simon Meggle)
+
+October 13, 2015: [Testing & Integration Day, Allianz Arena Munich](https://www.consol.de/testing-integration-day-mit-redhat/) (Tobias Schneck)
+
+June 22, 2015: [Agile Testing Munich](http://www.meetup.com/de-DE/Agile-Testing-Munich/events/222659146/?eventId=222659146) (Tobias Schneck)
+
+May 14, 2015: [OpenTechSummit](http://2015.opentechsummit.net/) (Simon Meggle)
+
+March 28, 2015: [LinuxTag Augsburg](https://www.luga.de/Aktionen/LIT-2015/) (Simon Meggle)
+
 
 ## Changelog
 
@@ -148,17 +182,19 @@ The guys behind Sakuli:
 
 ## Thanks
 
-### Contributors 
+### Contributors
 
-At this point we want to thank all contributors, which helped to move this great project by submitting code, writing documentation, or adapting other tools to play well together with Sakuli. 
+At this point we want to thank all contributors, which helped to move this great project by submitting code, writing documentation, or adapting other tools to play well together with Sakuli.
 
 * Tobias Schneck - Sakuli Team / Project Leader, Core Development
 * Simon Meggle - Sakuli Team / Project Leader, Monitoring Integration
+* Christoph Deppisch - Sakuli Team / Core Development
+* Lukas Höfer - Sakuli Team / Consultant
+* Sven Nierlein
+* Philip Griesbacher - Sakuli Go Starter
 * Thomas Rothenbacher
-* Sven Nierlein 
-* Philip Griesbacher - Sakuli Go Starter 
 
-(did we forget you? Please poke us): 
+(did we forget you? Please poke us):
 
 ### Valued supporters
 
