@@ -1,0 +1,29 @@
+sakuli:
+    container_name: sakulie2e
+#    image: local/sakuli-ubuntu-xfce:docker-playground
+    image: local/sakuli-centos-xfce:docker-playground
+    #image: local/sakuli-ubuntu-xfce:dev
+    volumes:
+    - ./sakuli_docker_test:/root/sakuli_docker_test
+    - ./sahi_ff_profile_template:/root/sakuli/sahi/config/ff_profile_template
+    - ./sahi_certs:/root/sakuli/sahi/userdata/certs
+    environment:
+    - TZ=Europe/Berlin
+    ports:
+    - "5901:5901"
+    - "6901:6901"
+    command: "run /root/sakuli_docker_test -loop 1"
+    links:
+    - omdlabs:omd
+
+omdlabs:
+    container_name: omdlabs
+    image: local/omd-labs-ubuntu
+    #image: consol/omd-labs-ubuntu-sakuli:dev
+    volumes:
+    - ./omd_ansible_drop-in_role/:/root/ansible/dropin_role
+    ports:
+    - "8443:443"
+
+
+#-v ./sakuli_docker_test:/root/sakuli_docker_test -v ./sahi_ff_profile_template:/root/sakuli/sahi/config/ff_profile_template/ -v ./sahi_certs:/root/sakuli/sahi/userdata/certs

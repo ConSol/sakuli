@@ -29,9 +29,16 @@ ADD scripts/auto-install.xml /tmp/
 RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
     && java -jar /tmp/sakuli-v$SAKULI_VERSION-installer.jar /tmp/auto-install.xml \
     && rm -f sakuli*.jar auto-install.xml
+RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /root/sakuli/sahi/userdata/config/userdata.properties
 
 ### Install apps for testing
 RUN yum -y install gedit gnome-calculator
+
+### Install Shutter
+RUN yum -y install epel-release \
+    && rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro \
+    && rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm \
+    && yum -y --enablerepo=nux-dextop install shutter
 
 # xvnc server port, if $DISPLAY=:1 port will be 5901
 EXPOSE 5901

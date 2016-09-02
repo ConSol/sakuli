@@ -1,0 +1,125 @@
+# Tutorial: Sakuli & OMD
+
+This *docker-compose* setup consists of two containers: one running a containerized Sakuli E2E test in "loop" mode (don't do this in production as you are loosing the advantages of containerized testing) and the other one running [**OMD labs**](https://labs.consol.de/de/omd/index.html) with a Ansible drop-in role for Sakuli adaption.
+
+The main purpose of this tutorial is to show the usage of Sakuli within Docker containers. But it also should show the possibilities with Nagios based monitoring systems (mainly OMD). It is obvious that we use *docker-compose* to show both playing well together. 
+
+## Start the demo environment
+
+    cd docker/sakuli-omd-labs [enter]
+    docker-dompose up [enter]
+    
+You will see lots of lines showing that both containers are starting now. Each line shows the container the message is coming from: 
+
+    ...
+    omdlabs    | changed: [localhost] => (item=GEARMAN_NEB on)
+    sakulie2e  | INFO  [2016-09-01 17:22:09.000] - sucessfully init sikuli-X screen!
+    omdlabs    | changed: [localhost] => (item=MOD_GEARMAN on)
+    sakulie2e  | INFO  [2016-09-01 17:22:10.959] - activate the spring context profiles '[GEARMAN]'
+    sakulie2e  | INFO  [2016-09-01 17:22:12.206] - read in properties from '/root/sakuli/sakuli-v1.1.0-SNAPSHOT/config/sakuli-default.properties'
+    ...
+
+Nothing exciting so far. Let's connect to both containers to see what's happening.
+
+### Sakuli VNC 
+
+Start a VNC viewer and connect to `localhost:5901` (in case you are running Docker on localhost) or `DOCKERHOST:5901` for a dedicated Docker host/Docker machine. 
+
+On a Mac, you can just open the URL `vnc://localhost:5901` in your browser.
+
+The default password for this VNC session is `sakuli`. 
+
+You should see Sakuli testing the browser, typing a calculation on calc and writing a success message on gedit. After that the test gets shut down and gets started from the beginning. 
+
+### OMD Labs site 
+
+Open the URL `https://localhost:8443/demo` (or `https://DOCKERHOST:8443/demo`) to connect to OMD, where Sakuli sends the test results to. Log in with **omdadmin/omd** and click on "Services" in the left navigation pane. You should see now the service "sakuli_xfce" on host "sakuli_client" with an OK result which gets renewed on every Sakuli run: 
+
+![image](pics/omd.jpg)
+
+## Explore and extend the test 
+
+To have a real-life example, we will clone the existing test and change it so that it can test the Thruk GUI of the OMD Docker container. 
+
+### clone the existing test suite
+
+Create a full copy of `sakuli_docker_test`: 
+   
+    cp -R sakuli_docker_test sakuli_omd 
+    
+Delete all unneeded files: 
+
+  * `case1/centos`
+  * `case1/*.png`
+
+Edit `sakuli_omd/case1/sakuli_demo.js` and remove everything but this code skeleton: 
+
+    _dynamicInclude($includeFolder);
+    var testCase = new TestCase(20, 30);
+    var env = new Environment();
+    var screen = new Region();
+
+    try {
+        // our code
+        env.sleep(1000000);
+    } catch (e) {
+        testCase.handleException(e);
+    } finally {
+        testCase.saveResult();
+    }
+
+(The `sleep` command helps to pause the test at a certain position, examine web content, take screenshots etc. You will use this very often.)
+
+Now tell Docker to mount `sakuli_omd` into the container. This is done in `docker-compose.yml`: 
+   
+    ...
+    volumes:
+    - ./sakuli_omd:/root/sakuli_docker_test 
+    ...
+
+Edit `sakuli_omd/testsuite.properties` to change the name of the test. This id will be used as the service name in Nagios: 
+
+    testsuite.id=omd_thruk
+ 
+Clone the Nagios service object and give it the same name as `testsuite.id`: 
+
+    vim omd_ansible_drop-in_role/files/skel/etc/nagios/conf.d/sakuli_nagios_objects.cfg
+    ...
+    define service {
+      service_description            omd_thruk
+      host_name                      sakuli_client
+      use                            tpl_s_sakuli_gearman
+    }
+    
+Stop and remove all running containers and re-run `docker-compose up`. Thre result should be nearly the same as before, but with a new (empty) test and a new Nagios service "omd_thruk" to receive the results.
+
+### HTTPS handling in Docker containers
+
+The web testing component of Sakuli, Sahi, acts as a "man in the middle" (=Proxy) between the web server and the browser. HTTPS web sites are fetched by Sahi using the original server certificate and delivered to the browser with a certificate 
+
+
+#### Saving the faked certificates 
+
+Start the Sakuli container:  
+
+    docker run -it --rm -v $(pwd)/sahi_certs:/root/sakuli/sahi/userdata/certs -v $(pwd)/sahi_ff_profile_template:/root/sakuli/sahi/config/ff_profile_template -p 5901:5901 local/sakuli-ubuntu-xfce:docker-playground bash
+
+This command starts the Sakuli docker container with two host mounted volumes: 
+ 
+* `sahi_certs` -> `/root/sakuli/sahi/userdata/certs`: Kaystore  
+
+HTTPS
+
+Screenshots 
+
+Graph!
+
+
+# run OMD labs (Ubuntu) with Sakuli Extension:
+docker run -it -p 8443:443 -v $(pwd)/ansible_drop-in_role:/root/ansible/dropin_role consol/omd-labs-ubuntu
+
+# run OMD labs (CentOS) with Sakuli Extension:
+docker run -it -p 8443:443 -v $(pwd)/ansible_drop-in_role:/root/ansible/dropin_role consol/omd-labs-centos
+
+# run OMD labs (Debian) with Sakuli Extension:
+docker run -it -p 8443:443 -v $(pwd)/ansible_drop-in_role:/root/ansible/dropin_role consol/omd-labs-debian

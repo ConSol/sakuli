@@ -1,0 +1,75 @@
+---
+
+- name: ensure DB check module dir
+  file:
+    path: /omd/sites/demo/etc/check_mysql_health/
+    state: directory
+    owner: demo
+    group: demo
+
+# - block:
+#   - name: copy all config files
+#     copy:
+#       src: "{{ item.key }}"
+#       dest: "{{ item.value.dest }}"
+#       mode: 0440
+#       owner: demo
+#       group: demo
+#     with_dict: "{{ files2copy }}"
+#   rescue:
+#     - fail:
+#         msg="Could not find all files to copy. Try to populate the role dir with 'make updatefiles'."
+
+- name: Ensure icon folder is present
+  file:
+    path: "/omd/sites/demo/local/share/nagios/htdocs/images/logos/"
+    state: directory
+    mode: 0770
+    owner: demo
+    group: demo
+
+- name: sync Sakuli skel files
+  synchronize:
+    src:  skel/
+    dest: /tmp/
+
+- name: set ownership for Sakuli skel files
+  file:
+    path: "/tmp/{{ item }}"
+    owner: demo
+    group: demo
+    recurse: yes
+  with_items:
+    - etc
+    - local
+
+- name: install Sakuli skel files
+  command: "rsync -avz --recursive /tmp/{{ item }} /omd/sites/demo/"
+  with_items:
+    - etc
+    - local
+
+- name: tmp permissions
+  file:
+    path: /tmp/
+    mode: "o=rwx"
+    recurse: yes
+
+
+- name: Configure OMD site
+  command: omd config demo set {{item}}
+  with_items:
+    - "DEFAULT_GUI thruk"
+    - "THRUK_COOKIE_AUTH on"
+    - "GEARMAND on"
+    - "GEARMAND_PORT 0.0.0.0:4730"
+    - "GEARMAN_NEB on"
+    - "MOD_GEARMAN on"
+    - "GEARMAN_WORKER off"
+    - "CORE nagios"
+
+- name: Configure HTML escaping in cgi.cfg
+  command: sed -i 's|\(escape_html_tags=\)1|\10|' /omd/sites/demo/etc/nagios/cgi.cfg
+
+- name: Configure mod-gearman
+  command: sed -i -e 's/\(services\|eventhandler\|hosts\|encryption\)=yes/\1=no/' -e 's/\(accept_clear_results\)=no/\1=yes/' /omd/sites/demo/etc/mod-gearman/server.cfg
