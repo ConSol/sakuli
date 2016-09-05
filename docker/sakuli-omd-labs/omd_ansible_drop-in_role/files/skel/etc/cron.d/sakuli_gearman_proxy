@@ -1,3 +1,0 @@
-MAILTO=""
-*/1 * * * * perl $OMD_ROOT/local/bin/appradar_gearman_proxy.pl -c $OMD_ROOT/etc/mod-gearman/appradar_gearman_proxy.cfg &
-

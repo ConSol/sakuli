@@ -11,3 +11,6 @@ firefox
 *.gearman-cache
 sakuli_app
 .DS_Store
+cert_override.txt
+cert8.db
+key3.db
