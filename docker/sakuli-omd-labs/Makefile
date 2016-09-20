@@ -40,16 +40,23 @@ updatefiles:
   # Nagios generic objects
 	cp $(SAKULI_SETUP)/nagios/sakuli_nagios_objects.cfg $(ANSIBLE_FILES)/etc/nagios/conf.d/
 
-# TODO: ansible-container starts all containers even with --limit is set...
+
+build: 	build-ubuntu build-centos build-debian
 
 build-ubuntu:
-	ansible-container build --from-scratch -- -l ubuntu
+	ln -f -s container_ubuntu.yml ansible/container.yml
+	ansible-container build --from-scratch -- -vv
 	docker tag $(DIRNAME)-ubuntu:latest $(REMOTE_REPO)-ubuntu:$(TAG)
+	docker tag $(DIRNAME)-ubuntu:latest $(REMOTE_REPO)-ubuntu
 
 build-centos:
-	ansible-container build --from-scratch -- -l centos
+	ln -f -s container_centos.yml ansible/container.yml
+	ansible-container build --from-scratch -- -vv
 	docker tag $(DIRNAME)-centos:latest $(REMOTE_REPO)-centos:$(TAG)
+	docker tag $(DIRNAME)-centos:latest $(REMOTE_REPO)-centos
 
 build-debian:
-	ansible-container build --from-scratch -- -l debian
+	ln -f -s container_debian.yml ansible/container.yml
+	ansible-container build --from-scratch -- -vv
 	docker tag $(DIRNAME)-debian:latest $(REMOTE_REPO)-debian:$(TAG)
+	docker tag $(DIRNAME)-debian:latest $(REMOTE_REPO)-debian

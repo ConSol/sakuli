@@ -39,6 +39,12 @@
     - etc
     - local
 
+- name: ensure custom plugins are executable
+  shell: chmod 775 /omd/sites/demo/local/lib/nagios/plugins/*
+
+- name: ensure local bins are executable
+  shell: chmod 775 /omd/sites/demo/local/bin/*
+
 - name: tmp permissions
   file:
     path: /tmp/

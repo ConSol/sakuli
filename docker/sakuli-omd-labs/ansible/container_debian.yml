@@ -1,0 +1,12 @@
+version: "1"
+services:
+
+  debian:
+    image: consol/omd-labs-debian
+    # image: local/omd-labs-debian
+    # environment:
+      # ANSIBLE_DROPIN_ROLE: 'dropin_role'
+      # ANSIBLE_VERBOSITY: ''
+    # command: /omd/sites/demo/bin/ansible-playbook -i localhost, /root/ansible/playbook.yml -c local -e ANSIBLE_DROPIN_ROLE=$ANSIBLE_DROPIN_ROLE $ANSIBLE_VERBOSITY
+
+registries: {}
