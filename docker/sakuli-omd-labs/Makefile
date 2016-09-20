@@ -45,18 +45,18 @@ build: 	build-ubuntu build-centos build-debian
 
 build-ubuntu:
 	ln -f -s container_ubuntu.yml ansible/container.yml
-	ansible-container build --from-scratch -- -vv
+	ansible-container build -- -vv
 	docker tag $(DIRNAME)-ubuntu:latest $(REMOTE_REPO)-ubuntu:$(TAG)
 	docker tag $(DIRNAME)-ubuntu:latest $(REMOTE_REPO)-ubuntu
 
 build-centos:
 	ln -f -s container_centos.yml ansible/container.yml
-	ansible-container build --from-scratch -- -vv
+	ansible-container build -- -vv
 	docker tag $(DIRNAME)-centos:latest $(REMOTE_REPO)-centos:$(TAG)
 	docker tag $(DIRNAME)-centos:latest $(REMOTE_REPO)-centos
 
 build-debian:
 	ln -f -s container_debian.yml ansible/container.yml
-	ansible-container build --from-scratch -- -vv
+	ansible-container build -- -vv
 	docker tag $(DIRNAME)-debian:latest $(REMOTE_REPO)-debian:$(TAG)
 	docker tag $(DIRNAME)-debian:latest $(REMOTE_REPO)-debian

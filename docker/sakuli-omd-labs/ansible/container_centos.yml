@@ -2,8 +2,8 @@ version: "1"
 services:
 
   centos:
-    # image: consol/omd-labs-centos
-    image: local/omd-labs-centos:dev-ansible
+    image: consol/omd-labs-centos
+    # image: local/omd-labs-centos:dev-ansible
     # image: local/omd-labs-centos
     # environment:
       # ANSIBLE_DROPIN_ROLE: 'dropin_role'
