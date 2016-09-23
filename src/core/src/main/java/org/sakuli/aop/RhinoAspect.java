@@ -36,7 +36,7 @@ import static org.apache.commons.lang.StringUtils.removeEnd;
 import static org.apache.commons.lang3.StringUtils.removeStart;
 
 /**
- * Aspect for the External Sahi Libary {@link net.sf.sahi}
+ * Aspect for the External Sahi Library {@link net.sf.sahi}
  *
  * @author tschneck Date: 17.10.13
  */

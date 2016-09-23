@@ -21,5 +21,9 @@ Currently available docker images:
 
 Further Information about the usage of the Sakuli docker containers you find under:
 * **[Usage Sakuli Docker Containers](../docs/docker-containers.md)**
-* Presentation **[Containerized End-2-End-Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)**
-* Example project on GitHub **[ConSol/sakuli-example-testautomation-day](https://github.com/ConSol/sakuli-example-testautomation-day)**.
+* Presentations:
+ * **[Containerized End-2-End-Testing - ContainerDays 2016 Hamburg](https://speakerdeck.com/toschneck/containerized-end-2-end-testing-containerdays-2016-in-hamburg)**
+ * **[Containerized End-2-End-Testing - ConSol CM Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)**
+* Example projects on GitHub:
+ * **[toschneck/sakuli-example-bakery-testing](https://github.com/toschneck/sakuli-example-bakery-testing)**
+ * **[ConSol/sakuli-example-testautomation-day](https://github.com/ConSol/sakuli-example-testautomation-day)**

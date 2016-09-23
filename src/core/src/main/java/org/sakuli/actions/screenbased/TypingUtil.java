@@ -298,14 +298,14 @@ public class TypingUtil<A extends Action> {
     }
 
     /**
-     * Blocks the current testcase execution for x seconds
+     * Blocks the current testcase execution for x milliseconds
      *
-     * @param seconds to sleep
+     * @param milliseconds to sleep
      * @return this {@link A} or NULL on errors.
      */
-    public A sleep(Integer seconds) {
+    public A sleep(Long milliseconds) {
         try {
-            TimeUnit.SECONDS.sleep(seconds);
+            TimeUnit.MILLISECONDS.sleep(milliseconds);
         } catch (InterruptedException e) {
             action.getLoader().getExceptionHandler().handleException(e, true);
             return null;

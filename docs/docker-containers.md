@@ -146,8 +146,12 @@ For example, the password for VNC could be set like this:
 ## Further Information
 Further information about the usage of Sakuli docker containers can be found at:
 
-* Presentation **[Containerized End-2-End-Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)**
-* Example project on GitHub **[ConSol/sakuli-example-testautomation-day](https://github.com/ConSol/sakuli-example-testautomation-day)**.
+* Presentation:
+ * **[Containerized End-2-End-Testing - ContainerDays 2016 Hamburg](https://speakerdeck.com/toschneck/containerized-end-2-end-testing-containerdays-2016-in-hamburg)**
+ * **[Containerized End-2-End-Testing - ConSol CM Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)**
+* Example projects on GitHub:
+ * **[toschneck/sakuli-example-bakery-testing](https://github.com/toschneck/sakuli-example-bakery-testing)**
+ * **[ConSol/sakuli-example-testautomation-day](https://github.com/ConSol/sakuli-example-testautomation-day)**
 
 ## Contact
 For questions or maybe some hints, feel free to contact us via **[sakuli@consol.de](mailto:sakuli@consol.de)** or open an [issue](https://github.com/ConSol/sakuli/issues/new).
@@ -156,7 +160,7 @@ The guys behind Sakuli:
 <table>
 <tr>
 <td>
-**ConSol Software GmbH** <br/>
+**ConSol Consulting & Solutions Software GmbH** <br/>
 *Franziskanerstr. 38, D-81669 München* <br/>
 *Tel. +49-89-45841-100, Fax +49-89-45841-111*<br/>
 *Homepage: http://www.consol.de E-Mail: [info@consol.de](info@consol.de)*

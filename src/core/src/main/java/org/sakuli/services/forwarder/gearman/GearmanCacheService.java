@@ -42,7 +42,7 @@ import java.util.List;
 @Component
 public class GearmanCacheService {
 
-    private static final String CACHE_FILE = ".gearman-cache";
+    private static final String CACHE_FILE = ".cache/gearman.cache";
     private static final String CACHE_SEPARATOR = "=======";
     private static final String CHARSET_NAME = "UTF-8";
     private static final String LINE_SEPARATOR = "\n";
@@ -92,6 +92,10 @@ public class GearmanCacheService {
     public void cacheResults(List<NagiosCheckResult> results) {
         Path cacheFile = testSuiteProperties.getTestSuiteFolder().resolve(CACHE_FILE);
         File output = new File(cacheFile.toUri());
+        if (!output.getParentFile().exists()) {
+            output.getParentFile().mkdirs();
+        }
+
         try (FileOutputStream fos = new FileOutputStream(output)) {
             for (NagiosCheckResult result : results) {
                 fos.write((CACHE_SEPARATOR + " " + result.getQueueName() + ":" + result.getUuid() + LINE_SEPARATOR).getBytes(CHARSET_NAME));

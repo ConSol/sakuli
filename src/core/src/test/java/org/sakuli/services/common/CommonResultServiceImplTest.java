@@ -61,6 +61,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
         multipleExpressions.put("AccessError(.*)", "");
 
         return new Object[][]{
+                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nSome details are here ...", Collections.singletonMap("[\\s\\S]+", "New error message!"), "New error message!"},
                 {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nSome details are here ...", Collections.singletonMap("TypeError(.*)", ""), "el is undefined"},
                 {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nTypeError another el is undefined\nSome details are here ...", Collections.singletonMap("TypeError(.*)", ""), "el is undefined another el is undefined"},
                 {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nTypeError another el is undefined\nSome details are here ...", Collections.singletonMap("TypeError(.*)", "TypeError:%1s "), "TypeError: el is undefined TypeError: another el is undefined"},
