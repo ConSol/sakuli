@@ -28,7 +28,7 @@ RUN yum -y install \
 ADD scripts/auto-install.xml /tmp/
 RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
     && java -jar /tmp/sakuli-v$SAKULI_VERSION-installer.jar /tmp/auto-install.xml \
-    && rm -f sakuli*.jar auto-install.xml
+    && rm -rf /tmp
 RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /root/sakuli/sahi/userdata/config/userdata.properties
 
 ### Install apps for testing
