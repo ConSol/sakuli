@@ -34,7 +34,7 @@ The Sakuli Java DSL comes to you as Maven module JAR file. You can add the modul
         
 In the last step, we have to provide also some local resources for our Sakuli test setup. Therefore we use the [maven-dependency-plugin] to unpack all needed Sakuli resources to our local `project.build.outputDirectory`:
  
- ```.xml
+```.xml
     <build>
         <plugins>
             <plugin>
