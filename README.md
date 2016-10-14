@@ -65,6 +65,7 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 # Resources
 
 ## Example projects on GitHub
+ * **[ConSol/sakuli-examples](https://github.com/ConSol/sakuli-examples)**
  * **[toschneck/sakuli-example-bakery-testing](https://github.com/toschneck/sakuli-example-bakery-testing)**
  * **[ConSol/sakuli-example-testautomation-day](https://github.com/ConSol/sakuli-example-testautomation-day)**
 
@@ -102,6 +103,8 @@ Episode 9 of the ***ConSol Monitoring Minutes*** shows the main features of Saku
 
 
 ### Slides
+
+2016: [Containerized End-2-End-Testing (German) - JUG Saxony Days Dresden](http://www.slideshare.net/TobiasSchneck/containerized-end2end-testing-jug-saxony-day) (Tobias Schneck)
 
 2016: [Containerized End-2-End-Testing - ContainerDays 2016 Hamburg](https://speakerdeck.com/toschneck/containerized-end-2-end-testing-containerdays-2016-in-hamburg) (Tobias Schneck)
 
