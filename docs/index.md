@@ -55,7 +55,7 @@ native application UI with screen related actions. The API is documented in [Jav
 * **Headless** Sakuli checks
   * [on Windows](headless-windows.md) -- in progress
   * [on Linux](headless-linux.md)
-* [**additional** Sakuli Settings](additional-settings.md)
+* [additional Sakuli Settings](additional-settings.md)
 * **Troubleshooting** and **Tuning**
   * [Sakuli Client](troubleshooting-tuning-sakuli-client.md)
   * [OMD/Nagios](troubleshooting-omd.md)
