@@ -114,6 +114,10 @@ for web sites and common UIs with full Nagios integration](https://rawgit.com/to
 
 
 ## Publications
+10/2016: [ConSol Labs: Containerized UI-Tests in Java with Sakuli and Docker](https://labs.consol.de/sakuli/development/2016/10/14/sakuli-java-dsl.html) (Tobias Schneck)
+
+10/2016: [ConSol Labs: Sakuli EndToEnd Tests mit Android](https://labs.consol.de/android/monitoring/sakuli/2016/10/10/android-sakuli.html) (Philip Griesbacher)
+
 8/2016: [heise Devloper: Testautomatisierung in Zeiten von Continuous Delivery](http://www.heise.de/developer/artikel/Testautomatisierung-in-Zeiten-von-Continuous-Delivery-3300566.html) (Christoph Deppisch / Tobias Schneck)
 
 8/2016: [Pressemitteilung:
