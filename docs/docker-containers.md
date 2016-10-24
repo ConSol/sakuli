@@ -2,30 +2,35 @@
 
 Docker containers allow you to run a Sakuli test in an isolated environment, called "container", which is always started off from the same base image. This ensures that tests always run under equal conditions.
 
-## Container OS types
+## image OS types
 The repository's subfolder [./docker](https://github.com/ConSol/sakuli/tree/master/docker) contains all source files Sakuli docker images are made of. Currently we provide images on  [DockerHub](https://hub.docker.com) for:
 * CentOS 7 ([consol/sakuli-centos-xfce](https://hub.docker.com/r/consol/sakuli-centos-xfce/))
 * Ubuntu 14.04 LTS ([consol/sakuli-ubuntu-xfce](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/))
+
+## image tags
+The build process on DockerHub is triggered by Github hooks; that means that you are always getting the current version for the two branches
+
+* **master** -> image tag "**latest**": contains the latest stable release of Sakuli
+* **dev** -> image tag "**dev**": contains the latest snapshot version of Sakuli 
 
 ## Architecture of Sakuli containers
 
 Each Sakuli docker image is installed with the following components:
 
-* Desktop environment (currently [**Xfce4**](http://www.xfce.org) only)
+* Desktop environment ([**Xfce4**](http://www.xfce.org))
 * VNC-Server (default VNC port `5901`)
 * [**noVNC**](https://github.com/kanaka/noVNC) - HTML5 VNC client (default http port `6901`)
 * Java JRE 8
 * Browsers:
   * Mozilla Firefox + Java Plugin
   * Google Chrome (Java-Plugin is no longer supported)
-* [**Sahi OS**](http://sahi.co.in)
+* [**Sahi OS 5**](http://sahi.co.in)
 * [**Sakuli**](https://github.com/ConSol/sakuli) in the latest stable version
 
-The running containers are accessible via:
+The running containers are accessible with VNC (default password: *sakuli*) by:
 
 * __VNC viewer__:
   *  __`DOCKER_HOST:5901`__
-  * default password: `sakuli`
 * __noVNC HTML5 client__:
   * [http://localhost:6901/vnc_auto.html?password=sakuli]()
 
@@ -45,11 +50,14 @@ Alternatively, you can build this image from the sources:
 
 Once you have pulled/built the image, you can start a container on top of it which binds port 5901/tcp and 6901/tcp to localhost (on native docker installations; $DOCKER_IP on boot2docker):
 
+      # default tag "latest" = Sakuli stable
       docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce
+      # tag "dev" = Sakuli Snapshot version of dev branch
+      docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce:dev
 
 The container will execute a small headless self-test and exit afterwards. Read on to learn how to execute your own test within this container.  
 
-## Integrate custom test suites in a Sakuli container
+## Run your test suite in a Sakuli container
 
 There are three important lines in the *Dockerfile* of each Sakuli image which define what has to be done on a container start:
 
@@ -61,11 +69,11 @@ There are three important lines in the *Dockerfile* of each Sakuli image which d
 * `CMD` is the default argument for `ENTRYPOINT`, that is, to run a test suite set by a variable.
 * `ENV SAKULI_TEST_SUITE` is set to the path of a test suite which has to run when the container starts. By default, this is set to the built-in folder `/root/sakuli/example_test_suites/example_xfce`.
 
-There is more than one way to integrate a custom testsuite in a container, discussed in the following and assuming that you want to integrate a suite called `suite_1` located on your host at the path `/home/myuser/my-sakuli-testsuites`:
+There is more than one way to integrate a custom testsuite in a container, discussed in the following. Assume you want to run a suite called `suite_1` located on your host at the path `/home/myuser/my-sakuli-testsuites` - use one of the following ways: 
 
-### 1) Mount an external suite folder and modify `CMD`
+### 1) `run` command
 
-Mount a folder on your host into the container and override `CMD` from Dockerfile (=argument for `ENTRYPOINT`) with custom parameters for the Sakuli starter `sakuli`.  In this way you can also instruct Sakuli e.g. to use another browser (`-browser chrome`).
+Mount the suite folder on your host into the container and override `CMD` from Dockerfile (=argument for `ENTRYPOINT`) with custom parameters for the Sakuli starter `sakuli`.  In this way you can also give further parameters to Sakuli e.g. to use another browser (`-browser chrome`).
  
     # running tests in chrome
     ~$ docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce 'run "$SAKULI_TEST_SUITE" -browser chrome'   
@@ -77,10 +85,10 @@ CMD can be overrideen in two ways:
 
 #### 1.1) using the command line
 
-    ~$ docker run -it -p 5901:5901 -p 6901:6901   \\
-         -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites"   \\
-         consol/sakuli-centos-xfce   \\
-         'run /my-sakuli-testsuites/suite_1'
+    ~$ docker run -it -p 5901:5901 -p 6901:6901 -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites" consol/sakuli-centos-xfce 'run /my-sakuli-testsuites/suite_1'
+This command will 
+    * mount the test suites folder to `/my-sakuli-testsuites` within the container
+    * execute the suite `suite_1`
 
 #### 1.2) using docker-compose
 A more elegant way is to pack all parameters into a [Docker Compose](https://docs.docker.com/compose/) file. Create `docker-compose.yml`:
@@ -99,7 +107,7 @@ When executed in the same directory as `docker-compose.yml`, a simple `docker-co
 
 `docker-compose rm -f` in contrast removes all currently stopped and running containers, which defined in the `docker-compose.yml`. Otherwise, if `docker-compose up` will called again, the test execution will reattach the instance and the start the test execution again in the same container instance.
 
-### 2) Mount an external suite folder and modify `SAKULI_TEST_SUITE`
+### 2) environment variable `SAKULI_TEST_SUITE`
 Mount a folder on your host into the container and override the environment variable `SAKULI_TEST_SUITE`.
 
 #### 2.1) using the command line
