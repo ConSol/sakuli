@@ -58,4 +58,12 @@ public class SakuliException extends Exception {
     public String toString() {
         return getLocalizedMessage();
     }
+
+    public String extractScreenshotAsBase64() {
+        return null;
+    }
+
+    public String extractScreenshotFormat() {
+        return null;
+    }
 }

@@ -1,0 +1,59 @@
+<table style="border-collapse: collapse;">
+<tbody>
+        <tr valign="top">
+            <td class="service{{testsuite.state.name}}">
+                {{testsuite.shortState}} Sakuli suite "{{testsuite.id}}"
+                {% if (testsuite.state.error) %}
+                {% else %}
+                    {{testsuite.state.nagiosStateDescription}}
+                {% endif %}
+                ({{testsuite.duration}}s
+                {% if (testsuite.state.name == 'WARNING_IN_SUITE') %}
+                    /warn at {{ testsuite.warningTime }}s
+                {% elseif (testsuite.state.name == 'CRITICAL_IN_SUITE') %}
+                    /crit at {{ testsuite.criticalTime }}s
+                {% endif %})
+                {% if (testsuite.state.error) %}
+                    {{testsuite.state.nagiosStateDescription}}: {% include 'suite_error_message.twig' with { testDataEntity: testsuite } %}
+                {% endif %}
+                (Last suite run:
+                {% if (empty(testsuite.stopDate)) %}
+                    xx
+                {% else %}
+                    {{ testsuite.stopDate|date("dd.MM.YY HH:mm:ss") }}
+                {% endif %})
+                TODO!!!{{error_screenshot}}
+            </td>
+        </tr>
+    {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
+        <tr valign="top">
+            <td class="service{{testCase.state.name}}">{{testCase.shortState}} case "{{testCase.id}}"
+            {% if (testCase.state.ok) %}
+                ran in {{testCase.duration}}s - {{testCase.state.nagiosStateDescription}}
+            {% elseif (testCase.state.warning) %}
+                over runtime ({{testCase.duration}}s/warn at {{testCase.warningTime}}s)
+                {% include 'step_information.twig' with { testCase: testCase } %}
+            {% elseif (testCase.state.critical) %}
+                EXCEPTION: STEP "Test_Sahi_landing_page": MY ERROR FOR GEORGI
+                <div id="sakuli_screenshot1033856359">
+                    <div id="openModal_sakuli_screenshot1033856359" class="modalDialog">
+                        <a href="#close" title="Close"  class="close">Close X</a>
+                        <a href="javascript:lightbox('sakuli_client','{{ testsuite.state.name }}')">
+                            <img class="screenshot" src="data:image/jpg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/9k=">
+                        </a>
+                    </div>
+                </div>
+                <div id=\"%s\">
+                    <div id=\"openModal_%s\" class="modalDialog">
+                        <a href="#close" title="Close" class="close">Close X</a>
+                        <a href="#openModal_%s">
+                            <img class="screenshot" src=\"data:image/%s;base64,%s\" >
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

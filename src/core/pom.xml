@@ -413,7 +413,15 @@
             <artifactId>jersey-media-json-jackson</artifactId>
         </dependency>
 
-
+        <!-- jtwig template engine -->
+        <dependency>
+            <groupId>org.jtwig</groupId>
+            <artifactId>jtwig-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jtwig</groupId>
+            <artifactId>jtwig-spaceless-extension</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
