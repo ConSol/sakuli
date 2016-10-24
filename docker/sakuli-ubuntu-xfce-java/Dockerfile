@@ -1,6 +1,6 @@
 # This Dockerfile is used to run Sakuli Java testss based on Ubuntu OS
 
-FROM consol/ubuntu-xfce-vnc:1.0.1
+FROM consol/ubuntu-xfce-vnc:1.0.2
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2016-10-24
 

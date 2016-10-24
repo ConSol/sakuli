@@ -1,6 +1,6 @@
 # This Dockerfile is used to build an sakuli image based on Ubuntu
 
-FROM consol/ubuntu-xfce-vnc:1.0.1
+FROM consol/ubuntu-xfce-vnc:1.0.2
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2016-06-03
 
@@ -9,7 +9,7 @@ ENV VNC_RESOLUTION 1280x1024
 ENV VNC_PW sakuli
 
 ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install
-ENV SAKULI_VERSION 1.0.2-SNAPSHOT
+ENV SAKULI_VERSION 1.0.1
 ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
 ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
 
