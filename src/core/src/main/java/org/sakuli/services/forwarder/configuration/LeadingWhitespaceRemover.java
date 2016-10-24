@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.forwarder;
+package org.sakuli.services.forwarder.configuration;
 
 import org.jtwig.spaceless.remover.SpaceRemover;
 

@@ -12,7 +12,7 @@
                 |s_{{ testCaseIndex }}_{{ testStepIndex }}_{{testStep.name}}={{testStep.duration}}s;{{testStep.warningTime}};;;
             {% endfor %}
         {% endfor %}
-    {{testsuite.shortState}}$whitespace$Sakuli suite "{{testsuite.id}}"$whitespace$
+    $whitespace$Sakuli suite "{{testsuite.id}}"$whitespace$
         {% if (testsuite.state.error) %}
             ({{testsuite.duration}}s) {{testsuite.state.nagiosStateDescription}}: {% include 'suite_error_message.twig' with { testDataEntity: testsuite } %}
         {% else %}

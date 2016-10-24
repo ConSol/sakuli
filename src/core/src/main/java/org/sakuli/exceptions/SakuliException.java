@@ -59,11 +59,4 @@ public class SakuliException extends Exception {
         return getLocalizedMessage();
     }
 
-    public String extractScreenshotAsBase64() {
-        return null;
-    }
-
-    public String extractScreenshotFormat() {
-        return null;
-    }
 }

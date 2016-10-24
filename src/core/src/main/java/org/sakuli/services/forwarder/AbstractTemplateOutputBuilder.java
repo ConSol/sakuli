@@ -24,17 +24,14 @@ import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.jtwig.spaceless.SpacelessExtension;
 import org.jtwig.spaceless.configuration.SpacelessConfiguration;
-import org.sakuli.datamodel.AbstractTestDataEntity;
-import org.sakuli.datamodel.TestCase;
-import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.services.forwarder.checkmk.CheckMKResultServiceImpl;
-import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
+import org.sakuli.services.forwarder.configuration.ExtractScreenshotFunction;
+import org.sakuli.services.forwarder.configuration.GetOutputStateFunction;
+import org.sakuli.services.forwarder.configuration.LeadingWhitespaceRemover;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Georgi Todorov
@@ -65,7 +62,11 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
         }
         EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration()
                 .extensions()
-                .add(new SpacelessExtension(new SpacelessConfiguration(new LeadingWhitespaceRemover())))
+                    .add(new SpacelessExtension(new SpacelessConfiguration(new LeadingWhitespaceRemover())))
+                .and()
+                .functions()
+                    .add(new GetOutputStateFunction())
+                    .add(new ExtractScreenshotFunction(screenshotDivConverter))
                 .and()
                 .build();
         JtwigTemplate template = JtwigTemplate.fileTemplate(new File(templatePath), configuration);
@@ -79,38 +80,6 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
         JtwigModel model = JtwigModel.newModel()
                 .with("testsuite", testSuite);
         return model;
-    }
-
-    private Map<String, ScreenshotDiv> extractExceptions() {
-        Map<String, ScreenshotDiv> exceptionsMap = new HashMap<>();
-        ScreenshotDiv screenshotDiv = extractExceptionFromEntity(testSuite);
-        if (screenshotDiv != null) {
-            exceptionsMap.put(testSuite.getId(), screenshotDiv);
-        }
-        for (Map.Entry<String, TestCase> stringTestCaseEntry : testSuite.getTestCases().entrySet()) {
-            TestCase testCase = stringTestCaseEntry.getValue();
-            ScreenshotDiv screenshotDivTestCase = extractExceptionFromEntity(testCase);
-            if (screenshotDivTestCase != null) {
-                exceptionsMap.put(
-                        String.format(GLOBAL_TEST_CASE_ID_FORMAT, testSuite.getId(), testCase.getId()),
-                        screenshotDivTestCase
-                );
-            }
-            for (TestCaseStep testStep : testCase.getSteps()) {
-                ScreenshotDiv screenshotDivTestStep = extractExceptionFromEntity(testStep);
-                if (screenshotDivTestStep != null) {
-                    exceptionsMap.put(
-                            String.format(GLOBAL_TEST_STEP_ID_FORMAT, testSuite.getId(), testCase.getId(), testStep.getId()),
-                            screenshotDivTestStep
-                    );
-                }
-            }
-        }
-        return exceptionsMap;
-    }
-
-    private ScreenshotDiv extractExceptionFromEntity(AbstractTestDataEntity testDataEntity) {
-        return screenshotDivConverter.convert(testDataEntity.getException());
     }
 
     protected String getTemplatePath() {

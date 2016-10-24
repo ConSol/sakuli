@@ -2,7 +2,7 @@
 <tbody>
         <tr valign="top">
             <td class="service{{testsuite.state.name}}">
-                {{testsuite.shortState}} Sakuli suite "{{testsuite.id}}"
+                {{ getOutputState(testsuite.state).shortState }} Sakuli suite "{{testsuite.id}}"
                 {% if (testsuite.state.error) %}
                 {% else %}
                     {{testsuite.state.nagiosStateDescription}}
@@ -27,7 +27,8 @@
         </tr>
     {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
         <tr valign="top">
-            <td class="service{{testCase.state.name}}">{{testCase.shortState}} case "{{testCase.id}}"
+            <td class="service{{testCase.state.name}}">
+                {{ getOutputState(testCase.state).shortState }} case "{{testCase.id}}"
             {% if (testCase.state.ok) %}
                 ran in {{testCase.duration}}s - {{testCase.state.nagiosStateDescription}}
             {% elseif (testCase.state.warning) %}

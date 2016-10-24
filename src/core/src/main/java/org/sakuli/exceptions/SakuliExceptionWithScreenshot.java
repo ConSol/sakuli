@@ -18,13 +18,7 @@
 
 package org.sakuli.exceptions;
 
-import org.apache.commons.lang.StringUtils;
-import sun.misc.BASE64Encoder;
-
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 
 /**
  * @author tschneck
@@ -63,32 +57,6 @@ public class SakuliExceptionWithScreenshot extends SakuliException {
 
     public void setScreenshot(Path screenshot) {
         this.screenshot = screenshot;
-    }
-
-    @Override
-    public String extractScreenshotAsBase64() {
-        if (getScreenshot() != null) {
-            try {
-                byte[] binaryScreenshot = Files.readAllBytes(getScreenshot());
-                String base64String = new BASE64Encoder().encode(binaryScreenshot);
-                for (String newLine : Arrays.asList("\n", "\r")) {
-                    base64String = StringUtils.remove(base64String, newLine);
-                }
-                return base64String;
-            } catch (IOException e) {
-                throw new SakuliRuntimeException(
-                        String.format("error during the BASE64 encoding of the screenshot '%s'", getScreenshot().toString()), e);
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public String extractScreenshotFormat() {
-        if (getScreenshot() != null) {
-            return StringUtils.substringAfterLast(getScreenshot().getFileName().toString(), ".");
-        }
-        return null;
     }
 
 }
