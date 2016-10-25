@@ -2,8 +2,8 @@
 
 |branch  |build state|docs state| docker images state
 |--------|-----------|-----------|-----------|
-| `master` | [![Build Status](http://labs-build.consol.de/buildStatus/icon?job=Sakuli_perform_release)](http://labs-build.consol.de/view/Sakuli/job/Sakuli_perform_release/) | [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=stable)](http://sakuli.readthedocs.io/en/stable/) | `consol/sakuli-ubuntu-xfce`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce.svg)](https://hub.docker.com/r/consol/ubuntu-centos-xfce/)  [![](https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce.svg)](http://microbadger.com/images/consol/ubuntu-centos-xfce) <br/> `consol/sakuli-centos-xfce`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce.svg)](https://hub.docker.com/r/consol/sakuli-centos-xfce/) [![](https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce.svg)](http://microbadger.com/images/consol/sakuli-centos-xfce)
-| `dev` | [![Build Status](http://labs-build.consol.de/buildStatus/icon?job=Sakuli_CI)](http://labs-build.consol.de/view/Sakuli/job/Sakuli_CI/) | [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=dev)](http://sakuli.readthedocs.io/en/dev/) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=latest)](http://sakuli.readthedocs.io/en/latest/) | `consol/sakuli-ubuntu-xfce:dev`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce:dev.svg)](https://hub.docker.com/r/consol/ubuntu-centos-xfce/)  [![](https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce:dev.svg)](http://microbadger.com/images/consol/ubuntu-centos-xfce) <br/> `consol/sakuli-centos-xfce:dev`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce:dev.svg)](https://hub.docker.com/r/consol/sakuli-centos-xfce/) [![](https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce:dev.svg)](http://microbadger.com/images/consol/sakuli-centos-xfce)
+| `master` | [![Build Status](http://labs-build.consol.de/buildStatus/icon?job=Sakuli_perform_release)](http://labs-build.consol.de/view/Sakuli/job/Sakuli_perform_release/) | [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=stable)](http://sakuli.readthedocs.io/en/stable/) | `consol/sakuli-ubuntu-xfce`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce.svg)](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/)  [![](https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce.svg)](http://microbadger.com/images/consol/sakuli-ubuntu-xfce) <br/> `consol/sakuli-centos-xfce`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce.svg)](https://hub.docker.com/r/consol/sakuli-centos-xfce/) [![](https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce.svg)](http://microbadger.com/images/consol/sakuli-centos-xfce) <br/> `consol/sakuli-ubuntu-xfce-java`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce-java.svg)](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/)  [![](https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce-java.svg)](http://microbadger.com/images/consol/sakuli-ubuntu-xfce-java) <br/> `consol/sakuli-centos-xfce-java`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce-java.svg)](https://hub.docker.com/r/consol/sakuli-centos-xfce-java/) [![](https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce-java.svg)](http://microbadger.com/images/consol/sakuli-centos-xfce-java)|
+| `dev` | [![Build Status](http://labs-build.consol.de/buildStatus/icon?job=Sakuli_CI)](http://labs-build.consol.de/view/Sakuli/job/Sakuli_CI/) | [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=dev)](http://sakuli.readthedocs.io/en/dev/) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=latest)](http://sakuli.readthedocs.io/en/latest/) | `consol/sakuli-ubuntu-xfce:dev`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce:dev.svg)](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/)  [![](https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce:dev.svg)](http://microbadger.com/images/consol/sakuli-ubuntu-xfce) <br/> `consol/sakuli-centos-xfce:dev`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce:dev.svg)](https://hub.docker.com/r/consol/sakuli-centos-xfce/) [![](https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce:dev.svg)](http://microbadger.com/images/consol/sakuli-centos-xfce) <br/>`consol/sakuli-ubuntu-xfce-java:dev`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce-java:dev.svg)](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/)  [![](https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce-java:dev.svg)](http://microbadger.com/images/consol/sakuli-ubuntu-xfce-java) <br/> `consol/sakuli-centos-xfce-java:dev`<br/> [![](https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce-java:dev.svg)](https://hub.docker.com/r/consol/sakuli-centos-xfce-java/) [![](https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce-java:dev.svg)](http://microbadger.com/images/consol/sakuli-centos-xfce-java)|
 
 *An end-to-end testing tool for web sites and common UIs with full Nagios integration*
 
@@ -65,6 +65,7 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 # Resources
 
 ## Example projects on GitHub
+ * **[ConSol/sakuli-examples](https://github.com/ConSol/sakuli-examples)**
  * **[toschneck/sakuli-example-bakery-testing](https://github.com/toschneck/sakuli-example-bakery-testing)**
  * **[ConSol/sakuli-example-testautomation-day](https://github.com/ConSol/sakuli-example-testautomation-day)**
 
@@ -103,6 +104,8 @@ Episode 9 of the ***ConSol Monitoring Minutes*** shows the main features of Saku
 
 ### Slides
 
+2016: [Containerized End-2-End-Testing (German) - JUG Saxony Days Dresden](http://www.slideshare.net/TobiasSchneck/containerized-end2end-testing-jug-saxony-day) (Tobias Schneck)
+
 2016: [Containerized End-2-End-Testing - ContainerDays 2016 Hamburg](https://speakerdeck.com/toschneck/containerized-end-2-end-testing-containerdays-2016-in-hamburg) (Tobias Schneck)
 
 2014: [End-to-end testing
@@ -111,6 +114,10 @@ for web sites and common UIs with full Nagios integration](https://rawgit.com/to
 
 
 ## Publications
+10/2016: [ConSol Labs: Containerized UI-Tests in Java with Sakuli and Docker](https://labs.consol.de/sakuli/development/2016/10/14/sakuli-java-dsl.html) (Tobias Schneck)
+
+10/2016: [ConSol Labs: Sakuli EndToEnd Tests mit Android](https://labs.consol.de/android/monitoring/sakuli/2016/10/10/android-sakuli.html) (Philip Griesbacher)
+
 8/2016: [heise Devloper: Testautomatisierung in Zeiten von Continuous Delivery](http://www.heise.de/developer/artikel/Testautomatisierung-in-Zeiten-von-Continuous-Delivery-3300566.html) (Christoph Deppisch / Tobias Schneck)
 
 8/2016: [Pressemitteilung:
