@@ -24,6 +24,7 @@ import org.gearman.common.GearmanJobServerConnection;
 import org.gearman.common.GearmanNIOJobServerConnection;
 import org.sakuli.services.common.AbstractResultService;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
+import org.sakuli.services.forwarder.gearman.crypt.Aes256;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosExceptionBuilder;
@@ -107,7 +108,13 @@ public class GearmanResultServiceImpl extends AbstractResultService {
     }
 
     protected GearmanJob creatJob(NagiosCheckResult checkResult) {
-        byte[] bytesBase64 = Base64.encodeBase64(checkResult.getPayloadString().getBytes());
+        byte[] bytesBase64;
+        if (properties.isEncryption()) {
+            bytesBase64 = Aes256.encrypt(checkResult.getPayloadString(), properties.getSecretKey());
+        } else {
+            bytesBase64 = Base64.encodeBase64(checkResult.getPayloadString().getBytes());
+        }
+
         return GearmanJobImpl.createBackgroundJob(checkResult.getQueueName(), bytesBase64, checkResult.getUuid());
     }
 
