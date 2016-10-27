@@ -17,6 +17,10 @@ RUN rm -rf /var/lib/apt /etc/apt/sources.list.d/mint.list && apt-get update && \
     apt-get install -y zip oracle-java8-installer oracle-java8-set-default && \
     rm -rf /var/lib/apt
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+### Install JAVA JCE policy (necessary for gearman encryption)
+RUN apt-get update \
+    && apt-get install -y oracle-java8-unlimited-jce-policy \
+    && rm -rf /var/lib/apt
 
 ### Install Maven
 ARG MAVEN_VERSION=3.3.9
