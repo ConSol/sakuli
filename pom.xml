@@ -22,7 +22,7 @@
 
     <groupId>org.sakuli</groupId>
     <artifactId>root</artifactId>
-    <version>1.0.2-lhm-SNAPSHOT</version>
+    <version>1.0.2-lhm</version>
     <packaging>pom</packaging>
 
     <name>sakuli-parent</name>

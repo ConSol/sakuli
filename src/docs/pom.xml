@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>1.0.2-lhm-SNAPSHOT</version>
+        <version>1.0.2-lhm</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>docs</artifactId>
-    <version>1.0.2-lhm-SNAPSHOT</version>
+    <version>1.0.2-lhm</version>
     <name>docs</name>
     <description>maven module to build the markdown api docs from jsdoc</description>
 
