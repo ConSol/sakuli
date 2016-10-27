@@ -95,7 +95,6 @@ Now open Thruk; you should see now the Sakuli host with one service attached:
 
 The check is waiting now for check results from a Sakuli client. 
 
-
 ## Sakuli gearman forwarder configuration
 
 On the Sakuli client you must set the global properties for the gearman receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):. 
@@ -113,6 +112,17 @@ On the Sakuli client you must set the global properties for the gearman receiver
     # (Nagios service name is defined by testsuite.properties -> suiteID)
 	sakuli.forwarder.gearman.nagios.hostname=sakuli_client
 	sakuli.forwarder.gearman.nagios.check_command=check_sakuli
+
+## Using AES encryption
+
+The gearman forwarder supports AES encryption when sending checked results to the OMD server. The AES encryption uses a 32 byte (256 bit) secret key that
+has to be given in the properties. 
+
+    sakuli.forwarder.gearman.encryption=true
+    sakuli.forwarder.gearman.secret.key=secret_password
+
+In case you get a java.lang.security.InvalidKeyException with error message *"Illegal key size or default parameters"* you probably
+need to enable unlimited strength security policies in your Java JRE. This is done by adding a special security policy JAR to the Java JRE lib directory.
 
 ## Test result transmission to OMD
 

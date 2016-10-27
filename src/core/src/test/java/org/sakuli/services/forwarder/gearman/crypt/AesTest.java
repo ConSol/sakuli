@@ -22,24 +22,36 @@ import org.gearman.common.GearmanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 /**
  * @author Christoph Deppisch
  */
-public class Aes256Test {
+public class AesTest {
 
     /** Logger */
-    private static Logger log = LoggerFactory.getLogger(Aes256Test.class);
+    private static Logger log = LoggerFactory.getLogger(AesTest.class);
 
     private final String text = "Secret text to encrypt";
+
+    @BeforeClass
+    public void setKeyLength() {
+        //set key length to 16 byte in unit tests, so default Java JRE security policy applies
+        Aes.keyLength = 16;
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void restoreKeyLength() {
+        //restore default key length
+        Aes.keyLength = Aes.DEFAULT_KEY_LENGTH;
+    }
 
     @Test
     public void testEncryptDecrypt() throws Exception {
         final String password = "encryptor_secret_key";
 
-        byte[] encrypted = Aes256.encrypt(text.trim(), password);
-        String decrypted = Aes256.decrypt(encrypted, password);
+        byte[] encrypted = Aes.encrypt(text.trim(), password);
+        String decrypted = Aes.decrypt(encrypted, password);
 
         log.info("Text to Encrypt: " + text);
         log.info("Decrypted : " + decrypted);
@@ -51,8 +63,8 @@ public class Aes256Test {
     public void testEncryptDecryptShortPassword() throws Exception {
         final String password = "x";
 
-        byte[] encrypted = Aes256.encrypt(text.trim(), password);
-        String decrypted = Aes256.decrypt(encrypted, password);
+        byte[] encrypted = Aes.encrypt(text.trim(), password);
+        String decrypted = Aes.decrypt(encrypted, password);
 
         log.info("Text to Encrypt: " + text);
         log.info("Decrypted : " + decrypted);
@@ -64,8 +76,8 @@ public class Aes256Test {
     public void testEncryptDecryptVeryLongPassword() throws Exception {
         final String password = "xyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyx";
 
-        byte[] encrypted = Aes256.encrypt(text.trim(), password);
-        String decrypted = Aes256.decrypt(encrypted, password);
+        byte[] encrypted = Aes.encrypt(text.trim(), password);
+        String decrypted = Aes.decrypt(encrypted, password);
 
         log.info("Text to Encrypt: " + text);
         log.info("Decrypted : " + decrypted);
@@ -77,8 +89,8 @@ public class Aes256Test {
     public void testWrongPassword() throws Exception {
         final String password = "encryptor_secret_key";
 
-        byte[] encrypted = Aes256.encrypt(text.trim(), password);
-        Aes256.decrypt(encrypted, "wrongPassword");
+        byte[] encrypted = Aes.encrypt(text.trim(), password);
+        Aes.decrypt(encrypted, "wrongPassword");
     }
 
 }
