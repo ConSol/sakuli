@@ -14,6 +14,13 @@ RUN wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2
     && rm /root/jdk.rpm \
     && yum clean all -y
 ENV JAVA_HOME /usr/java/jdk1.8.0_112
+# Install JAVA JCE policy (necessary for gearman encryption)
+RUN mkdir -p /tmp/java-jce \
+    && cd /tmp/java-jce \
+    && wget --no-check-certificate -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
+    && unzip *.zip \
+    && for i in $(find /usr/java/ -name "security"); do /bin/cp -v -f UnlimitedJCEPolicyJDK8/*.jar $i; done \
+    && rm -rf /tmp/java-jce
 
 ### Install Maven
 ARG MAVEN_VERSION=3.3.9
