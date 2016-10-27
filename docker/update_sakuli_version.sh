@@ -34,7 +34,7 @@ searchdir="$(dirname $0)"
 refreshDate=$(date +%Y-%m-%d)
 
 find $searchdir -type f -name Dockerfile | while read file ; do \
-    sed -i -e "s/^ARG SAKULI_VERSION.*/ARG SAKULI_VERSION $new_version/" $file \
+    sed -i -e "s/^ARG SAKULI_VERSION.*/ARG SAKULI_VERSION=$new_version/" $file \
     && echo -e "replace SAKULI_VERSION with '$new_version' in file $file" \
     && sed -i -e "s/^ENV REFRESHED_AT.*/ENV REFRESHED_AT $refreshDate/" $file  \
     && echo -e "replace ENV REFRESHED_AT with '$refreshDate' in file $file" ; \
