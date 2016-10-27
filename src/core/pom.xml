@@ -205,6 +205,12 @@
         <!--profil to deploy the zip file to labs.consol.de/sakuli/install-->
         <profile>
             <id>upload-release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <!-- wagon plugin to upload the zipped releases to the labs server -->
