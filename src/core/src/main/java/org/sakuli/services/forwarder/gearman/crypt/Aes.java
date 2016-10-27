@@ -30,9 +30,14 @@ import java.util.Arrays;
 /**
  * @author Christoph Deppisch
  */
-public class Aes256 {
+public class Aes {
 
-    private static final Logger logger = LoggerFactory.getLogger(Aes256.class);
+    private static final Logger logger = LoggerFactory.getLogger(Aes.class);
+
+    public static final int DEFAULT_KEY_LENGTH = 32;
+
+    /** Key length in byte that should be used, default is 32 = 256 bit */
+    public static int keyLength = DEFAULT_KEY_LENGTH;
 
     /**
      * Encrypt text with AES-256/ECP mode.
@@ -76,7 +81,7 @@ public class Aes256 {
      */
     private static SecretKeySpec getSecretKey(String password){
         try {
-            byte[] key = Arrays.copyOf(password.getBytes(), 32); // use only first 256 bit
+            byte[] key = Arrays.copyOf(password.getBytes(), keyLength); // use only first 256 bit
             return new SecretKeySpec(key, "AES");
         } catch (Exception e) {
             logger.error("Error while creating secret key: ", e);
