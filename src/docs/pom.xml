@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+  ~
+  ~ Copyright 2013 - 2015 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sakuli</groupId>
+        <artifactId>root</artifactId>
+        <version>1.0.2-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>docs</artifactId>
+    <version>1.0.2-SNAPSHOT</version>
+    <name>docs</name>
+    <description>maven module to build the markdown api docs from jsdoc</description>
+
+    <packaging>pom</packaging>
+
+    <properties>
+        <node.dir>${project.build.directory}/node-mvn</node.dir>
+        <node.modules.dir>${node.dir}/node_modules</node.modules.dir>
+        <js-src.target>${project.build.directory}/js_src</js-src.target>
+        <js-src.source>${project.parent.basedir}/src/common/src/main/resources/org/sakuli/common/libs/js</js-src.source>
+        <markdown.output.directory>${project.parent.basedir}/docs</markdown.output.directory>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>generate-markdown</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <!-- copy the js sources to the target -->
+                                <id>copy-jsdoc-resources</id>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${js-src.target}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.basedir}/src/main/resources</directory>
+                                        </resource>
+                                        <resource>
+                                            <directory>${js-src.source}</directory>
+                                            <includes>
+                                                <include>*.js</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                                <phase>generate-resources</phase>
+                            </execution>
+                            <execution>
+                                <!-- copy the generated sakuli-api.md file back-->
+                                <id>copy-markdown-files</id>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${markdown.output.directory}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${js-src.target}</directory>
+                                            <includes>
+                                                <include>*.md</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                                <phase>compile</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <configuration>
+                            <workingDirectory>${js-src.target}</workingDirectory>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>install node and npm</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>v0.12.0</nodeVersion>
+                                    <npmVersion>2.6.1</npmVersion>
+                                </configuration>
+                                <phase>generate-resources</phase>
+                            </execution>
+
+                            <!-- install the modules from 'src/main/resources/package.json' -->
+                            <execution>
+                                <id>npm install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install --verbose</arguments>
+                                </configuration>
+                                <phase>generate-resources</phase>
+                            </execution>
+
+                            <!-- execute the grunt tasks from 'src/main/resources/Gruntfile.js' -->
+                            <execution>
+                                <id>grunt build</id>
+                                <goals>
+                                    <goal>grunt</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>--verbose</arguments>
+                                </configuration>
+                                <phase>generate-resources</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

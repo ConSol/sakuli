@@ -1,0 +1,121 @@
+<!--
+  ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+  ~
+  ~ Copyright 2013 - 2015 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<!-- @formatter:off -->
+<browserTypes>
+    <!-- INFO: $userDir will be resolved as the SAHI_HOME/userdata folder -->
+    <browserType>
+        <name>firefox</name>
+        <displayName>Firefox</displayName>
+        <icon>firefox.png</icon>
+        <path>$ProgramFiles (x86)\Mozilla Firefox\firefox.exe</path>
+        <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
+        <processName>firefox.exe</processName>
+        <capacity>5</capacity>
+    </browserType>
+
+    <browserType>
+        <name>firefox_portable</name>
+        <displayName>Firefox portable</displayName>
+        <icon>firefox.png</icon>
+        <path>$SAKULI_HOME\..\FirefoxPortable\App\Firefox\firefox.exe</path>
+        <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
+        <processName>firefox.exe</processName>
+        <capacity>5</capacity>
+    </browserType>
+
+    <browserType>
+        <name>ie</name>
+        <displayName>IE</displayName>
+        <icon>ie.png</icon>
+        <path>$ProgramFiles\Internet Explorer\iexplore.exe</path>
+        <options>-noframemerging</options>
+        <processName>iexplore.exe</processName>
+        <useSystemProxy>true</useSystemProxy>
+        <capacity>5</capacity>
+    </browserType>
+
+    <!-- <browserType>
+        <name>ie</name>
+        <displayName>IE 8</displayName>
+        <icon>ie.png</icon>
+        <path>$ProgramFiles (x86)\Internet Explorer\iexplore.exe</path>
+        <options>-noframemerging</options>
+        <processName>iexplore.exe</processName>
+        <useSystemProxy>true</useSystemProxy>
+        <capacity>5</capacity>
+    </browserType> -->
+    <!--
+    <browserType>
+        <name>ie</name>
+        <displayName>IE 7</displayName>
+        <icon>ie.png</icon>
+        <path>$ProgramFiles (x86)\Internet Explorer\iexplore.exe</path>
+        <options></options>
+        <processName>iexplore.exe</processName>
+        <useSystemProxy>true</useSystemProxy>
+        <capacity>5</capacity>
+    </browserType>
+     -->
+
+    <!--
+    <browserType>
+        <name>ie</name>
+        <displayName>IE 6</displayName>
+        <icon>ie.png</icon>
+        <path>$ProgramFiles (x86)\Internet Explorer\iexplore.exe</path>
+        <options></options>
+        <processName>iexplore.exe</processName>
+        <useSystemProxy>true</useSystemProxy>
+        <capacity>5</capacity>
+    </browserType>
+     -->
+
+    <browserType>
+        <name>chrome</name>
+        <displayName>Chrome</displayName>
+        <icon>chrome.png</icon>
+        <path>$ProgramFiles (x86)\Google\Chrome\Application\chrome.exe</path>
+        <options>--incognito --user-data-dir="$userDir/browser/chrome/profiles/sahi$threadNo" --start-maximized --no-default-browser-check --no-first-run --disable-infobars --proxy-server=localhost:9999 --disable-popup-blocking</options>
+        <processName>chrome.exe</processName>
+        <capacity>5</capacity>
+    </browserType>
+
+    <browserType>
+        <name>safari</name>
+        <displayName>Safari</displayName>
+        <icon>safari.png</icon>
+        <path>$ProgramFiles (x86)\Safari\Safari.exe</path>
+        <options></options>
+        <processName>safari.exe</processName>
+        <useSystemProxy>true</useSystemProxy>
+        <capacity>1</capacity>
+    </browserType>
+
+    <browserType>
+        <name>opera</name>
+        <displayName>Opera</displayName>
+        <icon>opera.png</icon>
+        <path>$ProgramFiles (x86)\Opera\opera.exe</path>
+        <options></options>
+        <processName>opera.exe</processName>
+        <useSystemProxy>true</useSystemProxy>
+        <capacity>1</capacity>
+    </browserType>
+
+</browserTypes>
+<!-- @formatter:on -->
