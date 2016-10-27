@@ -18,6 +18,7 @@
 
 package org.sakuli.services.forwarder.gearman;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.time.DateUtils;
 import org.gearman.client.*;
 import org.gearman.common.GearmanJobServerConnection;
@@ -30,6 +31,7 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliActionException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliRuntimeException;
+import org.sakuli.services.forwarder.gearman.crypt.Aes256;
 import org.sakuli.services.forwarder.gearman.model.NagiosCachedCheckResult;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
@@ -209,6 +211,40 @@ public class GearmanResultServiceImplTest extends BaseTest {
         Assert.assertEquals(checkresult.getValue().getQueueName(), queueName);
         Assert.assertEquals(checkresult.getValue().getUuid(), testSuite.getGuid());
         Assert.assertEquals(checkresult.getValue().getPayloadString(), testResult);
+    }
+
+    @Test
+    public void testCreateJobEncryptionDisabled() throws Exception {
+        when(properties.getServiceType()).thenReturn("passive");
+        final String queueName = "check_results";
+        when(properties.getServerQueue()).thenReturn(queueName);
+        final String host = "99.99.99.20";
+        when(properties.getServerHost()).thenReturn(host);
+        final int port = 4730;
+        when(properties.getServerPort()).thenReturn(port);
+        when(properties.getNagiosHost()).thenReturn("win7sakuli");
+        when(properties.isEncryption()).thenReturn(false);
+
+        GearmanJob gearmanJob = testling.creatJob(new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        Assert.assertEquals(new String(Base64.decodeBase64(gearmanJob.getData())), testResult);
+    }
+
+    @Test
+    public void testCreateJobEncryptionEnabled() throws Exception {
+        when(properties.getServiceType()).thenReturn("passive");
+        final String queueName = "check_results";
+        when(properties.getServerQueue()).thenReturn(queueName);
+        final String host = "99.99.99.20";
+        when(properties.getServerHost()).thenReturn(host);
+        final int port = 4730;
+        when(properties.getServerPort()).thenReturn(port);
+        when(properties.getNagiosHost()).thenReturn("win7sakuli");
+        when(properties.isEncryption()).thenReturn(true);
+        final String secretKey = "abcdefghijklmnopqrstuvwxyz";
+        when(properties.getSecretKey()).thenReturn(secretKey);
+
+        GearmanJob gearmanJob = testling.creatJob(new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        Assert.assertEquals(Aes256.decrypt(gearmanJob.getData(), secretKey), testResult);
     }
 
     @Test
