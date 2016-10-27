@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.MessageDigest;
 import java.util.Arrays;
 
 /**
@@ -45,7 +44,7 @@ public class Aes256 {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(password));
-            return Base64.encodeBase64(cipher.doFinal(text.getBytes("UTF-8")));
+            return Base64.encodeBase64(cipher.doFinal(text.getBytes()));
         } catch (Exception e) {
             logger.error("Error while encrypting: ", e);
             throw new GearmanException("Error while encrypting: " + e.getMessage());
@@ -58,7 +57,7 @@ public class Aes256 {
      * @param password
      * @return
      */
-    public static String decrypt(String enrcypted, String password) {
+    public static String decrypt(byte[] enrcypted, String password) {
         try {
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 
@@ -77,9 +76,7 @@ public class Aes256 {
      */
     private static SecretKeySpec getSecretKey(String password){
         try {
-            byte[] key = password.getBytes("UTF-8");
-            key = MessageDigest.getInstance("SHA-1").digest(key);
-            key = Arrays.copyOf(key, 32); // use only first 256 bit
+            byte[] key = Arrays.copyOf(password.getBytes(), 32); // use only first 256 bit
             return new SecretKeySpec(key, "AES");
         } catch (Exception e) {
             logger.error("Error while creating secret key: ", e);

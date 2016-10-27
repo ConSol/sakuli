@@ -38,15 +38,10 @@ public class Aes256Test {
     public void testEncryptDecrypt() throws Exception {
         final String password = "encryptor_secret_key";
 
-        String encrypted = new String(Aes256.encrypt(text.trim(), password), "UTF-8");
+        byte[] encrypted = Aes256.encrypt(text.trim(), password);
+        String decrypted = Aes256.decrypt(encrypted, password);
 
         log.info("Text to Encrypt: " + text);
-        log.info("Encrypted: " + encrypted);
-
-        final String strToDecrypt =  encrypted;
-        String decrypted = Aes256.decrypt(strToDecrypt.trim(), password);
-
-        log.info("Text To Decrypt : " + strToDecrypt);
         log.info("Decrypted : " + decrypted);
 
         Assert.assertEquals(decrypted, text);
@@ -56,15 +51,10 @@ public class Aes256Test {
     public void testEncryptDecryptShortPassword() throws Exception {
         final String password = "x";
 
-        String encrypted = new String(Aes256.encrypt(text.trim(), password), "UTF-8");
+        byte[] encrypted = Aes256.encrypt(text.trim(), password);
+        String decrypted = Aes256.decrypt(encrypted, password);
 
         log.info("Text to Encrypt: " + text);
-        log.info("Encrypted: " + encrypted);
-
-        final String strToDecrypt =  encrypted;
-        String decrypted = Aes256.decrypt(strToDecrypt.trim(), password);
-
-        log.info("Text To Decrypt : " + strToDecrypt);
         log.info("Decrypted : " + decrypted);
 
         Assert.assertEquals(decrypted, text);
@@ -74,15 +64,10 @@ public class Aes256Test {
     public void testEncryptDecryptVeryLongPassword() throws Exception {
         final String password = "xyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyxyx";
 
-        String encrypted = new String(Aes256.encrypt(text.trim(), password), "UTF-8");
+        byte[] encrypted = Aes256.encrypt(text.trim(), password);
+        String decrypted = Aes256.decrypt(encrypted, password);
 
         log.info("Text to Encrypt: " + text);
-        log.info("Encrypted: " + encrypted);
-
-        final String strToDecrypt =  encrypted;
-        String decrypted = Aes256.decrypt(strToDecrypt.trim(), password);
-
-        log.info("Text To Decrypt : " + strToDecrypt);
         log.info("Decrypted : " + decrypted);
 
         Assert.assertEquals(decrypted, text);
@@ -92,8 +77,8 @@ public class Aes256Test {
     public void testWrongPassword() throws Exception {
         final String password = "encryptor_secret_key";
 
-        String encrypted = new String(Aes256.encrypt(text.trim(), password), "UTF-8");
-        Aes256.decrypt(encrypted.trim(), "wrongPassword");
+        byte[] encrypted = Aes256.encrypt(text.trim(), password);
+        Aes256.decrypt(encrypted, "wrongPassword");
     }
 
 }
