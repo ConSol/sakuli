@@ -24,21 +24,16 @@ import org.gearman.client.*;
 import org.gearman.common.GearmanJobServerConnection;
 import org.mockito.*;
 import org.sakuli.BaseTest;
-import org.sakuli.builder.TestCaseExampleBuilder;
-import org.sakuli.builder.TestCaseStepExampleBuilder;
-import org.sakuli.builder.TestSuiteExampleBuilder;
+import org.sakuli.builder.*;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliActionException;
-import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliRuntimeException;
-import org.sakuli.services.forwarder.gearman.crypt.Aes256;
+import org.sakuli.exceptions.*;
+import org.sakuli.services.forwarder.gearman.crypt.Aes;
 import org.sakuli.services.forwarder.gearman.model.NagiosCachedCheckResult;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.util.*;
 import java.util.concurrent.Future;
@@ -97,6 +92,18 @@ public class GearmanResultServiceImplTest extends BaseTest {
     @BeforeMethod
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+    }
+
+    @BeforeClass
+    public void setKeyLength() {
+        //set key length to 16 byte in unit tests, so default Java JRE security policy applies
+        Aes.keyLength = 16;
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void restoreKeyLength() {
+        //restore default key length
+        Aes.keyLength = Aes.DEFAULT_KEY_LENGTH;
     }
 
     @Test
@@ -244,7 +251,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
         when(properties.getSecretKey()).thenReturn(secretKey);
 
         GearmanJob gearmanJob = testling.creatJob(new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
-        Assert.assertEquals(Aes256.decrypt(gearmanJob.getData(), secretKey), testResult);
+        Assert.assertEquals(Aes.decrypt(gearmanJob.getData(), secretKey), testResult);
     }
 
     @Test
