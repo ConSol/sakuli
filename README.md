@@ -114,6 +114,8 @@ for web sites and common UIs with full Nagios integration](https://rawgit.com/to
 
 
 ## Publications
+10/2016: [Informatik Aktuell: Software-Test im Container: So können Sie Graphical User Interfaces mit Docker und Sakuli testen](https://www.informatik-aktuell.de/entwicklung/methoden/graphical-user-interface-gui-in-containern-testen.html) (Tobias Schneck)
+
 10/2016: [ConSol Labs: Containerized UI-Tests in Java with Sakuli and Docker](https://labs.consol.de/sakuli/development/2016/10/14/sakuli-java-dsl.html) (Tobias Schneck)
 
 10/2016: [ConSol Labs: Sakuli EndToEnd Tests mit Android](https://labs.consol.de/android/monitoring/sakuli/2016/10/10/android-sakuli.html) (Philip Griesbacher)
