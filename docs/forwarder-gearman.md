@@ -130,6 +130,8 @@ On the Sakuli client you must set the global properties for the gearman receiver
     __INST_DIR__/example_test_suites/sakuli.properties:
 
 	sakuli.forwarder.gearman.enabled=true
+	sakuli.forwarder.gearman.encryption=false
+	sakuli.forwarder.gearman.secret.key=secret_password
 	sakuli.forwarder.gearman.server.host=__GEARMAN_IP__
 	sakuli.forwarder.gearman.server.port=[Gearman Port defined in "omd config" (default:4730)]
 	sakuli.forwarder.gearman.server.queue=check_results
