@@ -45,6 +45,8 @@
     </properties>
 
     <build>
+        <finalName>${project.jar.name}</finalName>
+
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
@@ -89,9 +91,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <finalName>${project.jar.name}</finalName>
-                </configuration>
             </plugin>
 
             <!-- unpack sahi to include into the zip assembly -->
@@ -412,8 +411,6 @@
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
         </dependency>
-
-
     </dependencies>
 
 </project>
