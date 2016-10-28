@@ -2,20 +2,25 @@
 
 FROM consol/ubuntu-xfce-vnc:1.0.2
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2016-06-03
+ENV REFRESHED_AT 2016-10-27
 
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
 ENV VNC_PW sakuli
 
 ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install
-ENV SAKULI_VERSION 1.0.1
+ARG SAKULI_VERSION=1.0.2-lhm
 ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
 ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
 
 ### Install Sakuli
 ##Install some native libaries
 RUN apt-get update && apt-get -y install libcv2.4 libtesseract3 wmctrl xdotool psmisc
+# Install JAVA JCE policy (necessary for gearman encryption)
+RUN apt-get update \
+    && apt-get install -y oracle-java8-unlimited-jce-policy \
+    && rm -rf /var/lib/apt
+
 ## Install sakuli
 ADD scripts/auto-install.xml /tmp/
 RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
