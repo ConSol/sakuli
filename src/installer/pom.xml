@@ -83,6 +83,12 @@
 
         <profile>
             <id>upload-release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <build>
                 <resources>
                     <resource>

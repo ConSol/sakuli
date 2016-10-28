@@ -101,24 +101,42 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
                 <configuration>
-                    <releaseProfiles>release-build,upload-release</releaseProfiles>
+                    <flowInitContext>
+                        <!-- default git flow prefixes -->
+                        <masterBranchName>master</masterBranchName>
+                        <developBranchName>dev</developBranchName>
+                        <featureBranchPrefix>feature/</featureBranchPrefix>
+                        <releaseBranchPrefix>release/</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
+                        <!-- non default 'v' prefix -->
+                        <versionTagPrefix>v</versionTagPrefix>
+                    </flowInitContext>
+                    <!--<defaultOriginUrl-->
+                    <pushFeatures>true</pushFeatures>
+                    <pushHotfixes>true</pushHotfixes>
+                    <pushReleases>true</pushReleases>
+                    <updateDependencies>true</updateDependencies>
+                    <scmCommentPrefix>mvn-jgitflow: </scmCommentPrefix>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <!-- verifies that only the phases until install will be executed-->
-                    <!--<goals>install</goals>-->
+                    <enableSshAgent>true</enableSshAgent>
+                    <useReleaseProfile>true</useReleaseProfile>
+                    <!-- needs profile activation via:
+                        <profile>
+                        ...
+                            <activation>
+                                <property>
+                                    <name>performRelease</name>
+                                    <value>true</value>
+                                </property>
+                            </activation>
+                        </profile>
+                    -->
                 </configuration>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-scm-plugin</artifactId>
-                <configuration>
-                    <!-- name for release branch -->
-                    <branch>REL_${project.version}</branch>
-                </configuration>
-            </plugin>
         </plugins>
         <!-- plugin dependencies -->
         <pluginManagement>
@@ -145,11 +163,6 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>2.7</version>
                 </plugin>
@@ -157,11 +170,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>2.6.1</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-scm-plugin</artifactId>
-                    <version>1.9</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -212,6 +220,12 @@
                     <groupId>pl.project13.maven</groupId>
                     <artifactId>git-commit-id-plugin</artifactId>
                     <version>2.2.0</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>external.atlassian.jgitflow</groupId>
+                    <artifactId>jgitflow-maven-plugin</artifactId>
+                    <version>1.0-m5.1</version>
                 </plugin>
             </plugins>
 
@@ -287,6 +301,12 @@
         <!-- profile for uploading the artifacts and zipped files to labs.consol.de/sakuli-->
         <profile>
             <id>upload-release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <!-- profile settings to upload the artifacts to the consol labs server -->
             <distributionManagement>
                 <repository>
@@ -537,18 +557,6 @@
         </dependencies>
     </dependencyManagement>
     <repositories>
-        <repository>
-            <id>central</id>
-            <name>Maven Repository Switchboard</name>
-            <layout>default</layout>
-            <url>http://repo1.maven.org/maven2</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
         <!-- ConSol Labs repository holds Sahi and SikuliX dependencies -->
         <repository>
             <id>labs-consol</id>
@@ -572,18 +580,6 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-        <!-- sonatype for gearman dependencies & sikuliX-2014 -->
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </releases>
-        </repository>
+
     </repositories>
 </project>
