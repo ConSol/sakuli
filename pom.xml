@@ -106,8 +106,8 @@
                 <configuration>
                     <flowInitContext>
                         <!-- default git flow prefixes -->
-                        <masterBranchName>maven-jgitflow-release</masterBranchName>
-                        <developBranchName>maven-jgitflow</developBranchName>
+                        <masterBranchName>master</masterBranchName>
+                        <developBranchName>dev</developBranchName>
                         <featureBranchPrefix>feature/</featureBranchPrefix>
                         <releaseBranchPrefix>release/</releaseBranchPrefix>
                         <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
