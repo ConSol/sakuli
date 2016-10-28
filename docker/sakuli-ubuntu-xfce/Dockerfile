@@ -15,11 +15,16 @@ ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
 
 ### Install Sakuli
 ##Install some native libaries
-RUN apt-get update && apt-get -y install libcv2.4 libtesseract3 wmctrl xdotool psmisc
-# Install JAVA JCE policy (necessary for gearman encryption)
 RUN apt-get update \
-    && apt-get install -y oracle-java8-unlimited-jce-policy \
+    && apt-get -y install libcv2.4 libtesseract3 wmctrl xdotool psmisc unzip \
     && rm -rf /var/lib/apt
+## Install JAVA JCE policy (necessary for gearman encryption)
+RUN mkdir -p /tmp/java-jce \
+    && cd /tmp/java-jce \
+    && wget --no-check-certificate -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
+    && unzip *.zip \
+    && for i in $(find /usr/lib/jvm -name "security"); do /bin/cp -v -f UnlimitedJCEPolicyJDK8/*.jar $i; done \
+    && rm -rf /tmp/java-jce
 
 ## Install sakuli
 ADD scripts/auto-install.xml /tmp/
@@ -28,7 +33,9 @@ RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-in
     && rm -f sakuli*.jar auto-install.xml
 
 ### Install apps for testing
-RUN apt-get -y install gedit gnome-calculator
+RUN apt-get update \
+    && apt-get -y install gedit gnome-calculator \
+    && rm -rf /var/lib/apt
 
 # xvnc server port, if $DISPLAY=:1 port will be 5901
 EXPOSE 5901
