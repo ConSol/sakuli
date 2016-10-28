@@ -2,20 +2,30 @@
 
 FROM consol/ubuntu-xfce-vnc:1.0.2
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2016-06-03
+ENV REFRESHED_AT 2016-10-28
 
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
 ENV VNC_PW sakuli
 
 ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install
-ENV SAKULI_VERSION 1.0.1
+ARG SAKULI_VERSION=1.0.2-lhm
 ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
 ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
 
 ### Install Sakuli
 ##Install some native libaries
-RUN apt-get update && apt-get -y install libcv2.4 libtesseract3 wmctrl xdotool psmisc
+RUN apt-get update \
+    && apt-get -y install libcv2.4 libtesseract3 wmctrl xdotool psmisc unzip \
+    && rm -rf /var/lib/apt
+## Install JAVA JCE policy (necessary for gearman encryption)
+RUN mkdir -p /tmp/java-jce \
+    && cd /tmp/java-jce \
+    && wget --no-check-certificate -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
+    && unzip *.zip \
+    && for i in $(find /usr/lib/jvm -name "security"); do /bin/cp -v -f UnlimitedJCEPolicyJDK8/*.jar $i; done \
+    && rm -rf /tmp/java-jce
+
 ## Install sakuli
 ADD scripts/auto-install.xml /tmp/
 RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
@@ -23,7 +33,9 @@ RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-in
     && rm -f sakuli*.jar auto-install.xml
 
 ### Install apps for testing
-RUN apt-get -y install gedit gnome-calculator
+RUN apt-get update \
+    && apt-get -y install gedit gnome-calculator \
+    && rm -rf /var/lib/apt
 
 # xvnc server port, if $DISPLAY=:1 port will be 5901
 EXPOSE 5901

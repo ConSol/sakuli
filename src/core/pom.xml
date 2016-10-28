@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.2-lhm</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>core</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2-lhm</version>
     <name>core</name>
 
     <description>core module for all sakuli functionality</description>
@@ -205,6 +205,12 @@
         <!--profil to deploy the zip file to labs.consol.de/sakuli/install-->
         <profile>
             <id>upload-release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <!-- wagon plugin to upload the zipped releases to the labs server -->

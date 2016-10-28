@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.2-lhm</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>installer</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.2-lhm</version>
     <description>maven module to build the IzPack-Java Installer</description>
 
     <properties>
@@ -82,6 +82,12 @@
 
         <profile>
             <id>upload-release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <build>
                 <resources>
                     <resource>
