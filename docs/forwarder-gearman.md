@@ -130,6 +130,8 @@ On the Sakuli client you must set the global properties for the gearman receiver
     __INST_DIR__/example_test_suites/sakuli.properties:
 
 	sakuli.forwarder.gearman.enabled=true
+	sakuli.forwarder.gearman.encryption=false
+	sakuli.forwarder.gearman.secret.key=secret_password
 	sakuli.forwarder.gearman.server.host=__GEARMAN_IP__
 	sakuli.forwarder.gearman.server.port=[Gearman Port defined in "omd config" (default:4730)]
 	sakuli.forwarder.gearman.server.queue=check_results
@@ -143,6 +145,17 @@ On the Sakuli client you must set the global properties for the gearman receiver
 	sakuli.forwarder.gearman.nagios.hostname=sakuli_client
 	sakuli.forwarder.gearman.nagios.check_command=check_sakuli
 	sakuli.forwarder.gearman.nagios.service_description=service_description
+
+## Using AES encryption
+
+The gearman forwarder supports AES encryption when sending checked results to the OMD server. The AES encryption uses a 32 byte (256 bit) secret key that
+has to be given in the properties. 
+
+    sakuli.forwarder.gearman.encryption=true
+    sakuli.forwarder.gearman.secret.key=secret_password
+
+In case you get a java.lang.security.InvalidKeyException with error message *"Illegal key size or default parameters"* you probably
+need to enable unlimited strength security policies in your Java JRE. This is done by adding a special security policy JAR to the Java JRE lib directory.
 
 ## Test result transmission to OMD
 

@@ -45,6 +45,8 @@
     </properties>
 
     <build>
+        <finalName>${project.jar.name}</finalName>
+
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
@@ -89,9 +91,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <finalName>${project.jar.name}</finalName>
-                </configuration>
             </plugin>
 
             <!-- unpack sahi to include into the zip assembly -->
@@ -206,6 +205,12 @@
         <!--profil to deploy the zip file to labs.consol.de/sakuli/install-->
         <profile>
             <id>upload-release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <!-- wagon plugin to upload the zipped releases to the labs server -->
@@ -412,8 +417,6 @@
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
         </dependency>
-
-
     </dependencies>
 
 </project>

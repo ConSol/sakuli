@@ -31,10 +31,11 @@ if [[ ! $new_version ]]; then
 fi
 
 searchdir="$(dirname $0)"
-find $searchdir -type f -name Dockerfile | while read file ; do \
-    sed -i -e "s/^ENV SAKULI_VERSION.*/ENV SAKULI_VERSION $new_version/" $file && \
-    echo -e "replace SAKULI_VERSION with '$new_version' in file $file" ; \
-    git add $file
-    done
+refreshDate=$(date +%Y-%m-%d)
 
-git commit -m "update ENV SAKULI_VERSION to '$new_version' in Docker-Containers"
+find $searchdir -type f -name Dockerfile | while read file ; do \
+    sed -i -e "s/^ARG SAKULI_VERSION.*/ARG SAKULI_VERSION=$new_version/" $file \
+    && echo -e "replace SAKULI_VERSION with '$new_version' in file $file" \
+    && sed -i -e "s/^ENV REFRESHED_AT.*/ENV REFRESHED_AT $refreshDate/" $file  \
+    && echo -e "replace ENV REFRESHED_AT with '$refreshDate' in file $file" ; \
+    done
