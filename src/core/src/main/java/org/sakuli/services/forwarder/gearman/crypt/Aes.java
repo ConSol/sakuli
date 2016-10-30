@@ -32,10 +32,9 @@ import java.util.Arrays;
  */
 public class Aes {
 
-    private static final Logger logger = LoggerFactory.getLogger(Aes.class);
-
     public static final int DEFAULT_KEY_LENGTH = 32;
-
+    public static final String CRYPT_ALGORITHM = "AES/ECB/PKCS5Padding";
+    private static final Logger LOGGER = LoggerFactory.getLogger(Aes.class);
     /** Key length in byte that should be used, default is 32 = 256 bit */
     public static int keyLength = DEFAULT_KEY_LENGTH;
 
@@ -47,11 +46,12 @@ public class Aes {
      */
     public static byte[] encrypt(String text, String password) {
         try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            LOGGER.debug("encrypt data using " + CRYPT_ALGORITHM + " algorithm");
+            Cipher cipher = Cipher.getInstance(CRYPT_ALGORITHM);
             cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(password));
             return Base64.encodeBase64(cipher.doFinal(text.getBytes()));
         } catch (Exception e) {
-            logger.error("Error while encrypting: ", e);
+            LOGGER.error("Error while encrypting: ", e);
             throw new GearmanException("Error while encrypting: " + e.getMessage());
         }
     }
@@ -64,12 +64,12 @@ public class Aes {
      */
     public static String decrypt(byte[] enrcypted, String password) {
         try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
-
+            LOGGER.debug("decrypt data using " + CRYPT_ALGORITHM + " algorithm");
+            Cipher cipher = Cipher.getInstance(CRYPT_ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, getSecretKey(password));
             return new String(cipher.doFinal(Base64.decodeBase64(enrcypted)));
         } catch (Exception e) {
-            logger.error("Error while decrypting: ", e);
+            LOGGER.error("Error while decrypting: ", e);
             throw new GearmanException("Error while decrypting: " + e.getMessage());
         }
     }
@@ -84,7 +84,7 @@ public class Aes {
             byte[] key = Arrays.copyOf(password.getBytes(), keyLength); // use only first 256 bit
             return new SecretKeySpec(key, "AES");
         } catch (Exception e) {
-            logger.error("Error while creating secret key: ", e);
+            LOGGER.error("Error while creating secret key: ", e);
             throw new GearmanException("Error while creating secret key: " + e.getMessage());
         }
     }
