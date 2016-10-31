@@ -21,7 +21,7 @@
     <com.izforge.izpack.panels.hello.HelloPanel id="HelloPanel_0"/>
     <com.izforge.izpack.panels.htmllicence.HTMLLicencePanel id="HTMLLicencePanel_1"/>
     <com.izforge.izpack.panels.target.TargetPanel id="TargetPanel_2">
-        <installpath>/root/sakuli</installpath>
+        <installpath>/headless/sakuli</installpath>
     </com.izforge.izpack.panels.target.TargetPanel>
     <com.izforge.izpack.panels.packs.PacksPanel id="PacksPanel_3">
         <pack index="0" selected="true"/>

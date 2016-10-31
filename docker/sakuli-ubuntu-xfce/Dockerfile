@@ -1,6 +1,6 @@
 # This Dockerfile is used to build an sakuli image based on Ubuntu
 
-FROM consol/ubuntu-xfce-vnc:1.0.2
+FROM local/ubuntu_rbo_os
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2016-10-28
 
@@ -12,6 +12,19 @@ ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install
 ARG SAKULI_VERSION=1.1.0-SNAPSHOT
 ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
 ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
+
+# xvnc server port, if $DISPLAY=:1 port will be 5901
+EXPOSE 5901
+# novnc web port, connect via URL: http://$HOST:6901/vnc_auto.html?password=...
+EXPOSE 6901
+
+# use root user for installation
+USER root
+
+### Install some basic native apps for testing
+RUN apt-get update \
+    && apt-get -y install --fix-missing gedit gnome-calculator shutter \
+    && rm -rf /var/lib/apt
 
 ### Install Sakuli
 ##Install some native libaries
@@ -27,24 +40,17 @@ RUN mkdir -p /tmp/java-jce \
     && rm -rf /tmp/java-jce
 
 ## Install sakuli
-ADD scripts/auto-install.xml /tmp/
-RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
-    && java -jar /tmp/sakuli-v$SAKULI_VERSION-installer.jar /tmp/auto-install.xml \
-    && rm -rf /tmp
-RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /root/sakuli/sahi/userdata/config/userdata.properties
+ADD scripts/auto-install.xml /tmp/sakuli/
+RUN wget --directory-prefix=/tmp/sakuli $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
+    && java -jar /tmp/sakuli/sakuli-v$SAKULI_VERSION-installer.jar /tmp/sakuli/auto-install.xml \
+    && rm -rf /tmp/sakuli
+RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /headless/sakuli/sahi/userdata/config/userdata.properties
 
-### Install apps for testing
-RUN apt-get update \
-    && apt-get -y install --fix-missing gedit gnome-calculator shutter \
-    && rm -rf /var/lib/apt
-
-# xvnc server port, if $DISPLAY=:1 port will be 5901
-EXPOSE 5901
-# novnc web port
-EXPOSE 6901
-
-ADD scripts/sakuli_startup.sh /root/scripts/
-RUN chmod +x /root/scripts/*.sh
+ADD scripts/sakuli_startup.sh /headless/scripts/
+RUN chmod +x /headless/scripts/*.sh
+RUN chgrp -R 0 /headless && chmod -R g+rw /headless && find /headless -type d -exec chmod g+x {} +
+## use headless user
+USER 1984
 
 ### Sakuli startup script
 # no parameters:
@@ -56,4 +62,4 @@ RUN chmod +x /root/scripts/*.sh
 #   docker run consol/sakuli-ubuntu-xfce help
 # - start a bash (or any other command):
 #   docker run -it consol/sakuli-ubuntu-xfce bash
-ENTRYPOINT ["/root/scripts/sakuli_startup.sh"]
+ENTRYPOINT ["/headless/scripts/sakuli_startup.sh"]

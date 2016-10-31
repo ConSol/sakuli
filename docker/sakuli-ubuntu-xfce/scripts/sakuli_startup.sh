@@ -24,7 +24,7 @@ main() {
 
 # start VNC server
 vnc_init() {
-        /root/scripts/vnc_startup.sh
+        /headless/scripts/vnc_startup.sh
 }
 
 if [ $# -gt 0 ]; then
@@ -35,5 +35,5 @@ else
 	# - run the suite defined by $SAKULI_TEST_SUITE, if set
 	# or
 	# - run the example_xfce case (fallback)
-	main run ${SAKULI_TEST_SUITE:-/root/sakuli/example_test_suites/example_xfce}
+	main run ${SAKULI_TEST_SUITE:-/headless/sakuli/example_test_suites/example_xfce}
 fi
