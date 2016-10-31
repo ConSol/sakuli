@@ -25,9 +25,7 @@ import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.jtwig.spaceless.SpacelessExtension;
 import org.jtwig.spaceless.configuration.SpacelessConfiguration;
 import org.sakuli.services.forwarder.checkmk.CheckMKResultServiceImpl;
-import org.sakuli.services.forwarder.configuration.ExtractScreenshotFunction;
-import org.sakuli.services.forwarder.configuration.GetOutputStateFunction;
-import org.sakuli.services.forwarder.configuration.LeadingWhitespaceRemover;
+import org.sakuli.services.forwarder.configuration.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,8 +39,6 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
     private static final Logger logger = LoggerFactory.getLogger(CheckMKResultServiceImpl.class);
 
     public static final String TEMPLATE_EXTENSION = ".twig";
-    public static final String GLOBAL_TEST_CASE_ID_FORMAT = "%s_%s";
-    public static final String GLOBAL_TEST_STEP_ID_FORMAT = "%s_%s_%s";
 
     /**
      * Returns the name of the converter. The name is used to dynamically retrieve the template for the converter.
@@ -67,6 +63,8 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                 .functions()
                     .add(new GetOutputStateFunction())
                     .add(new ExtractScreenshotFunction(screenshotDivConverter))
+                    .add(new GetExceptionMessagesFunction(sakuliProperties.getLogExceptionFormatMappings()))
+                    .add(new GetExceptionMessagesSummaryFunction(sakuliProperties.getLogExceptionFormatMappings()))
                 .and()
                 .build();
         JtwigTemplate template = JtwigTemplate.fileTemplate(new File(templatePath), configuration);
@@ -85,10 +83,13 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
     protected String getTemplatePath() {
         String templateFolder = sakuliProperties.getForwarderTemplateFolder();
         String templatePath =
-                templateFolder
-                        + System.getProperty("file.separator")
-                        + getConverterName().toLowerCase()
-                        + TEMPLATE_EXTENSION;
+                new StringBuilder(templateFolder)
+                        .append(System.getProperty("file.separator"))
+                        .append(getConverterName().toLowerCase())
+                        .append(System.getProperty("file.separator"))
+                        .append(getConverterName().toLowerCase())
+                        .append(TEMPLATE_EXTENSION)
+                        .toString();
         return templatePath;
     }
 

@@ -1,0 +1,46 @@
+<table style="border-collapse: collapse;">
+    <tr valign="top">
+        <td class="service{{getOutputState(testsuite.state).name}}">
+            {{ getOutputState(testsuite.state).shortState }} Sakuli suite "{{testsuite.id}}"$whitespace$
+            {% if (testsuite.state.error) %}
+            {% else %}
+                {{testsuite.state.nagiosStateDescription}}$whitespace$
+            {% endif %}
+            ({{testsuite.duration}}s
+            {% if (testsuite.state.name == 'WARNING_IN_SUITE') %}
+                /warn at {{ testsuite.warningTime }}s
+            {% elseif (testsuite.state.name == 'CRITICAL_IN_SUITE') %}
+                /crit at {{ testsuite.criticalTime }}s
+            {% endif %})$whitespace$
+            {% if (testsuite.state.error) %}
+                {{testsuite.state.nagiosStateDescription}}: {% include 'suite_error_message.twig' with { testDataEntity: testsuite } %}.$whitespace$
+            {% endif %}
+            (Last suite run:$whitespace$
+            {% if (empty(testsuite.stopDate)) %}
+                xx
+            {% else %}
+                {{ testsuite.stopDate|date("dd.MM.YY HH:mm:ss") }}
+            {% endif %})
+            {% include 'exception_screenshot.twig' with { testDataEntity: testsuite } %}
+        </td>
+    </tr>
+{% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
+    <tr valign="top">
+        <td class="service{{getOutputState(testCase.state).name}}">
+            {{ getOutputState(testCase.state).shortState }} case "{{testCase.id}}"$whitespace$
+        {% if (testCase.state.ok) %}
+            ran in {{testCase.duration}}s - {{testCase.state.nagiosStateDescription}}
+        {% elseif (testCase.state.warning) %}
+            over runtime ({{testCase.duration}}s/warn at {{testCase.warningTime}}s)
+            {% include 'step_information.twig' with { testCase: testCase } %}$whitespace$
+        {% elseif (testCase.state.critical) %}
+            EXCEPTION: {% include 'suite_error_message.twig' with { testDataEntity: testCase } %}
+            {% include 'exception_screenshot.twig' with { testDataEntity: testCase } %}
+            {% for testStep in testCase.stepsAsSortedSet %}
+                {% include 'exception_screenshot.twig' with { testDataEntity: testStep } %}
+            {% endfor %}
+        {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+</table>

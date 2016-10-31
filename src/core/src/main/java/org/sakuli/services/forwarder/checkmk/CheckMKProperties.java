@@ -30,6 +30,7 @@ public class CheckMKProperties {
     private static final String SPOOL_DIR = "sakuli.forwarder.check_mk.spooldir";
     private static final String SPOOL_FILE_PREFIX = "sakuli.forwarder.check_mk.spoolfile_prefix";
     private static final String FRESHNESS = "sakuli.forwarder.check_mk.freshness";
+
     @Value("${" + SPOOL_DIR + "}")
     private String spoolDir;
     @Value("${" + SPOOL_FILE_PREFIX + "}")

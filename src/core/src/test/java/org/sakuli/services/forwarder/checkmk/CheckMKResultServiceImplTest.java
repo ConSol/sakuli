@@ -57,7 +57,7 @@ public class CheckMKResultServiceImplTest extends BaseTest {
 
     @Test(dataProvider = "createSpoolFilePathDP")
     public void createSpoolFilePath(String spoolDir, String freshness, String spoolFileNamePrefix, String testSuiteName, String expectedFilePath) {
-        doReturn(testSuiteName).when(testSuite).getName();
+        doReturn(testSuiteName).when(testSuite).getId();
         doReturn(spoolDir).when(checkMKProperties).getSpoolDir();
         doReturn(freshness).when(checkMKProperties).getFreshness();
         doReturn(spoolFileNamePrefix).when(checkMKProperties).getSpoolFilePrefix();

@@ -31,6 +31,11 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
+import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.services.forwarder.ScreenshotDivConverter;
+import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -40,7 +45,12 @@ import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Georgi Todorov
@@ -53,11 +63,15 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
     private static final String EXPECTED_OUTPUT_WARN_IN_SUITE = "1 sakuli_3_WARNING_IN_SUITE suite__state=3;;;;|suite__warning=3s;;;;|suite__critical=400s;;;;|suite_example_xfce=46.94s;3;400;;|c_001__state=0;;;;|c_001__warning=20s;;;;|c_001__critical=30s;;;;|c_001_case1=14.13s;20;30;;|s_001_001_Test_Sahi_landing_page=1.21s;5;;;|s_001_002_Calculation=7.41s;10;;;|s_001_003_Editor=1.43s;10;;;|c_002__state=0;;;;|c_002__warning=20s;;;;|c_002__critical=30s;;;;|c_002_case2=13.58s;20;30;;|s_002_001_Test_Sahi_landing_page_(case2)=1.06s;5;;;|s_002_002_Calculation_(case2)=7.08s;10;;;|s_002_003_Editor_(case2)=1.36s;10;;; Sakuli suite \"example_xfce\" warning (46.94s/warn at 3s). (Last suite run: 01.01.70 10:32:46)";
     private static final String EXPECTED_OUTPUT_CRIT_IN_SUITE = "2 sakuli_5_CRITICAL_IN_SUITE suite__state=5;;;;|suite__warning=30s;;;;|suite__critical=40s;;;;|suite_example_xfce=44.81s;30;40;;|c_001__state=0;;;;|c_001__warning=20s;;;;|c_001__critical=30s;;;;|c_001_case1=13.91s;20;30;;|s_001_001_Test_Sahi_landing_page=1.16s;5;;;|s_001_002_Calculation=7.25s;10;;;|s_001_003_Editor=1.45s;10;;;|c_002__state=0;;;;|c_002__warning=20s;;;;|c_002__critical=30s;;;;|c_002_case2=13.55s;20;30;;|s_002_001_Test_Sahi_landing_page_(case2)=1.05s;5;;;|s_002_002_Calculation_(case2)=7.03s;10;;;|s_002_003_Editor_(case2)=1.39s;10;;; Sakuli suite \"example_xfce\" critical (44.81s/crit at 40s). (Last suite run: 01.01.70 10:33:44)";
     private static final String EXPECTED_OUTPUT_CRIT_IN_CASE = "2 sakuli_4_CRITICAL_IN_CASE suite__state=4;;;;|suite__warning=300s;;;;|suite__critical=400s;;;;|suite_example_xfce=46.96s;300;400;;|c_001__state=0;;;;|c_001__warning=20s;;;;|c_001__critical=30s;;;;|c_001_case1=14.13s;20;30;;|s_001_001_Test_Sahi_landing_page=1.28s;5;;;|s_001_002_Calculation=7.31s;10;;;|s_001_003_Editor=1.47s;10;;;|c_002__state=3;;;;|c_002__warning=2s;;;;|c_002__critical=3s;;;;|c_002_case2=13.7s;2;3;;|s_002_001_Test_Sahi_landing_page_(case2)=1.08s;5;;;|s_002_002_Calculation_(case2)=7.12s;10;;;|s_002_003_Editor_(case2)=1.44s;10;;; Sakuli suite \"example_xfce\" critical in case, case \"case2\" over runtime (13.7s/crit at 3s). (Last suite run: 01.01.70 10:35:46)";
-    private static final String EXPECTED_OUTPUT_EXCEPTION = "2 sakuli_6_ERRORS suite__state=6;;;;|suite__warning=300s;;;;|suite__critical=400s;;;;|suite_example_xfce=44.8s;300;400;;|c_001__state=0;;;;|c_001__warning=20s;;;;|c_001__critical=30s;;;;|c_001_case1=14.2s;20;30;;|s_001_001_Test_Sahi_landing_page=1.14s;5;;;|s_001_002_Calculation=7.54s;10;;;|s_001_003_Editor=1.47s;10;;;|c_002__state=4;;;;|c_002__warning=20s;;;;|c_002__critical=30s;;;;|c_002_case2=13.55s;20;30;;|s_002_001_Test_Sahi_landing_page_(case2)=1.05s;5;;;|s_002_002_Calculation_(case2)=7.03s;10;;;|s_002_003_Editor_(case2)=1.39s;10;;; Sakuli suite \"example_xfce\" (44.8s) EXCEPTION: 'CASE \"case2\": STEP \"Test_Sahi_landing_page_(case2)\": _highlight(_link(\"xSL Manager\")); TypeError: el is undefined Sahi.prototype._highlight@http ...\\\\n<style>.modalDialog {width: 640px;}.modalDialog:target {width: auto;margin: 20px auto;overflow: scroll;position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 99999;opacity: 1;pointer-events: auto;}.modalDialog:target .close {display: block;}.modalDialog:target .screenshot {width: 100%;border: 2px solid #333;}.screenshot {width: 98%;border: 2px solid  gray;display: block;margin-left: auto;margin-right: auto;margin-bottom: 4px;cursor: -webkit-zoom-in;cursor: -moz-zoom-in;}.close {display: none;background: #aaa;color: #fff;line-height: 25px;position: absolute;right: 10px;text-align: center;top: 25px;width: 65px;text-decoration: none;font-weight: bold;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;}.close:hover {background: #333;}</style><table style=\"border-collapse: collapse;\"><tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"example_xfce\" (44.80s) EXCEPTION: 'CASE \"case2\": STEP \"Test_Sahi_landing_page_(case2)\": _highlight(_link(\"xSL Manager\")); TypeError: el is undefined Sahi.prototype._highlight@http://sahi.example.com/_s_/spr/concat.js:1210:9 @http://sahi.example.com/_s_/spr/concat.js line 3607 > eval:1:1 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/concat.js:3607:9 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/sakuli/inject.js:46:12 @http://sahi.example.com/_s_/spr/concat.js:3373:5  <a href='/_s_/dyn/Log_getBrowserScript?href=/root/sakuli/example_test_suites/example_xfce/case2/sakuli_demo.js&n=1210'><b>Click for browser script</b></a>'. (Last suite run: 30.09.16 09:03:56)</td></tr><tr valign=\"top\"><td class=\"serviceOK\">[OK] case \"case1\" ran in 14.20s - ok</td></tr>" +
+    private static final String EXPECTED_OUTPUT_EXCEPTION = "2 sakuli_6_ERRORS suite__state=6;;;;|suite__warning=300s;;;;|suite__critical=400s;;;;|suite_example_xfce=44.8s;300;400;;|c_001__state=0;;;;|c_001__warning=20s;;;;|c_001__critical=30s;;;;|c_001_case1=14.2s;20;30;;|s_001_001_Test_Sahi_landing_page=1.14s;5;;;|s_001_002_Calculation=7.54s;10;;;|s_001_003_Editor=1.47s;10;;;|c_002__state=4;;;;|c_002__warning=20s;;;;|c_002__critical=30s;;;;|c_002_case2=13.55s;20;30;;|s_002_001_Test_Sahi_landing_page_(case2)=1.05s;5;;;|s_002_002_Calculation_(case2)=7.03s;10;;;|s_002_003_Editor_(case2)=1.39s;10;;; Sakuli suite \"example_xfce\" (44.8s) EXCEPTION: CASE \"case2\": STEP \"Test_Sahi_landing_page_(case2)\": _highlight(_link(\"xSL Manager\")); TypeError: el is undefined Sahi.prototype._highlight@http://sahi.example.com/_s_/spr/concat.js:1210:9 @http://sah ... <style>.modalDialog {width: 640px;}.modalDialog:target {width: auto;margin: 20px auto;overflow: scroll;position: fixed;top: 0;right: 0;bottom: 0;left: 0;z-index: 99999;opacity: 1;pointer-events: auto;}.modalDialog:target .close {display: block;}.modalDialog:target .screenshot {width: 100%;border: 2px solid #333;}.screenshot {width: 98%;border: 2px solid  gray;display: block;margin-left: auto;margin-right: auto;margin-bottom: 4px;cursor: -webkit-zoom-in;cursor: -moz-zoom-in;}.close {display: none;background: #aaa;color: #fff;line-height: 25px;position: absolute;right: 10px;text-align: center;top: 25px;width: 65px;text-decoration: none;font-weight: bold;-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;}.close:hover {background: #333;}</style><table style=\"border-collapse: collapse;\"><tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"example_xfce\" (44.8s) EXCEPTION: CASE \"case2\": STEP \"Test_Sahi_landing_page_(case2)\": _highlight(_link(\"xSL Manager\")); TypeError: el is undefined Sahi.prototype._highlight@http://sahi.example.com/_s_/spr/concat.js:1210:9 @http://sahi.example.com/_s_/spr/concat.js line 3607 > eval:1:1 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/concat.js:3607:9 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/sakuli/inject.js:46:12 @http://sahi.example.com/_s_/spr/concat.js:3373:5  <a href='/_s_/dyn/Log_getBrowserScript?href=/root/sakuli/example_test_suites/example_xfce/case2/sakuli_demo.js&n=1210'><b>Click for browser script</b></a>. (Last suite run: 01.01.70 10:36:44)</td></tr><tr valign=\"top\"><td class=\"serviceOK\">[OK] case \"case1\" ran in 14.2s - ok</td></tr>" +
             "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] case \"case2\" EXCEPTION: STEP \"Test_Sahi_landing_page_(case2)\": _highlight(_link(\"xSL Manager\")); TypeError: el is undefined Sahi.prototype._highlight@http://sahi.example.com/_s_/spr/concat.js:1210:9 @http://sahi.example.com/_s_/spr/concat.js line 3607 > eval:1:1 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/concat.js:3607:9 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/sakuli/inject.js:46:12 @http://sahi.example.com/_s_/spr/concat.js:3373:5  <a href='/_s_/dyn/Log_getBrowserScript?href=/root/sakuli/example_test_suites/example_xfce/case2/sakuli_demo.js&n=1210'><b>Click for browser script</b></a><div id=\"sakuli_screenshot243575009\"><div id=\"openModal_sakuli_screenshot243575009\" class=\"modalDialog\"><a href=\"#close\" title=\"Close\" class=\"close\">Close X</a><a href=\"#openModal_sakuli_screenshot243575009\"><img class=\"screenshot\" src=\"data:image/jpg;base64,/9j/4AAQSkZJRgABAgAAAQABAAD9k=\" ></a></div></div></td></tr></table>";
 
     @InjectMocks
     private CheckMKTemplateOutputBuilder testling;
+    @Mock
+    private ScreenshotDivConverter screenshotDivConverter;
+    @Mock
+    private SakuliExceptionHandler exceptionHandler;
     @Mock
     private CheckMKProperties checkMKProperties;
     @Mock
@@ -583,6 +597,8 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
         doReturn(44.80f).when(testSuite).getDuration();
         doReturn(new DateTime(1970,1,1,10,36,0).toDate()).when(testSuite).getStartDate();
         doReturn(new DateTime(1970,1,1,10,36,44,800).toDate()).when(testSuite).getStopDate();
+        when(testSuite.getExceptionMessages(anyBoolean(), any())).thenCallRealMethod();
+        when(testSuite.getException()).thenCallRealMethod();
         SortedSet<TestCase> testCaseAsSortedSet = new TreeSet<>(Arrays.asList(
                 new TestCaseExampleBuilder()
                         .withState(TestCaseState.OK)
@@ -627,11 +643,12 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
                         .withTestCaseSteps(
                                 Arrays.asList(
                                         new TestCaseStepExampleBuilder()
-                                                .withState(TestCaseStepState.OK)
+                                                .withState(TestCaseStepState.ERRORS)
                                                 .withName("Test_Sahi_landing_page_(case2)")
                                                 .withWarningTime(5)
                                                 .withStartDate(new DateTime(1970,1,1,10,36,00).toDate())
                                                 .withStopDate(new DateTime(1970,1,1,10,36,1,50).toDate())
+                                                .withException(new SakuliException("_highlight(_link(\"xSL Manager\")); TypeError: el is undefined Sahi.prototype._highlight@http://sahi.example.com/_s_/spr/concat.js:1210:9 @http://sahi.example.com/_s_/spr/concat.js line 3607 > eval:1:1 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/concat.js:3607:9 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/sakuli/inject.js:46:12 @http://sahi.example.com/_s_/spr/concat.js:3373:5  <a href='/_s_/dyn/Log_getBrowserScript?href=/root/sakuli/example_test_suites/example_xfce/case2/sakuli_demo.js&n=1210'><b>Click for browser script</b></a>"))
                                                 .buildExample(),
                                         new TestCaseStepExampleBuilder()
                                                 .withState(TestCaseStepState.OK)
@@ -652,6 +669,11 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
+        ScreenshotDiv screenshotDiv = new ScreenshotDiv();
+        screenshotDiv.setId("sakuli_screenshot243575009");
+        screenshotDiv.setFormat("jpg");
+        screenshotDiv.setBase64screenshot("/9j/4AAQSkZJRgABAgAAAQABAAD9k=");
+        doReturn(screenshotDiv).when(screenshotDivConverter).convert(notNull(Throwable.class));
         String output = testling.createOutput();
         Assert.assertEquals(output, EXPECTED_OUTPUT_EXCEPTION);
     }

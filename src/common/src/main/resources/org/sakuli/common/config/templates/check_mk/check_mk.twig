@@ -14,7 +14,7 @@
         {% endfor %}
     $whitespace$Sakuli suite "{{testsuite.id}}"$whitespace$
         {% if (testsuite.state.error) %}
-            ({{testsuite.duration}}s) {{testsuite.state.nagiosStateDescription}}: {% include 'suite_error_message.twig' with { testDataEntity: testsuite } %}
+            ({{testsuite.duration}}s) {{testsuite.state.nagiosStateDescription}}: {{getExceptionMessagesSummary(testsuite, true)}}
         {% else %}
             {{testsuite.state.nagiosStateDescription}}
             {% if (testsuite.state.ok) %}
@@ -46,10 +46,10 @@
                     {% endif %}
                 {% endfor %}
             {% endif %}
+            $whitespace$(Last suite run: {% if (empty(testsuite.stopDate)) %}xx{% else %}{{ testsuite.stopDate|date("dd.MM.YY HH:mm:ss") }}{% endif %})
         {% endif %}
-    $whitespace$(Last suite run: {% if (empty(testsuite.stopDate)) %}xx{% else %}{{ testsuite.stopDate|date("dd.MM.YY HH:mm:ss") }}{% endif %})
     {% if (testsuite.state.error) %}
-        $newline${% include 'summary_styles.twig' %}
+        $whitespace${% include 'summary_styles.twig' %}
         {% include 'summary.twig' %}
     {% endif %}
 {% endspaceless %}

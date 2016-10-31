@@ -41,7 +41,7 @@ public class CheckMKResultServiceImpl extends AbstractResultService {
 
     private static final Logger logger = LoggerFactory.getLogger(CheckMKResultServiceImpl.class);
 
-    private static final String SPOOL_FILE_NAME_FORMAT = "%s%s_%s";
+    private static final String SPOOL_FILE_NAME_FORMAT = "%s%s%s";
 
     @Autowired
     private CheckMKProperties checkMKProperties;
@@ -67,10 +67,15 @@ public class CheckMKResultServiceImpl extends AbstractResultService {
 
     protected String createSpoolFilePath() {
         String spoolDir = checkMKProperties.getSpoolDir();
-        String fileName = String.format(SPOOL_FILE_NAME_FORMAT,
-                checkMKProperties.getFreshness(),
-                isEmpty(checkMKProperties.getSpoolFilePrefix()) ? "" : "_" + checkMKProperties.getSpoolFilePrefix(),
-                testSuite.getName());
+        String fileName = new StringBuilder()
+                .append(checkMKProperties.getFreshness())
+                .append(isEmpty(checkMKProperties.getSpoolFilePrefix())
+                                ? ""
+                                : "_" + checkMKProperties.getSpoolFilePrefix()
+                )
+                .append("_")
+                .append(testSuite.getId())
+                .toString();
         return spoolDir + System.getProperty("file.separator") + fileName;
     }
 
