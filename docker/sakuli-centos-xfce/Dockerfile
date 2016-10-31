@@ -19,13 +19,11 @@ RUN yum -y install unzip \
     # opencv
     opencv \
     # tesseract
-    http://repo.iotti.biz/CentOS/7/x86_64/leptonica-1.71-2.el7.lux.1.x86_64.rpm \
-    http://repo.iotti.biz/CentOS/7/x86_64/tesseract-3.03-0.2.rc1.el7.lux.1.x86_64.rpm \
-    # wmctrl
-    http://mirror.symnds.com/distributions/gf/el/7/gf/x86_64/wmctrl-1.07-17.gf.el7.x86_64.rpm \
+    leptonica tesseract tesseract-langpack-deu \
+    # wmctrl  (checked by: https://www.virustotal.com/de/url/394da2ac7e9bbbf5d10a3f304cc913459fc38f66019a4c3ba0fd4afd8f48e64f/analysis/1465466765/)
+    $SAKULI_DOWNLOAD_URL/3rd-party/rpm/wmctrl-1.07-17.gf.el7.x86_64.rpm \
     # xdotool
-    http://li.nux.ro/download/nux/dextop/el7/x86_64/xdotool-2.20110530.1-7.el7.nux.x86_64.rpm \
-    http://li.nux.ro/download/nux/dextop/el7/x86_64/libxdo-2.20110530.1-7.el7.nux.x86_64.rpm
+    xdotool
 ## Install JAVA JCE policy (necessary for gearman encryption)
 RUN mkdir -p /tmp/java-jce \
     && cd /tmp/java-jce \
@@ -38,10 +36,17 @@ RUN mkdir -p /tmp/java-jce \
 ADD scripts/auto-install.xml /tmp/
 RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
     && java -jar /tmp/sakuli-v$SAKULI_VERSION-installer.jar /tmp/auto-install.xml \
-    && rm -f sakuli*.jar auto-install.xml
+    && rm -rf /tmp
+RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /root/sakuli/sahi/userdata/config/userdata.properties
 
 ### Install apps for testing
 RUN yum -y install gedit gnome-calculator
+
+### Install Shutter
+RUN yum -y install epel-release \
+    && rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro \
+    && rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-1.el7.nux.noarch.rpm \
+    && yum -y --enablerepo=nux-dextop install shutter
 
 # xvnc server port, if $DISPLAY=:1 port will be 5901
 EXPOSE 5901
@@ -61,7 +66,14 @@ RUN yum erase -y google-chrome \
 RUN sed -i -e 's/exec $CMD_PREFIX "$HERE\/chrome"/exec $CMD_PREFIX "$HERE\/chrome" $CHROMIUM_FLAGS/' /opt/chromium/chrome-wrapper
 ENV CHROMIUM_FLAGS "--no-sandbox --start-maximized --user-data-dir"
 
-# startup script
+### Sakuli startup script
+# no parameters:
+# - run the suite defined by $SAKULI_TEST_SUITE, if set
+# paramters:
+# - run a Sakuli test suite like the example_xfce case via:
+#   docker run consol/sakuli-ubuntu-xfce run /root/sakuli/example_test_suites/example_xfce
+# - help:
+#   docker run consol/sakuli-ubuntu-xfce help
+# - start a bash (or any other command):
+#   docker run -it consol/sakuli-ubuntu-xfce bash
 ENTRYPOINT ["/root/scripts/sakuli_startup.sh"]
-# arguments for the sakuli_startup.sh script
-CMD ["run $SAKULI_TEST_SUITE"]

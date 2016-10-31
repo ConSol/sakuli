@@ -1,36 +1,39 @@
 #!/bin/bash
 
-/root/scripts/vnc_startup.sh
-
-# modify $SAKULI_TEST_SUITE permissions to ensure, that volume-mounted log files can be deleted afterwards
-modify_testsuite_permissions(){
-    while test $# -gt 0; do
-        case "$1" in
-            run)
-                shift #shift to suite parameter value
-                chmod -R a+rw $1
-                shift
-                ;;
-            *)
-                shift
-                continue
-                ;;
-        esac
-    done
+main() {
+	# If arg 1 is not one of the four possible Sakuli COMMANDs, execute as it is.
+	if [[ $1 =~ encrypt|help|version ]]; then
+		echo "Executing: 'sakuli $@'"
+		$SAKULI_HOME/bin/sakuli "$@"
+		exit $?
+	elif [ "$1" == "run" ]; then
+		vnc_init
+		echo "Executing: 'sakuli $@'"
+		$SAKULI_HOME/bin/sakuli "$@"
+		res=$?
+		echo "SAKULI_RETURN_VAL: $res"
+		# modify testsuite folder permissions to ensure that volume-mounted log files can be deleted afterwards
+		chmod -R a+rw $2
+		exit $res
+	else
+		# execute any other command, init VNC anyway
+		vnc_init
+		exec $1
+	fi
 }
 
-# A command of $SAKULI_HOME/bin/sakuli start with `run` or `encrypt` and a option with a dash.
-# If not, assume that CMD was not meant as an argument
-# for sakuli (=ENTRYPOINT). Hence, try to execute CMD standalone.
-if [ "${1:0:1}" == "-" ] || [ "${1:0:3}" == "run" ] || [ "${1:0:7}" == "encrypt" ]; then
-        i=$(eval echo $*)
-        echo "call 'sakuli $i'"
-        $SAKULI_HOME/bin/sakuli $i
+# start VNC server
+vnc_init() {
+        /root/scripts/vnc_startup.sh
+}
 
-        res=$?
-        echo "SAKULI_RETURN_VAL: $res"
-        modify_testsuite_permissions $i
-        exit $res
+if [ $# -gt 0 ]; then
+	# pass all parameters
+	main "$@"
 else
-        exec $1
+	# no parameters
+	# - run the suite defined by $SAKULI_TEST_SUITE, if set
+	# or
+	# - run the example_xfce case (fallback)
+	main run ${SAKULI_TEST_SUITE:-/root/sakuli/example_test_suites/example_xfce}
 fi

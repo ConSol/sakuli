@@ -16,7 +16,7 @@ ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
 ### Install Sakuli
 ##Install some native libaries
 RUN apt-get update \
-    && apt-get -y install libcv2.4 libtesseract3 wmctrl xdotool psmisc unzip \
+    && apt-get -y install --fix-missing libcv2.4 libtesseract3 wmctrl xdotool psmisc unzip \
     && rm -rf /var/lib/apt
 ## Install JAVA JCE policy (necessary for gearman encryption)
 RUN mkdir -p /tmp/java-jce \
@@ -30,11 +30,12 @@ RUN mkdir -p /tmp/java-jce \
 ADD scripts/auto-install.xml /tmp/
 RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
     && java -jar /tmp/sakuli-v$SAKULI_VERSION-installer.jar /tmp/auto-install.xml \
-    && rm -f sakuli*.jar auto-install.xml
+    && rm -rf /tmp
+RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /root/sakuli/sahi/userdata/config/userdata.properties
 
 ### Install apps for testing
 RUN apt-get update \
-    && apt-get -y install gedit gnome-calculator \
+    && apt-get -y install --fix-missing gedit gnome-calculator shutter \
     && rm -rf /var/lib/apt
 
 # xvnc server port, if $DISPLAY=:1 port will be 5901
@@ -45,7 +46,14 @@ EXPOSE 6901
 ADD scripts/sakuli_startup.sh /root/scripts/
 RUN chmod +x /root/scripts/*.sh
 
-# startup script
+### Sakuli startup script
+# no parameters:
+# - run the suite defined by $SAKULI_TEST_SUITE, if set
+# paramters:
+# - run a Sakuli test suite like the example_xfce case via:
+#   docker run consol/sakuli-ubuntu-xfce run /root/sakuli/example_test_suites/example_xfce
+# - help:
+#   docker run consol/sakuli-ubuntu-xfce help
+# - start a bash (or any other command):
+#   docker run -it consol/sakuli-ubuntu-xfce bash
 ENTRYPOINT ["/root/scripts/sakuli_startup.sh"]
-# arguments for the sakuli_startup.sh script
-CMD ["run $SAKULI_TEST_SUITE"]

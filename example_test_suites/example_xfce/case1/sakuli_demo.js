@@ -42,18 +42,18 @@ try {
     testCase.endOfStep("Test Sahi landing page", 5);
     appCalc.open();
 
-    screen.waitForImage("calculator.png", 5).mouseMove();
+    screen.waitForImage("calculator.png", 5).mouseMove().highlight();
 
     env.type("525");
     env.sleep(2);
     var calcRegion = appCalc.getRegion();
-    calcRegion.find("plus.png").click().type("100");
-    calcRegion.find("result.png").click();
+    calcRegion.find("plus.png").highlight().click().type("100");
+    calcRegion.find("result.png").highlight().click();
     screen.waitForImage("625", 5);
-    testCase.endOfStep("Calculation", 10);
+    testCase.endOfStep("Calculation", 15);
 
     appGedit.open();
-    screen.waitForImage("gedit.png", 10);
+    screen.waitForImage("gedit.png", 10).highlight();
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
     testCase.endOfStep("Editor", 10);
     env.sleep(4);
