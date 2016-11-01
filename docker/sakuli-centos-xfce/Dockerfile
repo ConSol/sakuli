@@ -19,13 +19,12 @@ RUN yum -y install unzip \
     # opencv
     opencv \
     # tesseract
-    http://repo.iotti.biz/CentOS/7/x86_64/leptonica-1.71-2.el7.lux.1.x86_64.rpm \
-    http://repo.iotti.biz/CentOS/7/x86_64/tesseract-3.03-0.2.rc1.el7.lux.1.x86_64.rpm \
-    # wmctrl
-    http://mirror.symnds.com/distributions/gf/el/7/gf/x86_64/wmctrl-1.07-17.gf.el7.x86_64.rpm \
-    # xdotool
-    http://li.nux.ro/download/nux/dextop/el7/x86_64/xdotool-2.20110530.1-7.el7.nux.x86_64.rpm \
-    http://li.nux.ro/download/nux/dextop/el7/x86_64/libxdo-2.20110530.1-7.el7.nux.x86_64.rpm
+    leptonica tesseract tesseract-langpack-deu \
+    # wmctrl  (checked by: https://www.virustotal.com/de/url/394da2ac7e9bbbf5d10a3f304cc913459fc38f66019a4c3ba0fd4afd8f48e64f/analysis/1465466765/)
+    $SAKULI_DOWNLOAD_URL/3rd-party/rpm/wmctrl-1.07-17.gf.el7.x86_64.rpm \
+    # some missing ui controll tools
+    xdotool redhat-lsb-core psmisc \
+   && yum clean all
 ## Install JAVA JCE policy (necessary for gearman encryption)
 RUN mkdir -p /tmp/java-jce \
     && cd /tmp/java-jce \
