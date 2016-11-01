@@ -1,7 +1,7 @@
 FROM consol/ubuntu-omd-labs:latest
 MAINTAINER The Sakuli team.  <sakuli@consol.de>
 
-ENV REFRESHED_AT 2016-10-28
+ENV REFRESHED_AT 2016-11-01
 
 #RUN mkdir $OMD_DEMO/etc/check_mysql_health/
 #COPY ["./CheckMySQLHealthSakuli.pm", "$OMD_DEMO/etc/check_mysql_health/"]
