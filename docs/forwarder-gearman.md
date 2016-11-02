@@ -34,7 +34,7 @@ As Sakuli only uses the *result queue* of gearmand, you can disable all other qu
 	hosts=no
 	do_hostchecks=no
 	
-At the time of the creation of this documents, Sakuli does not encrypt any gearman results. Therefore, set  `accept_clear_results` in `server.cfg`:
+At the time of the creation of this documents, Sakuli does not encrypt any gearman results by default. Therefore, set  `accept_clear_results` in `server.cfg`:
 
     OMD[sakuli]:~$ vim ~/etc/mod-gearman/server.cfg
 	accept_clear_results=yes
@@ -161,13 +161,14 @@ On the server side (OMD) you have to enable the encryption feature of [mod-gearm
 
 1) Set the server side encryption password:
 
-    echo "secret_password" > ~/etc/mod-gearman/secret.key
+     OMD[sakuli]:~$ echo "secret_password" > ~/etc/mod-gearman/secret.key
 
-2) Enable the gearman encryption in the config file:
+2) Enable the `encryption` and disable `accept_clear_results` in the config file:
 
-	vim ~/etc/mod-gearman/server.cfg
+	 OMD[sakuli]:~$ vim ~/etc/mod-gearman/server.cfg
 	
 	encryption=yes
+    accept_clear_results=yes
 
 
 ## Test result transmission to OMD

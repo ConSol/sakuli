@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.sakuli</groupId>
@@ -60,7 +61,7 @@
         <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
         <!-- special sakuli-version 99x - change this later to latest stable version-->
         <sikulixapi.version>1.1.999</sikulixapi.version>
-        <sahi.version>5.0</sahi.version>
+        <sahi.version>5.1</sahi.version>
         <izpack.version>5.0.6</izpack.version>
     </properties>
 
@@ -460,7 +461,7 @@
             </dependency>
 
             <!-- Sahi Library (OpenSource Version)-->
-            <!-- local libaries, included with 'install_local_lib.sh' ... the are still not available over maven central -->
+            <!-- install libaries in labs repo, see `docs/development/maven-aspects.md` -->
             <dependency>
                 <groupId>net.sf.sahi</groupId>
                 <artifactId>sahi</artifactId>
@@ -475,9 +476,9 @@
 
             <!-- Sahi API Dependencies-->
             <dependency>
-                <groupId>rhino</groupId>
-                <artifactId>js</artifactId>
-                <version>1.7R2</version>
+                <groupId>org.mozilla</groupId>
+                <artifactId>rhino</artifactId>
+                <version>1.7.7.1</version>
             </dependency>
 
             <!-- SikuliX-Java Library (FULL LIBRARY) - is part of the  sikuli-setup.jar-->
