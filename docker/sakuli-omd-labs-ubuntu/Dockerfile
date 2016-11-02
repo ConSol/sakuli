@@ -1,7 +1,7 @@
 FROM consol/omd-labs-ubuntu:latest
 MAINTAINER The Sakuli team.  <sakuli@consol.de>
 
-ENV REFRESHED_AT 2016-10-28
+ENV REFRESHED_AT 2016-11-02
 
 WORKDIR /omd/sites/demo/
 ADD contrib/CheckMySQLHealthSakuli.pm /omd/sites/demo/etc/check_mysql_health/

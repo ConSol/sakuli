@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>1.0.2-lhm</version>
+        <version>1.0.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>core</artifactId>
-    <version>1.0.2-lhm</version>
+    <version>1.0.2</version>
     <name>core</name>
 
     <description>core module for all sakuli functionality</description>
@@ -376,8 +376,8 @@
 
         <!-- Sahi API Dependencies-->
         <dependency>
-            <groupId>rhino</groupId>
-            <artifactId>js</artifactId>
+            <groupId>org.mozilla</groupId>
+            <artifactId>rhino</artifactId>
         </dependency>
 
         <!-- SikuliX-Java Library (FULL LIBRARY) - is part of the  sikuli-setup.jar-->

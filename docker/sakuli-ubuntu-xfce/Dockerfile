@@ -2,14 +2,14 @@
 
 FROM consol/ubuntu-xfce-vnc:1.0.2
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2016-10-28
+ENV REFRESHED_AT 2016-11-02
 
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
 ENV VNC_PW sakuli
 
 ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install
-ARG SAKULI_VERSION=1.0.2-lhm
+ARG SAKULI_VERSION=1.0.2
 ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
 ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
 
