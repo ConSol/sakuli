@@ -34,7 +34,7 @@ As Sakuli only uses the *result queue* of gearmand, you can disable all other qu
 	hosts=no
 	do_hostchecks=no
 	
-At the time of the creation of this documents, Sakuli does not encrypt any gearman results. Therefore, set  `accept_clear_results` in `server.cfg`:
+At the time of the creation of this documents, Sakuli does not encrypt any gearman results by default. Therefore, set  `accept_clear_results` in `server.cfg`:
 
     OMD[sakuli]:~$ vim ~/etc/mod-gearman/server.cfg
 	accept_clear_results=yes
@@ -113,7 +113,7 @@ On the Sakuli client you must set the global properties for the gearman receiver
 	sakuli.forwarder.gearman.nagios.hostname=sakuli_client
 	sakuli.forwarder.gearman.nagios.check_command=check_sakuli
 
-## Using AES encryption
+## Using AES encryption (optional)
 
 The gearman forwarder supports AES encryption when sending checked results to the OMD server. The AES encryption uses a 32 byte (256 bit) secret key that
 has to be given in the properties. 
@@ -121,8 +121,22 @@ has to be given in the properties.
     sakuli.forwarder.gearman.encryption=true
     sakuli.forwarder.gearman.secret.key=secret_password
 
-In case you get a java.lang.security.InvalidKeyException with error message *"Illegal key size or default parameters"* you probably
-need to enable unlimited strength security policies in your Java JRE. This is done by adding a special security policy JAR to the Java JRE lib directory.
+In case you get a `java.lang.security.InvalidKeyException` with error message *"Illegal key size or default parameters"* you probably
+need to enable unlimited strength security policies in your Java JRE. This is done by adding a special security policy JAR to the Java JRE lib directory. For the Java JRE 8, take a look at [Oracle - Java Cryptography Extension 8](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html).
+
+On the server side (OMD) you have to enable the encryption feature of [mod-gearman](https://labs.consol.de/nagios/mod-gearman/). Therefore the following two steps are necessary:
+
+1) Set the server side encryption password:
+
+     OMD[sakuli]:~$ echo "secret_password" > ~/etc/mod-gearman/secret.key
+
+2) Enable the `encryption` and disable `accept_clear_results` in the config file:
+
+	 OMD[sakuli]:~$ vim ~/etc/mod-gearman/server.cfg
+	
+	encryption=yes
+    accept_clear_results=yes
+
 
 ## Test result transmission to OMD
 
