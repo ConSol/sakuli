@@ -29,7 +29,6 @@ case $STATE in
     echo "LASTSERVICECHECK: $LASTSERVICECHECK" >> $LOG
 
     OUT=$(echo -e "GET services\nColumns: plugin_output\nFilter: host_name = $HOST\nFilter: description = $SERVICE" | unixcat ~/tmp/run/live)
-    [[ $OUT =~ "EXCEPTION" ]] || exit 0
     OUTLONG=$(echo -e "GET services\nColumns: long_plugin_output\nFilter: host_name = $HOST\nFilter: description = $SERVICE" | unixcat ~/tmp/run/live)
 
     echo "OUT: $OUT" >> $LOG

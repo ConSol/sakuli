@@ -1,0 +1,27 @@
+# Sakuli example docker-compose.yml
+
+# define the Sakuli test suite via environment variable 'SAKULI_TEST_SUITE'
+# See https://github.com/ConSol/sakuli/blob/dev/docs/docker-containers.md#2-mount-your-test-suite-and-modify-the-environment-variable-sakuli_test_suite
+sakuli-example-centos:
+  image: consol/sakuli-centos-xfce
+  volumes:
+  - ../example_test_suites:/root/my_test_suites
+  environment:
+  - TZ=Europe/Berlin
+  - SAKULI_TEST_SUITE=/root/my_test_suites/example_xfce
+  ports:
+  - 5911:5901
+  - 6911:6901
+
+# define the Sakuli test suite via CMD arguments; all arguments of sakuli can be used.
+# See https://github.com/ConSol/sakuli/blob/dev/docs/docker-containers.md#1-mount-an-external-suite-folder-and-modify-cmd
+sakuli-example-ubuntu:
+  image: consol/sakuli-ubuntu-xfce
+  volumes:
+  - ../example_test_suites:/root/my_test_suites
+  command: "'run /root/my_test_suites/example_xfce -browser chrome'"
+  environment:
+  - TZ=Europe/Berlin
+  ports:
+  - 5912:5901
+  - 6912:6901

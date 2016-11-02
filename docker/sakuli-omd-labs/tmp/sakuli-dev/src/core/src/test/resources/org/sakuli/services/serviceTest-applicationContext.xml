@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+  ~
+  ~ Copyright 2013 - 2015 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <aop:aspectj-autoproxy/>
+    <context:annotation-config/>
+
+    <bean id="propertyResolver"
+          class="org.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8"/>
+        <property name="systemPropertiesMode" value="2"/>
+        <property name="loadSakuliProperties" value="false"/>
+        <property name="loadSakuliDefaultProperties" value="false"/>
+        <property name="loadTestSuiteProperties" value="false"/>
+        <property name="writePropertiesToSahiConfig" value="false"/>
+    </bean>
+
+    <bean id="org.sakuli.datamodel.TestSuite" class="org.sakuli.builder.TestSuiteExampleFactory"/>
+    <bean id="org.sakuli.services.common.CommonResultServiceImpl"
+          class="org.sakuli.services.common.CommonResultServiceMockImpl">
+        <constructor-arg ref="org.sakuli.datamodel.properties.SakuliProperties"></constructor-arg>
+    </bean>
+    <bean class="org.sakuli.services.common.CommonInitializingServiceImpl"/>
+
+    <!-- spyed Beans -->
+    <bean id="org.sakuli.services.forwarder.database.DatabaseInitializingServiceImpl"
+          class="org.sakuli.MockitoSpyFactoryBean">
+        <constructor-arg value="org.sakuli.services.forwarder.database.DatabaseInitializingServiceImpl"/>
+    </bean>
+    <bean id="org.sakuli.services.forwarder.gearman.GearmanInitializingServiceImpl"
+          class="org.sakuli.MockitoSpyFactoryBean">
+        <constructor-arg value="org.sakuli.services.forwarder.gearman.GearmanInitializingServiceImpl"/>
+    </bean>
+    <bean id="org.sakuli.services.forwarder.database.DatabaseResultServiceImpl"
+          class="org.sakuli.MockitoSpyFactoryBean">
+        <constructor-arg value="org.sakuli.services.forwarder.database.DatabaseResultServiceImpl"/>
+    </bean>
+    <bean id="org.sakuli.services.forwarder.gearman.GearmanResultServiceImpl" class="org.sakuli.MockitoSpyFactoryBean">
+        <constructor-arg value="org.sakuli.services.forwarder.gearman.GearmanResultServiceImpl"/>
+    </bean>
+    <bean id="org.sakuli.services.common.CacheHandlingResultServiceImpl" class="org.sakuli.MockitoSpyFactoryBean">
+        <constructor-arg value="org.sakuli.services.common.CacheHandlingResultServiceImpl"/>
+    </bean>
+    <bean id="org.sakuli.services.common.LogCleanUpResultServiceImpl" class="org.sakuli.MockitoSpyFactoryBean">
+        <constructor-arg value="org.sakuli.services.common.LogCleanUpResultServiceImpl"/>
+    </bean>
+    <!-- Mocked Beans -->
+    <bean id="org.sakuli.dao.DaoTestSuite " class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.services.forwarder.database.dao.DaoTestSuite "/>
+    </bean>
+    <bean id="org.sakuli.exceptions.SakuliExceptionHandler" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.exceptions.SakuliExceptionHandler"/>
+    </bean>
+    <bean id="org.sakuli.actions.screenbased.ScreenshotActions" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.actions.screenbased.ScreenshotActions"/>
+    </bean>
+    <bean id="org.sakuli.datamodel.properties.ForwarderProperties" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.datamodel.properties.ForwarderProperties"/>
+    </bean>
+    <bean id="org.sakuli.datamodel.properties.TestSuiteProperties" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.datamodel.properties.TestSuiteProperties"/>
+    </bean>
+    <bean id="org.sakuli.datamodel.properties.SakuliProperties" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.datamodel.properties.SakuliProperties"/>
+    </bean>
+
+    <bean id="org.sakuli.datamodel.properties.ActionProperties" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.datamodel.properties.ActionProperties"/>
+    </bean>
+    <bean id="org.sakuli.datamodel.properties.SahiProxyProperties" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.datamodel.properties.SahiProxyProperties"/>
+    </bean>
+    <bean id="org.sakuli.loader.BaseActionLoaderImpl" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.loader.BaseActionLoaderImpl"/>
+    </bean>
+    <bean id="org.sakuli.actions.settings.ScreenBasedSettings" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.actions.settings.ScreenBasedSettings"/>
+    </bean>
+
+</beans>

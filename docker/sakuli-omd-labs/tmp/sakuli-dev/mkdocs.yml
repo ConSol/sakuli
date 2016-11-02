@@ -1,0 +1,6 @@
+site_name: sakuli
+site_url: https://sakuli.readthedocs.io
+repo_url: https://github.com/ConSol/sakuli.git
+site_description: Sakuli Documentation
+docs_dir: docs
+markdown_extensions: [toc,fenced_code]
