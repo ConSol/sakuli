@@ -6,9 +6,9 @@
 ## (Jenkins CI) Perform a new official release
 * Create a new taged verison on [DockerHub](https://hub.docker.com/) with same `REL_VERSION` for the following images, to ensure that they will trigger after the release build:
 	* [consol/sakuli-centos-xfce](https://hub.docker.com/r/consol/sakuli-centos-xfce/~/settings/automated-builds/)
-	* [consol/sakuli-centos-xfce](https://hub.docker.com/r/consol/sakuli-centos-xfce-java/~/settings/automated-builds/)
+	* [consol/sakuli-centos-xfce-java](https://hub.docker.com/r/consol/sakuli-centos-xfce-java/~/settings/automated-builds/)
 	* [consol/sakuli-ubuntu-xfce](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/~/settings/automated-builds/)
-	* [consol/sakuli-ubuntu-xfce](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/~/settings/automated-builds/)
+	* [consol/sakuli-ubuntu-xfce-java](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/~/settings/automated-builds/)
 * Go to [Jenkins - Sakuli_perform_release](http://labs-build.consol.de/job/Sakuli_perform_release/) and execute the job and set the parameters `REL_VERSION` and `DEV_VERSION`
 * Update the tag `stable` at [read-the-docs](https://readthedocs.io/projects/sakuli/).
 * Add `sakuli-vXXX-installer.jar` and `sakuli-vXXX.zip` from https://labs.consol.de/sakuli/install/ to a new release XXX at https://github.com/ConSol/sakuli/releases
