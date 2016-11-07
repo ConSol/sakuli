@@ -10,8 +10,8 @@ ENV VNC_PW sakuli
 
 ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install
 ARG SAKULI_VERSION=1.1.0-SNAPSHOT
-ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
-ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
+ENV SAKULI_HOME /sakuli/sakuli-v$SAKULI_VERSION
+ENV SAKULI_TEST_SUITE /sakuli/example_test_suites/example_xfce
 
 # xvnc server port, if $DISPLAY=:1 port will be 5901
 EXPOSE 5901
@@ -44,11 +44,11 @@ ADD scripts/auto-install.xml /tmp/sakuli/
 RUN wget --directory-prefix=/tmp/sakuli $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
     && java -jar /tmp/sakuli/sakuli-v$SAKULI_VERSION-installer.jar /tmp/sakuli/auto-install.xml \
     && rm -rf /tmp/sakuli
-RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /headless/sakuli/sahi/userdata/config/userdata.properties
+RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /sakuli/sahi/userdata/config/userdata.properties
 
-ADD scripts/sakuli_startup.sh /headless/scripts/
-RUN chmod +x /headless/scripts/*.sh
-RUN chgrp -R 0 /headless && chmod -R g+rw /headless && find /headless -type d -exec chmod g+x {} +
+ADD scripts/sakuli_startup.sh /sakuli/scripts/
+RUN chmod +x /sakuli/scripts/*.sh
+RUN chgrp -R 0 /sakuli && chmod -R g+rw /sakuli && find /sakuli -type d -exec chmod g+x {} +
 ## use headless user
 USER 1984
 
@@ -57,9 +57,9 @@ USER 1984
 # - run the suite defined by $SAKULI_TEST_SUITE, if set
 # paramters:
 # - run a Sakuli test suite like the example_xfce case via:
-#   docker run consol/sakuli-ubuntu-xfce run /root/sakuli/example_test_suites/example_xfce
+#   docker run consol/sakuli-ubuntu-xfce run /sakuli/example_test_suites/example_xfce
 # - help:
 #   docker run consol/sakuli-ubuntu-xfce help
 # - start a bash (or any other command):
 #   docker run -it consol/sakuli-ubuntu-xfce bash
-ENTRYPOINT ["/headless/scripts/sakuli_startup.sh"]
+ENTRYPOINT ["/sakuli/scripts/sakuli_startup.sh"]
