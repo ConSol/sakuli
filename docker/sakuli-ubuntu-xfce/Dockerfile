@@ -1,6 +1,6 @@
 # This Dockerfile is used to build an sakuli image based on Ubuntu
 
-FROM local/ubuntu_rbo_os
+FROM consol/ubuntu-xfce-vnc:dev
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2016-10-28
 
