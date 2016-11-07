@@ -12,6 +12,7 @@ ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install
 ARG SAKULI_VERSION=1.1.0-SNAPSHOT
 ENV SAKULI_HOME /sakuli/sakuli-v$SAKULI_VERSION
 ENV SAKULI_TEST_SUITE /sakuli/example_test_suites/example_xfce
+ENV SAKULI_UMASK 0000
 
 # xvnc server port, if $DISPLAY=:1 port will be 5901
 EXPOSE 5901

@@ -9,15 +9,14 @@ main() {
 		$SAKULI_HOME/bin/sakuli "$@"
 		exit $?
 	elif [ "$1" == "run" ]; then
+		# Important for folder permissions to ensure that volume-mounted log
+		# files can be deleted afterwards
+		umask ${SAKULI_UMASK:-0000}
 		vnc_init
 		echo "Executing: 'sakuli $@'"
 		$SAKULI_HOME/bin/sakuli "$@"
 		res=$?
 		echo "SAKULI_RETURN_VAL: $res"
-		# modify testsuite folder permissions to ensure that volume-mounted log
-		# files can be deleted afterwards
-		# ToDo: Clearify, doesn't work in "usermode"
-		# chmod -R a+rw $2
 		exit $res
 	else
 		# execute any other command, init VNC anyway
