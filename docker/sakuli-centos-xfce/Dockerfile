@@ -30,14 +30,15 @@ RUN yum -y install unzip \
 ## Install JAVA JCE policy (necessary for gearman encryption)
 RUN mkdir -p /tmp/java-jce \
     && cd /tmp/java-jce \
-    && wget --no-check-certificate -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
+    && wget -q --no-check-certificate -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
     && unzip *.zip \
     && for i in $(find /usr/java/ -name "security"); do /bin/cp -v -f UnlimitedJCEPolicyJDK8/*.jar $i; done \
     && rm -rf /tmp/java-jce
 
 ## Install sakuli
 ADD scripts/auto-install.xml /tmp/sakuli/
-RUN wget --directory-prefix=/tmp/sakuli/ $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
+
+RUN wget -q --directory-prefix=/tmp/sakuli/ $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
     && java -jar /tmp/sakuli/sakuli-v$SAKULI_VERSION-installer.jar /tmp/sakuli/auto-install.xml \
     && rm -rf /tmp/sakuli
 RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /sakuli/sahi/userdata/config/userdata.properties
