@@ -38,7 +38,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
 
     private static final Logger logger = LoggerFactory.getLogger(CheckMKResultServiceImpl.class);
 
-    public static final String TEMPLATE_EXTENSION = ".twig";
+    public static final String MAIN_TEMPLATE_NAME = "main.twig";
 
     /**
      * Returns the name of the converter. The name is used to dynamically retrieve the template for the converter.
@@ -87,8 +87,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                         .append(System.getProperty("file.separator"))
                         .append(getConverterName().toLowerCase())
                         .append(System.getProperty("file.separator"))
-                        .append(getConverterName().toLowerCase())
-                        .append(TEMPLATE_EXTENSION)
+                        .append(MAIN_TEMPLATE_NAME)
                         .toString();
         return templatePath;
     }

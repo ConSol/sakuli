@@ -61,9 +61,9 @@ public class AbstractTemplateOutputBuilderTest extends BaseTest {
     @DataProvider
     public Object[][] getTemplatePathDP() {
         return new Object[][] {
-                { "/tmp/template", "Check_MK", "/tmp/template/check_mk/check_mk.twig"},
-                { "/tmp/template", "CHECKmk", "/tmp/template/checkmk/checkmk.twig"},
-                { "/tmp/template", "gearman", "/tmp/template/gearman/gearman.twig"},
+                { "/tmp/template", "Check_MK", "/tmp/template/check_mk/main.twig"},
+                { "/tmp/template", "CHECKmk", "/tmp/template/checkmk/main.twig"},
+                { "/tmp/template", "gearman", "/tmp/template/gearman/main.twig"},
         };
     }
 
