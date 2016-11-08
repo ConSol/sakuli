@@ -24,9 +24,7 @@ import net.sf.sahi.util.Utils;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.exceptions.SakuliException;
-import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliInitException;
+import org.sakuli.exceptions.*;
 import org.sakuli.starter.helper.SahiProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,12 +99,16 @@ public class SahiConnector {
                 logger.info("Sahi-Script-Runner executed with " + output);
 
                 //should only thrown if an exception could fetched by the backend of some reason
-                if (output.equals("FAILURE")
-                        && testSuite.getException() == null) {
-                    throw new SakuliInitException("SAHI-Proxy returned 'FAILURE' ");
+                if (output.equals("FAILURE")) {
+                    if (testSuite.getException() != null && testSuite.getException().getClass().equals(SahiActionException.class)
+                            && testSuite.getException().getMessage().startsWith("Script did not start")) {
+                        SakuliException causingError = new SakuliException(testSuite.getException());
+                        testSuite.clearException();
+                        this.reconnect(causingError);
+                    } else if (testSuite.getException() == null) {
+                        throw new SakuliInitException("SAHI-Proxy returned 'FAILURE' ");
+                    }
                 }
-
-
             } catch (ConnectException | IllegalMonitorStateException e) {
                 //Reconnect - wait for Thread "sahiRunner"
                 this.reconnect(e);
