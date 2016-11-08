@@ -12,8 +12,8 @@ ENV VNC_PW sakuli
 
 ENV SAKULI_DOWNLOAD_URL https://labs.consol.de/sakuli/install
 ARG SAKULI_VERSION=1.1.0-SNAPSHOT
-ENV SAKULI_HOME /root/sakuli/sakuli-v$SAKULI_VERSION
-ENV SAKULI_TEST_SUITE /root/sakuli/example_test_suites/example_xfce
+ENV SAKULI_HOME /sakuli/sakuli-v$SAKULI_VERSION
+ENV SAKULI_TEST_SUITE /sakuli/example_test_suites/example_xfce
 
 ### Install Sakuli
 ##Install some native libaries
@@ -39,7 +39,7 @@ ADD scripts/auto-install.xml /tmp/sakuli/
 RUN wget --directory-prefix=/tmp/sakuli/ $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
     && java -jar /tmp/sakuli/sakuli-v$SAKULI_VERSION-installer.jar /tmp/sakuli/auto-install.xml \
     && rm -rf /tmp/sakuli
-RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /root/sakuli/sahi/userdata/config/userdata.properties
+RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /sakuli/sahi/userdata/config/userdata.properties
 
 ### Install apps for testing
 RUN yum -y install gedit gnome-calculator
@@ -55,8 +55,13 @@ EXPOSE 5901
 # novnc web port
 EXPOSE 6901
 
-ADD scripts/sakuli_startup.sh /root/scripts/
-RUN chmod +x /root/scripts/*.sh
+ADD scripts/sakuli_startup.sh /sakuli/scripts/
+RUN chmod +x /sakuli/scripts/*.sh \
+ && chgrp -R 0 /sakuli \
+ && chmod -R g+rw /sakuli \
+ && find /sakuli -type d -exec chmod g+x {} +
+
+USER 1984
 
 ### Sakuli startup script
 # no parameters:
@@ -68,4 +73,4 @@ RUN chmod +x /root/scripts/*.sh
 #   docker run consol/sakuli-ubuntu-xfce help
 # - start a bash (or any other command):
 #   docker run -it consol/sakuli-ubuntu-xfce bash
-ENTRYPOINT ["/root/scripts/sakuli_startup.sh"]
+ENTRYPOINT ["/sakuli/scripts/sakuli_startup.sh"]
