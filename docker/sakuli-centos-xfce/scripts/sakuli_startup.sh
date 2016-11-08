@@ -24,7 +24,8 @@ main() {
 
 # start VNC server
 vnc_init() {
-        /root/scripts/vnc_startup.sh
+	# Includes /headless/scripts/generate_container_user
+	/headless/scripts/vnc_startup.sh
 }
 
 if [ $# -gt 0 ]; then
