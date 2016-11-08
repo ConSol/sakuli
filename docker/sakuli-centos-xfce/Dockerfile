@@ -35,10 +35,10 @@ RUN mkdir -p /tmp/java-jce \
     && rm -rf /tmp/java-jce
 
 ## Install sakuli
-ADD scripts/auto-install.xml /tmp/
-RUN wget --directory-prefix=/tmp $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
-    && java -jar /tmp/sakuli-v$SAKULI_VERSION-installer.jar /tmp/auto-install.xml \
-    && rm -rf /tmp
+ADD scripts/auto-install.xml /tmp/sakuli/
+RUN wget --directory-prefix=/tmp/sakuli/ $SAKULI_DOWNLOAD_URL/sakuli-v$SAKULI_VERSION-installer.jar \
+    && java -jar /tmp/sakuli/sakuli-v$SAKULI_VERSION-installer.jar /tmp/sakuli/auto-install.xml \
+    && rm -rf /tmp/sakuli
 RUN sed -i -e 's/proxy_alert.disabled=.*/proxy_alert.disabled=true/' /root/sakuli/sahi/userdata/config/userdata.properties
 
 ### Install apps for testing
