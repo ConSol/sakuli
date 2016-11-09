@@ -58,6 +58,7 @@ import static org.mockito.Mockito.when;
 public class CheckMKTemplateOutputBuilderTest extends BaseTest {
 
     private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+    private static final String DEFAULT_SERVICE_DESCRIPTION = "service_description";
 
     @InjectMocks
     private CheckMKTemplateOutputBuilder testling;
@@ -76,6 +77,7 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         doReturn(getTemplatePath()).when(sakuliProperties).getForwarderTemplateFolder();
+        doReturn(DEFAULT_SERVICE_DESCRIPTION).when(checkMKProperties).getServiceDescription();
     }
 
     private String getTemplatePath() {

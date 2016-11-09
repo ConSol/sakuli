@@ -30,6 +30,7 @@ public class CheckMKProperties {
     private static final String SPOOL_DIR = "sakuli.forwarder.check_mk.spooldir";
     private static final String SPOOL_FILE_PREFIX = "sakuli.forwarder.check_mk.spoolfile_prefix";
     private static final String FRESHNESS = "sakuli.forwarder.check_mk.freshness";
+    private static final String SERVICE_DESCRIPTION = "sakuli.forwarder.check_mk.service_description";
 
     @Value("${" + SPOOL_DIR + "}")
     private String spoolDir;
@@ -37,6 +38,9 @@ public class CheckMKProperties {
     private String spoolFilePrefix;
     @Value("${" + FRESHNESS + "}")
     private String freshness;
+
+    @Value("${" + SERVICE_DESCRIPTION + "}")
+    private String serviceDescription;
 
     public String getSpoolDir() {
         return spoolDir;
@@ -49,4 +53,9 @@ public class CheckMKProperties {
     public String getFreshness() {
         return freshness;
     }
+
+    public String getServiceDescription() {
+        return serviceDescription;
+    }
+
 }

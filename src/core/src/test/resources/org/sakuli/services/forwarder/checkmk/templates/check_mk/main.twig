@@ -1,5 +1,5 @@
 {% spaceless %}
-    {{ testsuite.state.nagiosErrorCode }} sakuli_{{ testsuite.state.errorCode }}_{{ testsuite.state.name }} suite__state={{ testsuite.state.errorCode }};;;;
+    {{ testsuite.state.nagiosErrorCode }} {{getServiceDescription(testsuite)}} suite__state={{ testsuite.state.errorCode }};;;;
     |suite__warning={{ testsuite.warningTime }}s;;;;|suite__critical={{ testsuite.criticalTime }}s;;;;|suite_{{ testsuite.id }}={{ testsuite.duration }}s;{{ testsuite.warningTime }};{{ testsuite.criticalTime }};;
         {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
             {% set testCaseIndex = format("%03d", loop.index) %}
@@ -53,4 +53,5 @@
         $whitespace${% include 'summary_styles.twig' %}
         {% include 'summary.twig' %}
     {% endif %}
+$newline$
 {% endspaceless %}

@@ -47,6 +47,14 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
     public abstract String getConverterName();
 
     /**
+     * Returns the configured service description properties in case it is specified within the
+     * testsuite.properties. Otherwise <code>null</code> will be returned and the id of the test suite
+     * will be used as service description.
+     * @return the configured service description or <code>null</code>
+     */
+    public abstract String getConfiguredServiceDescription();
+
+    /**
      * Converts the current test suite to a string based on the template for the concrete converter.
      * @return
      */
@@ -62,6 +70,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                 .and()
                 .functions()
                     .add(new GetOutputStateFunction())
+                    .add(new GetServiceDescriptionFunction(getConfiguredServiceDescription()))
                     .add(new ExtractScreenshotFunction(screenshotDivConverter))
                     .add(new GetExceptionMessagesFunction(sakuliProperties.getLogExceptionFormatMappings()))
                     .add(new AbbreviateFunction(sakuliProperties.getLogExceptionFormatMappings()))

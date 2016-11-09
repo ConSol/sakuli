@@ -19,6 +19,7 @@
 package org.sakuli.services.forwarder.checkmk;
 
 import org.sakuli.services.forwarder.AbstractTemplateOutputBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,8 +28,18 @@ import org.springframework.stereotype.Component;
 @ProfileCheckMK
 @Component
 public class CheckMKTemplateOutputBuilder extends AbstractTemplateOutputBuilder {
+
+    @Autowired
+    private CheckMKProperties checkMKProperties;
+
     @Override
     public String getConverterName() {
         return "Check_MK";
     }
+
+    @Override
+    public String getConfiguredServiceDescription() {
+        return checkMKProperties.getServiceDescription();
+    }
+
 }
