@@ -1,6 +1,5 @@
 package org.sakuli.services.forwarder.configuration;
 
-import org.apache.commons.lang.StringUtils;
 import org.jtwig.functions.FunctionRequest;
 import org.jtwig.functions.SimpleJtwigFunction;
 import org.sakuli.datamodel.AbstractTestDataEntity;

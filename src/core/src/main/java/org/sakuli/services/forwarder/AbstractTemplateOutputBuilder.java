@@ -64,7 +64,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                     .add(new GetOutputStateFunction())
                     .add(new ExtractScreenshotFunction(screenshotDivConverter))
                     .add(new GetExceptionMessagesFunction(sakuliProperties.getLogExceptionFormatMappings()))
-                    .add(new GetExceptionMessagesSummaryFunction(sakuliProperties.getLogExceptionFormatMappings()))
+                    .add(new AbbreviateFunction(sakuliProperties.getLogExceptionFormatMappings()))
                 .and()
                 .build();
         JtwigTemplate template = JtwigTemplate.fileTemplate(new File(templatePath), configuration);

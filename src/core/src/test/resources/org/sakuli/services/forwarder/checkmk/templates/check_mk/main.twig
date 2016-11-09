@@ -14,7 +14,8 @@
         {% endfor %}
     $whitespace$Sakuli suite "{{testsuite.id}}"$whitespace$
         {% if (testsuite.state.error) %}
-            ({{testsuite.duration}}s) {{testsuite.state.nagiosStateDescription}}: {{getExceptionMessagesSummary(testsuite, true)}}
+            {% set exceptionMessages = getExceptionMessages(testsuite, true) %}
+            ({{testsuite.duration}}s) {{testsuite.state.nagiosStateDescription}}: {{abbreviate(exceptionMessages, 200)}}
         {% else %}
             {{testsuite.state.nagiosStateDescription}}
             {% if (testsuite.state.ok) %}
