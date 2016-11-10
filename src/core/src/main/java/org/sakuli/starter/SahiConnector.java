@@ -24,7 +24,9 @@ import net.sf.sahi.util.Utils;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.exceptions.*;
+import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.starter.helper.SahiProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +55,14 @@ public class SahiConnector {
 
     @Autowired
     private SakuliExceptionHandler sakuliExceptionHandler;
+
+    static boolean isSahiScriptTimout(Throwable exception) {
+        return exception != null && (
+                exception.getMessage().startsWith("Script did not start within")
+                        //check also the suppressed Exceptions
+                        || isSahiScriptTimout(exception.getCause())
+        );
+    }
 
     /**
      * Initialize method to start the sahi proxy thread, if needed
@@ -100,9 +110,10 @@ public class SahiConnector {
 
                 //should only thrown if an exception could fetched by the backend of some reason
                 if (output.equals("FAILURE")) {
-                    if (testSuite.getException() != null && testSuite.getException().getClass().equals(SahiActionException.class)
-                            && testSuite.getException().getMessage().startsWith("Script did not start")) {
+                    if (isSahiScriptTimout(testSuite.getException())) {
+                        logger.warn("Sahi-Script-Runner timeout detected, start retry!");
                         SakuliException causingError = new SakuliException(testSuite.getException());
+                        //TODO TS may be we have to clear more? whats about starting time to not break warning?
                         testSuite.clearException();
                         this.reconnect(causingError);
                     } else if (testSuite.getException() == null) {
