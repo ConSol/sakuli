@@ -70,6 +70,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                 .and()
                 .functions()
                     .add(new GetOutputStateFunction())
+                    .add(new GetOutputDurationFunction())
                     .add(new GetServiceDescriptionFunction(getConfiguredServiceDescription()))
                     .add(new ExtractScreenshotFunction(screenshotDivConverter))
                     .add(new GetExceptionMessagesFunction(sakuliProperties.getLogExceptionFormatMappings()))
