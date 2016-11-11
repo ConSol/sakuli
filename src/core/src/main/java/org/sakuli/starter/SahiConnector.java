@@ -27,6 +27,7 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliInitException;
+import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.starter.helper.SahiProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,8 +114,8 @@ public class SahiConnector {
                     if (isSahiScriptTimout(testSuite.getException())) {
                         logger.warn("Sahi-Script-Runner timeout detected, start retry!");
                         SakuliException causingError = new SakuliException(testSuite.getException());
-                        //TODO TS may be we have to clear more? whats about starting time to not break warning?
-                        testSuite.clearException();
+                        //reset all values
+                        InitializingServiceHelper.invokeInitializingServcies();
                         this.reconnect(causingError);
                     } else if (testSuite.getException() == null) {
                         throw new SakuliInitException("SAHI-Proxy returned 'FAILURE' ");
