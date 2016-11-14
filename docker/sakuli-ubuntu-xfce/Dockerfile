@@ -33,6 +33,7 @@ RUN apt-get update \
     && apt-get -y install --fix-missing libcv2.4 libtesseract3 wmctrl xdotool psmisc unzip \
     && rm -rf /var/lib/apt
 ## Install JAVA JCE policy (necessary for gearman encryption)
+## JCE Download page: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 RUN mkdir -p /tmp/java-jce \
     && cd /tmp/java-jce \
     && wget --no-check-certificate -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
