@@ -70,8 +70,10 @@ public class CommonInitializingServiceImpl implements InitializingService {
     public void initTestSuite() throws SakuliInitException {
         checkConfiguration(testSuite);
         logger.info("initialize test suite with id '{}'", testSuite.getId());
+        testSuite.clearException();
         testSuite.setState(TestSuiteState.RUNNING);
         testSuite.setStartDate(new Date());
+        testSuite.setStopDate(null);
 
         try {
             testSuite.setHost(InetAddress.getLocalHost().getHostName());
@@ -84,6 +86,7 @@ public class CommonInitializingServiceImpl implements InitializingService {
          */
         if (testSuiteProperties.isLoadTestCasesAutomatic()) {
             try {
+                testSuite.setTestCases(null);
                 testSuite.setTestCases(TestSuiteHelper.loadTestCases(testSuiteProperties));
             } catch (IOException e) {
                 throw new SakuliInitException(e, String.format("Cannot read testsuite.suite '%s' file", testSuiteProperties.getTestSuiteSuiteFile().toString()));
