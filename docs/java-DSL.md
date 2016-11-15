@@ -135,6 +135,10 @@ add Sakuli specific actions on HTML dom content in a browser or any native appli
 
 Next we will setup a complete sample project for Sakuli Java.
 
+## Usage with HTTPS-Sites
+
+As workaround for issue #131 you can follow the intructions of [sahi-https](sahi-https.md) and copy afterwards the files from `java-example/target/classes/sahi/userdata/certs` to `java-example/src/main/resources/sahi/userdata/certs`. This will copy the trusted certificates when building the project and allows a clean run.
+
 # Sakuli Java Example 
 
 The next section describes how to get started with the Sakuli Java DSL by example. The Java example is a fully runnable Java
