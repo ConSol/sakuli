@@ -1,2 +1,3 @@
 <<<local>>>
 2 service_description suite__state=2;;;;|suite__warning=30s;;;;|suite__critical=40s;;;;|suite_example_xfce=44.81s;30;40;;|c_001__state=0;;;;|c_001__warning=20s;;;;|c_001__critical=30s;;;;|c_001_case1=13.91s;20;30;;|s_001_001_Test_Sahi_landing_page=1.16s;5;;;|s_001_002_Calculation=7.25s;10;;;|s_001_003_Editor=1.45s;10;;;|c_002__state=0;;;;|c_002__warning=20s;;;;|c_002__critical=30s;;;;|c_002_case2=13.55s;20;30;;|s_002_001_Test_Sahi_landing_page_(case2)=1.05s;5;;;|s_002_002_Calculation_(case2)=7.03s;10;;;|s_002_003_Editor_(case2)=1.39s;10;;; Sakuli suite "example_xfce" critical (44.81s/crit at 40s). (Last suite run: 01.01.70 10:33:44)
+

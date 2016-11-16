@@ -1,2 +1,3 @@
 <<<local>>>
 1 service_description suite__state=1;;;;|suite__warning=300s;;;;|suite__critical=400s;;;;|suite_example_xfce=42.84s;300;400;;|c_001__state=0;;;;|c_001__warning=20s;;;;|c_001__critical=30s;;;;|c_001_case1=14.03s;20;30;;|s_001_001_Test_Sahi_landing_page=1.16s;5;;;|s_001_002_Calculation=7.34s;10;;;|s_001_003_Editor=1.46s;10;;;|c_002__state=1;;;;|c_002__warning=2s;;;;|c_002__critical=30s;;;;|c_002_case2=13.54s;2;30;;|s_002_001_Test_Sahi_landing_page_(case2)=0.94s;5;;;|s_002_002_Calculation_(case2)=7.14s;10;;;|s_002_003_Editor_(case2)=1.39s;10;;; Sakuli suite "example_xfce" warning in case, case "case2" over runtime (13.54s/warn at 2s). (Last suite run: 01.01.70 10:34:42)
+
