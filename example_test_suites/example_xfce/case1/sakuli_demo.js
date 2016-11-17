@@ -49,9 +49,8 @@ try {
     var calcRegion = appCalc.getRegion();
     calcRegion.find("plus.png").highlight().click().type("100");
     calcRegion.find("result.png").highlight().click();
-    screen.waitForImage("625", 5);
+    screen.waitForImage("625", 5).highlight();
     testCase.endOfStep("Calculation", 15);
-
     appGedit.open();
     screen.waitForImage("gedit.png", 10).highlight();
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
