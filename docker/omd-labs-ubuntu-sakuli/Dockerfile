@@ -9,6 +9,7 @@ ENV ANSIBLE_SAKULI /root/ansible_sakuli
 ADD ansible_sakuli $ANSIBLE_SAKULI
 
 ARG BRANCH
+RUN env > /root/env
 
 WORKDIR $ANSIBLE_SAKULI/sakuli/
 # checkout the Sakuli source there
@@ -32,7 +33,7 @@ RUN /bin/bash -c "mkdir $SRCDIR && pushd $SRCDIR && git init &&\
   popd &&\
   ln -s src/$SPARSEDIR files"
 
-RUN env > /root/env
+
 
 # use the OMD-included Ansible to install the Sakuli stuff
 ENV PYTHONPATH=/omd/versions/default/lib/python/
