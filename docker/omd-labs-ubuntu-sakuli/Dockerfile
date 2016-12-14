@@ -1,5 +1,3 @@
-# docker build --build-arg BRANCH=github-204-docker-cloud -t consol/sakuli-omd-labs .
-
 #FROM local/omd-labs-ubuntu
 FROM consol/omd-labs-ubuntu
 MAINTAINER Simon Meggle "simon.meggle@consol.de"
@@ -8,7 +6,7 @@ ENV REFRESHED_AT 2016-12-13
 ENV ANSIBLE_SAKULI /root/ansible_sakuli
 ADD ansible_sakuli $ANSIBLE_SAKULI
 
-ARG BRANCH
+ARG SOURCE_BRANCH
 RUN env > /root/env
 
 WORKDIR $ANSIBLE_SAKULI/sakuli/
@@ -21,14 +19,14 @@ ENV REMOTE_HTTPS https://github.com/ConSol/sakuli.git
 # checkout only this folder
 ENV SPARSEDIR src/common/src/main/resources/org/sakuli/common/setup/omd
 
-RUN echo "Built from $REMOTE_GIT/${BRANCH:-${SOURCE_BRANCH:-"master"}}" > /root/build_info
+RUN echo "Built from $REMOTE_GIT/${SOURCE_BRANCH:-"dev"}" > /root/build_info
 
 RUN /bin/bash -c "mkdir $SRCDIR && pushd $SRCDIR && git init &&\
   (git remote add -f origin $REMOTE_GIT || git remote set-url origin $REMOTE_HTTPS) &&\
   git fetch origin &&\
   git config core.sparseCheckout true &&\
   echo "$SPARSEDIR" > .git/info/sparse-checkout &&\
-  git checkout ${BRANCH:-${SOURCE_BRANCH:-"master"}} &&\
+  git checkout ${SOURCE_BRANCH:-"dev"} &&\
   rm -rf $SRCDIR/.git &&\
   popd &&\
   ln -s src/$SPARSEDIR files"

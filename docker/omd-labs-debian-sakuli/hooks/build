@@ -1,0 +1,3 @@
+#!/bin/bash
+# This hook exposes the SOURCE_BRANCH to the build process
+docker build -t $IMAGE_NAME --build-arg SOURCE_BRANCH=$SOURCE_BRANCH .
