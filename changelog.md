@@ -1,5 +1,19 @@
 ## Change Log of Sakuli Releases
 
+### Version 1.0.2 (Bugfix + some small features)
+* issue #210: upgrade Sahi to version `5.1` due to  Sahi compatibility issue with Chrome 53+ - _click
+* fix docker images
+    * Chrome don't startup under CentOS Docker image, see also https://github.com/ConSol/docker-headless-vnc-container/issues/2  
+    * XFCE window manager don't startup under CentOS Docker image, see also https://github.com/ConSol/docker-headless-vnc-container/issues/4  
+    * use `SAKULI_VERSION` ARG in Dockerfiles, to have more flexible to build images
+* issue #215 add java-based Sakuli Docker images
+* issue #91: add AES encryption option for Gearman forwarder module
+    * add Java JCE extension to Docker images
+* fix #216: set `dom.storage.enabled` to true in firefox pref.js
+* add Sakuli-Example page https://github.com/ConSol/sakuli-examples
+* fix #177 add description for the javaDSL and update the documentation
+* issue #205: use maven-jgitflow for releases and branching
+
 ### Version 1.0.1 (Bugfix)
 
 * fix #190:  fix Docker centos image:  use tagged version `consol/centos-xfce-vnc:1.0.1`

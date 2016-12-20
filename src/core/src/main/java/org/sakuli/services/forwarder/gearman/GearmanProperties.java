@@ -41,6 +41,8 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private static final String SERVER_PORT = "sakuli.forwarder.gearman.server.port";
     private static final String CACHE_ENABLED = "sakuli.forwarder.gearman.cache.enabled";
     private static final String JOB_INTERVAL = "sakuli.forwarder.gearman.job.interval";
+    private static final String ENCRYPTION = "sakuli.forwarder.gearman.encryption";
+    private static final String SECRET_KEY = "sakuli.forwarder.gearman.secret.key";
     private static final String NAGIOS_HOSTNAME = "sakuli.forwarder.gearman.nagios.hostname";
     private static final String NAGIOS_CHECK_COMMAND = "sakuli.forwarder.gearman.nagios.check_command";
     private static final String NAGIOS_SERVICE_DESCRIPTION = "sakuli.forwarder.gearman.nagios.service_description";
@@ -71,6 +73,10 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private boolean cacheEnabled;
     @Value("${" + JOB_INTERVAL + "}")
     private long jobInterval;
+    @Value("${" + ENCRYPTION + "}")
+    private boolean encryption;
+    @Value("${" + SECRET_KEY + "}")
+    private String secretKey;
     @Value("${" + NAGIOS_HOSTNAME + "}")
     private String nagiosHost;
     @Value("${" + NAGIOS_CHECK_COMMAND + "}")
@@ -191,6 +197,22 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
 
     public void setCacheEnabled(boolean cacheEnabled) {
         this.cacheEnabled = cacheEnabled;
+    }
+
+    public boolean isEncryption() {
+        return encryption;
+    }
+
+    public void setEncryption(boolean encryption) {
+        this.encryption = encryption;
+    }
+
+    public String getSecretKey() {
+        return this.secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 
     public String getNagiosHost() {

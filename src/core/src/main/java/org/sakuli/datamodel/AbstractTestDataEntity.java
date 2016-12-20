@@ -139,6 +139,10 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return exception;
     }
 
+    public void clearException() {
+        this.exception = null;
+    }
+
     public String getExceptionMessages(boolean flatFormatted, Map<String, String> formatExpressions) {
         if (exception != null) {
             String msg = exception.getMessage();
