@@ -27,6 +27,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.File;
+
 import static org.mockito.Mockito.doReturn;
 import static org.testng.Assert.assertEquals;
 
@@ -49,9 +51,9 @@ public class CheckMKResultServiceImplTest extends BaseTest {
 
     @DataProvider
     public Object[][] createSpoolFilePathDP() {
-        return new Object[][] {
-                {"/tmp/blub", "600", "sakuli_suite", "docker_test", "/tmp/blub/600_sakuli_suite_docker_test"},
-                {"/tmp/blub", "300", null, "test_suite", "/tmp/blub/300_test_suite"},
+        return new Object[][]{
+                {"tmp/blub", "600", "sakuli_suite", "docker_test", "tmp" + File.separator + "blub" + File.separator + "600_sakuli_suite_docker_test"},
+                {"tmp/blub", "300", null, "test_suite", "tmp" + File.separator + "blub" + File.separator + "300_test_suite"},
         };
     }
 
@@ -61,7 +63,7 @@ public class CheckMKResultServiceImplTest extends BaseTest {
         doReturn(spoolDir).when(checkMKProperties).getSpoolDir();
         doReturn(freshness).when(checkMKProperties).getFreshness();
         doReturn(spoolFileNamePrefix).when(checkMKProperties).getSpoolFilePrefix();
-        assertEquals(testling.createSpoolFilePath(), expectedFilePath);
+        assertEquals(testling.createSpoolFilePath().toString(), expectedFilePath);
     }
 
 }

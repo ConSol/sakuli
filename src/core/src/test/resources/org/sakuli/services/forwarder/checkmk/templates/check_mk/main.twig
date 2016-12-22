@@ -55,6 +55,7 @@
             {% endif %}
             $whitespace$(Last suite run: {% if (empty(testsuite.stopDate)) %}xx{% else %}{{ testsuite.stopDate|date("dd.MM.YY HH:mm:ss") }}{% endif %})
         {% endif %}
+    {#TODO:REVIEW correct only on error add html table?#}
     {% if (testsuite.state.error) %}
         $whitespace${% include 'summary_styles.twig' %}
         {% include 'summary.twig' %}

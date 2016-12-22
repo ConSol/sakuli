@@ -25,8 +25,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
@@ -40,8 +42,6 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 public class CheckMKResultServiceImpl extends AbstractResultService {
 
     private static final Logger logger = LoggerFactory.getLogger(CheckMKResultServiceImpl.class);
-
-    private static final String SPOOL_FILE_NAME_FORMAT = "%s%s%s";
 
     @Autowired
     private CheckMKProperties checkMKProperties;
@@ -58,14 +58,14 @@ public class CheckMKResultServiceImpl extends AbstractResultService {
     public void saveAllResults() {
         logger.info("======= WRITE FILE FOR CHECK_MK ======");
         String output = outputBuilder.createOutput();
-        if (logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {    //TODO REVIEW: still necessary tody?
             logger.debug(String.format("Output for check_mk:\n%s", output));
         }
         writeToFile(createSpoolFilePath(), output);
         logger.info("======= FINISHED: WRITE FILE FOR CHECK_MK ======");
     }
 
-    protected String createSpoolFilePath() {
+    protected Path createSpoolFilePath() {
         String spoolDir = checkMKProperties.getSpoolDir();
         String fileName = new StringBuilder()
                 .append(checkMKProperties.getFreshness())
@@ -76,19 +76,20 @@ public class CheckMKResultServiceImpl extends AbstractResultService {
                 .append("_")
                 .append(testSuite.getId())
                 .toString();
-        return spoolDir + System.getProperty("file.separator") + fileName;
+        return Paths.get(spoolDir + File.separator + fileName);
     }
 
-    private void writeToFile(String filePath, String output) {
+    private void writeToFile(Path file, String output) {
         try {
-            logger.info(String.format("Write file to '%s'", filePath));
-            Files.write(Paths.get(filePath), output.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            logger.info(String.format("Write file to '%s'", file));
+            Files.write(file, output.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            //TODO REVIEW: is already in ExceptionHandler
+//            logger.error(e.getMessage());
             exceptionHandler.handleException(
                     new SakuliForwarderException(e,
                             String.format("Unexpected error by writing the output for check_mk to the following file '%s'",
-                            filePath
+                                    file
                     ))
             );
         }

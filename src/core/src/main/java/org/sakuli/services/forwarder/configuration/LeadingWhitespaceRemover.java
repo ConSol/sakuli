@@ -32,17 +32,17 @@ public class LeadingWhitespaceRemover implements SpaceRemover {
 
     /**
      * Removes leading spaces and line endings.
-     *  (?m)    -> enables multi line mode
-     *  ^       -> matches begin of line only if multi line mode is enabled
-     *  [\s\t]+ -> leading white spaces and tabs
-     *  \n      -> line endings
+     * (?m)    -> enables multi line mode
+     * ^       -> matches begin of line only if multi line mode is enabled
+     * [\s\t]+ -> leading white spaces and tabs
+     * \n      -> line endings
      * After removing the leading spaces and the line endings, the special strings $whitespace$ and $newline$
      * are replaced by a real white space resp. a new line.
      *
      * @param input
      * @return the input string without line endings and leading whitespaces per line
      */
-    @Override
+    @Override                                 //TODO REVIEW: write unit test
     public String removeSpaces(String input) {
         return input
                 .replaceAll("(?m)^[\\s\\t]+|\\n", "")

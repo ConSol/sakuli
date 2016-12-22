@@ -1,5 +1,7 @@
 {% spaceless %}
-    <<<local>>>$newline$
+    <<
+    <local>>>$newline$
+    {#TODO REVIEW: make seperate *.twig file for performance data (maybe for each kind)#}
     {{ testsuite.state.nagiosErrorCode }} {{getServiceDescription(testsuite)}} suite__state={{getOutputState(testsuite.state).errorCode}};;;;
     |suite__warning={{ testsuite.warningTime }}s;;;;|suite__critical={{ testsuite.criticalTime }}s;;;;|suite_{{ testsuite.id }}={{getOutputDuration(testsuite)}};{{ testsuite.warningTime }};{{ testsuite.criticalTime }};;
     {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
@@ -55,7 +57,9 @@
         {% endif %}
         $whitespace$(Last suite run: {% if (empty(testsuite.stopDate)) %}xx{% else %}{{ testsuite.stopDate|date("dd.MM.YY HH:mm:ss") }}{% endif %})
     {% endif %}
+    {#TODO REVIEW: correct only on error add html table?#}
     {% if (testsuite.state.error) %}
+        {#TODO REVIEW: maybe css_styles.twig better?#}
         $whitespace${% include 'summary_styles.twig' %}
         {% include 'summary.twig' %}
     {% endif %}

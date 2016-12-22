@@ -44,6 +44,7 @@ public class ExtractScreenshotFunction extends SimpleJtwigFunction {
 
     @Override
     public Object execute(FunctionRequest request) {
+        //TODO REVIEW: maybe is it better to throw a exception? The default assert message is maybe misleading
         assert request.getNumberOfArguments() == 1;
         AbstractTestDataEntity testDataEntity = (AbstractTestDataEntity) request.getArguments().get(0);
         return screenshotDivConverter.convert(testDataEntity.getException());

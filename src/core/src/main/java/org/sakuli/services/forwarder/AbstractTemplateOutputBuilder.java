@@ -36,9 +36,8 @@ import java.io.File;
  */
 public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilder {
 
-    private static final Logger logger = LoggerFactory.getLogger(CheckMKResultServiceImpl.class);
-
     public static final String MAIN_TEMPLATE_NAME = "main.twig";
+    private static final Logger logger = LoggerFactory.getLogger(CheckMKResultServiceImpl.class);
 
     /**
      * Returns the name of the converter. The name is used to dynamically retrieve the template for the converter.
@@ -61,7 +60,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
     public String createOutput() {
         JtwigModel model = createModel();
         String templatePath = getTemplatePath();
-        if (logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {  //TODO REVIEW: still necessary?
             logger.debug(String.format("Load JTwig template from following location: '%s'", templatePath));
         }
         EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration()
@@ -71,32 +70,38 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                 .functions()
                     .add(new GetOutputStateFunction())
                     .add(new GetOutputDurationFunction())
+                //TODO REVIEW: function is `GetServiceDescriptionFunction` not needed, because the spring based property replace mechanism, should already autowire the correct service description or the testsuite id
+                //TODO REVIEW: just use `getConfiguredServiceDescription()`
                     .add(new GetServiceDescriptionFunction(getConfiguredServiceDescription()))
                     .add(new ExtractScreenshotFunction(screenshotDivConverter))
                     .add(new GetExceptionMessagesFunction(sakuliProperties.getLogExceptionFormatMappings()))
                     .add(new AbbreviateFunction(sakuliProperties.getLogExceptionFormatMappings()))
                 .and()
-                .build();
+                .build();                                         //path.getFile
         JtwigTemplate template = JtwigTemplate.fileTemplate(new File(templatePath), configuration);
-        if (logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {  //TODO REVIEW: still necessary?
             logger.debug(String.format("Render model into JTwig template. Model: '%s'", model));
         }
         return template.render(model);
+
+        //TODO REVIEW: What happens on rendering errors? Maybe try-catch Exception and forward it to the exception handler
     }
 
+    //TODO REVIEW: why this separate method needed?
     protected JtwigModel createModel() {
         JtwigModel model = JtwigModel.newModel()
                 .with("testsuite", testSuite);
         return model;
     }
 
+    //TODO REVIEW: retrun nio.Path and check before if the template path is existig
     protected String getTemplatePath() {
         String templateFolder = sakuliProperties.getForwarderTemplateFolder();
         String templatePath =
                 new StringBuilder(templateFolder)
-                        .append(System.getProperty("file.separator"))
+                        .append(File.separator)
                         .append(getConverterName().toLowerCase())
-                        .append(System.getProperty("file.separator"))
+                        .append(File.separator)
                         .append(MAIN_TEMPLATE_NAME)
                         .toString();
         return templatePath;
