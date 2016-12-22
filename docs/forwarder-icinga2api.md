@@ -79,19 +79,7 @@ On the Sakuli client you must set the global properties for the Icinga2 receiver
     sakuli.forwarder.icinga2.api.password=icingasakuli
     sakuli.forwarder.icinga2.hostname=sakuliclient01
     
-There are also some **optional** parameters you can adjust:
-
-    ## Icinga service description
-    sakuli.forwarder.icinga2.service_description=${testsuite.id}
-    
-    ## Icinga 'plugin_output' template strings. Change only if needed.
-    sakuli.forwarder.icinga2.template.suite.summary={{state_short}} Sakuli suite "{{id}}" {{suite_summary}}. (Last suite run: {{stop_date}})
-    sakuli.forwarder.icinga2.template.suite.summary.maxLength=200
-    sakuli.forwarder.icinga2.template.case.ok={{state_short}} case "{{id}}" ran in {{duration}}s - {{state_description}}
-    sakuli.forwarder.icinga2.template.case.warning={{state_short}} case "{{id}}" over runtime ({{duration}}s/warn at {{warning_threshold}}s){{step_information}}
-    sakuli.forwarder.icinga2.template.case.warningInStep={{state_short}} case "{{id}}" over runtime ({{duration}}s/warn at {{warning_threshold}}s){{step_information}}
-    sakuli.forwarder.icinga2.template.case.critical={{state_short}} case "{{id}}" over runtime ({{duration}}s/crit at {{critical_threshold}}s){{step_information}}
-    sakuli.forwarder.icinga2.template.case.error={{state_short}} case "{{id}}" {{state_description}}: {{error_message}}
+For other **OPTIONAL** Icinga2 parameters you can adjust, see [sakuli-default.properties](../src/common/src/main/resources/org/sakuli/common/config/sakuli-default.properties) file. 
     
 ## Graph settings
 Icinga2 integration is very new; we did not yet dive into the configuration of Graphite or Grafana graphs. The only supported graphing solution is PNP4Nagios. Nevertheless you are welcome to contribute graph templates for  Grafana and/or Graphite!

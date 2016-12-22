@@ -125,26 +125,19 @@ will get stored in RRD correclty with the timestamp of "start_time" = 1458800000
 
 ## Sakuli gearman forwarder configuration
 
-On the Sakuli client you must set the global properties for the gearman receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):. 
+On the Sakuli client you must set the global properties for the gearman receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`): 
 
-    __INST_DIR__/example_test_suites/sakuli.properties:
+`__INST_DIR__/example_test_suites/sakuli.properties`:
 
-	sakuli.forwarder.gearman.enabled=true
-	sakuli.forwarder.gearman.encryption=false
-	sakuli.forwarder.gearman.secret.key=secret_password
-	sakuli.forwarder.gearman.server.host=__GEARMAN_IP__
-	sakuli.forwarder.gearman.server.port=[Gearman Port defined in "omd config" (default:4730)]
-	sakuli.forwarder.gearman.server.queue=check_results
-	
-	sakuli.forwarder.gearman.cache.enabled=true
-	sakuli.forwarder.gearman.job.interval=1000
-	
-	# Nagios host where all Sakuli services are defined on. If neccessary, override this value per test suite. 
-    # (Nagios service name is defined by testsuite.properties -> suiteID)
-    # (Nagios service description is optional, default value is defined by testsuite.properties -> suiteID)
-	sakuli.forwarder.gearman.nagios.hostname=sakuli_client
-	sakuli.forwarder.gearman.nagios.check_command=check_sakuli
-	sakuli.forwarder.gearman.nagios.service_description=service_description
+    ## Gearman server settings:
+    sakuli.forwarder.gearman.enabled=true
+    sakuli.forwarder.gearman.server.host=__OMD_HOST__
+    sakuli.forwarder.gearman.server.port=4730
+    # Nagios host where all Sakuli services are defined on. If neccessary, override this value per test suite. 
+    sakuli.forwarder.gearman.nagios.hostname=sakuli_client
+
+
+For other **OPTIONAL** gearman parameters you can adjust, see [sakuli-default.properties](../src/common/src/main/resources/org/sakuli/common/config/sakuli-default.properties) file. 
 
 ## Using AES encryption (optional)
 
