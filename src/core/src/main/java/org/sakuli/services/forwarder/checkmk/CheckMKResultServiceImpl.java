@@ -56,13 +56,15 @@ public class CheckMKResultServiceImpl extends AbstractResultService {
 
     @Override
     public void saveAllResults() {
-        logger.info("======= WRITE FILE FOR CHECK_MK ======");
-        String output = outputBuilder.createOutput();
-        if (logger.isDebugEnabled()) {    //TODO REVIEW: still necessary tody?
+        try {
+            logger.info("======= WRITE FILE FOR CHECK_MK ======");
+            String output = outputBuilder.createOutput();
             logger.debug(String.format("Output for check_mk:\n%s", output));
+            writeToFile(createSpoolFilePath(), output);
+            logger.info("======= FINISHED: WRITE FILE FOR CHECK_MK ======");
+        } catch (SakuliForwarderException e) {
+            exceptionHandler.handleException(e, false);
         }
-        writeToFile(createSpoolFilePath(), output);
-        logger.info("======= FINISHED: WRITE FILE FOR CHECK_MK ======");
     }
 
     protected Path createSpoolFilePath() {
@@ -79,19 +81,13 @@ public class CheckMKResultServiceImpl extends AbstractResultService {
         return Paths.get(spoolDir + File.separator + fileName);
     }
 
-    private void writeToFile(Path file, String output) {
+    private void writeToFile(Path file, String output) throws SakuliForwarderException {
         try {
             logger.info(String.format("Write file to '%s'", file));
             Files.write(file, output.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            //TODO REVIEW: is already in ExceptionHandler
-//            logger.error(e.getMessage());
-            exceptionHandler.handleException(
-                    new SakuliForwarderException(e,
-                            String.format("Unexpected error by writing the output for check_mk to the following file '%s'",
-                                    file
-                    ))
-            );
+            throw new SakuliForwarderException(e,
+                    String.format("Unexpected error by writing the output for check_mk to the following file '%s'", file));
         }
     }
 

@@ -79,23 +79,12 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
     }
 
     private String getTemplatePath() {
-        //TODO REVIEW: use templates from config folder, so if we change something also this will be tested
-        return getResource("templates", this.getClass());
+        return getResource("common/config/templates");
     }
 
     private String getOutputPath() {
         return getResource("output", this.getClass());
     }
-//   TODO REVIEW: use getResource
-//    private String getBaseTestPath() {
-//        String currentAbsolutePath = Paths.get("").toAbsolutePath().toString();
-//        String canonicalNameDir = this.getClass().getPackage().getName().replaceAll("\\.", "/");
-//        return currentAbsolutePath + File.separator
-//                + "src" + File.separator
-//                + "test" + File.separator
-//                + "resources" + File.separator
-//                + canonicalNameDir;
-//    }
 
     private String loadExpectedOutput(String testCaseName) throws IOException {
         return FileUtils.readFileToString(Paths.get(getOutputPath() + File.separator + "TestCase_" + testCaseName + ".txt").toFile());

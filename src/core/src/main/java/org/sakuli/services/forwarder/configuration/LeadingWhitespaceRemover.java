@@ -42,7 +42,7 @@ public class LeadingWhitespaceRemover implements SpaceRemover {
      * @param input
      * @return the input string without line endings and leading whitespaces per line
      */
-    @Override                                 //TODO REVIEW: write unit test
+    @Override
     public String removeSpaces(String input) {
         return input
                 .replaceAll("(?m)^[\\s\\t]+|\\n", "")

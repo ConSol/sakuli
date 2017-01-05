@@ -19,7 +19,6 @@
 package org.sakuli.services.forwarder.configuration;
 
 import org.jtwig.functions.FunctionRequest;
-import org.jtwig.functions.SimpleJtwigFunction;
 import org.sakuli.datamodel.AbstractTestDataEntity;
 
 import java.util.Locale;
@@ -31,7 +30,7 @@ import java.util.Locale;
  *
  * @author Georgi Todorov
  */
-public class GetOutputDurationFunction extends SimpleJtwigFunction {
+public class GetOutputDurationFunction extends AbstractFunction {
 
     private static final String UNKNOWN_DURATION = "U";
 
@@ -42,9 +41,7 @@ public class GetOutputDurationFunction extends SimpleJtwigFunction {
 
     @Override
     public Object execute(FunctionRequest request) {
-        //TODO REVIEW: maybe is it better to throw a exception? The default assert message is maybe misleading
-
-        assert request.getNumberOfArguments() == 1;
+        verifyFunctionParameters(request, 1, AbstractTestDataEntity.class);
         AbstractTestDataEntity testDataEntity = (AbstractTestDataEntity) request.getArguments().get(0);
         if (testDataEntity.getState().isError() || testDataEntity.getDuration() < 0) {
             return UNKNOWN_DURATION;

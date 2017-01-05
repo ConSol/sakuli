@@ -2,7 +2,6 @@ package org.sakuli.services.forwarder.configuration;
 
 import org.apache.commons.lang.StringUtils;
 import org.jtwig.functions.FunctionRequest;
-import org.jtwig.functions.SimpleJtwigFunction;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -34,7 +33,7 @@ import java.util.Map;
  *
  * @author Georgi Todorov
  */
-public class AbbreviateFunction extends SimpleJtwigFunction {
+public class AbbreviateFunction extends AbstractFunction {
 
     private Map<String, String> formatExpressions;
 
@@ -49,7 +48,7 @@ public class AbbreviateFunction extends SimpleJtwigFunction {
 
     @Override
     public Object execute(FunctionRequest request) {
-        assert request.getNumberOfArguments() == 2;
+        verifyFunctionParameters(request, 2, String.class, BigDecimal.class);
         String toAbbreviate = (String) request.getArguments().get(0);
         BigDecimal summaryMaxLength = (BigDecimal) request.getArguments().get(1);
         return StringUtils.abbreviate(toAbbreviate, summaryMaxLength.intValue());

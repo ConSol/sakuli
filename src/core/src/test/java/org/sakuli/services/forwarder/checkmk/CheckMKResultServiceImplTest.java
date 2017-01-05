@@ -52,8 +52,8 @@ public class CheckMKResultServiceImplTest extends BaseTest {
     @DataProvider
     public Object[][] createSpoolFilePathDP() {
         return new Object[][]{
-                {"tmp/blub", "600", "sakuli_suite", "docker_test", "tmp" + File.separator + "blub" + File.separator + "600_sakuli_suite_docker_test"},
-                {"tmp/blub", "300", null, "test_suite", "tmp" + File.separator + "blub" + File.separator + "300_test_suite"},
+                {"tmp" + File.separator + "blub", "600", "sakuli_suite", "docker_test", "tmp" + File.separator + "blub" + File.separator + "600_sakuli_suite_docker_test"},
+                {"tmp" + File.separator + "blub", "300", null, "test_suite", "tmp" + File.separator + "blub" + File.separator + "300_test_suite"},
         };
     }
 

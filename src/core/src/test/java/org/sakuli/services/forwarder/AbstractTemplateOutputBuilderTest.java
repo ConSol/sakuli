@@ -26,6 +26,7 @@ import org.mockito.Spy;
 import org.sakuli.BaseTest;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
+import org.sakuli.services.forwarder.checkmk.CheckMKProperties;
 import org.sakuli.services.forwarder.checkmk.CheckMKTemplateOutputBuilder;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -46,6 +47,8 @@ public class AbstractTemplateOutputBuilderTest extends BaseTest {
     private TestSuite testSuite;
     @Mock
     private SakuliProperties sakuliProperties;
+    @Mock
+    private CheckMKProperties checkMKProperties;
 
     @BeforeMethod
     public void setUp() throws Exception {
@@ -56,6 +59,7 @@ public class AbstractTemplateOutputBuilderTest extends BaseTest {
     public void createModel() {
         JtwigModel model = testling.createModel();
         assertEquals(model.get("testsuite").get().getValue(), testSuite);
+        assertEquals(model.get("sakuli").get().getValue(), sakuliProperties);
     }
 
     @DataProvider
@@ -71,7 +75,7 @@ public class AbstractTemplateOutputBuilderTest extends BaseTest {
     public void getTemplatePath(String templateFolder, String converterName, String expectedTemplatePath) {
         doReturn(templateFolder).when(sakuliProperties).getForwarderTemplateFolder();
         doReturn(converterName).when(testling).getConverterName();
-        assertEquals(testling.getTemplatePath(), expectedTemplatePath);
+        assertEquals(testling.getTemplatePath().toString(), expectedTemplatePath);
     }
 
 }

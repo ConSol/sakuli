@@ -18,6 +18,7 @@
 
 package org.sakuli.services.forwarder.checkmk;
 
+import org.jtwig.JtwigModel;
 import org.sakuli.services.forwarder.AbstractTemplateOutputBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,8 +39,9 @@ public class CheckMKTemplateOutputBuilder extends AbstractTemplateOutputBuilder 
     }
 
     @Override
-    public String getConfiguredServiceDescription() {
-        return checkMKProperties.getServiceDescription();
+    public JtwigModel createModel() {
+        return super.createModel()
+                .with("checkmk", checkMKProperties);
     }
 
 }

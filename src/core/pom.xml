@@ -275,6 +275,12 @@
     </profiles>
 
     <dependencies>
+        <dependency>
+            <groupId>org.sakuli</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
         <!-- Spring Libraries -->
         <dependency>
             <groupId>org.springframework</groupId>

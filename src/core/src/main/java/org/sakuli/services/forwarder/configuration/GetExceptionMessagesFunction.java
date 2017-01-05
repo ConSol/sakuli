@@ -19,7 +19,6 @@
 package org.sakuli.services.forwarder.configuration;
 
 import org.jtwig.functions.FunctionRequest;
-import org.jtwig.functions.SimpleJtwigFunction;
 import org.sakuli.datamodel.AbstractTestDataEntity;
 
 import java.util.Map;
@@ -29,7 +28,7 @@ import java.util.Map;
  *
  * @author Georgi Todorov
  */
-public class GetExceptionMessagesFunction extends SimpleJtwigFunction {
+public class GetExceptionMessagesFunction extends AbstractFunction {
 
     private Map<String, String> formatExpressions;
 
@@ -44,8 +43,7 @@ public class GetExceptionMessagesFunction extends SimpleJtwigFunction {
 
     @Override
     public Object execute(FunctionRequest request) {
-        //TODO REVIEW: maybe is it better to throw a exception? The default assert message is maybe misleading
-        assert request.getNumberOfArguments() == 2;
+        verifyFunctionParameters(request, 2, AbstractTestDataEntity.class, Boolean.class);
         AbstractTestDataEntity testDataEntity = (AbstractTestDataEntity) request.getArguments().get(0);
         boolean flatFormatted = (boolean) request.getArguments().get(1);
         return testDataEntity.getExceptionMessages(flatFormatted, formatExpressions);

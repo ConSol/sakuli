@@ -24,12 +24,16 @@ import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.jtwig.spaceless.SpacelessExtension;
 import org.jtwig.spaceless.configuration.SpacelessConfiguration;
-import org.sakuli.services.forwarder.checkmk.CheckMKResultServiceImpl;
+import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.configuration.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author Georgi Todorov
@@ -37,7 +41,10 @@ import java.io.File;
 public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilder {
 
     public static final String MAIN_TEMPLATE_NAME = "main.twig";
-    private static final Logger logger = LoggerFactory.getLogger(CheckMKResultServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractTemplateOutputBuilder.class);
+
+    @Autowired
+    protected SakuliExceptionHandler exceptionHandler;
 
     /**
      * Returns the name of the converter. The name is used to dynamically retrieve the template for the converter.
@@ -46,56 +53,46 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
     public abstract String getConverterName();
 
     /**
-     * Returns the configured service description properties in case it is specified within the
-     * testsuite.properties. Otherwise <code>null</code> will be returned and the id of the test suite
-     * will be used as service description.
-     * @return the configured service description or <code>null</code>
-     */
-    public abstract String getConfiguredServiceDescription();
-
-    /**
      * Converts the current test suite to a string based on the template for the concrete converter.
      * @return
      */
-    public String createOutput() {
-        JtwigModel model = createModel();
-        String templatePath = getTemplatePath();
-        if (logger.isDebugEnabled()) {  //TODO REVIEW: still necessary?
-            logger.debug(String.format("Load JTwig template from following location: '%s'", templatePath));
-        }
-        EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration()
-                .extensions()
+    public String createOutput() throws SakuliForwarderException {
+        try {
+            JtwigModel model = createModel();
+            EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration()
+                    .extensions()
                     .add(new SpacelessExtension(new SpacelessConfiguration(new LeadingWhitespaceRemover())))
-                .and()
-                .functions()
+                    .and()
+                    .functions()
                     .add(new GetOutputStateFunction())
                     .add(new GetOutputDurationFunction())
-                //TODO REVIEW: function is `GetServiceDescriptionFunction` not needed, because the spring based property replace mechanism, should already autowire the correct service description or the testsuite id
-                //TODO REVIEW: just use `getConfiguredServiceDescription()`
-                    .add(new GetServiceDescriptionFunction(getConfiguredServiceDescription()))
                     .add(new ExtractScreenshotFunction(screenshotDivConverter))
                     .add(new GetExceptionMessagesFunction(sakuliProperties.getLogExceptionFormatMappings()))
                     .add(new AbbreviateFunction(sakuliProperties.getLogExceptionFormatMappings()))
-                .and()
-                .build();                                         //path.getFile
-        JtwigTemplate template = JtwigTemplate.fileTemplate(new File(templatePath), configuration);
-        if (logger.isDebugEnabled()) {  //TODO REVIEW: still necessary?
+                    .and()
+                    .build();
+            JtwigTemplate template = JtwigTemplate.fileTemplate(getTemplatePath().toFile(), configuration);
             logger.debug(String.format("Render model into JTwig template. Model: '%s'", model));
+            return template.render(model);
         }
-        return template.render(model);
-
-        //TODO REVIEW: What happens on rendering errors? Maybe try-catch Exception and forward it to the exception handler
+        catch (Throwable thr) {
+            throw new SakuliForwarderException(thr, "Exception during rendering of Twig template occurred!");
+        }
     }
 
-    //TODO REVIEW: why this separate method needed?
+    /**
+     * Creates the model used as input for the template engine. This can be overwritten by the concrete
+     * OutputBuilder to add some specific objects to the model (e.g. specific properties)
+     * @return
+     */
     protected JtwigModel createModel() {
         JtwigModel model = JtwigModel.newModel()
-                .with("testsuite", testSuite);
+                .with("testsuite", testSuite)
+                .with("sakuli", sakuliProperties);
         return model;
     }
 
-    //TODO REVIEW: retrun nio.Path and check before if the template path is existig
-    protected String getTemplatePath() {
+    protected Path getTemplatePath() {
         String templateFolder = sakuliProperties.getForwarderTemplateFolder();
         String templatePath =
                 new StringBuilder(templateFolder)
@@ -104,7 +101,8 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                         .append(File.separator)
                         .append(MAIN_TEMPLATE_NAME)
                         .toString();
-        return templatePath;
+        logger.debug(String.format("Load JTwig template from following location: '%s'", templatePath));
+        return Paths.get(templatePath);
     }
 
     @Override
