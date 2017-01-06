@@ -2,7 +2,7 @@
     {% if (testCase.state.warning || testCase.state.critical || testCase.state.error) %}
         , case "{{ testCase.name }}"$whitespace$
         {% if (testCase.state.error) %}
-            EXCEPTION: {% include 'suite_error_message.twig' with { testDataEntity: testCase } %}
+            EXCEPTION: {{ errorMessageCreator.exceptionMessageTestCase(testCase) }}
         {% else %}
             {% if (testCase.state.critical) %}
                 over runtime ( {{ testCase.duration }}s/crit at {{ testCase.criticalTime }}s)

@@ -36,7 +36,7 @@ public class GetOutputStateFunction extends AbstractFunction {
 
     @Override
     public Object execute(FunctionRequest request) {
-        verifyFunctionParameters(request, 1, SakuliState.class);
+        verifyFunctionArguments(request, 1, SakuliState.class);
         SakuliState sakuliState = (SakuliState) request.getArguments().get(0);
         return OutputState.lookupSakuliState(sakuliState);
     }

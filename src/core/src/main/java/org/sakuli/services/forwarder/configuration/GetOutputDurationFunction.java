@@ -41,7 +41,7 @@ public class GetOutputDurationFunction extends AbstractFunction {
 
     @Override
     public Object execute(FunctionRequest request) {
-        verifyFunctionParameters(request, 1, AbstractTestDataEntity.class);
+        verifyFunctionArguments(request, 1, AbstractTestDataEntity.class);
         AbstractTestDataEntity testDataEntity = (AbstractTestDataEntity) request.getArguments().get(0);
         if (testDataEntity.getState().isError() || testDataEntity.getDuration() < 0) {
             return UNKNOWN_DURATION;

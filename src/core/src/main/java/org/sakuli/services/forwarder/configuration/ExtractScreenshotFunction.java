@@ -43,7 +43,7 @@ public class ExtractScreenshotFunction extends AbstractFunction {
 
     @Override
     public Object execute(FunctionRequest request) {
-        verifyFunctionParameters(request, 1, AbstractTestDataEntity.class);
+        verifyFunctionArguments(request, 1, AbstractTestDataEntity.class);
         AbstractTestDataEntity testDataEntity = (AbstractTestDataEntity) request.getArguments().get(0);
         return screenshotDivConverter.convert(testDataEntity.getException());
     }

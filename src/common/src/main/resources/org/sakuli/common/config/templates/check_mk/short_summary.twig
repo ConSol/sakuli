@@ -1,8 +1,8 @@
 {# This template renders the short summary for the current test suite. #}
 $whitespace$Sakuli suite "{{testsuite.id}}"$whitespace$
 {% if (testsuite.state.error) %}
-    {% set exceptionMessages = getExceptionMessages(testsuite, true) %}
-    ({{testsuite.duration}}s) {{testsuite.state.nagiosStateDescription}}: {{abbreviate(exceptionMessages, 200)}}
+    {% set exceptionMessages = errorMessageCreator.exceptionMessageTestSuite(testsuite) %}
+    ({{testsuite.duration}}s) {{testsuite.state.nagiosStateDescription}}: {{abbreviate(exceptionMessages, 200, true)}}
 {% else %}
     {{testsuite.state.nagiosStateDescription}}
     {% if (testsuite.state.ok) %}

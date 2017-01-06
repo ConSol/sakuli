@@ -48,9 +48,11 @@ public class AbbreviateFunction extends AbstractFunction {
 
     @Override
     public Object execute(FunctionRequest request) {
-        verifyFunctionParameters(request, 2, String.class, BigDecimal.class);
+        verifyFunctionArguments(request, 3, String.class, BigDecimal.class, Boolean.class);
         String toAbbreviate = (String) request.getArguments().get(0);
         BigDecimal summaryMaxLength = (BigDecimal) request.getArguments().get(1);
+        boolean removeWhitespaces = (boolean) request.getArguments().get(2);
+        toAbbreviate = removeWhitespaces ? toAbbreviate.replaceAll("(?m)^[\\s\\t]+|\\n", "") : toAbbreviate;
         return StringUtils.abbreviate(toAbbreviate, summaryMaxLength.intValue());
     }
 

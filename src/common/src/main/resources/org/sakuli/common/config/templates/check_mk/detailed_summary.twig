@@ -16,7 +16,8 @@
                 /crit at {{ testsuite.criticalTime }}s
                 {% endif %})$whitespace$
                 {% if (testsuite.state.error) %}
-                    {{testsuite.state.nagiosStateDescription}}: {% include 'suite_error_message.twig' with { testDataEntity: testsuite } %}.$whitespace$
+                    {{testsuite.state.nagiosStateDescription}}:$whitespace$
+                    {{ errorMessageCreator.exceptionMessageTestSuite(testsuite) }}.$whitespace$
                 {% endif %}
                 (Last suite run:$whitespace$
                 {% if (empty(testsuite.stopDate)) %}
@@ -27,7 +28,7 @@
                 {% include 'exception_screenshot.twig' with { testDataEntity: testsuite } %}
             </td>
         </tr>
-        {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
+        {% for testCase in testsuite.testCasesAsSortedSet %}
             <tr valign="top">
                 <td class="service{{getOutputState(testCase.state).name}}">
                     {{ getOutputState(testCase.state).shortState }} case "{{testCase.id}}"$whitespace$
@@ -37,7 +38,7 @@
                         over runtime ({{testCase.duration}}s/warn at {{testCase.warningTime}}s)
                         {% include 'step_information.twig' with { testCase: testCase } %}$whitespace$
                     {% elseif (testCase.state.critical) %}
-                        EXCEPTION: {% include 'suite_error_message.twig' with { testDataEntity: testCase } %}
+                        EXCEPTION: {{ errorMessageCreator.exceptionMessageTestCase(testCase) }}
                         {% include 'exception_screenshot.twig' with { testDataEntity: testCase } %}
                         {% for testStep in testCase.stepsAsSortedSet %}
                             {% include 'exception_screenshot.twig' with { testDataEntity: testStep } %}

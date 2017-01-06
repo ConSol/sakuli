@@ -64,10 +64,10 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                     .add(new SpacelessExtension(new SpacelessConfiguration(new LeadingWhitespaceRemover())))
                     .and()
                     .functions()
+                    .add(new IsBlankFunction())
                     .add(new GetOutputStateFunction())
                     .add(new GetOutputDurationFunction())
                     .add(new ExtractScreenshotFunction(screenshotDivConverter))
-                    .add(new GetExceptionMessagesFunction(sakuliProperties.getLogExceptionFormatMappings()))
                     .add(new AbbreviateFunction(sakuliProperties.getLogExceptionFormatMappings()))
                     .and()
                     .build();

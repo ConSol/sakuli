@@ -34,7 +34,7 @@ public abstract class AbstractFunction extends SimpleJtwigFunction {
      * @param expectedNumberOfArguments
      * @param expectedArgumentTypes
      */
-    protected void verifyFunctionParameters(FunctionRequest request, int expectedNumberOfArguments, Class... expectedArgumentTypes) {
+    protected void verifyFunctionArguments(FunctionRequest request, int expectedNumberOfArguments, Class... expectedArgumentTypes) {
         if (request.getNumberOfArguments() != expectedNumberOfArguments) {
             throw new IllegalArgumentException(
                     String.format("Wrong number of arguments for function '%s' provided. Expected: '%s', actual: '%s'.",

@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2016 the original author or authors.
+ * Copyright 2013 - 2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,35 +18,26 @@
 
 package org.sakuli.services.forwarder.configuration;
 
+import org.apache.commons.lang.StringUtils;
 import org.jtwig.functions.FunctionRequest;
-import org.sakuli.datamodel.AbstractTestDataEntity;
-
-import java.util.Map;
 
 /**
- * Custom JtwigFunction for retrieving the excepton text for a provided test data entity.
+ * Custom JtwigFunction for checking whether the provided string is blank.
  *
  * @author Georgi Todorov
  */
-public class GetExceptionMessagesFunction extends AbstractFunction {
-
-    private Map<String, String> formatExpressions;
-
-    public GetExceptionMessagesFunction(Map<String, String> formatExpressions) {
-        this.formatExpressions = formatExpressions;
-    }
+public class IsBlankFunction extends AbstractFunction {
 
     @Override
     public String name() {
-        return "getExceptionMessages";
+        return "isBlank";
     }
 
     @Override
     public Object execute(FunctionRequest request) {
-        verifyFunctionParameters(request, 2, AbstractTestDataEntity.class, Boolean.class);
-        AbstractTestDataEntity testDataEntity = (AbstractTestDataEntity) request.getArguments().get(0);
-        boolean flatFormatted = (boolean) request.getArguments().get(1);
-        return testDataEntity.getExceptionMessages(flatFormatted, formatExpressions);
+        verifyFunctionArguments(request, 1, String.class);
+        String toCheck = (String) request.getArguments().get(0);
+        return StringUtils.isBlank(toCheck);
     }
 
 }
