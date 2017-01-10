@@ -79,6 +79,7 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
     }
 
     private String getTemplatePath() {
+        // If not available execute test via `mvn test` to extract the file dependencies
         return getResource("common/config/templates");
     }
 
