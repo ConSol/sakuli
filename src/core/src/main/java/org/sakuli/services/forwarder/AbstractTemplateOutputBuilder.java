@@ -32,6 +32,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -48,12 +50,14 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
 
     /**
      * Returns the name of the converter. The name is used to dynamically retrieve the template for the converter.
+     *
      * @return the name of the converter
      */
     public abstract String getConverterName();
 
     /**
      * Converts the current test suite to a string based on the template for the concrete converter.
+     *
      * @return
      */
     public String createOutput() throws SakuliForwarderException {
@@ -74,8 +78,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
             JtwigTemplate template = JtwigTemplate.fileTemplate(getTemplatePath().toFile(), configuration);
             logger.debug(String.format("Render model into JTwig template. Model: '%s'", model));
             return template.render(model);
-        }
-        catch (Throwable thr) {
+        } catch (Throwable thr) {
             throw new SakuliForwarderException(thr, "Exception during rendering of Twig template occurred!");
         }
     }
@@ -83,26 +86,29 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
     /**
      * Creates the model used as input for the template engine. This can be overwritten by the concrete
      * OutputBuilder to add some specific objects to the model (e.g. specific properties)
+     *
      * @return
      */
     protected JtwigModel createModel() {
-        JtwigModel model = JtwigModel.newModel()
+        return JtwigModel.newModel()
                 .with("testsuite", testSuite)
                 .with("sakuli", sakuliProperties);
-        return model;
     }
 
-    protected Path getTemplatePath() {
+    protected Path getTemplatePath() throws FileNotFoundException {
         String templateFolder = sakuliProperties.getForwarderTemplateFolder();
-        String templatePath =
-                new StringBuilder(templateFolder)
-                        .append(File.separator)
-                        .append(getConverterName().toLowerCase())
-                        .append(File.separator)
-                        .append(MAIN_TEMPLATE_NAME)
-                        .toString();
+        Path templatePath = Paths.get(
+                templateFolder + File.separator +
+                        getConverterName().toLowerCase() + File.separator +
+                        MAIN_TEMPLATE_NAME)
+                .normalize().toAbsolutePath();
+        if (Files.notExists(templatePath)) {
+            throw new FileNotFoundException(String.format("JTwig template folder for %s could not be found under '%s'",
+                    getConverterName(), templatePath.toString()));
+
+        }
         logger.debug(String.format("Load JTwig template from following location: '%s'", templatePath));
-        return Paths.get(templatePath);
+        return templatePath;
     }
 
     @Override

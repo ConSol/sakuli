@@ -18,6 +18,7 @@
 
 package org.sakuli.services.forwarder;
 
+import org.apache.commons.io.FileUtils;
 import org.jtwig.JtwigModel;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -28,9 +29,16 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.services.forwarder.checkmk.CheckMKProperties;
 import org.sakuli.services.forwarder.checkmk.CheckMKTemplateOutputBuilder;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.mockito.Mockito.doReturn;
 import static org.testng.Assert.assertEquals;
@@ -49,10 +57,17 @@ public class AbstractTemplateOutputBuilderTest extends BaseTest {
     private SakuliProperties sakuliProperties;
     @Mock
     private CheckMKProperties checkMKProperties;
+    private Path tmp_output_builder_test;
 
     @BeforeMethod
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
+        tmp_output_builder_test = Files.createTempDirectory("tmp_output_builder_test");
+    }
+
+    @AfterMethod
+    public void clean() throws Exception {
+        FileUtils.deleteDirectory(tmp_output_builder_test.toFile());
     }
 
     @Test
@@ -65,18 +80,32 @@ public class AbstractTemplateOutputBuilderTest extends BaseTest {
 
     @DataProvider
     public Object[][] getTemplatePathDP() {
-        return new Object[][] {
-                { "/tmp/template", "Check_MK", "/tmp/template/check_mk/main.twig"},
-                { "/tmp/template", "CHECKmk", "/tmp/template/checkmk/main.twig"},
-                { "/tmp/template", "gearman", "/tmp/template/gearman/main.twig"},
+        return new Object[][]{
+                {"Check_MK", "check_mk" + File.separator + "main.twig"},
+                {"CHECKmk", "checkmk" + File.separator + "main.twig"},
+                {"gearman", "gearman" + File.separator + "main.twig"},
+                {"gearMAN", "gearman" + File.separator + "main.twig"},
         };
     }
 
     @Test(dataProvider = "getTemplatePathDP")
-    public void getTemplatePath(String templateFolder, String converterName, String expectedTemplatePath) {
-        doReturn(templateFolder).when(sakuliProperties).getForwarderTemplateFolder();
+    public void getTemplatePath(String converterName, String expectedTemplate) throws Exception {
+        // to ensure file exists
+        String expectedTemplatePath = tmp_output_builder_test.toString() + File.separator + expectedTemplate;
+        Path expectedFile = Paths.get(expectedTemplatePath);
+        Files.createDirectory(expectedFile.getParent());
+        Files.createFile(expectedFile);
+
+        doReturn(tmp_output_builder_test.toString()).when(sakuliProperties).getForwarderTemplateFolder();
         doReturn(converterName).when(testling).getConverterName();
         assertEquals(testling.getTemplatePath().toString(), expectedTemplatePath);
     }
 
+    @Test(expectedExceptions = FileNotFoundException.class,
+            expectedExceptionsMessageRegExp = "JTwig template folder for check_MK could not be found under '/tmp/tmp_output_builder_.*/check_mk/main.twig'")
+    public void testgetTemplatePathFileNotExists() throws Exception {
+        doReturn(tmp_output_builder_test.toString()).when(sakuliProperties).getForwarderTemplateFolder();
+        doReturn("check_MK").when(testling).getConverterName();
+        testling.getTemplatePath();
+    }
 }
