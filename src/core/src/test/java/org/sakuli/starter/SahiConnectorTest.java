@@ -19,17 +19,19 @@
 package org.sakuli.starter;
 
 import net.sf.sahi.ant.Report;
+import net.sf.sahi.report.ResultType;
 import net.sf.sahi.test.TestRunner;
+import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.sakuli.BaseTest;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.actions.LogResult;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliInitException;
+import org.sakuli.exceptions.*;
 import org.sakuli.starter.helper.SahiProxy;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -40,6 +42,7 @@ import java.net.ConnectException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.stream.Stream;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -173,5 +176,23 @@ public class SahiConnectorTest extends BaseTest {
     public void testUnvalidTestSuiteFile() throws Exception {
         when(testSuiteMock.getAbsolutePathOfTestSuiteFile()).thenReturn(Paths.get("unvalid-testsuite.suite").toString());
         testling.checkTestSuiteFile();
+    }
+
+    @SuppressWarnings("ThrowableInstanceNeverThrown")
+    @Test
+    public void testIsSahiTimoutException() throws Exception {
+        Stream.of(Pair.of("Script did not start within 150 seconds. => ERROR ... @CALL:", true),
+                Pair.of("some other error message", false)).forEach(p -> {
+
+            String sahiError = p.getLeft();
+            Throwable testException = new SakuliExceptionWithScreenshot(new SahiActionException
+                    (new LogResult("error", ResultType.FAILURE, "debug info", sahiError)), null);
+
+            Stream.of(testException, testException.getCause(), new SakuliException(sahiError))
+                    .forEach(e -> Assert.assertEquals(SahiConnector.isSahiScriptTimout(e), (boolean) p.getRight()));
+
+
+        });
+
     }
 }

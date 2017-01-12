@@ -17,7 +17,7 @@
  */
 
 _dynamicInclude($includeFolder);
-var testCase = new TestCase(30, 40);
+var testCase = new TestCase(40, 60);
 var env = new Environment();
 var screen = new Region();
 var appCalc = new Application("/usr/bin/gnome-calculator");

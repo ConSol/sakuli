@@ -4,7 +4,7 @@ FROM consol/centos-xfce-vnc:dev
 USER 0
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2016-10-28
+ENV REFRESHED_AT 2016-11-02
 
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
@@ -25,8 +25,9 @@ RUN yum -y install unzip \
     leptonica tesseract tesseract-langpack-deu \
     # wmctrl  (checked by: https://www.virustotal.com/de/url/394da2ac7e9bbbf5d10a3f304cc913459fc38f66019a4c3ba0fd4afd8f48e64f/analysis/1465466765/)
     $SAKULI_DOWNLOAD_URL/3rd-party/rpm/wmctrl-1.07-17.gf.el7.x86_64.rpm \
-    # xdotool
-    xdotool
+    # some missing ui controll tools
+    xdotool redhat-lsb-core psmisc \
+   && yum clean all
 ## Install JAVA JCE policy (necessary for gearman encryption)
 RUN mkdir -p /tmp/java-jce \
     && cd /tmp/java-jce \
@@ -76,3 +77,5 @@ USER 1984
 # - start a bash (or any other command):
 #   docker run -it consol/sakuli-ubuntu-xfce bash
 ENTRYPOINT ["/sakuli/scripts/sakuli_startup.sh"]
+# arguments for the sakuli_startup.sh script
+CMD ["run $SAKULI_TEST_SUITE"]

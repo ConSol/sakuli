@@ -73,3 +73,17 @@ Example of Maven config file `.m2/settings.xml`:
       </servers>
 
   ```
+
+## add new artifacts to remote repo
+for example for the sahi.jars, more information see: https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html
+
+#### install to local repo
+    mvn install:install-file -DgroupId=net.sf.sahi -DartifactId=sahi -Dversion=5.1 -Dpackaging=jar -Dfile=sahi-5.1.jar
+    mvn install:install-file -DgroupId=net.sf.sahi -DartifactId=ant-sahi -Dversion=5.1 -Dpackaging=jar -Dfile=ant-sahi-5.1.jar
+    mvn install:install-file -DgroupId=net.sf.sahi -DartifactId=sahi-install -Dversion=5.1 -Dpackaging=zip -Dfile=sahi-install-5.1.zip
+
+#### install to remote repo
+    mvn deploy:deploy-file -DgroupId=net.sf.sahi -DartifactId=sahi -Dversion=5.1 -Dpackaging jar -Dfile=sahi-5.1.jar -Drepository=labs-consol-sakuli-repository -Durl=scpexe://labs.consol.de/home/maven-repository/www/htdocs/repository
+    
+or copy the local artifacts via SCP:
+    scp -r ~.m2/repository/net/sf/sahi/sahi/5.1  maven-repository@labs.consol.de:/home/maven-repository/www/htdocs/repository/net/sf/sahi/sahi/5.1

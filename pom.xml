@@ -50,6 +50,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- needed for no errors on javadoc generation (maven-javadoc-plugin) -->
         <additionalparam>-Xdoclint:none</additionalparam>
+        <dependencies.sakuli-go-wrapper.version>1.0.2</dependencies.sakuli-go-wrapper.version>
         <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
@@ -60,7 +61,7 @@
         <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
         <!-- special sakuli-version 99x - change this later to latest stable version-->
         <sikulixapi.version>1.1.999</sikulixapi.version>
-        <sahi.version>5.0</sahi.version>
+        <sahi.version>5.1</sahi.version>
         <izpack.version>5.0.6</izpack.version>
     </properties>
 
@@ -460,7 +461,7 @@
             </dependency>
 
             <!-- Sahi Library (OpenSource Version)-->
-            <!-- local libaries, included with 'install_local_lib.sh' ... the are still not available over maven central -->
+            <!-- install libaries in labs repo, see `docs/development/maven-aspects.md` -->
             <dependency>
                 <groupId>net.sf.sahi</groupId>
                 <artifactId>sahi</artifactId>
@@ -475,9 +476,9 @@
 
             <!-- Sahi API Dependencies-->
             <dependency>
-                <groupId>rhino</groupId>
-                <artifactId>js</artifactId>
-                <version>1.7R2</version>
+                <groupId>org.mozilla</groupId>
+                <artifactId>rhino</artifactId>
+                <version>1.7.7.1</version>
             </dependency>
 
             <!-- SikuliX-Java Library (FULL LIBRARY) - is part of the  sikuli-setup.jar-->
