@@ -26,8 +26,8 @@ ENV VNC_PW sakuli
 # use root user for installation
 USER root
 # $INST_SCRIPTS is already set in FROM image
-ADD .sakuli-client/src/common/install/ $INST_SCRIPTS/
-ADD .sakuli-client/src/ubuntu/install/ $INST_SCRIPTS/
+ADD ./sakuli-client/src/common/install/ $INST_SCRIPTS/
+ADD ./sakuli-client/src/ubuntu/install/ $INST_SCRIPTS/
 RUN find $INST_SCRIPTS -name '*.sh' -exec chmod a+x {} +
 
 ### Install ...
