@@ -1,16 +1,19 @@
 #!/usr/bin/env bash
 ### Startup Script for the Sakuli headless testing container
 export _JAVA_OPTIONS=-Duser.home=$HOME
+# have to be added to hold all env vars correctly
+source $HOME/scripts/generate_container_user
 
 main() {
 	# If arg 1 is not one of the four possible Sakuli COMMANDs, execute as it is.
 	if [[ $1 =~ run|encrypt|help|version ]]; then
-        # Important for folder permissions to ensure that volume-mounted log
+	    # Important for folder permissions to ensure that volume-mounted log
 		# files can be deleted afterwards
 		umask ${SAKULI_UMASK:-0000}
 
-		## start UI and VNC components
+		## start UI and VNC components and execute sakuli
 		$HOME/scripts/vnc_startup.sh
+		echo -e "\n\n------------------ VNC STARTUP finished -----------------------------"
 
 		echo -e "\n\n------------------ start Sakuli -----------------------------"
 		echo "Executing: 'sakuli $@'"
