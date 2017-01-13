@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ### Startup Script for the Sakuli headless testing container
 export _JAVA_OPTIONS=-Duser.home=$HOME
 
