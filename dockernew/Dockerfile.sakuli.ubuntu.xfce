@@ -1,0 +1,76 @@
+# This Dockerfile is used to build an sakuli image based on Ubuntu
+
+FROM consol/ubuntu-xfce-vnc:dev
+
+MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
+ENV REFRESHED_AT 2017-01-12
+
+LABEL io.k8s.description="Sakuli headless testing Container with Xfce window manager, firefox and chromium" \
+      io.k8s.display-name="Sakuli Testing Container based Ubuntu and Xfce" \
+      io.openshift.expose-services="6901:http,5901:xvnc" \
+      io.openshift.tags="sakuli, ubuntu, xfce" \
+      io.openshift.non-scalable=true
+
+## Connection ports for controlling the UI:
+# VNC port:5901
+# noVNC webport, connect via http://IP:6901/vnc_auto.html?password=vncpassword
+ENV VNC_PORT 5901
+ENV NO_VNC_PORT 6901
+EXPOSE $VNC_PORT $NO_VNC_PORT
+
+### Envrionment config
+ENV VNC_COL_DEPTH 24
+ENV VNC_RESOLUTION 1280x1024
+ENV VNC_PW sakuli
+
+# use root user for installation
+USER root
+# $INST_SCRIPTS is already set in FROM image
+ADD ./src/common/install/ $INST_SCRIPTS/
+ADD ./src/ubuntu/install/ $INST_SCRIPTS/
+RUN find $INST_SCRIPTS -name '*.sh' -exec chmod a+x {} +
+
+### Install ...
+RUN $INST_SCRIPTS/example_apps.sh
+RUN $INST_SCRIPTS/screenshot_tool.sh
+RUN $INST_SCRIPTS/native_screen_control_libs.sh
+RUN $INST_SCRIPTS/java_jre.sh
+
+### TODO Install JAVA JCE policy (necessary for gearman encryption)
+### JCE Download page: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+#RUN mkdir -p /tmp/java-jce \
+#    && cd /tmp/java-jce \
+#    && wget --no-check-certificate -c --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jce/8/jce_policy-8.zip \
+#    && unzip *.zip \
+#    && for i in $(find /usr/lib/jvm -name "security"); do /bin/cp -v -f UnlimitedJCEPolicyJDK8/*.jar $i; done \
+#    && rm -rf /tmp/java-jce
+
+
+### Install Sakuli
+ARG SAKULI_VERSION=1.1.0-SNAPSHOT-218_docker_usermod_openshift
+ENV SAKULI_ROOT $HOME/sakuli
+ENV SAKULI_HOME $SAKULI_ROOT/sakuli-v$SAKULI_VERSION
+# define Sakuli default startup testsuite
+ENV SAKULI_TEST_SUITE $SAKULI_ROOT/example_test_suites/example_xfce
+# testsuite folder default permissions after text execution
+ENV SAKULI_UMASK 0000
+WORKDIR $SAKULI_ROOT
+RUN $INST_SCRIPTS/sakuli.sh
+
+### configure startup
+ADD ./src/common/scripts $SAKULI_ROOT/scripts
+RUN $INST_SCRIPTS/set_user_permission.sh
+# use headless user for startup
+USER 1984
+
+### Sakuli startup script
+# no parameters:
+# - run the suite defined by $SAKULI_TEST_SUITE, if set
+# paramters:
+# - run a Sakuli test suite like the example_xfce case via:
+#   docker run consol/sakuli-ubuntu-xfce run /sakuli/example_test_suites/example_xfce
+# - help:
+#   docker run consol/sakuli-ubuntu-xfce help
+# - start a bash (or any other command):
+#   docker run -it consol/sakuli-ubuntu-xfce bash
+ENTRYPOINT ["scripts/sakuli_startup.sh"]
