@@ -2,7 +2,7 @@
 $whitespace${% include 'detailed_summary_css_styles.twig' %}
 <table style="border-collapse: collapse;">
     <tr valign="top">
-        <td class="service{{ getOutputState(testsuite.state).name }}">
+        <td class="state{{ getOutputState(testsuite.state).getErrorCode }}">
             {{ getOutputState(testsuite.state).shortState }} Sakuli suite "{{ testsuite.id }}"$whitespace$
             {% if (testsuite.state.error) %}
             {% else %}
@@ -29,7 +29,7 @@ $whitespace${% include 'detailed_summary_css_styles.twig' %}
     </tr>
     {% for testCase in testsuite.testCasesAsSortedSet %}
         <tr valign="top">
-            <td class="service{{ getOutputState(testCase.state).name }}">
+            <td class="state{{ getOutputState(testCase.state).getErrorCode }}">
                 {{ getOutputState(testCase.state).shortState }} case "{{ testCase.id }}"$whitespace$
                 {% if (testCase.state.ok) %}
                     ran in {{ testCase.duration }}s - {{ testCase.state.nagiosStateDescription }}
