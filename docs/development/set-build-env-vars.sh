@@ -19,4 +19,4 @@ echo "VERSION_SURFIX=$VERSION_SURFIX" >> $WORKSPACE/myjob.properties
 echo "SAKULI_FEATURE_VERSION=$SAKULI_VERSION-$FEATURE_NAME" >> $WORKSPACE/myjob.properties
 
 # jenkins will use the myjob.properties as environment vars
-#cat $WORKSPACE/myjob.properties
+cat $WORKSPACE/myjob.properties
