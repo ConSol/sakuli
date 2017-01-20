@@ -84,7 +84,7 @@ function lightbox(h, s) {
                   success : function(data){
                      jQuery(data).find('a').filter(
                         function() {
-                                return this.href.match(/\d{10}/);
+                                return this.href.match(/\d{10}\/$/);
                         }
                      ).each(function() {
                         t = jQuery(this).attr("href").replace(/\/$/, '');

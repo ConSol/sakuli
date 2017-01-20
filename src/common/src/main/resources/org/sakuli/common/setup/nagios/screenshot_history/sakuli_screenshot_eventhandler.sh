@@ -13,7 +13,10 @@ LASTSERVICECHECK=$4
 mkdir -p $IMG_ROOT
 mkdir -p $TMP
 
-for d in $(find $IMG_ROOT -mindepth 3 -maxdepth 3 -mtime +30 -type d); do rm -rf $d; done
+# Delete all dirs > 60 days
+for d in $(find $IMG_ROOT -mindepth 3 -maxdepth 3 -mtime +60 -type d); do rm -rf $d; done
+# Rename all visible dirs > 30 days (-> make them invisible for Thruk SSI)
+for d in $(find $IMG_ROOT -mindepth 3 -maxdepth 3 -regex '.*[0-9]' -mtime +30 -type d); do mv $d $d.HIDDEN; done
 
 case $STATE in
 "OK")
@@ -52,3 +55,4 @@ case $STATE in
     ;;
 esac
 exit 0
+
