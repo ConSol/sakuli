@@ -1,0 +1,172 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: sakuli-e2e-build-and-run
+metadata:
+  annotations:
+    description: Sakuli End-2-End testing client container (build & run)
+    iconClass: icon-beaker
+    tags: consol, sakuli, ubuntu, xfce
+    version: 1.1.0-SNAPSHOT
+  creationTimestamp: null
+  name: sakuli-ubuntu-xfce-build-and-run
+objects:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Sakuli client vnc and http port
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}
+  spec:
+    ports:
+    - name: http-port-tcp
+      protocol: TCP
+      port: 6901
+      targetPort: 6901
+    - name: vnc-port-tcp
+      protocol: TCP
+      port: 5901
+      targetPort: 5901
+    selector:
+      deploymentConfig: ${E2E_TEST_NAME}
+- apiVersion: v1
+  id: ${E2E_TEST_NAME}-http
+  kind: Route
+  metadata:
+    annotations:
+      description: Route for vnc's http service.
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}
+  spec:
+    host: ${HOSTNAME_HTTP}
+    to:
+      name: ${E2E_TEST_NAME}
+    port:
+      targetPort: http-port-tcp
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${E2E_TEST_NAME}:latest
+    source:
+      git:
+        ref: ${SOURCE_REPOSITORY_REF}
+        uri: ${SOURCE_REPOSITORY_URL}
+      type: Git
+    strategy:
+      type: Docker
+      dockerStrategy:
+        dockerfilePath: ${SOURCE_DOCKERFILE}
+    triggers:
+    - github:
+        secret: ${GITHUB_WEBHOOK_SECRET}
+      type: GitHub
+    - generic:
+        secret: ${GENERIC_WEBHOOK_SECRET}
+      type: Generic
+    - imageChange: {}
+      type: ImageChange
+    - type: ConfigChange
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}
+  spec:
+    replicas: 1
+    selector:
+      deploymentConfig: ${E2E_TEST_NAME}
+    strategy:
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          application: ${E2E_TEST_NAME}
+          deploymentConfig: ${E2E_TEST_NAME}
+        name: ${E2E_TEST_NAME}
+      spec:
+        containers:
+        - name: ${E2E_TEST_NAME}
+          image: ${IMAGE}
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 5901
+            name: vnc
+            protocol: TCP
+          - containerPort: 6901
+            name: http
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 6901
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 6901
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${E2E_TEST_NAME}
+        from:
+          kind: ImageStreamTag
+          name: ${E2E_TEST_NAME}:latest
+      type: ImageChange
+    - type: ConfigChange
+parameters:
+- description: The name for the E2E test suite.
+  name: E2E_TEST_NAME
+  required: true
+  value: sakuli-ubuntu-xfce-example
+- description: 'Custom hostname for http service route.  Leave blank for default hostname,
+    e.g.: <application-name>-<project>.<default-domain-suffix>'
+  name: HOSTNAME_HTTP
+- description: Git source URI for application
+  name: SOURCE_REPOSITORY_URL
+  required: true
+  value: https://github.com/ConSol/sakuli.git
+- description: Git branch/tag reference
+  name: SOURCE_REPOSITORY_REF
+  value: "master"
+- description: Name of the Dockerfile for example Dockerfile.centos.icewm, Dockerfile.ubuntu.icewm or Dockerfile.centos.xfce
+  name: SOURCE_DOCKERFILE
+  value: Dockerfile.centos.xfce
+- description: GitHub trigger secret
+  from: '[a-zA-Z0-9]{8}'
+  generate: expression
+  name: GITHUB_WEBHOOK_SECRET
+  required: true
+- description: Generic build trigger secret
+  from: '[a-zA-Z0-9]{8}'
+  generate: expression
+  name: GENERIC_WEBHOOK_SECRET
+  required: true
