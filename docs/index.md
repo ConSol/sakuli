@@ -14,10 +14,11 @@ Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs
 * [Sakuli JavaDSL setup](java-DSL.md)
 * [Usage Sakuli Docker Containers](../docs/docker-containers.md)
 * Submitting Sakuli results
-  * [to OMD (Nagios/Icinga2/Shinken)](installation-omd.md)
+  * [to OMD (Nagios/Icinga2/Shinken/Check_MK)](installation-omd.md)
     * [via Gearman](forwarder-gearman.md)
     * [via Database](forwarder-database.md)
     * [via Icinga2](forwarder-icinga2api.md)
+    * [via Check_MK](forwarder-checkmk.md)
 * Tutorial: [First steps](first-steps.md)
 * Example projects on GitHub [ConSol/sakuli-examples](https://github.com/ConSol/sakuli-examples)
 
