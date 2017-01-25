@@ -27,40 +27,42 @@ parameters:
 ### Configuration of OpenShift objects
 objects:
 ### POD deployment config
-- apiVersion: v1
-  kind: DeploymentConfig
+- apiVersion: batch/v1
+  kind: Job
   metadata:
     labels:
       application: ${E2E_TEST_NAME}
-    name: ${E2E_TEST_NAME}-dc
-  strategy:
-    type: Custom
+    name: ${E2E_TEST_NAME}-job
+#  strategy:
+#    type: Custom
   spec:
-    replicas: 1
-    selector:
-      deploymentConfig: ${E2E_TEST_NAME}-dc
-#    parallelism: 1
-    completions: 0
+#    replicas: 1
+#    selector:
+#      deploymentConfig: ${E2E_TEST_NAME}-dc
+    parallelism: 1
+    completions: 1
     template:
       metadata:
         labels:
           application: ${E2E_TEST_NAME}
-          deploymentConfig: ${E2E_TEST_NAME}-dc
+          job: ${E2E_TEST_NAME}-job
         name: ${E2E_TEST_NAME}-pod
       spec:
+        restartPolicy: Never
         containers:
         - name: ${E2E_TEST_NAME}-pod-c1
           image: ${IMAGE}
           imagePullPolicy: Always
 #          command: ["/headless/scripts/vnc_startup.sh", "--tail-log"]
           args:
-            - 'run'
-            - '/headless/sakuli/example_test_suites/example_xfce/'
-            - '-browser'
-            - 'chrome'
+            - '-version'
+#            - 'run'
+#            - '/headless/sakuli/example_test_suites/example_xfce/'
+#            - '-browser'
+#            - 'chrome'
 #            - '-D log.level.sakuli=DEBUG'
 #            - '-D log.level.sahi=DEBUG'
-#        restartPolicy: Never
+          # TODO TS add possiblity in script to override exit code
           livenessProbe:
             tcpSocket:
               port: 5901
@@ -86,7 +88,7 @@ objects:
       port: 5901
       targetPort: 5901
     selector:
-      deploymentConfig: ${E2E_TEST_NAME}-dc
+      job: ${E2E_TEST_NAME}-job
 ### Route -> Service config
 - apiVersion: v1
   id: ${E2E_TEST_NAME}-http
