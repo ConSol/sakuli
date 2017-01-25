@@ -1,0 +1,114 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: sakuli-e2e-run
+metadata:
+  annotations:
+    description: Sakuli End-2-End testing client container (only run)
+    iconClass: icon-beaker
+    tags: consol, sakuli, ubuntu, xfce
+    version: 1.1.0-SNAPSHOT
+  creationTimestamp: null
+  name: sakuli-ubuntu-xfce-run-only
+### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
+parameters:
+- description: The name for the E2E test suite.
+  name: E2E_TEST_NAME
+  required: true
+  value: sakuli-ubuntu-xfce-example
+- description: 'Custom hostname for http service route.  Leave blank for default hostname,
+    e.g.: <application-name>-<project>.<default-domain-suffix>'
+  name: HOSTNAME_HTTP
+- description: Sakuli E2E image
+  name: IMAGE
+  required: true
+#  TODO TS: remove tag after finishing
+  value: consol/sakuli-ubuntu-xfce:v1.1.0-SNAPSHOT-218_docker_usermod_openshift
+### Configuration of OpenShift objects
+objects:
+### POD deployment config
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}-dc
+  strategy:
+    type: Custom
+  spec:
+    replicas: 1
+    selector:
+      deploymentConfig: ${E2E_TEST_NAME}-dc
+#    parallelism: 1
+    completions: 0
+    template:
+      metadata:
+        labels:
+          application: ${E2E_TEST_NAME}
+          deploymentConfig: ${E2E_TEST_NAME}-dc
+        name: ${E2E_TEST_NAME}-pod
+      spec:
+        containers:
+        - name: ${E2E_TEST_NAME}-pod-c1
+          image: ${IMAGE}
+          imagePullPolicy: Always
+#          command: ["/headless/scripts/vnc_startup.sh", "--tail-log"]
+          args:
+            - 'run'
+            - '/headless/sakuli/example_test_suites/example_xfce/'
+            - '-browser'
+            - 'chrome'
+#            - '-D log.level.sakuli=DEBUG'
+#            - '-D log.level.sahi=DEBUG'
+#        restartPolicy: Never
+          livenessProbe:
+            tcpSocket:
+              port: 5901
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+### Service -> POD config
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Sakuli client vnc and http port
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}-service
+  spec:
+    ports:
+    - name: http-port-tcp
+      protocol: TCP
+      port: 6901
+      targetPort: 6901
+    - name: vnc-port-tcp
+      protocol: TCP
+      port: 5901
+      targetPort: 5901
+    selector:
+      deploymentConfig: ${E2E_TEST_NAME}-dc
+### Route -> Service config
+- apiVersion: v1
+  id: ${E2E_TEST_NAME}-http
+  kind: Route
+  metadata:
+    annotations:
+      description: Route for vnc's http service.
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}-http
+  spec:
+    host: ${HOSTNAME_HTTP}
+    to:
+      name: ${E2E_TEST_NAME}-service
+    port:
+      targetPort: http-port-tcp
+#- apiVersion: v1
+#  kind: Route
+#  metadata:
+#    name: frontend
+#  spec:
+#    host: www.example.com
+#    to:
+#      kind: Service
+#      name: frontend
