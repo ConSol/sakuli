@@ -9,9 +9,10 @@ In addition following properties affecting the behaviour of the Check_MK forward
 An example configuration of the properties, could look like:
 
     sakuli.forwarder.check_mk.enabled=true
-    # optional properties:
-    ...
-    TODO REVIEW: add exmpaple config
+    sakuli.forwarder.check_mk.spooldir=/var/lib/check_mk_agent/spool
+    sakuli.forwarder.check_mk.freshness=600
+    sakuli.forwarder.check_mk.spoolfile_prefix=sakuli_suite_
+    sakuli.forwarder.check_mk.service_description=My_Custom_Service
 
 With the implementation of the Check_MK forwarder a new templating mechanism has been introduced in Sakuli. Based on different templates the output of the forwarder can be adapted to fulfill the customer needs. With the new concepts Sakuli doesn't need to be released, if the forwarder output has to be slightly modified or customized.
  

@@ -48,12 +48,8 @@ The property `sakuli.forwarder.template.folder` defines the path to the main.twi
 
 Before customizing a default template, it is essential to copy the templates to a new location and configure that location as the template location in Sakuli, otherwise installing a new Sakuli release would overwrite the modified templates within the config directory.
 
-## Supported Forwarder
-* [Check_MK](forwarder-checkmk.md)
-
-#TODO REVIEW: move to forwarder-checkmk.md
-## Structure of default Check_MK template
-The Check_MK forwarder is expecting to find a certain template file named `main.twig` within the configured template directory. The default `main.twig` template doesn't contain the whole output, but includes further templates to make the single templates more readable. Since the templates are fully customizable, the user can decide how the templates are structured, whether to use nested templates or to define everything within a single file.
+## Structure of the default main template
+Generally the forwarder is expecting to find a certain template file named `main.twig` within the configured template directory. The default `main.twig` template doesn't contain the whole output, but includes further templates to make the single templates more readable. Since the templates are fully customizable, the user can decide how the templates are structured, whether to use nested templates or to define everything within a single file.
 The following snippet shows the default `main.twig` template provided by Sakuli for the Check_MK forwarder. This template is also showing the use of the spaceless extension and the special character for a new line.
 
 ```.xml
@@ -66,5 +62,8 @@ The following snippet shows the default `main.twig` template provided by Sakuli 
         $newline$
     {% endspaceless %}
 ```
+
+## Supported Forwarder
+* [Check_MK](forwarder-checkmk.md)
 
 [Jtwig]: http://jtwig.org/
