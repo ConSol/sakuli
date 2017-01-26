@@ -4,20 +4,19 @@ labels:
   template: sakuli-e2e-run
 metadata:
   annotations:
-    description: Sakuli End-2-End testing client container (only run)
+    description: Sakuli End-2-End testing client template (run as batch job)
     iconClass: icon-beaker
     tags: consol, sakuli, ubuntu, xfce
     version: 1.1.0-SNAPSHOT
   creationTimestamp: null
-  name: sakuli-ubuntu-xfce-run-only
+  name: sakuli-ubuntu-xfce-run-as-job
 ### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
 parameters:
 - description: The name for the E2E test suite.
   name: E2E_TEST_NAME
   required: true
   value: sakuli-ubuntu-xfce-example
-- description: 'Custom hostname for http service route.  Leave blank for default hostname,
-    e.g.: <application-name>-<project>.<default-domain-suffix>'
+- description: 'Custom hostname for http service route.  Leave blank for default hostname, e.g.: <application-name>-<project>.<default-domain-suffix>'
   name: HOSTNAME_HTTP
 - description: Sakuli E2E image
   name: IMAGE
@@ -105,12 +104,3 @@ objects:
       name: ${E2E_TEST_NAME}-service
     port:
       targetPort: http-port-tcp
-#- apiVersion: v1
-#  kind: Route
-#  metadata:
-#    name: frontend
-#  spec:
-#    host: www.example.com
-#    to:
-#      kind: Service
-#      name: frontend
