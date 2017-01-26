@@ -26,7 +26,6 @@ import org.sakuli.builder.TestCaseExampleBuilder;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
@@ -42,8 +41,6 @@ import org.testng.annotations.Test;
 import java.util.Collections;
 import java.util.Date;
 
-import static org.mockito.Mockito.when;
-
 /**
  * @author tschneck
  *         Date: 2/24/16
@@ -54,8 +51,6 @@ public class Icinga2OutputBuilderTest {
     private Icinga2Properties properties;
     @Mock
     private ScreenshotDivConverter screenshotDivConverter;
-    @Mock
-    private SakuliProperties sakuliProperties;
     @InjectMocks
     private Icinga2OutputBuilder testling;
 
@@ -63,8 +58,6 @@ public class Icinga2OutputBuilderTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         MonitoringPropertiesTestHelper.initMonitoringMock(properties);
-
-        when(sakuliProperties.getLogExceptionFormatMappings()).thenReturn(Collections.emptyMap());
     }
 
     @Test

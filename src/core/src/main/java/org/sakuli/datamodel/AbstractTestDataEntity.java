@@ -143,7 +143,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         this.exception = null;
     }
 
-    public String getExceptionMessages(boolean flatFormatted, Map<String, String> formatExpressions) {
+    public String getExceptionMessages(boolean flatFormatted) {
         if (exception != null) {
             String msg = exception.getMessage();
             //add suppressed exceptions
@@ -153,34 +153,6 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
                 } else {
                     msg += "\n\t\tSuppressed EXCEPTION: " + ee.getMessage();
                 }
-            }
-
-            String formatted = "";
-            for (Map.Entry<String, String> formatExpression : formatExpressions.entrySet()) {
-                Pattern p = Pattern.compile(formatExpression.getKey());
-                Matcher m = p.matcher(msg);
-                while (m.find()) {
-                    if (StringUtils.isNotEmpty(formatExpression.getValue())) {
-                        if (m.groupCount() > 0) {
-                            Object[] parameters = new Object[m.groupCount()];
-                            for (int i = 0; i < m.groupCount(); i++) {
-                                parameters[i] = m.group(i + 1);
-                            }
-
-                            formatted += String.format(formatExpression.getValue(), parameters);
-                        } else {
-                            formatted += formatExpression.getValue();
-                        }
-                    } else {
-                        for (int i = 1; i <= m.groupCount(); i++) {
-                            formatted += m.group(i);
-                        }
-                    }
-                }
-            }
-
-            if (StringUtils.isNotBlank(formatted)) {
-                msg = formatted;
             }
 
             if (flatFormatted) {
@@ -253,7 +225,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return SakuliExceptionHandler.getScreenshotFile(exception);
     }
 
-    protected String getResultString(SakuliProperties sakuliProperties) {
+    protected String getResultString() {
         String stout = "\nname: " + this.getName()
                 + "\nRESULT STATE: " + this.getState();
         if (this.getState() != null) {
@@ -261,7 +233,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         }
         //if no exception is there, don't print it
         if (this.exception != null) {
-            stout += "\nERRORS:" + this.getExceptionMessages(false, sakuliProperties.getLogExceptionFormatMappings());
+            stout += "\nERRORS:" + this.getExceptionMessages(false);
             if (this.exception instanceof SakuliExceptionWithScreenshot) {
                 stout += "\nERROR - SCREENSHOT: "
                         + this.getScreenShotPath().toFile().getAbsolutePath();

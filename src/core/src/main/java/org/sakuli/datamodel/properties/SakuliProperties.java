@@ -18,19 +18,15 @@
 
 package org.sakuli.datamodel.properties;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.sakuli.exceptions.SakuliInitException;
-import org.sakuli.exceptions.SakuliRuntimeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
 
 /**
  * @author tschneck Date: 09.05.14
@@ -46,7 +42,6 @@ public class SakuliProperties extends AbstractProperties {
     public static final String LOG_FOLDER = "sakuli.log.folder";
     public static final String LOG_MAX_AGE = "sakuli.log.maxAge";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
-    public static final String LOG_EXCEPTION_FORMAT = "sakuli.log.exception.format";
     public static final String LOG_LEVEL_SAKULI = "log.level.sakuli";
     public static final String LOG_LEVEL_SAHI = "log.level.sahi";
     public static final String LOG_LEVEL_SIKULI = "log.level.sikuli";
@@ -76,8 +71,6 @@ public class SakuliProperties extends AbstractProperties {
     private Path logFolder;
     @Value("${" + LOG_PATTERN + "}")
     private String logPattern;
-    @Value("${" + LOG_EXCEPTION_FORMAT + "}")
-    private String logExceptionFormat;
     @Value("${" + LOG_LEVEL_SAKULI + ":}")
     private String logLevelSakuli;
     @Value("${" + LOG_LEVEL_SAHI + ":}")
@@ -168,41 +161,6 @@ public class SakuliProperties extends AbstractProperties {
 
     public void setLogPattern(String logPattern) {
         this.logPattern = logPattern;
-    }
-
-    public String getLogExceptionFormat() {
-        return logExceptionFormat;
-    }
-
-    public void setLogExceptionFormat(String logExceptionFormat) {
-        this.logExceptionFormat = logExceptionFormat;
-    }
-
-    public Map<String, String> getLogExceptionFormatMappings() {
-        String[] formatExpressions;
-        if (StringUtils.hasText(logExceptionFormat) &&
-                logExceptionFormat.startsWith("[") && logExceptionFormat.endsWith("]")) {
-            try {
-                formatExpressions = new JsonFactory().setCodec(new ObjectMapper()).createParser(logExceptionFormat).readValueAs(String[].class);
-            } catch (IOException e) {
-                throw new SakuliRuntimeException("Found invalid log exception format pattern", e);
-            }
-        } else if (StringUtils.hasText(logExceptionFormat)) {
-            formatExpressions = new String[] { logExceptionFormat };
-        } else {
-            formatExpressions = new String[] {};
-        }
-
-        Map<String, String> formatMappings = new LinkedHashMap<>();
-        for (String formatExpression : formatExpressions) {
-            if (formatExpression.contains("=>")) {
-                formatMappings.put(formatExpression.substring(0, formatExpression.indexOf("=>")).trim(), formatExpression.substring(formatExpression.indexOf("=>") + 2).trim());
-            } else {
-                formatMappings.put(formatExpression, "");
-            }
-        }
-
-        return formatMappings;
     }
 
     public Path getConfigFolder() {

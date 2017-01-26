@@ -18,7 +18,6 @@
 
 package org.sakuli.datamodel;
 
-
 import org.joda.time.DateTime;
 import org.sakuli.BaseTest;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
@@ -44,7 +43,7 @@ public class AbstractTestDataEntityTest extends BaseTest {
             }
 
             @Override
-            public String getResultString(SakuliProperties sakuliProperties) {
+            public String getResultString() {
                 return null;
             }
         };
@@ -65,11 +64,11 @@ public class AbstractTestDataEntityTest extends BaseTest {
     public void testAddException() throws Exception {
         testling.addException(new Exception("test"));
         Assert.assertNotNull(testling.getException());
-        Assert.assertTrue(testling.getExceptionMessages(false, Collections.emptyMap()).contains("test"));
+        Assert.assertTrue(testling.getExceptionMessages(false).contains("test"));
 
         testling.addException(new Exception("SuppressedTest"));
         Assert.assertNotNull(testling.getException().getSuppressed());
-        Assert.assertTrue(testling.getExceptionMessages(false, Collections.emptyMap()).contains("SuppressedTest"));
+        Assert.assertTrue(testling.getExceptionMessages(false).contains("SuppressedTest"));
     }
 
     @Test
