@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: sakuli-e2e-run
+  template: sakuli-e2e-run-job
 metadata:
   annotations:
     description: Sakuli End-2-End testing client template (run as batch job)
@@ -9,35 +9,32 @@ metadata:
     tags: consol, sakuli, ubuntu, xfce
     version: 1.1.0-SNAPSHOT
   creationTimestamp: null
-  name: sakuli-ubuntu-xfce-run-as-job
+  name: sakuli-e2e-run-job
 ### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
 parameters:
 - description: The name for the E2E test suite.
   name: E2E_TEST_NAME
   required: true
   value: sakuli-ubuntu-xfce-example
-- description: 'Custom hostname for http service route.  Leave blank for default hostname, e.g.: <application-name>-<project>.<default-domain-suffix>'
+- description: 'Custom hostname for http service route.  Leave blank for default hostname, e.g.: <E2E_TEST_NAME-name>-<project>.<default-domain-suffix>'
   name: HOSTNAME_HTTP
-- description: Sakuli E2E image
+- description: 'Sakuli End-2-End image, see `docker search sakuli`'
   name: IMAGE
   required: true
 #  TODO TS: remove tag after finishing
   value: consol/sakuli-ubuntu-xfce:v1.1.0-SNAPSHOT-218_docker_usermod_openshift
 ### Configuration of OpenShift objects
 objects:
-### POD deployment config
+### Job config
 - apiVersion: batch/v1
   kind: Job
   metadata:
     labels:
       application: ${E2E_TEST_NAME}
     name: ${E2E_TEST_NAME}-job
-#  strategy:
-#    type: Custom
   spec:
-#    replicas: 1
-#    selector:
-#      deploymentConfig: ${E2E_TEST_NAME}-dc
+#    schedule: */5 * * * ?
+#    concurrencyPolicy: Forbid
     parallelism: 1
     completions: 1
     template:
@@ -45,27 +42,35 @@ objects:
         labels:
           application: ${E2E_TEST_NAME}
           job: ${E2E_TEST_NAME}-job
-        name: ${E2E_TEST_NAME}-pod
+        name: ${E2E_TEST_NAME}-job
       spec:
         restartPolicy: Never
         containers:
         - name: ${E2E_TEST_NAME}-pod-c1
           image: ${IMAGE}
           imagePullPolicy: Always
-#          command: ["/headless/scripts/vnc_startup.sh", "--tail-log"]
           args:
-            - '-version'
-#            - 'run'
-#            - '/headless/sakuli/example_test_suites/example_xfce/'
-#            - '-browser'
-#            - 'chrome'
-#            - '-D log.level.sakuli=DEBUG'
-#            - '-D log.level.sahi=DEBUG'
-          # TODO TS add possiblity in script to override exit code
+            - 'run'
+            - '/headless/sakuli/example_test_suites/example_xfce/'
+            - '-browser'
+            - 'chrome'
+#           - '-D'
+#           - 'log.level.sakuli=DEBUG'
+#           - '-D'
+#           - 'log.level.sahi=DEBUG'
+          ### checks that vnc server is up and running
           livenessProbe:
             tcpSocket:
               port: 5901
-            initialDelaySeconds: 15
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+          ### checks if http-vnc connection is working
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 6901
+              scheme: HTTP
+            initialDelaySeconds: 5
             timeoutSeconds: 1
 ### Service -> POD config
 - apiVersion: v1
