@@ -12,7 +12,7 @@ metadata:
   name: sakuli-e2e-image-build
 ### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
 parameters:
-- description: The name for the Sakuli image
+- description: The name for the taged target image
   name: IMAGE
   required: true
   value: sakuli-example-image
@@ -68,7 +68,7 @@ objects:
         ref: ${SOURCE_REPOSITORY_REF}
         uri: ${SOURCE_REPOSITORY_URL}
       type: Git
-      contextDir: docker
+      contextDir: ${SOURCE_DOCKER_CONTEXT_DIR}
     strategy:
       type: Docker
       dockerStrategy:
