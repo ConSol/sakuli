@@ -51,7 +51,7 @@ public abstract class AbstractOutputBuilder {
     @Autowired
     protected TestSuite testSuite;
     @Autowired
-    private SakuliProperties sakuliProperties;
+    protected SakuliProperties sakuliProperties;
 
     public static String replacePlaceHolder(String message, PlaceholderMap placeholderStringMap) {
         if (StringUtils.isBlank(message)) {
@@ -157,7 +157,7 @@ public abstract class AbstractOutputBuilder {
         return placeholderMap;
     }
 
-    private String generateStateSummary(TestSuiteState state) {
+    private String  generateStateSummary(TestSuiteState state) {
         StringBuilder summary = new StringBuilder(state.isError() ? "" : STATE_DESC.getPattern());
         switch (state) {
             case OK:

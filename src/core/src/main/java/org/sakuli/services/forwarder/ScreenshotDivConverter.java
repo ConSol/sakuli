@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
 import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.services.forwarder.checkmk.ProfileCheckMK;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
 import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
 import org.sakuli.services.forwarder.icinga2.ProfileIcinga2;
@@ -39,6 +40,7 @@ import java.util.Arrays;
  */
 @ProfileGearman
 @ProfileIcinga2
+@ProfileCheckMK
 @Component
 public class ScreenshotDivConverter {
 

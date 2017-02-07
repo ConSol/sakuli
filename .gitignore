@@ -10,3 +10,5 @@ firefox
 *.cache
 sakuli_app
 .DS_Store
+.gearman-cache
+.sakuli-steps-cache

@@ -58,4 +58,5 @@ public class SakuliException extends Exception {
     public String toString() {
         return getLocalizedMessage();
     }
+
 }
