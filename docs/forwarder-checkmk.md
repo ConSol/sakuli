@@ -24,12 +24,20 @@ Now set the properties for the check_mk receiver. For this, edit `sakuli.propert
   * `sakuli.forwarder.check_mk.spoolfile_prefix` - Defines the result file prefix. It can be used to change the default naming convention for the Check_MK output files. Default value: `sakuli_suite_`.
   * `sakuli.forwarder.check_mk.service_description` - Defines the service description, which is used within the check result. Default value: `${testsuite.id}`. If you want to use a PNP graph template, the service name must begin with "sakuli_". Only then the generic PNP template of check_mk for local (=passive) checks will be able to determine "sakuli.php" as a valid template for this check result. For more information see [here](https://mathias-kettner.de/checkmk_localchecks.html#PNP%20Templates%20for%20local%20checks).
 
+An example configuration could look like:
+
+    sakuli.forwarder.check_mk.enabled=true
+    sakuli.forwarder.check_mk.spooldir=/var/lib/check_mk_agent/spool
+    sakuli.forwarder.check_mk.freshness=600
+    sakuli.forwarder.check_mk.spoolfile_prefix=sakuli_suite_
+    sakuli.forwarder.check_mk.service_description=My_Custom_Service
+
 ### Output format template
 
 With the implementation of the Check_MK forwarder a new [Jtwig](http://jtwig.org/) templating mechanism has been introduced in Sakuli, which decouples the output format from the Sakuli binary. This which allows format adaptions to fulfill your needs at any time without installing a new version of Sakuli.
 
 In near time, all other forwarder modules of Sakuli will support the templating feature.
 
-Sakuli comes with default templates, which are placed in ''$INSTALL_DIR/config/templates''. The default Check_MK templates can be found in a subdirectory check_mk.
+Sakuli comes with default templates, which are placed in ''$INSTALL_DIR/config/templates''. The [default Check_MK templates](../src/common/src/main/resources/org/sakuli/common/config/templates/check_mk) can be found in a subdirectory `check_mk`.
 
 For further information how the default template directory can be changed or how the forwarder templates can be customized please refer to [Using Jtwig templates in Sakuli](forwarder-templates.md).
