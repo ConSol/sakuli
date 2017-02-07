@@ -29,4 +29,8 @@ Further Information about the usage of the Sakuli docker containers are availabl
 These containers provide a nightly build of OMD Labs (https://labs.consol.de/OMD/) with Sakuli extensions:
 
 - Sakuli PNP template
-- Sakuli  FIXME
+- Screenshot eventhandler which stores screenshots in the file system
+- Thruk SSI to display screenshots in a lightbox
+- check_mysql_health to check a Sakuli result database
+- adapted version of gearman_proxy.pl to retrieve results in a separate result queue (e.g. for replacing message substrings)
+- Nagios example config files

@@ -7,18 +7,24 @@
 
 REPO = local/$(shell basename `pwd`)
 TAG  = $(shell git rev-parse --abbrev-ref HEAD|sed 's/master/latest/')
+BUILDARGS = --build-arg SOURCE_BRANCH=$(TAG)
 
 IMAGE=$(REPO):$(TAG)
 
+ifdef SITENAME
+	BUILDARGS += --build-arg SITENAME=$(SITENAME)
+endif
 
 .PHONY: build start echo bash
 
 build:
-	docker build --build-arg BRANCH=$(TAG) -t $(IMAGE) .
+	sed 's@^\(FROM\) consol\(/omd-labs-.*\)@\1 local\2@' Dockerfile > Dockerfile.local
+	docker build -f Dockerfile.local -t $(IMAGE) $(BUILDARGS) .
 	@docker images | grep '$(REPO)'
+	rm Dockerfile.local
+	@echo "docker run -p 8443:443 -d "$(IMAGE)
 start:
 	docker run -p 8443:443 -d $(IMAGE)
-	@docker images | grep '$(REPO)'
 echo:
 	@echo $(IMAGE)
 bash:

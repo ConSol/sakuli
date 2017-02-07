@@ -5,8 +5,8 @@
     path: "{{ OMD_ROOT }}/local/share/nagios/htdocs/images/logos/"
     state: directory
     mode: 0770
-    owner: demo
-    group: demo
+    owner: "{{ SITENAME }}"
+    group: "{{ SITENAME }}"
 
 - name: sync Sakuli skel files
   copy:
@@ -19,8 +19,8 @@
 - name: set ownership for Sakuli skel files
   file:
     path: "{{ OMD_ROOT }}/{{ item }}"
-    owner: demo
-    group: demo
+    owner: "{{ SITENAME }}"
+    group: "{{ SITENAME }}"
     recurse: yes
   with_items:
     - etc
@@ -39,7 +39,7 @@
     recurse: yes
 
 - name: Configure OMD site
-  command: omd config demo set {{item}}
+  command: omd config "{{ SITENAME }}" set {{item}}
   with_items:
     - "DEFAULT_GUI thruk"
     - "THRUK_COOKIE_AUTH on"
