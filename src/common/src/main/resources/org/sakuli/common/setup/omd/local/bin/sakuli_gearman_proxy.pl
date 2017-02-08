@@ -80,25 +80,9 @@ if(!defined $queues or scalar keys %{$queues} == 0) {
 #################################################
 # save pid file
 if($pidFile) {
-    if ( -e $pidFile) {
-	open(my $fh, "<", $pidFile) or die "open $pidFile failed: ".$!;
-	my $line = <$fh>;
-    	my (undef, $pid) = split(/\s+/, $line);
-    	if ($pid) {
-      		out("Found a pid file: pid = $pid") if $debug;
-      		my $status = kill(0, $pid);
-      		if ($status) {
-        	    out("old job is still running.") if $debug;
-        	    exit;
-      		} else {
-        	    out("The old job is no longer running.") if $debug;
-      		}
-    	}
-    }
-    open my $fh, '>', $pidFile or die "Can't open $pidFile for writing: $!\n";
-    flock ($fh, 2) or die "can't obtain exclusive lock on file $pidFile: $!\n";
-    print $fh "pid: ", $$, "\n";
-    close $fh;
+    open(my $fhpid, ">", $pidFile) or die "open $pidFile failed: ".$!;
+    print $fhpid $$;
+    close($fhpid);
 }
 
 #################################################
