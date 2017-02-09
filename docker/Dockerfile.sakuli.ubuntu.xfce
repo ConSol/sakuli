@@ -54,8 +54,8 @@ RUN $INST_SCRIPTS/sakuli.sh
 VOLUME $SAKULI_TEST_SUITE
 
 ### configure startup
-ADD ./sakuli-client/src/common/scripts $SAKULI_ROOT/scripts
-RUN $INST_SCRIPTS/set_user_permission.sh
+ADD ./sakuli-client/src/common/scripts $STARTUPDIR
+RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
 # use headless user for startup
 USER 1984
 
@@ -66,7 +66,7 @@ USER 1984
 # - run a Sakuli test suite like the example_xfce case via:
 #   docker run consol/sakuli-ubuntu-xfce run /sakuli/example_test_suites/example_xfce
 # - help:
-#   docker run consol/sakuli-ubuntu-xfce help
+#   docker run consol/sakuli-ubuntu-xfce -help
 # - start a bash (or any other command):
 #   docker run -it consol/sakuli-ubuntu-xfce bash
-ENTRYPOINT ["scripts/sakuli_startup.sh"]
+ENTRYPOINT ["/dockerstartup/startup.sh"]

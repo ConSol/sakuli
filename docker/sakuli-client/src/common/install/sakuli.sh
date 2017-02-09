@@ -21,8 +21,7 @@ rm -rf /tmp/sakuli
 
 example_suite=$SAKULI_ROOT/example_test_suites/example_xfce
 echo "Copy example suite '$example_suite' to volume mount point: $SAKULI_TEST_SUITE:"
-#mkdir -p $SAKULI_TEST_SUITE
-cp -rv $example_suite $SAKULI_TEST_SUITE
+cp -rv $example_suite $SAKULI_TEST_SUITE && chmod -R -v a+rw $SAKULI_TEST_SUITE
 #ls -la $SAKULI_TEST_SUITE
 
 echo -e "\n\nInstalled Sakuli:"
