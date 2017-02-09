@@ -2,7 +2,10 @@
 ### every exit != 0 fails the script
 set -e
 
-echo "Install Sakuli v$SAKULI_VERSION to '$SAKULI_ROOT'"
+### Install Sakuli in the $SAKULI_VERSION and create the example testsuite
+### under $SAKULI_TEST_SUITE
+
+echo "Install Sakuli v$SAKULI_VERSION to '$SAKULI_ROOT' and create the example testsuite under '$SAKULI_TEST_SUITE'"
 
 SAKULI_DOWNLOAD_URL=https://labs.consol.de/sakuli/install
 
@@ -16,5 +19,11 @@ mkdir -p $SAKULI_HOME
 java -jar /tmp/sakuli/sakuli-v$SAKULI_VERSION-installer.jar $INST_SCRIPTS/sakuli-auto-install.xml
 rm -rf /tmp/sakuli
 
-echo "Installed Sakuli:"
+example_suite=$SAKULI_ROOT/example_test_suites/example_xfce
+echo "Copy example suite '$example_suite' to volume mount point: $SAKULI_TEST_SUITE:"
+#mkdir -p $SAKULI_TEST_SUITE
+cp -rv $example_suite $SAKULI_TEST_SUITE
+#ls -la $SAKULI_TEST_SUITE
+
+echo -e "\n\nInstalled Sakuli:"
 $SAKULI_HOME/bin/sakuli -version
