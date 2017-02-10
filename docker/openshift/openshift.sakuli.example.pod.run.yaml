@@ -40,8 +40,9 @@ objects:
       image: ${IMAGE}
       imagePullPolicy: Always
       args:
+#        - '--tail-log' #make normal UI startup to connect via: oc rsh <pod-name> bash
         - 'run'
-        - '/headless/sakuli/example_test_suites/example_xfce/'
+        - '/headless/sakuli/testsuite'
         - '-browser'
         - 'chrome'
 #        - '-D'
