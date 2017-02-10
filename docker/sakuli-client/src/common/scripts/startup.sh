@@ -6,9 +6,6 @@ main() {
     # files can be deleted afterwards
     umask ${SAKULI_UMASK:-0000}
 
-    # set correct java startup
-    export _JAVA_OPTIONS=-Duser.home=$HOME
-
 	# If arg 1 is not one of the four possible Sakuli COMMANDs, execute as it is.
 	if [[ $1 =~ run|encrypt|-help|-version ]]; then
         $STARTUPDIR/sakuli_startup.sh "$@"
