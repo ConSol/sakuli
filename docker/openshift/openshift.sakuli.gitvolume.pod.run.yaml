@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: sakuli-e2e-run-pod
+  template: sakuli-e2e-run-pod-gitvol
 metadata:
   annotations:
-    description: Sakuli End-2-End testing client template (run as pod)
+    description: Sakuli End-2-End testing client template (run as pod with mounted gitvolumen for the test suite)
     iconClass: icon-beaker
     tags: consol, sakuli, ubuntu, xfce
     version: 1.1.0-SNAPSHOT
   creationTimestamp: null
-  name: sakuli-e2e-run-pod
+  name: sakuli-e2e-run-pod-gitvol
 ### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
 parameters:
 - description: The name for the E2E test suite.
@@ -23,6 +23,13 @@ parameters:
   required: true
 #  TODO TS: remove tag after finishing
   value: consol/sakuli-ubuntu-xfce:v1.1.0-SNAPSHOT-218_docker_usermod_openshift
+- description: Git repository where the Sakuli testsuite is stored
+  name: GIT_TESTSUITE_REPO
+  value: https://github.com/ConSol/sakuli-examples
+- description: Path to the Sakuli testsuite is stored at the GIT_TESTSUITE_REPO
+  name: GIT_TESTSUITE_PATH
+  value: docker-xfce/part_01/example_xfce
+  # TODO TS: change to openshift example
 ### Configuration of OpenShift objects
 objects:
 ### POD config (run one time)
@@ -41,12 +48,17 @@ objects:
     - name: ${E2E_TEST_NAME}-pod-c1
       image: ${IMAGE}
       imagePullPolicy: Always
+      volumeMounts:
+      - mountPath: /headless/sakuli/testsuite
+        name: vol-testsuite
       args:
-#        - '--tail-log' #make normal UI startup to connect via: oc rsh <pod-name> bash
-        - 'run'
-        - '/headless/sakuli/testsuite'
-        - '-browser'
-        - 'chrome'
+        - '--tail-log' #make normal UI startup to connect via: oc rsh <pod-name> bash
+#        - 'run'
+#        - '/var/testsuite'
+#        - '-preHook'
+#        - 'ls -la .'
+#        - '-browser'
+#        - 'chrome'
 #        - '-D'
 #        - 'log.level.sakuli=DEBUG'
 #        - '-D'
@@ -65,6 +77,14 @@ objects:
           scheme: HTTP
         initialDelaySeconds: 1
         timeoutSeconds: 1
+    volumes:
+    - name: vol-testsuite
+      gitRepo:
+        repository: ${GIT_TESTSUITE_REPO}
+#        repository: https://github.com/ConSol/sakuli-examples
+#        revision: 7f00938bc89d3b95707e5458a49beaef99b0ab7e
+#        directory: docker-xfce/part_01/example_xfce
+        directory: ${GIT_TESTSUITE_PATH}
 ### Service -> POD config
 - apiVersion: v1
   kind: Service

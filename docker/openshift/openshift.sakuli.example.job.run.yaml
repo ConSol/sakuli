@@ -45,13 +45,16 @@ objects:
         name: ${E2E_TEST_NAME}-job
       spec:
         restartPolicy: Never
+    dnsPolicy: ClusterFirst
+    terminationGracePeriodSeconds: 5
         containers:
         - name: ${E2E_TEST_NAME}-pod-c1
           image: ${IMAGE}
           imagePullPolicy: Always
           args:
+#         - '--tail-log' #make normal UI startup to connect via: oc rsh <pod-name> bash
             - 'run'
-            - '/headless/sakuli/example_test_suites/example_xfce/'
+            - '/headless/sakuli/testsuite'
             - '-browser'
             - 'chrome'
 #           - '-D'
@@ -62,7 +65,7 @@ objects:
           livenessProbe:
             tcpSocket:
               port: 5901
-            initialDelaySeconds: 5
+            initialDelaySeconds: 1
             timeoutSeconds: 1
           ### checks if http-vnc connection is working
           readinessProbe:
@@ -70,7 +73,7 @@ objects:
               path: /
               port: 6901
               scheme: HTTP
-            initialDelaySeconds: 5
+            initialDelaySeconds: 1
             timeoutSeconds: 1
 ### Service -> POD config
 - apiVersion: v1

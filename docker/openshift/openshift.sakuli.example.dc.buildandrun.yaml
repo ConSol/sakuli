@@ -108,6 +108,8 @@ objects:
           application: ${E2E_TEST_NAME}
           dc: ${E2E_TEST_NAME}-dc
         name: ${E2E_TEST_NAME}-pod
+      dnsPolicy: ClusterFirst
+      terminationGracePeriodSeconds: 5
       spec:
       # restartPolicy: Never
         containers:
@@ -127,7 +129,7 @@ objects:
           livenessProbe:
             tcpSocket:
               port: 5901
-            initialDelaySeconds: 5
+            initialDelaySeconds: 1
             timeoutSeconds: 1
           ### checks if http-vnc connection is working
           readinessProbe:
@@ -135,7 +137,7 @@ objects:
               path: /
               port: 6901
               scheme: HTTP
-            initialDelaySeconds: 5
+            initialDelaySeconds: 1
             timeoutSeconds: 1
     triggers:
     - imageChangeParams:

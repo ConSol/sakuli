@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: sakuli-e2e-build-and-run-pod
+  template: sakuli-e2e-build-and-run-dc
 metadata:
   annotations:
-    description: Sakuli End-2-End testing client template (build and run as pod)
+    description: Sakuli End-2-End testing client template (build and run as deployment config)
     iconClass: icon-beaker
     tags: consol, sakuli, ubuntu, xfce
     version: 1.1.0-SNAPSHOT
   creationTimestamp: null
-  name: sakuli-e2e-build-and-run-pod
+  name: sakuli-e2e-build-and-run-dc
 ### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
 parameters:
 - description: The name for the E2E test suite.
@@ -22,17 +22,13 @@ parameters:
   name: IMAGE
   required: true
   value: sakuli-example-image
-- description: 'Specifies the opsenshift internal docker registry path to the image as: <IP ord DNS name>:<port>/<project>. This will be needed currently as long as the pod configuration did not support image streams, see https://github.com/openshift/origin/issues/6222.'
-  name: DOCKER_REGISTRY_PATH
-  required: true
-#  value: <IP ord DNS name>:<port>/<project>
 - description: Git source URI for application
   name: SOURCE_REPOSITORY_URL
   required: true
   value: https://github.com/ConSol/sakuli.git
 - description: Git branch/tag reference
   name: SOURCE_REPOSITORY_REF
-  #TODO TS: remove tag after finishing
+# TODO TS: remove tag after finishing
   value: "feature/#218_docker_usermod_openshift"
 - description: Source Folder where the Dockerfile is placed example `docker`
   name: SOURCE_DOCKER_CONTEXT_DIR
@@ -95,46 +91,62 @@ objects:
     - imageChange: {}
       type: ImageChange
     - type: ConfigChange
-### POD config (run one time)
+### POD deployment config
 - apiVersion: v1
-  kind: Pod
+  kind: DeploymentConfig
   metadata:
     labels:
       application: ${E2E_TEST_NAME}
-    name: ${E2E_TEST_NAME}-pod
+    name: ${E2E_TEST_NAME}-dc
   spec:
-    ### ensure that the pod won't start again
-    restartPolicy: Never
-    dnsPolicy: ClusterFirst
-    terminationGracePeriodSeconds: 5
-    containers:
-    - name: ${E2E_TEST_NAME}
-      image: ${DOCKER_REGISTRY_PATH}/${IMAGE}:${IMAGE_TAG}
-      imagePullPolicy: Always
-      args:
-#        - '--tail-log' #make normal UI startup to connect via: oc rsh <pod-name> bash
-        - 'run'
-        - '/headless/sakuli/testsuite'
-        - '-browser'
-        - 'chrome'
-#        - '-D'
-#        - 'log.level.sakuli=DEBUG'
-#        - '-D'
-#        - 'log.level.sahi=DEBUG'
-      ### checks that vnc server is up and running
-      livenessProbe:
-        tcpSocket:
-          port: 5901
-        initialDelaySeconds: 1
-        timeoutSeconds: 1
-      ### checks if http-vnc connection is working
-      readinessProbe:
-        httpGet:
-          path: /
-          port: 6901
-          scheme: HTTP
-        initialDelaySeconds: 1
-        timeoutSeconds: 1
+    replicas: 1
+#    selector:
+#      deploymentConfig: ${E2E_TEST_NAME}-dc
+    template:
+      metadata:
+        labels:
+          application: ${E2E_TEST_NAME}
+          dc: ${E2E_TEST_NAME}-dc
+        name: ${E2E_TEST_NAME}-pod
+      spec:
+      # restartPolicy: Never
+        containers:
+        - name: ${E2E_TEST_NAME}-pod-c1
+          image: ${IMAGE}
+          imagePullPolicy: Always
+          args:
+            - 'run'
+            - '/headless/sakuli/example_test_suites/example_xfce/'
+            - '-browser'
+            - 'chrome'
+#            - '-D'
+#            - 'log.level.sakuli=DEBUG'
+#            - '-D'
+#            - 'log.level.sahi=DEBUG'
+          ### checks that vnc server is up and running
+          livenessProbe:
+            tcpSocket:
+              port: 5901
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+          ### checks if http-vnc connection is working
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 6901
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${E2E_TEST_NAME}
+        from:
+          kind: ImageStreamTag
+          name: ${IMAGE}:latest
+      type: ImageChange
+    - type: ConfigChange
 ### Service -> POD config
 - apiVersion: v1
   kind: Service
@@ -155,7 +167,7 @@ objects:
       port: 5901
       targetPort: 5901
     selector:
-      application: ${E2E_TEST_NAME}
+      dc: ${E2E_TEST_NAME}-dc
 ### Route -> Service config
 - apiVersion: v1
   id: ${E2E_TEST_NAME}-http

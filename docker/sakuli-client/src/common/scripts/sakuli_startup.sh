@@ -4,10 +4,8 @@
 ###
 
 # have to be added to hold all env vars correctly
-source $STARTUPDIR/generate_container_user
-if [ -f $HOME/.bashrc ] ; then
-    source $HOME/.bashrc
-fi
+# also will source $STARTUPDIR/generate_container_user
+source $HOME/.bashrc
 
 echo -e "\n\n------------------ START SAKULI CONTAINER ---------------------------"
 
