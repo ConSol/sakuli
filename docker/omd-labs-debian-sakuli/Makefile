@@ -11,18 +11,18 @@ BUILDARGS = --build-arg SOURCE_BRANCH=$(TAG)
 
 IMAGE=$(REPO):$(TAG)
 
-ifdef SITENAME
-	BUILDARGS += --build-arg SITENAME=$(SITENAME)
+ifdef SOURCE_BRANCH
+	BUILDARGS = --build-arg SOURCE_BRANCH=$(SOURCE_BRANCH)
 endif
 
 .PHONY: build start echo bash
 
 build:
-	sed 's@^\(FROM\) consol\(/omd-labs-.*\)@\1 local\2@' Dockerfile > Dockerfile.local
-	docker build -f Dockerfile.local -t $(IMAGE) $(BUILDARGS) .
-	@docker images | grep '$(REPO)'
-	rm Dockerfile.local
-	@echo "docker run -p 8443:443 -d "$(IMAGE)
+	# use the local base image with tag = branchname
+	sed 's@^\(FROM\) consol\(/omd-labs-.*\)@\1 local\2:$(TAG)@' Dockerfile > Dockerfile.local
+	docker build -f Dockerfile.local $(BUILDARGS) -t $(IMAGE) .
+	@rm Dockerfile.local
+	@echo "Successfully built" $(IMAGE)
 start:
 	docker run -p 8443:443 -d $(IMAGE)
 echo:

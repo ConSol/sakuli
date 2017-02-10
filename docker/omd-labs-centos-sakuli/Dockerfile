@@ -1,28 +1,26 @@
 FROM consol/omd-labs-centos
-MAINTAINER Simon Meggle "simon.meggle@consol.de"
-ENV REFRESHED_AT 2016-12-13
 
-ENV ANSIBLE_SAKULI /root/ansible_sakuli
+MAINTAINER Simon Meggle "simon.meggle@consol.de"
+ENV REFRESHED_AT 2017-02-10
+
+ARG ANSIBLE_SAKULI=/root/ansible_sakuli
+# branch from where to checkout Sakuli OMD-Addon-dir "omd"
+ARG SOURCE_BRANCH=dev
 ADD ansible_sakuli $ANSIBLE_SAKULI
 
-ARG SOURCE_BRANCH=dev
-ARG SITENAME=demo
 RUN env > /root/env
 
+# -- sparse checkout Sakuli OMD-Addon-dir "omd"
 WORKDIR $ANSIBLE_SAKULI/sakuli/
 # checkout the Sakuli source there
 ENV SRCDIR $ANSIBLE_SAKULI/sakuli/src
 # use git protocol if possible
 ENV REMOTE_GIT git://github.com/ConSol/sakuli.git
-# fallback
+# fallback if git protocol is not possible
 ENV REMOTE_HTTPS https://github.com/ConSol/sakuli.git
 # checkout only this folder
 ENV SPARSEDIR src/common/src/main/resources/org/sakuli/common/setup/omd
-
-RUN echo "Built from $REMOTE_GIT/$SOURCE_BRANCH" > /root/build_info
-
-
-
+RUN echo "Built from $REMOTE_GIT/$SOURCE_BRANCH" > /root/sakuli_git_info
 RUN /bin/bash -c "mkdir $SRCDIR && pushd $SRCDIR && git init &&\
   (git remote add -f origin $REMOTE_GIT || git remote set-url origin $REMOTE_HTTPS) &&\
   git fetch origin &&\
@@ -33,15 +31,12 @@ RUN /bin/bash -c "mkdir $SRCDIR && pushd $SRCDIR && git init &&\
   popd &&\
   ln -s src/$SPARSEDIR files"
 
-
-
-# use the OMD-included Ansible to install the Sakuli stuff
-ENV PYTHONPATH=/omd/versions/default/lib/python/
-ENV ANSIBLE_CONFIG=/root/ansible_sakuli/ansible.cfg
+# -- Run the Ansible playbook to install the Sakuli addons
 RUN /omd/versions/default/bin/ansible-playbook \
-  -i localhost, /root/ansible_sakuli/playbook.yml \
-  -c local -vv \
-  -e ANSIBLE_DROPIN_ROLE=$ANSIBLE_DROPIN_ROLE \
+  -i localhost, $ANSIBLE_SAKULI/playbook.yml \
+  -c local $ANSIBLE_VERBOSITY \
   -e SITENAME=$SITENAME
 
 WORKDIR /root
+
+# CMD is borrowed from the base image
