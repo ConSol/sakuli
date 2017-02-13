@@ -23,11 +23,14 @@ parameters:
   required: true
 #  TODO TS: remove tag after finishing
   value: consol/sakuli-ubuntu-xfce:v1.1.0-SNAPSHOT-218_docker_usermod_openshift
-- description: Git repository where the Sakuli testsuite is stored
-  name: GIT_TESTSUITE_REPO
+- description: Git repository where the Sakuli test suite is stored
+  name: GIT_TEST_SUITE_REPO
   value: https://github.com/ConSol/sakuli-examples
-- description: Path to the Sakuli testsuite is stored at the GIT_TESTSUITE_REPO
-  name: GIT_TESTSUITE_PATH
+- description: Git revision which sould be used for git checkout of the Sakuli test suite. For example to use a branch `development` or any git hash `7f00938bc89d3b95707e5458a49beaef99b0ab7e`.
+  name: GIT_TEST_SUITE_REVISION
+  value: master
+- description: Path to the Sakuli test suite is stored at the GIT_TEST_SUITE_REPO
+  name: GIT_TEST_SUITE_PATH
   value: docker-xfce/part_01/example_xfce
   # TODO TS: change to openshift example
 ### Configuration of OpenShift objects
@@ -51,12 +54,17 @@ objects:
       volumeMounts:
       - mountPath: /headless/sakuli/testsuite
         name: vol-testsuite
+      ## TODO TS check if there is a more convenient variant
       args:
-        - '--tail-log' #make normal UI startup to connect via: oc rsh <pod-name> bash
-#        - 'run'
-#        - '/var/testsuite'
-#        - '-preHook'
-#        - 'ls -la .'
+#        - '--tail-log' #make normal UI startup to connect via: oc rsh <pod-name> bash
+        - run
+        - /headless/sakuli/testsuite/${GIT_TEST_SUITE_PATH}
+        - -D
+        # must be a writable path
+        - sakuli.log.folder= /headless/sakuli/logs
+        - -D
+        # not needed in openshift envrionment
+        - sakuli.forwarder.gearman.cache.enabled=false
 #        - '-browser'
 #        - 'chrome'
 #        - '-D'
@@ -80,11 +88,9 @@ objects:
     volumes:
     - name: vol-testsuite
       gitRepo:
-        repository: ${GIT_TESTSUITE_REPO}
-#        repository: https://github.com/ConSol/sakuli-examples
-#        revision: 7f00938bc89d3b95707e5458a49beaef99b0ab7e
-#        directory: docker-xfce/part_01/example_xfce
-        directory: ${GIT_TESTSUITE_PATH}
+        repository: ${GIT_TEST_SUITE_REPO}
+        revision: ${GIT_TEST_SUITE_REVISION}
+        directory: .
 ### Service -> POD config
 - apiVersion: v1
   kind: Service
