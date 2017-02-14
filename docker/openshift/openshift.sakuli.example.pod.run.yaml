@@ -44,7 +44,7 @@ objects:
       args:
 #        - '--tail-log' #make normal UI startup to connect via: oc rsh <pod-name> bash
         - 'run'
-        - '/headless/sakuli/testsuite'
+        - '/headless/sakuli/test'
         - '-browser'
         - 'chrome'
 #        - '-D'

@@ -41,17 +41,15 @@ RUN $INST_SCRIPTS/java_jce_test/jce_test.sh
 ARG SAKULI_VERSION=1.1.0-SNAPSHOT-218_docker_usermod_openshift
 ENV SAKULI_ROOT $HOME/sakuli
 ENV SAKULI_HOME $SAKULI_ROOT/sakuli-v$SAKULI_VERSION
-# Define Sakuli default startup testsuite  TODO TS: discuss a good default path
-ENV SAKULI_TEST_SUITE $SAKULI_ROOT/testsuite
 # Testsuite folder default permissions after text execution
 ENV SAKULI_UMASK 0000
+# Define Sakuli default startup testsuite  TODO TS: discuss a good default path
+ENV SAKULI_TEST_SUITE $SAKULI_ROOT/test
 #
 #
 WORKDIR $SAKULI_ROOT
 # Install the $SAKULI_VERSION and create the example testsuite under $SAKULI_TEST_SUITE
 RUN $INST_SCRIPTS/sakuli.sh
-# expose the SAKULI_TEST_SUITE as default volume mount point
-VOLUME $SAKULI_TEST_SUITE
 
 ### configure startup
 ADD ./sakuli-client/src/common/scripts $STARTUPDIR

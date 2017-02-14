@@ -52,13 +52,13 @@ objects:
       image: ${IMAGE}
       imagePullPolicy: Always
       volumeMounts:
-      - mountPath: /headless/sakuli/testsuite
-        name: vol-testsuite
+      - mountPath: /headless/sakuli/test
+        name: vol-test
       #TODO: change after #238 is implemented
       args:
 #        - '--tail-log' #make normal UI startup to connect via: oc rsh <pod-name> bash
         - run
-        - /headless/sakuli/testsuite/${GIT_TEST_SUITE_PATH}
+        - /headless/sakuli/test/${GIT_TEST_SUITE_PATH}
         - -D
         # logs have to be writen in a writable path
         - sakuli.log.folder=/headless/sakuli/logs
@@ -83,7 +83,7 @@ objects:
         initialDelaySeconds: 1
         timeoutSeconds: 1
     volumes:
-    - name: vol-testsuite
+    - name: vol-test
       gitRepo:
         repository: ${GIT_TEST_SUITE_REPO}
         revision: ${GIT_TEST_SUITE_REVISION}
