@@ -21,7 +21,7 @@ parameters:
 - description: 'Sakuli End-2-End image, see `docker search sakuli`'
   name: IMAGE
   required: true
-#  TODO TS: remove tag after finishing
+  #TODO TS: remove tag after finishing
   value: consol/sakuli-ubuntu-xfce:v1.1.0-SNAPSHOT-218_docker_usermod_openshift
 - description: Git repository where the Sakuli test suite is stored
   name: GIT_TEST_SUITE_REPO
@@ -32,7 +32,7 @@ parameters:
 - description: Path to the Sakuli test suite is stored at the GIT_TEST_SUITE_REPO
   name: GIT_TEST_SUITE_PATH
   value: docker-xfce/part_01/example_xfce
-  # TODO TS: change to openshift example
+  #TODO TS: change to openshift example
 ### Configuration of OpenShift objects
 objects:
 ### POD config (run one time)
@@ -54,17 +54,14 @@ objects:
       volumeMounts:
       - mountPath: /headless/sakuli/testsuite
         name: vol-testsuite
-      ## TODO TS check if there is a more convenient variant
+      #TODO: change after #238 is implemented
       args:
 #        - '--tail-log' #make normal UI startup to connect via: oc rsh <pod-name> bash
         - run
         - /headless/sakuli/testsuite/${GIT_TEST_SUITE_PATH}
         - -D
-        # must be a writable path
-        - sakuli.log.folder= /headless/sakuli/logs
-        - -D
-        # not needed in openshift envrionment
-        - sakuli.forwarder.gearman.cache.enabled=false
+        # logs have to be writen in a writable path
+        - sakuli.log.folder=/headless/sakuli/logs
 #        - '-browser'
 #        - 'chrome'
 #        - '-D'
