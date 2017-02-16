@@ -556,6 +556,16 @@
                 <version>1.9.5</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.jtwig</groupId>
+                <artifactId>jtwig-core</artifactId>
+                <version>5.64</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jtwig</groupId>
+                <artifactId>jtwig-spaceless-extension</artifactId>
+                <version>1.44</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <repositories>
@@ -582,6 +592,18 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-
+        <!-- jtwig dependency-->
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </repository>
     </repositories>
 </project>

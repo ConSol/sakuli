@@ -13,3 +13,5 @@ sakuli_app
 cert_override.txt
 cert8.db
 key3.db
+.gearman-cache
+.sakuli-steps-cache

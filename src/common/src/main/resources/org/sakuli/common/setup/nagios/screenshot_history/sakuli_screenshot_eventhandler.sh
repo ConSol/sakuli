@@ -1,19 +1,20 @@
 #!/bin/bash
 
-LOG=${OMD_ROOT}/var/log/sakuli_screenshot_eventhandler.log
-IMG_ROOT=${OMD_ROOT}/var/sakuli/screenshots
-TMP=${OMD_ROOT}/tmp/sakuli
-NOW=$(date)
+SCREENSHOT_COUNT=1000
+SCREENSHOT_HIDE_AFTER=30
+SCREENSHOT_DELETE_AFTER=60
 
 STATE=$1
 HOST=$2
 SERVICE=$3
 LASTSERVICECHECK=$4
 
-mkdir -p $IMG_ROOT
-mkdir -p $TMP
+LOG=${OMD_ROOT}/var/log/sakuli_screenshot_eventhandler.log
+IMG_ROOT=${OMD_ROOT}/var/sakuli/screenshots/$HOST/$SERVICE
+TMP=${OMD_ROOT}/tmp/sakuli
+NOW=$(date)
 
-for d in $(find $IMG_ROOT -mindepth 3 -maxdepth 3 -mtime +30 -type d); do rm -rf $d; done
+mkdir -p $TMP
 
 case $STATE in
 "OK")
@@ -44,7 +45,7 @@ case $STATE in
     echo "$IMG" | base64 -d > $TMP/${TMPNAME}
     # exit if no image data detected
     file $TMP/${TMPNAME} | grep -q 'image data' || exit 0
-    IMG_DIR="$IMG_ROOT/$HOST/$SERVICE/$LASTSERVICECHECK"
+    IMG_DIR="$IMG_ROOT/$LASTSERVICECHECK"
     echo "IMG_DIR: $IMG_DIR" >> $LOG
     mkdir -p "$IMG_DIR"
     mv $TMP/${TMPNAME} "$IMG_DIR/screenshot.${FORMAT}"
@@ -52,4 +53,14 @@ case $STATE in
     ls -la "$IMG_DIR" >> $LOG
     ;;
 esac
+
+# Cleanup  ===================
+pushd $IMG_ROOT
+# Keep only the last X screenshots
+ls -1tr $IMG_ROOT | tail -n +$SCREENSHOT_COUNT | xargs rm -rf
+# Delete all dirs > 60 days
+for d in $(find $IMG_ROOT -mtime +$SCREENSHOT_DELETE_AFTER -type d); do rm -rf $d; done
+# Rename all visible dirs > 30 days (-> that makes them invisible for Thruk SSI)
+for d in $(find $IMG_ROOT -regex '.*[0-9]' -mtime +$SCREENSHOT_HIDE_AFTER -type d); do mv $d $d.HIDDEN; done
+
 exit 0

@@ -104,6 +104,8 @@ Episode 9 of the ***ConSol Monitoring Minutes*** shows the main features of Saku
 
 ### Slides
 
+2017: [Containerized End-2-End-Testing - Agile Testing Meetup Munich](http://www.slideshare.net/TobiasSchneck/containerized-end2end-testing-agile-testing-meetup-at-sddeutsche-zeitung-munich-19012017) (Tobias Schneck)
+
 2016: [Containerized End-2-End-Testing (German) - JUG Saxony Days Dresden](http://www.slideshare.net/TobiasSchneck/containerized-end2end-testing-jug-saxony-day) (Tobias Schneck)
 
 2016: [Containerized End-2-End-Testing - ContainerDays 2016 Hamburg](https://speakerdeck.com/toschneck/containerized-end-2-end-testing-containerdays-2016-in-hamburg) (Tobias Schneck)
@@ -114,6 +116,8 @@ for web sites and common UIs with full Nagios integration](https://rawgit.com/to
 
 
 ## Publications
+01/2017: [Java aktuell: Automatisiertes Testen in Zeiten von Microservices](https://www.consol.de/fileadmin/pdf/news/news-events/01_2017-Java_aktuell-Magazin-Christoph-Deppisch-und-Tobias-Schneck_Automatisiertes-Testen-in-Zeiten-von-Microservices.pdf) (Christoph Deppisch / Tobias Schneck)
+
 10/2016: [Informatik Aktuell: Software-Test im Container: So können Sie Graphical User Interfaces mit Docker und Sakuli testen](https://www.informatik-aktuell.de/entwicklung/methoden/graphical-user-interface-gui-in-containern-testen.html) (Tobias Schneck)
 
 10/2016: [ConSol Labs: Containerized UI-Tests in Java with Sakuli and Docker](https://labs.consol.de/sakuli/development/2016/10/14/sakuli-java-dsl.html) (Tobias Schneck)
@@ -135,7 +139,9 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen ](https://www.consol.d
 
 ## Events
 
-30 January - 3 February, 2017: [OOP 2017, Munich](http://www.oop-konferenz.de/) (Tobias Schneck)
+January 30 - February 3, 2017: [OOP 2017, Munich](http://www.oop-konferenz.de/) (Tobias Schneck)
+
+January 19, 2017: [Agile Testing Meetup - Testen im Zeitalter von Containern, Munich](https://www.meetup.com/de-DE/Agile-Testing-Munich/events/235148329/) (Tobias Schneck)
 
 ---
 

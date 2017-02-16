@@ -62,4 +62,4 @@ Now go back to the SSL Manager overview and click the "refresh" button. Every pr
 
 #### Internet Explorer ####
 
-See Sahi description [Configer SSL in Sahi](http://sahipro.com/docs/using-sahi/sahi-configuration-basic.html#Configure%20SSL).
+See Sahi description [Configure SSL in Sahi](http://sahipro.com/docs/using-sahi/sahi-configuration-basic.html#Configure%20SSL).

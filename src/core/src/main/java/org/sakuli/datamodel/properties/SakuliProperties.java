@@ -52,6 +52,7 @@ public class SakuliProperties extends AbstractProperties {
     public static final String LOG_LEVEL_SIKULI = "log.level.sikuli";
     public static final String LOG_LEVEL_SPRING = "log.level.spring";
     public static final String LOG_LEVEL_ROOT = "log.level.root";
+    public static final String FORWARDER_TEMPLATE_FOLDER = "sakuli.forwarder.template.folder";
     public static final String CONFIG_FOLDER_APPEDER = File.separator + "config";
     public static final String LIBS_FOLDER_APPEDER = File.separator + "libs";
     public static final String JS_LIB_FOLDER_APPEDER = LIBS_FOLDER_APPEDER + File.separator + "js";
@@ -88,10 +89,11 @@ public class SakuliProperties extends AbstractProperties {
     private String logLevelSpring;
     @Value("${" + LOG_LEVEL_ROOT + ":}")
     private String logLevelRoot;
+    @Value("${" + FORWARDER_TEMPLATE_FOLDER + ":}")
+    private String forwarderTemplateFolder;
     private Path configFolder;
     private Path jsLibFolder;
     private Path tessDataLibFolder;
-
 
     @PostConstruct
     public void initFolders() throws FileNotFoundException, SakuliInitException {
@@ -276,4 +278,9 @@ public class SakuliProperties extends AbstractProperties {
     public void setLoadJavaScriptEngine(boolean loadJavaScriptEngine) {
         this.loadJavaScriptEngine = loadJavaScriptEngine;
     }
+
+    public String getForwarderTemplateFolder() {
+        return forwarderTemplateFolder;
+    }
+
 }
