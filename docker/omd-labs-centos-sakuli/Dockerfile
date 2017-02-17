@@ -8,7 +8,7 @@ ARG ANSIBLE_SAKULI=/root/ansible_sakuli
 ARG SOURCE_BRANCH=dev
 ADD ansible_sakuli $ANSIBLE_SAKULI
 
-RUN env > /root/env
+RUN env > /root/.env
 
 # -- sparse checkout Sakuli OMD-Addon-dir "omd"
 WORKDIR $ANSIBLE_SAKULI/sakuli/

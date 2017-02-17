@@ -2,7 +2,7 @@
 
 - name: Ensure icon folder is present
   file:
-    path: "{{ OMD_ROOT }}/local/share/nagios/htdocs/images/logos/"
+    path: "{{ OMD_ROOT }}/local.{{ ORIG }}/share/nagios/htdocs/images/logos/"
     state: directory
     mode: 0770
     owner: "{{ SITENAME }}"
@@ -10,27 +10,28 @@
 
 - name: sync Sakuli skel files
   copy:
-    src: "{{ item }}"
-    dest: "{{ OMD_ROOT }}/"
+    src: "{{ item }}/"
+    dest: "{{ OMD_ROOT }}/{{ item }}.{{ ORIG }}"
   with_items:
     - etc
     - local
 
-- name: set ownership for Sakuli skel files
-  file:
-    path: "{{ OMD_ROOT }}/{{ item }}"
-    owner: "{{ SITENAME }}"
-    group: "{{ SITENAME }}"
-    recurse: yes
-  with_items:
-    - etc
-    - local
+# - name: set ownership for Sakuli skel files
+#   file:
+#     path: "{{ OMD_ROOT }}/{{ item }}"
+#     owner: "{{ SITENAME }}"
+#     group: "{{ SITENAME }}"
+#     recurse: yes
+#     follow: yes
+#   with_items:
+#     - etc
+#     - local
 
 - name: ensure custom plugins are executable
-  shell: "chmod 775 {{ OMD_ROOT }}/local/lib/nagios/plugins/*"
+  shell: "chmod 775 {{ OMD_ROOT }}/local.{{ ORIG }}/lib/nagios/plugins/*"
 
 - name: ensure local bins are executable
-  shell: "chmod 775 {{ OMD_ROOT }}/local/bin/*"
+  shell: "chmod 775 {{ OMD_ROOT }}/local.{{ ORIG }}/bin/*"
 
 - name: tmp permissions
   file:
@@ -51,7 +52,7 @@
     - "CORE nagios"
 
 - name: Configure HTML escaping in cgi.cfg
-  command: sed -i 's|\(escape_html_tags=\)1|\10|' {{ OMD_ROOT }}/etc/nagios/cgi.cfg
+  command: sed -i 's|\(escape_html_tags=\)1|\10|' {{ OMD_ROOT }}/etc.{{ ORIG }}/nagios/cgi.cfg
 
 - name: Configure mod-gearman
-  command: sed -i -e 's/\(services\|eventhandler\|hosts\|encryption\)=yes/\1=no/' -e 's/\(accept_clear_results\)=no/\1=yes/' {{ OMD_ROOT }}/etc/mod-gearman/server.cfg
+  command: sed -i -e 's/\(services\|eventhandler\|hosts\|encryption\)=yes/\1=no/' -e 's/\(accept_clear_results\)=no/\1=yes/' {{ OMD_ROOT }}/etc.{{ ORIG }}/mod-gearman/server.cfg
