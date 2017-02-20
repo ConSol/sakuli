@@ -1,14 +1,14 @@
 # This Dockerfile is used to build an sakuli image based on Ubuntu
 
-FROM consol/ubuntu-xfce-vnc:dev
+FROM consol/centos-icewm-vnc:dev
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-02-17
+ENV REFRESHED_AT 2017-02-20
 
-LABEL io.k8s.description="Sakuli headless testing Container with Xfce window manager, firefox and chromium" \
-      io.k8s.display-name="Sakuli Testing Container based on Ubuntu and Xfce" \
+LABEL io.k8s.description="Sakuli headless testing Container (maven java tests) with IceWM window manager, firefox and chromium" \
+      io.k8s.display-name="Sakuli Testing Container (maven java tests) based on Centos and IceWM" \
       io.openshift.expose-services="6901:http,5901:xvnc" \
-      io.openshift.tags="sakuli, ubuntu, xfce" \
+      io.openshift.tags="sakuli, centos, icewm, java, maven" \
       io.openshift.non-scalable=true
 
 ## Connection ports for controlling the UI:
@@ -27,44 +27,47 @@ ENV VNC_PW sakuli
 USER root
 # $INST_SCRIPTS is already set in FROM image
 ADD ./sakuli-client/src/common/install/ $INST_SCRIPTS/
-ADD ./sakuli-client/src/ubuntu/install/ $INST_SCRIPTS/
+ADD ./sakuli-client/src_java/common/install/ $INST_SCRIPTS/
+ADD ./sakuli-client/src/centos/install/ $INST_SCRIPTS/
+ADD ./sakuli-client/src_java/centos/install/ $INST_SCRIPTS/
 RUN find $INST_SCRIPTS -name '*.sh' -exec chmod a+x {} +
 
 ### Install needed packages
-RUN $INST_SCRIPTS/example_apps.sh
 RUN $INST_SCRIPTS/screenshot_tool.sh
 RUN $INST_SCRIPTS/native_screen_control_libs.sh
 RUN $INST_SCRIPTS/java_jre.sh
+RUN $INST_SCRIPTS/java_jdk.sh
 RUN $INST_SCRIPTS/java_jce_test/jce_test.sh
+
+### Install Maven
+ARG MAVEN_VERSION=3.3.9
+ENV MAVEN_HOME /root/apps/maven
+RUN $INST_SCRIPTS/maven.sh
 
 ### Install Sakuli
 ARG SAKULI_VERSION=1.1.0-SNAPSHOT-218_docker_usermod_openshift
-ENV SAKULI_ROOT $HOME/sakuli
-ENV SAKULI_HOME $SAKULI_ROOT/sakuli-v$SAKULI_VERSION
 # Testsuite folder default permissions after text execution
 ENV SAKULI_UMASK 0000
 # Define Sakuli default startup testsuite
-ENV SAKULI_TEST_SUITE $SAKULI_ROOT/test
+ENV SAKULI_TEST_SUITE /opt/maven
 #
-#
-WORKDIR $SAKULI_ROOT
+WORKDIR $SAKULI_TEST_SUITE
 # Install the $SAKULI_VERSION and create the example testsuite under $SAKULI_TEST_SUITE
+RUN $INST_SCRIPTS/zip.sh
 RUN $INST_SCRIPTS/sakuli.sh
 
 ### configure startup
-ADD ./sakuli-client/src/common/scripts $STARTUPDIR
-RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
+ADD ./sakuli-client/src/common/scripts/ $STARTUPDIR
+ADD ./sakuli-client/src_java/common/scripts/ $STARTUPDIR
+RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME $SAKULI_TEST_SUITE
 # use headless user for startup
 USER 1984
 
 ### Sakuli startup script
 # no parameters:
-# - run the suite defined by $SAKULI_TEST_SUITE, if set
-# paramters:
-# - run a Sakuli test suite like the example_xfce case via:
-#   docker run consol/sakuli-ubuntu-xfce run /sakuli/example_test_suites/example_xfce
-# - help:
-#   docker run consol/sakuli-ubuntu-xfce -help
+# - run the suite defined by $SAKULI_TEST_SUITE via `mvn test`
+# if set paramters:
+# - run the suite via typical maven commands like `mvn install`
 # - start a bash (or any other command):
-#   docker run -it consol/sakuli-ubuntu-xfce bash
+#   docker run -it consol/sakuli-ubuntu-xfce-java bash
 ENTRYPOINT ["/dockerstartup/startup.sh"]

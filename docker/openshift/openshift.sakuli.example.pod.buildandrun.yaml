@@ -15,7 +15,7 @@ parameters:
 - description: The name for the E2E test suite.
   name: E2E_TEST_NAME
   required: true
-  value: sakuli-ubuntu-xfce-example
+  value: sakuli-my-example
 - description: 'Custom hostname for http service route.  Leave blank for default hostname, e.g.: <E2E_TEST_NAME-name>-<project>.<default-domain-suffix>'
   name: HOSTNAME_HTTP
 - description: The name for the taged target image
@@ -112,15 +112,16 @@ objects:
       image: ${DOCKER_REGISTRY_PATH}/${IMAGE}:${IMAGE_TAG}
       imagePullPolicy: Always
       args:
-#        - '--tail-log' #make normal UI startup to connect via: oc rsh <pod-name> bash
-        - 'run'
-        - '/headless/sakuli/test'
-        - '-browser'
-        - 'chrome'
-#        - '-D'
-#        - 'log.level.sakuli=DEBUG'
-#        - '-D'
-#        - 'log.level.sahi=DEBUG'
+        ### make normal UI startup to connect via: oc rsh <pod-name> bash
+        #- --tail-log
+        ### run in chrome
+        # - run
+        # - /headless/sakuli/test
+        # - -browser
+        # - chrome
+        ### set e.g. debug level
+        #- -D
+        #- log.level.sakuli=DEBUG
       ### checks that vnc server is up and running
       livenessProbe:
         tcpSocket:
@@ -143,7 +144,7 @@ objects:
       description: Sakuli client vnc and http port
     labels:
       application: ${E2E_TEST_NAME}
-    name: ${E2E_TEST_NAME}-service
+    name: ${E2E_TEST_NAME}-ser
   spec:
     ports:
     - name: http-port-tcp
@@ -169,6 +170,6 @@ objects:
   spec:
     host: ${HOSTNAME_HTTP}
     to:
-      name: ${E2E_TEST_NAME}-service
+      name: ${E2E_TEST_NAME}-ser
     port:
       targetPort: http-port-tcp
