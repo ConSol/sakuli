@@ -74,6 +74,10 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         creationDate = new DateTime();
     }
 
+    protected static String getMessageOrClassName(Throwable e) {
+        return StringUtils.isBlank(e.getMessage()) ? e.getClass().getName() : e.getMessage();
+    }
+
     /**
      * set the times to the format "time in millisec / 1000"
      *
@@ -145,13 +149,13 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
 
     public String getExceptionMessages(boolean flatFormatted, Map<String, String> formatExpressions) {
         if (exception != null) {
-            String msg = exception.getMessage();
+            String msg = getMessageOrClassName(exception);
             //add suppressed exceptions
             for (Throwable ee : exception.getSuppressed()) {
                 if (flatFormatted) {
-                    msg += " --  Suppressed EXCEPTION: " + ee.getMessage();
+                    msg += " --  Suppressed EXCEPTION: " + getMessageOrClassName(ee);
                 } else {
-                    msg += "\n\t\tSuppressed EXCEPTION: " + ee.getMessage();
+                    msg += "\n\t\tSuppressed EXCEPTION: " + getMessageOrClassName(ee);
                 }
             }
 

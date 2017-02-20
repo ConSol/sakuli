@@ -28,7 +28,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.net.NoRouteToHostException;
 import java.util.*;
+
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author tschneck Date: 19.07.13
@@ -54,9 +57,9 @@ public class AbstractTestDataEntityTest extends BaseTest {
     public void testCreateDateTimeString() throws Exception {
         Date aspectedDate = new Date();
         long aspectedLong = aspectedDate.getTime();
-        Assert.assertEquals("-1", testling.createUnixTimestamp(null));
+        assertEquals("-1", testling.createUnixTimestamp(null));
         String result = testling.createUnixTimestamp(aspectedDate);
-        Assert.assertEquals(aspectedLong, Long.parseLong(result.replace(".", "")));
+        assertEquals(aspectedLong, Long.parseLong(result.replace(".", "")));
         Assert.assertTrue(result.charAt(result.length() - 4) == '.');
     }
 
@@ -85,9 +88,9 @@ public class AbstractTestDataEntityTest extends BaseTest {
         //first should be the step with startdate, after that the init steps will follow after the creation date
         TreeSet<TestCaseStep> sorted = new TreeSet<>(values);
         print(sorted);
-        Assert.assertEquals(sorted.size(), 3);
-        Assert.assertEquals(sorted.first().getName(), "first");
-        Assert.assertEquals(sorted.last().getName(), "third");
+        assertEquals(sorted.size(), 3);
+        assertEquals(sorted.first().getName(), "first");
+        assertEquals(sorted.last().getName(), "third");
     }
 
     protected void print(TreeSet<TestCaseStep> sorted) {
@@ -115,11 +118,19 @@ public class AbstractTestDataEntityTest extends BaseTest {
         //first should be the step with startdate, after that the init steps will follow after the creation date
         TreeSet<TestCaseStep> sorted = new TreeSet<>(values);
         print(sorted);
-        Assert.assertEquals(sorted.size(), 4);
+        assertEquals(sorted.size(), 4);
         Iterator<TestCaseStep> it = sorted.iterator();
-        Assert.assertEquals(it.next().getName(), "first");
-        Assert.assertEquals(it.next().getName(), "second");
-        Assert.assertEquals(it.next().getName(), "third");
-        Assert.assertEquals(it.next().getName(), "fourth");
+        assertEquals(it.next().getName(), "first");
+        assertEquals(it.next().getName(), "second");
+        assertEquals(it.next().getName(), "third");
+        assertEquals(it.next().getName(), "fourth");
+    }
+
+    @Test
+    public void testMessageOrClass() throws Exception {
+        assertEquals(AbstractTestDataEntity.getMessageOrClassName(new NoRouteToHostException()),
+                "java.net.NoRouteToHostException");
+        assertEquals(AbstractTestDataEntity.getMessageOrClassName(new NoRouteToHostException("my message")),
+                "my message");
     }
 }
