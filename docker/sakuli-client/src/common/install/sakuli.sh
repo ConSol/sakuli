@@ -19,7 +19,6 @@ mkdir -p $SAKULI_HOME
 java -jar /tmp/sakuli/sakuli-v$SAKULI_VERSION-installer.jar $INST_SCRIPTS/sakuli-auto-install.xml
 rm -rf /tmp/sakuli
 
-# TODO TS: make adjustable for icewm
 example_suite=$SAKULI_ROOT/example_test_suites/example_xfce
 echo "Link example suite '$example_suite' to volume mount point: $SAKULI_TEST_SUITE:"
 ln -s $example_suite $SAKULI_TEST_SUITE
