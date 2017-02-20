@@ -97,7 +97,7 @@
                         <exclude>**/integration/**/*</exclude>
                     </excludes>
                     <environmentVariables>
-                        <SAKULI_HOME />
+                        <SAKULI_HOME/>
                     </environmentVariables>
                 </configuration>
             </plugin>
@@ -121,7 +121,7 @@
                     <pushHotfixes>true</pushHotfixes>
                     <pushReleases>true</pushReleases>
                     <updateDependencies>true</updateDependencies>
-                    <scmCommentPrefix>mvn-jgitflow: </scmCommentPrefix>
+                    <scmCommentPrefix>mvn-jgitflow:</scmCommentPrefix>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <enableSshAgent>true</enableSshAgent>
                     <useReleaseProfile>true</useReleaseProfile>
@@ -314,6 +314,28 @@
                 <repository>
                     <id>labs-consol-sakuli-repository</id>
                     <url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/repository</url>
+                </repository>
+                <snapshotRepository>
+                    <id>labs-consol-sakuli-repository</id>
+                    <url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/snapshots-repository</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+        <!-- profile for uploading the SNAPSHOT artifacts and zipped files to labs.consol.de/sakuli-->
+        <profile>
+            <id>upload-snapshots</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <!-- profile settings to upload the artifacts to the consol labs server -->
+            <distributionManagement>
+                <repository>
+                    <id>labs-consol-sakuli-repository</id>
+                    <!-- ensure that snapshot repository will used -->
+                    <url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/snapshots-repository</url>
                 </repository>
                 <snapshotRepository>
                     <id>labs-consol-sakuli-repository</id>
