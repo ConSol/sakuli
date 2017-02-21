@@ -19,7 +19,6 @@
 package org.sakuli.services.forwarder.database.dao.impl;
 
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +43,6 @@ public abstract class Dao extends NamedParameterJdbcDaoSupport {
     protected TestSuite testSuite;
     @Autowired
     protected LobHandler lobHandler;
-    @Autowired
-    protected SakuliProperties sakuliProperties;
 
     public Dao(DataSource dataSource) throws SakuliException {
 
