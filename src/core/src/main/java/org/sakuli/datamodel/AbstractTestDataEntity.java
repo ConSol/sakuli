@@ -20,7 +20,6 @@ package org.sakuli.datamodel;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.SakuliState;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
@@ -32,9 +31,6 @@ import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author tschneck
