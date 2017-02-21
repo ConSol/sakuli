@@ -133,7 +133,7 @@ On the Sakuli client you must set the global properties for the gearman receiver
     sakuli.forwarder.gearman.enabled=true
     sakuli.forwarder.gearman.server.host=__OMD_HOST__
     sakuli.forwarder.gearman.server.port=4730
-    # Nagios host where all Sakuli services are defined on. If neccessary, override this value per test suite. 
+    # Nagios host where all Sakuli services are defined on. If neccessary, overwrite this value per test suite. 
     sakuli.forwarder.gearman.nagios.hostname=sakuli_client
 
 
@@ -204,7 +204,7 @@ and define a command:
         command_line                   $USER2$/eh_sakuli_screenshot.sh $SERVICESTATE$ $HOSTNAME$ $SERVICEDESC$ $LASTSERVICECHECK$
     }  
     
-The eventhandler script also deletes screenshots older than 30 days. If you want to override this, define the number of days to keep screenshots as a custom macro (e.g. `$USER12$`) and use this variable as fifth parameter: 
+The eventhandler script also deletes screenshots older than 30 days. If you want to overwrite this, define the number of days to keep screenshots as a custom macro (e.g. `$USER12$`) and use this variable as fifth parameter: 
 
         command_line                   $USER2$/eh_sakuli_screenshot.sh $SERVICESTATE$ $HOSTNAME$ $SERVICEDESC$ $LASTSERVICECHECK$ $USER12$
 

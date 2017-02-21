@@ -26,7 +26,7 @@ var appGedit = new Application("/usr/bin/gedit");
 function checkCentOS() {
     var dist = env.runCommand('cat /etc/os-release').getOutput();
     if (dist.match(/NAME=.*CentOS.*/)) {
-        Logger.logInfo('Detected distribution: CentOS  >> override some image patterns');
+        Logger.logInfo('Detected distribution: CentOS  >> overwrite some image patterns');
         testCase.addImagePaths("centos");
     }
 }

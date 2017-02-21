@@ -58,7 +58,7 @@
                             </includes>
                             <groups>${test.included.groups}</groups>
                             <excludedGroups>${test.excluded.groups}</excludedGroups>
-                            <!-- override the sahi.proxy.homePath property-->
+                            <!-- overwrite the sahi.proxy.homePath property-->
                             <argLine>-Dsahi.proxy.homePath=${sakuli.home}/sahi</argLine>
                         </configuration>
                     </execution>

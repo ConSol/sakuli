@@ -56,14 +56,14 @@
     Options:
            -loop	   <seconds>	  Loop this suite, wait n seconds between
                                       executions, 0 means no loops (default: 0)
-           -javaHome   <folder>       Java bin dir (overrides PATH)
+           -javaHome   <folder>       Java bin dir (overwrites PATH)
            -javaOption <java option>  JVM option parameter, e.g. '-agentlib:...'
            -preHook    <programpath>  A program which will be executed before a
                                       suite run (can be added multiple times)
            -postHook   <programpath>  A program which will be executed after a
                                       suite run (can be added multiple times)
            -D 	   <JVM option>   JVM option to set a property at runtime,
-                                      overrides file based properties
+                                      overwrites file based properties
            -browser    <browser>      Browser for the test execution
                                       (default: Firefox)
            -interface  <interface>    Network interface card name, used by
@@ -140,7 +140,7 @@
 * fix #142: remove some not valid windows escape chars like `'` or `"` to prevent a InvalidPathException in SakuliStarter arguments
 * docker-containers.md: Added hint for boot2docker users.
 * check_sakuli.php: fixed #132 (suite runtime)
-* close #103: make docker-container able to override the running testsuite in `docker run`  `CMD` arguments  
+* close #103: make docker-container able to overwrite the running testsuite in `docker run`  `CMD` arguments  
   * make the `sakuli.sh` command line parameters usable in `docker run`  `CMD` arguments, like for example `docker run consol/sakuli-centos-xfce '--run $SAKULI_TEST_SUITE --browser chrome'`
 * Added documentation how to configure HTTPS in Sahi. #53
 * Rename README.md to index.md in case of https://readthedocs.org/projects/sakuli/
@@ -297,7 +297,7 @@
 * centralized the configuration of properties files:
 	* `_include/sakuli.properties` now contains all possible configuration options for Sakuli. These are the _default values_ for all tests
 	* `<test-suite>/testsuite.properties` contains the _test suite specific configuration options_. The only mandatory property here is the test suite identifier `testsuite.id`. All other properties are optional.
-	* Options set in `testsuite.properties` will override the default settings in `sakuli.properties`
+	* Options set in `testsuite.properties` will overwrite the default settings in `sakuli.properties`
 * Proxy configuration options can now be set in `sakuli.properties` (defaults) or  `testsuite.properties` (suite specific)
 * Re-organized the folder structure of `sakuli-zipped-release-vX.X.X.zip` and source code directory.
 * Extended logging with more configuration possibilities (SLF4J with underlying logback-Logging)
