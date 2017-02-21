@@ -111,7 +111,7 @@ unit test. Sakuli just adds the end-to-end testing capabilities. The test class 
 This `AbstractSakuliTest` provides convenient access to the Sakuli Java DSL API.
 
 These are methods such as `initTC()` and `getTestCaseInitParameter()` that are customizable in test classes. Just 
-override the methods and add custom logic. In addition to that the abstract super class in Sakuli provides access to the
+overwrite the methods and add custom logic. In addition to that the abstract super class in Sakuli provides access to the
 `browser` field that represents the Sahi web browser capabilities. This browser object is used in the test cases to trigger
 Sahi related actions such as opening a website and highlighting links or buttons.
 

@@ -77,7 +77,7 @@ public class LoggerInitializer {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         JoranConfigurator jc = new JoranConfigurator();
         jc.setContext(context);
-        context.reset(); // override default configuration
+        context.reset(); // overwrite default configuration
 
         //put properties into the context
         properties.stream().filter(p -> isNotEmpty(p.getValue()))

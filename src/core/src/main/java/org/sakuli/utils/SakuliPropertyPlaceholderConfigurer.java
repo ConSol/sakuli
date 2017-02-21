@@ -69,7 +69,7 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         loadSakuliDefaultProperties(props);
         loadSakuliProperties(props);
         loadTestSuiteProperties(props);
-        //override if set sahi proxy home
+        //overwrite if set sahi proxy home
         if (isNotEmpty(SAHI_HOME_VALUE)) {
             props.setProperty(SahiProxyProperties.PROXY_HOME_FOLDER, SAHI_HOME_VALUE);
             props.setProperty(SahiProxyProperties.PROXY_CONFIG_FOLDER, SAHI_HOME_VALUE + File.separator + "userdata");

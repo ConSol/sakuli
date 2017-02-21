@@ -65,7 +65,7 @@ public class NagiosCheckResultBuilder implements Builder<NagiosCheckResult> {
         NagiosCheckResult result = new NagiosCheckResult(queueName, uuid);
         SortedMap<PayLoadFields, String> payload = new TreeMap<>();
         payload.put(TYPE, type);
-        //host name from properties file can overrides the determined of the suite
+        //host name from properties file can overwrites the determined of the suite
         if (hostProperties != null) {
             payload.put(HOST, hostProperties);
         } else {
