@@ -1,1 +1,6 @@
+// use "//" to disable single testcases
+//
+// ... define your tescase like:
+// folder-of-testcase http://www.startURL.de
+//
 case1/sakuli_demo.js http://sahi.example.com/_s_/dyn/Driver_initialized
