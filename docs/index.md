@@ -12,7 +12,7 @@ Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs
 
 * [Sakuli client installation](installation-client.md)
 * [Sakuli JavaDSL setup](java-DSL.md)
-* [Usage Sakuli Docker Containers](../docs/docker-containers.md)
+* [Sakuli Docker Images](docker-images.md)
 * Submitting Sakuli results
   * [to OMD (Nagios/Icinga2/Shinken)](installation-omd.md)
     * [via Gearman](forwarder-gearman.md)
@@ -43,7 +43,7 @@ For documentation see
 ## Advanced topics
 
 * **Containerized Sakuli checks with [Docker](https://www.docker.com/)**
-  * [Usage Sakuli Docker Containers](../docs/docker-containers.md)
+  * [Usage Sakuli Docker Images](docker-images.md)
   * Presentation [Containerized End-2-End-Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)
   * Example project on GitHub [toschneck/sakuli-example-bakery-testing](https://github.com/toschneck/sakuli-example-bakery-testing)
 * **Headless** Sakuli checks
