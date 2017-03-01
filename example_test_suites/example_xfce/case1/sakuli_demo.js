@@ -56,7 +56,7 @@ try {
     screen.waitForImage("gedit.png", 10);
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
     testCase.endOfStep("Editor", 10);
-    env.sleep(4);
+
 } catch (e) {
     testCase.handleException(e);
 } finally {
