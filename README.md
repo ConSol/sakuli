@@ -139,6 +139,8 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen ](https://www.consol.d
 
 ## Events
 
+April 27, 2017: [Stuttgarter Test-Tage, Stuttgart](http://www.jugs.de/tt2017/abstracts.html#link07): Testing - Selenium? Rich-Clients? Containers? (Tobias Schneck)
+
 January 30 - February 3, 2017: [OOP 2017, Munich](http://www.oop-konferenz.de/) (Tobias Schneck)
 
 January 19, 2017: [Agile Testing Meetup - Testen im Zeitalter von Containern, Munich](https://www.meetup.com/de-DE/Agile-Testing-Munich/events/235148329/) (Tobias Schneck)
