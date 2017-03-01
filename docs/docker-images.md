@@ -1,6 +1,6 @@
-# Usage of Sakuli Docker Containers
+# Usage of Sakuli Docker Images
 
-Docker containers allow you to run a Sakuli test in an isolated environment, called "container", which is always started off from the same base image. This ensures that tests always run under equal conditions.
+Docker allows you to run a Sakuli test in an isolated environment, called "container", which is always started off from the same base image. This ensures that tests always run under equal conditions.
 
 ## Image OS types
 The repository's subfolder [./docker](https://github.com/ConSol/sakuli/tree/master/docker) contains all source files Sakuli docker images are made of. Currently we provide images on  [DockerHub](https://hub.docker.com) for:
@@ -35,7 +35,7 @@ The running containers are accessible with VNC (default password: *sakuli*) by:
   * [http://localhost:6901/vnc_auto.html?password=sakuli]()
 
 
-## Get Sakuli docker images
+## Get Sakuli Docker Images
 
 The following example command pulls the CentOS7 image from [DockerHub](https://hub.docker.com/r/consol/sakuli-centos-xfce/):
 

@@ -17,8 +17,8 @@
     * [Why Sakuli](#why-sakuli)
 * [**Resources**](#resources)
     * [**Documentation**](./docs/index.md)
-    * [**Docker Images**](./docs/docker-containers.md)
-    * [Exampel projects](#example-projects-on-github)
+    * [**Docker Images**](docs/docker-images.md)
+    * [Example projects](#example-projects-on-github)
     * [Demo](#demo-virtual-machine)
     * [Media](#media)
     * [Events](#events)
@@ -138,6 +138,8 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen ](https://www.consol.d
 2/2015: [IT Administrator](http://www.it-administrator.de): [End2End-Monitoring mit dem Open Source-Tool Sakuli](http://www.it-administrator.de/themen/netzwerkmanagement/fachartikel/179023.html) (Simon Meggle)
 
 ## Events
+
+April 27, 2017: [Stuttgarter Test-Tage, Stuttgart](http://www.jugs.de/tt2017/abstracts.html#link07): Testing - Selenium? Rich-Clients? Containers? (Tobias Schneck)
 
 January 30 - February 3, 2017: [OOP 2017, Munich](http://www.oop-konferenz.de/) (Tobias Schneck)
 
