@@ -124,7 +124,7 @@ for web sites and common UIs with full Nagios integration](https://rawgit.com/to
 
 10/2016: [ConSol Labs: Sakuli EndToEnd Tests mit Android](https://labs.consol.de/android/monitoring/sakuli/2016/10/10/android-sakuli.html) (Philip Griesbacher)
 
-8/2016: [heise Devloper: Testautomatisierung in Zeiten von Continuous Delivery](http://www.heise.de/developer/artikel/Testautomatisierung-in-Zeiten-von-Continuous-Delivery-3300566.html) (Christoph Deppisch / Tobias Schneck)
+8/2016: [heise Developer: Testautomatisierung in Zeiten von Continuous Delivery](http://www.heise.de/developer/artikel/Testautomatisierung-in-Zeiten-von-Continuous-Delivery-3300566.html) (Christoph Deppisch / Tobias Schneck)
 
 8/2016: [Pressemitteilung:
 Testautomatisierung darf nicht bei Unit-Tests Halt machen ](https://www.consol.de/it-services/news/details/testautomatisierung-darf-nicht-bei-unit-tests-halt-machen-1/)
