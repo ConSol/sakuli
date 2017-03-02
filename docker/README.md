@@ -39,7 +39,7 @@
   ```
 
 ### More:
-Further Information about the usage of the Sakuli docker containers you find under:
+You can find further information about the usage of Sakuli docker containers here: 
 
 * **[Usage Sakuli Docker Containers](../docs/docker-containers.md)**
 * Publications:
