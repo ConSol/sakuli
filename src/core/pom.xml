@@ -45,6 +45,8 @@
     </properties>
 
     <build>
+        <finalName>${project.jar.name}</finalName>
+
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
@@ -89,9 +91,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <finalName>${project.jar.name}</finalName>
-                </configuration>
             </plugin>
 
             <!-- unpack sahi to include into the zip assembly -->
@@ -114,6 +113,28 @@
                                     <version>${sahi.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.sakuli</groupId>
+                                    <artifactId>common</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <!--Unpacks the config resources from the common module, e.g. for the twig templates,
+                    to be able to load it via java.nio.Path method in unit tests-->
+                    <execution>
+                        <id>unpack-test-resources</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
+                            <includes>**/common/config/**</includes>
+                            <artifactItems>
                                 <artifactItem>
                                     <groupId>org.sakuli</groupId>
                                     <artifactId>common</artifactId>
@@ -206,6 +227,12 @@
         <!--profil to deploy the zip file to labs.consol.de/sakuli/install-->
         <profile>
             <id>upload-release</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <!-- wagon plugin to upload the zipped releases to the labs server -->
@@ -371,8 +398,8 @@
 
         <!-- Sahi API Dependencies-->
         <dependency>
-            <groupId>rhino</groupId>
-            <artifactId>js</artifactId>
+            <groupId>org.mozilla</groupId>
+            <artifactId>rhino</artifactId>
         </dependency>
 
         <!-- SikuliX-Java Library (FULL LIBRARY) - is part of the  sikuli-setup.jar-->
@@ -413,7 +440,15 @@
             <artifactId>jersey-media-json-jackson</artifactId>
         </dependency>
 
-
+        <!-- jtwig template engine -->
+        <dependency>
+            <groupId>org.jtwig</groupId>
+            <artifactId>jtwig-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jtwig</groupId>
+            <artifactId>jtwig-spaceless-extension</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

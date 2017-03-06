@@ -1,0 +1,14 @@
+{% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
+    {% if (testCase.state.warning || testCase.state.critical || testCase.state.error) %}
+        , case "{{ testCase.name }}"$whitespace$
+        {% if (testCase.state.error) %}
+            EXCEPTION: {{ errorMessageCreator.exceptionMessageTestCase(testCase) }}
+        {% else %}
+            {% if (testCase.state.critical) %}
+                over runtime ( {{ testCase.duration }}s/crit at {{ testCase.criticalTime }}s)
+            {% else %}
+                over runtime ( {{ testCase.duration }}s/warn at {{ testCase.warningTime }}s)
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endfor %}

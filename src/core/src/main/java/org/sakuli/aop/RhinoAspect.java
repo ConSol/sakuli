@@ -23,7 +23,9 @@ import net.sf.sahi.report.ResultType;
 import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.apache.commons.lang.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.datamodel.actions.LogResult;
 import org.sakuli.loader.*;
@@ -36,7 +38,7 @@ import static org.apache.commons.lang.StringUtils.removeEnd;
 import static org.apache.commons.lang3.StringUtils.removeStart;
 
 /**
- * Aspect for the External Sahi Libary {@link net.sf.sahi}
+ * Aspect for the External Sahi Library {@link net.sf.sahi}
  *
  * @author tschneck Date: 17.10.13
  */
@@ -55,9 +57,9 @@ public class RhinoAspect extends BaseSakuliAspect {
      */
     @After("execution(* net.sf.sahi.rhino.RhinoScriptRunner.setReporter*(*))")
     public void getRhinoScriptRunner(JoinPoint joinPoint) {
-        logger.info("Add RhinoScriptRunner to the JavaBackEnd");
         BaseActionLoader environmentLoader = BeanLoader.loadBaseActionLoader();
         if (joinPoint.getTarget() instanceof RhinoScriptRunner) {
+            logger.info("Add RhinoScriptRunner to the JavaBackEnd");
             environmentLoader.setRhinoScriptRunner((RhinoScriptRunner) joinPoint.getTarget());
         } else {
             logger.warn(joinPoint.getTarget().getClass().getName() + " could not added to the JavaBackEnd!");

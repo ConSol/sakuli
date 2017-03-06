@@ -22,6 +22,7 @@ import org.sakuli.actions.TestCaseAction;
 import org.sakuli.actions.environment.Application;
 import org.sakuli.actions.environment.Environment;
 import org.sakuli.actions.screenbased.Region;
+import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,10 +57,16 @@ public class BeanLoader {
         return getBeanFactory().getBean(TestCaseAction.class);
     }
 
-    public static Application loadApplication(String applicationNameOrPath, String resumeOnException) {
+    public static Application loadApplication(String applicationNameOrPath, String resumeOnException) throws SakuliInitException {
         logger.debug("Get an new application object over BeanFactory for \""
                 + applicationNameOrPath + "\"");
-        return new Application(applicationNameOrPath, Boolean.valueOf(resumeOnException));
+        try {
+            return new Application(applicationNameOrPath, Boolean.valueOf(resumeOnException));
+        } catch (Throwable throwable) {
+            loadBaseActionLoader().getExceptionHandler().handleException(new SakuliInitException(throwable,
+                    "Unexpected error during creating an instance of class '" + Application.class.getName() + "'"));
+            return null;
+        }
     }
 
     public static Environment loadEnvironment(String resumeOnException) {
@@ -143,7 +150,7 @@ public class BeanLoader {
         if (beanFactory instanceof ListableBeanFactory) {
             beans = ((ListableBeanFactory) beanFactory).getBeansOfType(classDef);
         }
-        return beans != null ? beans : Collections.<String, T>emptyMap();
+        return beans != null ? beans : Collections.emptyMap();
     }
 
 }

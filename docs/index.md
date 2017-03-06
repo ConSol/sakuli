@@ -10,29 +10,18 @@ Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs
 ## Usage
 ### Basic setup
 
-* [Sakuli client **installation**](installation-client.md)
-* Submitting Sakuli results
-  * [to OMD (Nagios/Icinga2/Shinken)](installation-omd.md)
-    * [via **Gearman**](forwarder-gearman.md)
-    * [via **Database**](forwarder-database.md)
-    * [via **Icinga2**](forwarder-icinga2api.md)
+* [Sakuli client installation](installation-client.md)
+* [Sakuli JavaDSL setup](java-DSL.md)
+* [Usage Sakuli Docker Containers](../docs/docker-containers.md)
+* Submitting Sakuli results to [OMD](installation-omd.md)
+    * [to Gearmand](forwarder-gearman.md)
+    * [into Database](forwarder-database.md)
+    * [to Icinga2 REST API](forwarder-icinga2api.md)
+    * [to Check_MK as local check](forwarder-checkmk.md)
 * Tutorial: [First steps](first-steps.md)
+* Example projects on GitHub [ConSol/sakuli-examples](https://github.com/ConSol/sakuli-examples)
 
-### Advanced topics###
-
-* **Containerized Sakuli checks with [Docker](https://www.docker.com/)**
-  * **[Usage Sakuli Docker Containers](../docs/docker-containers.md)**
-  * Presentation **[Containerized End-2-End-Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)**
-  * Example project on GitHub **[ConSol/sakuli-example-testautomation-day](https://github.com/ConSol/sakuli-example-testautomation-day)**.
-* **Headless** Sakuli checks
-  * [on Windows](headless-windows.md) -- in progress
-  * [on Linux](headless-linux.md)
-* [**additional** Sakuli Settings](additional-settings.md)
-* **Troubleshooting** and **Tuning**
-  * [**Sakuli Client**](troubleshooting-tuning-sakuli-client.md)
-  * [**OMD/Nagios**](troubleshooting-omd.md)
-
-## Sakuli API
+### Sakuli API
 
 Sakuli provides methods of three different types:
 
@@ -51,8 +40,28 @@ For documentation see
 * [MouseButton](sakuli-api.md#MouseButton)
 * [Logger](sakuli-api.md#Logger)
 
+### Sakuli Java API
+
+In addition to the JavaScript APIs Sakuli provides a Java DSL for writing tests in Java. This Sakuli Java API enables users to write
+Sakuli tests in pure Java unit tests using JUnit or TestNG. The good news about that is that you are still able to access any
+native application UI with screen related actions. The API is documented in [Java DSL](java-dsl.md).
+
+## Advanced topics
+
+* **Containerized Sakuli checks with [Docker](https://www.docker.com/)**
+  * [Usage Sakuli Docker Containers](../docs/docker-containers.md)
+  * Presentation [Containerized End-2-End-Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)
+  * Example project on GitHub [toschneck/sakuli-example-bakery-testing](https://github.com/toschneck/sakuli-example-bakery-testing)
+* **Headless** Sakuli checks
+  * [on Windows](headless-windows.md) -- in progress
+  * [on Linux](headless-linux.md)
+* [additional Sakuli Settings](additional-settings.md)
+* **Troubleshooting** and **Tuning**
+  * [Sakuli Client](troubleshooting-tuning-sakuli-client.md)
+  * [OMD/Nagios](troubleshooting-omd.md)
+
 ## How to contribute
 
-* [Installation instructions for **developers**](development/installation-developers.md)
-* [How to prepare a **new releas**e](development/how-to-release.md)
-* [**Maven Build Aspects**](development/maven-aspects.md)
+* [Installation instructions for developers](development/installation-developers.md)
+* [How to prepare a new release](development/how-to-release.md)
+* [Maven Build Aspects](development/maven-aspects.md)

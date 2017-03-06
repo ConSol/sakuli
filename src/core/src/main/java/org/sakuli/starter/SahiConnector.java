@@ -27,6 +27,7 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliInitException;
+import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.starter.helper.SahiProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +56,14 @@ public class SahiConnector {
 
     @Autowired
     private SakuliExceptionHandler sakuliExceptionHandler;
+
+    static boolean isSahiScriptTimout(Throwable exception) {
+        return exception != null && (
+                exception.getMessage().startsWith("Script did not start within")
+                        //check also the suppressed Exceptions
+                        || isSahiScriptTimout(exception.getCause())
+        );
+    }
 
     /**
      * Initialize method to start the sahi proxy thread, if needed
@@ -101,12 +110,17 @@ public class SahiConnector {
                 logger.info("Sahi-Script-Runner executed with " + output);
 
                 //should only thrown if an exception could fetched by the backend of some reason
-                if (output.equals("FAILURE")
-                        && testSuite.getException() == null) {
-                    throw new SakuliInitException("SAHI-Proxy returned 'FAILURE' ");
+                if (output.equals("FAILURE")) {
+                    if (isSahiScriptTimout(testSuite.getException())) {
+                        logger.warn("Sahi-Script-Runner timeout detected, start retry!");
+                        SakuliException causingError = new SakuliException(testSuite.getException());
+                        //reset all values
+                        InitializingServiceHelper.invokeInitializingServcies();
+                        this.reconnect(causingError);
+                    } else if (testSuite.getException() == null) {
+                        throw new SakuliInitException("SAHI-Proxy returned 'FAILURE' ");
+                    }
                 }
-
-
             } catch (ConnectException | IllegalMonitorStateException e) {
                 //Reconnect - wait for Thread "sahiRunner"
                 this.reconnect(e);

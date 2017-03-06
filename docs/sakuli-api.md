@@ -29,6 +29,7 @@
   * [Environment.getRegionFromFocusedWindow()](#Environment.getRegionFromFocusedWindow)
   * [Environment.takeScreenshot(pathName)](#Environment.takeScreenshot)
   * [Environment.sleep(seconds)](#Environment.sleep)
+  * [Environment.sleepMs(milliseconds)](#Environment.sleepMs)
   * [Environment.getClipboard()](#Environment.getClipboard)
   * [Environment.setClipboard(text)](#Environment.setClipboard)
   * [Environment.pasteClipboard()](#Environment.pasteClipboard)
@@ -99,6 +100,7 @@
   * [Region.highlight(seconds)](#Region.highlight)
   * [Region.takeScreenshot(filename)](#Region.takeScreenshot)
   * [Region.sleep(seconds)](#Region.sleep)
+  * [Region.sleepMs(milliseconds)](#Region.sleepMs)
   * [Region.extractText()](#Region.extractText)
 * [RegionRectangle](#RegionRectangle)
  
@@ -342,6 +344,7 @@ Environment - Represents the environment of the current test host.
   * [Environment.getRegionFromFocusedWindow()](#Environment.getRegionFromFocusedWindow)
   * [Environment.takeScreenshot(pathName)](#Environment.takeScreenshot)
   * [Environment.sleep(seconds)](#Environment.sleep)
+  * [Environment.sleepMs(milliseconds)](#Environment.sleepMs)
   * [Environment.getClipboard()](#Environment.getClipboard)
   * [Environment.setClipboard(text)](#Environment.setClipboard)
   * [Environment.pasteClipboard()](#Environment.pasteClipboard)
@@ -405,6 +408,15 @@ Blocks the current testcase execution for x seconds
 **Params**
 
 - seconds `number` - to sleep  
+
+**Returns**:  - this Environment or NULL on errors.  
+<a name="Environment.sleepMs"></a>
+##Environment.sleepMs(milliseconds)
+Blocks the current testcase execution for x milliseconds
+
+**Params**
+
+- milliseconds `number` - to sleep  
 
 **Returns**:  - this Environment or NULL on errors.  
 <a name="Environment.getClipboard"></a>
@@ -758,6 +770,7 @@ Region - Represents a region as a part of or the hole screen.
   * [Region.highlight(seconds)](#Region.highlight)
   * [Region.takeScreenshot(filename)](#Region.takeScreenshot)
   * [Region.sleep(seconds)](#Region.sleep)
+  * [Region.sleepMs(milliseconds)](#Region.sleepMs)
   * [Region.extractText()](#Region.extractText)
 
 <a name="Region.find"></a>
@@ -1140,6 +1153,15 @@ Blocks the current testcase execution for x seconds
 **Params**
 
 - seconds `number` - to sleep  
+
+**Returns**:  - this Region or NULL on errors.  
+<a name="Region.sleepMs"></a>
+##Region.sleepMs(milliseconds)
+Blocks the current testcase execution for x milliseconds
+
+**Params**
+
+- milliseconds `number` - to sleep  
 
 **Returns**:  - this Region or NULL on errors.  
 <a name="Region.extractText"></a>

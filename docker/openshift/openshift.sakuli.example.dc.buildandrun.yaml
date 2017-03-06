@@ -1,0 +1,188 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: sakuli-e2e-build-and-run-dc
+metadata:
+  annotations:
+    description: Sakuli End-2-End testing client template (build and run as deployment config)
+    iconClass: icon-beaker
+    tags: consol, sakuli, ubuntu, xfce
+    version: 1.1.0-SNAPSHOT
+  creationTimestamp: null
+  name: sakuli-e2e-build-and-run-dc
+### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
+parameters:
+- description: The name for the E2E test suite.
+  name: E2E_TEST_NAME
+  required: true
+  value: sakuli-my-example
+- description: 'Custom hostname for http service route.  Leave blank for default hostname, e.g.: <E2E_TEST_NAME-name>-<project>.<default-domain-suffix>'
+  name: HOSTNAME_HTTP
+- description: The name for the taged target image
+  name: IMAGE
+  required: true
+  value: sakuli-example-image
+- description: Git source URI for application
+  name: SOURCE_REPOSITORY_URL
+  required: true
+  value: https://github.com/ConSol/sakuli.git
+- description: Git branch/tag reference
+  name: SOURCE_REPOSITORY_REF
+# TODO TS: remove tag after finishing
+  value: "feature/#218_docker_usermod_openshift"
+- description: Source Folder where the Dockerfile is placed example `docker`
+  name: SOURCE_DOCKER_CONTEXT_DIR
+  value: docker
+- description: Name of the Dockerfile for example Dockerfile.sakuli.ubuntu.xfce
+  name: SOURCE_DOCKERFILE
+  value: Dockerfile.sakuli.ubuntu.xfce
+- description: GitHub trigger secret
+  from: '[a-zA-Z0-9]{8}'
+  generate: expression
+  name: GITHUB_WEBHOOK_SECRET
+  required: true
+- description: Generic build trigger secret
+  from: '[a-zA-Z0-9]{8}'
+  generate: expression
+  name: GENERIC_WEBHOOK_SECRET
+  required: true
+- description: Image tag of the target image
+  name: IMAGE_TAG
+  required: true
+  value: latest
+### Configuration of OpenShift objects
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      application: ${IMAGE}
+    name: ${IMAGE}
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      application: ${IMAGE}
+    name: ${IMAGE}
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${IMAGE}:${IMAGE_TAG}
+    source:
+      git:
+        ref: ${SOURCE_REPOSITORY_REF}
+        uri: ${SOURCE_REPOSITORY_URL}
+      type: Git
+      contextDir: ${SOURCE_DOCKER_CONTEXT_DIR}
+    strategy:
+      type: Docker
+      dockerStrategy:
+        dockerfilePath: ${SOURCE_DOCKERFILE}
+        noCache: false
+        forcePull: true
+    triggers:
+    - github:
+        secret: ${GITHUB_WEBHOOK_SECRET}
+      type: GitHub
+    - generic:
+        secret: ${GENERIC_WEBHOOK_SECRET}
+      type: Generic
+    - imageChange: {}
+      type: ImageChange
+    - type: ConfigChange
+### POD deployment config
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}-dc
+  spec:
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          application: ${E2E_TEST_NAME}
+          dc: ${E2E_TEST_NAME}-dc
+        name: ${E2E_TEST_NAME}-pod
+      dnsPolicy: ClusterFirst
+      terminationGracePeriodSeconds: 5
+      spec:
+      # restartPolicy: Never
+        containers:
+        - name: ${E2E_TEST_NAME}-pod-c1
+          image: ${IMAGE}
+          imagePullPolicy: Always
+          args:
+            ### make normal UI startup to connect via: oc rsh <pod-name> bash
+            #- --tail-log
+            ### run in chrome
+            # - run
+            # - /headless/sakuli/test
+            # - -browser
+            # - chrome
+            ### set e.g. debug level
+            #- -D
+            #- log.level.sakuli=DEBUG
+          ### checks that vnc server is up and running
+          livenessProbe:
+            tcpSocket:
+              port: 5901
+            initialDelaySeconds: 1
+            timeoutSeconds: 1
+          ### checks if http-vnc connection is working
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 6901
+              scheme: HTTP
+            initialDelaySeconds: 1
+            timeoutSeconds: 1
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${E2E_TEST_NAME}
+        from:
+          kind: ImageStreamTag
+          name: ${IMAGE}:latest
+      type: ImageChange
+    - type: ConfigChange
+### Service -> POD config
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Sakuli client vnc and http port
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}-ser
+  spec:
+    ports:
+    - name: http-port-tcp
+      protocol: TCP
+      port: 6901
+      targetPort: 6901
+    - name: vnc-port-tcp
+      protocol: TCP
+      port: 5901
+      targetPort: 5901
+    selector:
+      dc: ${E2E_TEST_NAME}-dc
+### Route -> Service config
+- apiVersion: v1
+  id: ${E2E_TEST_NAME}-http
+  kind: Route
+  metadata:
+    annotations:
+      description: Route for vnc's http service.
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}-http
+  spec:
+    host: ${HOSTNAME_HTTP}
+    to:
+      name: ${E2E_TEST_NAME}-ser
+    port:
+      targetPort: http-port-tcp

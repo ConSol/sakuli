@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The CacheHandlingResultService will manage the cached steps definitions in the file `.sakuli-steps-cache`.
+ * The CacheHandlingResultService will manage the cached steps definitions in the file `steps.cache`.
  * If the {@link org.sakuli.datamodel.TestSuite#state} is NOT {@link TestSuiteState#ERRORS} or {@link TestSuiteState#RUNNING} it will
  * remove all present not called step definitions and persist its.
  * This Service MUST be called as first Service before all other {@link org.sakuli.services.ResultService}s

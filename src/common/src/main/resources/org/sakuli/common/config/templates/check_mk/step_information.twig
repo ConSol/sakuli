@@ -1,0 +1,8 @@
+{% for testStep in testCase.stepsAsSortedSet %}
+    , step "{{ testStep.name }}"$whitespace$
+    {% if (testStep.state.error) %}
+        EXCEPTION: {{ errorMessageCreator.exceptionMessage(testStep) }}
+    {% else %}
+        over runtime ({{ testStep.duration }}s/warn at {{ testStep.warningTime }}s)
+    {% endif %}
+{% endfor %}

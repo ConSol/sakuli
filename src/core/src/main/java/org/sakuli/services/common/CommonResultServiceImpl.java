@@ -88,7 +88,11 @@ public class CommonResultServiceImpl extends AbstractResultService {
     }
 
     public void cleanUp() {
-        CleanUpHelper.cleanClipboard();
-        CleanUpHelper.releaseAllModifiers();
+        try {
+            CleanUpHelper.cleanClipboard();
+            CleanUpHelper.releaseAllModifiers();
+        } catch (Throwable e) {
+            LOGGER.warn("Some unexpected errors during the clean up procedure:", e);
+        }
     }
 }

@@ -195,7 +195,6 @@ public class RhinoAspectTest extends AopBaseTest {
                 className + "." + methodName + "()");
     }
 
-
     @Test
     public void testDoEnvironmentLog() throws Exception {
         initMocks();
