@@ -591,7 +591,7 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
         doReturn(44.80f).when(testSuite).getDuration();
         doReturn(new DateTime(1970, 1, 1, 10, 36, 0).toDate()).when(testSuite).getStartDate();
         doReturn(new DateTime(1970, 1, 1, 10, 36, 44, 800).toDate()).when(testSuite).getStopDate();
-        when(testSuite.getExceptionMessages(anyBoolean(), any())).thenCallRealMethod();
+        when(testSuite.getExceptionMessages(anyBoolean())).thenCallRealMethod();
         when(testSuite.getException()).thenCallRealMethod();
         SortedSet<TestCase> testCaseAsSortedSet = new TreeSet<>(Arrays.asList(
                 new TestCaseExampleBuilder()

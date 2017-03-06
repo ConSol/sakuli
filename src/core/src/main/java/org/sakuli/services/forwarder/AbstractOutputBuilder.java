@@ -19,7 +19,9 @@
 package org.sakuli.services.forwarder;
 
 import org.apache.commons.lang.StringUtils;
-import org.sakuli.datamodel.*;
+import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestSuiteState;
@@ -50,8 +52,6 @@ public abstract class AbstractOutputBuilder {
     protected ScreenshotDivConverter screenshotDivConverter;
     @Autowired
     protected TestSuite testSuite;
-    @Autowired
-    protected SakuliProperties sakuliProperties;
 
     public static String replacePlaceHolder(String message, PlaceholderMap placeholderStringMap) {
         if (StringUtils.isBlank(message)) {
@@ -70,13 +70,13 @@ public abstract class AbstractOutputBuilder {
         return modifiedString;
     }
 
-    static String generateStepInformation(SortedSet<TestCaseStep> steps, SakuliProperties sakuliProperties) {
+    static String generateStepInformation(SortedSet<TestCaseStep> steps) {
         StringBuilder sb = new StringBuilder();
         steps.stream().filter(step -> step.getState().isWarning() || step.getState().isError())
                 .forEach(step -> {
                     sb.append(", step \"").append(step.getName()).append("\" ");
                     if (step.getState().isError()) {
-                        sb.append("EXCEPTION: ").append(step.getExceptionMessages(true, sakuliProperties.getLogExceptionFormatMappings()));
+                        sb.append("EXCEPTION: ").append(step.getExceptionMessages(true));
                     } else {
                         sb.append("over runtime (")
                                 .append(NagiosFormatter.formatToSec(step.getDuration()))
@@ -88,13 +88,13 @@ public abstract class AbstractOutputBuilder {
         return sb.toString();
     }
 
-    static String generateCaseInformation(SortedSet<TestCase> cases, SakuliProperties sakuliProperties) {
+    static String generateCaseInformation(SortedSet<TestCase> cases) {
         StringBuilder sb = new StringBuilder();
         cases.stream().filter(c -> c.getState().isWarning() || c.getState().isCritical() || c.getState().isError())
                 .forEach(c -> {
                     sb.append(", case \"").append(c.getName()).append("\" ");
                     if (c.getState().isError()) {
-                        sb.append("EXCEPTION: ").append(c.getExceptionMessages(true, sakuliProperties.getLogExceptionFormatMappings()));
+                        sb.append("EXCEPTION: ").append(c.getExceptionMessages(true));
                     } else {
                         sb.append("over runtime (").append(NagiosFormatter.formatToSec(c.getDuration()));
                         if (c.getState().isCritical()) {
@@ -144,15 +144,15 @@ public abstract class AbstractOutputBuilder {
         placeholderMap.put(WARN_THRESHOLD, String.valueOf(testSuite.getWarningTime()));
         placeholderMap.put(CRITICAL_THRESHOLD, String.valueOf(testSuite.getCriticalTime()));
         placeholderMap.put(ERROR_SCREENSHOT, screenshotDiv != null ? screenshotDiv.getPayloadString() : null);
-        placeholderMap.put(ERROR_MESSAGE, testSuite.getExceptionMessages(true, sakuliProperties.getLogExceptionFormatMappings()));
+        placeholderMap.put(ERROR_MESSAGE, testSuite.getExceptionMessages(true));
         placeholderMap.put(SUITE_FOLDER, testSuite.getTestSuiteFolder() != null ? testSuite.getTestSuiteFolder().toString() : null);
         placeholderMap.put(HOST, testSuite.getHost());
         placeholderMap.put(BROWSER_INFO, testSuite.getBrowserInfo());
         placeholderMap.put(TD_CSS_CLASS, "service" + outputState.name());
-        placeholderMap.put(CASE_INFORMATION, generateCaseInformation(testSuite.getTestCasesAsSortedSet(), sakuliProperties));
+        placeholderMap.put(CASE_INFORMATION, generateCaseInformation(testSuite.getTestCasesAsSortedSet()));
         placeholderMap.put(STEP_INFORMATION,
                 testSuite.getTestCasesAsSortedSet().stream()
-                        .map(c -> generateStepInformation(c.getStepsAsSortedSet(), sakuliProperties))
+                        .map(c -> generateStepInformation(c.getStepsAsSortedSet()))
                         .collect(Collectors.joining()));
         return placeholderMap;
     }
@@ -202,9 +202,9 @@ public abstract class AbstractOutputBuilder {
         placeholderMap.put(STOP_DATE, (testCase.getStopDate() == null) ? "xx" : dateFormat.format(testCase.getStopDate()));
         placeholderMap.put(WARN_THRESHOLD, String.valueOf(testCase.getWarningTime()));
         placeholderMap.put(CRITICAL_THRESHOLD, String.valueOf(testCase.getCriticalTime()));
-        placeholderMap.put(ERROR_MESSAGE, testCase.getExceptionMessages(true, sakuliProperties.getLogExceptionFormatMappings()));
+        placeholderMap.put(ERROR_MESSAGE, testCase.getExceptionMessages(true));
         placeholderMap.put(ERROR_SCREENSHOT, generateTestCaseScreenshotsHTML(testCase));
-        placeholderMap.put(STEP_INFORMATION, generateStepInformation(testCase.getStepsAsSortedSet(), sakuliProperties));
+        placeholderMap.put(STEP_INFORMATION, generateStepInformation(testCase.getStepsAsSortedSet()));
         placeholderMap.put(CASE_FILE, testCase.getTcFile() != null ? testCase.getTcFile().toString() : null);
         placeholderMap.put(CASE_START_URL, testCase.getStartUrl());
         placeholderMap.put(CASE_LAST_URL, testCase.getLastURL());

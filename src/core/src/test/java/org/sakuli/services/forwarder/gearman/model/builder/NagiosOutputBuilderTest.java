@@ -19,16 +19,24 @@
 package org.sakuli.services.forwarder.gearman.model.builder;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.sakuli.BaseTest;
-import org.sakuli.builder.*;
+import org.sakuli.builder.TestCaseExampleBuilder;
+import org.sakuli.builder.TestCaseStepExampleBuilder;
+import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.datamodel.state.*;
+import org.sakuli.datamodel.state.TestCaseState;
+import org.sakuli.datamodel.state.TestCaseStepState;
+import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
-import org.sakuli.services.forwarder.*;
+import org.sakuli.services.forwarder.AbstractOutputBuilder;
+import org.sakuli.services.forwarder.MonitoringPropertiesTestHelper;
+import org.sakuli.services.forwarder.ScreenshotDivConverter;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.model.NagiosOutput;
 import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
@@ -38,11 +46,12 @@ import org.testng.annotations.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 public class NagiosOutputBuilderTest {
@@ -52,8 +61,6 @@ public class NagiosOutputBuilderTest {
     private GearmanProperties gearmanProperties;
     @Mock
     private NagiosPerformanceDataBuilder nagiosPerformanceDataBuilder;
-    @Mock
-    private SakuliProperties sakuliProperties;
     @Spy
     @InjectMocks
     private ScreenshotDivConverter screenshotDivConverter;
@@ -66,8 +73,6 @@ public class NagiosOutputBuilderTest {
         MockitoAnnotations.initMocks(this);
         ReflectionTestUtils.setField(testling, "screenshotDivConverter", screenshotDivConverter);
         MonitoringPropertiesTestHelper.initMock(gearmanProperties);
-
-        when(sakuliProperties.getLogExceptionFormatMappings()).thenReturn(Collections.emptyMap());
     }
 
     @Test

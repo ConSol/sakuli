@@ -1,6 +1,6 @@
-# Usage of Sakuli Docker Containers
+# Usage of Sakuli Docker Images
 
-Docker containers allow you to run a Sakuli test in an isolated environment, called "container", which is always started off from the same base image. This ensures that tests always run under equal conditions.
+Docker allows you to run a Sakuli test in an isolated environment, called "container", which is always started off from the same base image. This ensures that tests always run under equal conditions.
 
 ## Image OS types
 The repository's subfolder [./docker](https://github.com/ConSol/sakuli/tree/master/docker) contains all source files Sakuli docker images are made of. Currently we provide images on  [DockerHub](https://hub.docker.com) for:
@@ -35,7 +35,7 @@ The running containers are accessible with VNC (default password: *sakuli*) by:
   * [http://localhost:6901/vnc_auto.html?password=sakuli]()
 
 
-## Get Sakuli docker images
+## Get Sakuli Docker Images
 
 The following example command pulls the CentOS7 image from [DockerHub](https://hub.docker.com/r/consol/sakuli-centos-xfce/):
 
@@ -73,7 +73,7 @@ There is more than one way to integrate a custom testsuite in a container, discu
 
 ### 1.1) `run` command
 
-Mount the suite folder on your host into the container and override `CMD` from Dockerfile (=argument for `ENTRYPOINT`) with custom parameters for the Sakuli starter `sakuli`.  In this way you can also give further parameters to Sakuli e.g. to use another browser (`-browser chrome`).
+Mount the suite folder on your host into the container and overwrite `CMD` from Dockerfile (=argument for `ENTRYPOINT`) with custom parameters for the Sakuli starter `sakuli`.  In this way you can also give further parameters to Sakuli e.g. to use another browser (`-browser chrome`).
 
     # running tests in chrome
     ~$ docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce 'run "$SAKULI_TEST_SUITE" -browser chrome'   
@@ -81,7 +81,7 @@ Mount the suite folder on your host into the container and override `CMD` from D
  To get all possible command line parameters call `docker run consol/sakuli-ubuntu-xfce -help`.
 
 
-CMD can be overrideen in two ways:
+CMD can be overwritten in two ways:
 
 #### 1.1.1) Using the command line
 
@@ -108,7 +108,7 @@ When executed in the same directory as `docker-compose.yml`, a simple `docker-co
 `docker-compose rm -f` in contrast removes all currently stopped and running containers, which defined in the `docker-compose.yml`. Otherwise, if `docker-compose up` will called again, the test execution will reattach the instance and the start the test execution again in the same container instance.
 
 ### 1.2) Environment variable `SAKULI_TEST_SUITE`
-Mount a folder on your host into the container and override the environment variable `SAKULI_TEST_SUITE`.
+Mount a folder on your host into the container and overwrite the environment variable `SAKULI_TEST_SUITE`.
 
 #### 1.2.1) Using the command line
 
@@ -153,7 +153,7 @@ This command will
   * mount the test suites folder to `/home/myuser/my-sakuli-maven-project` within the container
   * execute the maven build with default command `mvn clean test`
 
-If you want to for example also build youre maven artifacts over `mvn install` override the default command like follow:
+If you want to for example also build youre maven artifacts over `mvn install` overwrite the default command like follow:
 
     ~$ docker run -it -p 5901:5901 -p 6901:6901 -v "/home/myuser/my-sakuli-maven-project:/opt/maven" consol/sakuli-ubuntu-xfce-java 'mvn clean install'
 
@@ -173,7 +173,7 @@ When executed in the same directory as `docker-compose.yml`, a simple `docker-co
 
 `docker-compose rm -f` in contrast removes all currently stopped and running containers, which defined in the `docker-compose.yml`. Otherwise, if `docker-compose up` will called again, the test execution will reattach the instance and the start the test execution again in the same container instance.
 
-Like above you can for example also override the default mvn command and use a additional persistent volume for caching the maven dependencies:
+Like above you can for example also overwrite the default mvn command and use a additional persistent volume for caching the maven dependencies:
 
     version: '2'
 

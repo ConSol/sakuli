@@ -2,7 +2,7 @@
 
 This page describes the common steps to **install and test** Sakuli on **Windows** and **Linux**.
   * For updating Sakuli, see **[Upgrade process](#upgrade-process)**.
-  * For using **docker containers**, see **[Usage Sakuli Docker Containers](docker-containers.md)**.
+  * For using **docker containers**, see **[Usage Sakuli Docker Images](docker-images.md)**.
 
 The default installation path of a particular Sakuli version is referenced as `%SAKULI_HOME%`, that is the *version* folder inside of the folder "sakuli":
 

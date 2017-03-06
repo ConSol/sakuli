@@ -6,7 +6,7 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function() {
-  // In case that Sakuli SSI is present, override te image href to show the history lightbox
+  // In case that Sakuli SSI is present, overwrite te image href to show the history lightbox
   if (typeof lightbox == 'function') {
         var urlArgs = toQueryParams();
         jQuery('a').has('img.screenshot').attr("href", "javascript:lightbox('" + urlArgs['host'] + "','" + urlArgs['service'] + "')" );
