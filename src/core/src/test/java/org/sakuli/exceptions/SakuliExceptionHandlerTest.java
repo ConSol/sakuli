@@ -107,7 +107,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         //test Suppressed
         String excpMessage2 = "ExceptionSuppressed";
         testling.handleException(new Exception(excpMessage2));
-        assertEquals(testSuite.getExceptionMessages(false, Collections.emptyMap()), testExcMessage + "\n\t\tSuppressed EXCEPTION: " + excpMessage2);
+        assertEquals(testSuite.getExceptionMessages(false), testExcMessage + "\n\t\tSuppressed EXCEPTION: " + excpMessage2);
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
         assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
@@ -134,7 +134,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         //test Suppressed
         String excpMessage2 = "ExceptionSuppressed";
         testling.handleException(new Exception(excpMessage2));
-        assertEquals(testCase.getExceptionMessages(false, Collections.emptyMap()), testExcMessage + "\n\t\tSuppressed EXCEPTION: " + excpMessage2);
+        assertEquals(testCase.getExceptionMessages(false), testExcMessage + "\n\t\tSuppressed EXCEPTION: " + excpMessage2);
         assertEquals(testCase.getState(), TestCaseState.ERRORS);
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
 

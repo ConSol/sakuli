@@ -56,9 +56,9 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
     }
 
     @Override
-    public String getResultString(SakuliProperties sakuliProperties) {
+    public String getResultString() {
         return "\n\t\t======== test case step \"" + this.getName() + "\" ended with " + getState() + " ================="
-                + super.getResultString(sakuliProperties).replace("\n", "\n\t\t");
+                + super.getResultString().replace("\n", "\n\t\t");
     }
 
     @Override

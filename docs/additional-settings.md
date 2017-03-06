@@ -11,11 +11,11 @@ This page contains different topics regarding the configuration of both **Sakuli
 1. as a **global testsuite property** in `test-suites-folder/sakuli.properties`
    -> valid for **all test suites** within this folder
 2. as a **testsuite property** in `test-suites-folder/test-suite/testsuite.properties`
-   -> valid for **all test cases** within a test suite 
+   -> valid for the **test suite** itself and **all test cases** within it 
 3. as a **Java VM option** like  `-D log.level.sakuli=DEBUG`, as option of the Sakuli starter
-   -> valid for only one run
+   -> valid for only one test run
 
-We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file; your changes will not be preserved. 
+We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file and would overwrite the existing one; your changes would not be preserved. 
 
 ### Forwarder
 
@@ -71,40 +71,6 @@ The logging verbosity of all compoments *Sakuli, Sahi, Sikuli, Spring* - and *Ja
 * **`sakuli.log.folder`**`=${sakuli.testsuite.folder}/_logs`  -  Log folder
 
 In general it is also possible to add your own Logback configuration under `__SAKULI_HOME__/config/sakuli-log-config.xml`. For more information about the Logback syntax please refer to the [Logback manual](http://logback.qos.ch/manual/configuration.html).
-
-#### Log exception format
-
-* **`sakuli.log.exception.format`**`=TypeError (.*)`  -  Format regular expression 
-
-Optional custom exception message logging format expression. This is a regular expression that formats all exception messages before they get printed to results or forwarded to external systems like OMD Gearman. The regular expression works on groups that identify
-the part of the message that should be included. You can use multiple groups in order to extract multiple message snippets to the final result
-
-For example if we have following error message given:
-
-    Something went wrong!
-    Now some important information:
-    TypeError el is undefined AccessError el is not accessible
-    Some more details follow now ...
-    
-We can extract the important information with this regular expression: **TypeError(.*).*AccessError\s(.*)**
-
-Now we get the final error message: **el is undefined el is not accessible**
-
-The log exception format property supports multiple expression values. You can use a JSON array syntax when having more than one regular expression that should be evaluated.
-
-* **`sakuli.log.exception.format`**`=["TypeError(.*)", "AccessError(.*)", "OtherError(.*)"]`  -  Multiple format regular expressions 
-
-All regular expressions in the list are evaluated in sequence and the results get combined to a single formatted exception message.
-
-We can also use custom error messages in order to customize the resulting exception log message. You can map the exception log format expressions to a custom text like this:
- 
-* **`sakuli.log.exception.format`**`=["TypeError(.*) => Type error: %s", "AccessError(.*) => Access error: %s", "OtherError.* => Some other error occurred"]`  -  Multiple format regular expressions with custom text mappings
- 
-The exception log expression is mapped to a custom text using the "=>" operator. So the regular expression 'TypeError(.*)' is mapped to the custom message 'Type error: %s'. The custom text is able to use regular expression back 
-references. Just use simple Java message format parameters (e.g. '%s') in your custom error message in order to reference regular expression groups as back reference.
- 
-Multiple back references are supported, too. Respectively use indices when using the Java String format parameters in your custom error message ('%1s', '%2s' and so on). When no regular expression group is used you can simple map 
-the regular expression match to a custom message as shown in the expression: 'OtherError.* => Some other error occurred'.
 
 #### Log file rotation 
 

@@ -25,11 +25,6 @@ import org.sakuli.datamodel.properties.SakuliProperties;
  *         Date: 09.04.15
  */
 public class CommonResultServiceMockImpl extends CommonResultServiceImpl {
-
-    public CommonResultServiceMockImpl(SakuliProperties sakuliProperties) {
-        super(sakuliProperties);
-    }
-
     @Override
     public void cleanUp() {
         // do nothing

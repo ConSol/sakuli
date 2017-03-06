@@ -79,7 +79,7 @@ public class DaoTestCaseImpl extends Dao implements DaoTestCase {
         //try to save the screenshot
         tcParameters.addValue("screenshot", getScreenshotAsSqlLobValue(testCase), Types.BLOB);
         tcParameters.addValue("duration", testCase.getDuration());
-        tcParameters.addValue("msg", testCase.getExceptionMessages(true, sakuliProperties.getLogExceptionFormatMappings()));
+        tcParameters.addValue("msg", testCase.getExceptionMessages(true));
 
         //generate the sql-statement
         SimpleJdbcInsert insertTCResults = new SimpleJdbcInsert(getDataSource())

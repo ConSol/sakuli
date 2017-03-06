@@ -34,7 +34,7 @@
         <property name="writePropertiesToSahiConfig" value="false"/>
         <property name="locations">
             <list>
-                <!-- override the properties from the test-suite folder and so on-->
+                <!-- overwrite the properties from the test-suite folder and so on-->
                 <value>classpath:integration-test.sakuli.properties</value>
             </list>
         </property>

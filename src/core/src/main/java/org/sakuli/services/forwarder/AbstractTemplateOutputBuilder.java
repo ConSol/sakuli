@@ -24,6 +24,7 @@ import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.jtwig.spaceless.SpacelessExtension;
 import org.jtwig.spaceless.configuration.SpacelessConfiguration;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.configuration.*;
@@ -47,6 +48,8 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
 
     @Autowired
     protected SakuliExceptionHandler exceptionHandler;
+    @Autowired
+    private SakuliProperties sakuliProperties;
 
     /**
      * Returns the name of the converter. The name is used to dynamically retrieve the template for the converter.
@@ -72,7 +75,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                     .add(new GetOutputStateFunction())
                     .add(new GetOutputDurationFunction())
                     .add(new ExtractScreenshotFunction(screenshotDivConverter))
-                    .add(new AbbreviateFunction(sakuliProperties.getLogExceptionFormatMappings()))
+                    .add(new AbbreviateFunction())
                     .and()
                     .build();
             JtwigTemplate template = JtwigTemplate.fileTemplate(getTemplatePath().toFile(), configuration);

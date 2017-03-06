@@ -41,7 +41,7 @@
 ### More:
 You can find further information about the usage of Sakuli docker containers here: 
 
-* **[Usage Sakuli Docker Containers](../docs/docker-containers.md)**
+* **[Usage Sakuli Docker Images](../docs/docker-images.md)**
 * Publications:
  * **[Containerized UI-Tests in Java with Sakuli and Docker](https://labs.consol.de/sakuli/development/2016/10/14/sakuli-java-dsl.html)**
 * Presentations:

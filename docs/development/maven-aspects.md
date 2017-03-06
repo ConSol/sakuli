@@ -53,7 +53,7 @@ Profiles can be added with option `-P`, followed by a parameter, e.g.
           ```
 
 * `release-build` (internal use)
- This profile will be only enabled if you perform a release, see [How to Release](how-to-release.md). In this case it is necessary to override the path of the sahi installation.
+ This profile will be only enabled if you perform a release, see [How to Release](how-to-release.md). In this case it is necessary to overwrite the path of the sahi installation.
 
 Example of Maven config file `.m2/settings.xml`:
 

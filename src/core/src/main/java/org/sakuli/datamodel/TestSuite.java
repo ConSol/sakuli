@@ -124,26 +124,26 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
     }
 
     @Override
-    public String getResultString(SakuliProperties sakuliProperties) {
+    public String getResultString() {
         String stout = "\n=========== RESULT of SAKULI Testsuite \"" + getId() + "\" - " + getState() + " ================="
                 + "\ntest suite id: " + this.getId()
                 + "\nguid: " + this.getGuid()
-                + super.getResultString(sakuliProperties)
+                + super.getResultString()
                 + "\ndb primary key of job table: " + this.getDbJobPrimaryKey()
                 + "\nbrowser: " + this.getBrowserInfo();
         if (!CollectionUtils.isEmpty(testCases)) {
             for (TestCase tc : getTestCasesAsSortedSet()) {
-                stout += tc.getResultString(sakuliProperties);
+                stout += tc.getResultString();
             }
         }
         return stout;
     }
 
     @Override
-    public String getExceptionMessages(boolean flatFormatted, Map<String, String> formatExpressions) {
-        StringBuilder suiteErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted, formatExpressions)));
+    public String getExceptionMessages(boolean flatFormatted) {
+        StringBuilder suiteErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted)));
         for (TestCase testCase : getTestCasesAsSortedSet()) {
-            final String tcErrorMessage = testCase.getExceptionMessages(flatFormatted, formatExpressions);
+            final String tcErrorMessage = testCase.getExceptionMessages(flatFormatted);
 
             if (isNotBlank(tcErrorMessage)) {
                 if (suiteErrorMessage.length() > 0) {

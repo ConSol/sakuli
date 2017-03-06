@@ -105,16 +105,16 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
     }
 
     @Override
-    public String getResultString(SakuliProperties sakuliProperties) {
+    public String getResultString() {
         String stout = "\n\t======== test case \"" + getId() + "\" ended with " + getState() + " ================="
                 + "\n\ttest case id: " + this.getId()
-                + super.getResultString(sakuliProperties).replace("\n", "\n\t")
+                + super.getResultString().replace("\n", "\n\t")
                 + "\n\tstart URL: " + this.getStartUrl()
                 + "\n\tlast URL: " + this.getLastURL();
 
         //steps
         for (TestCaseStep step : getStepsAsSortedSet()) {
-            stout += step.getResultString(sakuliProperties);
+            stout += step.getResultString();
         }
         return stout;
     }
@@ -194,10 +194,10 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
     }
 
     @Override
-    public String getExceptionMessages(boolean flatFormatted, Map<String, String> formatExpressions) {
-        StringBuilder caseErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted, formatExpressions)));
+    public String getExceptionMessages(boolean flatFormatted) {
+        StringBuilder caseErrorMessage = new StringBuilder(trimToEmpty(super.getExceptionMessages(flatFormatted)));
         for (TestCaseStep step : getStepsAsSortedSet()) {
-            final String stepErrorMessage = step.getExceptionMessages(flatFormatted, formatExpressions);
+            final String stepErrorMessage = step.getExceptionMessages(flatFormatted);
 
             if (isNotBlank(stepErrorMessage)) {
                 if (flatFormatted && caseErrorMessage.length() > 0) {
