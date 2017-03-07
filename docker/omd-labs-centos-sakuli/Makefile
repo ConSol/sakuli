@@ -7,17 +7,21 @@
 
 REPO = local/$(shell basename `pwd`)
 TAG  = $(shell git rev-parse --abbrev-ref HEAD|sed 's/master/latest/')
-BUILDARGS = --build-arg SOURCE_BRANCH=$(TAG)
+BUILDARG1= SOURCE_BRANCH=$(TAG)
+BUILDARG2= NEW_SITENAME=demo
 
 IMAGE=$(REPO):$(TAG)
 
 ifdef SOURCE_BRANCH
-	BUILDARGS = --build-arg SOURCE_BRANCH=$(SOURCE_BRANCH)
+	BUILDARG1= SOURCE_BRANCH=$(SOURCE_BRANCH)
 endif
 
-ifndef SITENAME
-  SITENAME=demo
+ifdef NEW_SITENAME
+	BUILDARG2 = NEW_SITENAME=$(NEW_SITENAME)
 endif
+
+BUILDARGS = --build-arg $(BUILDARG1) --build-arg $(BUILDARG2)
+echo "buildargs: $(BUILDARGS)"
 
 .PHONY: build start echo bash
 
@@ -28,9 +32,9 @@ build:
 	@rm Dockerfile.local
 	@echo "Successfully built" $(IMAGE)
 start:
-	docker run -p 8443:443 -d $(IMAGE)
+	docker run --name omd -p 8443:443 -d $(IMAGE)
 startvol:
-	docker run -d -p 8443:443             \
+	docker run --name omd -d -p 8443:443             \
 	-v $(shell pwd)/site/local:/omd/sites/$(SITENAME)/local \
 	-v $(shell pwd)/site/etc:/omd/sites/$(SITENAME)/etc     \
 	-v $(shell pwd)/site/var:/omd/sites/$(SITENAME)/var     \
@@ -38,9 +42,9 @@ startvol:
 echo:
 	@echo $(IMAGE)
 bash:
-	docker run --rm -p 8443:443 -it $(IMAGE) /bin/bash
+	docker run --name omd --rm -p 8443:443 -it $(IMAGE) /bin/bash
 bashvol:
-	docker run --rm -p 8443:443 -it \
+	docker run --name omd --rm -p 8443:443 -it \
 	-v $(shell pwd)/site/local:/omd/sites/$(SITENAME)/local \
 	-v $(shell pwd)/site/etc:/omd/sites/$(SITENAME)/etc     \
 	-v $(shell pwd)/site/var:/omd/sites/$(SITENAME)/var     \

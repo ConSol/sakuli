@@ -20,7 +20,7 @@ ENV REMOTE_GIT git://github.com/ConSol/sakuli.git
 ENV REMOTE_HTTPS https://github.com/ConSol/sakuli.git
 # checkout only this folder
 ENV SPARSEDIR src/common/src/main/resources/org/sakuli/common/setup/omd
-RUN echo "Built from $REMOTE_GIT/$SOURCE_BRANCH" > /root/sakuli_git_info
+RUN echo "Built from $REMOTE_GIT/$SOURCE_BRANCH" > /root/sakuli_git_info && cat /root/sakuli_git_info
 RUN /bin/bash -c "mkdir $SRCDIR && pushd $SRCDIR && git init &&\
   (git remote add -f origin $REMOTE_GIT || git remote set-url origin $REMOTE_HTTPS) &&\
   git fetch origin &&\
@@ -32,11 +32,13 @@ RUN /bin/bash -c "mkdir $SRCDIR && pushd $SRCDIR && git init &&\
   ln -s src/$SPARSEDIR files"
 
 # -- Run the Ansible playbook to install the Sakuli addons
-RUN /omd/versions/default/bin/ansible-playbook \
+ARG NEW_SITENAME=demo
+RUN echo "Config Site $NEW_SITENAME" && \
+  /omd/versions/default/bin/ansible-playbook \
   -i localhost, $ANSIBLE_SAKULI/playbook.yml \
   -c local $ANSIBLE_VERBOSITY \
-  -e SITENAME=$SITENAME
+  -e SITENAME=$NEW_SITENAME
 
-WORKDIR /root
+WORKDIR /opt/omd/sites/$NEW_SITENAME
 
 # CMD is borrowed from the base image
