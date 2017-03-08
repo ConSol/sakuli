@@ -1,7 +1,7 @@
 FROM consol/omd-labs-centos
 
 MAINTAINER Simon Meggle "simon.meggle@consol.de"
-ENV REFRESHED_AT 2017-02-10
+ENV REFRESHED_AT 2017-03-08
 
 ARG ANSIBLE_SAKULI=/root/ansible_sakuli
 # branch from where to checkout Sakuli OMD-Addon-dir "omd"
@@ -32,12 +32,11 @@ RUN /bin/bash -c "mkdir $SRCDIR && pushd $SRCDIR && git init &&\
   ln -s src/$SPARSEDIR files"
 
 # -- Run the Ansible playbook to install the Sakuli addons
-ARG NEW_SITENAME=demo
-RUN echo "Config Site $NEW_SITENAME" && \
-  /omd/versions/default/bin/ansible-playbook \
+ENV SITENAME=$NEW_SITENAME
+RUN /omd/versions/default/bin/ansible-playbook \
   -i localhost, $ANSIBLE_SAKULI/playbook.yml \
-  -c local $ANSIBLE_VERBOSITY \
-  -e SITENAME=$NEW_SITENAME
+  -c local \
+  -e SITENAME=$SITENAME
 
 WORKDIR /opt/omd/sites/$NEW_SITENAME
 
