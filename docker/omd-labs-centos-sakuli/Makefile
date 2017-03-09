@@ -7,18 +7,20 @@
 
 REPO = local/$(shell basename `pwd`)
 TAG  = $(shell git rev-parse --abbrev-ref HEAD|sed 's/master/latest/')
-
 IMAGE=$(REPO):$(TAG)
 
 ifdef SOURCE_BRANCH
 	BUILDARGS = --build-arg SOURCE_BRANCH=$(SOURCE_BRANCH)
+else
+	BUILDARGS = --build-arg SOURCE_BRANCH=$(TAG)
 endif
 
 ifdef NEW_SITENAME
-  BUILDARGS += --build-arg NEW_SITENAME=$(NEW_SITENAME)
+  SITENAME = $(NEW_SITENAME)
 else
-  NEW_SITENAME=demo
+  SITENAME = demo
 endif
+BUILDARGS += --build-arg NEW_SITENAME=$(SITENAME)
 
 echo "buildargs: $(BUILDARGS)"
 

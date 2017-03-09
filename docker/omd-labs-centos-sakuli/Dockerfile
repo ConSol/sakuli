@@ -32,8 +32,10 @@ RUN /bin/bash -c "mkdir $SRCDIR && pushd $SRCDIR && git init &&\
   ln -s src/$SPARSEDIR files"
 
 # -- Run the Ansible playbook to install the Sakuli addons
+# $NEW_SITENAME is borrowed as build ARG in the base image
 ENV SITENAME=$NEW_SITENAME
-RUN /omd/versions/default/bin/ansible-playbook \
+RUN echo "Config Site $NEW_SITENAME" && \
+  /omd/versions/default/bin/ansible-playbook \
   -i localhost, $ANSIBLE_SAKULI/playbook.yml \
   -c local \
   -e SITENAME=$SITENAME
