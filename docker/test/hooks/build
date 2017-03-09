@@ -1,7 +1,0 @@
-#!/bin/bash
-echo "===== Build Hook ====="
-echo "SOURCE_COMMIT: $SOURCE_COMMIT"
-echo "SOURCE_BRANCH: $SOURCE_BRANCH"
-echo "DOCKER_TAG: $DOCKER_TAG"
-
-docker build -t $IMAGE_NAME --build-arg SOURCE_COMMIT=$SOURCE_COMMIT --build-arg SOURCE_TAG=$DOCKER_TAG  --build-arg SOURCE_BRANCH=$SOURCE_BRANCH .
