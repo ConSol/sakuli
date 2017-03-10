@@ -1,4 +1,5 @@
-FROM consol/omd-labs-centos
+FROM consol/omd-labs-centos:github-204-docker-cloud
+# TODO change after merge
 
 MAINTAINER Simon Meggle "simon.meggle@consol.de"
 ENV REFRESHED_AT 2017-03-08
