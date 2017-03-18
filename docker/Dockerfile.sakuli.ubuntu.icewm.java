@@ -1,6 +1,6 @@
 # This Dockerfile is used to build a sakuli image based on Ubuntu
 
-FROM consol/ubuntu-icewm-vnc:dev
+FROM consol/ubuntu-icewm-vnc:1.1.0
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2017-03-17
