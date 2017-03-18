@@ -51,7 +51,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- needed for no errors on javadoc generation (maven-javadoc-plugin) -->
         <additionalparam>-Xdoclint:none</additionalparam>
-        <dependencies.sakuli-go-wrapper.version>1.1.0-SNAPSHOT</dependencies.sakuli-go-wrapper.version>
+        <dependencies.sakuli-go-wrapper.version>1.0.3</dependencies.sakuli-go-wrapper.version>
         <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
