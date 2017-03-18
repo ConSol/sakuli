@@ -3,7 +3,7 @@
 FROM consol/centos-xfce-vnc:dev
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-02-17
+ENV REFRESHED_AT 2017-03-17
 
 LABEL io.k8s.description="Sakuli headless testing container with IceWM window manager, firefox and chromium" \
       io.k8s.display-name="Sakuli testing container based on Centos and IceWM" \
