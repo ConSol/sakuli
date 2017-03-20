@@ -250,6 +250,7 @@ For example, the password for VNC could be set like this:
 ## 4) Further Information
 Further information about the usage of Sakuli docker containers can be found at:
 
+* [Usage Sakuli in OpenShift](openshift.md)
 * Publications:
  * **[Containerized UI-Tests in Java with Sakuli and Docker](https://labs.consol.de/sakuli/development/2016/10/14/sakuli-java-dsl.html)**
 * Presentations:
