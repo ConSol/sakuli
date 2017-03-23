@@ -1,1 +1,0 @@
-# Sakuli & OMD-Labs
