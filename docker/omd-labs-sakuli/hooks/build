@@ -1,3 +1,14 @@
 #!/bin/bash
-# This hook exposes the SOURCE_BRANCH to the build process
-docker build -t $IMAGE_NAME --build-arg SOURCE_BRANCH=$SOURCE_BRANCH .
+# This hook
+# - exposes the SOURCE_BRANCH to the build process
+# - uses $DOCKER_REPO to access the OS Dockerfile
+# https://docs.docker.com/docker-cloud/builds/advanced/
+set -x
+
+env
+
+# full path on Dockerhub
+# index.docker.io/consol/omd-labs-debian-sakuli
+DOCKERFILE=Dockerfile.$(echo $DOCKER_REPO | cut -d "/" -f 3)
+
+docker build -f $DOCKERFILE -t $IMAGE_NAME --build-arg SOURCE_BRANCH=$SOURCE_BRANCH .
