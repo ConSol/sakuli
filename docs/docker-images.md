@@ -234,7 +234,7 @@ Add the `--user` flag to your docker run command:
 #### 5.2) Using user and group id of host system
 Add the `--user` flag to your docker run command:
 
-    docker run -it --user 0 -p 6911:6901 --user $(id -u):$(id -g) consol/sakuli-ubuntu-xfce
+    docker run -it -p 6911:6901 --user $(id -u):$(id -g) consol/sakuli-ubuntu-xfce
 
 ## 4) Override VNC environment variables
 The following VNC environment variables can be overwritten at the `docker run` phase to customize your desktop environment inside the container:
@@ -244,8 +244,7 @@ The following VNC environment variables can be overwritten at the `docker run` p
 
 For example, the password for VNC could be set like this:
 
-    ~$ docker run -it -p 5901:5901 -p 6901:6901 -e VNC_PW=my-new-password  \\
-         consol/sakuli-ubuntu-xfce
+    docker run -it -p 5901:5901 -p 6901:6901 -e VNC_PW=my-new-password consol/sakuli-ubuntu-xfce
 
 ## 4) Further Information
 Further information about the usage of Sakuli docker containers can be found at:
