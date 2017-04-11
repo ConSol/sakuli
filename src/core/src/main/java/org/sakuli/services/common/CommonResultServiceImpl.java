@@ -58,7 +58,7 @@ public class CommonResultServiceImpl extends AbstractResultService {
                 logTestCaseStateDetailInfo(tc -> tc.getState().isCritical());
                 break;
             case ERRORS:
-                String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages();
+                String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages(false);
                 LOGGER.error(errorMsg + "\n");
                 break;
         }
@@ -79,7 +79,11 @@ public class CommonResultServiceImpl extends AbstractResultService {
     }
 
     public void cleanUp() {
-        CleanUpHelper.cleanClipboard();
-        CleanUpHelper.releaseAllModifiers();
+        try {
+            CleanUpHelper.cleanClipboard();
+            CleanUpHelper.releaseAllModifiers();
+        } catch (Throwable e) {
+            LOGGER.warn("Some unexpected errors during the clean up procedure:", e);
+        }
     }
 }

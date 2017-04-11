@@ -70,7 +70,7 @@ public class LogCleanUpResultServiceImpl implements TeardownService {
                 } else if (Files.isRegularFile(e)) {
                     try {
                         if (Files.getLastModifiedTime(e).toInstant().isBefore(maxDate)) {
-                            LOGGER.info("cleanup to old log file '{}'", e);
+                            LOGGER.info("cleanup too old log file '{}'", e);
                             Files.deleteIfExists(e);
                         }
                     } catch (IOException e1) {

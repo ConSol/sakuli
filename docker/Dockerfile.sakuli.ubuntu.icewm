@@ -1,0 +1,70 @@
+# This Dockerfile is used to build a sakuli image based on Ubuntu
+
+FROM consol/ubuntu-icewm-vnc:1.1.0
+
+MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
+ENV REFRESHED_AT 2017-04-11
+
+LABEL io.k8s.description="Sakuli headless testing container with IceWM window manager, firefox and chromium" \
+      io.k8s.display-name="Sakuli testing container based on Ubuntu and IceWM" \
+      io.openshift.expose-services="6901:http,5901:xvnc" \
+      io.openshift.tags="sakuli, ubuntu, icewm" \
+      io.openshift.non-scalable=true
+
+## Connection ports for controlling the UI:
+# VNC port:5901
+# noVNC webport, connect via http://IP:6901/vnc_auto.html?password=vncpassword
+ENV VNC_PORT 5901
+ENV NO_VNC_PORT 6901
+EXPOSE $VNC_PORT $NO_VNC_PORT
+
+### Environment config
+ENV VNC_COL_DEPTH 24
+ENV VNC_RESOLUTION 1280x1024
+ENV VNC_PW sakuli
+
+# use root user for installation
+USER root
+# $INST_SCRIPTS is already set in FROM image
+ADD ./sakuli-client/src/common/install/ $INST_SCRIPTS/
+ADD ./sakuli-client/src/ubuntu/install/ $INST_SCRIPTS/
+RUN find $INST_SCRIPTS -name '*.sh' -exec chmod a+x {} +
+
+### Install needed packages
+RUN $INST_SCRIPTS/example_apps.sh
+RUN $INST_SCRIPTS/screenshot_tool.sh
+RUN $INST_SCRIPTS/native_screen_control_libs.sh
+RUN $INST_SCRIPTS/java_jre.sh
+RUN $INST_SCRIPTS/java_jce_test/jce_test.sh
+
+### Install Sakuli
+ARG SAKULI_VERSION=1.1.0-beta
+ENV SAKULI_ROOT $HOME/sakuli
+ENV SAKULI_HOME $SAKULI_ROOT/sakuli-v$SAKULI_VERSION
+# Testsuite folder default permissions after text execution
+ENV SAKULI_UMASK 0000
+# Define Sakuli default startup testsuite
+ENV SAKULI_TEST_SUITE $SAKULI_ROOT/test
+#
+#
+WORKDIR $SAKULI_ROOT
+# Install the $SAKULI_VERSION and create the example testsuite under $SAKULI_TEST_SUITE
+RUN $INST_SCRIPTS/sakuli.sh
+
+### configure startup
+ADD ./sakuli-client/src/common/scripts $STARTUPDIR
+RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
+# use headless user for startup
+USER 1984
+
+### Sakuli startup script
+# no parameters:
+# - run the suite defined by $SAKULI_TEST_SUITE, if set
+# parameters:
+# - run a Sakuli test suite like the example_xfce case via:
+#   docker run consol/sakuli-ubuntu-xfce run /sakuli/example_test_suites/example_xfce
+# - help:
+#   docker run consol/sakuli-ubuntu-xfce -help
+# - start a bash (or any other command):
+#   docker run -it consol/sakuli-ubuntu-xfce bash
+ENTRYPOINT ["/dockerstartup/startup.sh"]

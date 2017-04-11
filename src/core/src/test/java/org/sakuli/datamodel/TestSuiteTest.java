@@ -26,10 +26,7 @@ import org.sakuli.exceptions.SakuliException;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.Test;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.*;
@@ -158,14 +155,14 @@ public class TestSuiteTest {
         TestSuite testSuite = new TestSuite();
         String message = "suite-exception";
         testSuite.addException(new SakuliException(message));
-        assertEquals(testSuite.getExceptionMessages(), message);
+        assertEquals(testSuite.getExceptionMessages(false), message);
         assertEquals(testSuite.getExceptionMessages(true), message);
 
         TestCase tc1 = new TestCase("case1", "case1");
         String messageCase = "case-exception";
         tc1.addException(new SakuliException(messageCase));
         testSuite.addTestCase(tc1.getId(), tc1);
-        assertEquals(testSuite.getExceptionMessages(), message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase);
+        assertEquals(testSuite.getExceptionMessages(false), message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase);
         assertEquals(testSuite.getExceptionMessages(true), message + " -- CASE \"" + tc1.getId() + "\": " + messageCase);
     }
 
@@ -174,7 +171,7 @@ public class TestSuiteTest {
         TestSuite testSuite = new TestSuite();
         String message = "suite-exception";
         testSuite.addException(new SakuliException(message));
-        assertEquals(testSuite.getExceptionMessages(), message);
+        assertEquals(testSuite.getExceptionMessages(false), message);
         assertEquals(testSuite.getExceptionMessages(true), message);
 
         TestCase tc1 = new TestCase("case1", "case1");
@@ -187,7 +184,7 @@ public class TestSuiteTest {
         step1.addException(new SakuliException(messageStep));
         tc1.addStep(step1);
 
-        assertEquals(testSuite.getExceptionMessages(),
+        assertEquals(testSuite.getExceptionMessages(false),
                 message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase
                         + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );
@@ -197,7 +194,7 @@ public class TestSuiteTest {
         );
 
         tc1.exception = null;
-        assertEquals(testSuite.getExceptionMessages(),
+        assertEquals(testSuite.getExceptionMessages(false),
                 message + "\n" + "CASE \"" + tc1.getId() + "\": "
                         + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );
@@ -207,7 +204,7 @@ public class TestSuiteTest {
         );
 
         testSuite.exception = null;
-        assertEquals(testSuite.getExceptionMessages(),
+        assertEquals(testSuite.getExceptionMessages(false),
                 "CASE \"" + tc1.getId() + "\": "
                         + "\n\tSTEP \"" + step1.getId() + "\": " + messageStep
         );

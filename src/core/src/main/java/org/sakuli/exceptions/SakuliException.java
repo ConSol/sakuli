@@ -39,7 +39,8 @@ public class SakuliException extends Exception {
      * @param e
      */
     public SakuliException(Throwable e) {
-        super(e);
+        //use this constructor to avoid to get the classname as prefix in the exception message
+        super(e.getLocalizedMessage(), e);
     }
 
     /**
@@ -51,6 +52,11 @@ public class SakuliException extends Exception {
     public SakuliException(Throwable suppressedException, String message) {
         super(message);
         this.addSuppressed(suppressedException);
+    }
+
+    @Override
+    public String toString() {
+        return getLocalizedMessage();
     }
 
 }

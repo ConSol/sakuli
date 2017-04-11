@@ -150,7 +150,7 @@ public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        tcParameters.addValue("msg", testSuite.getExceptionMessages());
+        tcParameters.addValue("msg", testSuite.getExceptionMessages(false));
         return tcParameters;
     }
 }

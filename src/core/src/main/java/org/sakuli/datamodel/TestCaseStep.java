@@ -19,6 +19,7 @@
 package org.sakuli.datamodel;
 
 import org.apache.commons.lang.StringUtils;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.SakuliException;
 

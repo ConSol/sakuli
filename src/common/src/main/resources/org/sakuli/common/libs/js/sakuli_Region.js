@@ -634,7 +634,19 @@ function initRegion(that, javaObject) {
      * @method sleep
      */
     that.sleep = function (seconds) {
-        return update(that.javaObject.sleep(seconds));
+        return update(that.javaObject.sleep(Packages.java.lang.Double.valueOf(seconds)));
+    };
+
+    /**
+     * Blocks the current testcase execution for x milliseconds
+     *
+     * @param {number} milliseconds to sleep
+     * @return this Region or NULL on errors.
+     * @memberOf Region
+     * @method sleepMs
+     */
+    that.sleepMs = function (milliseconds) {
+        return update(that.javaObject.sleepMs(milliseconds));
     };
 
     /**

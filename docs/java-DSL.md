@@ -111,7 +111,7 @@ unit test. Sakuli just adds the end-to-end testing capabilities. The test class 
 This `AbstractSakuliTest` provides convenient access to the Sakuli Java DSL API.
 
 These are methods such as `initTC()` and `getTestCaseInitParameter()` that are customizable in test classes. Just 
-override the methods and add custom logic. In addition to that the abstract super class in Sakuli provides access to the
+overwrite the methods and add custom logic. In addition to that the abstract super class in Sakuli provides access to the
 `browser` field that represents the Sahi web browser capabilities. This browser object is used in the test cases to trigger
 Sahi related actions such as opening a website and highlighting links or buttons.
 
@@ -134,6 +134,10 @@ This little example demonstrates the basic usage of the Sakuli Java API. We writ
 add Sakuli specific actions on HTML dom content in a browser or any native application operations by screen related access.
 
 Next we will setup a complete sample project for Sakuli Java.
+
+## Usage with HTTPS-Sites
+
+As workaround for issue #131 you can follow the intructions of [sahi-https](sahi-https.md) and copy afterwards the files from `java-example/target/classes/sahi/userdata/certs` to `java-example/src/main/resources/sahi/userdata/certs`. This will copy the trusted certificates when building the project and allows a clean run.
 
 # Sakuli Java Example 
 

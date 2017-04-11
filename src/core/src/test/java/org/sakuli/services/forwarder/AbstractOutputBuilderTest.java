@@ -30,6 +30,7 @@ import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
@@ -43,11 +44,9 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.Date;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
+import static org.mockito.Mockito.when;
 import static org.sakuli.services.forwarder.gearman.TextPlaceholder.*;
 import static org.testng.Assert.assertEquals;
 
@@ -56,8 +55,6 @@ import static org.testng.Assert.assertEquals;
  *         Date: 2/24/16
  */
 public class AbstractOutputBuilderTest {
-    @Mock
-    private TestSuite testSuite;
     @Mock
     private AbstractMonitoringTemplateProperties properties = new GearmanProperties();
     @Spy
@@ -229,53 +226,63 @@ public class AbstractOutputBuilderTest {
         assertEquals(textPlaceholder.get(BROWSER_INFO), "");
     }
 
-    @Test
-    public void testGenerateTestCaseStepInformation() throws Exception {
-        DateTime creationDate1 = new DateTime().minusSeconds(1);
-        DateTime creationDate2 = new DateTime();
-        assertEquals(AbstractOutputBuilder.generateStepInformation(new TreeSet<>()), "");
-
-        TestCaseStep stepWarning = new TestCaseStepExampleBuilder().withCreationDate(creationDate1).withState(TestCaseStepState.WARNING).buildExample();
-        assertEquals(AbstractOutputBuilder.generateStepInformation(new TreeSet<>(Collections.singletonList(stepWarning))),
-                ", step \"step_for_unit_test\" over runtime (3.00s/warn at 4s)");
-
-        TestCaseStep stepWarning2 = new TestCaseStepExampleBuilder().withCreationDate(creationDate2).withName("step_2").withState(TestCaseStepState.WARNING).buildExample();
-        SortedSet<TestCaseStep> input = new TreeSet<>();
-        input.add(stepWarning);
-        input.add(stepWarning2);
-        assertEquals(AbstractOutputBuilder.generateStepInformation(input),
-                ", step \"step_for_unit_test\" over runtime (3.00s/warn at 4s), step \"step_2\" over runtime (3.00s/warn at 4s)");
-
-        TestCaseStep ok = new TestCaseStepExampleBuilder().withCreationDate(creationDate1).withName("ok1").withState(TestCaseStepState.OK).buildExample();
-        TestCaseStep ok2 = new TestCaseStepExampleBuilder().withCreationDate(creationDate2).withName("ok2").withState(TestCaseStepState.OK).buildExample();
-        input = new TreeSet<>();
-        input.add(ok);
-        input.add(ok2);
-        assertEquals(AbstractOutputBuilder.generateStepInformation(input), "");
+    @DataProvider
+    public Object[][] testGenerateTestCaseStepInformationDP() {
+        return new Object[][] {
+                {new TestCaseStep[]{}, ""},
+                {new TestCaseStep[]{createTestCaseStep(null, new DateTime(), TestCaseStepState.WARNING)},
+                        ", step \"step_for_unit_test\" over runtime (3.00s/warn at 4s)"},
+                {new TestCaseStep[]{createTestCaseStep(null, new DateTime(), TestCaseStepState.WARNING),
+                        createTestCaseStep("step_2", new DateTime().plusSeconds(1), TestCaseStepState.WARNING)},
+                        ", step \"step_for_unit_test\" over runtime (3.00s/warn at 4s), step \"step_2\" over runtime (3.00s/warn at 4s)"},
+                {new TestCaseStep[]{createTestCaseStep("ok1", new DateTime(), TestCaseStepState.OK),
+                        createTestCaseStep("ok2", new DateTime().plusSeconds(1), TestCaseStepState.OK)},
+                        ""},
+        };
     }
 
-    @Test
-    public void testGenerateTestCaseInformation() throws Exception {
-        DateTime creationDate1 = new DateTime().minusSeconds(1);
-        DateTime creationDate2 = new DateTime();
-        assertEquals(AbstractOutputBuilder.generateCaseInformation(new TreeSet<>()), "");
+    @Test(dataProvider = "testGenerateTestCaseStepInformationDP")
+    public void testGenerateTestCaseStepInformation(TestCaseStep[] testCaseSteps, String expectedTestCaseStepInformation) throws Exception {
+        SortedSet<TestCaseStep> input = new TreeSet<>();
+        input.addAll(Arrays.asList(testCaseSteps));
+        assertEquals(AbstractOutputBuilder.generateStepInformation(input), expectedTestCaseStepInformation);
+    }
 
-        TestCase caseWarning = new TestCaseExampleBuilder().withCreationDate(creationDate1).withState(TestCaseState.WARNING).buildExample();
-        assertEquals(AbstractOutputBuilder.generateCaseInformation(new TreeSet<>(Collections.singletonList(caseWarning))),
-                ", case \"Unit Test Case\" over runtime (3.00s/warn at 4s)");
+    @DataProvider
+    public Object[][] testGenerateTestCaseInformationDP() {
+        return new Object[][] {
+                {new TestCase[]{}, ""},
+                {new TestCase[]{createTestCase(null, new DateTime(), TestCaseState.WARNING)},
+                        ", case \"Unit Test Case\" over runtime (3.00s/warn at 4s)"},
+                {new TestCase[]{createTestCase(null, new DateTime(), TestCaseState.WARNING),
+                        createTestCase("case_2", new DateTime().plusSeconds(1), TestCaseState.WARNING)},
+                        ", case \"Unit Test Case\" over runtime (3.00s/warn at 4s), case \"case_2\" over runtime (3.00s/warn at 4s)"},
+                {new TestCase[]{createTestCase("ok1", new DateTime(), TestCaseState.OK),
+                        createTestCase("ok2", new DateTime().plusSeconds(1), TestCaseState.OK)},
+                        ""},
+        };
+    }
 
-        TestCase caseWarning2 = new TestCaseExampleBuilder().withCreationDate(creationDate2).withName("case_2").withState(TestCaseState.WARNING).buildExample();
+    @Test(dataProvider = "testGenerateTestCaseInformationDP")
+    public void testGenerateTestCaseInformation(TestCase[] testCases, String expectedTestCaseInformation) throws Exception {
         SortedSet<TestCase> input = new TreeSet<>();
-        input.add(caseWarning);
-        input.add(caseWarning2);
-        assertEquals(AbstractOutputBuilder.generateCaseInformation(input),
-                ", case \"Unit Test Case\" over runtime (3.00s/warn at 4s), case \"case_2\" over runtime (3.00s/warn at 4s)");
+        input.addAll(Arrays.asList(testCases));
+        assertEquals(AbstractOutputBuilder.generateCaseInformation(input), expectedTestCaseInformation);
+    }
 
-        TestCase ok = new TestCaseExampleBuilder().withCreationDate(creationDate1).withName("ok1").withState(TestCaseState.OK).buildExample();
-        TestCase ok2 = new TestCaseExampleBuilder().withCreationDate(creationDate2).withName("ok2").withState(TestCaseState.OK).buildExample();
-        input = new TreeSet<>();
-        input.add(ok);
-        input.add(ok2);
-        assertEquals(AbstractOutputBuilder.generateCaseInformation(input), "");
+    private TestCase createTestCase(String name, DateTime creationDate, TestCaseState state) {
+        TestCase testCase = new TestCaseExampleBuilder().withCreationDate(creationDate).withState(state).buildExample();
+        if (name != null) {
+            testCase.setName(name);
+        }
+        return testCase;
+    }
+
+    private TestCaseStep createTestCaseStep(String name, DateTime creationDate, TestCaseStepState state) {
+        TestCaseStep testCaseStep = new TestCaseStepExampleBuilder().withCreationDate(creationDate).withState(state).buildExample();
+        if (name != null) {
+            testCaseStep.setName(name);
+        }
+        return testCaseStep;
     }
 }

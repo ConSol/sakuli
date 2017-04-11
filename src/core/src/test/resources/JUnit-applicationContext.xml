@@ -37,7 +37,7 @@
         <property name="writePropertiesToSahiConfig" value="false"/>
         <property name="locations">
             <list>
-                <!-- override the properties from the test-suite folder and so on-->
+                <!-- overwrite the properties from the test-suite folder and so on-->
                 <value>classpath:JUnit-sakuli.properties</value>
             </list>
         </property>
@@ -50,8 +50,7 @@
     </bean>
 
     <bean id="org.sakuli.loader.BaseActionLoaderImpl" class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.loader.BaseActionLoaderImpl">
-        </constructor-arg>
+        <constructor-arg value="org.sakuli.loader.BaseActionLoaderImpl"/>
     </bean>
 
     <bean id="org.sakuli.loader.ScreenActionLoader" class="org.sakuli.MockitoFactoryBean">

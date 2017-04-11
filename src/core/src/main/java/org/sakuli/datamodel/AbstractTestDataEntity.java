@@ -18,6 +18,7 @@
 
 package org.sakuli.datamodel;
 
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 import org.sakuli.datamodel.state.SakuliState;
 import org.sakuli.exceptions.SakuliExceptionHandler;
@@ -67,6 +68,10 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
 
     public AbstractTestDataEntity() {
         creationDate = new DateTime();
+    }
+
+    protected static String getMessageOrClassName(Throwable e) {
+        return StringUtils.isBlank(e.getMessage()) ? e.getClass().getName() : e.getMessage();
     }
 
     /**
@@ -134,13 +139,31 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return exception;
     }
 
-    public String getExceptionMessages() {
-        return getExceptionMessages(false);
+    public void clearException() {
+        this.exception = null;
     }
 
-
     public String getExceptionMessages(boolean flatFormatted) {
-        return SakuliExceptionHandler.getAllExceptionMessages(exception, flatFormatted);
+        if (exception != null) {
+            String msg = getMessageOrClassName(exception);
+            //add suppressed exceptions
+            for (Throwable ee : exception.getSuppressed()) {
+                if (flatFormatted) {
+                    msg += " --  Suppressed EXCEPTION: " + getMessageOrClassName(ee);
+                } else {
+                    msg += "\n\t\tSuppressed EXCEPTION: " + getMessageOrClassName(ee);
+                }
+            }
+
+            if (flatFormatted) {
+                msg = StringUtils.replace(msg, "\n", " ");
+                msg = StringUtils.replace(msg, "\t", " ");
+            }
+
+            return msg;
+        } else {
+            return null;
+        }
     }
 
     public String getName() {
@@ -210,7 +233,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         }
         //if no exception is there, don't print it
         if (this.exception != null) {
-            stout += "\nERRORS:" + this.getExceptionMessages();
+            stout += "\nERRORS:" + this.getExceptionMessages(false);
             if (this.exception instanceof SakuliExceptionWithScreenshot) {
                 stout += "\nERROR - SCREENSHOT: "
                         + this.getScreenShotPath().toFile().getAbsolutePath();

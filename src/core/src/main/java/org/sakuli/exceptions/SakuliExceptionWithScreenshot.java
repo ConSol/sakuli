@@ -58,4 +58,5 @@ public class SakuliExceptionWithScreenshot extends SakuliException {
     public void setScreenshot(Path screenshot) {
         this.screenshot = screenshot;
     }
+
 }

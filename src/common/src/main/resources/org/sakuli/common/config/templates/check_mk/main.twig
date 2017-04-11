@@ -1,0 +1,8 @@
+{% spaceless %}
+{% import 'error_message_creator.twig' as errorMessageCreator %}
+    <<<local>>>$newline$
+    {% include 'performance_data.twig' %}
+    {% include 'short_summary.twig' %}
+    {% include 'detailed_summary.twig' %}
+    $newline$
+{% endspaceless %}

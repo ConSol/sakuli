@@ -22,13 +22,13 @@ import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.forwarder.gearman.TextPlaceholder;
 import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosFormatter;
-import org.sakuli.services.forwarder.gearman.model.builder.NagiosOutputBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,8 @@ import static org.sakuli.services.forwarder.gearman.TextPlaceholder.*;
  */
 public abstract class AbstractOutputBuilder {
     public final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.YY HH:mm:ss");
-    protected static Logger LOGGER = LoggerFactory.getLogger(NagiosOutputBuilder.class);
+    protected Logger LOGGER = LoggerFactory.getLogger(getClass());
+
     @Autowired
     protected ScreenshotDivConverter screenshotDivConverter;
     @Autowired
@@ -130,7 +131,7 @@ public abstract class AbstractOutputBuilder {
     protected PlaceholderMap getTextPlaceholder(TestSuite testSuite) {
         PlaceholderMap placeholderMap = new PlaceholderMap();
         OutputState outputState = OutputState.lookupSakuliState(testSuite.getState());
-        ScreenshotDiv screenshotDiv = screenshotDivConverter.convert(testSuite.getException(), getOutputScreenshotDivWidth());
+        ScreenshotDiv screenshotDiv = screenshotDivConverter.convert(testSuite.getException());
         placeholderMap.put(STATE, outputState.name());
         placeholderMap.put(STATE_SHORT, outputState.getShortState());
         placeholderMap.put(STATE_DESC, testSuite.getState().getNagiosStateDescription());
@@ -156,7 +157,7 @@ public abstract class AbstractOutputBuilder {
         return placeholderMap;
     }
 
-    private String generateStateSummary(TestSuiteState state) {
+    private String  generateStateSummary(TestSuiteState state) {
         StringBuilder summary = new StringBuilder(state.isError() ? "" : STATE_DESC.getPattern());
         switch (state) {
             case OK:
@@ -217,12 +218,12 @@ public abstract class AbstractOutputBuilder {
     @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
     protected String generateTestCaseScreenshotsHTML(TestCase testCase) {
         StringBuilder sb = new StringBuilder();
-        ScreenshotDiv caseDiv = screenshotDivConverter.convert(testCase.getException(), getOutputScreenshotDivWidth());
+        ScreenshotDiv caseDiv = screenshotDivConverter.convert(testCase.getException());
         if (caseDiv != null) {
             sb.append(caseDiv.getPayloadString());
         }
         for (TestCaseStep step : testCase.getStepsAsSortedSet()) {
-            ScreenshotDiv stepDiv = screenshotDivConverter.convert(step.getException(), getOutputScreenshotDivWidth());
+            ScreenshotDiv stepDiv = screenshotDivConverter.convert(step.getException());
             if (stepDiv != null) {
                 sb.append(stepDiv.getPayloadString());
             }

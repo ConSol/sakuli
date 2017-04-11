@@ -2,22 +2,23 @@
 
 # Documentation
 
-Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs.org)**.
-* Stable version (latest tagged `vX.X.X` documentation) [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=stable)](http://sakuli.readthedocs.org/en/stable/)
-* Latest verison (documentation on `master` branch, with corrections) [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=latest)](http://sakuli.readthedocs.org/en/latest/)
-* Dev version (current development version on `dev` branch) [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=dev)](http://sakuli.readthedocs.org/en/dev/)
+Our documentation is also available on **[Read the Docs](http://sakuli.readthedocs.io)**.
+* Stable version (latest tagged `vX.X.X` documentation) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=stable)](http://sakuli.readthedocs.io/en/stable/)
+* Latest version (documentation on `master` branch, with corrections) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=latest)](http://sakuli.readthedocs.io/en/latest/)
+* Dev version (current development version on `dev` branch) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=dev)](http://sakuli.readthedocs.io/en/dev/)
 
 ## Usage
 ### Basic setup
 
 * [Sakuli client installation](installation-client.md)
 * [Sakuli JavaDSL setup](java-DSL.md)
-* [Sakuli Docker Images](docker-images.md)
-* Submitting Sakuli results
-  * [to OMD (Nagios/Icinga2/Shinken)](installation-omd.md)
-    * [via Gearman](forwarder-gearman.md)
-    * [via Database](forwarder-database.md)
-    * [via Icinga2](forwarder-icinga2api.md)
+* [Usage of Sakuli Docker Images](docker-images.md)
+* Forwarding Sakuli results to other systems:
+    * [Open Monitoring Distribution (OMD)](installation-omd.md)
+    * [Gearman Daemon](forwarder-gearman.md)
+    * [SQL Database](forwarder-database.md)
+    * [Icinga2 REST API](forwarder-icinga2api.md)
+    * [Check_MK](forwarder-checkmk.md)
 * Tutorial: [First steps](first-steps.md)
 * Example projects on GitHub [ConSol/sakuli-examples](https://github.com/ConSol/sakuli-examples)
 
@@ -40,10 +41,19 @@ For documentation see
 * [MouseButton](sakuli-api.md#MouseButton)
 * [Logger](sakuli-api.md#Logger)
 
+### Sakuli Java API
+
+In addition to the JavaScript APIs Sakuli provides a Java DSL for writing tests in Java. This Sakuli Java API enables users to write
+Sakuli tests in pure Java unit tests using JUnit or TestNG. The good news about that is that you are still able to access any
+native application UI with screen related actions. The API is documented in [Java DSL](java-dsl.md).
+
 ## Advanced topics
 
 * **Containerized Sakuli checks with [Docker](https://www.docker.com/)**
   * [Usage Sakuli Docker Images](docker-images.md)
+  * [Usage Sakuli in OpenShift](openshift.md)
+  * [Usage Sakuli in Kubernetes](kubernetes.md)
+  * [Usage OMD-Labs Docker images with Sakuli support](omd-labs-sakuli.md)
   * Presentation [Containerized End-2-End-Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)
   * Example project on GitHub [toschneck/sakuli-example-bakery-testing](https://github.com/toschneck/sakuli-example-bakery-testing)
 * **Headless** Sakuli checks

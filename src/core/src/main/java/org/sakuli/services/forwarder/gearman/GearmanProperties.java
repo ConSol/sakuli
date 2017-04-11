@@ -39,10 +39,13 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private static final String SERVER_QUEUE = "sakuli.forwarder.gearman.server.queue";
     private static final String SERVER_HOST = "sakuli.forwarder.gearman.server.host";
     private static final String SERVER_PORT = "sakuli.forwarder.gearman.server.port";
+    private static final String CACHE_ENABLED = "sakuli.forwarder.gearman.cache.enabled";
+    private static final String JOB_INTERVAL = "sakuli.forwarder.gearman.job.interval";
     private static final String ENCRYPTION = "sakuli.forwarder.gearman.encryption";
     private static final String SECRET_KEY = "sakuli.forwarder.gearman.secret.key";
     private static final String NAGIOS_HOSTNAME = "sakuli.forwarder.gearman.nagios.hostname";
     private static final String NAGIOS_CHECK_COMMAND = "sakuli.forwarder.gearman.nagios.check_command";
+    private static final String NAGIOS_SERVICE_DESCRIPTION = "sakuli.forwarder.gearman.nagios.service_description";
     private static final String TEMPLATE_SUITE_TABLE = "sakuli.forwarder.gearman.nagios.template.suite.table";
     private static final String TEMPLATE_SCREENSHOT_DIV_WIDTH = "sakuli.forwarder.gearman.nagios.template.screenshotDivWidth";
     @Value("${" + TEMPLATE_SUITE_SUMMARY + "}")
@@ -66,6 +69,10 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private String serverHost;
     @Value("${" + SERVER_PORT + "}")
     private int serverPort;
+    @Value("${" + CACHE_ENABLED + "}")
+    private boolean cacheEnabled;
+    @Value("${" + JOB_INTERVAL + "}")
+    private long jobInterval;
     @Value("${" + ENCRYPTION + "}")
     private boolean encryption;
     @Value("${" + SECRET_KEY + "}")
@@ -74,6 +81,8 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private String nagiosHost;
     @Value("${" + NAGIOS_CHECK_COMMAND + "}")
     private String nagiosCheckCommand;
+    @Value("${" + NAGIOS_SERVICE_DESCRIPTION + "}")
+    private String nagiosServiceDescription;
     @Value("${" + TEMPLATE_SUITE_TABLE + "}")
     private String templateSuiteTable;
     @Value("${" + TEMPLATE_SCREENSHOT_DIV_WIDTH + "}")
@@ -174,6 +183,22 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
         this.serverPort = serverPort;
     }
 
+    public boolean isCacheEnabled() {
+        return cacheEnabled;
+    }
+
+    public long getJobInterval() {
+        return this.jobInterval;
+    }
+
+    public void setJobInterval(long jobInterval) {
+        this.jobInterval = jobInterval;
+    }
+
+    public void setCacheEnabled(boolean cacheEnabled) {
+        this.cacheEnabled = cacheEnabled;
+    }
+
     public boolean isEncryption() {
         return encryption;
     }
@@ -202,8 +227,16 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
         return nagiosCheckCommand;
     }
 
+    public String getNagiosServiceDescription() {
+        return nagiosServiceDescription;
+    }
+
     public void setNagiosCheckCommand(String nagiosCheckCommand) {
         this.nagiosCheckCommand = nagiosCheckCommand;
+    }
+
+    public void setNagiosServiceDescription(String nagiosServiceDescription) {
+        this.nagiosServiceDescription = nagiosServiceDescription;
     }
 
     public String getTemplateSuiteTable() {

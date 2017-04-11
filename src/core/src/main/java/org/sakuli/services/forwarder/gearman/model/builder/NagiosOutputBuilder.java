@@ -26,6 +26,7 @@ import org.sakuli.services.forwarder.AbstractOutputBuilder;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
 import org.sakuli.services.forwarder.gearman.model.NagiosOutput;
+import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -73,6 +74,7 @@ public class NagiosOutputBuilder extends AbstractOutputBuilder implements Builde
         StringBuilder sb = new StringBuilder();
         sb.append(StringUtils.remove(formatTestSuiteSummaryStateMessage(testSuite, properties.getTemplateSuiteSummary()), "\n"))
                 .append(NagiosOutput.DETAILS_SEPARATOR)
+                .append(String.format(ScreenshotDiv.STYLE_TEMPLATE, getOutputScreenshotDivWidth()))
                 .append(TABLE_HEADER)
                 .append(StringUtils.remove(formatTestSuiteTableStateMessage(testSuite, properties.getTemplateSuiteTable()), "\n"));
 

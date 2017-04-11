@@ -28,9 +28,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.datamodel.actions.LogResult;
-import org.sakuli.loader.BaseActionLoader;
-import org.sakuli.loader.BaseActionLoaderImpl;
-import org.sakuli.loader.BeanLoader;
+import org.sakuli.loader.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -40,7 +38,7 @@ import static org.apache.commons.lang.StringUtils.removeEnd;
 import static org.apache.commons.lang3.StringUtils.removeStart;
 
 /**
- * Aspect for the External Sahi Libary {@link net.sf.sahi}
+ * Aspect for the External Sahi Library {@link net.sf.sahi}
  *
  * @author tschneck Date: 17.10.13
  */
@@ -176,14 +174,13 @@ public class RhinoAspect extends BaseSakuliAspect {
     }
 
     /**
-     * Aspect to fetch all Logs from the Sahi-Proxy by the methode {@link net.sf.sahi.ant.Report} and do an trusty
+     * Aspect to fetch all Logs from the Sahi-Proxy by the method {@link net.sf.sahi.ant.Report} and do an trusty
      * exception handling on top of that.
      *
      * @param joinPoint injected joinPoint of the execution
      */
     @Before("execution(* net.sf.sahi.report.Report.addResult(..))")
     public void doHandleRhinoException(JoinPoint joinPoint) {
-
         // Read out all args
         Object[] args = joinPoint.getArgs();
         ResultType resultType;
@@ -192,14 +189,15 @@ public class RhinoAspect extends BaseSakuliAspect {
         } else {
             resultType = ResultType.getType((String) args[1]);
         }
+
         LogResult logResult = new LogResult(
                 (String) args[0],
                 resultType,
                 (String) args[2],
                 (String) args[3]
         );
-        if (logResult.getFailureMsg() == null || !logResult.getFailureMsg().contains(ALREADY_PROCESSED)) {
 
+        if (logResult.getFailureMsg() == null || !logResult.getFailureMsg().contains(ALREADY_PROCESSED)) {
             //log and handle exception from sahi actions
             if (ResultType.ERROR.equals(resultType)
                     || ResultType.FAILURE.equals(resultType)) {
@@ -207,6 +205,7 @@ public class RhinoAspect extends BaseSakuliAspect {
                 BaseActionLoader environmentLoader = BeanLoader.loadBaseActionLoader();
                 environmentLoader.getExceptionHandler().handleException(logResult);
             }
+
             /**
              * all Actions in Package {@link org.sakuli.actions} should be already logged by
              * {@link #doAddActionLog(org.aspectj.lang.JoinPoint, org.sakuli.actions.logging.LogToResult)}.

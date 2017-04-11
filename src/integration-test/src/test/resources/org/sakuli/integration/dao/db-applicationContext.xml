@@ -22,8 +22,7 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd"
->
+       http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <bean id="propertyResolver"
           class="org.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
@@ -35,7 +34,7 @@
         <property name="writePropertiesToSahiConfig" value="false"/>
         <property name="locations">
             <list>
-                <!-- override the properties from the test-suite folder and so on-->
+                <!-- overwrite the properties from the test-suite folder and so on-->
                 <value>classpath:integration-test.sakuli.properties</value>
             </list>
         </property>
@@ -45,7 +44,6 @@
     <jdbc:initialize-database data-source="dataSource" ignore-failures="DROPS">
         <jdbc:script location="classpath*:create_derby_db.sql"/>
     </jdbc:initialize-database>
-
 
     <!-- Definiert die DataSource -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

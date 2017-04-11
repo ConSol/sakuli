@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
 import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.services.forwarder.checkmk.ProfileCheckMK;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
 import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
 import org.sakuli.services.forwarder.icinga2.ProfileIcinga2;
@@ -39,21 +40,23 @@ import java.util.Arrays;
  */
 @ProfileGearman
 @ProfileIcinga2
+@ProfileCheckMK
 @Component
 public class ScreenshotDivConverter {
 
-    public static final String REGEX_SRC_DATA_IMAGE_BASE64 = "src=\"data:image\\/.*;base64,.*\"";
+    public static final String REGEX_SRC_DATA_IMAGE_BASE64 = "src=\"data:image\\/[\\w]{3,4};base64,[^\\s]*\" >";
+
     @Autowired
     private SakuliExceptionHandler exceptionHandler;
 
     public static String removeBase64ImageDataString(String string) {
         if (StringUtils.isNotEmpty(string)) {
-            return string.replaceAll(REGEX_SRC_DATA_IMAGE_BASE64, "src=\"\"");
+            return string.replaceAll(REGEX_SRC_DATA_IMAGE_BASE64, "src=\"\" >");
         }
         return string;
     }
 
-    public ScreenshotDiv convert(Throwable e, String divWidthPixel) {
+    public ScreenshotDiv convert(Throwable e) {
         if (e != null) {
             String base64String = extractScreenshotAsBase64(e);
             String format = extractScreenshotFormat(e);
@@ -61,9 +64,7 @@ public class ScreenshotDivConverter {
                 ScreenshotDiv screenshotDiv = new ScreenshotDiv();
                 screenshotDiv.setFormat(format);
                 screenshotDiv.setBase64screenshot(base64String);
-                String divID = ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID;
-                screenshotDiv.setId(divID);
-                screenshotDiv.setWidth(divWidthPixel);
+                screenshotDiv.setId(ScreenshotDiv.DEFAULT_SAKULI_SCREENSHOT_DIV_ID + screenshotDiv.hashCode());
                 return screenshotDiv;
             }
         }

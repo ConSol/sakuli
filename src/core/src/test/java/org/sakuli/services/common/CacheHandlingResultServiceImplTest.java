@@ -19,6 +19,7 @@
 package org.sakuli.services.common;
 
 import org.apache.commons.io.FileUtils;
+import org.mockito.Mockito;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
@@ -27,6 +28,7 @@ import org.sakuli.datamodel.helper.TestCaseStepHelper;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -50,17 +52,21 @@ import static org.testng.Assert.*;
 public class CacheHandlingResultServiceImplTest {
     private CacheHandlingResultServiceImpl testling = spy(new CacheHandlingResultServiceImpl());
     private TestSuite testSuite;
+    private SakuliExceptionHandler exceptionHandler;
 
     @BeforeMethod
     public void init() {
         testSuite = new TestSuiteExampleBuilder()
                 .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS).withException(new SakuliException("TEST")).buildExample();
+
+        exceptionHandler = Mockito.mock(SakuliExceptionHandler.class);
         ReflectionTestUtils.setField(testling, "testSuite", testSuite);
+        ReflectionTestUtils.setField(testling, "exceptionHandler", exceptionHandler);
     }
 
     @Test
     public void testWriteCachedStepDefinitions() throws Exception {
-        final String cacheFilePath = "valid/validTestCase/" + TestCaseStepHelper.SAKULI_STEPS_CACHE_FILE;
+        final String cacheFilePath = "valid/validTestCase/" + TestCaseStepHelper.STEPS_CACHE_FILE;
         if (this.getClass().getResource(cacheFilePath) != null) {
             Files.deleteIfExists(getResource(cacheFilePath, true));
         }

@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>1.0.2</version>
+        <version>1.1.0-beta</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>core</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0-beta</version>
     <name>core</name>
 
     <description>core module for all sakuli functionality</description>
@@ -44,6 +44,8 @@
     </properties>
 
     <build>
+        <finalName>${project.jar.name}</finalName>
+
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
@@ -88,9 +90,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <finalName>${project.jar.name}</finalName>
-                </configuration>
             </plugin>
 
             <!-- unpack sahi to include into the zip assembly -->
@@ -113,6 +112,28 @@
                                     <version>${sahi.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.sakuli</groupId>
+                                    <artifactId>common</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <!--Unpacks the config resources from the common module, e.g. for the twig templates,
+                    to be able to load it via java.nio.Path method in unit tests-->
+                    <execution>
+                        <id>unpack-test-resources</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
+                            <includes>**/common/config/**</includes>
+                            <artifactItems>
                                 <artifactItem>
                                     <groupId>org.sakuli</groupId>
                                     <artifactId>common</artifactId>
@@ -188,7 +209,7 @@
                         </goals>
                         <configuration>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>${project.artifactId}.zip</artifactId>
+                            <artifactId>${project.artifactId}</artifactId>
                             <version>${project.version}</version>
                             <packaging>zip</packaging>
                             <file>${project.build.directory}/install/${sakuli.filename}.zip</file>
@@ -204,7 +225,7 @@
     <profiles>
         <!--profil to deploy the zip file to labs.consol.de/sakuli/install-->
         <profile>
-            <id>upload-release</id>
+            <id>upload</id>
             <activation>
                 <property>
                     <name>performRelease</name>
@@ -245,7 +266,7 @@
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
-                                <phase>verify</phase>
+                                <phase>package</phase>
                                 <goals>
                                     <goal>jar-no-fork</goal>
                                 </goals>
@@ -418,7 +439,15 @@
             <artifactId>jersey-media-json-jackson</artifactId>
         </dependency>
 
-
+        <!-- jtwig template engine -->
+        <dependency>
+            <groupId>org.jtwig</groupId>
+            <artifactId>jtwig-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jtwig</groupId>
+            <artifactId>jtwig-spaceless-extension</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

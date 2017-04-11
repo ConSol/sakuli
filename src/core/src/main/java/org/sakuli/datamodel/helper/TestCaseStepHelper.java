@@ -28,6 +28,7 @@ import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -41,13 +42,13 @@ import java.util.List;
  */
 public class TestCaseStepHelper {
 
-    public static final String SAKULI_STEPS_CACHE_FILE = ".sakuli-steps-cache";
+    public static final String STEPS_CACHE_FILE = ".cache/steps.cache";
     private static final Logger LOGGER = LoggerFactory.getLogger(TestCaseStepHelper.class);
 
     public static List<TestCaseStep> readCachedStepDefinitions(Path tcFile) throws IOException {
         List<TestCaseStep> result = new ArrayList<>();
         if (tcFile != null) {
-            Path stepsCacheFile = tcFile.getParent().resolve(SAKULI_STEPS_CACHE_FILE);
+            Path stepsCacheFile = tcFile.getParent().resolve(STEPS_CACHE_FILE);
             if (Files.exists(stepsCacheFile)) {
                 try {
                     List<String> lines = FileUtils.readLines(stepsCacheFile.toFile(), Charset.forName("UTF-8"));
@@ -73,11 +74,16 @@ public class TestCaseStepHelper {
         if (testSuite.getTestCases() != null) {
             for (TestCase tc : testSuite.getTestCases().values()) {
                 if (tc.getTcFile() != null) {
-                    Path stepsCacheFile = tc.getTcFile().getParent().resolve(SAKULI_STEPS_CACHE_FILE);
+                    Path stepsCacheFile = tc.getTcFile().getParent().resolve(STEPS_CACHE_FILE);
+                    File output = new File(stepsCacheFile.toUri());
+                    if (!output.getParentFile().exists()) {
+                        output.getParentFile().mkdirs();
+                    }
+
                     try {
                         String stepNames = getStepName(tc.getSteps());
                         LOGGER.debug("write following step IDs to file '{}':\n{}", stepsCacheFile, stepNames);
-                        FileUtils.writeStringToFile(stepsCacheFile.toFile(), stepNames, Charset.forName("UTF-8"), false);
+                        FileUtils.writeStringToFile(output, stepNames, Charset.forName("UTF-8"), false);
                     } catch (IOException e) {
                         throw new IOException(String.format("error during writing into '%s' file ", stepsCacheFile), e);
                     }

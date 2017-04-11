@@ -41,8 +41,7 @@ import org.testng.annotations.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -102,16 +101,25 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new Exception(testExcMessage));
         assertTrue(testSuite.getException() instanceof SakuliException);
-        assertTrue(testSuite.getException().getMessage().contains(testExcMessage));
+        assertEquals(testSuite.getException().getMessage(), testExcMessage);
         assertEquals(testSuite.getScreenShotPath(), expectedScreenshotPath);
 
         //test Suppressed
         String excpMessage2 = "ExceptionSuppressed";
         testling.handleException(new Exception(excpMessage2));
-        assertTrue(testSuite.getExceptionMessages().contains(excpMessage2));
-        assertTrue(testSuite.getExceptionMessages().contains(testExcMessage));
+        assertEquals(testSuite.getExceptionMessages(false), testExcMessage + "\n\t\tSuppressed EXCEPTION: " + excpMessage2);
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
         assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
+    }
+
+    @Test
+    public void testHandleActionException() throws Exception {
+        setUp();
+        when(loader.getCurrentTestCase()).thenReturn(null);
+        testling.handleException(new SakuliActionException(testExcMessage));
+        assertTrue(testSuite.getException() instanceof SakuliException);
+        assertEquals(testSuite.getException().getMessage(), testExcMessage);
+        assertEquals(testSuite.getScreenShotPath(), expectedScreenshotPath);
     }
 
     @Test
@@ -120,14 +128,13 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         Exception testExc = new Exception(testExcMessage);
         testling.handleException(testExc);
         assertTrue(testCase.getException() instanceof SakuliExceptionWithScreenshot);
-        assertTrue(testCase.getException().getMessage().contains(testExcMessage));
+        assertEquals(testCase.getException().getMessage(), testExcMessage);
         assertEquals(testCase.getScreenShotPath(), expectedScreenshotPath);
 
         //test Suppressed
         String excpMessage2 = "ExceptionSuppressed";
         testling.handleException(new Exception(excpMessage2));
-        assertTrue(testCase.getExceptionMessages().contains(excpMessage2));
-        assertTrue(testCase.getExceptionMessages().contains(testExcMessage));
+        assertEquals(testCase.getExceptionMessages(false), testExcMessage + "\n\t\tSuppressed EXCEPTION: " + excpMessage2);
         assertEquals(testCase.getState(), TestCaseState.ERRORS);
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
 
@@ -144,7 +151,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         Exception testExc = new Exception(testExcMessage);
         testling.handleException(testExc, true);
         assertTrue(testCase.getException() instanceof SakuliExceptionWithScreenshot);
-        assertTrue(testCase.getException().getMessage().contains(testExcMessage));
+        assertEquals(testCase.getException().getMessage(), testExcMessage);
         assertEquals(testCase.getScreenShotPath(), expectedScreenshotPath);
 
         SakuliRuntimeException resumedExceptions = null;
@@ -155,7 +162,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         }
         assertNotNull(resumedExceptions, "exception is expected!");
         assertEquals(resumedExceptions.getMessage(), "test contains some suppressed resumed exceptions!");
-        assertTrue(resumedExceptions.getSuppressed()[0].getMessage().contains(testExcMessage));
+        assertEquals(resumedExceptions.getSuppressed()[0].getMessage(), testExcMessage);
     }
 
     @Test
@@ -226,7 +233,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new SakuliInitException(testExcMessage));
         assertTrue(testSuite.getException() instanceof NonScreenshotException);
-        assertTrue(testSuite.getException().getMessage().contains(testExcMessage));
+        assertEquals(testSuite.getException().getMessage(), testExcMessage);
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
         verify(loader, never()).getScreenshotActions();
     }
@@ -237,7 +244,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new SakuliValidationException(testExcMessage));
         assertTrue(testSuite.getException() instanceof NonScreenshotException);
-        assertTrue(testSuite.getException().getMessage().contains(testExcMessage));
+        assertEquals(testSuite.getException().getMessage(), testExcMessage);
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
         verify(loader, never()).getScreenshotActions();
     }

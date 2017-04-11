@@ -31,17 +31,19 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.sakuli.utils.SystemHelper.sleep;
+
 /**
  * @author Tobias Schneck
  */
 
 public class Application extends App {
-    protected final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
     private final boolean resumeOnException;
 
     private ScreenActionLoader loader;
-    private Integer sleepMillis = 1000;
+    private Long sleepMillis = 1000L;
 
     /**
      * Creates a new Application of the name or path to the executable.
@@ -215,7 +217,7 @@ public class Application extends App {
      */
     @LogToResult
     public Application setSleepTime(Integer seconds) {
-        this.sleepMillis = (int) TimeUnit.SECONDS.toMillis(seconds);
+        this.sleepMillis = TimeUnit.SECONDS.toMillis(seconds);
         return this;
     }
 
@@ -256,15 +258,6 @@ public class Application extends App {
     @Override
     public String getName() {
         return super.getName();
-    }
-
-
-    private void sleep(Integer milli) {
-        try {
-            Thread.sleep(milli);
-        } catch (InterruptedException e) {
-            LOGGER.error("error during sleeping", e);
-        }
     }
 
     @Override

@@ -1,0 +1,19 @@
+{# This template renders the performance data for the current test suite. #}
+{{ testsuite.state.nagiosErrorCode }} {{checkmk.serviceDescription}} suite__state={{getOutputState(testsuite.state).errorCode}};;;;
+|suite__warning={{ testsuite.warningTime }}s;;;;|suite__critical={{ testsuite.criticalTime }}s;;;;|suite_{{ testsuite.id }}={{getOutputDuration(testsuite)}};{{ testsuite.warningTime }};{{ testsuite.criticalTime }};;
+{% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
+    {% set testCaseIndex = format("%03d", loop.index) %}
+    |c_{{ testCaseIndex }}__state={{getOutputState(testCase.state).errorCode}};;;;
+    |c_{{ testCaseIndex }}__warning={{ testCase.warningTime }}s;;;;
+    |c_{{ testCaseIndex }}__critical={{ testCase.criticalTime }}s;;;;
+    |c_{{ testCaseIndex }}_{{ testCase.id }}={{getOutputDuration(testCase)}};{{ testCase.warningTime }};{{ testCase.criticalTime }};;
+    {% for testStep in testCase.steps %}
+        {% set testStepIndex = format("%03d", loop.index) %}
+        |s_{{ testCaseIndex }}_{{ testStepIndex }}_{{testStep.name}}={{getOutputDuration(testStep)}};
+        {% set testStepWarningTime = testStep.warningTime %}
+        {% if (testStepWarningTime > 0) %}
+            {{testStepWarningTime}}
+        {% else %}
+        {% endif %};;;
+    {% endfor %}
+{% endfor %}

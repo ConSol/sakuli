@@ -18,6 +18,8 @@
 
 package org.sakuli.services.common;
 
+import org.sakuli.datamodel.properties.SakuliProperties;
+
 /**
  * @author tschneck
  *         Date: 09.04.15

@@ -21,13 +21,13 @@ package org.sakuli.services.forwarder.gearman.model;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.services.forwarder.MonitoringPropertiesTestHelper;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosOutputBuilder;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -38,8 +38,8 @@ import static org.mockito.Mockito.when;
 
 public class NagiosCheckResultTest {
 
-    @Mock
-    private TestSuite testSuite;
+    @Spy
+    private TestSuite testSuite = new TestSuiteExampleBuilder().buildExample();
     @Mock
     private GearmanProperties gearmanProperties;
     @Mock
@@ -50,9 +50,10 @@ public class NagiosCheckResultTest {
     @BeforeMethod
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        ReflectionTestUtils.setField(testling, "testSuite", new TestSuiteExampleBuilder().buildExample());
         when(nagiosOutputBuilder.build()).thenReturn(new NagiosOutput());
         MonitoringPropertiesTestHelper.initMock(gearmanProperties);
+        //represents the property replace mechanism of the `.properties` file
+        when(gearmanProperties.getNagiosServiceDescription()).then(a -> testSuite.getId());
     }
 
     @Test

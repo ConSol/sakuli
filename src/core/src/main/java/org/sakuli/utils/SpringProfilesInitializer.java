@@ -42,6 +42,7 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
     public static final String JDBC_DB = "JDBC_DB";
     public static final String GEARMAN = "GEARMAN";
     public static final String INCINGA2 = "ICINGA2";
+    public static final String CHECK_MK = "CHECK_MK";
     private static final Logger logger = LoggerFactory.getLogger(SpringProfilesInitializer.class);
     private ConfigurableApplicationContext ctx;
     @Autowired
@@ -50,7 +51,6 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
     public void setApplicationContext(ApplicationContext ac) throws BeansException {
         ctx = (ConfigurableApplicationContext) ac;
     }
-
 
     public void afterPropertiesSet() throws Exception {
         String[] configuredProfiles = getConfiguredProfiles();
@@ -74,6 +74,9 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
         }
         if (forwarderProperties.isIcinga2Enabled()) {
             profileNames.add(INCINGA2);
+        }
+        if (forwarderProperties.isCheckMKEnabled()) {
+            profileNames.add(CHECK_MK);
         }
         return profileNames.toArray(new String[profileNames.size()]);
     }

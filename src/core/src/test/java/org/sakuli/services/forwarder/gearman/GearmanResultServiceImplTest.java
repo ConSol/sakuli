@@ -18,34 +18,37 @@
 
 package org.sakuli.services.forwarder.gearman;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.time.DateUtils;
-import org.gearman.client.GearmanClient;
-import org.gearman.client.GearmanClientImpl;
-import org.gearman.client.GearmanJob;
-import org.gearman.client.GearmanJobResult;
+import org.gearman.client.*;
 import org.gearman.common.GearmanJobServerConnection;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
+import org.mockito.*;
 import org.sakuli.BaseTest;
 import org.sakuli.builder.TestCaseExampleBuilder;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliActionException;
+import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliRuntimeException;
+import org.sakuli.services.forwarder.gearman.crypt.Aes;
+import org.sakuli.services.forwarder.gearman.model.NagiosCachedCheckResult;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
+import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.nio.channels.UnresolvedAddressException;
+import java.util.*;
 import java.util.concurrent.Future;
 
 import static org.mockito.Mockito.*;
+import static org.testng.Assert.assertEquals;
 
 public class GearmanResultServiceImplTest extends BaseTest {
 
@@ -53,16 +56,67 @@ public class GearmanResultServiceImplTest extends BaseTest {
     @InjectMocks
     private GearmanResultServiceImpl testling;
     @Mock
+    private GearmanCacheService gearmanCacheService;
+    @Mock
     private GearmanProperties properties;
+    @Mock
+    private SakuliExceptionHandler exceptionHandler;
+    @Mock
+    private NagiosCheckResultBuilder checkResultBuilder;
 
-//TODO change this to set up the context and test if all works
-//    @BeforeMethod
-//    public void setUp() throws Exception {
-//        MockitoAnnotations.initMocks(this);
-//        properties = GearmanPropertiesTestHelper.initMock(properties);
-//    }
+    private String testResult = "type=passive\n" +
+            "host_name=win7sakuli\n" +
+            "start_time=1425729540.000\n" +
+            "finish_time=1425729600.000\n" +
+            "return_code=2\n" +
+            "service_description=sakuli_demo22\n" +
+            "output=CRITICAL - CRITICAL - [CRIT] Sakuli suite \"sakuli_demo22\" ran in 60.00 seconds - EXCEPTION: \" - CASE 'error_case': exception test message\". (Last suite run: 07.03 13:00:00)" +
+            "\\\\n<table style=\"border-collapse: collapse;\">" +
+            "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli_demo22\" ran in 60.00 seconds - EXCEPTION: \" - CASE 'error_case': exception test message\". (Last suite run: 07.03 13:00:00)</td></tr>" +
+            "<tr valign=\"top\"><td class=\"serviceOK\">[OK] case \"ok_case\" ran in 12.00s - ok</td></tr>" +
+            "<tr valign=\"top\"><td class=\"serviceWARNING\">[WARN] case \"warn_case\" over runtime (30.00s /warning at 20s) </td></tr>" +
+            "<tr valign=\"top\"><td class=\"serviceWARNING\">[WARN] case \"warn_in_step\" over runtime (30.00s /warning in step at 40s) step \"warn_step_1\" (9.00s /warn at 5s), step \"warn_step_2\" (9.00s /warn at 5s)</td></tr>" +
+            "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] case \"crit_case\" over runtime (14.00s /critical at 13s) </td></tr>" +
+            "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] case \"error_case\" EXCEPTION: exception test message</td></tr></table>" +
+            "|" +
+            "suite__state=2;;;; " +
+            "suite_sakuli_demo22=60.00s;;;; " +
+            "c_1__state_ok_case=0;;;; " +
+            "c_1_ok_case=12.00s;13;20;; " +
+            "s_1_1_step_for_unit_test=1.00s;2;;; " +
+            "c_2__state_warn_case=1;;;; " +
+            "c_2_warn_case=30.00s;20;40;; " +
+            "s_2_1_step_for_unit_test=1.00s;2;;; " +
+            "c_3__state_warn_in_step=1;;;; " +
+            "c_3_warn_in_step=30.00s;40;50;; " +
+            "s_3_1_warn_step_1=9.00s;5;;; " +
+            "s_3_2_warn_step_2=9.00s;5;;; " +
+            "c_4__state_crit_case=2;;;; " +
+            "c_4_crit_case=14.00s;10;13;; " +
+            "s_4_1_step_for_unit_test=1.00s;2;;; " +
+            "c_5__state_error_case=2;;;; " +
+            "c_5_error_case=-1.00s;4;5;; " +
+            "s_5_1_step_for_unit_test=1.00s;2;;; " +
+            "[check_sakuli]";
 
-    @Test(enabled = false)
+    @BeforeMethod
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @BeforeClass
+    public void setKeyLength() {
+        //set key length to 16 byte in unit tests, so default Java JRE security policy applies
+        Aes.keyLength = 16;
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void restoreKeyLength() {
+        //restore default key length
+        Aes.keyLength = Aes.DEFAULT_KEY_LENGTH;
+    }
+
+    @Test
     public void testSaveAllResults() throws Exception {
         when(properties.getServiceType()).thenReturn("passive");
         final String queueName = "check_results";
@@ -73,6 +127,8 @@ public class GearmanResultServiceImplTest extends BaseTest {
         when(properties.getServerPort()).thenReturn(port);
         when(properties.getNagiosHost()).thenReturn("win7sakuli");
 
+        when(checkResultBuilder.build()).thenReturn(new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+
         GearmanClient gearmanClient = mock(GearmanClientImpl.class);
         doReturn(gearmanClient).when(testling).getGearmanClient();
         GearmanJobServerConnection connection = mock(GearmanJobServerConnection.class);
@@ -80,10 +136,14 @@ public class GearmanResultServiceImplTest extends BaseTest {
         GearmanJob job = mock(GearmanJob.class);
         doReturn(job).when(testling).creatJob(any(NagiosCheckResult.class));
         Future future = mock(Future.class);
+        when(gearmanClient.addJobServer(connection)).thenReturn(true);
         when(gearmanClient.submit(job)).thenReturn(future);
         GearmanJobResult jobResult = mock(GearmanJobResult.class);
         when(future.get()).thenReturn(jobResult);
         when(jobResult.jobSucceeded()).thenReturn(true);
+        GearmanJobStatus jobStatus = mock(GearmanJobStatus.class);
+        when(jobStatus.isRunning()).thenReturn(false);
+        when(gearmanClient.getJobStatus(job)).thenReturn(jobStatus);
 
         Date stopDate = new GregorianCalendar(2014, 14, 7, 13, 0).getTime();
 
@@ -153,6 +213,10 @@ public class GearmanResultServiceImplTest extends BaseTest {
         testling.saveAllResults();
 
         //checks
+        verify(gearmanCacheService, never()).cacheResults(anyList());
+        verify(gearmanCacheService, never()).getCachedResults();
+        verify(exceptionHandler, never()).handleException(any(Throwable.class));
+        verify(exceptionHandler, never()).handleException(any(Throwable.class), anyBoolean());
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
@@ -161,42 +225,265 @@ public class GearmanResultServiceImplTest extends BaseTest {
         verify(gearmanClient).shutdown();
         ArgumentCaptor<NagiosCheckResult> checkresult = ArgumentCaptor.forClass(NagiosCheckResult.class);
         verify(testling).creatJob(checkresult.capture());
-        Assert.assertEquals(checkresult.getValue().getQueueName(), queueName);
-        Assert.assertEquals(checkresult.getValue().getUuid(), testSuite.getGuid());
-        Assert.assertEquals(checkresult.getValue().getPayloadString(), "" +
-                "type=passive\n" +
-                "host_name=win7sakuli\n" +
-                "start_time=1425729540.000\n" +
-                "finish_time=1425729600.000\n" +
-                "return_code=2\n" +
-                "service_description=sakuli_demo22\n" +
-                "output=CRITICAL - CRITICAL - [CRIT] Sakuli suite \"sakuli_demo22\" ran in 60.00 seconds - EXCEPTION: \" - CASE 'error_case': exception test message\". (Last suite run: 07.03 13:00:00)" +
-                "\\\\n<table style=\"border-collapse: collapse;\">" +
-                "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] Sakuli suite \"sakuli_demo22\" ran in 60.00 seconds - EXCEPTION: \" - CASE 'error_case': exception test message\". (Last suite run: 07.03 13:00:00)</td></tr>" +
-                "<tr valign=\"top\"><td class=\"serviceOK\">[OK] case \"ok_case\" ran in 12.00s - ok</td></tr>" +
-                "<tr valign=\"top\"><td class=\"serviceWARNING\">[WARN] case \"warn_case\" over runtime (30.00s /warning at 20s) </td></tr>" +
-                "<tr valign=\"top\"><td class=\"serviceWARNING\">[WARN] case \"warn_in_step\" over runtime (30.00s /warning in step at 40s) step \"warn_step_1\" (9.00s /warn at 5s), step \"warn_step_2\" (9.00s /warn at 5s)</td></tr>" +
-                "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] case \"crit_case\" over runtime (14.00s /critical at 13s) </td></tr>" +
-                "<tr valign=\"top\"><td class=\"serviceCRITICAL\">[CRIT] case \"error_case\" EXCEPTION: exception test message</td></tr></table>" +
-                "|" +
-                "suite__state=2;;;; " +
-                "suite_sakuli_demo22=60.00s;;;; " +
-                "c_1__state_ok_case=0;;;; " +
-                "c_1_ok_case=12.00s;13;20;; " +
-                "s_1_1_step_for_unit_test=1.00s;2;;; " +
-                "c_2__state_warn_case=1;;;; " +
-                "c_2_warn_case=30.00s;20;40;; " +
-                "s_2_1_step_for_unit_test=1.00s;2;;; " +
-                "c_3__state_warn_in_step=1;;;; " +
-                "c_3_warn_in_step=30.00s;40;50;; " +
-                "s_3_1_warn_step_1=9.00s;5;;; " +
-                "s_3_2_warn_step_2=9.00s;5;;; " +
-                "c_4__state_crit_case=2;;;; " +
-                "c_4_crit_case=14.00s;10;13;; " +
-                "s_4_1_step_for_unit_test=1.00s;2;;; " +
-                "c_5__state_error_case=2;;;; " +
-                "c_5_error_case=-1.00s;4;5;; " +
-                "s_5_1_step_for_unit_test=1.00s;2;;; " +
-                "[check_sakuli]");
+        assertEquals(checkresult.getValue().getQueueName(), queueName);
+        assertEquals(checkresult.getValue().getUuid(), testSuite.getGuid());
+        assertEquals(checkresult.getValue().getPayloadString(), testResult);
+    }
+
+    @Test
+    public void testCreateJobEncryptionDisabled() throws Exception {
+        when(properties.getServiceType()).thenReturn("passive");
+        final String queueName = "check_results";
+        when(properties.getServerQueue()).thenReturn(queueName);
+        final String host = "99.99.99.20";
+        when(properties.getServerHost()).thenReturn(host);
+        final int port = 4730;
+        when(properties.getServerPort()).thenReturn(port);
+        when(properties.getNagiosHost()).thenReturn("win7sakuli");
+        when(properties.isEncryption()).thenReturn(false);
+
+        GearmanJob gearmanJob = testling.creatJob(new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        assertEquals(new String(Base64.decodeBase64(gearmanJob.getData())), testResult);
+    }
+
+    @Test
+    public void testCreateJobEncryptionEnabled() throws Exception {
+        when(properties.getServiceType()).thenReturn("passive");
+        final String queueName = "check_results";
+        when(properties.getServerQueue()).thenReturn(queueName);
+        final String host = "99.99.99.20";
+        when(properties.getServerHost()).thenReturn(host);
+        final int port = 4730;
+        when(properties.getServerPort()).thenReturn(port);
+        when(properties.getNagiosHost()).thenReturn("win7sakuli");
+        when(properties.isEncryption()).thenReturn(true);
+        final String secretKey = "abcdefghijklmnopqrstuvwxyz";
+        when(properties.getSecretKey()).thenReturn(secretKey);
+
+        GearmanJob gearmanJob = testling.creatJob(new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        assertEquals(Aes.decrypt(gearmanJob.getData(), secretKey), testResult);
+    }
+
+    @Test
+    public void testSaveAllResultsConnectionFailed() throws Exception {
+        when(properties.getServiceType()).thenReturn("passive");
+        final String queueName = "check_results";
+        when(properties.getServerQueue()).thenReturn(queueName);
+        final String host = "99.99.99.20";
+        when(properties.getServerHost()).thenReturn(host);
+        final int port = 4730;
+        when(properties.getServerPort()).thenReturn(port);
+        when(properties.getNagiosHost()).thenReturn("win7sakuli");
+
+        when(checkResultBuilder.build()).thenReturn(new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+
+        GearmanClient gearmanClient = mock(GearmanClientImpl.class);
+        doReturn(gearmanClient).when(testling).getGearmanClient();
+        GearmanJobServerConnection connection = mock(GearmanJobServerConnection.class);
+        doReturn(connection).when(testling).getGearmanConnection(host, port);
+        when(gearmanClient.addJobServer(connection)).thenReturn(false);
+
+        testling.saveAllResults();
+
+        //checks
+        verify(gearmanCacheService, never()).cacheResults(anyList());
+        verify(gearmanCacheService, never()).getCachedResults();
+        verify(exceptionHandler).handleException(any(Throwable.class), eq(true));
+        verify(testling).getGearmanClient();
+        verify(testling).getGearmanConnection(host, port);
+        verify(gearmanClient).addJobServer(connection);
+        verify(gearmanClient).shutdown();
+    }
+
+    @Test
+    public void testSaveAllResultsConnectionFailedCacheResults() throws Exception {
+        when(properties.getServiceType()).thenReturn("passive");
+        final String queueName = "check_results";
+        when(properties.getServerQueue()).thenReturn(queueName);
+        final String host = "99.99.99.20";
+        when(properties.getServerHost()).thenReturn(host);
+        final int port = 4730;
+        when(properties.getServerPort()).thenReturn(port);
+        when(properties.getNagiosHost()).thenReturn("win7sakuli");
+        when(properties.isCacheEnabled()).thenReturn(true);
+
+        when(checkResultBuilder.build()).thenReturn(new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+
+        GearmanClient gearmanClient = mock(GearmanClientImpl.class);
+        doReturn(gearmanClient).when(testling).getGearmanClient();
+        GearmanJobServerConnection connection = mock(GearmanJobServerConnection.class);
+        doReturn(connection).when(testling).getGearmanConnection(host, port);
+        when(gearmanClient.addJobServer(connection)).thenReturn(false);
+
+        when(gearmanCacheService.getCachedResults()).thenReturn(Collections.emptyList());
+
+        doAnswer(invocationOnMock -> {
+            assertEquals(((List) invocationOnMock.getArguments()[0]).size(), 1L);
+            return null;
+        }).when(gearmanCacheService).cacheResults(anyList());
+
+        testling.saveAllResults();
+
+        //checks
+        verify(gearmanCacheService).cacheResults(anyList());
+        verify(gearmanCacheService).getCachedResults();
+        verify(exceptionHandler).handleException(any(Throwable.class), eq(true));
+        verify(testling).getGearmanClient();
+        verify(testling).getGearmanConnection(host, port);
+        verify(gearmanClient).addJobServer(connection);
+        verify(gearmanClient).shutdown();
+    }
+
+    @Test
+    public void testSaveAllResultsJobSubmitFailedAddCacheResults() throws Exception {
+        when(properties.getServiceType()).thenReturn("passive");
+        final String queueName = "check_results";
+        when(properties.getServerQueue()).thenReturn(queueName);
+        final String host = "99.99.99.20";
+        when(properties.getServerHost()).thenReturn(host);
+        final int port = 4730;
+        when(properties.getServerPort()).thenReturn(port);
+        when(properties.getNagiosHost()).thenReturn("win7sakuli");
+        when(properties.isCacheEnabled()).thenReturn(true);
+
+        GearmanClient gearmanClient = mock(GearmanClientImpl.class);
+        doReturn(gearmanClient).when(testling).getGearmanClient();
+        GearmanJobServerConnection connection = mock(GearmanJobServerConnection.class);
+        doReturn(connection).when(testling).getGearmanConnection(host, port);
+        GearmanJob job = mock(GearmanJob.class);
+        doReturn(job).when(testling).creatJob(any(NagiosCheckResult.class));
+        when(gearmanClient.addJobServer(connection)).thenReturn(true);
+        when(gearmanClient.submit(job)).thenThrow(new SakuliRuntimeException("Something went wrong!"));
+
+        NagiosCheckResult mockedResult1 = Mockito.mock(NagiosCheckResult.class);
+        NagiosCheckResult mockedResult2 = Mockito.mock(NagiosCheckResult.class);
+        when(gearmanCacheService.getCachedResults()).thenReturn(Arrays.asList(mockedResult1, mockedResult2));
+
+        NagiosCheckResult newResult = new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult);
+        when(checkResultBuilder.build()).thenReturn(newResult);
+
+        doAnswer(invocationOnMock -> {
+            List<NagiosCheckResult> results = ((List) invocationOnMock.getArguments()[0]);
+            assertEquals(results.size(), 3L);
+
+            assertEquals(results.get(0), newResult);
+            assertEquals(results.get(1), mockedResult1);
+            assertEquals(results.get(2), mockedResult2);
+            return null;
+        }).when(gearmanCacheService).cacheResults(anyList());
+        StringBuilder sendOrder = new StringBuilder();
+        doAnswer(invocationOnMock -> {
+            Object result = invocationOnMock.getArguments()[1];
+            Assert.assertTrue(result instanceof NagiosCheckResult);
+            sendOrder.append(result.hashCode());
+            return invocationOnMock.callRealMethod();
+
+        }).when(testling).sendResult(any(), any());
+
+        testling.saveAllResults();
+
+        //checks
+        assertEquals(sendOrder.toString(), "" + mockedResult2.hashCode() + mockedResult1.hashCode() + newResult.hashCode());
+        verify(gearmanCacheService).cacheResults(anyList());
+        verify(gearmanCacheService).getCachedResults();
+        verify(exceptionHandler, times(3)).handleException(any(Throwable.class), eq(true));
+        verify(testling).getGearmanClient();
+        verify(testling).getGearmanConnection(host, port);
+        verify(gearmanClient).addJobServer(connection);
+        verify(gearmanClient).shutdown();
+    }
+
+    @Test
+    public void testSaveAllResultsConnectionFailedAddCacheResults() throws Exception {
+        when(properties.getServiceType()).thenReturn("passive");
+        final String queueName = "check_results";
+        when(properties.getServerQueue()).thenReturn(queueName);
+        final String host = "99.99.99.20";
+        when(properties.getServerHost()).thenReturn(host);
+        final int port = 4730;
+        when(properties.getServerPort()).thenReturn(port);
+        when(properties.getNagiosHost()).thenReturn("win7sakuli");
+        when(properties.isCacheEnabled()).thenReturn(true);
+
+        GearmanClient gearmanClient = mock(GearmanClientImpl.class);
+        doReturn(gearmanClient).when(testling).getGearmanClient();
+        GearmanJobServerConnection connection = mock(GearmanJobServerConnection.class);
+        doReturn(connection).when(testling).getGearmanConnection(host, port);
+        GearmanJob job = mock(GearmanJob.class);
+        doReturn(job).when(testling).creatJob(any(NagiosCheckResult.class));
+        when(gearmanClient.addJobServer(connection)).thenReturn(false);
+
+        NagiosCheckResult mockedResult1 = Mockito.mock(NagiosCheckResult.class);
+        when(gearmanCacheService.getCachedResults()).thenReturn(Collections.singletonList(mockedResult1));
+
+        NagiosCheckResult newResult = new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult);
+        when(checkResultBuilder.build()).thenReturn(newResult);
+
+        doAnswer(invocationOnMock -> {
+            List<NagiosCheckResult> results = ((List) invocationOnMock.getArguments()[0]);
+            assertEquals(results.size(), 2L);
+
+            assertEquals(results.get(0), newResult);
+            assertEquals(results.get(1), mockedResult1);
+            return null;
+        }).when(gearmanCacheService).cacheResults(anyList());
+
+        testling.saveAllResults();
+
+        //checks
+        verify(gearmanCacheService).cacheResults(anyList());
+        verify(gearmanCacheService).getCachedResults();
+        verify(exceptionHandler).handleException(any(Throwable.class), eq(true));
+        verify(testling).getGearmanClient();
+        verify(testling).getGearmanConnection(host, port);
+        verify(gearmanClient).addJobServer(connection);
+        verify(gearmanClient).shutdown();
+    }
+
+    @Test
+    public void testSaveAllResultsWrongConnectionCacheResults() throws Exception {
+        when(properties.getServiceType()).thenReturn("passive");
+        final String queueName = "check_results";
+        when(properties.getServerQueue()).thenReturn(queueName);
+        final String host = "not-resolveable-host.de";
+        when(properties.getServerHost()).thenReturn(host);
+        final int port = 4730;
+        when(properties.getServerPort()).thenReturn(port);
+        when(properties.getNagiosHost()).thenReturn("win7sakuli");
+        when(properties.isCacheEnabled()).thenReturn(true);
+
+        when(checkResultBuilder.build()).thenReturn(new NagiosCachedCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+
+        GearmanClient gearmanClient = mock(GearmanClientImpl.class);
+        doReturn(gearmanClient).when(testling).getGearmanClient();
+        GearmanJobServerConnection connection = mock(GearmanJobServerConnection.class);
+        doReturn(connection).when(testling).getGearmanConnection(host, port);
+        when(gearmanClient.addJobServer(connection)).thenThrow(new UnresolvedAddressException());
+
+        when(gearmanCacheService.getCachedResults()).thenReturn(Collections.emptyList());
+
+        doAnswer(invocationOnMock -> {
+            assertEquals(((List) invocationOnMock.getArguments()[0]).size(), 1L);
+            return null;
+        }).when(gearmanCacheService).cacheResults(anyList());
+
+        doAnswer(invocationOnMock -> {
+            Exception exception = (Exception) invocationOnMock.getArguments()[0];
+            assertRegExMatch(exception.getMessage(),
+                    "Could not transfer Sakuli results to the Gearman server.*");
+            assertEquals(exception.getSuppressed()[0].getClass(), UnresolvedAddressException.class);
+            return null;
+        }).when(exceptionHandler).handleException(any(Throwable.class), anyBoolean());
+
+        testling.saveAllResults();
+
+        //checks
+        verify(gearmanCacheService).cacheResults(anyList());
+        verify(gearmanCacheService).getCachedResults();
+        verify(exceptionHandler).handleException(any(SakuliForwarderException.class), anyBoolean());
+        verify(testling).getGearmanClient();
+        verify(testling).getGearmanConnection(host, port);
+        verify(gearmanClient).addJobServer(connection);
+        verify(gearmanClient).shutdown();
     }
 }

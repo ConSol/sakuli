@@ -24,14 +24,12 @@ import org.sakuli.actions.ModifySahiTimer;
 import org.sakuli.actions.environment.CommandLineUtil.CommandLineResult;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.screenbased.Region;
-import org.sakuli.actions.screenbased.RegionImpl;
-import org.sakuli.actions.screenbased.TypingUtil;
+import org.sakuli.actions.screenbased.*;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
-import org.sikuli.script.App;
-import org.sikuli.script.IRobot;
+import org.sikuli.script.*;
 import org.sikuli.script.Key;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -169,7 +167,29 @@ public class Environment implements Action {
      */
     @LogToResult(message = "sleep and do nothing for x seconds", logClassInstance = false)
     public Environment sleep(Integer seconds) {
-        return typingUtil.sleep(seconds);
+        return typingUtil.sleep(seconds * 1000L);
+    }
+
+    /**
+     * Blocks the current testcase execution for x seconds
+     *
+     * @param seconds to sleep
+     * @return this {@link Environment} or NULL on errors.
+     */
+    @LogToResult(message = "sleep and do nothing for x seconds", logClassInstance = false)
+    public Environment sleep(Double seconds) {
+        return typingUtil.sleep((long) (seconds * 1000L));
+    }
+
+    /**
+     * Blocks the current testcase execution for x milliseconds
+     *
+     * @param milliseconds to sleep
+     * @return this {@link Environment} or NULL on errors.
+     */
+    @LogToResult(message = "sleep and do nothing for x milliseconds", logClassInstance = false)
+    public Environment sleepMs(Integer milliseconds) {
+        return typingUtil.sleep(Long.valueOf(milliseconds));
     }
 
     /**

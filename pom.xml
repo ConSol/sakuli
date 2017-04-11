@@ -22,7 +22,7 @@
 
     <groupId>org.sakuli</groupId>
     <artifactId>root</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0-beta</version>
     <packaging>pom</packaging>
 
     <name>sakuli-parent</name>
@@ -50,6 +50,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- needed for no errors on javadoc generation (maven-javadoc-plugin) -->
         <additionalparam>-Xdoclint:none</additionalparam>
+        <dependencies.sakuli-go-wrapper.version>1.0.3</dependencies.sakuli-go-wrapper.version>
         <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
@@ -119,7 +120,7 @@
                     <pushHotfixes>true</pushHotfixes>
                     <pushReleases>true</pushReleases>
                     <updateDependencies>true</updateDependencies>
-                    <scmCommentPrefix>mvn-jgitflow: </scmCommentPrefix>
+                    <scmCommentPrefix>mvn-jgitflow:</scmCommentPrefix>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <enableSshAgent>true</enableSshAgent>
                     <useReleaseProfile>true</useReleaseProfile>
@@ -245,7 +246,7 @@
         <connection>scm:git:git://github.com/ConSol/sakuli.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/ConSol/sakuli.git</developerConnection>
         <url>git://github.com/ConSol/sakuli.git</url>
-        <tag>v1.0.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
@@ -298,7 +299,7 @@
 
 
     <profiles>
-        <!-- profile for uploading the artifacts and zipped files to labs.consol.de/sakuli-->
+        <!-- profile overrideds the `upload-config` for releases-->
         <profile>
             <id>upload-release</id>
             <activation>
@@ -312,6 +313,22 @@
                 <repository>
                     <id>labs-consol-sakuli-repository</id>
                     <url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/repository</url>
+                </repository>
+                <snapshotRepository>
+                    <id>labs-consol-sakuli-repository</id>
+                    <url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/snapshots-repository</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+        <!-- profile for uploading the SNAPSHOT artifacts and zipped files to labs.consol.de/sakuli-->
+        <profile>
+            <id>upload</id>
+            <!-- profile settings to upload the artifacts to the consol labs server -->
+            <distributionManagement>
+                <repository>
+                    <id>labs-consol-sakuli-repository</id>
+                    <!-- ensure that snapshot repository will used -->
+                    <url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/snapshots-repository</url>
                 </repository>
                 <snapshotRepository>
                     <id>labs-consol-sakuli-repository</id>
@@ -554,6 +571,16 @@
                 <version>1.9.5</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.jtwig</groupId>
+                <artifactId>jtwig-core</artifactId>
+                <version>5.64</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jtwig</groupId>
+                <artifactId>jtwig-spaceless-extension</artifactId>
+                <version>1.44</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <repositories>
@@ -580,6 +607,18 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-
+        <!-- jtwig dependency-->
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </repository>
     </repositories>
 </project>

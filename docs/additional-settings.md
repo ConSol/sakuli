@@ -11,11 +11,11 @@ This page contains different topics regarding the configuration of both **Sakuli
 1. as a **global testsuite property** in `test-suites-folder/sakuli.properties`
    -> valid for **all test suites** within this folder
 2. as a **testsuite property** in `test-suites-folder/test-suite/testsuite.properties`
-   -> valid for **all test cases** within a test suite 
+   -> valid for the **test suite** itself and **all test cases** within it 
 3. as a **Java VM option** like  `-D log.level.sakuli=DEBUG`, as option of the Sakuli starter
-   -> valid for only one run
+   -> valid for only one test run
 
-We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file; your changes will not be preserved. 
+We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file and would overwrite the existing one; your changes would not be preserved. 
 
 ### Forwarder
 
@@ -71,7 +71,6 @@ The logging verbosity of all compoments *Sakuli, Sahi, Sikuli, Spring* - and *Ja
 * **`sakuli.log.folder`**`=${sakuli.testsuite.folder}/_logs`  -  Log folder
 
 In general it is also possible to add your own Logback configuration under `__SAKULI_HOME__/config/sakuli-log-config.xml`. For more information about the Logback syntax please refer to the [Logback manual](http://logback.qos.ch/manual/configuration.html).
-
 
 #### Log file rotation 
 

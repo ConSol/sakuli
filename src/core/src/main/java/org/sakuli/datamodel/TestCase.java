@@ -18,6 +18,7 @@
 
 package org.sakuli.datamodel;
 
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.exceptions.SakuliException;
 import org.springframework.util.CollectionUtils;

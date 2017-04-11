@@ -19,12 +19,9 @@
 package org.sakuli.exceptions;
 
 import net.sf.sahi.report.ResultType;
-import org.apache.commons.lang.StringUtils;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.aop.RhinoAspect;
-import org.sakuli.datamodel.TestCase;
-import org.sakuli.datamodel.TestCaseStep;
-import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.*;
 import org.sakuli.datamodel.actions.LogResult;
 import org.sakuli.loader.ScreenActionLoader;
 import org.slf4j.Logger;
@@ -52,28 +49,6 @@ public class SakuliExceptionHandler {
     private List<Throwable> processedExceptions = new ArrayList<>();
     private List<Throwable> resumeExceptions = new ArrayList<>();
 
-    public static String getAllExceptionMessages(Throwable e, boolean flatFormatted) {
-        if (e != null) {
-            String msg = format(e.getMessage());
-            //add suppressed exceptions
-            for (Throwable ee : e.getSuppressed()) {
-                if (flatFormatted) {
-                    msg += " --  Suppressed EXCEPTION: " + format(ee.getMessage());
-                } else {
-                    msg += "\n\t\t Suppressed EXCEPTION: " + format(ee.getMessage());
-                }
-            }
-            if (flatFormatted) {
-                msg = StringUtils.replace(msg, "\n", " ");
-                msg = StringUtils.replace(msg, "\t", " ");
-                return msg;
-            }
-            return msg;
-        } else {
-            return null;
-        }
-    }
-
     /**
      * @return all exceptions from the test suite and there underlying test cases.
      */
@@ -97,13 +72,6 @@ public class SakuliExceptionHandler {
         }
 
         return result;
-    }
-
-    private static String format(String message) {
-        if (message != null && message.contains(":")) {
-            return message.substring(message.indexOf(":") + 1);
-        }
-        return message;
     }
 
     /**
@@ -274,7 +242,6 @@ public class SakuliExceptionHandler {
             throw new RuntimeException(RhinoAspect.ALREADY_PROCESSED + e.getMessage());
         }
     }
-
 
     /**
      * transforms any {@link Throwable} to SakuliException. If the property 'sakuli.screenshot.onError=true' is set, the

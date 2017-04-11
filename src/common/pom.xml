@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>1.0.2</version>
+        <version>1.1.0-beta</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>common</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0-beta</version>
     <name>common</name>
     <description>maven module for common used resources</description>
 
@@ -67,7 +67,7 @@
                                 <artifactItem>
                                     <groupId>org.sakuli</groupId>
                                     <artifactId>sakuli-go-wrapper</artifactId>
-                                    <version>${project.version}</version>
+                                    <version>${dependencies.sakuli-go-wrapper.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
                                     <excludes>META-INF/</excludes>

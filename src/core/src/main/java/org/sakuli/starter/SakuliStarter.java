@@ -189,7 +189,7 @@ public class SakuliStarter {
         //check and set the sakuli main folder
         tempLogCache = SakuliFolderHelper.checkSakuliHomeFolderAndSetContextVariables(sakuliHomeFolderPath, tempLogCache);
 
-        //if sahi home have been set override the default
+        //if sahi home have been set overwrite the default
         if (isNotEmpty(sahiHomeFolder)) {
             tempLogCache = SakuliFolderHelper.checkSahiProxyHomeAndSetContextVariables(sahiHomeFolder, tempLogCache);
         }

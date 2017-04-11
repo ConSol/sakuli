@@ -97,6 +97,6 @@ public class TestCaseStepTest {
                         .buildExample()));
         assertEquals(testCase.getExceptionMessages(true), "CASE-EXCEPTION - STEP \"step_for_unit_test\": STEP-EXCEPTION");
         assertEquals(testCase.getExceptionMessages(false), "CASE-EXCEPTION\n\tSTEP \"step_for_unit_test\": STEP-EXCEPTION");
-
     }
+
 }
