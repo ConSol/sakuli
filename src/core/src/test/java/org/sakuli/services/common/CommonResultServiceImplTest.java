@@ -18,29 +18,34 @@
 
 package org.sakuli.services.common;
 
-import org.mockito.Mock;
+import org.mockito.InjectMocks;
+import org.mockito.Spy;
 import org.sakuli.LoggerTest;
-import org.sakuli.builder.*;
+import org.sakuli.builder.TestCaseExampleBuilder;
+import org.sakuli.builder.TestCaseStepExampleBuilder;
+import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.datamodel.state.*;
+import org.sakuli.datamodel.state.TestCaseState;
+import org.sakuli.datamodel.state.TestCaseStepState;
+import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.testng.annotations.*;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
 
 public class CommonResultServiceImplTest extends LoggerTest {
 
-    @Mock
-    private SakuliProperties sakuliProperties;
-
+    @Spy
+    @InjectMocks
     private CommonResultServiceImpl testling;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -54,38 +59,15 @@ public class CommonResultServiceImplTest extends LoggerTest {
         };
     }
 
-    @DataProvider(name = "errors")
-    public static Object[][] errors() {
-        Map<String, String> multipleExpressions = new LinkedHashMap<>();
-        multipleExpressions.put("TypeError(.*)", "");
-        multipleExpressions.put("AccessError(.*)", "");
-
-        return new Object[][]{
-                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nSome details are here ...", Collections.singletonMap("[\\s\\S]+", "New error message!"), "New error message!"},
-                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nSome details are here ...", Collections.singletonMap("TypeError(.*)", ""), "el is undefined"},
-                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nTypeError another el is undefined\nSome details are here ...", Collections.singletonMap("TypeError(.*)", ""), "el is undefined another el is undefined"},
-                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nTypeError another el is undefined\nSome details are here ...", Collections.singletonMap("TypeError(.*)", "TypeError:%1s "), "TypeError: el is undefined TypeError: another el is undefined"},
-                {"Something went wrong!\nNow some important information:\nTypeError el is undefined AccessError another el is not accessible\nSome details are here ...", Collections.singletonMap("TypeError(.*).*AccessError\\s(.*)", ""), "el is undefined another el is not accessible"},
-                {"Something went wrong!\nNow some important information:\nTypeError el is undefined AccessError another el is not accessible\nSome details are here ...", Collections.singletonMap("TypeError\\s(.*)\\sAccessError\\s(.*)", "TypeError:'%1s' - AccessError:'%2s'"), "TypeError:'el is undefined' - AccessError:'another el is not accessible'"},
-                {"Something went wrong!\nNow some important information:\nTypeError el is undefined\nAccessError another el is not accessible\nSome details are here ...", multipleExpressions, "el is undefined another el is not accessible"},
-                {"Something went wrong!", Collections.singletonMap("TypeError(.*)", ""), "Something went wrong!"},
-                {"Something went wrong: take a look at it!", Collections.emptyMap(), "Something went wrong: take a look at it!"},
-        };
-    }
-
     @Override
     @BeforeMethod
     public void init() {
         super.init();
-        testling = spy(new CommonResultServiceImpl(sakuliProperties));
         doNothing().when(testling).cleanUp();
     }
 
     @Test(dataProvider = "states")
     public void testSaveAllResults(TestSuiteState testSuiteState, TestCaseState testCaseState, String stateOutputRegex) throws Exception {
-        reset(sakuliProperties);
-        when(sakuliProperties.getLogExceptionFormatMappings()).thenReturn(Collections.emptyMap());
-
         TestCaseStepState stepState = TestCaseStepState.WARNING;
         TestSuite testSuite = new TestSuiteExampleBuilder()
                 .withId("LOG_TEST_SUITE").withState(testSuiteState)
@@ -101,32 +83,6 @@ public class CommonResultServiceImplTest extends LoggerTest {
         testling.saveAllResults();
         String lastLineOfLogFile = getLastLineOfLogFile(logfile, testSuiteState.isError() ? 42 : 39);
         List<String> regExes = getValidationExpressions(testSuiteState, testCaseState, stepState, stateOutputRegex, "TEST");
-
-        List<String> strings = Arrays.asList(lastLineOfLogFile.split("\n"));
-        Iterator<String> regExIterator = regExes.iterator();
-        verifyOutputLines(strings, regExIterator);
-    }
-
-    @Test(dataProvider = "errors")
-    public void testSaveAllResultsWithErrorFormat(String exceptionMessage, Map<String, String> formatExpressions, String errorResult) throws Exception {
-        reset(sakuliProperties);
-        when(sakuliProperties.getLogExceptionFormatMappings()).thenReturn(formatExpressions);
-
-        TestCaseStepState stepState = TestCaseStepState.WARNING;
-        TestSuite testSuite = new TestSuiteExampleBuilder()
-                .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS)
-                .withException(new SakuliException(exceptionMessage))
-                .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
-                        .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
-                        .withState(TestCaseState.WARNING)
-                        .buildExample()
-                ))
-                .buildExample();
-        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
-        Path logfile = Paths.get(properties.getLogFile());
-        testling.saveAllResults();
-        String lastLineOfLogFile = getLastLineOfLogFile(logfile, 42);
-        List<String> regExes = getValidationExpressions(TestSuiteState.ERRORS, TestCaseState.WARNING, stepState, "ERROR .* ERROR:", errorResult);
 
         List<String> strings = Arrays.asList(lastLineOfLogFile.split("\n"));
         Iterator<String> regExIterator = regExes.iterator();

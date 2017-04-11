@@ -2,9 +2,9 @@
 
 # Documentation
 
-Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs.io)**.
+Our documentation is also available on **[Read the Docs](http://sakuli.readthedocs.io)**.
 * Stable version (latest tagged `vX.X.X` documentation) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=stable)](http://sakuli.readthedocs.io/en/stable/)
-* Latest verison (documentation on `master` branch, with corrections) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=latest)](http://sakuli.readthedocs.io/en/latest/)
+* Latest version (documentation on `master` branch, with corrections) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=latest)](http://sakuli.readthedocs.io/en/latest/)
 * Dev version (current development version on `dev` branch) [![Documentation Status](https://readthedocs.io/projects/sakuli/badge/?version=dev)](http://sakuli.readthedocs.io/en/dev/)
 
 ## Usage
@@ -12,12 +12,13 @@ Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs
 
 * [Sakuli client installation](installation-client.md)
 * [Sakuli JavaDSL setup](java-DSL.md)
-* [Usage Sakuli Docker Containers](../docs/docker-containers.md)
-* Submitting Sakuli results to [OMD](installation-omd.md)
-    * [to Gearmand](forwarder-gearman.md)
-    * [into Database](forwarder-database.md)
-    * [to Icinga2 REST API](forwarder-icinga2api.md)
-    * [to Check_MK as local check](forwarder-checkmk.md)
+* [Usage of Sakuli Docker Images](docker-images.md)
+* Forwarding Sakuli results to other systems:
+    * [Open Monitoring Distribution (OMD)](installation-omd.md)
+    * [Gearman Daemon](forwarder-gearman.md)
+    * [SQL Database](forwarder-database.md)
+    * [Icinga2 REST API](forwarder-icinga2api.md)
+    * [Check_MK](forwarder-checkmk.md)
 * Tutorial: [First steps](first-steps.md)
 * Example projects on GitHub [ConSol/sakuli-examples](https://github.com/ConSol/sakuli-examples)
 
@@ -49,7 +50,8 @@ native application UI with screen related actions. The API is documented in [Jav
 ## Advanced topics
 
 * **Containerized Sakuli checks with [Docker](https://www.docker.com/)**
-  * [Usage Sakuli Docker Containers](../docs/docker-containers.md)
+  * [Usage Sakuli Docker Images](docker-images.md)
+  * [Usage Sakuli in OpenShift](openshift.md)
   * Presentation [Containerized End-2-End-Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)
   * Example project on GitHub [toschneck/sakuli-example-bakery-testing](https://github.com/toschneck/sakuli-example-bakery-testing)
 * **Headless** Sakuli checks

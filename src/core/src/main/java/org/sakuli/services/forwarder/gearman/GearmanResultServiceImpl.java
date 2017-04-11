@@ -78,17 +78,25 @@ public class GearmanResultServiceImpl extends AbstractResultService {
             }
         }
 
-        if (!gearmanClient.addJobServer(connection)) {
-            exceptionHandler.handleException(new SakuliForwarderException("Failed to connect to Gearman server"), true);
-        } else {
-            //sending in reverse original happened order
-            Collections.reverse(results);
-            results = results.stream()
-                    //filter all unsuccessful results
-                    .filter(checkResult -> !sendResult(gearmanClient, checkResult))
-                    .collect(Collectors.toList());
-            Collections.reverse(results);
+        try {
+            if (!gearmanClient.addJobServer(connection)) {
+                exceptionHandler.handleException(new SakuliForwarderException(
+                        String.format("Failed to connect to Gearman server '%s:%s'", properties.getServerHost(), properties.getServerPort())), true);
+            } else {
+                //sending in reverse original happened order
+                Collections.reverse(results);
+                results = results.stream()
+                        //filter all unsuccessful results
+                        .filter(checkResult -> !sendResult(gearmanClient, checkResult))
+                        .collect(Collectors.toList());
+                Collections.reverse(results);
+            }
+        } catch (Exception e) {
+            exceptionHandler.handleException(new SakuliForwarderException(e,
+                    String.format("Could not transfer Sakuli results to the Gearman server '%s:%s'", properties.getServerHost(), properties.getServerPort())), true);
         }
+
+        //save all not send results
         if (properties.isCacheEnabled()) {
             cacheService.cacheResults(results);
         }

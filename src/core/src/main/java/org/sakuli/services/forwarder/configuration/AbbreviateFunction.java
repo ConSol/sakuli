@@ -35,12 +35,6 @@ import java.util.Map;
  */
 public class AbbreviateFunction extends AbstractFunction {
 
-    private Map<String, String> formatExpressions;
-
-    public AbbreviateFunction(Map<String, String> formatExpressions) {
-        this.formatExpressions = formatExpressions;
-    }
-
     @Override
     public String name() {
         return "abbreviate";

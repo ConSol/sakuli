@@ -7,7 +7,7 @@ metadata:
     description: Sakuli End-2-End testing client template (run as pod with mounted gitvolumen for the test suite)
     iconClass: icon-beaker
     tags: consol, sakuli, ubuntu, xfce
-    version: 1.1.0-SNAPSHOT
+    version: 1.1.0
   creationTimestamp: null
   name: sakuli-e2e-run-pod-gitvol
 ### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
@@ -21,8 +21,7 @@ parameters:
 - description: 'Sakuli End-2-End image, see `docker search sakuli`'
   name: IMAGE
   required: true
-  #TODO TS: remove tag after finishing
-  value: consol/sakuli-ubuntu-xfce:v1.1.0-SNAPSHOT-218_docker_usermod_openshift
+  value: consol/sakuli-ubuntu-xfce
 - description: Git repository where the Sakuli test suite is stored
   name: GIT_TEST_SUITE_REPO
   value: https://github.com/ConSol/sakuli-examples
@@ -32,7 +31,7 @@ parameters:
 - description: Path to the Sakuli test suite is stored at the GIT_TEST_SUITE_REPO
   name: GIT_TEST_SUITE_PATH
   value: docker-xfce/part_01/example_xfce
-  #TODO TS: change to openshift example
+  #TODO #244: change to openshift example
 ### Configuration of OpenShift objects
 objects:
 ### POD config (run one time)
@@ -54,7 +53,7 @@ objects:
       volumeMounts:
       - mountPath: /headless/sakuli/test
         name: vol-test
-      #TODO: change after #238 is implemented
+      #TODO #238: change after  is implemented
       args:
         # - --tail-log #make normal UI startup to connect via: oc rsh <pod-name> bash
         - run
@@ -86,6 +85,7 @@ objects:
         timeoutSeconds: 1
     volumes:
     - name: vol-test
+      # ensure gitRepo volumes are allowed in openshift, see docu.
       gitRepo:
         repository: ${GIT_TEST_SUITE_REPO}
         revision: ${GIT_TEST_SUITE_REVISION}

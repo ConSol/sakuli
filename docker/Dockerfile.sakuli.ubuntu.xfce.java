@@ -1,12 +1,12 @@
-# This Dockerfile is used to build an sakuli image based on Ubuntu
+# This Dockerfile is used to build a sakuli image based on Ubuntu
 
-FROM consol/ubuntu-xfce-vnc:dev
+FROM consol/ubuntu-xfce-vnc:1.1.0
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-02-20
+ENV REFRESHED_AT 2017-03-17
 
-LABEL io.k8s.description="Sakuli headless testing Container (maven java tests) with Xfce window manager, firefox and chromium" \
-      io.k8s.display-name="Sakuli Testing Container (maven java tests) based on Ubuntu and Xfce" \
+LABEL io.k8s.description="Sakuli headless testing container (maven java tests) with Xfce window manager, firefox and chromium" \
+      io.k8s.display-name="Sakuli testing container (maven java tests) based on Ubuntu and Xfce" \
       io.openshift.expose-services="6901:http,5901:xvnc" \
       io.openshift.tags="sakuli, ubuntu, xfce, java, maven" \
       io.openshift.non-scalable=true
@@ -18,7 +18,7 @@ ENV VNC_PORT 5901
 ENV NO_VNC_PORT 6901
 EXPOSE $VNC_PORT $NO_VNC_PORT
 
-### Envrionment config
+### Environment config
 ENV VNC_COL_DEPTH 24
 ENV VNC_RESOLUTION 1280x1024
 ENV VNC_PW sakuli
@@ -66,7 +66,7 @@ USER 1984
 ### Sakuli startup script
 # no parameters:
 # - run the suite defined by $SAKULI_TEST_SUITE via `mvn test`
-# if set paramters:
+# if set parameters:
 # - run the suite via typical maven commands like `mvn install`
 # - start a bash (or any other command):
 #   docker run -it consol/sakuli-ubuntu-xfce-java bash

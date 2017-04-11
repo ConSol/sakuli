@@ -26,7 +26,7 @@ var appGedit = new Application("/usr/bin/gedit");
 function checkCentOS() {
     var dist = env.runCommand('cat /etc/os-release').getOutput();
     if (dist.match(/NAME=.*CentOS.*/)) {
-        Logger.logInfo('Detected distribution: CentOS  >> override some image patterns');
+        Logger.logInfo('Detected distribution: CentOS  >> overwrite some image patterns');
         testCase.addImagePaths("centos");
     }
 }
@@ -55,7 +55,7 @@ try {
     screen.waitForImage("gedit.png", 10).highlight();
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
     testCase.endOfStep("Editor", 10);
-    env.sleep(4);
+
 } catch (e) {
     testCase.handleException(e);
 } finally {
