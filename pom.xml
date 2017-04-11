@@ -323,12 +323,6 @@
         <!-- profile for uploading the SNAPSHOT artifacts and zipped files to labs.consol.de/sakuli-->
         <profile>
             <id>upload-snapshots</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
             <!-- profile settings to upload the artifacts to the consol labs server -->
             <distributionManagement>
                 <repository>
