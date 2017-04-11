@@ -1,0 +1,6 @@
+---
+
+- name: Configure OMD site {{ SITENAME }} for Sakuli
+  hosts: all
+  roles:
+    - sakuli

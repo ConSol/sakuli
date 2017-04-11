@@ -1,0 +1,3 @@
+---
+
+OMD_ROOT: "/opt/omd/sites/{{ SITENAME }}"

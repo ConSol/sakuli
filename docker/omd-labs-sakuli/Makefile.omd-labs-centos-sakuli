@@ -1,0 +1,53 @@
+# This file is used to manage local images
+# depending of the current dir and branch.
+# Branch 'master' leads to no tag (=latest),
+# others to "local/[dirname]:[branchname]
+
+# run 'make echo' to show the image name you're working on.
+
+REPO = local/omd-labs-centos-sakuli
+TAG  = $(shell git rev-parse --abbrev-ref HEAD|sed 's/master/latest/')
+IMAGE=$(REPO):$(TAG)
+DOCKERFILE = Dockerfile.omd-labs-centos-sakuli
+
+ifdef SOURCE_BRANCH
+	BUILDARGS = --build-arg SOURCE_BRANCH=$(SOURCE_BRANCH)
+else
+	BUILDARGS = --build-arg SOURCE_BRANCH=$(TAG)
+endif
+
+ifdef NEW_SITENAME
+  SITENAME = $(NEW_SITENAME)
+else
+  SITENAME = demo
+endif
+BUILDARGS += --build-arg NEW_SITENAME=$(SITENAME)
+
+echo "buildargs: $(BUILDARGS)"
+
+.PHONY: build start echo bash
+
+build:
+	# use the local base image with tag = branchname
+	sed 's@^\(FROM\) consol\(/omd-labs-.*\)@\1 local\2:$(TAG)@' $(DOCKERFILE) > $(DOCKERFILE).local
+	docker build -f $(DOCKERFILE).local $(BUILDARGS) -t $(IMAGE) .
+	@rm $(DOCKERFILE).local
+	@echo "Successfully built" $(IMAGE)
+start:
+	docker run -p 8443:443 -d $(IMAGE)
+startvol:
+	docker run -d -p 8443:443         \
+	-v $(shell pwd)/site/local:/omd/sites/$(SITENAME)/local \
+	-v $(shell pwd)/site/etc:/omd/sites/$(SITENAME)/etc     \
+	-v $(shell pwd)/site/var:/omd/sites/$(SITENAME)/var     \
+	$(IMAGE)
+echo:
+	@echo $(IMAGE)
+bash:
+	docker run --rm -p 8443:443 -it $(IMAGE) /bin/bash
+bashvol:
+	docker run --rm -p 8443:443 -it \
+	-v $(shell pwd)/site/local:/omd/sites/$(SITENAME)/local \
+	-v $(shell pwd)/site/etc:/omd/sites/$(SITENAME)/etc     \
+	-v $(shell pwd)/site/var:/omd/sites/$(SITENAME)/var     \
+	$(IMAGE) /bin/bash

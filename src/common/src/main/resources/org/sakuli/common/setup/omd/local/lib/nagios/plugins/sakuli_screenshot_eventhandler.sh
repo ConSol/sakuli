@@ -1,8 +1,5 @@
 #!/bin/bash
 
-SCREENSHOT_COUNT=1000
-SCREENSHOT_HIDE_AFTER=30
-SCREENSHOT_DELETE_AFTER=60
 
 STATE=$1
 HOST=$2
@@ -52,14 +49,4 @@ case $STATE in
     ls -la "$IMG_DIR" >> $LOG
     ;;
 esac
-
-# Cleanup  ===================
-pushd $IMG_ROOT
-# Keep only the last X screenshots
-ls -1tr $IMG_ROOT | tail -n +$SCREENSHOT_COUNT | xargs rm -rf
-# Delete all dirs > 60 days
-for d in $(find $IMG_ROOT -mtime +$SCREENSHOT_DELETE_AFTER -type d); do rm -rf $d; done
-# Rename all visible dirs > 30 days (-> that makes them invisible for Thruk SSI)
-for d in $(find $IMG_ROOT -regex '.*[0-9]' -mtime +$SCREENSHOT_HIDE_AFTER -type d); do mv $d $d.HIDDEN; done
-
 exit 0
