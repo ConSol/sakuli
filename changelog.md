@@ -2,7 +2,7 @@
 
 ### Version 1.1.0-beta
 
-* OpenShift and enhanced docker support (#218):
+* [OpenShift](docs/openshift.md) and enhanced [docker support](docs/docker-images.md) (#218):
   * add different OpenShift templates under `docker/openshift`: 
     * Docker Image Build from sources
     * Deployment Config for continuous test running
@@ -16,13 +16,14 @@
   * move to startup scripts to a more generic path: `/dockerstartup`
   * fix some Firefox startup issues 
   * Use OpenJDK for docker images
+* [Kubernetes support](docs/kubernetes.md) with examples under `docker/kubernetes` (#239)
 * skip vnc startup on docker containers on sakuli commands: `-help`, `-version`, `encrypt` (#198)
 * first step to improve exception message output (#37)
 * fix description of properties loading mechanism (#211)
 * fix some problems of the Gearman caching (#225):
   * add error handling for RuntimeExceptions to Gearman client
   * print out Exception class if no message is provided
-* add support for checkMK monitoring system, based on twig template based file output (#176)
+* add [support for checkMK](docs/forwarder-checkmk.md) monitoring system, based on twig template based file output (#176)
 * Improved Sakuli event handler: hide screenshots after 30 days, delete after 60; adapted Thruk SSI (#236)
 * fix wrong exit code of go-starter `sakuli -version`
 * clean up ordering of gearman and icinga2 properties in `sakuli-default.properties` and documentation (#188) 
