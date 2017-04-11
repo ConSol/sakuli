@@ -38,7 +38,7 @@ RUN $INST_SCRIPTS/java_jre.sh
 RUN $INST_SCRIPTS/java_jce_test/jce_test.sh
 
 ### Install Sakuli
-ARG SAKULI_VERSION=1.1.0-SNAPSHOT
+ARG SAKULI_VERSION=1.1.0-beta
 ENV SAKULI_ROOT $HOME/sakuli
 ENV SAKULI_HOME $SAKULI_ROOT/sakuli-v$SAKULI_VERSION
 # Testsuite folder default permissions after text execution
