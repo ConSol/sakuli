@@ -5,7 +5,7 @@
 
 # run 'make echo' to show the image name you're working on.
 
-REPO = local/omd-labs-debian
+REPO = local/omd-labs-debian-sakuli
 TAG  = $(shell git rev-parse --abbrev-ref HEAD|sed 's/master/latest/')
 IMAGE=$(REPO):$(TAG)
 DOCKERFILE = Dockerfile.omd-labs-debian-sakuli
