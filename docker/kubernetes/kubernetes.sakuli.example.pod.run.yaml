@@ -19,7 +19,7 @@ spec:
   containers:
   - name: test-sakuli-kub
     ##  TODO TS: remove tag after finishing
-    image: consol/sakuli-ubuntu-xfce:v1.1.0-SNAPSHOT-218_docker_usermod_openshift
+    image: consol/sakuli-ubuntu-xfce:dev
     imagePullPolicy: Always
     args:
       ### make normal UI startup to connect via: oc rsh <pod-name> bash
