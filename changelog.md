@@ -1,5 +1,38 @@
 ## Change Log of Sakuli Releases
 
+### Version 1.1.0-beta
+
+* OpenShift and enhanced docker support (#218):
+  * add different OpenShift templates under `docker/openshift`: 
+    * Docker Image Build from sources
+    * Deployment Config for continuous test running
+    * Job Config for onetime execution
+    * POD run config for single execution only
+    * GitRepoVolumeSource example configuration for a ready to use git-based testsuites execution
+  * change startup to a non-root-user startup procedure
+  * add Sakuli Images based on IceWM UI
+  * add non-root java DSL based Docker images
+  * add correct JVM heap sizing on startup  due to [Docker cgroups constraints](http://matthewkwilliams.com/index.php/2016/03/17/docker-cgroups-memory-constraints-and-java-cautionary-tale/1)
+  * move to startup scripts to a more generic path: `/dockerstartup`
+  * fix some Firefox startup issues 
+  * Use OpenJDK for docker images
+* skip vnc startup on docker containers on sakuli commands: `-help`, `-version`, `encrypt` (#198)
+* first step to improve exception message output (#37)
+* fix description of properties loading mechanism (#211)
+* fix some problems of the Gearman caching (#225):
+  * add error handling for RuntimeExceptions to Gearman client
+  * print out Exception class if no message is provided
+* add support for checkMK monitoring system, based on twig template based file output (#176)
+* Improved Sakuli event handler: hide screenshots after 30 days, delete after 60; adapted Thruk SSI (#236)
+* fix wrong exit code of go-starter `sakuli -version`
+* clean up ordering of gearman and icinga2 properties in `sakuli-default.properties` and documentation (#188) 
+* fix Sahi startup errors with retry mechanism (#219)
+* merge pull request #220 from martku/patch-1
+* change dependency `sakuli-go-wrapper` to fixed version
+* smaller bugfixes and documentation update
+
+- - -
+
 ### Version 1.0.2 (Bugfix + some small features)
 * issue #210: upgrade Sahi to version `5.1` due to  Sahi compatibility issue with Chrome 53+ - _click
 * fix docker images

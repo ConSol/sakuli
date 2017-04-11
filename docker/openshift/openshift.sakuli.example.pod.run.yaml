@@ -6,8 +6,8 @@ metadata:
   annotations:
     description: Sakuli End-2-End testing client template (run as pod)
     iconClass: icon-beaker
-    tags: consol, sakuli, ubuntu, xfce
-    version: 1.1.0-SNAPSHOT
+    tags: consol, sakuli, e2e-testing, e2e-monitoring
+    version: 1.1.0
   creationTimestamp: null
   name: sakuli-e2e-run-pod
 ### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
@@ -21,8 +21,7 @@ parameters:
 - description: 'Sakuli End-2-End image, see `docker search sakuli`'
   name: IMAGE
   required: true
-#  TODO TS: remove tag after finishing
-  value: consol/sakuli-ubuntu-xfce:v1.1.0-SNAPSHOT-218_docker_usermod_openshift
+  value: consol/sakuli-ubuntu-xfce
 ### Configuration of OpenShift objects
 objects:
 ### POD config (run one time)

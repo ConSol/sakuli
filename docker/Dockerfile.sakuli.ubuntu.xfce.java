@@ -1,9 +1,9 @@
 # This Dockerfile is used to build a sakuli image based on Ubuntu
 
-FROM consol/ubuntu-xfce-vnc:dev
+FROM consol/ubuntu-xfce-vnc:1.1.0
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-02-20
+ENV REFRESHED_AT 2017-03-17
 
 LABEL io.k8s.description="Sakuli headless testing container (maven java tests) with Xfce window manager, firefox and chromium" \
       io.k8s.display-name="Sakuli testing container (maven java tests) based on Ubuntu and Xfce" \

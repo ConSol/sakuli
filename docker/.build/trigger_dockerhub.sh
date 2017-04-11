@@ -12,7 +12,15 @@ URLS=(
     "https://registry.hub.docker.com/u/consol/sakuli-centos-icewm/trigger/8edc4936-c7d8-4618-9c55-b541ba457454/"
     "https://registry.hub.docker.com/u/consol/sakuli-centos-icewm-java/trigger/b5793202-aa0b-47fa-956a-49704f7c6a1e/"
 )
-PAYLOAD='{"source_type": "Tag", "source_name": "'$GIT_TAG'"}'
+
+### starting with `v`
+if [[ ${GIT_TAG:0:1} == "v" ]] ; then
+    PAYLOAD='{"source_type": "Tag", "source_name": "'$GIT_TAG'"}'
+elif [[ $GIT_TAG == "master" ]] ; then
+    PAYLOAD='{"docker_tag": "'latest'"}'
+else
+    PAYLOAD='{"docker_tag": "'$GIT_TAG'"}'
+fi
 
 #Loop
 for URL in "${URLS[@]}"
