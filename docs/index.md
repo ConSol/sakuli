@@ -53,6 +53,7 @@ native application UI with screen related actions. The API is documented in [Jav
   * [Usage Sakuli Docker Images](docker-images.md)
   * [Usage Sakuli in OpenShift](openshift.md)
   * [Usage Sakuli in Kubernetes](kubernetes.md)
+  * [Usage OMD-Labs Docker images with Sakuli support](omd-labs-sakuli.md)
   * Presentation [Containerized End-2-End-Testing](https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/)
   * Example project on GitHub [toschneck/sakuli-example-bakery-testing](https://github.com/toschneck/sakuli-example-bakery-testing)
 * **Headless** Sakuli checks
