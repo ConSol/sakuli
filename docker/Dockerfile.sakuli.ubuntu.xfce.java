@@ -3,7 +3,7 @@
 FROM consol/ubuntu-xfce-vnc:1.1.0
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-03-17
+ENV REFRESHED_AT 2017-04-11
 
 LABEL io.k8s.description="Sakuli headless testing container (maven java tests) with Xfce window manager, firefox and chromium" \
       io.k8s.display-name="Sakuli testing container (maven java tests) based on Ubuntu and Xfce" \
@@ -45,7 +45,7 @@ ENV MAVEN_HOME $HOME/apps/maven
 RUN $INST_SCRIPTS/maven.sh
 
 ### Install Sakuli
-ARG SAKULI_VERSION=1.1.0-SNAPSHOT-218_docker_usermod_openshift
+ARG SAKULI_VERSION=1.1.0-SNAPSHOT
 # Testsuite folder default permissions after text execution
 ENV SAKULI_UMASK 0000
 # Define Sakuli default startup testsuite

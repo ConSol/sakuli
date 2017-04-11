@@ -3,7 +3,7 @@
 FROM consol/centos-xfce-vnc:1.1.0
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-03-17
+ENV REFRESHED_AT 2017-04-11
 
 LABEL io.k8s.description="Sakuli headless testing container with IceWM window manager, firefox and chromium" \
       io.k8s.display-name="Sakuli testing container based on Centos and IceWM" \
@@ -38,7 +38,7 @@ RUN $INST_SCRIPTS/java_jre.sh
 RUN $INST_SCRIPTS/java_jce_test/jce_test.sh
 
 ### Install Sakuli
-ARG SAKULI_VERSION=1.1.0-SNAPSHOT-218_docker_usermod_openshift
+ARG SAKULI_VERSION=1.1.0-SNAPSHOT
 ENV SAKULI_ROOT $HOME/sakuli
 ENV SAKULI_HOME $SAKULI_ROOT/sakuli-v$SAKULI_VERSION
 # Testsuite folder default permissions after text execution
