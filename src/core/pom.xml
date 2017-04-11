@@ -225,7 +225,7 @@
     <profiles>
         <!--profil to deploy the zip file to labs.consol.de/sakuli/install-->
         <profile>
-            <id>upload-release</id>
+            <id>upload</id>
             <activation>
                 <property>
                     <name>performRelease</name>

@@ -299,7 +299,7 @@
 
 
     <profiles>
-        <!-- profile for uploading the artifacts and zipped files to labs.consol.de/sakuli-->
+        <!-- profile overrideds the `upload-config` for releases-->
         <profile>
             <id>upload-release</id>
             <activation>
@@ -322,7 +322,7 @@
         </profile>
         <!-- profile for uploading the SNAPSHOT artifacts and zipped files to labs.consol.de/sakuli-->
         <profile>
-            <id>upload-snapshots</id>
+            <id>upload</id>
             <!-- profile settings to upload the artifacts to the consol labs server -->
             <distributionManagement>
                 <repository>

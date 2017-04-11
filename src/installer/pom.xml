@@ -81,7 +81,7 @@
         </profile>
 
         <profile>
-            <id>upload-release</id>
+            <id>upload</id>
             <activation>
                 <property>
                     <name>performRelease</name>
