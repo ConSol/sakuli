@@ -48,10 +48,15 @@ If you want to create a custom site, you have to build an own image of OMD-labs 
 * see the documentation of https://github.com/ConSol/omd-labs-docker, section "run a custom site" how to build a local image of OMD-labs.
 * then clone this repository, `cd` into the folder containg the Dockerfile, e.g. `omd-labs-centos-sakuli`
 * build a local image:
-      export NEW_SITENAME=mynewsite
-      make build    
+
+    export NEW_SITENAME=mynewsite
+    make build    
+
+
 * run the image:
-      docker run -p 8443:443 local/omd-labs-centos-sakuli
+
+    docker run -p 8443:443 local/omd-labs-centos-sakuli
+
 
 ## Ansible drop-ins
 You can also configure this OMD labs container with Ansible playbooks. See https://github.com/ConSol/omd-labs-docker for more information.
