@@ -13,8 +13,11 @@ if [[ $1 =~ encrypt|-help|-version ]]; then SKIP=--skip ; fi
 echo -e "\n\n------------------ START SAKULI CONTAINER ---------------------------"
 
 ## start UI and VNC components
-$STARTUPDIR/vnc_startup.sh $SKIP
-if [ -n $SKIP ]; then echo -e "\n\n------------------ VNC STARTUP finished -----------------------------" ; fi
+if [ -n $SKIP ]; then
+    echo -e "\n\n------------------ VNC STARTUP skipped -----------------------------"
+else
+    $STARTUPDIR/vnc_startup.sh
+fi
 
 #env
 echo -e "\n\n------------------ SAKULI TEST EXECUTION start ----------------------"
