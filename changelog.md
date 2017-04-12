@@ -32,6 +32,8 @@
 * change dependency `sakuli-go-wrapper` to fixed version
 * smaller bugfixes and documentation update
 
+**Documentation: [v1.1.0-beta](http://sakuli.readthedocs.io/en/v1.1.0-beta/)**
+
 - - -
 
 ### Version 1.0.2 (Bugfix + some small features)
@@ -48,11 +50,15 @@
 * fix #177 add description for the javaDSL and update the documentation
 * issue #205: use maven-jgitflow for releases and branching
 
+**Documentation: [v1.0.2](http://sakuli.readthedocs.io/en/v1.0.2/)**
+
 ### Version 1.0.1 (Bugfix)
 
 * fix #190:  fix Docker centos image:  use tagged version `consol/centos-xfce-vnc:1.0.1`
 * Use consistent file naming and fix broken links in docs
 * fix example_xfce for new centos 7 version
+
+**Documentation: [v1.0.1](http://sakuli.readthedocs.io/en/v1.0.1/)**
 
 ### Version 1.0.0
 * First step tutorial and https documentation. Fixes #161, fixes #53 partially.
@@ -67,6 +73,8 @@
 * close #168 add reboot hint if user install the package `Windows environement changes` 
 * update the installer translation to the recommend one from https://github.com/izpack/izpack/tree/master/izpack-core/src/main/resources/com/izforge/izpack/bin/langpacks/installer
 * fix maven snapshot repository path of the `labs.consol.de` maven-repository
+
+**Documentation: [v1.0.0](http://sakuli.readthedocs.io/en/v1.0.0/)**
 
 - - -
 
