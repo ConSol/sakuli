@@ -126,7 +126,7 @@ Mount a folder on your host into the container and overwrite the environment var
          consol/sakuli-ubuntu-xfce
 
 #### 1.2.2) Using docker-compose
-Similar to [#12-using-docker-compose](docker-compose in 1.2), the file `docker-compose.yml` would look like this:
+Similar to [#122-using-docker-compose](docker-compose in 1.2), the file `docker-compose.yml` would look like this:
 
     sakuli-example-ubuntu:
       image: consol/sakuli-ubuntu-xfce
@@ -224,7 +224,7 @@ USER 1984
 
 ## 5) Change User of running Sakuli Container
 
-Per default, since version `1.1.0` all container processes will executed with user id `1984`. You can chnage the user id like follow: 
+Per default, since version `1.1.0` all container processes will executed with user id `1984`. You can chnage the user id like follow:
 
 #### 5.1) Using root (user id `0`)
 Add the `--user` flag to your docker run command:
@@ -249,8 +249,9 @@ For example, the password for VNC could be set like this:
 ## 4) Further Information
 Further information about the usage of Sakuli docker containers can be found at:
 
-* [Usage Sakuli in OpenShift](openshift.md)
-* [Usage Sakuli in Kubernetes](kubernetes.md)
+* [Usage of Sakuli containers in OpenShift](openshift.md)
+* [Usage of Sakuli containers in Kubernetes](kubernetes.md)
+* [Usage of Sakuli containers together with OMD-Labs Docker Images](omd-labs-sakuli.md)
 * Publications:
  * **[Containerized UI-Tests in Java with Sakuli and Docker](https://labs.consol.de/sakuli/development/2016/10/14/sakuli-java-dsl.html)**
 * Presentations:
