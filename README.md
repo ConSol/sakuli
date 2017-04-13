@@ -115,6 +115,8 @@ for web sites and common UIs with full Nagios integration](https://rawgit.com/to
 
 
 ## Publications
+03/2017: [JAXenter: End-2-End-Testing und -Monitoring im Container-Zeitalter](https://jaxenter.de/sakuli-testing-monitoring-container-54374) (Tobias Schneck)
+
 01/2017: [Java aktuell: Automatisiertes Testen in Zeiten von Microservices](https://www.consol.de/fileadmin/pdf/news/news-events/01_2017-Java_aktuell-Magazin-Christoph-Deppisch-und-Tobias-Schneck_Automatisiertes-Testen-in-Zeiten-von-Microservices.pdf) (Christoph Deppisch / Tobias Schneck)
 
 10/2016: [Informatik Aktuell: Software-Test im Container: So können Sie Graphical User Interfaces mit Docker und Sakuli testen](https://www.informatik-aktuell.de/entwicklung/methoden/graphical-user-interface-gui-in-containern-testen.html) (Tobias Schneck)
