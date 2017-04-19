@@ -3,6 +3,7 @@
 #GIT_BRANCH=origin/feature/#219_sahi_error
 #SAKULI_VERSION=v1-SNAPSHOT-219_sahi_error
 #SAKULI_VERSION=v1-SNAPSHOT
+mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version
 
 echo "branch= $GIT_BRANCH"
 SAKULI_BRANCH=${GIT_BRANCH/origin\/}
