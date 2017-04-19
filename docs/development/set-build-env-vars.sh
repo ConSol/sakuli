@@ -15,8 +15,11 @@ SAKULI_VERSION="$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate 
 echo "SAKULI_VERSION=$SAKULI_VERSION" >> $WORKSPACE/myjob.properties
 VERSION_SURFIX=${SAKULI_VERSION:$(expr index \"$SAKULI_VERSION\" 'SNAPSHOT') +7 }
 echo "VERSION_SURFIX=$VERSION_SURFIX" >> $WORKSPACE/myjob.properties
-
-echo "SAKULI_FEATURE_VERSION=$SAKULI_VERSION-$FEATURE_NAME" >> $WORKSPACE/myjob.properties
+if [ -z "$VERSION_SURFIX" ] ; then
+    echo "SAKULI_FEATURE_VERSION=$SAKULI_VERSION-$FEATURE_NAME" >> $WORKSPACE/myjob.properties
+else
+    echo "SAKULI_FEATURE_VERSION=$SAKULI_VERSION" >> $WORKSPACE/myjob.properties
+fi
 
 # jenkins will use the myjob.properties as environment vars
 cat $WORKSPACE/myjob.properties
