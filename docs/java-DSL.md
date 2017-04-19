@@ -11,14 +11,14 @@ The Sakuli Java DSL comes to you as Maven module JAR file. You can add the modul
     <dependencies>
         <dependency>
             <groupId>org.sakuli</groupId>
-            <artifactId>java-dsl</artifactId>
+            <artifactId>sakuli-java-dsl</artifactId>
             <version>${sakuli.version}</version>
             <scope>test</scope>
         </dependency>
         <!-- needed for AbstractSakuliTest class -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>java-dsl</artifactId>
+            <artifactId>sakuli-java-dsl</artifactId>
             <version>${sakuli.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
@@ -51,7 +51,7 @@ In the last step, we have to provide also some local resources for our Sakuli te
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.sakuli</groupId>
-                                    <artifactId>java-dsl</artifactId>
+                                    <artifactId>sakuli-java-dsl</artifactId>
                                     <version>${sakuli.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>

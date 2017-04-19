@@ -23,14 +23,14 @@
 
     <parent>
         <groupId>org.sakuli</groupId>
-        <artifactId>root</artifactId>
+        <artifactId>sakuli-root</artifactId>
         <version>1.1.0-SNAPSHOT-241_sakuli_se</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>integration-test</artifactId>
     <version>1.1.0-SNAPSHOT-241_sakuli_se</version>
-    <name>integration-test</name>
+    <name>${artifactId}</name>
     <description>integration test module for sakuli</description>
 
     <packaging>jar</packaging>
@@ -106,8 +106,8 @@
                                 <configuration>
                                     <artifactItems>
                                         <artifactItem>
-                                            <groupId>org.sakuli</groupId>
-                                            <artifactId>java-dsl</artifactId>
+                                            <groupId>${project.groupId}</groupId>
+                                            <artifactId>sakuli-java-dsl</artifactId>
                                             <version>${project.version}</version>
                                             <type>jar</type>
                                             <overWrite>true</overWrite>
@@ -127,14 +127,14 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>java-dsl</artifactId>
+            <artifactId>sakuli-java-dsl</artifactId>
             <version>${project.parent.version}</version>
             <type>jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>java-dsl</artifactId>
+            <artifactId>sakuli-java-dsl</artifactId>
             <version>${project.parent.version}</version>
             <type>test-jar</type>
             <scope>test</scope>

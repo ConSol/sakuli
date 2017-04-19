@@ -30,13 +30,13 @@ For more detailed information about Jtwig templates, please refer to [Jtwig].
 ## Customized Jtwig Functions
 
 [Jtwig] comes with a list of functions like `abs`, `concat` etc, which can be used within a template. In addition to the standard functions, Jtwig supports the implementation and injection of custom functions. Sakuli provides following custom functions:
-* [`abbreviate`](../src/core/src/main/java/org/sakuli/services/forwarder/configuration/AbbreviateFunction.java) - The function abbreviates a certain string to a specified length. The implementation is based on the StringUtils.abbreviate method from the Apache commons library.
-* [`extractScreenshot`](../src/core/src/main/java/org/sakuli/services/forwarder/configuration/ExtractScreenshotFunction.java) - The function extracts the screenshot from a specified test data entity, which contains an exception.
-* [`getOutputDuration`](../src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputDurationFunction.java) - The function returns the formatted duration for a specified test entity.
-* [`getOutputState`](../src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputStateFunction.java) - The function returns the [OutputState](../src/core/src/main/java/org/sakuli/datamodel/state/SakuliState.java) for a specified SakuliState.
-* [`isBlank`](../src/core/src/main/java/org/sakuli/services/forwarder/configuration/IsBlankFunction.java) - The function checks whether the specified string parameter is blank.
+* [`abbreviate`](../src/sakuli-core/src/main/java/org/sakuli/services/forwarder/configuration/AbbreviateFunction.java) - The function abbreviates a certain string to a specified length. The implementation is based on the StringUtils.abbreviate method from the Apache commons library.
+* [`extractScreenshot`](../src/sakuli-core/src/main/java/org/sakuli/services/forwarder/configuration/ExtractScreenshotFunction.java) - The function extracts the screenshot from a specified test data entity, which contains an exception.
+* [`getOutputDuration`](../src/sakuli-core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputDurationFunction.java) - The function returns the formatted duration for a specified test entity.
+* [`getOutputState`](../src/sakuli-core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputStateFunction.java) - The function returns the [OutputState](../src/sakuli-core/src/main/java/org/sakuli/datamodel/state/SakuliState.java) for a specified SakuliState.
+* [`isBlank`](../src/sakuli-core/src/main/java/org/sakuli/services/forwarder/configuration/IsBlankFunction.java) - The function checks whether the specified string parameter is blank.
 
-Please refer to the Sakuli [default Jtwig templates](../src/common/src/main/resources/org/sakuli/common/config/templates), to see the custom functions in action.
+Please refer to the Sakuli [default Jtwig templates](../src/sakuli-common/src/main/resources/org/sakuli/common/config/templates), to see the custom functions in action.
 
 
 ## Handling of white spaces and new lines

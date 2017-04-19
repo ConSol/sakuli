@@ -27,7 +27,7 @@
         <option name="MAIN_CLASS_NAME" value="org.sakuli.starter.SakuliStarter"/>
         <option name="VM_PARAMETERS" value=""/>
         <option name="PROGRAM_PARAMETERS"
-                value="--run ../../example_test_suites/example_windows8 --sakuli_home ../common/src/main/resources/org/sakuli/common --sahi_home ../../sahi"/>
+                value="--run ../../example_test_suites/example_windows8 --sakuli_home ../sakuli-common/src/main/resources/org/sakuli/common --sahi_home ../../sahi"/>
         <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$"/>
         <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false"/>
         <option name="ALTERNATIVE_JRE_PATH"/>

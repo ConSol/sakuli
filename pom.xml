@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.sakuli</groupId>
-    <artifactId>root</artifactId>
+    <artifactId>sakuli-root</artifactId>
     <version>1.1.0-SNAPSHOT-241_sakuli_se</version>
     <packaging>pom</packaging>
 
@@ -34,14 +34,15 @@
     <url>http://maven.apache.org</url>
 
     <modules>
-        <module>src/common</module>
         <module>src/ocr-tessdata-extractor</module>
-        <module>src/core</module>
+        <module>src/sakuli-common</module>
+        <module>src/sakuli-core</module>
+        <module>src/sakuli-sahi-setup</module>
+        <module>src/sakuli-installer</module>
+        <module>src/sakuli-java-dsl</module>
+        <!--<module>src/sakuli-selenium-java-dsl</module>-->
         <module>src/integration-test</module>
         <module>src/docs</module>
-        <module>src/java-dsl</module>
-        <!--<module>src/selenium-java-dsl</module>-->
-        <module>src/installer</module>
     </modules>
 
     <properties>

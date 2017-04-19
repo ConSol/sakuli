@@ -38,6 +38,6 @@ With the implementation of the Check_MK forwarder a new [Jtwig](http://jtwig.org
 
 In near time, all other forwarder modules of Sakuli will support the templating feature.
 
-Sakuli comes with default templates, which are placed in ''$INSTALL_DIR/config/templates''. The [default Check_MK templates](../src/common/src/main/resources/org/sakuli/common/config/templates/check_mk) can be found in a subdirectory `check_mk`.
+Sakuli comes with default templates, which are placed in ''$INSTALL_DIR/config/templates''. The [default Check_MK templates](../src/sakuli-common/src/main/resources/org/sakuli/common/config/templates/check_mk) can be found in a subdirectory `check_mk`.
 
 For further information how the default template directory can be changed or how the forwarder templates can be customized please refer to [Using Jtwig templates in Sakuli](forwarder-templates.md).

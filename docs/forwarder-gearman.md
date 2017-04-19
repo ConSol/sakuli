@@ -137,7 +137,7 @@ On the Sakuli client you must set the global properties for the gearman receiver
     sakuli.forwarder.gearman.nagios.hostname=sakuli_client
 
 
-For other **OPTIONAL** gearman parameters you can adjust, see [sakuli-default.properties](../src/common/src/main/resources/org/sakuli/common/config/sakuli-default.properties) file. 
+For other **OPTIONAL** gearman parameters you can adjust, see [sakuli-default.properties](../src/sakuli-common/src/main/resources/org/sakuli/common/config/sakuli-default.properties) file. 
 
 ## Using AES encryption (optional)
 

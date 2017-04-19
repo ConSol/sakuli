@@ -79,7 +79,7 @@ On the Sakuli client you must set the global properties for the Icinga2 receiver
     sakuli.forwarder.icinga2.api.password=icingasakuli
     sakuli.forwarder.icinga2.hostname=sakuliclient01
     
-For other **OPTIONAL** Icinga2 parameters you can adjust, see [sakuli-default.properties](../src/common/src/main/resources/org/sakuli/common/config/sakuli-default.properties) file. 
+For other **OPTIONAL** Icinga2 parameters you can adjust, see [sakuli-default.properties](../src/sakuli-common/src/main/resources/org/sakuli/common/config/sakuli-default.properties) file. 
     
 ## Graph settings
 Icinga2 integration is very new; we did not yet dive into the configuration of Graphite or Grafana graphs. The only supported graphing solution is PNP4Nagios. Nevertheless you are welcome to contribute graph templates for  Grafana and/or Graphite!

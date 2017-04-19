@@ -23,7 +23,7 @@
 
     <parent>
         <groupId>org.sakuli</groupId>
-        <artifactId>root</artifactId>
+        <artifactId>sakuli-root</artifactId>
         <version>1.1.0-SNAPSHOT-241_sakuli_se</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
