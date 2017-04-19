@@ -74,6 +74,10 @@
                 <exclude>META-INF</exclude>
             </excludes>
         </fileSet>
+        <fileSet>
+            <directory>${project.build.unpacked-resources}/org/sakuli/ocr/tessdata/lib</directory>
+            <outputDirectory>/${sakuli.filename}/libs/tessdata</outputDirectory>
+        </fileSet>
     </fileSets>
 
     <!-- add dependency jars to "bin/lib" -->

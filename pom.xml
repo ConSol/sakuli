@@ -23,7 +23,7 @@
 
     <groupId>org.sakuli</groupId>
     <artifactId>root</artifactId>
-    <version>v1.1.0-SNAPSHOT-241_sakuli_se</version>
+    <version>1.1.0-SNAPSHOT-241_sakuli_se</version>
     <packaging>pom</packaging>
 
     <name>sakuli-parent</name>
@@ -35,10 +35,12 @@
 
     <modules>
         <module>src/common</module>
+        <module>src/ocr-tessdata-extractor</module>
         <module>src/core</module>
         <module>src/integration-test</module>
         <module>src/docs</module>
         <module>src/java-dsl</module>
+        <!--<module>src/selenium-java-dsl</module>-->
         <module>src/installer</module>
     </modules>
 
@@ -56,6 +58,7 @@
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
         <dependencies.jersey-client.version>2.22.2</dependencies.jersey-client.version>
+        <dependencies.slf4j.version>1.7.7</dependencies.slf4j.version>
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
         <test.group.ui>ui</test.group.ui>
@@ -428,14 +431,19 @@
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${dependencies.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
-                <version>1.7.7</version>
+                <version>${dependencies.slf4j.version}</version>
                 <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>jul-to-slf4j</artifactId>
-                <version>1.7.7</version>
+                <version>${dependencies.slf4j.version}</version>
             </dependency>
 
             <!-- will rout the system out from sikulX to logging over slf4j -->
@@ -464,7 +472,7 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.4</version>
+                <version>2.5</version>
             </dependency>
             <dependency>
                 <groupId>joda-time</groupId>
@@ -474,7 +482,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.3.2</version>
+                <version>3.5</version>
             </dependency>
 
             <!-- Sahi Library (OpenSource Version)-->
