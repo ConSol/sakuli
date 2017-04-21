@@ -23,7 +23,7 @@ ENV SPARSEDIR src/sakuli-common/src/main/resources/org/sakuli/common/setup/omd
 RUN echo "Built from $REMOTE_GIT/$SOURCE_BRANCH" > /root/sakuli_git_info && cat /root/sakuli_git_info
 RUN /bin/bash -c "mkdir $SRCDIR && pushd $SRCDIR && git init &&\
   (git remote add -f origin $REMOTE_GIT || git remote set-url origin $REMOTE_HTTPS) &&\
-  git fetch origin &&\
+  git fetch --tags origin &&\
   git config core.sparseCheckout true &&\
   echo "$SPARSEDIR" > .git/info/sparse-checkout &&\
   git checkout $SOURCE_BRANCH &&\
