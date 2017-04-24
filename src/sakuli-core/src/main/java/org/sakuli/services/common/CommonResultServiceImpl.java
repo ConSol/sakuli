@@ -22,6 +22,7 @@ import org.sakuli.datamodel.TestCase;
 import org.sakuli.utils.CleanUpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Predicate;
@@ -35,6 +36,8 @@ import java.util.function.Predicate;
 @Component
 public class CommonResultServiceImpl extends AbstractResultService {
     private static Logger LOGGER = LoggerFactory.getLogger(CommonResultServiceImpl.class);
+    @Autowired
+    private CleanUpHelper cleanUpHelper;
 
     @Override
     public int getServicePriority() {
@@ -80,8 +83,8 @@ public class CommonResultServiceImpl extends AbstractResultService {
 
     public void cleanUp() {
         try {
-            CleanUpHelper.cleanClipboard();
-            CleanUpHelper.releaseAllModifiers();
+            cleanUpHelper.cleanClipboard();
+            cleanUpHelper.releaseAllModifiers();
         } catch (Throwable e) {
             LOGGER.warn("Some unexpected errors during the clean up procedure:", e);
         }

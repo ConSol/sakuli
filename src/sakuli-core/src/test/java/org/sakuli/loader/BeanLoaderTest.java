@@ -32,8 +32,7 @@ public class BeanLoaderTest {
     public void setUp() throws Exception {
         SakuliPropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = BaseTest.TEST_FOLDER_PATH;
         SakuliPropertyPlaceholderConfigurer.SAKULI_HOME_FOLDER_VALUE = BaseTest.SAKULI_HOME_FOLDER_PATH;
-        SakuliPropertyPlaceholderConfigurer.SAHI_HOME_VALUE = BaseTest.SAHI_FOLDER_PATH;
-        BeanLoader.CONTEXT_PATH = "loaderTest-beanRefFactory.xml";
+        BeanLoader.CONTEXT_PATH = "org/sakuli/loader/loaderTest-beanRefFactory.xml";
         BeanLoader.refreshContext();
     }
 

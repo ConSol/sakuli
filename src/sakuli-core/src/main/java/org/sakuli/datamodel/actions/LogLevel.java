@@ -18,24 +18,12 @@
 
 package org.sakuli.datamodel.actions;
 
-import net.sf.sahi.report.ResultType;
-
 /**
  * @author Tobias Schneck
  */
 public enum LogLevel {
-    ERROR(ResultType.ERROR),
-    INFO(ResultType.INFO),
-    DEBUG(null),
-    WARNING(ResultType.INFO);
-
-    private ResultType resultType;
-
-    LogLevel(ResultType resultType) {
-        this.resultType = resultType;
-    }
-
-    public ResultType getResultType() {
-        return resultType;
-    }
+    ERROR,
+    INFO,
+    DEBUG,
+    WARNING
 }

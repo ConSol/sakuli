@@ -18,19 +18,18 @@
 
 package org.sakuli.loader;
 
-import net.sf.sahi.rhino.RhinoScriptRunner;
-import net.sf.sahi.session.Session;
 import org.joda.time.DateTime;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.builder.TestCaseStepBuilder;
-import org.sakuli.datamodel.properties.SahiProxyProperties;
-import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.utils.CleanUpHelper;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -46,19 +45,11 @@ import static org.testng.Assert.*;
  */
 public class BaseActionLoaderTest {
     @Mock
-    private RhinoScriptRunner rhinoScriptRunner;
-    @Mock
-    private Session session;
-    @Mock
-    private SahiProxyProperties sahiProxyProperties;
-    @Mock
-    private TestSuiteProperties testSuiteProperties;
-    @Mock
     private TestSuite testSuite;
     @Mock
     private SakuliExceptionHandler exceptionHandler;
     @Mock
-    private SakuliProperties sakuliProperties;
+    private CleanUpHelper cleanUpHelper;
 
     @Spy
     @InjectMocks
@@ -67,45 +58,7 @@ public class BaseActionLoaderTest {
     @BeforeMethod
     public void init() {
         MockitoAnnotations.initMocks(this);
-        when(rhinoScriptRunner.getSession()).thenReturn(session);
-        doNothing().when(testling).cleanUp();
-    }
-
-    @Test
-    public void testInit() throws Exception {
-        String testCaseId = "xyz";
-        when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("Test", testCaseId));
-        when(sahiProxyProperties.isRequestDelayActive()).thenReturn(true);
-        when(sakuliProperties.isLoadJavaScriptEngine()).thenReturn(true);
-        testling.init(testCaseId, ".");
-        verify(exceptionHandler, never()).handleException(any(Exception.class));
-        verify(session).setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, "true");
-    }
-
-    @Test
-    public void testInitNoSahiDelay() throws Exception {
-        String testCaseId = "xyz";
-        when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("Test", testCaseId));
-        when(sahiProxyProperties.isRequestDelayActive()).thenReturn(false);
-        when(sakuliProperties.isLoadJavaScriptEngine()).thenReturn(true);
-        testling.init(testCaseId, ".");
-        verify(exceptionHandler, never()).handleException(any(Exception.class));
-        verify(session).setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, "false");
-    }
-
-    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
-    @Test
-    public void testInitNoSahiSession() throws Exception {
-        String testCaseId = "xyz";
-        when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("Test", testCaseId));
-        when(rhinoScriptRunner.getSession()).thenReturn(null);
-        when(sakuliProperties.isLoadJavaScriptEngine()).thenReturn(true);
-
-        ArgumentCaptor<SakuliException> ac = ArgumentCaptor.forClass(SakuliException.class);
-        testling.init(testCaseId, ".");
-        verify(exceptionHandler).handleException(ac.capture());
-        assertEquals(ac.getValue().getMessage(), "cannot init rhino script runner with sakuli custom delay variable 'sakuli-delay-active'");
-        verify(session, never()).setVariable(anyString(), anyString());
+        doNothing().when(testling).callInitTestCaseCallback();
     }
 
     @Test
@@ -114,6 +67,8 @@ public class BaseActionLoaderTest {
         when(testSuite.getTestCase(testCaseId)).thenReturn(null);
         testling.init(testCaseId, ".");
         verify(exceptionHandler, times(1)).handleException(any(SakuliException.class));
+        verify(testling, never()).callInitTestCaseCallback();
+        verify(cleanUpHelper, never()).releaseAllModifiers();
     }
 
     @Test
@@ -122,6 +77,9 @@ public class BaseActionLoaderTest {
         when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("test", testCaseId));
         testling.init(testCaseId, new String[]{});
         verify(exceptionHandler, times(0)).handleException(any(IOException.class));
+        verify(testling).callInitTestCaseCallback();
+        verify(cleanUpHelper).releaseAllModifiers();
+
     }
 
     @Test
@@ -130,6 +88,8 @@ public class BaseActionLoaderTest {
         when(testSuite.getTestCase(testCaseId)).thenReturn(new TestCase("test", testCaseId));
         testling.init(testCaseId, new String[0]);
         verify(exceptionHandler, times(0)).handleException(any(IOException.class));
+        verify(testling).callInitTestCaseCallback();
+        verify(cleanUpHelper).releaseAllModifiers();
     }
 
     @Test

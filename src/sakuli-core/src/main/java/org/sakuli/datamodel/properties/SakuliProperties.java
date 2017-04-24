@@ -38,7 +38,6 @@ public class SakuliProperties extends AbstractProperties {
     public static final String SAKULI_DEFAULT_PROPERTIES_FILE_APPENDER = File.separator + "sakuli-default.properties";
     public static final String SAKULI_HOME_FOLDER = "sakuli.home.folder";
     public static final String SUPPRESS_RESUMED_EXCEPTIONS = "sakuli.exception.suppressResumedExceptions";
-    public static final String JAVASCRIPT_ENGINE = "sakuli.javascript.engine";
     public static final String LOG_FOLDER = "sakuli.log.folder";
     public static final String LOG_MAX_AGE = "sakuli.log.maxAge";
     public static final String LOG_PATTERN = "sakuli.log.pattern";
@@ -63,8 +62,6 @@ public class SakuliProperties extends AbstractProperties {
     private Path sakuliHomeFolder;
     @Value("${" + SUPPRESS_RESUMED_EXCEPTIONS + ":" + SUPPRESS_RESUMED_EXCEPTIONS_DEFAULT + "}")
     private boolean suppressResumedExceptions;
-    @Value("${" + JAVASCRIPT_ENGINE + ":" + JAVASCRIPT_ENGINE_DEFAULT + "}")
-    private boolean loadJavaScriptEngine;
     @Value("${" + LOG_FOLDER + "}")
     private String logFolderPropertyValue;
     @Value("${" + LOG_MAX_AGE + ":" + LOG_MAX_AGE_DEFAULT + "}")
@@ -227,14 +224,6 @@ public class SakuliProperties extends AbstractProperties {
 
     public void setLogLevelRoot(String logLevelRoot) {
         this.logLevelRoot = logLevelRoot;
-    }
-
-    public boolean isLoadJavaScriptEngine() {
-        return loadJavaScriptEngine;
-    }
-
-    public void setLoadJavaScriptEngine(boolean loadJavaScriptEngine) {
-        this.loadJavaScriptEngine = loadJavaScriptEngine;
     }
 
     public String getForwarderTemplateFolder() {

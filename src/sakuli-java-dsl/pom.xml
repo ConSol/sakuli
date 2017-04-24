@@ -30,14 +30,14 @@
 
     <artifactId>sakuli-java-dsl</artifactId>
     <version>1.1.0-SNAPSHOT-241_sakuli_se</version>
-    <name>${artifactId}</name>
+    <name>${project.artifactId}</name>
     <description>Specific Java-DSL for using Sakuli directly over Java</description>
 
     <packaging>jar</packaging>
     <properties>
         <sakuli.home>${project.parent.basedir}</sakuli.home>
         <test.excluded.groups>${test.group.unit},${test.group.sakuliDSL}</test.excluded.groups>
-        <test.included.groups />
+        <test.included.groups/>
         <maven-failsafe-plugin.skip>true</maven-failsafe-plugin.skip>
     </properties>
 
@@ -65,7 +65,7 @@
                     <weaveDependencies>
                         <weaveDependency>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>sakuli-core</artifactId>
+                            <artifactId>sakuli-sahi-setup</artifactId>
                         </weaveDependency>
                     </weaveDependencies>
                     <forceAjcCompile>true</forceAjcCompile>
@@ -219,7 +219,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>sakuli-core</artifactId>
+            <artifactId>sakuli-sahi-setup</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>

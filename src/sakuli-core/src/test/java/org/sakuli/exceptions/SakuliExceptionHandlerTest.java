@@ -18,11 +18,10 @@
 
 package org.sakuli.exceptions;
 
-import net.sf.sahi.report.Report;
-import net.sf.sahi.report.ResultType;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.sakuli.BaseTest;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.actions.screenbased.ScreenshotActions;
@@ -65,9 +64,8 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     private SakuliProperties sakuliProperties;
     @Mock
     private ActionProperties actionProperties;
-    @Mock
-    private Report sahiReport;
 
+    @Spy
     @InjectMocks
     private SakuliExceptionHandler testling;
 
@@ -90,7 +88,6 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(actionProperties.isTakeScreenshots()).thenReturn(true);
         when(loader.getSakuliProperties()).thenReturn(sakuliProperties);
         when(sakuliProperties.isSuppressResumedExceptions()).thenReturn(false);
-        when(loader.getSahiReport()).thenReturn(sahiReport);
         when(loader.getTestSuite()).thenReturn(testSuite);
         when(loader.getCurrentTestCase()).thenReturn(testCase);
 
@@ -121,6 +118,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         assertTrue(testSuite.getException() instanceof SakuliException);
         assertEquals(testSuite.getException().getMessage(), testExcMessage);
         assertEquals(testSuite.getScreenShotPath(), expectedScreenshotPath);
+        verify(testling).triggerCallbacks(any(SakuliExceptionWithScreenshot.class));
     }
 
     @Test
@@ -131,6 +129,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         assertTrue(testCase.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(testCase.getException().getMessage(), testExcMessage);
         assertEquals(testCase.getScreenShotPath(), expectedScreenshotPath);
+        verify(testling).triggerCallbacks(any(SakuliExceptionWithScreenshot.class));
 
         //test Suppressed
         String excpMessage2 = "ExceptionSuppressed";
@@ -138,12 +137,14 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         assertEquals(testCase.getExceptionMessages(false), testExcMessage + "\n\t\tSuppressed EXCEPTION: " + excpMessage2);
         assertEquals(testCase.getState(), TestCaseState.ERRORS);
         assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
+        verify(testling, times(2)).triggerCallbacks(any(SakuliExceptionWithScreenshot.class));
 
         //test Proxy Exception
         when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new SakuliInitException("FAILURE"));
-        Assert.assertNull(testSuite.getException());
+        Assert.assertEquals(testSuite.getException().getMessage(), "FAILURE");
         assertTrue(testling.isAlreadyProcessed(testExc));
+        verify(testling, times(3)).triggerCallbacks(any(SakuliException.class));
     }
 
     @Test
@@ -175,7 +176,6 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         testling.handleException(forwarderException, true);
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class), anyString());
-        verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertEquals(testSuite.getException(), forwarderException);
         assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
         assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
@@ -190,7 +190,6 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         testling.handleException(forwarderException);
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class), anyString());
-        verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertEquals(testSuite.getException(), forwarderException);
         assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
@@ -204,7 +203,6 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         testling.handleException(sakuliActionException, mock(RegionImpl.class), true);
         verify(screenshotActionsMock).takeScreenshot(anyString(), any(Path.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class), anyString());
-        verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);
         assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
@@ -221,7 +219,6 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         testling.handleException(sakuliActionException, mock(RegionImpl.class), true);
         verify(screenshotActionsMock).takeScreenshot(anyString(), any(Path.class));
         verify(screenshotActionsMock, never()).takeScreenshot(anyString(), any(Path.class), anyString());
-        verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);
         assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
@@ -229,7 +226,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     }
 
     @Test
-    public void testHandleSakuliProxyExceptionForTestCases() throws Exception {
+    public void testHandleSakuliInitExceptionForTestCases() throws Exception {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new SakuliInitException(testExcMessage));

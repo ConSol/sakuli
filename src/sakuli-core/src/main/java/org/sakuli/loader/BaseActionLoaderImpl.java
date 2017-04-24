@@ -18,15 +18,12 @@
 
 package org.sakuli.loader;
 
-import net.sf.sahi.report.Report;
-import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.properties.ActionProperties;
-import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliException;
@@ -43,6 +40,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedSet;
 
 /**
@@ -68,13 +66,11 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
     @Autowired
     private ActionProperties actionProperties;
     @Autowired
-    private SahiProxyProperties sahiProxyProperties;
-
+    private CleanUpHelper cleanUpHelper;
     /**
      * ** Fields which will be filled at runtime ***
      */
     private TestCase currentTestCase;
-    private RhinoScriptRunner rhinoScriptRunner;
     private ImageLib imageLib = new ImageLib();
 
     @Override
@@ -98,31 +94,24 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
     public void init(String testCaseID, Path... imagePaths) {
         try {
             //set the current test case
-            if (testSuite.getTestCase(testCaseID) == null) {
+            this.currentTestCase = testSuite.getTestCase(testCaseID);
+            if (this.currentTestCase == null) {
                 throw new SakuliException("Can't identify current test case in function init() in class SakuliBasedAction");
             }
-            this.currentTestCase = testSuite.getTestCase(testCaseID);
             addImagePaths(imagePaths);
-
-            if (sakuliProperties.isLoadJavaScriptEngine()) {
-                //add the "sakuli-delay-active" var to the script runner context
-                if (rhinoScriptRunner == null || rhinoScriptRunner.getSession() == null) {
-                    //could be possible if the aspectj compiler won't worked correctly, see RhinoAspect#getRhinoScriptRunner
-                    throw new SakuliException(String.format("cannot init rhino script runner with sakuli custom delay variable '%s'",
-                            SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR));
-                }
-                String isRequestDelayActive = String.valueOf(sahiProxyProperties.isRequestDelayActive());
-                rhinoScriptRunner.getSession().setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR, isRequestDelayActive);
-                LOGGER.info("set isRequestDelayActive={}", isRequestDelayActive);
-            }
-            cleanUp();
+            callInitTestCaseCallback();
+            cleanUpHelper.releaseAllModifiers();
         } catch (SakuliException e) {
             exceptionHandler.handleException(e);
         }
     }
 
-    protected void cleanUp() {
-        CleanUpHelper.releaseAllModifiers();
+    /**
+     * hook to call additional init actions
+     */
+    protected void callInitTestCaseCallback() {
+        BeanLoader.loadMultipleBeans(ActionLoaderCallback.class).values().stream().filter(Objects::nonNull)
+                .forEach(bean -> bean.initTestCase(currentTestCase));
     }
 
     @Override
@@ -155,15 +144,6 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
 
     public void setActionProperties(ActionProperties actionProperties) {
         this.actionProperties = actionProperties;
-    }
-
-    @Override
-    public SahiProxyProperties getSahiProxyProperties() {
-        return this.sahiProxyProperties;
-    }
-
-    public void setSahiProxyProperties(SahiProxyProperties sahiProxyProperties) {
-        this.sahiProxyProperties = sahiProxyProperties;
     }
 
     @Override
@@ -226,21 +206,6 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
 
     public void setImageLib(ImageLib imageLib) {
         this.imageLib = imageLib;
-    }
-
-    @Override
-    public RhinoScriptRunner getRhinoScriptRunner() {
-        return rhinoScriptRunner;
-    }
-
-    public void setRhinoScriptRunner(RhinoScriptRunner rhinoScriptRunner) {
-        this.rhinoScriptRunner = rhinoScriptRunner;
-
-    }
-
-    @Override
-    public Report getSahiReport() {
-        return rhinoScriptRunner == null ? null : rhinoScriptRunner.getReport();
     }
 
     @Override

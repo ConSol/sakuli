@@ -18,8 +18,6 @@
 
 package org.sakuli.aop;
 
-import net.sf.sahi.playback.SahiScript;
-import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.sakuli.BaseTest;
 import org.sakuli.PropertyHolder;
 import org.sakuli.exceptions.SakuliExceptionHandler;
@@ -29,7 +27,7 @@ import org.testng.annotations.BeforeMethod;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.reset;
 
 /**
  * @author tschneck Date: 23.09.14
@@ -50,15 +48,12 @@ public abstract class AopBaseTest extends BaseTest {
 
     @Override
     protected String getTestContextPath() {
-        return "aopTest-beanRefFactory.xml";
+        return "org/sakuli/aop/aopTest-beanRefFactory.xml";
     }
 
     protected void initMocks() {
         SakuliExceptionHandler sakuliExceptionHandler = BeanLoader.loadBean(SakuliExceptionHandler.class);
         reset(sakuliExceptionHandler);
-        SahiScript sahiScriptMock = mock(SahiScript.class);
-        when(sahiScriptMock.jsString()).thenReturn("");
-        new RhinoScriptRunner(sahiScriptMock);
     }
 }
 

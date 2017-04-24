@@ -22,13 +22,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:annotation-config/>
-    <context:component-scan base-package="org.sakuli.utils"/>
     <context:component-scan base-package="org.sakuli.actions.settings"/>
 
     <bean class="org.sakuli.datamodel.properties.SakuliProperties"/>
     <bean class="org.sakuli.datamodel.properties.ForwarderProperties"/>
     <bean class="org.sakuli.datamodel.properties.ActionProperties"/>
     <bean class="org.sakuli.loader.BaseActionLoaderImpl"/>
+    <bean class="org.sakuli.utils.LoggerInitializer"/>
+    <bean class="org.sakuli.utils.SpringProfilesInitializer"/>
 
     <bean id="propertyResolver"
           class="org.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
@@ -37,7 +38,6 @@
         <property name="loadSakuliProperties" value="false"/>
         <property name="loadSakuliDefaultProperties" value="false"/>
         <property name="loadTestSuiteProperties" value="true"/>
-        <property name="writePropertiesToSahiConfig" value="false"/>
         <property name="locations">
             <list>
                 <!-- overwrite the properties from the test-suite folder and so on-->
@@ -67,11 +67,14 @@
     <bean id="org.sakuli.actions.environment.CipherUtil" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.actions.environment.CipherUtil"/>
     </bean>
-    <bean id="org.sakuli.datamodel.properties.SahiProxyProperties" class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.datamodel.properties.SahiProxyProperties"/>
-    </bean>
     <bean id="org.sakuli.loader.ScreenActionLoaderImpl" class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.loader.ScreenActionLoaderImpl">
+        <constructor-arg value="org.sakuli.loader.ScreenActionLoaderImpl"/>
+    </bean>
+    <bean id="org.sakuli.utils.CleanUpHelper" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.utils.CleanUpHelper"/>
+    </bean>
+    <bean id="org.sakuli.loader.ActionLoaderHook" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.loader.ActionLoaderCallback">
         </constructor-arg>
     </bean>
     <bean id="org.sakuli.datamodel.properties.TestSuiteProperties" class="org.sakuli.MockitoFactoryBean">

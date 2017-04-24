@@ -20,10 +20,12 @@ package org.sakuli.utils;
 
 import org.sakuli.actions.environment.Application;
 import org.sakuli.actions.screenbased.Key;
-import org.sakuli.loader.BeanLoader;
+import org.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.IRobot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
@@ -31,18 +33,21 @@ import java.util.Arrays;
  * @author tschneck
  *         Date: 2/26/16
  */
+@Component
 public class CleanUpHelper {
     private static final Logger LOGGER = LoggerFactory.getLogger(CleanUpHelper.class);
+    @Autowired
+    private ScreenActionLoader screenActionLoader;
 
-    public static void releaseAllModifiers() {
-        IRobot robot = BeanLoader.loadScreenActionLoader().getScreen().getRobot();
+    public void releaseAllModifiers() {
+        IRobot robot = screenActionLoader.getScreen().getRobot();
         LOGGER.debug("release all modifier keys!");
 
         Arrays.asList(Key.C_CTRL, Key.C_ALT, Key.C_ALTGR, Key.C_SHIFT, Key.C_WIN, Key.C_CAPS_LOCK)
                 .forEach(i -> robot.typeChar(i, IRobot.KeyMode.RELEASE_ONLY));
     }
 
-    public static void cleanClipboard() {
+    public void cleanClipboard() {
         LOGGER.debug("clear Clipboard content!");
         Application.setClipboard(" ");
     }

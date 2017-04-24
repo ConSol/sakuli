@@ -33,7 +33,6 @@
         <property name="loadSakuliProperties" value="false"/>
         <property name="loadSakuliDefaultProperties" value="false"/>
         <property name="loadTestSuiteProperties" value="true"/>
-        <property name="writePropertiesToSahiConfig" value="false"/>
     </bean>
     <bean id="org.sakuli.datamodel.TestSuite" class="org.sakuli.builder.TestSuiteExampleFactory"/>
     <bean id="org.sakuli.exceptions.SakuliExceptionHandler" class="org.sakuli.MockitoFactoryBean">

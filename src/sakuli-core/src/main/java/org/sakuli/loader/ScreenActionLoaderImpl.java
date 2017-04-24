@@ -18,8 +18,6 @@
 
 package org.sakuli.loader;
 
-import net.sf.sahi.report.Report;
-import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.actions.screenbased.ScreenshotActions;
 import org.sakuli.actions.settings.ScreenBasedSettings;
@@ -29,7 +27,6 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.actions.Screen;
 import org.sakuli.datamodel.properties.ActionProperties;
-import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliException;
@@ -131,11 +128,6 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     }
 
     @Override
-    public SahiProxyProperties getSahiProxyProperties() {
-        return baseLoader.getSahiProxyProperties();
-    }
-
-    @Override
     public TestSuiteProperties getTestSuitePropeties() {
         return baseLoader.getTestSuitePropeties();
     }
@@ -168,20 +160,5 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     @Override
     public ImageLib getImageLib() {
         return baseLoader.getImageLib();
-    }
-
-    @Override
-    public RhinoScriptRunner getRhinoScriptRunner() {
-        return baseLoader.getRhinoScriptRunner();
-    }
-
-    @Override
-    public void setRhinoScriptRunner(RhinoScriptRunner scriptRunner) {
-        baseLoader.setRhinoScriptRunner(scriptRunner);
-    }
-
-    @Override
-    public Report getSahiReport() {
-        return baseLoader.getSahiReport();
     }
 }

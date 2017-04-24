@@ -18,17 +18,15 @@
 
 package org.sakuli.loader;
 
-import net.sf.sahi.report.Report;
-import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.properties.ActionProperties;
-import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
+import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 
@@ -51,19 +49,13 @@ public interface BaseActionLoader {
     void setCurrentTestCase(TestCase testCase);
 
     /**
-     * @return the first Step in state {@link org.sakuli.datamodel.state.TestCaseStepState#INIT}
-     * or {@link org.sakuli.datamodel.state.TestCaseStepState#ERRORS} in the current {@link TestCase},
+     * @return the first Step in state {@link TestCaseStepState#INIT}
+     * or {@link TestCaseStepState#ERRORS} in the current {@link TestCase},
      * if there is one present.
      */
     TestCaseStep getCurrentTestCaseStep();
 
     ImageLib getImageLib();
-
-    RhinoScriptRunner getRhinoScriptRunner();
-
-    void setRhinoScriptRunner(RhinoScriptRunner scriptRunner);
-
-    Report getSahiReport();
 
     CipherUtil getCipherUtil();
 
@@ -94,8 +86,6 @@ public interface BaseActionLoader {
     SakuliProperties getSakuliProperties();
 
     ActionProperties getActionProperties();
-
-    SahiProxyProperties getSahiProxyProperties();
 
     TestSuiteProperties getTestSuitePropeties();
 }

@@ -18,14 +18,13 @@
 
 package org.sakuli.actions.environment;
 
-import net.sf.sahi.util.OSUtils;
 import org.sakuli.actions.Action;
-import org.sakuli.actions.ModifySahiTimer;
 import org.sakuli.actions.environment.CommandLineUtil.CommandLineResult;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.screenbased.Region;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.actions.screenbased.TypingUtil;
+import org.sakuli.actions.screenbased.UserInterfaceInputAction;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.loader.BeanLoader;
@@ -49,6 +48,7 @@ import java.nio.file.Paths;
  */
 public class Environment implements Action {
 
+    private static String osName = System.getProperty("os.name");
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final boolean resumeOnException;
     private ScreenActionLoader loader;
@@ -229,7 +229,7 @@ public class Environment implements Action {
      *
      * @return this {@link Environment}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(message = "paste the current clipboard into the focus", logClassInstance = false)
     public Environment pasteClipboard() {
         int mod = Key.getHotkeyModifier();
@@ -246,7 +246,7 @@ public class Environment implements Action {
      *
      * @return this {@link Environment}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(message = "copy the current selection to the clipboard", logClassInstance = false)
     public Environment copyIntoClipboard() {
         int mod = Key.getHotkeyModifier();
@@ -261,7 +261,7 @@ public class Environment implements Action {
     /**
      * {@link org.sakuli.actions.screenbased.TypingUtil#paste(String)}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(logClassInstance = false)
     public Environment paste(String text) {
         return typingUtil.paste(text);
@@ -270,7 +270,7 @@ public class Environment implements Action {
     /**
      * {@link org.sakuli.actions.screenbased.TypingUtil#pasteMasked(String)}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(logClassInstance = false, logArgs = false)
     public Environment pasteMasked(String text) {
         return typingUtil.pasteMasked(text);
@@ -279,7 +279,7 @@ public class Environment implements Action {
     /**
      * {@link org.sakuli.actions.screenbased.TypingUtil#pasteAndDecrypt(String)}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(logClassInstance = false, logArgs = false)
     public Environment pasteAndDecrypt(String text) {
         return typingUtil.pasteAndDecrypt(text);
@@ -288,7 +288,7 @@ public class Environment implements Action {
     /**
      * See {@link org.sakuli.actions.screenbased.TypingUtil#type(String, String)}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(message = "type over system keyboard", logClassInstance = false)
     public Environment type(String text) {
         return typingUtil.type(text, null);
@@ -297,7 +297,7 @@ public class Environment implements Action {
     /**
      * See {@link org.sakuli.actions.screenbased.TypingUtil#type(String, String)}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(message = "type with pressed modifiers", logClassInstance = false)
     public Environment type(String text, String optModifiers) {
         return typingUtil.type(text, optModifiers);
@@ -306,7 +306,7 @@ public class Environment implements Action {
     /**
      * See {@link org.sakuli.actions.screenbased.TypingUtil#typeMasked(String, String)}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(message = "type over system keyboard", logClassInstance = false, logArgs = false)
     public Environment typeMasked(String text) {
         return typingUtil.typeMasked(text, null);
@@ -315,7 +315,7 @@ public class Environment implements Action {
     /**
      * See {@link org.sakuli.actions.screenbased.TypingUtil#typeMasked(String, String)}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(message = "type with pressed modifiers", logClassInstance = false, logArgs = false)
     public Environment typeMasked(String text, String optModifiers) {
         return typingUtil.typeMasked(text, optModifiers);
@@ -324,7 +324,7 @@ public class Environment implements Action {
     /**
      * See {@link org.sakuli.actions.screenbased.TypingUtil#typeAndDecrypt(String, String)} .
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(message = "decrypt and type over system keyboard", logClassInstance = false, logArgs = false)
     public Environment typeAndDecrypt(String text) {
         return typingUtil.typeAndDecrypt(text, null);
@@ -333,7 +333,7 @@ public class Environment implements Action {
     /**
      * See {@link org.sakuli.actions.screenbased.TypingUtil#typeAndDecrypt(String, String)} .
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(message = "decrypt and type with pressed modifiers", logClassInstance = false, logArgs = false)
     public Environment typeAndDecrypt(String text, String optModifiers) {
         return typingUtil.typeAndDecrypt(text, optModifiers);
@@ -342,7 +342,7 @@ public class Environment implements Action {
     /**
      * See {@link TypingUtil#keyDown(String)}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(message = "press key down", logClassInstance = false)
     public Environment keyDown(String keys) {
         return typingUtil.keyDown(keys);
@@ -351,7 +351,7 @@ public class Environment implements Action {
     /**
      * See {@link TypingUtil#keyUp(String)}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(message = "press key up", logClassInstance = false)
     public Environment keyUp(String keys) {
         return typingUtil.keyUp(keys);
@@ -360,7 +360,7 @@ public class Environment implements Action {
     /**
      * See {@link TypingUtil#write(String)}.
      */
-    @ModifySahiTimer
+    @UserInterfaceInputAction
     @LogToResult(message = "interpret and write the following expresion", logClassInstance = false)
     public Environment write(String text) {
         return typingUtil.write(text);
@@ -395,7 +395,7 @@ public class Environment implements Action {
      */
     @LogToResult(logClassInstance = false, logArgs = false)
     public boolean isWindows() {
-        switch (OSUtils.identifyOS()) {
+        switch (osName) {
             case "xp":
                 return true;
             case "nt":
@@ -410,7 +410,7 @@ public class Environment implements Action {
      */
     @LogToResult(logClassInstance = false, logArgs = false)
     public boolean isLinux() {
-        switch (OSUtils.identifyOS()) {
+        switch (osName) {
             case "linux":
                 return true;
             default:
@@ -423,7 +423,7 @@ public class Environment implements Action {
      */
     @LogToResult(logClassInstance = false, logArgs = false)
     public String getOsIdentifier() {
-        return OSUtils.identifyOS();
+        return osName;
     }
 
 

@@ -18,22 +18,20 @@
 
 package org.sakuli.javaDSL.utils;
 
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
-import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
+import org.sakuli.starter.sahi.utils.SahiStarterPropertyPlaceholderConfigurer;
 
 import java.util.Properties;
 
 /**
  * @author Tobias Schneck
  */
-public class SakuliJavaPropertyPlaceholderConfigurer extends SakuliPropertyPlaceholderConfigurer {
+public class SakuliJavaPropertyPlaceholderConfigurer extends SahiStarterPropertyPlaceholderConfigurer {
 
     @Override
     protected void loadSakuliDefaultProperties(Properties props) {
         super.loadSakuliDefaultProperties(props);
         props.put(TestSuiteProperties.LOAD_TEST_CASES_AUTOMATIC_PROPERTY, "false");
-        props.put(SakuliProperties.JAVASCRIPT_ENGINE, "false");
     }
 
     @Override

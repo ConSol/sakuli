@@ -19,12 +19,12 @@
 package org.sakuli.actions.screenbased;
 
 import org.sakuli.actions.logging.LogToResult;
-import org.sakuli.aop.RhinoAspectTest;
+import org.sakuli.aop.LogActionExecutedAspectTest;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.loader.ScreenActionLoader;
 
 /**
- * Test class for {@link RhinoAspectTest#testdoScreenBasedActionLog()}
+ * Test class for {@link LogActionExecutedAspectTest#testdoScreenBasedActionLog()}
  *
  * @author tschneck Date: 23.05.14
  */

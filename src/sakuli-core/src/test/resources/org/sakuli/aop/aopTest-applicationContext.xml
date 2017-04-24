@@ -41,7 +41,6 @@
         <property name="loadSakuliProperties" value="false"/>
         <property name="loadSakuliDefaultProperties" value="false"/>
         <property name="loadTestSuiteProperties" value="true"/>
-        <property name="writePropertiesToSahiConfig" value="false"/>
         <property name="locations">
             <list>
                 <!-- overwrite the properties from the test-suite folder and so on-->
@@ -71,10 +70,6 @@
         <constructor-arg value="org.sakuli.actions.environment.CipherUtil">
         </constructor-arg>
     </bean>
-    <bean id="org.sakuli.datamodel.properties.SahiProxyProperties" class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.datamodel.properties.SahiProxyProperties">
-        </constructor-arg>
-    </bean>
     <bean id="org.sakuli.datamodel.properties.ForwarderProperties" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.datamodel.properties.ForwarderProperties">
         </constructor-arg>
@@ -95,6 +90,13 @@
     <bean class="org.sakuli.actions.settings.ScreenBasedSettings">
         <constructor-arg index="0" ref="org.sakuli.datamodel.properties.ActionProperties"/>
         <constructor-arg index="1" ref="org.sakuli.datamodel.properties.SakuliProperties"/>
+    </bean>
+
+    <bean id="org.sakuli.actions.logging.LogToResultCallback" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.actions.logging.LogToResultCallback"/>
+    </bean>
+    <bean id="org.sakuli.actions.screenbased.UserInterfaceInputActionCallback" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.actions.screenbased.UserInterfaceInputActionCallback"/>
     </bean>
 
     <bean id="properties" class="org.sakuli.PropertyHolder" depends-on="propertyResolver">

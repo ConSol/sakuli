@@ -30,7 +30,7 @@
 
     <artifactId>sakuli-common</artifactId>
     <version>1.1.0-SNAPSHOT-241_sakuli_se</version>
-    <name>${artifactId}</name>
+    <name>${project.artifactId}</name>
     <description>maven module for common used resources</description>
 
     <packaging>jar</packaging>

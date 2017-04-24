@@ -31,7 +31,7 @@ public abstract class AbstractIcinga2ForwarderBaseTest extends AbstractServiceBa
     @Override
     protected String getTestContextPath() {
         System.setProperty(SPRING_PROFILES_ACTIVE, "ICINGA2");
-        return "icinga2Test-beanRefFactory.xml";
+        return "org/sakuli/services/forwarder/icinga2/icinga2Test-beanRefFactory.xml";
     }
 
     @Override

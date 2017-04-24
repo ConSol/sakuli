@@ -36,7 +36,6 @@
         <property name="loadSakuliProperties" value="false"/>
         <property name="loadSakuliDefaultProperties" value="false"/>
         <property name="loadTestSuiteProperties" value="false"/>
-        <property name="writePropertiesToSahiConfig" value="false"/>
     </bean>
 
     <bean id="org.sakuli.datamodel.TestSuite" class="org.sakuli.builder.TestSuiteExampleFactory"/>
@@ -90,14 +89,13 @@
     <bean id="org.sakuli.datamodel.properties.ActionProperties" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.datamodel.properties.ActionProperties"/>
     </bean>
-    <bean id="org.sakuli.datamodel.properties.SahiProxyProperties" class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.datamodel.properties.SahiProxyProperties"/>
-    </bean>
     <bean id="org.sakuli.loader.BaseActionLoaderImpl" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.loader.BaseActionLoaderImpl"/>
     </bean>
     <bean id="org.sakuli.actions.settings.ScreenBasedSettings" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.actions.settings.ScreenBasedSettings"/>
     </bean>
-
+    <bean id="org.sakuli.utils.CleanUpHelper" class="org.sakuli.MockitoFactoryBean">
+        <constructor-arg value="org.sakuli.utils.CleanUpHelper"/>
+    </bean>
 </beans>

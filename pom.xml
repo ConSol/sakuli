@@ -35,6 +35,7 @@
 
     <modules>
         <module>src/ocr-tessdata-extractor</module>
+        <module>src/basic-test-util</module>
         <module>src/sakuli-common</module>
         <module>src/sakuli-core</module>
         <module>src/sakuli-sahi-setup</module>
@@ -101,7 +102,7 @@
                         <exclude>**/integration/**/*</exclude>
                     </excludes>
                     <environmentVariables>
-                        <SAKULI_HOME />
+                        <SAKULI_HOME/>
                     </environmentVariables>
                 </configuration>
             </plugin>

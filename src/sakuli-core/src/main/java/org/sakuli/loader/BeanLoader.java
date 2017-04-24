@@ -23,7 +23,6 @@ import org.sakuli.actions.environment.Application;
 import org.sakuli.actions.environment.Environment;
 import org.sakuli.actions.screenbased.Region;
 import org.sakuli.exceptions.SakuliInitException;
-import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -42,6 +41,9 @@ import java.util.Map;
  */
 public class BeanLoader {
     protected static final Logger logger = LoggerFactory.getLogger(BeanLoader.class);
+    /**
+     * Will be defined in module which imports the `sakuli-core` maven module
+     */
     public static String CONTEXT_PATH = "beanRefFactory.xml";
 
     public static BaseActionLoader loadBaseActionLoader() {
@@ -117,7 +119,7 @@ public class BeanLoader {
      * Release the context and shuts the hole context down
      */
     public static void releaseContext() {
-        loadBean(SakuliPropertyPlaceholderConfigurer.class).restoreProperties();
+        loadBean(ActionLoaderCallback.class).releaseContext();
         BeanFactory beanFactory = getBeanFactory();
         if (beanFactory instanceof ConfigurableApplicationContext) {
             ((ConfigurableApplicationContext) beanFactory).close();

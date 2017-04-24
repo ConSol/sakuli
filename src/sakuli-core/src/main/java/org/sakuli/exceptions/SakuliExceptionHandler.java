@@ -18,13 +18,13 @@
 
 package org.sakuli.exceptions;
 
-import net.sf.sahi.report.ResultType;
 import org.sakuli.actions.screenbased.RegionImpl;
-import org.sakuli.aop.RhinoAspect;
+import org.sakuli.aop.BaseSakuliAspect;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.actions.LogResult;
+import org.sakuli.loader.ActionLoaderCallback;
+import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author tschneck Date: 12.07.13
@@ -129,16 +130,11 @@ public class SakuliExceptionHandler {
         if (e.getMessage() == null) {
             e = new SakuliException(e, e.getClass().getSimpleName());
         }
-
-        //e.g. Proxy Exception should only be handled if no other exceptions have been added
-        if (!(e instanceof SakuliInitException) ||
-                (!containsException(loader.getTestSuite()))) {
-            //if the exception have been already processed do no exception handling!
-            if (isAlreadyProcessed(e)) {
-                logger.debug("ALREADY PROCESSED: " + e.getMessage(), e);
-            } else {
-                processException(e);
-            }
+        //if the exception have been already processed do no exception handling!
+        if (isAlreadyProcessed(e)) {
+            logger.debug("ALREADY PROCESSED: " + e.getMessage(), e);
+        } else {
+            processException(e);
         }
     }
 
@@ -152,33 +148,26 @@ public class SakuliExceptionHandler {
         SakuliException transformedException = transformException(e);
 
         //Do different exception handling for different use cases:
-        if (!resumeToTestExcecution(e)) {
+        if (resumeToTestExcecution(e)
+                && loader.getSakuliProperties().isSuppressResumedExceptions()) {
+            //if suppressResumedExceptions == true and is a resume to test exception
+            logger.debug(transformedException.getMessage(), transformedException);
+        } else {
             //normal handling
             logger.error(transformedException.getMessage(), transformedException);
             saveException(transformedException);
-
-            // a {@link SakuliForwarderException}, should only added to the report and not stop sahi, because
-            // this error types only on already started the tear down of test suite.
-            if (e instanceof SakuliForwarderException) {
-                addExceptionToSahiReport(transformedException);
-            }
-            //stop the execution and add to report if the exception is not caused by Sahi
-            else if (!(e instanceof SahiActionException)) {
-                stopExecutionAndAddExceptionToSahiReport(transformedException);
-            }
-        }
-        //if exceptions should not stop the test case execution
-        else if (!loader.getSakuliProperties().isSuppressResumedExceptions()) {
-            // if suppressResumedExceptions == false
-            logger.error(e.getMessage(), transformedException);
-            saveException(transformedException);
-            addExceptionToSahiReport(transformedException);
-        } else {
-            //if suppressResumedExceptions == true
-            logger.debug(transformedException.getMessage(), transformedException);
+            triggerCallbacks(transformedException);
         }
         processedExceptions.add(e);
         processedExceptions.add(transformedException);
+    }
+
+    /**
+     * Triggers some {@link ActionLoaderCallback#handleException(SakuliException)} implementations.
+     */
+    void triggerCallbacks(SakuliException transformedException) {
+        BeanLoader.loadMultipleBeans(ActionLoaderCallback.class).values().stream().filter(Objects::nonNull)
+                .forEach(cb -> cb.handleException(transformedException));
     }
 
     /**
@@ -186,7 +175,7 @@ public class SakuliExceptionHandler {
      */
     public boolean isAlreadyProcessed(Throwable e) {
         String message = e.getMessage() != null ? e.getMessage() : e.toString();
-        return message.contains(RhinoAspect.ALREADY_PROCESSED)
+        return message.contains(BaseSakuliAspect.ALREADY_PROCESSED)
                 || message.contains(("Logging exception:")) || processedExceptions.contains(e);
     }
 
@@ -214,35 +203,6 @@ public class SakuliExceptionHandler {
             loader.getTestSuite().addException(e);
         }
         loader.getTestSuite().refreshState();
-    }
-
-    /**
-     * save the exception to the current sahi report (HTML Report in the log folder).
-     *
-     * @param e any {@link SakuliException}
-     */
-    private void addExceptionToSahiReport(SakuliException e) {
-        if (loader.getSahiReport() != null) {
-            loader.getSahiReport().addResult(
-                    e.getMessage(),
-                    ResultType.ERROR,
-                    e.getStackTrace().toString(),
-                    e.getMessage() + RhinoAspect.ALREADY_PROCESSED);
-        }
-    }
-
-    /**
-     * stops the execution of the current test case and add the exception to the sahi report (HTML Report in the log
-     * folder).
-     *
-     * @param e any {@link SakuliException}
-     */
-    private void stopExecutionAndAddExceptionToSahiReport(SakuliException e) {
-        if (loader.getRhinoScriptRunner() != null) {
-            loader.getRhinoScriptRunner().setStopOnError(true);
-            loader.getRhinoScriptRunner().setHasError();
-            throw new RuntimeException(RhinoAspect.ALREADY_PROCESSED + e.getMessage());
-        }
     }
 
     /**
@@ -292,10 +252,6 @@ public class SakuliExceptionHandler {
         ));
     }
 
-    public void handleException(LogResult logResult) {
-        handleException(new SahiActionException(logResult));
-    }
-
     private <T extends Throwable> T addResumeOnException(T e, boolean resumeOnException) {
         if (resumeOnException) {
             resumeExceptions.add(e);
@@ -310,7 +266,7 @@ public class SakuliExceptionHandler {
     public void throwCollectedResumedExceptions() {
         if (resumeExceptions.size() > 0) {
             SakuliRuntimeException e = new SakuliRuntimeException("test contains some suppressed resumed exceptions!");
-            resumeExceptions.stream().forEach(t -> e.addSuppressed(t));
+            resumeExceptions.forEach(e::addSuppressed);
             throw e;
         }
     }

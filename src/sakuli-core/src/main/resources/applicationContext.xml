@@ -38,7 +38,6 @@
     <context:component-scan base-package="org.sakuli.actions"/>
     <context:component-scan base-package="org.sakuli.aop"/>
     <context:component-scan base-package="org.sakuli.utils"/>
-    <context:component-scan base-package="org.sakuli.starter"/>
 
     <bean id="propertyResolver"
           class="org.sakuli.utils.SakuliPropertyPlaceholderConfigurer">

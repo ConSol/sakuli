@@ -18,6 +18,7 @@
 
 package org.sakuli.actions.logging;
 
+import org.sakuli.aop.LogActionExecutedAspect;
 import org.sakuli.datamodel.actions.LogLevel;
 
 import java.lang.annotation.*;
@@ -25,7 +26,7 @@ import java.lang.annotation.*;
 /**
  * This Annotation should be used do log actions in the package {@link org.sakuli.actions}.
  * All annotated methods or constructors will be called by the aspect
- * {@link org.sakuli.aop.RhinoAspect}.
+ * {@link LogActionExecutedAspect}.
  *
  * @author Tobias Schneck
  */

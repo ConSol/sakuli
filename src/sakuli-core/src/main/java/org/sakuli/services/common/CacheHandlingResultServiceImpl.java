@@ -20,6 +20,7 @@ package org.sakuli.services.common;
 
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.helper.TestCaseStepHelper;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliRuntimeException;
@@ -33,7 +34,7 @@ import java.util.List;
 
 /**
  * The CacheHandlingResultService will manage the cached steps definitions in the file `steps.cache`.
- * If the {@link org.sakuli.datamodel.TestSuite#state} is NOT {@link TestSuiteState#ERRORS} or {@link TestSuiteState#RUNNING} it will
+ * If the {@link TestSuite#state} is NOT {@link TestSuiteState#ERRORS} or {@link TestSuiteState#RUNNING} it will
  * remove all present not called step definitions and persist its.
  * This Service MUST be called as first Service before all other {@link org.sakuli.services.ResultService}s
  *

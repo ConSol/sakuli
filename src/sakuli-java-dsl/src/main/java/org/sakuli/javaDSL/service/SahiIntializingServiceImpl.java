@@ -20,11 +20,11 @@ package org.sakuli.javaDSL.service;
 
 import net.sf.sahi.client.Browser;
 import net.sf.sahi.config.Configuration;
-import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.services.InitializingService;
-import org.sakuli.starter.SahiConnector;
+import org.sakuli.starter.sahi.SahiConnector;
+import org.sakuli.starter.sahi.datamodel.properties.SahiProxyProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -18,11 +18,12 @@
 
 package org.sakuli.actions.logging;
 
+import org.sakuli.aop.LogActionExecutedAspect;
 import org.sakuli.datamodel.actions.LogLevel;
 
 /**
- * The logging will take place in the {@link org.sakuli.aop.RhinoAspect}.
- * This are only EntryPoints for {@link org.sakuli.aop.RhinoAspect#doLoggingLog(org.aspectj.lang.JoinPoint, LogToResult)}.
+ * The logging will take place in the {@link LogActionExecutedAspect}.
+ * This are only EntryPoints for {@link LogActionExecutedAspect#doLoggingLog(org.aspectj.lang.JoinPoint, LogToResult)}.
  *
  * @author tschneck
  *         Date: 24.06.13
