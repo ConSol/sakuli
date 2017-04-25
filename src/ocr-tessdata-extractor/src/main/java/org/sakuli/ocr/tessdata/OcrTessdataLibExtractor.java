@@ -24,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystemException;
 import java.nio.file.Files;
@@ -38,35 +40,39 @@ public class OcrTessdataLibExtractor {
     public static final String TESTDATA = "eng.traineddata";
     private static final Logger LOGGER = LoggerFactory.getLogger(OcrTessdataLibExtractor.class);
 
-    public static void extract(Path outputDir) throws Exception {
-        extract(outputDir, null);
+    public static Path extract(Path outputDir) throws IOException {
+        return extract(outputDir, null);
     }
 
-    public static Path extract(Path outputDir, URL tessdataClasspathResourceFolder) throws Exception {
+    public static Path extract(Path outputDir, URL tessdataClasspathResourceFolder) throws IOException {
         if (tessdataClasspathResourceFolder == null) {
             tessdataClasspathResourceFolder = OcrTessdataLibExtractor.class.getResource("lib");
         }
-
-        if (tessdataClasspathResourceFolder.getProtocol().equals("jar")) {
-            final Path targetDir = outputDir.resolve("org").resolve("sakuli").resolve("ocr").resolve("tessdata").resolve("lib");
-            if (!isTessdataLibFolderContentPresent(targetDir)) {
-                LOGGER.debug("Extract classpath resource '{}' to:{}", tessdataClasspathResourceFolder.toString(), outputDir.toString());
-                JarReader.read(tessdataClasspathResourceFolder, (name, is) -> {
-                    Path targetFile = outputDir.resolve("." + name).normalize();
-                    System.out.println("write file: " + targetFile);
-                    FileUtils.copyInputStreamToFile(is, targetFile.toFile());
-                });
-                checkTessdataLibFolderContent(targetDir);
+        try {
+            if (tessdataClasspathResourceFolder.getProtocol().equals("jar")) {
+                final Path targetDir = outputDir.resolve("org").resolve("sakuli").resolve("ocr").resolve("tessdata").resolve("lib");
+                if (!isTessdataLibFolderContentPresent(targetDir)) {
+                    LOGGER.debug("Extract classpath resource '{}' to:{}", tessdataClasspathResourceFolder.toString(), outputDir.toString());
+                    JarReader.read(tessdataClasspathResourceFolder, (name, is) -> {
+                        Path targetFile = outputDir.resolve("." + name).normalize();
+                        LOGGER.debug("write file: " + targetFile);
+                        FileUtils.copyInputStreamToFile(is, targetFile.toFile());
+                    });
+                    checkTessdataLibFolderContent(targetDir);
+                }
+                return targetDir.normalize().toAbsolutePath();
+            } else if (tessdataClasspathResourceFolder.getProtocol().equals("file")) {
+                final Path libPath = Paths.get(tessdataClasspathResourceFolder.toURI());
+                LOGGER.debug("Use direct file path for OCR tessdata lib: {}", libPath);
+                checkTessdataLibFolderContent(libPath);
+                return libPath.normalize().toAbsolutePath();
             }
-            return targetDir.normalize().toAbsolutePath();
-        } else if (tessdataClasspathResourceFolder.getProtocol().equals("file")) {
-            final Path libPath = Paths.get(tessdataClasspathResourceFolder.toURI());
-            LOGGER.debug("Use direct file path for OCR tessdata lib: {}", libPath);
-            checkTessdataLibFolderContent(libPath);
-            return libPath.normalize().toAbsolutePath();
+            throw new FileSystemException("URL type '" + tessdataClasspathResourceFolder.getProtocol()
+                    + "' not supported: " + tessdataClasspathResourceFolder.toString());
+        } catch (URISyntaxException e) {
+            throw new FileNotFoundException("File URL is not valid: " + tessdataClasspathResourceFolder.toString()
+                    + " - " + e.getMessage());
         }
-        throw new FileSystemException("URL type '" + tessdataClasspathResourceFolder.getProtocol()
-                + "' not supported: " + tessdataClasspathResourceFolder.toString());
     }
 
     public static void checkTessdataLibFolderContent(Path output) throws FileNotFoundException {

@@ -148,8 +148,8 @@ public class SakuliPropertyPlaceholderConfigurerTest {
     public void testSakuliHomeFolder() throws IOException {
         SakuliProperties properties = BeanLoader.loadBean(SakuliProperties.class);
 
-        assertTrue(Files.exists(properties.getJsLibFolder()), "include folder doesn't exists");
-        assertTrue(properties.getJsLibFolder().toString().contains(BaseTest.SAKULI_HOME_FOLDER_PATH.substring(2)));
+        assertTrue(Files.exists(properties.getSakuliHomeFolder()), "include folder doesn't exists");
+        assertTrue(properties.getSakuliHomeFolder().toString().contains(BaseTest.SAKULI_HOME_FOLDER_PATH.substring(2)));
 
         assertNotNull(properties.getLogPattern());
     }

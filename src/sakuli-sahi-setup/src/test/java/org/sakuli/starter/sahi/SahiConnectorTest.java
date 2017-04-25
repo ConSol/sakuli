@@ -136,7 +136,7 @@ public class SahiConnectorTest {
     @Test
     public void testGetIncludFolderJsPath() throws Exception {
         Path pathMock = mock(Path.class);
-        when(sakuliProperties.getJsLibFolder()).thenReturn(pathMock);
+        when(sahiProxyProperties.getJsLibFolder()).thenReturn(pathMock);
         when(pathMock.toAbsolutePath()).thenReturn(pathMock);
 
         if (File.separator.equals("/")) {
@@ -153,7 +153,7 @@ public class SahiConnectorTest {
     @Test
     public void testReconnectOK() throws Throwable {
         Path pathMock = mock(Path.class);
-        when(sakuliProperties.getJsLibFolder()).thenReturn(pathMock);
+        when(sahiProxyProperties.getJsLibFolder()).thenReturn(pathMock);
         when(pathMock.toAbsolutePath()).thenReturn(pathMock);
         when(pathMock.toString()).thenReturn("/sakuli/src/main/include");
 
@@ -166,7 +166,7 @@ public class SahiConnectorTest {
     @Test(expectedExceptions = InterruptedException.class)
     public void testReconnectFAILURE() throws Throwable {
         Path pathMock = mock(Path.class);
-        when(sakuliProperties.getJsLibFolder()).thenReturn(pathMock);
+        when(sahiProxyProperties.getJsLibFolder()).thenReturn(pathMock);
         when(pathMock.toAbsolutePath()).thenReturn(pathMock);
         when(pathMock.toString()).thenReturn("/sakuli/src/main/include");
 

@@ -36,6 +36,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.sakuli.datamodel.properties.SakuliProperties.LIBS_FOLDER_APPEDER;
+
 /**
  * @author tschneck Date: 14.05.14
  */
@@ -103,6 +105,7 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final List<String> logPropertyNames = Arrays.asList(SAHI_HANLDER, SAHI_LOG_CONSOLE_HANLDER_LEVEL,
             SAHI_LOG_FILE_HANDLER, SAHI_LOG_CONSOLE_HANDLER_FORMATTER, SAHI_LOG_FILE_HANDLER_FORMATTER,
             SAHI_LOG_FILE_HANDLER_LIMIT, SAHI_LOG_FILE_HANDLER_COUNT, SAHI_LOG_FILE_HANDLER_PATERN);
+    public static final String JS_LIB_FOLDER_APPEDER = LIBS_FOLDER_APPEDER + File.separator + "js";
     public static final Logger LOGGER = LoggerFactory.getLogger(SahiProxyProperties.class);
 
     @Value("${" + PROXY_HOME_FOLDER + "}")
@@ -132,6 +135,8 @@ public class SahiProxyProperties extends AbstractProperties {
     private Path sahiJSInjectConfigFile;
     private Path sahiJSInjectSourceFile;
     private Path sahiJSInjectTargetFile;
+    private Path jsLibFolder;
+
 
     @PostConstruct
     public void initFolders() throws FileNotFoundException {
@@ -139,6 +144,8 @@ public class SahiProxyProperties extends AbstractProperties {
         sahiConfigFolder = Paths.get(sahiConfigFolderPropertyValue).normalize().toAbsolutePath();
         if (!testSuiteProperties.isUiTest()) {
             checkFolders(sahiHomeFolder, sahiConfigFolder);
+            jsLibFolder = Paths.get(sakuliProperties.getSakuliHomeFolder() + JS_LIB_FOLDER_APPEDER);
+            checkFolders(jsLibFolder);
             loadSahiInjectFiles();
         }
     }
@@ -151,7 +158,7 @@ public class SahiProxyProperties extends AbstractProperties {
      */
     protected void loadSahiInjectFiles() throws FileNotFoundException {
         sahiJSInjectConfigFile = Paths.get(sahiHomeFolder.toString() + SAHI_JS_INJECT_CONFIG_FILE_APPENDER);
-        sahiJSInjectSourceFile = Paths.get(sakuliProperties.getJsLibFolder() + SAHI_JS_INJECT_CODE_FILENAME_APPENDER);
+        sahiJSInjectSourceFile = Paths.get(getJsLibFolder() + SAHI_JS_INJECT_CODE_FILENAME_APPENDER);
         checkFiles(sahiJSInjectConfigFile, sahiJSInjectSourceFile);
 
         //don't check files and folders => will be created during runtime
@@ -212,6 +219,14 @@ public class SahiProxyProperties extends AbstractProperties {
 
     public void setMaxConnectTries(Integer maxConnectTries) {
         this.maxConnectTries = maxConnectTries;
+    }
+
+    public Path getJsLibFolder() {
+        return jsLibFolder;
+    }
+
+    public void setJsLibFolder(Path jsLibFolder) {
+        this.jsLibFolder = jsLibFolder;
     }
 
     public Path getSahiJSInjectConfigFile() {

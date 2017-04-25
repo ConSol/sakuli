@@ -175,7 +175,7 @@ public class SahiConnector {
     }
 
     protected String getIncludeFolderJsPath() {
-        String path = sakuliProperties.getJsLibFolder().toAbsolutePath().toString() + File.separator + "sakuli.js";
+        String path = sahiProxyProperties.getJsLibFolder().toAbsolutePath().toString() + File.separator + "sakuli.js";
         if (path.contains("\\")) {
             //replace \ with \\
             path = path.replaceAll("\\\\", "\\\\\\\\");
