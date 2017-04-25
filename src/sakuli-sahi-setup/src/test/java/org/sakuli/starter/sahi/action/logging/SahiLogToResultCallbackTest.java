@@ -21,12 +21,12 @@ package org.sakuli.starter.sahi.action.logging;
 import net.sf.sahi.report.Report;
 import net.sf.sahi.report.ResultType;
 import net.sf.sahi.report.TestResult;
-import org.sakuli.actions.TestCaseAction;
 import org.sakuli.actions.environment.Environment;
 import org.sakuli.actions.logging.Logger;
 import org.sakuli.actions.screenbased.Region;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.actions.screenbased.TypingUtil;
+import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.exceptions.SakuliExceptionHandler;
@@ -163,12 +163,12 @@ public class SahiLogToResultCallbackTest extends AopBaseTest {
         BaseActionLoader loader = mock(BaseActionLoader.class);
         TestCase sampleTc = new TestCase("test", "testID");
         when(loader.getCurrentTestCase()).thenReturn(sampleTc);
-        TestCaseAction testAction = new TestCaseAction();
+        JavaScriptTestCaseActionImpl testAction = new JavaScriptTestCaseActionImpl();
         ReflectionTestUtils.setField(testAction, "loader", loader, BaseActionLoader.class);
         testAction.init("testID", 3, 4, "imagefolder1", "imagefolder2");
 
         verifySahiReportLogEntry(ResultType.INFO,
-                "\"test case [" + sampleTc.getActionValueString() + "]\" TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
+                "\"test case [" + sampleTc.getActionValueString() + "]\" AbstractTestCaseActionImpl.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
     }
 
     private void verifySahiReport(ResultType resultTyp, int initialListSize) {

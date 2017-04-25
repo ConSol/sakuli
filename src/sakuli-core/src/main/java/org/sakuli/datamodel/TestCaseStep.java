@@ -19,12 +19,13 @@
 package org.sakuli.datamodel;
 
 import org.apache.commons.lang.StringUtils;
+import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.SakuliException;
 
 /**
  * test case step based Exceptions and critical times will be currently not supported in {@link
- * org.sakuli.actions.TestCaseAction}.
+ * JavaScriptTestCaseActionImpl}.
  *
  * @author tschneck Date: 18.06.13
  */

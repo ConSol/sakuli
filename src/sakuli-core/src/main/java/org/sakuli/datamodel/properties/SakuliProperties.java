@@ -34,7 +34,8 @@ import java.nio.file.Paths;
 @Component
 public class SakuliProperties extends AbstractProperties {
 
-    public static final String SAKULI_PROPERTIES_FILE_APPENDER = File.separator + "sakuli.properties";
+    public static final String SAKULI_PROPERTIES_FILE_NAME = "sakuli.properties";
+    public static final String SAKULI_PROPERTIES_FILE_APPENDER = File.separator + SAKULI_PROPERTIES_FILE_NAME;
     public static final String SAKULI_DEFAULT_PROPERTIES_FILE_APPENDER = File.separator + "sakuli-default.properties";
     public static final String SAKULI_HOME_FOLDER = "sakuli.home.folder";
     public static final String SUPPRESS_RESUMED_EXCEPTIONS = "sakuli.exception.suppressResumedExceptions";

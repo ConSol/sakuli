@@ -19,7 +19,6 @@
 package org.sakuli.ocr.tessdata;
 
 import org.apache.commons.io.FileUtils;
-import org.sakuli.javaDSL.selenium.testng.JarReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

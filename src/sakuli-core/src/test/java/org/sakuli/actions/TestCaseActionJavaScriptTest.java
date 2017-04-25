@@ -23,6 +23,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.BaseTest;
+import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
@@ -50,9 +51,9 @@ import static org.testng.Assert.*;
 /**
  * @author tschneck Date: 25.07.13
  */
-public class TestCaseActionTest extends BaseTest {
+public class TestCaseActionJavaScriptTest extends BaseTest {
     @InjectMocks
-    private TestCaseAction testling;
+    private JavaScriptTestCaseActionImpl testling;
     @Mock
     private TestSuite testSuiteMock;
     @Mock
@@ -229,7 +230,8 @@ public class TestCaseActionTest extends BaseTest {
     public void testGetTestCaseFolderPath() throws Exception {
         String folderName = "test_case_folder";
         Path folderpath = Paths.get(TEST_FOLDER_PATH + File.separator + folderName + File.separator + "tc.js");
-        sample.setTcFile(folderpath);
+        //will be used in TestSuiteHelper like that
+        sample.setTcFolder(folderpath.getParent());
 
         assertEquals(testling.getTestCaseFolderPath(),
                 Paths.get(TEST_FOLDER_PATH + File.separator + folderName).toAbsolutePath().toString());

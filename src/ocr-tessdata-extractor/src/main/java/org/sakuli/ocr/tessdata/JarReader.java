@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sakuli.javaDSL.selenium.testng;
+package org.sakuli.ocr.tessdata;
 
 /**
  * @author tschneck

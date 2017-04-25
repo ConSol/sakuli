@@ -147,6 +147,8 @@ public class SakuliExceptionHandler {
     protected void processException(Throwable e) {
         SakuliException transformedException = transformException(e);
 
+        processedExceptions.add(e);
+        processedExceptions.add(transformedException);
         //Do different exception handling for different use cases:
         if (resumeToTestExcecution(e)
                 && loader.getSakuliProperties().isSuppressResumedExceptions()) {
@@ -158,8 +160,6 @@ public class SakuliExceptionHandler {
             saveException(transformedException);
             triggerCallbacks(transformedException);
         }
-        processedExceptions.add(e);
-        processedExceptions.add(transformedException);
     }
 
     /**
@@ -175,8 +175,15 @@ public class SakuliExceptionHandler {
      */
     public boolean isAlreadyProcessed(Throwable e) {
         String message = e.getMessage() != null ? e.getMessage() : e.toString();
-        return message.contains(BaseSakuliAspect.ALREADY_PROCESSED)
+        boolean processed = message.contains(BaseSakuliAspect.ALREADY_PROCESSED)
                 || message.contains(("Logging exception:")) || processedExceptions.contains(e);
+
+        //check also caused exception to don't process wrapped exceptions twice
+        //noinspection SimplifiableIfStatement
+        if (!processed && e.getCause() != null) {
+            return isAlreadyProcessed(e.getCause());
+        }
+        return processed;
     }
 
     /**

@@ -82,6 +82,7 @@ public class TestSuiteHelper {
                             TestCaseHelper.convertTestCaseFileToID(tcFileName));
                     tc.setStartUrl(startURL);
                     tc.setTcFile(tcFile);
+                    tc.setTcFolder(tcFile.getParent());
                     tc.setSteps(TestCaseStepHelper.readCachedStepDefinitions(tcFile));
                     //set the Map with the test case id as key
                     tcMap.put(tc.getId(), tc);

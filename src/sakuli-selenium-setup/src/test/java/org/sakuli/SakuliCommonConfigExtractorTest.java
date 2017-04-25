@@ -16,32 +16,39 @@
  * limitations under the License.
  */
 
-package org.sakuli.ocr.tessdata;
+package org.sakuli;
 
+import org.sakuli.datamodel.properties.TestSuiteProperties;
+import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.testng.annotations.Test;
 
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Properties;
 
 import static org.testng.Assert.*;
 
 /**
- * Integration Test for {@link JarReader} and {@link OcrTessdataLibExtractor}.
- *
  * @author tschneck
- *         Date: 4/18/17
+ *         Date: 4/24/17
  */
-public class OcrTessdataLibExtractorTest {
+public class SakuliCommonConfigExtractorTest {
     @Test
-    public void testOcrExtractionAsFile() throws Exception {
-        Path tempDirectory = Files.createTempDirectory(Paths.get("target"), "sakuli-tmp");
-        final URL libAsFile = OcrTessdataLibExtractor.class.getResource("lib");
-        assertEquals(libAsFile.getProtocol(), "file");
-        Path output = OcrTessdataLibExtractor.extract(tempDirectory, libAsFile);
+    public void testExtract() throws Exception {
+        Path tempDirectory = Files.createTempDirectory(Paths.get("target"), "sakuli-conf-tmp");
+        Path output = SakuliCommonConfigExtractor.extract(tempDirectory);
+
         assertTrue(Files.exists(output));
         assertTrue(Files.isDirectory(output));
-        assertFalse(Files.exists(output.resolve("org")));
+        final Path sakuliDefaultProp = output.resolve("sakuli-default.properties");
+        assertTrue(Files.exists(sakuliDefaultProp));
+        assertFalse(Files.isDirectory(sakuliDefaultProp));
+        Properties props = new Properties();
+        new SakuliPropertyPlaceholderConfigurer().addPropertiesFromFile(props, sakuliDefaultProp.toString(), true);
+        assertTrue(props.size() > 0);
+        assertEquals(props.getProperty(TestSuiteProperties.WARNING_TIME), "0");
+
     }
+
 }

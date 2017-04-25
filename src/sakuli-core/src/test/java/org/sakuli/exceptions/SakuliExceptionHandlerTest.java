@@ -111,6 +111,26 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     }
 
     @Test
+    public void testIsAlreadyProcessed() throws Exception {
+        setUp();
+        when(loader.getCurrentTestCase()).thenReturn(null);
+        final Exception e1 = new Exception(testExcMessage);
+        testling.handleException(e1);
+        verify(testling).processException(e1);
+        assertTrue(testSuite.getException() instanceof SakuliException);
+        assertEquals(testSuite.getException().getMessage(), testExcMessage);
+
+        //test Suppressed
+        assertTrue(testling.isAlreadyProcessed(e1));
+        final Exception e2 = new Exception(e1);
+        assertTrue(testling.isAlreadyProcessed(e2));
+        testling.handleException(e2);
+        verify(testling).processException(any());
+        assertEquals(testSuite.getException().getMessage(), testExcMessage);
+        assertEquals(testSuite.getState(), TestSuiteState.ERRORS);
+    }
+
+    @Test
     public void testHandleActionException() throws Exception {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);

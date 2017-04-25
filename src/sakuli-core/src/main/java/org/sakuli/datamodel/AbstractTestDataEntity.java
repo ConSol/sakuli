@@ -20,6 +20,7 @@ package org.sakuli.datamodel;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
+import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
 import org.sakuli.datamodel.state.SakuliState;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
@@ -52,8 +53,8 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
      */
     protected int dbPrimaryKey = -1;
     /**
-     * needed to be set to -1, so the function {@link org.sakuli.actions.TestCaseAction#addTestCaseStep(String, String, String, int)}
-     * can check if the method {@link org.sakuli.actions.TestCaseAction#initWarningAndCritical(int, int)}
+     * needed to be set to -1, so the function {@link JavaScriptTestCaseActionImpl#addTestCaseStep(String, String, String, int)}
+     * can check if the method {@link JavaScriptTestCaseActionImpl#initWarningAndCritical(int, int)}
      * have been called at the beginning of this test case.
      */
     protected int warningTime = -1;

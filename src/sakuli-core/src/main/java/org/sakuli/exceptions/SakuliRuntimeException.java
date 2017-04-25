@@ -19,7 +19,7 @@
 package org.sakuli.exceptions;
 
 /**
- * Wrapper for alle sakuli runtime exceptins
+ * Wrapper for all sakuli runtime exceptions
  *
  * @author Tobias Schneck
  */

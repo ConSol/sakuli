@@ -137,6 +137,19 @@ public abstract class AbstractLogAwareTest {
         }
     }
 
+    public synchronized static void assertLastLine(Path logFile, String filter, String logLevelName, String expectedMessage) throws IOException {
+        String preFix = logLevelName;
+        if ("WARNING".equals(logLevelName)) {
+            preFix = "WARN ";
+        }
+        if ("INFO".equals(logLevelName)) {
+            preFix = "INFO ";
+        }
+        String lastLineOfLogFile = AbstractLogAwareTest.getLastLineWithContent(logFile, filter);
+        assertEquals(lastLineOfLogFile.substring(0, 5), preFix);
+        assertEquals(lastLineOfLogFile.substring(lastLineOfLogFile.indexOf("]") + 4), expectedMessage);
+    }
+
     @BeforeSuite(alwaysRun = true)
     public void setLogLevel() throws Exception {
         setSakuliLogLevel("DEBUG");
@@ -149,18 +162,5 @@ public abstract class AbstractLogAwareTest {
         setSakuliLogLevel(null);
         setSikuliLogLevel(null);
         setSahiLogLevel(null);
-    }
-
-    protected synchronized void assertLastLine(Path logFile, String filter, String logLevelName, String expectedMessage) throws IOException {
-        String preFix = logLevelName;
-        if ("WARNING".equals(logLevelName)) {
-            preFix = "WARN ";
-        }
-        if ("INFO".equals(logLevelName)) {
-            preFix = "INFO ";
-        }
-        String lastLineOfLogFile = AbstractLogAwareTest.getLastLineWithContent(logFile, filter);
-        assertEquals(lastLineOfLogFile.substring(0, 5), preFix);
-        assertEquals(lastLineOfLogFile.substring(lastLineOfLogFile.indexOf("]") + 4), expectedMessage);
     }
 }

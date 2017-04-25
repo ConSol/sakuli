@@ -20,12 +20,12 @@ package org.sakuli.aop;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
-import org.sakuli.actions.TestCaseAction;
 import org.sakuli.actions.environment.Environment;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.logging.LogToResultCallback;
 import org.sakuli.actions.logging.Logger;
 import org.sakuli.actions.screenbased.RegionTestImpl;
+import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.loader.BaseActionLoader;
@@ -59,22 +59,22 @@ public class LogActionExecutedAspectTest extends AopBaseTest {
         initMocks();
 
         final String classContent = "Test-Action-Content";
-        final String className = TestCaseAction.class.getSimpleName();
+        final String className = JavaScriptTestCaseActionImpl.class.getSimpleName();
         final String methodName = "actionMethod";
         final String sampleMessage = "sample-message-for-log";
         final String arg1 = "ARG1";
         final String arg2 = "NULL";
 
-        TestCaseAction testAction = mock(TestCaseAction.class);
+        JavaScriptTestCaseActionImpl testAction = mock(JavaScriptTestCaseActionImpl.class);
         when(testAction.toString()).thenReturn(classContent);
 
         JoinPoint jp = mock(JoinPoint.class);
         when(jp.getTarget()).thenReturn(testAction);
         Signature signature = mock(Signature.class);
         when(jp.getSignature()).thenReturn(signature);
-        when(signature.getDeclaringType()).thenReturn(TestCaseAction.class);
+        when(signature.getDeclaringType()).thenReturn(JavaScriptTestCaseActionImpl.class);
         when(signature.getName()).thenReturn(methodName);
-        when(signature.getDeclaringTypeName()).thenReturn(TestCaseAction.class.getName());
+        when(signature.getDeclaringTypeName()).thenReturn(JavaScriptTestCaseActionImpl.class.getName());
         when(jp.getArgs()).thenReturn(new Object[]{arg1, null});
 
 
@@ -162,12 +162,27 @@ public class LogActionExecutedAspectTest extends AopBaseTest {
         BaseActionLoader loader = mock(BaseActionLoader.class);
         TestCase sampleTc = new TestCase("test", "testID");
         when(loader.getCurrentTestCase()).thenReturn(sampleTc);
-        TestCaseAction testAction = new TestCaseAction();
+        JavaScriptTestCaseActionImpl testAction = new JavaScriptTestCaseActionImpl();
         ReflectionTestUtils.setField(testAction, "loader", loader, BaseActionLoader.class);
         testAction.init("testID", 3, 4, "imagefolder1", "imagefolder2");
 
+        assertLastLine(logFile, "AbstractTestCaseActionImpl", LogLevel.INFO,
+                "\"test case [" + sampleTc.getActionValueString() + "]\" AbstractTestCaseActionImpl.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
+    }
+
+    @Test
+    public void testDoJavaScriptTestCaseActionLog() throws Exception {
+        initMocks();
+        BaseActionLoader loader = mock(BaseActionLoader.class);
+        TestCase sampleTc = new TestCase("test-js", "test-js-ID");
+        sampleTc.setLastURL("last-url");
+        when(loader.getCurrentTestCase()).thenReturn(sampleTc);
+        JavaScriptTestCaseActionImpl testAction = new JavaScriptTestCaseActionImpl();
+        ReflectionTestUtils.setField(testAction, "loader", loader, BaseActionLoader.class);
+        assertEquals(testAction.getLastURL(), "last-url");
+
         assertLastLine(logFile, testAction.getClass().getSimpleName(), LogLevel.INFO,
-                "\"test case [" + sampleTc.getActionValueString() + "]\" TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
+                "\"test case [" + sampleTc.getActionValueString() + "]\" JavaScriptTestCaseActionImpl.getLastURL() - return 'lastURL'");
     }
 
     @Test

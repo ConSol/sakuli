@@ -22,7 +22,7 @@ import net.sf.sahi.client.Browser;
 import net.sf.sahi.test.ProcessHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.sakuli.actions.TestCaseAction;
+import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.builder.TestCaseBuilder;
 import org.sakuli.exceptions.SakuliException;
@@ -58,7 +58,7 @@ public abstract class AbstractSakuliTest {
     public static final String SAKULI_TEST = "sakuli-test";
     protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractSakuliTest.class);
     protected ExecutorService executorService;
-    protected TestCaseAction testCaseAction;
+    protected JavaScriptTestCaseActionImpl javaScriptTestCaseAction;
     protected Browser browser;
     private int counter;
     private DateTime startTime;
@@ -134,7 +134,7 @@ public abstract class AbstractSakuliTest {
         initSahiBrowser();
 
         testSuite.addTestCase(new TestCaseBuilder(testCaseName, initParameter.getTestCaseId()).build());
-        testCaseAction = BeanLoader.loadTestCaseAction();
+        javaScriptTestCaseAction = BeanLoader.loadJavaScriptTestCaseAction();
 
         //add the the testcase folder as image folder
         if (Files.exists(getTestCaseFolder())) {
@@ -159,7 +159,7 @@ public abstract class AbstractSakuliTest {
      */
     protected void initTestCaseAction(TestCaseInitParameter initParameter) {
         List<Path> imagePaths = initParameter.getImagePaths();
-        testCaseAction.initWithPaths(this.initParameter.getTestCaseId(),
+        javaScriptTestCaseAction.initWithPaths(this.initParameter.getTestCaseId(),
                 this.initParameter.getWarningTime(),
                 this.initParameter.getCriticalTime(),
                 imagePaths.toArray(new Path[imagePaths.size()])
@@ -174,7 +174,7 @@ public abstract class AbstractSakuliTest {
 
     @AfterMethod(alwaysRun = true)
     public void saveTcStep() throws Throwable {
-        testCaseAction.addTestCaseStep("step " + counter,
+        javaScriptTestCaseAction.addTestCaseStep("step " + counter,
                 String.valueOf(startTime.getMillis()),
                 String.valueOf(DateTime.now().getMillis()),
                 0
@@ -188,7 +188,7 @@ public abstract class AbstractSakuliTest {
         }
         String testCaseName = this.getClass().getSimpleName();
         LOGGER.info("............................ SAVE RESULTS OF TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
-        testCaseAction.saveResult(initParameter.getTestCaseId(),
+        javaScriptTestCaseAction.saveResult(initParameter.getTestCaseId(),
                 String.valueOf(startTimeCase.getMillis()),
                 String.valueOf(DateTime.now().getMillis()),
                 null,

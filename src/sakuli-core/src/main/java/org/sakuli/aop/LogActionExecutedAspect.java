@@ -23,6 +23,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.logging.LogToResultCallback;
+import org.sakuli.actions.testcase.AbstractTestCaseActionImpl;
+import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
 import org.sakuli.loader.BeanLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +44,20 @@ public class LogActionExecutedAspect extends BaseSakuliAspect {
     protected final static Logger logger = LoggerFactory.getLogger(LogActionExecutedAspect.class);
 
     /**
-     * Pointcut for the {@link org.sakuli.actions.TestCaseAction} class to do an {@link
+     * Pointcut for the {@link JavaScriptTestCaseActionImpl} class to do an {@link
      * #addActionLog(org.aspectj.lang.JoinPoint, org.sakuli.actions.logging.LogToResult)}
      */
-    @Before("execution(* org.sakuli.actions.TestCaseAction.*(..)) &&" +
+    @Before("execution(* org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl.*(..)) &&" +
+            "@annotation(logToResult)")
+    public void doJavaScriptTestCaseActionLog(JoinPoint joinPoint, LogToResult logToResult) {
+        addActionLog(joinPoint, logToResult);
+    }
+
+    /**
+     * Pointcut for the {@link AbstractTestCaseActionImpl} class to do an {@link
+     * #addActionLog(org.aspectj.lang.JoinPoint, org.sakuli.actions.logging.LogToResult)}
+     */
+    @Before("execution(* org.sakuli.actions.testcase.AbstractTestCaseActionImpl.*(..)) &&" +
             "@annotation(logToResult)")
     public void doTestCaseActionLog(JoinPoint joinPoint, LogToResult logToResult) {
         addActionLog(joinPoint, logToResult);

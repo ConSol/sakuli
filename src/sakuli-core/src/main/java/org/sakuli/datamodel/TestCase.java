@@ -18,6 +18,7 @@
 
 package org.sakuli.datamodel;
 
+import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.exceptions.SakuliException;
 import org.springframework.util.CollectionUtils;
@@ -34,17 +35,18 @@ import static org.apache.commons.lang.StringUtils.trimToEmpty;
 public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseState> {
 
     /**
-     * {@link #id} and {@link # startUrl} will be set with the method {@link org.sakuli.starter.SahiConnector#init()}
+     * {@link #id} and {@link # startUrl} will be set with the method {@code org.sakuli.starter.SahiConnector#init()}
      */
     private String startUrl;
     /**
-     * will be set with the method {@link org.sakuli.actions.TestCaseAction#saveResult(String, String, String,
+     * will be set with the method {@link JavaScriptTestCaseActionImpl#saveResult(String, String, String,
      * String, String)}
      */
     private String lastURL;
     private List<TestCaseStep> steps;
 
     private Path tcFile;
+    private Path tcFolder;
 
     /**
      * Creates a TestCase
@@ -56,8 +58,8 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
         this.name = name;
         this.id = testCaseId;
         /**
-         * needed to be set to -1, so the function {@link org.sakuli.actions.TestCaseAction#addTestCaseStep(String, String, String, String, int)}
-         * can check if the method {@link org.sakuli.actions.TestCaseAction#initTestCaseWarningAndCritical(String, int, int)}
+         * needed to be set to -1, so the function {@link JavaScriptTestCaseActionImpl#addTestCaseStep(String, String, String, String, int)}
+         * can check if the method {@link JavaScriptTestCaseActionImpl#initTestCaseWarningAndCritical(String, int, int)}
          * have been called at the beginning of this test case.
          */
         warningTime = -1;
@@ -179,6 +181,14 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
 
     public void setTcFile(Path tcFile) {
         this.tcFile = tcFile;
+    }
+
+    public Path getTcFolder() {
+        return tcFolder;
+    }
+
+    public void setTcFolder(Path tcFolder) {
+        this.tcFolder = tcFolder;
     }
 
 

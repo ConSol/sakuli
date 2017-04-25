@@ -18,10 +18,11 @@
 
 package org.sakuli.loader;
 
-import org.sakuli.actions.TestCaseAction;
 import org.sakuli.actions.environment.Application;
 import org.sakuli.actions.environment.Environment;
 import org.sakuli.actions.screenbased.Region;
+import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
+import org.sakuli.actions.testcase.TestCaseAction;
 import org.sakuli.exceptions.SakuliInitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,9 +55,14 @@ public class BeanLoader {
         return loadBean(ScreenActionLoader.class);
     }
 
+    //TODO move to package `sahi-setup`
+    public static JavaScriptTestCaseActionImpl loadJavaScriptTestCaseAction() {
+        logger.debug("load JavaSriptTestCaseAction object over BeanFactory.");
+        return new JavaScriptTestCaseActionImpl();
+    }
+
     public static TestCaseAction loadTestCaseAction() {
-        logger.debug("create new TestCaseAction object over BeanFactory.");
-        return getBeanFactory().getBean(TestCaseAction.class);
+        return loadJavaScriptTestCaseAction();
     }
 
     public static Application loadApplication(String applicationNameOrPath, String resumeOnException) throws SakuliInitException {

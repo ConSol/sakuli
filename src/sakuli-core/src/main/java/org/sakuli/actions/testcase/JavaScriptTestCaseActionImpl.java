@@ -16,127 +16,32 @@
  * limitations under the License.
  */
 
-package org.sakuli.actions;
+package org.sakuli.actions.testcase;
 
-import org.apache.commons.lang.StringUtils;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.datamodel.helper.TestCaseHelper;
 import org.sakuli.datamodel.helper.TestCaseStepHelper;
-import org.sakuli.datamodel.helper.TestDataEntityHelper;
 import org.sakuli.exceptions.SakuliActionException;
 import org.sakuli.exceptions.SakuliException;
-import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliValidationException;
-import org.sakuli.loader.BaseActionLoader;
-import org.sakuli.loader.BaseActionLoaderImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
 /**
  * @author tschneck Date: 19.06.13
  */
-@Component
-public class TestCaseAction {
+//TODO move to package `sahi-setup`
+//@Component
+public class JavaScriptTestCaseActionImpl extends AbstractTestCaseActionImpl {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    /**
-     * Represents the current running TestCase. The object will be set at {@link #init(String, int, int, String...)} and
-     * releases at {@link #saveResult(String, String, String, String, String)}
-     */
-    @Autowired
-    @Qualifier(BaseActionLoaderImpl.QUALIFIER)
-    private BaseActionLoader loader;
-
-    /****************
-     * Init functions for the java script engine.
-     *********************/
-
-    /**
-     * Set the warning and critical Time to the specific test case.
-     *
-     * @param testCaseID   current ID of the test case
-     * @param warningTime  warning threshold in seconds. If the threshold is set to 0,
-     *                     the execution time will never exceed, so the state will be always OK!
-     * @param criticalTime critical threshold in seconds. If the threshold is set to 0,
-     *                     the execution time will never exceed, so the state will be always OK!
-     * @param imagePaths   multiple paths to images
-     */
-    @LogToResult(message = "init a new test case")
-    public void init(String testCaseID, int warningTime, int criticalTime, String... imagePaths) {
-        loader.init(testCaseID, imagePaths);
-        initWarningAndCritical(warningTime, criticalTime);
-    }
-
-    /**
-     * Set the warning and critical Time to the specific test case.
-     *
-     * @param testCaseID   current ID of the test case
-     * @param warningTime  warning threshold in seconds. If the threshold is set to 0,
-     *                     the execution time will never exceed, so the state will be always OK!
-     * @param criticalTime critical threshold in seconds. If the threshold is set to 0,
-     *                     the execution time will never exceed, so the state will be always OK!
-     * @param imagePaths   multiple paths to images
-     */
-    @LogToResult(message = "init a new test case")
-    public void initWithPaths(String testCaseID, int warningTime, int criticalTime, Path... imagePaths) {
-        loader.init(testCaseID, imagePaths);
-        initWarningAndCritical(warningTime, criticalTime);
-    }
-
-    /**
-     * Adds the additional paths to the current {@link ImageLib} object.
-     * If a relative path is assigned, the current testcase folder will be used as current directory.
-     *
-     * @param imagePaths one or more paths as {@link String} elements
-     * @throws SakuliException if an IO error occurs
-     */
-    public void addImagePathsAsString(String... imagePaths) throws SakuliException {
-        for (String path : imagePaths) {
-            //check if absolute path
-            if (!path.matches("(\\/\\S*|\\w:\\\\\\S*)")) {
-                addImagePaths(loader.getCurrentTestCase().getTcFile().getParent().resolve(path));
-            } else {
-                addImagePaths(Paths.get(path));
-            }
-        }
-    }
-
-    /**
-     * Adds the additional paths to the current {@link ImageLib} object.
-     *
-     * @param imagePaths one or more {@link Path} elements
-     * @throws SakuliException if an IO error occurs
-     */
-    @LogToResult
-    public void addImagePaths(Path... imagePaths) throws SakuliException {
-        loader.addImagePaths(imagePaths);
-    }
-
-    private void initWarningAndCritical(int warningTime, int criticalTime) {
-        TestCase currentTestCase = loader.getCurrentTestCase();
-        String errormsg = TestDataEntityHelper.checkWarningAndCriticalTime(warningTime, criticalTime, currentTestCase.toStringShort());
-        if (errormsg != null) {
-            handleException(errormsg);
-        } else {
-            //if everything is ok set the times
-            currentTestCase.setWarningTime(warningTime);
-            currentTestCase.setCriticalTime(criticalTime);
-        }
-    }
-
 
     /****************
      * TEST CASE HANDLING
@@ -227,17 +132,6 @@ public class TestCaseAction {
                 + "\"");
     }
 
-    protected TestCaseStep findStep(String stepName) {
-        TestCaseStep newStep = new TestCaseStep();
-        newStep.setId(stepName);
-        for (TestCaseStep step : loader.getCurrentTestCase().getSteps()) {
-            if (StringUtils.equals(step.getId(), newStep.getId())) {
-                return step;
-            }
-        }
-        return newStep;
-    }
-
     /**
      * Creates a new test case based exception with an optional screenshot at the calling time.
      * Will be called from sakuli.js or in side of 'org.sakuli.javaDSL.AbstractSakuliTest'.
@@ -248,30 +142,6 @@ public class TestCaseAction {
     @LogToResult(level = LogLevel.ERROR)
     public void throwException(String message, boolean screenshot) {
         loader.getExceptionHandler().handleException(screenshot ? new SakuliActionException(message) : new SakuliValidationException(message));
-    }
-
-    /**
-     * calls the method {@link SakuliExceptionHandler#handleException(Throwable)}
-     *
-     * @param e the original exception
-     */
-    public void handleException(Throwable e) {
-        loader.getExceptionHandler().handleException(e, false);
-    }
-
-    /**
-     * @param exceptionMessage String message
-     */
-    public void handleException(String exceptionMessage) {
-        loader.getExceptionHandler().handleException(exceptionMessage, false);
-    }
-
-    @Override
-    public String toString() {
-        if (loader != null && loader.getCurrentTestCase() != null) {
-            return "test case [" + loader.getCurrentTestCase().getActionValueString() + "]";
-        }
-        return "test case not initialized";
     }
 
     /****************
@@ -313,34 +183,16 @@ public class TestCaseAction {
         loader.getCurrentTestCase().setLastURL(lastURL);
     }
 
-    /**
-     * @return the folder path of the current testcase as {@link String}.
-     */
-    @LogToResult
-    public String getTestCaseFolderPath() {
-        try {
-            return loader.getCurrentTestCase().getTcFile().getParent().toAbsolutePath().toString();
-        } catch (Exception e) {
-            handleException(new SakuliException(e,
-                    String.format("cannot resolve the folder path of the current testcase '%s'",
-                            loader.getCurrentTestCase())));
-            return null;
+
+    @Override
+    public void addImagePathsAsString(String... imagePaths) throws SakuliException {
+        for (String path : imagePaths) {
+            //check if absolute path
+            if (!path.matches("(\\/\\S*|\\w:\\\\\\S*)")) {
+                addImagePaths(loader.getCurrentTestCase().getTcFile().getParent().resolve(path));
+            } else {
+                addImagePaths(Paths.get(path));
+            }
         }
     }
-
-    /**
-     * @return the folder path of the current testsuite as {@link String}.
-     */
-    @LogToResult
-    public String getTestSuiteFolderPath() {
-        try {
-            return loader.getTestSuite().getTestSuiteFolder().toAbsolutePath().toString();
-        } catch (Exception e) {
-            handleException(new SakuliException(e,
-                    String.format("cannot resolve the folder path of the current testsuite '%s'",
-                            loader.getTestSuite())));
-            return null;
-        }
-    }
-
 }

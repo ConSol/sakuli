@@ -29,7 +29,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Integration Test for {@link org.sakuli.javaDSL.selenium.testng.JarReader} and {@link OcrTessdataLibExtractor}.
+ * Integration Test for {@link JarReader} and {@link OcrTessdataLibExtractor}.
  *
  * @author tschneck
  *         Date: 4/18/17

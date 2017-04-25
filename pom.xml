@@ -41,7 +41,7 @@
         <module>src/sakuli-sahi-setup</module>
         <module>src/sakuli-installer</module>
         <module>src/sakuli-java-dsl</module>
-        <!--<module>src/sakuli-selenium-java-dsl</module>-->
+        <module>src/sakuli-selenium-setup</module>
         <module>src/integration-test</module>
         <module>src/docs</module>
     </modules>
