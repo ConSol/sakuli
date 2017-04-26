@@ -127,7 +127,7 @@ public class SakuliSeTest implements ITestListener, IInvokedMethodListener2 {
      */
     protected void initTestSuite(ITestContext context) {
         LOGGER.info("............................INITIALIZE SAKULI-CONTEXT");
-        BeanLoader.CONTEXT_PATH = "sakuli-se-beanRefFactory.xml";
+        BeanLoader.CONTEXT_PATH = SakuliSePropertyPlaceholderConfigurer.SE_CONTEXT_PATH;
         SakuliSePropertyPlaceholderConfigurer.TEST_SUITE_FOLDER_VALUE = JavaTestResourceHelper.getTestSuiteRootFolder().toString();
         SakuliSePropertyPlaceholderConfigurer.setSakuliProperty(SakuliProperties.LOG_FOLDER, getTestSuiteOutputFolder(context).toString());
         SakuliSePropertyPlaceholderConfigurer.setTestSuiteProperty(TestSuiteProperties.SUITE_ID, context.getSuite().getName());

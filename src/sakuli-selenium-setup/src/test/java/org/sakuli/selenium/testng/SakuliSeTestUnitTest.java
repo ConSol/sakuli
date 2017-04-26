@@ -18,26 +18,29 @@
 
 package org.sakuli.selenium.testng;
 
-//import org.sakuli.selenium.testng.SakuliTestCase;
 
 import org.sakuli.loader.BeanLoader;
 import org.testng.Assert;
-import org.testng.annotations.Listeners;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import java.nio.file.Paths;
 
-//import org.testng.annotations.Listeners;
-//import org.sakuli.selenium.testng.SakuliSeTest;
 
 /**
  * @author Tobias Schneck
  */
-@Listeners(SakuliSeTest.class)
+//@Listeners(SakuliSeTest.class)
 public class SakuliSeTestUnitTest {
 
-    @Test
-    @SakuliTestCase
+    @BeforeSuite
+    public void setUp() throws Exception {
+//        SakuliSePropertyPlaceholderConfigurer.SE_CONTEXT_PATH = AbstractBaseTest.TEST_CONTEXT_PATH;
+    }
+
+    //TODO TS make screen unindepedent
+    @Test(enabled = false)
+//    @SakuliTestCase
     public void testFolder() throws Exception {
         Assert.assertEquals(BeanLoader.loadTestCaseAction().getTestCaseFolderPath(),
                 Paths.get(getClass().getResource(".").toURI()).normalize().toAbsolutePath().toString());

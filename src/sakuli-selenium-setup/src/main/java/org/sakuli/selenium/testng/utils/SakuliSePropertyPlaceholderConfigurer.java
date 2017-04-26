@@ -42,6 +42,7 @@ import static org.sakuli.datamodel.properties.TestSuiteProperties.TEST_SUITE_PRO
  */
 public class SakuliSePropertyPlaceholderConfigurer extends SakuliPropertyPlaceholderConfigurer {
     public static final String SAKULI_TEMPFOLDER_NAME = ".sakuli";
+    public static String SE_CONTEXT_PATH = "sakuli-se-beanRefFactory.xml";
     private static Logger LOGGER = LoggerFactory.getLogger(SakuliSePropertyPlaceholderConfigurer.class);
     private static Properties testsuiteJavaProps = new Properties();
     private static Properties sakuliJavaProps = new Properties();
