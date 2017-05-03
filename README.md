@@ -103,6 +103,8 @@ Episode 9 of the ***ConSol Monitoring Minutes*** shows the main features of Saku
 
 ### Slides
 
+2017: [Testing - Selenium? Rich-Clients? Containers?](https://www.slideshare.net/TobiasSchneck/testing-selenium-richclients-containers) (Tobias Schneck)
+
 2017: [Containerized End-2-End-Testing - Agile Testing Meetup Munich](http://www.slideshare.net/TobiasSchneck/containerized-end2end-testing-agile-testing-meetup-at-sddeutsche-zeitung-munich-19012017) (Tobias Schneck)
 
 2016: [Containerized End-2-End-Testing (German) - JUG Saxony Days Dresden](http://www.slideshare.net/TobiasSchneck/containerized-end2end-testing-jug-saxony-day) (Tobias Schneck)
