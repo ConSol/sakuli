@@ -29,6 +29,8 @@
   copy:
     src: "{{ item }}/"
     dest: "{{ OMD_ROOT }}/{{ item }}"
+    owner: "{{ SITENAME }}"
+    group: "{{ SITENAME }}"
   with_items:
     - etc
     - local
