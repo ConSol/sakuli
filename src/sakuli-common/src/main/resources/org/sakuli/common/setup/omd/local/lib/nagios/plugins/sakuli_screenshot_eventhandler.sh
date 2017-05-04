@@ -11,6 +11,8 @@ IMG_ROOT=${OMD_ROOT}/var/sakuli/screenshots/$HOST/$SERVICE
 TMP=${OMD_ROOT}/tmp/sakuli
 NOW=$(date)
 
+hash file 2>/dev/null || { echo "ERROR: The file command is not installed.  Aborting." >> $LOG; exit 1; }
+
 mkdir -p $TMP
 
 case $STATE in
@@ -37,10 +39,9 @@ case $STATE in
 
     echo "Format: $FORMAT" >> $LOG
     TMPNAME=screenshot_${LASTSERVICECHECK}.${FORMAT}
-    echo "TMPNAME: $TMPNAME" >> $LOG
     echo "$IMG" | base64 -d > $TMP/${TMPNAME}
     # exit if no image data detected
-    file $TMP/${TMPNAME} | grep -q 'image data' || exit 0
+    file $TMP/${TMPNAME} | grep -q 'image data' || { echo "$TMP/$TMPNAME is not a valid image file. Exiting."; exit 0; }
     IMG_DIR="$IMG_ROOT/$LASTSERVICECHECK"
     echo "IMG_DIR: $IMG_DIR" >> $LOG
     mkdir -p "$IMG_DIR"

@@ -1,7 +1,7 @@
-FROM consol/omd-labs-debian
+FROM consol/omd-labs-debian:nightly
 
 MAINTAINER Simon Meggle "simon.meggle@consol.de"
-ENV REFRESHED_AT 2017-04-11
+ENV REFRESHED_AT 2017-05-02
 
 ARG ANSIBLE_SAKULI=/root/ansible_sakuli
 # branch from where to checkout Sakuli OMD-Addon-dir "omd"

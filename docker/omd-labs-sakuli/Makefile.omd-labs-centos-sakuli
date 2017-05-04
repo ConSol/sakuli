@@ -29,7 +29,7 @@ echo "buildargs: $(BUILDARGS)"
 
 build:
 	# use the local base image with tag = branchname
-	sed 's@^\(FROM\) consol\(/omd-labs-.*\)@\1 local\2:$(TAG)@' $(DOCKERFILE) > $(DOCKERFILE).local
+	sed 's@^\(FROM\) consol\(/omd-labs-.*\):\(.*\)@\1 local\2:\3@' $(DOCKERFILE) > $(DOCKERFILE).local
 	docker build -f $(DOCKERFILE).local $(BUILDARGS) -t $(IMAGE) .
 	@rm $(DOCKERFILE).local
 	@echo "Successfully built" $(IMAGE)
