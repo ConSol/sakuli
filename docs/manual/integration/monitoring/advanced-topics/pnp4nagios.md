@@ -1,50 +1,3 @@
-# Sakuli: Installation in OMD
-This chapter describes all neccessary steps to configure a **Nagios** compatible monitoring system to receive Sakuli test results. OMD with Thruk as web frontend is highly recommended, but any other Nagios based system will do also. 
-
-## Requirements
-* **[OMD](http://www.omdistro.org) 1.x** installed on a Linux operating system 
-* a running **OMD site** (here: **sakuli**)
-
-## Download
-
-General note: you should download the **same package version of Sakuli** as you did on the clients. **Do not mix versions**. 
-
-* Download **Sakuli** from  [http://labs.consol.de/sakuli/install](http://labs.consol.de/sakuli/install) into a temporary folder `__TEMP__`. 
-
-        cd __TEMP__
-        wget http://labs.consol.de/sakuli/install/sakuli-vx.x.x-SNAPSHOT.zip
-        
-* decompress it:
-
-		unzip sakuli-vx.x.x-SNAPSHOT.zip
-
-## General preparations
-All following steps should be done as the **OMD site user** (here: "sakuli"):
-
-		su - sakuli
-		
-### Nagios
-
-Sakuli will produce HTML formatted output. **HTML escaping** in Nagios must be turned off: 
-
-	OMD[sakuli]:~$ vim etc/nagios/cgi.cfg
-		escape_html_tags=0
-
-
-## Choose a forwarder
-Depending on your environment, you can set up on of these two possible forwarder types. Each of them is documented on a single page.
-
-  * [Setting up Nagios to **receive Gearman results** from Sakuli clients](forwarder-gearman.md#omd-configuration) (**recommended**)
-    * passive check (via Gearmand result queue) 
-    * \+ get results immediately
-    * \+ PNP graphs
-    * \- no performance value history to do further reporting (despite reading the RRDs again; not recommended) 
-  * [Setting up the Sakuli **result database** in OMD](forwarder-database.md#omd-configuration) and let Nagios check the database
-    * active check (against MySQL result database)
-    * \- results in Nagios always lag behind
-    * \+ PNP graphs
-    * \+ all suite/case/step performance values are stored in database and can be used for further reporting
-
 ## PNP4Nagios
 ### RRD Storage Type
 
@@ -61,7 +14,7 @@ If this value is *"SINGLE"* on your system and you do not want to change it glob
 
 ### RRD heartbeat
 
-Each RRD file contains a heartbeat value, which determines how much time must pass without any new update, before RRDtool writes an UNKNOWN value (nan) into the data slot (the graph will have a gap then). In PNP4nagios heartbeat is defined at approx. 2 1/2 hours. If your Sakuli check runs only every 2 hours, this value will be fine. But for a 5 minute interval, this is way too long. As a consequence, the graph line will be continuously drawed even Sakuli did no check for two hours. Hence, always make sure to adapt the heartbeat to a value which is slightly higher than the interval of Sakuli checks (and indeally the same as [freshness_threshold](forwarder-gearman.md#create-a-nagios-service), if you use the gearman receiver): 
+Each RRD file contains a heartbeat value, which determines how much time must pass without any new update, before RRDtool writes an UNKNOWN value (nan) into the data slot (the graph will have a gap then). In PNP4nagios heartbeat is defined at approx. 2 1/2 hours. If your Sakuli check runs only every 2 hours, this value will be fine. But for a 5 minute interval, this is way too long. As a consequence, the graph line will be continuously drawed even Sakuli did no check for two hours. Hence, always make sure to adapt the heartbeat to a value which is slightly higher than the interval of Sakuli checks (and indeally the same as [freshness_threshold](integration/monitoring/forwarder-gearman.md#create-a-nagios-service), if you use the gearman receiver): 
 
     OMD[sakuli]:~$ cd ~/var/pnp4nagios/perfdata/sakulihost/
     # Sakuli check interval: 2 minutes --> RRD heartbeat 3 minutes

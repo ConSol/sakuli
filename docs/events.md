@@ -39,3 +39,18 @@ June 22, 2015: [Agile Testing Munich](http://www.meetup.com/de-DE/Agile-Testing-
 May 14, 2015: [OpenTechSummit](http://2015.opentechsummit.net/) (Simon Meggle)
 
 March 28, 2015: [LinuxTag Augsburg](https://www.luga.de/Aktionen/LIT-2015/) (Simon Meggle)
+
+TODO add links to event like, ([Slides](link))
+
+### Slides
+
+2017: [Containerized End-2-End-Testing - Agile Testing Meetup Munich](http://www.slideshare.net/TobiasSchneck/containerized-end2end-testing-agile-testing-meetup-at-sddeutsche-zeitung-munich-19012017) (Tobias Schneck)
+
+2016: [Containerized End-2-End-Testing (German) - JUG Saxony Days Dresden](http://www.slideshare.net/TobiasSchneck/containerized-end2end-testing-jug-saxony-day) (Tobias Schneck)
+
+2016: [Containerized End-2-End-Testing - ContainerDays 2016 Hamburg](https://speakerdeck.com/toschneck/containerized-end-2-end-testing-containerdays-2016-in-hamburg) (Tobias Schneck)
+
+2014: [End-to-end testing
+for web sites and common UIs with full Nagios integration](https://rawgit.com/toschneck/presentation/sakuli-dev-day-presentation/index.html#/) (Tobias Schneck)
+
+

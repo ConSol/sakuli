@@ -1,5 +1,7 @@
 ## Change Log of Sakuli Releases
 
+TODO ensure that file is included at installer package
+
 ### Version 1.0.2 (Bugfix + some small features)
 * issue #210: upgrade Sahi to version `5.1` due to  Sahi compatibility issue with Chrome 53+ - _click
 * fix docker images

@@ -176,9 +176,3 @@ What next? Well, it depends...
   * [Open Monitoring Distribution (OMD)](installation-omd.md).
   * [Icinga2](forwarder-icinga2.md)
 * Sakuli can also be integrated in **continuous integration environments like Jenkins**. Documentation is coming in the next time (...have one?)
-
-# Upgrade process
-
-Execute `__SAKULI_HOME__/../Uninstaller/uninstaller.jar` to remove the current installed version. This will only affect the files in `__SAKULI_HOME__`. The uninstaller removes all installed files, and resets the environment configuration.
-
-After that just install the new version.

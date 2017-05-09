@@ -29,7 +29,7 @@ Profiles can be added with option `-P`, followed by a parameter, e.g.
 
 * `upload-release` Copies the generated `sakuli-zipped-release-vX.X.X.zip` file and maven artifacts to the [ConSol Labs](http://labs.consol.de/sakuli/) server. Your private key for the ssh connection have to be configured in maven config file `.m2/settings.xml`, see below
 * `ui-tests` Enables the UI based test in phase **integration-test** in the modul `integration-test` and `java-dsl`.
-* `generate-markdown` This profile will generate in the module **docs** the file [Sakuli-API](../sakuli-api.md).
+* `generate-markdown` This profile will generate in the module **docs** the file [Sakuli-API](../testdefintion/sakuli-api.md).
    To use the profil behind a **HTTP/HTTPS** proxy, be aware that the following things are configured:
     * include in your `$M2_HOME/settings.xml` the proxy tag (if needed):
       ```

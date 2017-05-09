@@ -1,3 +1,24 @@
+TODO TS check path in api generator and if this can be added automatically
+
+### Sakuli API
+
+Sakuli provides methods of three different types:
+
+* JS methods of **[Sahi](http://sahi.co.in/w/all-apis)**, which can be used 100% *natively*
+* JS methods which encapsulate a subset of the **Sikuli** Java API
+* JS methods of **Sakuli** framework itself (testcase stuff, exception handling, …)  
+
+For documentation see
+
+* [Sahi-API](http://sahi.co.in/w/all-apis)
+* [TestCase](sakuli-api.md#TestCase)
+* [Application](sakuli-api.md#Application)
+* [Environment](sakuli-api.md#Environment)
+* [Region](sakuli-api.md#Region)
+* [Keys](sakuli-api.md#Key)
+* [MouseButton](sakuli-api.md#MouseButton)
+* [Logger](sakuli-api.md#Logger)
+
 #Index
 
 **Namespaces**

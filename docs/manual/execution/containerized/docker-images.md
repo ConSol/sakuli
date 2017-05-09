@@ -132,7 +132,7 @@ Similar to [#12-using-docker-compose](docker-compose in 1.2), the file `docker-c
 
 ## 2) Run your test suite in a Sakuli container - Java based test
 
-Also for Sakuli test writen in Java and executed through [Maven](https://maven.apache.org), we provide to preconfigured docker images: [consol/sakuli-centos-xfce-java](https://hub.docker.com/r/consol/sakuli-centos-xfce-java/), [consol/sakuli-ubuntu-xfce-java](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/). More information about how to write a Java based Sakuli test, see [Sakuli JavaDSL setup](./java-DSL.md). Now take a look at the important lines in the *Dockerfile* which define how the container will start:
+Also for Sakuli test writen in Java and executed through [Maven](https://maven.apache.org), we provide to preconfigured docker images: [consol/sakuli-centos-xfce-java](https://hub.docker.com/r/consol/sakuli-centos-xfce-java/), [consol/sakuli-ubuntu-xfce-java](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/). More information about how to write a Java based Sakuli test, see [Sakuli JavaDSL setup](../maven/java-DSL.md). Now take a look at the important lines in the *Dockerfile* which define how the container will start:
 
     WORKDIR /opt/maven
     ENTRYPOINT ["/root/scripts/start_hook.sh"]

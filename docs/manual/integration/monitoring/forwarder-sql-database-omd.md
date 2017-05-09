@@ -1,3 +1,6 @@
+TODO: link zu (manual/integration/forwarder-sql-databse)
+TODO: describe OMD integration trough SQL Database
+
 # Database Forwarder
 This page describes how the results of the Sakuli tests **example_windows7/ubuntu/opensuse** can be written into a **MySQL database** which is then checked asynchronously by the monitoring system with *check_mysql_health*. 
 
@@ -119,7 +122,7 @@ Create a **host object** for Sakuli database checks (the checks are executed on 
 	  use                            generic-host
 	}
 
-Create the following **service object** for the first test case. Note the ARG2 in check_command: the database check will only evaluate the last result if it is max. 180 seconds old. If older, the check will return UNKNOWN. (For comparison: this is equivalent to "freshness_threshold" if you would use the [gearman forwarder](forwarder-gearman.md). In any case, you should set the [RRD heartbeat](installation-omd.md#rrd-heartbeat) to the same value to get a gap in the graph if recent client results are missing. ) 
+Create the following **service object** for the first test case. Note the ARG2 in check_command: the database check will only evaluate the last result if it is max. 180 seconds old. If older, the check will return UNKNOWN. (For comparison: this is equivalent to "freshness_threshold" if you would use the [gearman forwarder](forwarder-gearman.md). In any case, you should set the [RRD heartbeat](advanced-topics/installation-omd.md#rrd-heartbeat) to the same value to get a gap in the graph if recent client results are missing. ) 
 
 	OMD[sakuli]:~$ vim etc/nagios/conf.d/services.cfg
 	

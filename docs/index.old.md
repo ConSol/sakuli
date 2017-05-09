@@ -1,11 +1,5 @@
 ![sakuli-logo](pics/sakuli_logo_small.png)
 
-# Documentation
-
-Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs.org)**.
-* Stable version (latest tagged `vX.X.X` documentation) [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=stable)](http://sakuli.readthedocs.org/en/stable/)
-* Latest verison (documentation on `master` branch, with corrections) [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=latest)](http://sakuli.readthedocs.org/en/latest/)
-* Dev version (current development version on `dev` branch) [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=dev)](http://sakuli.readthedocs.org/en/dev/)
 
 ## Usage
 ### Basic setup
@@ -21,24 +15,6 @@ Our documentation is also avaible on **[Read the Docs](http://sakuli.readthedocs
 * Tutorial: [First steps](first-steps.md)
 * Example projects on GitHub [ConSol/sakuli-examples](https://github.com/ConSol/sakuli-examples)
 
-### Sakuli API
-
-Sakuli provides methods of three different types:
-
-* JS methods of **[Sahi](http://sahi.co.in/w/all-apis)**, which can be used 100% *natively*
-* JS methods which encapsulate a subset of the **Sikuli** Java API
-* JS methods of **Sakuli** framework itself (testcase stuff, exception handling, …)  
-
-For documentation see
-
-* [Sahi-API](http://sahi.co.in/w/all-apis)
-* [TestCase](sakuli-api.md#TestCase)
-* [Application](sakuli-api.md#Application)
-* [Environment](sakuli-api.md#Environment)
-* [Region](sakuli-api.md#Region)
-* [Keys](sakuli-api.md#Key)
-* [MouseButton](sakuli-api.md#MouseButton)
-* [Logger](sakuli-api.md#Logger)
 
 ## Advanced topics
 

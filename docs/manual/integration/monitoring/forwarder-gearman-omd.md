@@ -66,7 +66,7 @@ Create a host object for the Sakuli client:
 	  use                            generic-host
 	}
 
-Create the following service object for the first test case. *freshness_threshold* should be slightly higher than the interval Sakuli tests are planned (see also [RRD heartbeat](installation-omd.md#rrd-heartbeat) )
+Create the following service object for the first test case. *freshness_threshold* should be slightly higher than the interval Sakuli tests are planned (see also [RRD heartbeat](advanced-topics/installation-omd.md#rrd-heartbeat) )
 
 	vim ~/etc/nagios/conf.d/services.cfg
 

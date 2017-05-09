@@ -1,3 +1,5 @@
+TODO move to consol/sakuli-examples
+
 # Tutorial: first steps
 
 This tutorial requires that you have [installed the Sakuli client](installation-client.md) on a Windows or Linux operating system and that the [functionality test](./installation-client.md#test) finished successfully. The steps described here are written for a windows based test, but apply for all operating systems.  
@@ -73,7 +75,7 @@ Ups. You will be presented a page like this:
 
 What happened? Sahi, acting as a proxy, opened the https page, and delivered it to your browser also with https, but this time with a *self signed* server certificate (it cannot sign its certificate with the original root CA... ). Your browser warns you rightly about the fact that you are not connecting directly to consol.de - in fact, you only requested the Sahi proxy. Click on "I understand the risk" and accept the exception. 
 
-To check if there are more certificicates to accept (not all of them you are asked for!), close the browser and the Sahi cmd window. Start the Sahi dashboard from `__INSTALL_DIR__/sahi/userdata/bin/start_dashboard.bat/.sh` and follow the instructions   in [Sahi HTTPS](sahi-https.md#mozilla-firefox).
+To check if there are more certificicates to accept (not all of them you are asked for!), close the browser and the Sahi cmd window. Start the Sahi dashboard from `__INSTALL_DIR__/sahi/userdata/bin/start_dashboard.bat/.sh` and follow the instructions   in [Sahi HTTPS](testdefintion/advanced-topics/sahi-https.md#mozilla-firefox).
 
 ## record Sahi steps
 *Goals: use the Sahi Controller to identify elements on the page, write Sahi methods* 
@@ -134,7 +136,7 @@ After you have clicked on "stop", open the recorded file, copy everything and pa
 ## Create GUI aware actions
 *Goals: learn to take screenshots for GUI pattern detection and write code to detect Regions on your Screen*
 
-The GUI-Actions described in the [Sakuli-API documentation](sakuli-api.md) are implemented on top of the [Sikuli-API](https://github.com/RaiMan/SikuliX-2014). As example we will add the page as a bookmark and after that remove this bookmark again (do not ask for the sense - it's only a demo). Insert the "sleep"  line again as the very first statement within the "try"-block. Run the test again, it should hold as soon the Sakuli page has loaded. 
+The GUI-Actions described in the [Sakuli-API documentation](testdefintion/sakuli-api.md) are implemented on top of the [Sikuli-API](https://github.com/RaiMan/SikuliX-2014). As example we will add the page as a bookmark and after that remove this bookmark again (do not ask for the sense - it's only a demo). Insert the "sleep"  line again as the very first statement within the "try"-block. Run the test again, it should hold as soon the Sakuli page has loaded. 
 
 Adding a page as a bookmark is (in firefox) to click on the star icon in the menu bar: 
 

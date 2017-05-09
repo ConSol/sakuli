@@ -17,17 +17,6 @@ This page contains different topics regarding the configuration of both **Sakuli
 
 We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file; your changes will not be preserved. 
 
-### Forwarder
-
-Sakuli can hand over test result to "**Forwarder**", which can be currently **GearmanD** servers (such as Nagios monitoring systems with mod-gearman) and **JDBC databases**. If no forwarder is defined, a result summary is printed out in the end of a suite. 
-
-![sakuli_forwarders](./pics/sakuli-forwarder.png)
-
-For the configuration of forwarders on the OMD server side, see [Forwarder in OMD](installation-omd.md#forwarders)
-
-  * [Setting up Sakuli client to send results to the **Database**](forwarder-database.md#sakuli-configuration)
-  * [Setting up Sakuli client to submit results to the **Gearman Forwarder**](forwarder-gearman.md#sakuli-configuration)
-
 ### Exception handling
 
 Some objects (*Region, Application, Environment*) allow on their creation to specify the optional boolean argument `resumeOnException`, which controls whether the script should resume on an exception which is related to the object or one of its method (default: false).
@@ -140,36 +129,6 @@ To set the format and destination folder for screenshots taken by Sakuli:
 * **`sakuli.screenshot.format`**`=jpg`  -  screenshot file format (Possible values: jpg, png)
 * **`sakuli.forwarder.gearman.nagios.template.screenshotDivWidth`**=`640px` - Screenshot dimensions for results sent to Gearmand
     
-### RDP pecularities
-#### things to know
-
-There are four ways to connect to and work on a Sakuli client machine:
-
-1. **VNC**
-2. **Console** of a virtualization platform (ESX, Virtualbox, etc.)
-3. **Remote Desktop** (Windows)
-4. **local screen** 
-
-For case 1. and 2. there is nothing special to watch out for, except that the screen must not be locked (otherwise Sikuli will also see a locked screen). The screen content will be the same as displays on a local screen (4.). 
-
-For RDP on Windows there are some special things to know. Connecting to the Sakuli test client via RDP **locks any existing local console session of that user** and **attaches (="moves") it to a RDP session**.
-
-Sakuli will just as well run within that RDP session. But closing/disconnecting/logging of that RDP session will not unlock the local console session again. Sakuli will see the same as a regular user: nothing but a locked screen. Read the next paragraph to learn how to avoid this. 
-
-#### LOGOFF.bat
-To log off a RDP session, right-click `%SAKULI_HOME%\bin\helper\LOGOFF.bat` and execute the script with administrator privileges. The script then
-
-* determines the current RDP session ID
-* redirects this session back to the local console
-* terminates the RDP session.
-
-#### check_logon_session.ps1
-
-In `%SAKULI_HOME%\setup\nagios` you can find **check_logon_session.ps1** which can be used as a client-side Nagios check to ensure that the Sakuli user is always logged on, either via RDP or on the local console. Instructions for the implementation of this check can be found in the script header.
-
-Define a service dependency of all Sakuli checks to this logon check; this will ensure that a locked session will not raise false alarms.
-
-![](pics/userloggedin.jpg)
 
 ## Sikuli settings
 ### Highlighting
