@@ -9,6 +9,6 @@
     "svgexport": "0.3.2"
   },
   "scripts": {
-    "postinstall": "gitbook install & gitbook build ./ ${gitbook.output.directory}/html & gitbook pdf ./ ${gitbook.output.directory}/sakuli_documentation.pdf"
+    "postinstall": "gitbook install & gitbook build ./ ${gitbook.output.directory}/ & gitbook pdf ./ ${gitbook.output.directory}/pdf/sakuli_documentation.pdf"
   }
 }
