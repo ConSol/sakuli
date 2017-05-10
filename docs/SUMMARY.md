@@ -42,7 +42,7 @@
   * [Development](manual/development/README.md)
 * [Example Projects](example-projects.md)
 * [Changelog](changelog.md)
-* [Publications](publication.md)
+* [Publications](publications.md)
 * [Events](events.md)
 * [Media](media.md)
 * [Support](support.md)

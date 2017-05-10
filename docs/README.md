@@ -3,7 +3,7 @@
 
 ## Version
 
-**TODO TS: current version of docu**
+###  **`${sakuli.version}`**
 
 TODO TS update to github pages structure
 * Stable version (latest tagged `vX.X.X` documentation) [![Documentation Status](https://readthedocs.org/projects/sakuli/badge/?version=stable)](http://sakuli.readthedocs.org/en/stable/)
