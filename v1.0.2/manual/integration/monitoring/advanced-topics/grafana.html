@@ -1,0 +1,912 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Grafana | sakuli</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.6.7">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../../../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../../../../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../../../../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../../../../gitbook/plugins/gitbook-plugin-anchors/plugin.css">
+        
+    
+        
+        <link rel="stylesheet" href="../../../../gitbook/plugins/gitbook-plugin-code_tomorrow_scheme/code-tomorrow-scheme.css">
+        
+    
+        
+        <link rel="stylesheet" href="../../../../gitbook/plugins/gitbook-plugin-highlight/website.css">
+        
+    
+        
+        <link rel="stylesheet" href="../../../../gitbook/plugins/gitbook-plugin-search/search.css">
+        
+    
+        
+        <link rel="stylesheet" href="../../../../gitbook/plugins/gitbook-plugin-fontsettings/website.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../../../../manual/integration/ci/jenkins.html" />
+    
+    
+    <link rel="prev" href="../../../../manual/integration/monitoring/advanced-topics/pnp4nagios.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book"
+        data-level="4.4.1.4.3"
+        data-chapter-title="Grafana"
+        data-filepath="manual/integration/monitoring/advanced-topics/grafana.md"
+        data-basepath="../../../.."
+        data-revision="Wed May 10 2017 19:35:46 GMT+0200 (CEST)"
+        data-innerlanguage="">
+    
+
+<div class="book-summary">
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../../../../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Introduction
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="download.html">
+            
+                
+                    <a href="../../../../download.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Download
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="why-sakuli.html">
+            
+                
+                    <a href="../../../../why-sakuli.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Why Sakuli?
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="concept.html">
+            
+                
+                    <a href="../../../../concept.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Concept
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4" >
+            
+            <span><b>4.</b> Manual</span>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.1" >
+            
+            <span><b>4.1.</b> Introduction</span>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="manual/execution/index.html">
+            
+                
+                    <a href="../../../../manual/execution/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.</b>
+                        
+                        Execution Types
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.2.1" >
+            
+            <span><b>4.2.1.</b> Native Execution</span>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.2.1.1" data-path="manual/execution/native/windows.html">
+            
+                
+                    <a href="../../../../manual/execution/native/windows.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.1.1.</b>
+                        
+                        Windows
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.2.1.1.1" data-path="manual/execution/native/windows-troubleshooting.html">
+            
+                
+                    <a href="../../../../manual/execution/native/windows-troubleshooting.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.1.1.1.</b>
+                        
+                        Troubleshooting
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2.1.1.2" data-path="manual/execution/native/windows-rdp-peculiarities.html">
+            
+                
+                    <a href="../../../../manual/execution/native/windows-rdp-peculiarities.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.1.1.2.</b>
+                        
+                        RDP Peculiarities
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2.1.2" data-path="manual/execution/native/linux.html">
+            
+                
+                    <a href="../../../../manual/execution/native/linux.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.1.2.</b>
+                        
+                        Linux
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.2.1.2.1" data-path="manual/execution/native/linux-troubleshooting.html">
+            
+                
+                    <a href="../../../../manual/execution/native/linux-troubleshooting.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.1.2.1.</b>
+                        
+                        Troubleshooting
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2.1.2.2" data-path="manual/execution/native/linux-native-headless.html">
+            
+                
+                    <a href="../../../../manual/execution/native/linux-native-headless.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.1.2.2.</b>
+                        
+                        Native Headless Execution
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2.1.3" data-path="manual/execution/native/upgrade-process.html">
+            
+                
+                    <a href="../../../../manual/execution/native/upgrade-process.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.1.3.</b>
+                        
+                        Upgrade Process
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2.2" >
+            
+            <span><b>4.2.2.</b> Maven Execution</span>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.2.2.1" data-path="manual/execution/maven/java-DSL.html">
+            
+                
+                    <a href="../../../../manual/execution/maven/java-DSL.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.2.1.</b>
+                        
+                        Java DSL
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2.3" >
+            
+            <span><b>4.2.3.</b> Containerized Execution</span>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.2.3.1" data-path="manual/execution/containerized/docker-images.html">
+            
+                
+                    <a href="../../../../manual/execution/containerized/docker-images.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.3.1.</b>
+                        
+                        Docker Images
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2.3.2" data-path="manual/execution/containerized/docker-compose.html">
+            
+                
+                    <a href="../../../../manual/execution/containerized/docker-compose.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.2.3.2.</b>
+                        
+                        Docker Compose
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" data-path="manual/testdefintion/index.html">
+            
+                
+                    <a href="../../../../manual/testdefintion/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.</b>
+                        
+                        Sakuli Testdefinition
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.3.1" data-path="manual/testdefintion/test-in-javascript.html">
+            
+                
+                    <a href="../../../../manual/testdefintion/test-in-javascript.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.1.</b>
+                        
+                        Test in JavaScript
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.2" data-path="manual/testdefintion/test-in-java.html">
+            
+                
+                    <a href="../../../../manual/testdefintion/test-in-java.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.2.</b>
+                        
+                        Test in Java
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.3" data-path="manual/testdefintion/sakuli-api.html">
+            
+                
+                    <a href="../../../../manual/testdefintion/sakuli-api.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.3.</b>
+                        
+                        Sakuli API
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.4" data-path="manual/testdefintion/starter.html">
+            
+                
+                    <a href="../../../../manual/testdefintion/starter.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.4.</b>
+                        
+                        Starter
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.5" data-path="manual/testdefintion/advanced-topics/split-this.html">
+            
+                
+                    <a href="../../../../manual/testdefintion/advanced-topics/split-this.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.5.</b>
+                        
+                        Advanced Topics
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.3.5.1" >
+            
+            <span><b>4.3.5.1.</b> TODO ...</span>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.5.2" data-path="manual/testdefintion/advanced-topics/sahi-https.html">
+            
+                
+                    <a href="../../../../manual/testdefintion/advanced-topics/sahi-https.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.5.2.</b>
+                        
+                        Sahi HTTPS
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.5.3" data-path="manual/testdefintion/advanced-topics/gui-only.html">
+            
+                
+                    <a href="../../../../manual/testdefintion/advanced-topics/gui-only.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.5.3.</b>
+                        
+                        GUI only
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3.6" data-path="manual/testdefintion/troubleshooting.html">
+            
+                
+                    <a href="../../../../manual/testdefintion/troubleshooting.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.3.6.</b>
+                        
+                        Troubleshooting
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" data-path="manual/integration/index.html">
+            
+                
+                    <a href="../../../../manual/integration/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.</b>
+                        
+                        Integration in other Tools
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.4.1" >
+            
+            <span><b>4.4.1.</b> Monitoring</span>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.4.1.1" data-path="manual/integration/monitoring/forwarder-gearman-omd.html">
+            
+                
+                    <a href="../../../../manual/integration/monitoring/forwarder-gearman-omd.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.1.1.</b>
+                        
+                        OMD - Gearman Daemon
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.1.2" data-path="manual/integration/monitoring/forwarder-sql-database-omd.html">
+            
+                
+                    <a href="../../../../manual/integration/monitoring/forwarder-sql-database-omd.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.1.2.</b>
+                        
+                        OMD - SQL Database
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.1.3" data-path="manual/integration/monitoring/forwarder-icinga2api.html">
+            
+                
+                    <a href="../../../../manual/integration/monitoring/forwarder-icinga2api.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.1.3.</b>
+                        
+                        Icinga1 REST API
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.1.4" >
+            
+            <span><b>4.4.1.4.</b> Advanced Topics</span>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.4.1.4.1" data-path="manual/integration/monitoring/advanced-topics/omd-native.html">
+            
+                
+                    <a href="../../../../manual/integration/monitoring/advanced-topics/omd-native.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.1.4.1.</b>
+                        
+                        Native OMD Integration
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.1.4.2" data-path="manual/integration/monitoring/advanced-topics/pnp4nagios.html">
+            
+                
+                    <a href="../../../../manual/integration/monitoring/advanced-topics/pnp4nagios.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.1.4.2.</b>
+                        
+                        PNP4Nagios
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.4.1.4.3" data-path="manual/integration/monitoring/advanced-topics/grafana.html">
+            
+                
+                    <a href="../../../../manual/integration/monitoring/advanced-topics/grafana.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.1.4.3.</b>
+                        
+                        Grafana
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.2" >
+            
+            <span><b>4.4.2.</b> Continuous Integration</span>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.4.2.1" data-path="manual/integration/ci/jenkins.html">
+            
+                
+                    <a href="../../../../manual/integration/ci/jenkins.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.2.1.</b>
+                        
+                        Jenkins
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.3" data-path="manual/integration/forwarder-sql-database.html">
+            
+                
+                    <a href="../../../../manual/integration/forwarder-sql-database.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.4.3.</b>
+                        
+                        SQL Database
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" data-path="manual/development/index.html">
+            
+                
+                    <a href="../../../../manual/development/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.5.</b>
+                        
+                        Development
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="example-projects.html">
+            
+                
+                    <a href="../../../../example-projects.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Example Projects
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6" data-path="changelog.html">
+            
+                
+                    <a href="../../../../changelog.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                        Changelog
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7" data-path="publications.html">
+            
+                
+                    <a href="../../../../publications.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                        Publications
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="8" data-path="events.html">
+            
+                
+                    <a href="../../../../events.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.</b>
+                        
+                        Events
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="9" data-path="media.html">
+            
+                
+                    <a href="../../../../media.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.</b>
+                        
+                        Media
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="10" data-path="support.html">
+            
+                
+                    <a href="../../../../support.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.</b>
+                        
+                        Support
+                    </a>
+            
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../../../../" >sakuli</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <p>TODO SM how to use!</p>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../../../../manual/integration/monitoring/advanced-topics/pnp4nagios.html" class="navigation navigation-prev " aria-label="Previous page: PNP4Nagios"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../../../../manual/integration/ci/jenkins.html" class="navigation navigation-next " aria-label="Next page: Jenkins"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../../../../gitbook/app.js"></script>
+
+    
+    <script src="../../../../gitbook/plugins/gitbook-plugin-edit-link/plugin.js"></script>
+    
+
+    
+    <script src="../../../../gitbook/plugins/gitbook-plugin-code_tomorrow_scheme/code-tomorrow-scheme.js"></script>
+    
+
+    
+    <script src="../../../../gitbook/plugins/gitbook-plugin-code_tomorrow_scheme/plugin.js"></script>
+    
+
+    
+    <script src="../../../../gitbook/plugins/gitbook-plugin-search/lunr.min.js"></script>
+    
+
+    
+    <script src="../../../../gitbook/plugins/gitbook-plugin-search/search.js"></script>
+    
+
+    
+    <script src="../../../../gitbook/plugins/gitbook-plugin-sharing/buttons.js"></script>
+    
+
+    
+    <script src="../../../../gitbook/plugins/gitbook-plugin-fontsettings/buttons.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"edit-link":{"base":"https://github.com/ConSol/sakuli/edit/master/docs","label":"Edit This Page"},"anchors":{},"code_tomorrow_scheme":{},"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+  ~
+  ~ Copyright 2013 - 2015 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.sakuli</groupId>
+        <artifactId>root</artifactId>
+        <version>1.0.2</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>docs-gitbook</artifactId>
+    <version>1.0.2</version>
+    <name>${project.artifactId}</name>
+    <description>maven module to build the gitbook based sakuli documentation</description>
+
+    <packaging>pom</packaging>
+
+    <properties>
+        <sakuli.version>v${project.version}</sakuli.version>
+        <node.version>v5.12.0</node.version>
+        <npm.version>3.10.10</npm.version>
+        <md.source>${project.basedir}</md.source>
+        <gitbook.source.directory>${project.build.outputDirectory}/src</gitbook.source.directory>
+        <gitbook.output.directory>${project.build.outputDirectory}/gh_local</gitbook.output.directory>
+        <gh-pages.workingDirectory>${project.build.directory}/checkout</gh-pages.workingDirectory>
+        <gh-pages.targetDirectory>${gh-pages.workingDirectory}/${sakuli.version}</gh-pages.targetDirectory>
+    </properties>
+
+    <scm>
+        <connection>${project.parent.scm.connection}</connection>
+        <developerConnection>${project.parent.scm.developerConnection}</developerConnection>
+    </scm>
+
+    <profiles>
+        <profile>
+            <id>docs</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-markdown-documentation-sources</id>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <phase>process-resources</phase>
+                                <configuration>
+                                    <outputDirectory>${gitbook.source.directory}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${md.source}</directory>
+                                            <excludes>
+                                                <exclude>target/</exclude>
+                                            </excludes>
+                                        </resource>
+                                        <!--Filtered resources: replace ${xxxx.xxx.xxx} properties in files -->
+                                        <resource>
+                                            <directory>${md.source}</directory>
+                                            <filtering>true</filtering>
+                                            <includes>
+                                                <include>package.json</include>
+                                                <include>README.md</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <configuration>
+                            <installDirectory>${project.build.directory}/node-mvn</installDirectory>
+                            <workingDirectory>${gitbook.source.directory}</workingDirectory>
+                            <nodeVersion>${node.version}</nodeVersion>
+                            <npmVersion>${npm.version}</npmVersion>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>node-npm-setup</id>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>npm-install</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install --verbose</arguments>
+                                </configuration>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--profil to sync and deploy the gitbook docu to http://consol.github.io/sakuli-->
+        <profile>
+            <id>upload</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <configuration>
+                            <outputDirectory>${gh-pages.targetDirectory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${gitbook.output.directory}</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                        <executions>
+                            <!-- copies the fresh generated file to the `gh-pages` branch -->
+                            <execution>
+                                <id>gh-pages:copy-new-gitbook-sources1</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                            </execution>
+                            <!-- this is needed for step `gh-pages-remove-for-deploy2`, so that removed files will be updated also-->
+                            <execution>
+                                <id>gh-pages:copy-new-gitbook-sources2</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-scm-plugin</artifactId>
+                        <configuration>
+                            <scmVersion>gh-pages</scmVersion>
+                            <scmVersionType>branch</scmVersionType>
+                            <workingDirectory>${gh-pages.workingDirectory}</workingDirectory>
+                        </configuration>
+                        <executions>
+                            <!-- checkout the current documentation state -->
+                            <execution>
+                                <id>gh-pages-clone</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>checkout</goal>
+                                </goals>
+                            </execution>
+
+                            <!-- adds the modified and new files -->
+                            <execution>
+                                <id>gh-pages-deploy1</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>add</goal>
+                                    <goal>checkin</goal>
+                                </goals>
+                                <configuration>
+                                    <includes>${sakuli.version}/</includes>
+                                    <message>Add new sakuli documentation for ${sakuli.version}</message>
+                                </configuration>
+                            </execution>
+                            <!-- all after this is needed, so that removed files will be updated also-->
+                            <execution>
+                                <id>gh-pages-remove-for-deploy2</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>remove</goal>
+                                </goals>
+                                <configuration>
+                                    <includes>${sakuli.version}/</includes>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gh-pages-add2</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>add</goal>
+                                </goals>
+                                <configuration>
+                                    <includes>${sakuli.version}/</includes>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gh-pages-deploy2</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>checkin</goal>
+                                </goals>
+                                <configuration>
+                                    <message>Remove old files of sakuli documentation ${sakuli.version}</message>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+ 
+</project>
