@@ -1,13 +1,14 @@
 {
   "title": "sakuli",
   "description": "Sakuli Documentation",
+  "author": "The Sakuli Team",
   "extension": "pdf",
   "github": "ConSol/sakuli",
   "githubHost": "https://github.com/",
   "gitbook": "2.x.x",
   "links": {
     "home": "https://github.com/ConSol/sakuli",
-    "about": "https://consol.github.io/sakuli/index.html",
+    "about": "https://consol.github.io/sakuli/${sakuli.version}/index.html",
     "issues": "https://github.com/ConSol/sakuli/issues",
     "sharing": {
       "twitter": "https://twitter.com/sakuli_e2e"

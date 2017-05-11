@@ -76,7 +76,6 @@
                                     <goal>revision</goal>
                                 </goals>
                                 <configuration>
-                                    <verbose>true</verbose>
                                     <generateGitPropertiesFile>false</generateGitPropertiesFile>
                                     <skipPoms>false</skipPoms>
                                 </configuration>
