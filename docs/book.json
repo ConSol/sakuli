@@ -20,7 +20,7 @@
   ],
   "pluginsConfig": {
     "edit-link": {
-      "base": "https://github.com/ConSol/sakuli/edit/master/docs",
+      "base": "https://github.com/ConSol/sakuli/edit/${git.branch}/docs",
       "label": "Edit This Page"
     }
   },
