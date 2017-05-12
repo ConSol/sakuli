@@ -1,0 +1,7 @@
+
+[[examples]]
+= Example projects on GitHub
+
+* *https://github.com/ConSol/sakuli-examples[ConSol/sakuli-examples]*
+* *https://github.com/toschneck/sakuli-example-bakery-testing[toschneck/sakuli-example-bakery-testing]*
+* *https://github.com/ConSol/sakuli-example-testautomation-day[ConSol/sakuli-example-testautomation-day]*

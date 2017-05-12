@@ -1,0 +1,16 @@
+
+= Support
+
+//TODO update like http://www.citrusframework.org/docs/consulting/[http://www.citrusframework.org/docs/consulting/]
+
+In case you have any questions or requests for help, feel free to get in contact with us!
+The Sakuli team members are reachable on the email address *link:mailto:sakuli@consol.de[sakuli@consol.de]*.
+
+The guys behind Sakuli:
+
+//TODO fix line breaks
+*ConSol Software GmbH*
+
+_Franziskanerstr. 38, D-81669 München_, _Tel. +49-89-45841-100, Fax +49-89-45841-111_
+
+_Homepage: http://www.consol.de[http://www.consol.de] E-Mail: link:info@consol.de[info@consol.de]_

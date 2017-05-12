@@ -1,0 +1,99 @@
+= Sakuli E2E testing and -monitoring
+The Sakuli Team <sakuli@consol.de>
+:revnumber: ${sakuli.version}
+:revdate: ${git.build.time}
+:toc: macro
+:toclevels: 3
+:toc-title: Sakuli E2E
+:doctype: book
+:icons: font
+
+ifndef::ebook-format[:leveloffset: 1]
+
+// URIs:
+:uri-org: https://github.com/ConSol
+:uri-repo: {uri-org}/sakuli
+:uri-project: {uri-repo}
+ifdef::env-site[:uri-project: link:]
+// TODO TS
+//:uri-docs: {uri-project}/docs
+//:uri-news: {uri-project}/news
+//:uri-manpage: {uri-project}/man/asciidoctor
+:uri-issues: {uri-repo}/issues
+:uri-contributors: {uri-repo}/graphs/contributors
+:uri-rel-file-base: link:
+:uri-rel-tree-base: link:
+ifdef::env-site[]
+:uri-rel-file-base: {uri-repo}/blob/${git.branch}/
+:uri-rel-tree-base: {uri-repo}/tree/${git.branch}/
+endif::[]
+//TODO TS
+//:uri-changelog: {uri-rel-file-base}CHANGELOG.adoc
+//:uri-contribute: {uri-rel-file-base}CONTRIBUTING.adoc
+//:uri-license: {uri-rel-file-base}LICENSE.adoc
+//:uri-tests: {uri-rel-tree-base}test
+//:uri-discuss: http://discuss.asciidoctor.org
+//:uri-irc: irc://irc.freenode.org/#asciidoctor
+//:uri-rubygem: https://rubygems.org/gems/asciidoctor
+//:uri-what-is-asciidoc: {uri-docs}/what-is-asciidoc
+//:uri-user-manual: {uri-docs}/user-manual
+//:uri-install-docker: https://github.com/asciidoctor/docker-asciidoctor
+
+*Copyright © 2017 ConSol Software GmbH - http://www.sakuli.org[www.sakuli.org]*
+
+ifdef::basebackend-html[toc::[]]
+
+:numbered!:
+
+image:pics/sakuli_logo_small.png[sakuli-logo]
+
+*Documentation for version: `${sakuli.version}`*
+
+TODO TS update to github pages structure
+* Stable version (latest tagged `vX.X.X` documentation) image:https://readthedocs.org/projects/sakuli/badge/?version=stable[Documentation Status,link=http://sakuli.readthedocs.org/en/stable/]
+* Latest verison (documentation on `master` branch, with corrections) image:https://readthedocs.org/projects/sakuli/badge/?version=latest[Documentation Status,link=http://sakuli.readthedocs.org/en/latest/]
+* Dev version (current development version on `dev` branch) image:https://readthedocs.org/projects/sakuli/badge/?version=dev[Documentation Status,link=http://sakuli.readthedocs.org/en/dev/]
+
+= General
+[[contributors]]
+== Contributors
+
+At this point we want to thank all contributors, which helped to move this great project by submitting code, writing documentation, or adapting other tools to play well together with Sakuli.
+
+* Tobias Schneck - Sakuli Team / Project Leader, Core Development
+* Simon Meggle - Sakuli Team / Project Leader, Monitoring Integration
+* Christoph Deppisch - Sakuli Team / Core Development
+* Georgi Todorov - Sakuli Team / Core Development
+* Lukas Höfer - Sakuli Team / Consultant
+* Sven Nierlein
+* Philip Griesbacher - Sakuli Go Starter
+* Thomas Rothenbacher
+
+(did we forget you? Please poke us):
+
+[[supporters]]
+== Valued supporters
+
+Very special thanks to all customers which always nourish this project with new ideas and impulses and make it possible in the first place to give it back to the community as Open Source Software. Thumbs up!
+
+* LIDL Stiftung &amp; Co. KG
+* Deutsche Pfandbriefbank AG
+* Siemens AG, Global Services Information Technology
+'''
+
+// STRUCTURE
+include::download.adoc[]
+include::why-sakuli.adoc[]
+include::concept.adoc[]
+
+
+include::manual/manual.adoc[]
+
+:!numbered:
+include::example-projects.adoc[]
+include::changelog.adoc[]
+include::publications.adoc[]
+include::events.adoc[]
+include::media.adoc[]
+include::support.adoc[]
+
