@@ -1,6 +1,10 @@
 
 = Events
 
+[#git-edit-section]
+:page-path: docs/events.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
 April 27, 2017: http://www.jugs.de/tt2017/abstracts.html#link07[Stuttgarter Test-Tage, Stuttgart]: Testing - Selenium? Rich-Clients? Containers? (Tobias Schneck)
 
 January 30 - February 3, 2017: http://www.oop-konferenz.de/[OOP 2017, Munich] (Tobias Schneck)

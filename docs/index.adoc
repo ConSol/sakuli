@@ -7,6 +7,7 @@ The Sakuli Team <sakuli@consol.de>
 :toc-title: Sakuli E2E
 :doctype: book
 :icons: font
+:docinfo1:
 
 ifndef::ebook-format[:leveloffset: 1]
 
@@ -39,22 +40,36 @@ endif::[]
 //:uri-user-manual: {uri-docs}/user-manual
 //:uri-install-docker: https://github.com/asciidoctor/docker-asciidoctor
 
+
+
+//EDIT on Github config
+:git-repository: ConSol/sakuli
+:git-branch: ${git.branch}
+:git-edit: [link-text="edit", mode="edit", link-window="_blank"]
+:git-view: [link-text="view", mode="view", link-window="_blank"]
+
 *Copyright © 2017 ConSol Software GmbH - http://www.sakuli.org[www.sakuli.org]*
 
 ifdef::basebackend-html[toc::[]]
+
+//custom CSS
 
 :numbered!:
 
 image:pics/sakuli_logo_small.png[sakuli-logo]
 
+= General
+
 *Documentation for version: `${sakuli.version}`*
+
+[#git-edit-section]
+git-link:self{git-view} | git-link:self{git-edit}
 
 TODO TS update to github pages structure
 * Stable version (latest tagged `vX.X.X` documentation) image:https://readthedocs.org/projects/sakuli/badge/?version=stable[Documentation Status,link=http://sakuli.readthedocs.org/en/stable/]
 * Latest verison (documentation on `master` branch, with corrections) image:https://readthedocs.org/projects/sakuli/badge/?version=latest[Documentation Status,link=http://sakuli.readthedocs.org/en/latest/]
 * Dev version (current development version on `dev` branch) image:https://readthedocs.org/projects/sakuli/badge/?version=dev[Documentation Status,link=http://sakuli.readthedocs.org/en/dev/]
 
-= General
 [[contributors]]
 == Contributors
 
@@ -91,9 +106,9 @@ include::manual/manual.adoc[]
 
 :!numbered:
 include::example-projects.adoc[]
-include::changelog.adoc[]
 include::publications.adoc[]
 include::events.adoc[]
 include::media.adoc[]
+include::changelog.adoc[]
 include::support.adoc[]
 

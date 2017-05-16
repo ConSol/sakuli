@@ -2,6 +2,10 @@
 [[changelog]]
 = Change Log
 
+[#git-edit-section]
+:page-path: docs/changelog.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
 //TODO ensure that file is included at installer package
 
 .Version 1.0.2 (Bugfix + some small features)

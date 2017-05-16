@@ -2,6 +2,10 @@
 [[download]]
 == Download
 
+[#git-edit-section]
+:page-path: docs/download.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
 //TODO Links zu
 * Installer *-&gt; http://labs.consol.de/sakuli/install/[Download]*
 * Maven Decencies

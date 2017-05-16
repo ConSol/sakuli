@@ -2,6 +2,9 @@
 [[concept]]
 == Concept
 
+[#git-edit-section]
+:page-path: docs/concept.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 TODO aktualisieren und abstrachieren, https://jaxenter.de/sakuli-testing-monitoring-container-54374[https://jaxenter.de/sakuli-testing-monitoring-container-54374]
 

@@ -1,0 +1,8 @@
+
+=== Windows Client
+
+[#git-edit-section]
+:page-path: docs/manual/execution/native/windows.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+//TODO extract from installation-client.md
