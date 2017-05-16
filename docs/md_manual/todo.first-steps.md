@@ -14,7 +14,7 @@ That in turn means that you have to learn to deal with *two* different testing t
  
 Sakuli tests are organized in *Suites* which allow to contain one or more *cases* (normally you will always start with one case per suite). Create a new folder `test_suites`, preferably on the same level as `example_test_suites`. Within this folder, create the following directory structure: 
 
-![folders](pics/tutorial_folder.png)    
+![folders](images/tutorial_folder.png)    
 
 Within `sakuli`, create a file `sakuli_page.js` and paste the following code skeleton: 
 
@@ -71,7 +71,7 @@ Start the new test (make sure to quote the folder correctly when it contains spa
 
 Ups. You will be presented a page like this: 
 
-![cert warning](pics/tutorial_cert_warning.png) 
+![cert warning](images/tutorial_cert_warning.png) 
 
 What happened? Sahi, acting as a proxy, opened the https page, and delivered it to your browser also with https, but this time with a *self signed* server certificate (it cannot sign its certificate with the original root CA... ). Your browser warns you rightly about the fact that you are not connecting directly to consol.de - in fact, you only requested the Sahi proxy. Click on "I understand the risk" and accept the exception. 
 
@@ -93,43 +93,43 @@ Start the test suite again; the Sakuli web page should appear and the test shoul
 
 Open the Sahi Controller (hold the `ALT` key on Windows or `CTRL + ALT` on Linux and doubleclick anywhere on the page) to open this window: 
 
-![controller](pics/tutorial_contoller.png)
+![controller](images/tutorial_contoller.png)
 
 First, we want Sahi to check if there is the Sakuli Logo on the page. Hold the Ctrl key and move the mouse pointer on the Sakuli logo. Watch the Sahi Controller: it detects the HTML elements below the mouse pointer and generates the [accessor method for "image"](http://sahipro.com/docs/sahi-apis/accessor-apis.html#_image) automagically: 
 
-![logo_accessor](pics/tutorial_logo_accessor.png)
+![logo_accessor](images/tutorial_logo_accessor.png)
 
 Click on "Assert" to let Sahi autogenerate [assertion methods](http://sahipro.com/docs/sahi-apis/assertions.html): 
 
-![assert](pics/tutorial_assert2.png)
+![assert](images/tutorial_assert2.png)
 
 Just copy the second line (which checks the visibility of an element) into the clipboard and paste it into `sakuli_page.js` before the "sleep" statement. 
 
 Furtheron, we want to assure that the contact form of the web page os displayed correctly. Move the mouse pointer down to the "Kontakt" link; Sahi should display the accessor `_image("Kontakt zu ConSol")` (1). This time use the "click" button on the controller (2) to execute a click; this also generates the complete [browser action](http://sahipro.com/docs/sahi-apis/action-apis.html) statement (3) which you can copy/paste also into the test case: 
 
-![click](pics/tutorial_click_action.png)  
+![click](images/tutorial_click_action.png)  
 
 In the end, Sahi should check that the appeared popup window contains the text "Schreiben Sie uns!". You guessed it - move the mouse pointer over this text and click the "Assert" button again. The fourth assertion is the right one, which we also paste into the test script: 
 
-![contains_text](pics/tutorial_contains_text.png)  
+![contains_text](images/tutorial_contains_text.png)  
 
 Now remove the "sleep" statement from the script file; it should look now like that: 
 
-![code1](pics/tutorial_code1.png)
+![code1](images/tutorial_code1.png)
 
 Run the suite again now - it should execute the three Sahi actions without an error. Perhaps you want Sahi to highlight the items it is acting on: just use the `_highlight()` method from the [debug helper API](http://sahipro.com/docs/sahi-apis/debug-helper-apis.html) to mark each element with a red border before accessing it: 
 
-![highlight](pics/tutorial_highlight.png)
+![highlight](images/tutorial_highlight.png)
 
 ### record
 
 Another method is to record all steps into a file; for this, enter a filename and click on "record": 
 
-![record](pics/tutorial_record.png)
+![record](images/tutorial_record.png)
 
 Remark: actions like clicks are written to file automatically. All other actions like assertions can be written to file by clicking the button "Append to Script": 
 
-![append](pics/tutorial_append.png)
+![append](images/tutorial_append.png)
 
 After you have clicked on "stop", open the recorded file, copy everything and paste the lines in to the Sakuli script file. 
 
@@ -140,7 +140,7 @@ The GUI-Actions described in the [Sakuli-API documentation](testdefintion/sakuli
 
 Adding a page as a bookmark is (in firefox) to click on the star icon in the menu bar: 
 
-![star](pics/tutorial_star.png) 
+![star](images/tutorial_star.png) 
 
 Take a screeshot of this menu item which looks similar to this one and save the image as "star.png" in the same folder as the Sakuli script. 
 
@@ -157,11 +157,11 @@ The returned region gets then highlighted and clicked. (For the interested ones:
 
 When you run the test, you will see that Sikuli clicks on the star to bookmark the page. To un-bookmark, we have to click again on the st... - wait, not *this* star we already know. Got the difference? Now the star has changed its color to blue. So we have to take a new screenshot `star_blue.png`:
 
-![star_blue](pics/tutorial_star_blue2.png)
+![star_blue](images/tutorial_star_blue2.png)
 
 **CAUTION**: This is a nice example for the little traps to fall in when writing e2e tests. Remember that Sakuli has moved the mouse pointer to the (disabled) star to click it. Due to the fact that the mouse did not leave this position, the blue star will still have a "hover" / "mouseover" state. Set your screenshot editor (e.g. [Greenshot](http://getgreenshot.org/) / [Shutter](http://shutter-project.org/) to a capture delay of ~3s and move the mouse over the star before the picture is taken. You have got the **wrong** image if it looks like this: 
 
-![star_blue](pics/tutorial_star_blue.png)
+![star_blue](images/tutorial_star_blue.png)
 
 The line to click the blue star is not that hard to guess: 
 
@@ -171,7 +171,7 @@ screen.waitForImage("star_blue",10).highlight().click();
 
 You will see that there is one more step to do - to un-bookmark, Sikuli has to click on a separate button (this may be labelled in another language on your system): 
 
-![entfernen](pics/tutorial_entfernen.png)
+![entfernen](images/tutorial_entfernen.png)
 
 So take a screenshot of (only) the "remove"-Button, save it as `remove.png` and add the third line to the test: 
 
@@ -182,8 +182,8 @@ You might ask why we did not highlight the button first as we did in the steps b
 
 The complete code looks now: 
 
-![code_complete](pics/tutorial_code_complete.png)
+![code_complete](images/tutorial_code_complete.png)
 
 This code isn't very sensful, but it demonstrates how Sakuli makes it possible to use two completely different automation tools in one single test file. We are sure you have better fields of application - **have fun with Sakuli :-)**
 
-![mov](pics/sakuli-first-steps.gif)
+![mov](images/sakuli-first-steps.gif)

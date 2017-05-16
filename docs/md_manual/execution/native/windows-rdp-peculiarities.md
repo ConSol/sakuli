@@ -27,4 +27,4 @@ In `%SAKULI_HOME%\setup\nagios` you can find **check_logon_session.ps1** which c
 
 Define a service dependency of all Sakuli checks to this logon check; this will ensure that a locked session will not raise false alarms.
 
-![](pics/userloggedin.jpg)
+![](images/userloggedin.jpg)

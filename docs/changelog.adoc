@@ -126,7 +126,7 @@ Options:
 * add setting some firefox variables (`MOZ_DISABLE_OOP_PLUGINS`, `MOZ_DISABLE_AUTO_SAFE_MODE`, `MOZ_DISABLE_SAFE_MODE_KEY`) for UI testing to the installer, see #158.
 * Executable JAR installer `sakuli-vX.X.X-installer.jar`, downloadable via [](https://labs.consol.de/sakuli/install/)[https://labs.consol.de/sakuli/install/)], see #24.
 * The installer contains a complete Sakuli setup and the following options:
-image:docs/pics/installer_2.png[inst_2]
+image:docs/installer_2.png[inst_2]
 ** *1)* will set/update the environment variable `__SAKULI_HOME__` to this version.
 ** *2)* will set/update the environment to a recommend UI testing configuration. In examples disables the Firefox safe.
 ** *3)* will install one example test suite per OS which will help you to test and understand Sakuli.

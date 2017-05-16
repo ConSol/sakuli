@@ -40,9 +40,9 @@
         <sakuli.version>v${project.version}</sakuli.version>
         <docs.source.dir>${project.basedir}</docs.source.dir>
         <!-- needed this way to generate correct "edit on github" links -->
-        <ascii.build.source.dir>${project.build.directory}/checkout/docs</ascii.build.source.dir>
-        <ascii.build.output.directory>${project.build.directory}/gh_local</ascii.build.output.directory>
-        <gh-pages.working.dir>${project.build.directory}/gh_checkout</gh-pages.working.dir>
+        <ascii.build.source.dir>${project.build.outputDirectory}</ascii.build.source.dir>
+        <ascii.build.output.directory>${project.build.directory}/generated-docs</ascii.build.output.directory>
+        <gh-pages.working.dir>${project.build.directory}/checkout</gh-pages.working.dir>
         <gh-pages.target.dir>${gh-pages.working.dir}/${sakuli.version}</gh-pages.target.dir>
     </properties>
 
@@ -53,6 +53,7 @@
 
     <!-- TODO TS: move to seperate maven module ander src/ -->
     <!-- TODO TS: include api generation + update docu to CI build (maybe as separate job) -->
+    <!--TODO TS enable § anchor links like in asciidoc docu-->
     <profiles>
         <profile>
             <id>doc-html</id>
@@ -120,8 +121,8 @@
                                 <toc>left</toc>
                             </attributes>
                             <sourceDirectory>${ascii.build.source.dir}</sourceDirectory>
-                            <imagesDir>${ascii.build.source.dir}</imagesDir>
-                            <outputDirectory>${ascii.build.output.directory}</outputDirectory>
+                            <!--<imagesDir>pics</imagesDir>-->
+                            <!--<outputDirectory>${ascii.build.output.directory}</outputDirectory>-->
                         </configuration>
                         <executions>
                             <execution>

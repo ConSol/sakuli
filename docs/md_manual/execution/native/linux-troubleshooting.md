@@ -6,13 +6,13 @@ Sakuli can test on Unity, of course - but [gnome-session-fallback](https://apps.
  `sudo apt-get install gnome-session-fallback`
 
 After the installation, relogin and select the desktop envirionment __GNOME Flashback (Metacity)__:
-![fallback](.././docs/pics/u_theme_select.jpg)
+![fallback](.././docs/images/u_theme_select.jpg)
 
-![flashback](.././docs/pics/u_flashback.jpg)
+![flashback](.././docs/images/u_flashback.jpg)
 
 The Ubuntu menu bar should have changed now to the "classical" one: 
 
-![menu](.././docs/pics/u_menu.jpg)
+![menu](.././docs/images/u_menu.jpg)
 
 
 ## Restore gsettings key bindings

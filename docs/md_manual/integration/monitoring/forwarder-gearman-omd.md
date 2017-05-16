@@ -1,7 +1,7 @@
 # Gearman Forwarder
 This page describes how the results of the Sakuli tests **example_windows7/ubuntu/opensuse** can be transmitted directly into the **Gearman result queue** of the monitoring system. 
 
-![sakuli-db-forwarder](pics/sakuli-gearman.png)
+![sakuli-db-forwarder](images/sakuli-gearman.png)
 
 * Nagios **host**: property `sakuli.forwarder.gearman.nagios.hostname` (define globally or per suite)
 * Nagios **service**: property `testsuite.id` in `testsuite.properties` 
@@ -91,7 +91,7 @@ Reload OMD:
 	
 Now open Thruk; you should see now the Sakuli host with one service attached: 
 
-![omd_pending2](pics/omd-pending2.png) 
+![omd_pending2](images/omd-pending2.png) 
 
 The check is waiting now for check results from a Sakuli client. 
 
@@ -149,9 +149,9 @@ Execute the example test case again:
 
 The service should change its status to:
 
-![omd_pending2](pics/omd-ok.png) 
+![omd_pending2](images/omd-ok.png) 
 
 
-![omd_pending2](pics/omd-ok-details.png) 
+![omd_pending2](images/omd-ok-details.png) 
 
 

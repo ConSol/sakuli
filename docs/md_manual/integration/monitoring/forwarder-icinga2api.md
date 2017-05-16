@@ -2,7 +2,7 @@
 
 This page describes how the results of Sakuli tests can be sent to the [REST API](http://docs.icinga.org/icinga2/snapshot/doc/module/icinga2/chapter/icinga2-api) of an [Icinga2](https://www.icinga.org/) monitoring instance. 
 
-![sakuli-icinga2](pics/sakuli-icinga2.png)
+![sakuli-icinga2](images/sakuli-icinga2.png)
 
 ## Icinga2 configuration
 
@@ -60,7 +60,7 @@ Reload Icinga2:
        
 Now open Icingaweb2; you should see the Sakuli host with the service *"sakuli_demo"* attached: 
 
-![icingaweb2-pending2](pics/icingaweb2-pending2.png) 
+![icingaweb2-pending2](images/icingaweb2-pending2.png) 
 
 The check is waiting now for check results from a Sakuli client. 
 
@@ -107,6 +107,6 @@ The service in Icnga2 should change its status to:
 
 
 
-![icinga_ok](pics/icinga_ok.png)  
+![icinga_ok](images/icinga_ok.png)  
 
 

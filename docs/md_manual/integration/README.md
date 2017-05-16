@@ -14,7 +14,7 @@ TODO Liste der Forwarder hinzufügen
 
 Sakuli can hand over test result to "**Forwarder**", which can be currently **GearmanD** servers (such as Nagios monitoring systems with mod-gearman) and **JDBC databases**. If no forwarder is defined, a result summary is printed out in the end of a suite. 
 
-![sakuli_forwarders](./pics/sakuli-forwarder.png)
+![sakuli_forwarders](./images/sakuli-forwarder.png)
 
 For the configuration of forwarders on the OMD server side, see [Forwarder in OMD](installation-omd.md#forwarders)
 

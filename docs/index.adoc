@@ -56,14 +56,15 @@ ifdef::basebackend-html[toc::[]]
 
 :numbered!:
 
-image:pics/sakuli_logo_small.png[sakuli-logo]
+image:sakuli_logo_small.png[sakuli-logo]
 
 = General
 
 *Documentation for version: `${sakuli.version}`*
 
 [#git-edit-section]
-git-link:self{git-view} | git-link:self{git-edit}
+:page-path: docs/index.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 TODO TS update to github pages structure
 * Stable version (latest tagged `vX.X.X` documentation) image:https://readthedocs.org/projects/sakuli/badge/?version=stable[Documentation Status,link=http://sakuli.readthedocs.org/en/stable/]

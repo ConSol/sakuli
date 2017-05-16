@@ -12,7 +12,7 @@ TODO Grobes Kontzept danach tiefere Themen wie Detail-Testdefiniton verlinken
 
 TODO Liste der Forwarder hinzufügen
 
-image:pics/sakuli_concept.png[sakuli concept]
+image:sakuli_concept.png[sakuli concept]
 
 *Sakuli simulates user actions* on graphical user interfaces (web, fat client, citrix, …), and provides the obtained information (runtime, result, screenshots) to third party (e.g. Nagios compatible monitoring) systems.
 
@@ -22,4 +22,4 @@ The *Sakuli* project brings together two Open-Source end-to-end testing tools wh
 
 Sakuli accesses both tools via its *Java API* and makes it possible to *use them simultaneously*. For example, web tests can be done very performant with Sahi (where a screenshot-based approach would be at best the second choice), whereas "off-DOM"-content can be catched with Sikuli. Whenever a web test comes into a situation which Sahi can't handle (e.g. a PIN dialogue for a smartcard login), use a Sikuli command. On the other hand, pure tests of fat client applications can be easily be setup by using only the Sikuli functions of Sakuli.
 
-image:pics/sakuli_components.png[Components of Sakuli]
+image:sakuli_components.png[Components of Sakuli]

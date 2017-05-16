@@ -141,7 +141,7 @@ To set the format and destination folder for screenshots taken by Sakuli:
 ### Browser configuration
 If the Sahi dashboard does not show any browser or if you want to add another browser to the dashboard…
 
-![nobrowser](../docs/pics/w_sahi_no_browser.jpg) 
+![nobrowser](../docs/images/w_sahi_no_browser.jpg) 
 
 …you have to edit `__SAHI_DIR__/userdata/config/browser_types.xml`. Each browser is defined within a **browserType** block. Please refer to the [Sahi Documentation, "Configure Browsers"](https://sahipro.com/docs/using-sahi/sahi-configuration-basic.html) to see the *browserType* Nodes for popular browsers. 
 

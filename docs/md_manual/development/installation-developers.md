@@ -103,7 +103,7 @@ If you want to use a Docker-Container, you can build and run it with the followi
     e.g. for the provided Win7 example use `-run ../sakuli_test_suites/example src/main/_include ../sahi`
 
 * To run the testng tests correctly and prevent wrong file paths, set the default TestNG config like follow:
-  ![](../pics/intellij_testng_run_config.png)
+  ![](../images/intellij_testng_run_config.png)
 
 ### Important note: startup error
 If you run your Sakuli test the first time, you might get a native library error, caused by Sikuli, saying that it could not find the correct native library to work with. At the same time, Sikuli already tried to fix the problem by modyfing PATH.  

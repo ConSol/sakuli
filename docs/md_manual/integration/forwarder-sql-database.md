@@ -3,7 +3,7 @@ TODO: remove OMD stuff and described sql schema and how results will be placed t
 # Database Forwarder
 This page describes how the results of the Sakuli tests **example_windows7/ubuntu/opensuse** can be written into a **MySQL database** which is then checked asynchronously by the monitoring system with *check_mysql_health*. 
 
-![sakuli-db-forwarder](pics/sakuli-db.png)
+![sakuli-db-forwarder](images/sakuli-db.png)
  
 ## OMD Configuration
 
@@ -140,11 +140,11 @@ Reload OMD:
 	
 Now open Thruk; you should see now the Sakuli host with one service attached: 
 
-![omd_pending](pics/omd-pending.png)
+![omd_pending](images/omd-pending.png)
 
 Re-scheduling this service should display the UNKNOWN message that the requested suite could not be found. For the moment, this is ok: 
 
-![omd_unknown](pics/omd-unknown.png)
+![omd_unknown](images/omd-unknown.png)
 
 
 ## Sakuli database forwarder parameter
@@ -176,10 +176,10 @@ Execute the example test case again:
 
 The service should change its status to:
 
-![omd_pending2](pics/omd-db-ok.png)
+![omd_pending2](images/omd-db-ok.png)
 
 
-![omd_pending2](pics/omd-db-ok-details.png)
+![omd_pending2](images/omd-db-ok-details.png)
 
 ## Database cleanup (optional)
 

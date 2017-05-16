@@ -76,7 +76,7 @@ You should see that Sakuli
 2.  opens the **calculator** and calculates *525+100=625* 
 3.  opens an **editor** and writes a **status message**
 
-![](pics/u_vnc_test.png)
+![](images/u_vnc_test.png)
 
 ## Scheduling by cron 
 

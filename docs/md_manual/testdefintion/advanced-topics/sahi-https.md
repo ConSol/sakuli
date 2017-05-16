@@ -17,7 +17,7 @@ This will work on most systems, especially the ones you have full control over.
 * Once the page has loaded, click **"SSL Manager"** from the Sahi start page
 * You should be presented a green check mark right of the https URL, indicating that Chrome accepted the site's certificate, signed by Sahi: 
 
-![https_ok](./pics/https_ok.png) 
+![https_ok](./images/https_ok.png) 
 
 ### Solution 2: manual certificate import (browser-specific)
 
@@ -37,28 +37,28 @@ This will work on most systems, especially the ones you have full control over.
 * You should be presented a green check mark right of the https URL, indicating that Chrome accepted the site's certificate, signed by Sahi: 
 
 
-![https_ok](./pics/https_ok.png) 
+![https_ok](./images/https_ok.png) 
 
 #### Mozilla Firefox
 * Open Sahi Dashboard, start *Firefox/Firefox portable*
 * On the Sahi start page, navigate to the https site you want Sahi to trust (e.g. [https://github.com](https://github.com) )
 * You will be presented a message that this page "connection is not secure". Click on I understand the risks" and add the certificate exception. Now navigate back to the sahi start page and click on the Link "SSL Manager": 
 
-![ssl manager](pics/tutorial_ssl_manager.png) 
+![ssl manager](images/tutorial_ssl_manager.png) 
 
 You will be promptet again a security warning for connecting to "sahi.example.com" (a local dummy domain), add the certificate here also as an exception. 
 
 The following page contains a list of all so far trusted and untrusted domains and their certificates. To import the red marked into the browser's certificate store, open the links by clicking them with the middle mouse key. This opens the page within a new tab; only in this way you are allowed to add the certificate exception.  
 
-![certs](pics/tutorial_certs.png)
+![certs](images/tutorial_certs.png)
 
 You can close every opened tab when it is displaying "Successfully connected" for the domain: 
 
-![connected](pics/tutorial_connected.png)
+![connected](images/tutorial_connected.png)
 
 Now go back to the SSL Manager overview and click the "refresh" button. Every previously untrusted domain should now be marked as OK: 
 
-![refresh](pics/tutorial_refresh.png) 
+![refresh](images/tutorial_refresh.png) 
 
 #### Internet Explorer ####
 

@@ -2,18 +2,18 @@ If you have some errors with your Windows installation, you can check the follow
 
 #### Change Windows theme and title bar colors
 Windows 7 comes by default with an "aero" theme, which is quite awkward for Sikuli, because there are many transparency effects which cause window elements to change their appearance dependend on the elements below. For that, change the theme to "Windows Classic".
-![classic](pics/w_classictheme.jpg)
+![classic](images/w_classictheme.jpg)
 
 
 Furthermore, change the colors of **active** and **inactive** title bars to **non gradient**: 
-![titlebars](pics/w_titlebar.jpg)
+![titlebars](images/w_titlebar.jpg)
 
 #### RDP related settings
 The following steps have only to be done if you are accessing the Sakuli Client via RDP. 
 ##### Disable Clipboard Sharing
 The "paste" function of Sakuli uses the clipboard at runtime to decrypt and paste passwords. For this reason, the clipboard exchange of the Sakuli client and the RDP client should be suppressed in the settings tab of your **local Remote Desktop client**:
 
-![clipboard](pics/w_clipboard.jpg)
+![clipboard](images/w_clipboard.jpg)
 
 This can be set globally in the registry **of your local host**: 
 

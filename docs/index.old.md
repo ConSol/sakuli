@@ -1,4 +1,4 @@
-![sakuli-logo](pics/sakuli_logo_small.png)
+![sakuli-logo](images/sakuli_logo_small.png)
 
 
 ## Usage

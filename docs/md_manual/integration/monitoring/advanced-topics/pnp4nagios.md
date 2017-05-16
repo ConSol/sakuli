@@ -33,7 +33,7 @@ If Sakuli reports a long check runtime, it is good to know the CPU/Memory metric
  
 The following optional enhancement displays the **CPU/Memory graph** lines of the Sakuli test client in the suite/case graph. By setting **custom host macros**, the graph template knows where to fetch these data from. 
 
-![PNP graph](./pics/pnp_graph.png) 
+![PNP graph](./images/pnp_graph.png) 
 *(picture shows a Linux client with CPU check, displayed by a yellow line)*
 
 #### add CPU load check (for Linux Sakuli clients)
@@ -71,7 +71,7 @@ Now reload OMD:
     
 You should see now the following service on `sakuli_client`: 
 
-![PNP graph](./pics/svc_cpu.png)  
+![PNP graph](./images/svc_cpu.png)  
    
 **Note**: The value of `_E2E_CPU_SVC` and `_E2E_MEM_SVC` refer to the file name of the corresponding RRD file. `CPU_Usage_5` for example means to get the the CPU usage data from `$OMD_ROOT/var/pnp4nagios/perfdata/[_E2E_CPU_HOST]/CPU_Usage_5.rrd`.    
     

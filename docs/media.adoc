@@ -1,3 +1,5 @@
+
+[[media]]
 = Media
 
 [#git-edit-section]
@@ -10,10 +12,10 @@ Episode 9 of the *_ConSol Monitoring Minutes_* shows the main features of Sakuli
 
 https://www.youtube.com/watch?v=S6NROEOYF6w[End2End Monitoring mit Sakuli und Nagios - ConSol Monitoring Minutes 9]
 
-image:./docs/pics/monitoring_minutes_sakuli_300.png[youtube e2e monitoring]
+image:monitoring_minutes_sakuli_300.png[youtube e2e monitoring]
 
 .End-2-End-Testing
 
 https://www.youtube.com/watch?v=JjRGlkN8BKo[Sakuli End-2-End-Testing - Lightning Talk - Agile Testing Meetup (June 2015)]
 
-image:./docs/pics/youtube_e2e_testing_agile_testing_meetup.png[youtube e2e testing]
+image:youtube_e2e_testing_agile_testing_meetup.png[youtube e2e testing]

@@ -53,11 +53,11 @@ Sakuli v0.9.x and higher require **Java JRE >= 1.8**, obtainable from [http://ww
 
 Double-click on the downloaded .jar file (Windows) or execute `java -jar sakuli-vX.X.X-installer.jar`. You should be presented the welcome screen of the installer:
 
-![inst_1](./pics/installer_1.png)
+![inst_1](./images/installer_1.png)
 
 After you have accepted the licence and choose the installation folder, select the packages to install:
 
-![inst_2](./pics/installer_2.png)
+![inst_2](./images/installer_2.png)
 
 * **1)** will set/update the environment variable `__SAKULI_HOME__` to this version.
 * **2)** will set/update environment settings which have proved as best practice for UI tests.
@@ -71,7 +71,7 @@ If you have installed Sakuli on Windows, reboot now to take the registry changes
 
 In the end you are offered to generate a automatic installation script to install Sakuli headless:
 
-![inst_3](./pics/installer_3.png)
+![inst_3](./images/installer_3.png)
 
 A headless installation (e.g. when building Docker images) can be executed with:
 
@@ -81,11 +81,11 @@ A headless installation (e.g. when building Docker images) can be executed with:
 
 Now is the right time to test if Sahi can start a Sahi-controlled browser. Execute `__SAKULI_HOME__/sahi/userdata/bin/start_dashboard.(sh|bat)` to open the **Sahi Dashboard**. It should now list all available browsers on this system (on Windows: also Firefox Portable).
 
-![dashboards](./pics/inst_dashboards.jpg)
+![dashboards](./images/inst_dashboards.jpg)
 
 Click on any browser icon; it should start and present you the start page of Sahi:
 
-![sahi_start](../docs/pics/sahi_startpage.jpg)
+![sahi_start](../docs/images/sahi_startpage.jpg)
 
 At last, test the **Sahi Controller**:
 * on **Windows** press the ALT key
@@ -93,9 +93,9 @@ At last, test the **Sahi Controller**:
 
 and double-click on any white space. If you are getting a new window showing the "Sahi Controller", you're done. Close all browser windows and Sahi.
 
-![controller_linux](./pics/installer_4_l.png)
+![controller_linux](./images/installer_4_l.png)
 
-![controller_windows](./pics/installer_4_w.png)
+![controller_windows](./images/installer_4_w.png)
 
 **Additional documentation:**
 
@@ -163,7 +163,7 @@ Sakuli should now
 2.  open the **calculator** and calculate *525+100=625*
 3.  open an **editor** and write a **status message**
 
-![](pics/u_vnc_test.png)
+![](images/u_vnc_test.png)
 
 **Congratulations - you have installed Sakuli!**
 
