@@ -1,9 +1,7 @@
-[[manual]]
-= Manual
 
-:numbered:
+
 [[execution-types]]
-= Execution Types
+== Execution Types
 
 [#git-edit-section]
 :page-path: docs/manual/manual.adoc
@@ -11,7 +9,6 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 TODO TS Why different executions are possible
 
-include::execution/native/windows.adoc[]
 
 //TODO TS go on here
 //== Manual

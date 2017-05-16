@@ -102,8 +102,12 @@ include::download.adoc[]
 include::why-sakuli.adoc[]
 include::concept.adoc[]
 
+[[manual]]
+= Manual
 
+:numbered:
 include::manual/manual.adoc[]
+include::manual/execution/native/windows.adoc[]
 
 :!numbered:
 include::example-projects.adoc[]
