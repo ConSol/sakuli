@@ -51,8 +51,8 @@
         <developerConnection>${project.parent.scm.developerConnection}</developerConnection>
     </scm>
 
-    <!-- TODO TS: move to seperate maven module ander src/ -->
-    <!-- TODO TS: include api generation + update docu to CI build (maybe as separate job) -->
+    <!-- TODO TS: after merge into dev, add to Jenkins-Job `Sakuli_CI, Sakuli_CI_feature_branch` remove source trigger-->
+    <!-- TODO TS: include api generation + update docu -->
     <!--TODO TS enable § anchor links like in asciidoc docu-->
     <profiles>
         <profile>
