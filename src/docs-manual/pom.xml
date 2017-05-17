@@ -25,10 +25,10 @@
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
         <version>1.0.2</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>docs-gitbook</artifactId>
+    <artifactId>docs-manual</artifactId>
     <version>1.0.2</version>
     <name>${project.artifactId}</name>
     <description>maven module to build the AsciiDoc based sakuli documentation: http://consol.github.io/sakuli
@@ -38,7 +38,7 @@
 
     <properties>
         <sakuli.version>v${project.version}</sakuli.version>
-        <docs.source.dir>${project.basedir}</docs.source.dir>
+        <docs.source.dir>${project.parent.basedir}/docs</docs.source.dir>
         <!-- needed this way to generate correct "edit on github" links -->
         <ascii.build.source.dir>${project.build.outputDirectory}</ascii.build.source.dir>
         <ascii.build.output.directory>${project.build.directory}/generated-docs</ascii.build.output.directory>
@@ -56,7 +56,13 @@
     <!--TODO TS enable § anchor links like in asciidoc docu-->
     <profiles>
         <profile>
-            <id>doc-html</id>
+            <id>generate-manual</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <!-- generate git/build information for `book.json` to set correct edit link -->
@@ -192,7 +198,7 @@
 
         <!--profil to sync and deploy the gitbook docu to http://consol.github.io/sakuli-->
         <profile>
-            <id>upload</id>
+            <id>upload-manual</id>
             <activation>
                 <property>
                     <name>performRelease</name>
