@@ -55,6 +55,7 @@
     <!-- TODO TS: include api generation + update docu -->
     <!--TODO TS enable § anchor links like in asciidoc docu-->
     <profiles>
+
         <profile>
             <id>generate-manual</id>
             <activation>
@@ -77,6 +78,7 @@
                                 <configuration>
                                     <generateGitPropertiesFile>false</generateGitPropertiesFile>
                                     <skipPoms>false</skipPoms>
+                                    <useNativeGit>true</useNativeGit>
                                 </configuration>
                             </execution>
                         </executions>
@@ -299,6 +301,39 @@
                                 <configuration>
                                     <message>Remove old files of sakuli documentation ${sakuli.version}</message>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--Just for editing the document locally with auto-refresh when index.adoc is updated-->
+        <profile>
+            <id>generate-manual-watch</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctor-maven-plugin</artifactId>
+                        <version>1.5.3</version>
+                        <configuration>
+                            <backend>html</backend>
+                            <sourceHighlighter>coderay</sourceHighlighter>
+                            <attributes>
+                                <toc>left</toc>
+                            </attributes>
+                            <sourceDirectory>${docs.source.dir}</sourceDirectory>
+                            <!--<imagesDir>pics</imagesDir>-->
+                            <!--<outputDirectory>${ascii.build.output.directory}</outputDirectory>-->
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>generate ascii and auto-refresh</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>auto-refresh</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>
