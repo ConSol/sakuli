@@ -5,7 +5,7 @@ The Sakuli Team <sakuli@consol.de>
 :sectanchors:
 :sectnumlevels: 4
 :toc: macro
-:toclevels: 4
+:toclevels: 5
 :toc-title: Sakuli E2E
 :doctype: book
 :icons: font
@@ -111,6 +111,8 @@ include::manual/execution-types.adoc[]
 
 === Native Execution
 include::manual/execution/native/windows.adoc[]
+include::manual/execution/native/windows-rdp-peculiarities.adoc[]
+include::manual/execution/native/windows-troubleshooting.adoc[]
 
 === Maven Execution
 
