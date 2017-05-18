@@ -336,9 +336,38 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <!--See https://jmini.github.io/asciidoctorj-gh-edit/-->
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.bsiag.asciidoctorj</groupId>
+                                <artifactId>gh-edit</artifactId>
+                                <version>3.0.0</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
+            <!-- needed for com.bsiag.asciidoctorj:gh-edit depededency -->
+            <repositories>
+                <repository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>bintray-jmini-maven</id>
+                    <name>bintray</name>
+                    <url>http://dl.bintray.com/jmini/maven</url>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>bintray-jmini-maven</id>
+                    <name>bintray-plugins</name>
+                    <url>http://dl.bintray.com/jmini/maven</url>
+                </pluginRepository>
+            </pluginRepositories>
         </profile>
     </profiles>
 
