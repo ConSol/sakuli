@@ -2,8 +2,10 @@
 The Sakuli Team <sakuli@consol.de>
 :revnumber: ${sakuli.version}
 :revdate: ${git.build.time}
+:sectanchors:
+:sectnumlevels: 4
 :toc: macro
-:toclevels: 3
+:toclevels: 4
 :toc-title: Sakuli E2E
 :doctype: book
 :icons: font
@@ -42,7 +44,8 @@ endif::[]
 
 
 
-//EDIT on Github config
+// EDIT on Github config
+// see: https://jmini.github.io/asciidoctorj-gh-edit
 :git-repository: ConSol/sakuli
 :git-branch: ${git.branch}
 :git-edit: [link-text="edit", mode="edit", link-window="_blank"]
@@ -52,9 +55,7 @@ endif::[]
 
 ifdef::basebackend-html[toc::[]]
 
-//custom CSS
-
-:numbered!:
+:sectnums!:
 
 image:sakuli_logo_small.png[sakuli-logo]
 
@@ -102,14 +103,59 @@ include::download.adoc[]
 include::why-sakuli.adoc[]
 include::concept.adoc[]
 
+:sectnums:
 [[manual]]
 = Manual
+== Introduction
+include::manual/execution-types.adoc[]
 
-:numbered:
-include::manual/manual.adoc[]
+=== Native Execution
 include::manual/execution/native/windows.adoc[]
 
-:!numbered:
+=== Maven Execution
+
+//TODO TS go on here
+//== Manual
+//=== Introduction
+//
+//** Native Execution
+//*** link:manual/execution/native/windows.md[Windows]
+//**** link:manual/execution/native/windows-troubleshooting.md[Troubleshooting]
+//**** link:manual/execution/native/windows-rdp-peculiarities.md[RDP Peculiarities]
+//*** link:manual/execution/native/linux.md[Linux]
+//**** link:manual/execution/native/linux-troubleshooting.md[Troubleshooting]
+//**** link:manual/execution/native/linux-native-headless.md[Native Headless Execution]
+//*** link:manual/execution/native/upgrade-process.md[Upgrade Process]
+//** Maven Execution
+//*** link:manual/execution/maven/java-DSL.md[Java DSL]
+//** Containerized Execution
+//*** link:manual/execution/containerized/docker-images.md[Docker Images]
+//*** link:manual/execution/containerized/docker-compose.md[Docker Compose]
+//* link:manual/testdefintion/README.md[Sakuli Testdefinition]
+//** link:manual/testdefintion/test-in-javascript.md[Test in JavaScript]
+//** link:manual/testdefintion/test-in-java.md[Test in Java]
+//** link:manual/testdefintion/sakuli-api.md[Sakuli API]
+//** link:manual/testdefintion/starter.md[Starter]
+//** link:manual/testdefintion/advanced-topics/split-this.md[Advanced Topics]
+//*** TODO …
+//*** link:manual/testdefintion/advanced-topics/sahi-https.md[Sahi HTTPS]
+//*** link:manual/testdefintion/advanced-topics/gui-only.md[GUI only]
+//** link:manual/testdefintion/troubleshooting.md[Troubleshooting]
+//* link:manual/integration/README.md[Integration in other Tools]
+//** Monitoring
+//*** link:manual/integration/monitoring/forwarder-gearman-omd.md[OMD - Gearman Daemon]
+//*** link:manual/integration/monitoring/forwarder-sql-database-omd.md[OMD - SQL Database]
+//*** link:manual/integration/monitoring/forwarder-icinga2api.md[Icinga1 REST API]
+//*** Advanced Topics
+//**** link:manual/integration/monitoring/advanced-topics/omd-native.md[Native OMD Integration]
+//**** link:manual/integration/monitoring/advanced-topics/pnp4nagios.md[PNP4Nagios]
+//**** link:manual/integration/monitoring/advanced-topics/grafana.md[Grafana]
+//** Continuous Integration
+//*** link:manual/integration/ci/jenkins.md[Jenkins]
+//** link:manual/integration/forwarder-sql-database.md[SQL Database]
+//* link:manual/development/README.md[Development]
+
+//:!numbered:
 include::example-projects.adoc[]
 include::publications.adoc[]
 include::events.adoc[]
