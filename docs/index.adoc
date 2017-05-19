@@ -3,6 +3,7 @@ The Sakuli Team <sakuli@consol.de>
 :revnumber: ${sakuli.version}
 :revdate: ${git.build.time}
 :sectanchors:
+:sectlinks:
 :sectnumlevels: 4
 :toc: macro
 :toclevels: 5
@@ -67,7 +68,9 @@ image:sakuli_logo_small.png[sakuli-logo]
 :page-path: docs/index.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-TODO TS update to github pages structure
+//TODO TS update to github pages structure
+//TODO check internal links, see http://asciidoctor.org/docs/user-manual/#internal-cross-references
+
 * Stable version (latest tagged `vX.X.X` documentation) image:https://readthedocs.org/projects/sakuli/badge/?version=stable[Documentation Status,link=http://sakuli.readthedocs.org/en/stable/]
 * Latest verison (documentation on `master` branch, with corrections) image:https://readthedocs.org/projects/sakuli/badge/?version=latest[Documentation Status,link=http://sakuli.readthedocs.org/en/latest/]
 * Dev version (current development version on `dev` branch) image:https://readthedocs.org/projects/sakuli/badge/?version=dev[Documentation Status,link=http://sakuli.readthedocs.org/en/dev/]
@@ -113,6 +116,11 @@ include::manual/execution-types.adoc[]
 include::manual/execution/native/windows.adoc[]
 include::manual/execution/native/windows-rdp-peculiarities.adoc[]
 include::manual/execution/native/windows-troubleshooting.adoc[]
+include::manual/execution/native/linux.adoc[]
+include::manual/execution/native/linux-native-headless.adoc[]
+include::manual/execution/native/linux-troubleshooting.adoc[]
+include::manual/execution/native/upgrade-process.adoc[]
+
 
 === Maven Execution
 
