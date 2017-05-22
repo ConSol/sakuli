@@ -136,11 +136,29 @@ include::manual/testdefinition/test-in-java.adoc[]
 //** link:manual/testdefintion/sakuli-api.md[Sakuli API]
 include::manual/testdefinition/starter.adoc[]
 
+=== Additional Topics
+This page contains different topics regarding the configuration of both *Sakuli* and its components: *Sahi* and *Sikuli*.
+
+include::manual/testdefinition/advanced-topics/sakuli-property-loading.adoc[]
+include::manual/testdefinition/advanced-topics/sakuli-exception-handling.adoc[]
+include::manual/testdefinition/advanced-topics/sakuli-logging.adoc[]
+include::manual/testdefinition/advanced-topics/sakuli-encryption.adoc[]
+include::manual/testdefinition/advanced-topics/sakuli-screenshot-settings.adoc[]
+include::manual/testdefinition/advanced-topics/sakuli-gui-only.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-controller.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-recorder.adoc[]
+
+==== Sahi settings
+include::manual/testdefinition/advanced-topics/sahi-settings-browser-selection.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-settings-browser-config.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-settings-proxy.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-https.adoc[]
+
+==== Sikuli settings
+include::manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc[]
+
+
 //TODO TS go on here
-//** link:manual/testdefintion/advanced-topics/split-this.md[Advanced Topics]
-//*** TODO
-//*** link:manual/testdefintion/advanced-topics/sahi-https.md[Sahi HTTPS]
-//*** link:manual/testdefintion/advanced-topics/gui-only.md[GUI only]
 //** link:manual/testdefintion/troubleshooting.md[Troubleshooting]
 //* link:manual/integration/README.md[Integration in other Tools]
 //** Monitoring

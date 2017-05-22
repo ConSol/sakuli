@@ -1,0 +1,55 @@
+==== Secret De-/Encryption
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sakuli-encryption.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+.Interface selection
+
+Neither Sahi nor Sikuli have a way to prevent *sensible data* (passwords, PINs, etc.) from being logged and stored in the script in *clear text*.
+
+That's the reason why Sakuli is able to *encrypt* them on the command line, and to *decrypt* them again on runtime just for the moment when they are needed. There is no (quick) way to decrypt those secrets again on the command line, so this is rather a way to obscure things not everybody should see than high-secure a encryption mechanism.
+
+Among other parameters, Sakuli uses the MAC address of a local network interface card as a encryption salt. Hence no virtual adapters can be choosen.
+
+You can decide whether Sakuli should automatically select an adapter…
+
+[source,properties]
+----
+sakuli.encryption.interface.autodetect=true
+----
+
+..or a specific one should be used:
+
+[source,properties]
+----
+sakuli.encryption.interface.autodetect=false
+sakuli.encryption.interface=eth0
+----
+
+
+.Encrypt a secret
+
+To encrypt secrets on the command line, Sakuli uses the MAC address of a NIC on the local machine (Windows/Linux). The following command lets Sakuli decide which NIC will be used:
+
+[source,bash]
+----
+sakuli encrypt foo
+=========== Calling Sakuli JAR: java -classpath C:\Program Files (x86)\sakuli\sakuli-v0.9.3-SNAPSHOT\libs\jav\sakuli.jar;C:\Program Files (x86)\sakuli\sakuli-v0.9.3-SNAPSHOT\libs\java\* org.sakuli.starter.SakuliStarter --sakuli_home C:\Program Files (x86)\sakuli\sakuli-v0.9.3-SNAPSHOT --encrypt foo ===========
+
+String to Encrypt: foo
+...
+Encrypted secret with interface 'eth3': CKXIAZmO7rSoBVMGgJZPDQ==
+
+... now copy the secret to your testcase!
+----
+
+Add `-interface eth0` to select eth0 as salt interface. Add `-interface list` to get a list of all available adapters.
+
+.Decrypt a secret
+
+To decrypt and use a secret in Sakuli test cases, use one of the following methods:
+
+//TODO update links
+* link:./api/sakuli_Environment.md#pasteanddecrypttext[pasteAndDecrypt]
+* link:./api/sakuli_Environment.md#typeanddecrypttext-optmodifiers[typeAndDecrypt]
+* link:./api/sakuli_Environment.md#decryptsecretsecret[decryptSecret]

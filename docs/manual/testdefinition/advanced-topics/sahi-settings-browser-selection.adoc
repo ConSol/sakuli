@@ -1,0 +1,21 @@
+
+===== Browser selection
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sahi-settings-browser-selection.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+
+You may want to change the browser due to the following reasons:
+
+* to check if a web test (made with Sahi methods) for browser A is also running properly on browser B
+* to run a headless browser
+** just for curiosity :-)
+** to keep the browser in background while Sakuli tests a non-web application (e.g. fat client)
+
+In addition to the possibilities described property `testsuite.browser`, see <<property-loading-mechanism>>, the generic Sakuli starter `sakuli/sakuli.exe` can also be given the parameter `-browser`:
+
+[source,bash]
+----
+sakuli run /path/to/suite -browser chrome
+----
+
