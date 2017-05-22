@@ -110,7 +110,7 @@ include::concept.adoc[]
 [[manual]]
 = Manual
 == Introduction
-include::manual/execution-types.adoc[]
+include::manual/execution/execution-types.adoc[]
 
 === Native Execution
 include::manual/execution/native/windows.adoc[]
@@ -129,15 +129,14 @@ include::manual/execution/maven/java-DSL.adoc[]
 include::manual/execution/containerized/docker-images.adoc[]
 include::manual/execution/containerized/docker-compose.adoc[]
 
+include::manual/testdefinition/testdefinition.adoc[]
+include::manual/testdefinition/test-in-javascript.adoc[]
+include::manual/testdefinition/test-in-java.adoc[]
+//TODO automate generation
+//** link:manual/testdefintion/sakuli-api.md[Sakuli API]
+include::manual/testdefinition/starter.adoc[]
 
 //TODO TS go on here
-
-
-//* link:manual/testdefintion/README.md[Sakuli Testdefinition]
-//** link:manual/testdefintion/test-in-javascript.md[Test in JavaScript]
-//** link:manual/testdefintion/test-in-java.md[Test in Java]
-//** link:manual/testdefintion/sakuli-api.md[Sakuli API]
-//** link:manual/testdefintion/starter.md[Starter]
 //** link:manual/testdefintion/advanced-topics/split-this.md[Advanced Topics]
 //*** TODO
 //*** link:manual/testdefintion/advanced-topics/sahi-https.md[Sahi HTTPS]
@@ -157,7 +156,6 @@ include::manual/execution/containerized/docker-compose.adoc[]
 //** link:manual/integration/forwarder-sql-database.md[SQL Database]
 //* link:manual/development/README.md[Development]
 
-//:!numbered:
 include::example-projects.adoc[]
 include::publications.adoc[]
 include::events.adoc[]
