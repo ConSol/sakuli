@@ -123,22 +123,12 @@ include::manual/execution/native/upgrade-process.adoc[]
 
 
 === Maven Execution
+include::manual/execution/maven/java-DSL.adoc[]
+
+=== Containerized Execution
+
 
 //TODO TS go on here
-//== Manual
-//=== Introduction
-//
-//** Native Execution
-//*** link:manual/execution/native/windows.md[Windows]
-//**** link:manual/execution/native/windows-troubleshooting.md[Troubleshooting]
-//**** link:manual/execution/native/windows-rdp-peculiarities.md[RDP Peculiarities]
-//*** link:manual/execution/native/linux.md[Linux]
-//**** link:manual/execution/native/linux-troubleshooting.md[Troubleshooting]
-//**** link:manual/execution/native/linux-native-headless.md[Native Headless Execution]
-//*** link:manual/execution/native/upgrade-process.md[Upgrade Process]
-//** Maven Execution
-//*** link:manual/execution/maven/java-DSL.md[Java DSL]
-//** Containerized Execution
 //*** link:manual/execution/containerized/docker-images.md[Docker Images]
 //*** link:manual/execution/containerized/docker-compose.md[Docker Compose]
 //* link:manual/testdefintion/README.md[Sakuli Testdefinition]
@@ -147,7 +137,7 @@ include::manual/execution/native/upgrade-process.adoc[]
 //** link:manual/testdefintion/sakuli-api.md[Sakuli API]
 //** link:manual/testdefintion/starter.md[Starter]
 //** link:manual/testdefintion/advanced-topics/split-this.md[Advanced Topics]
-//*** TODO …
+//*** TODO
 //*** link:manual/testdefintion/advanced-topics/sahi-https.md[Sahi HTTPS]
 //*** link:manual/testdefintion/advanced-topics/gui-only.md[GUI only]
 //** link:manual/testdefintion/troubleshooting.md[Troubleshooting]
