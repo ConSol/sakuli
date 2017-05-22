@@ -37,7 +37,7 @@ The Sakuli Java DSL comes to you as Maven module JAR file. You can add the modul
     </dependencies>
 ----
 
-In the last step, we have to provide also some local resources for our Sakuli test setup. Therefore we use the [maven-dependency-plugin] to unpack all needed Sakuli resources to our local `project.build.outputDirectory`:
+In the last step, we have to provide also some local resources for our Sakuli test setup. Therefore we use the link:https://maven.apache.org/plugins/maven-dependency-plugin[maven-dependency-plugin] to unpack all needed Sakuli resources to our local `project.build.outputDirectory`:
 
 [source,xml]
 ----
@@ -122,7 +122,7 @@ override the methods and add custom logic. In addition to that the abstract supe
 `browser` field that represents the Sahi web browser capabilities. This browser object is used in the test cases to trigger
 Sahi related actions such as opening a website and highlighting links or buttons.
 
-In the example above we open a website **http://www.citrusframework.org/[]** and assert the content on that page. In the example above we open a website **http://www.citrusframework.org/[]** and assert the content on that page.]
+In the example above we open a website **http://www.citrusframework.org/[]** and assert the content on that page. In the example above we open a website **http://www.citrusframework.org/[]** and assert the content on that page.
 
 Now lets add some testing logic that works with content other than HTML dom related content. We add a test step that puts
 focus to the web browser task bar. In detail we click into the browser search input field, fill in a word and perform the search.

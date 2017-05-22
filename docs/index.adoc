@@ -126,11 +126,13 @@ include::manual/execution/native/upgrade-process.adoc[]
 include::manual/execution/maven/java-DSL.adoc[]
 
 === Containerized Execution
+include::manual/execution/containerized/docker-images.adoc[]
+include::manual/execution/containerized/docker-compose.adoc[]
 
 
 //TODO TS go on here
-//*** link:manual/execution/containerized/docker-images.md[Docker Images]
-//*** link:manual/execution/containerized/docker-compose.md[Docker Compose]
+
+
 //* link:manual/testdefintion/README.md[Sakuli Testdefinition]
 //** link:manual/testdefintion/test-in-javascript.md[Test in JavaScript]
 //** link:manual/testdefintion/test-in-java.md[Test in Java]
