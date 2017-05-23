@@ -1,0 +1,83 @@
+
+[[sql-database]]
+=== SQL Database
+
+[#git-edit-section]
+:page-path: docs/manual/integration/sql-database.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+This page describes how the results of the Sakuli tests *example_windows7/ubuntu/opensuse* can be written into a *MySQL database* which can be read by other 3rd party systems.
+
+//TODO:described sql schema and how results will be placed there.
+
+[[sql-database-create-db]]
+==== Create Sakuli DB
+
+Create the *Sakuli database* and the DB user:
+
+[source,bash]
+----
+$ mysql < __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/database/create_sakuli_database.sql
+----
+
+Create the *database user*:
+
+[source,bash]
+----
+$ mysql
+  grant ALL on sakuli.* to '__DB_USER__'@'%' identified by '__DB_PASSWORD__';
+  flush privileges;
+  quit
+----
+
+Check the connection with your favorit SQL tool:
+
+[[sql-database-enable-forwarder]]
+==== Enable database forwarder
+
+On the Sakuli client you must set the global properties for the database receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):
+
+[source,properties]
+----
+__INST_DIR__/example_test_suites/sakuli.properties:
+
+# DEFAULT: false
+sakuli.forwarder.database.enabled=true
+
+#DEFAULT: mysql
+sakuli.forwarder.database.jdbc.driverClass=com.mysql.jdbc.Driver
+sakuli.forwarder.database.host=__DB_IP__
+sakuli.forwarder.database.port=__DB_PORT__
+sakuli.forwarder.database=sakuli
+sakuli.forwarder.database.user=__DB_USER__
+sakuli.forwarder.database.password=__DB_PW__
+----
+
+[[sql-database-test-transmission]]
+.Test result transmission
+
+Execute the example test case:
+
+* *Ubuntu*: `sakuli run __INST_DIR__/example_test_suites/example_ubuntu/`
+* *openSUSE*: `sakuli run __INST_DIR__/example_test_suites/example_opensuse/`
+* *Windows 7*: `sakuli run __INST_DIR__\example_test_suites\example_windows7\`
+* *Windows 8*: `sakuli run __INST_DIR__\example_test_suites\example_windows8\`
+
+The database should now contain the results.
+
+// TODO add SQL DB result
+
+[[sql-database-optional-cleanup]]
+==== Database cleanup (optional)
+
+Sakuli's database can get very large over time. Use the following database maintenance script to keep only the most recent data. 
+
+Create a crontab entry for a automatic database cleanup of data older than 90 days:
+
+[source,bash]
+----
+~$ crontab -e
+00 12 * * * $SAKULI_HOME/bin/helper/mysql_purge.sh 90 > /dev/null 2>&1
+----
+
+After that, the crontab should be active.
