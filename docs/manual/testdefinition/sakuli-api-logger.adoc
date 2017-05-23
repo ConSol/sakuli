@@ -1,0 +1,58 @@
+
+[[Logger]]
+==== Logger
+
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/sakuli-api-logger.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Logger - Logging functions to do 'debug, 'info', 'warning' and 'error' log entries.
+
+*Members*
+
+* link:#Logger[Logger]
+* link:#Logger.logError[Logger.logError(message)]
+* link:#Logger.logWarning[Logger.logWarning(message)]
+* link:#Logger.logInfo[Logger.logInfo(message)]
+* link:#Logger.logDebug[Logger.logDebug(message)]
+
+
+[[Logger.logError]]
+.Logger.logError(message)
+
+make a error-log over Java backend into the log file.
+This won't stop the execution of the test case.
+
+*Params*
+
+* message `String` - as a String
+
+
+[[Logger.logWarning]]
+.Logger.logWarning(message)
+
+make a debug-log over Java backend into the log file.
+
+*Params*
+
+* message `String` - as a String
+
+
+[[Logger.logInfo]]
+.Logger.logInfo(message)
+
+make a info-log over Java backend into the log file.
+
+*Params*
+
+* message `String` - as a String
+
+
+[[Logger.logDebug]]
+.Logger.logDebug(message)
+
+make a debug-log over Java backend into the log file.
+
+*Params*
+
+* message `String` - as a String

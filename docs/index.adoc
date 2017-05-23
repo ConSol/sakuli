@@ -132,8 +132,16 @@ include::manual/execution/containerized/docker-compose.adoc[]
 include::manual/testdefinition/testdefinition.adoc[]
 include::manual/testdefinition/test-in-javascript.adoc[]
 include::manual/testdefinition/test-in-java.adoc[]
-//TODO automate generation
-//** link:manual/testdefintion/sakuli-api.md[Sakuli API]
+//Sakuli API
+include::manual/testdefinition/sakuli-api.adoc[]
+include::manual/testdefinition/sakuli-api-testcase.adoc[]
+include::manual/testdefinition/sakuli-api-application.adoc[]
+include::manual/testdefinition/sakuli-api-environment.adoc[]
+include::manual/testdefinition/sakuli-api-key.adoc[]
+include::manual/testdefinition/sakuli-api-logger.adoc[]
+include::manual/testdefinition/sakuli-api-mouse-button.adoc[]
+include::manual/testdefinition/sakuli-api-region.adoc[]
+
 include::manual/testdefinition/starter.adoc[]
 
 === Additional Topics
@@ -157,7 +165,7 @@ include::manual/testdefinition/advanced-topics/sahi-https.adoc[]
 ==== Sikuli settings
 include::manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc[]
 
-
+//TODO links
 //TODO TS go on here
 //** link:manual/testdefintion/troubleshooting.md[Troubleshooting]
 //* link:manual/integration/README.md[Integration in other Tools]
