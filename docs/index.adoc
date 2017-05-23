@@ -156,7 +156,9 @@ include::manual/testdefinition/troubleshooting.adoc[]
 //Integration documentation
 include::manual/integration/integration.adoc[]
 === Monitoring
+include::manual/integration/monitoring/omd-gearman.adoc[]
 include::manual/integration/monitoring/omd-sql-database.adoc[]
+
 //TODO TS go on here
 
 === Continuous Integration

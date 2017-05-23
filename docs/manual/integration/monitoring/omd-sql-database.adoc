@@ -1,7 +1,8 @@
-//TODO: link zu (manual/integration/forwarder-sql-databse)
-//TODO: describe OMD integration trough SQL Database
 
 ==== OMD - SQL Database
+[#git-edit-section]
+:page-path: docs/manual/integration/monitoring/omd-sql-database.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 This page describes how the results of the Sakuli tests (e.g. example_windows7/ubuntu/opensuse) can be written into a *MySQL database* which is then checked asynchronously by the monitoring system with `check_mysql_health`.
 
@@ -170,7 +171,7 @@ Re-scheduling this service should display the UNKNOWN message that the requested
 
 image:omd-unknown.png[omd_unknown]
 
-===== Sakuli Client setup
+===== Sakuli Client Configuration
 
 .Modify Sakuli database forwarder parameter
 
