@@ -1,4 +1,5 @@
 
+[[omd-gearman]]
 ==== OMD - Gearman Daemon
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/omd-gearman.adoc

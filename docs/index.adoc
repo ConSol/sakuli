@@ -159,8 +159,12 @@ include::manual/integration/integration.adoc[]
 include::manual/integration/monitoring/omd-gearman.adoc[]
 include::manual/integration/monitoring/omd-sql-database.adoc[]
 include::manual/integration/monitoring/icinga2api.adoc[]
+==== Advanced Topics
+include::manual/integration/monitoring/advanced-topics/omd-native.adoc[]
+include::manual/integration/monitoring/advanced-topics/pnp4nagios.adoc[]
+include::manual/integration/monitoring/advanced-topics/grafana.adoc[]
 //
-//                            dd
+//                    dd
 //TODO TS go on here
 
 === Continuous Integration
@@ -168,11 +172,6 @@ include::manual/integration/ci/jenkins.adoc[]
 include::manual/integration/sql-database.adoc[]
 
 //TODO links
-//** Monitoring
-//*** link:manual/integration/monitoring/forwarder-gearman-omd.md[OMD - Gearman Daemon]
-//*** link:manual/integration/monitoring/forwarder-sql-database-omd.md[OMD - SQL Database]
-//*** link:manual/integration/monitoring/forwarder-icinga2api.md[Icinga1 REST API]
-//*** Advanced Topics
 //**** link:manual/integration/monitoring/advanced-topics/omd-native.md[Native OMD Integration]
 //**** link:manual/integration/monitoring/advanced-topics/pnp4nagios.md[PNP4Nagios]
 //**** link:manual/integration/monitoring/advanced-topics/grafana.md[Grafana]
