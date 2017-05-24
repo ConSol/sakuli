@@ -11,7 +11,7 @@ This page describes how the results of the Sakuli tests *example_windows7/ubuntu
 //TODO:described sql schema and how results will be placed there.
 
 [[sql-database-create-db]]
-==== Create Sakuli DB
+===== Create Sakuli DB
 
 Create the *Sakuli database* and the DB user:
 
@@ -33,7 +33,7 @@ $ mysql
 Check the connection with your favorit SQL tool:
 
 [[sql-database-enable-forwarder]]
-==== Enable database forwarder
+===== Enable database forwarder
 
 On the Sakuli client you must set the global properties for the database receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):
 
@@ -68,7 +68,7 @@ The database should now contain the results.
 // TODO add SQL DB result
 
 [[sql-database-optional-cleanup]]
-==== Database cleanup (optional)
+===== Database cleanup (optional)
 
 Sakuli's database can get very large over time. Use the following database maintenance script to keep only the most recent data. 
 

@@ -1,0 +1,124 @@
+
+[[dev-maven-aspects]]
+=== Maven aspects
+[#git-edit-section]
+:page-path: docs/manual/development/maven-aspects.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Following default lifecycle actions are currently used:
+
+.Complete build process `mvn clean deploy`
+
+. Compiles the sources with the `aspectj-maven-plugin` to weave the source code and the dependencies
+. Executes all unit tests
+. Executes all *integration tests* (without UI-Tests)
+. Adds the built maven artifacts to the local workspace
+. Builds the `sakuli-vX.X.X.zip`and `sakuli-vX.X.X-installer.jar` file locally
+. Deploys the maven artifacts to the local repository
+
+.Run unit tests `mvn test`
+
+Runs all steps until step *2.*
+
+.Run integration tests `mvn verify`
+
+Runs all steps until step *3*
+
+.Install locally `mvn install`
+
+Runs all steps until step *6*
+
+.Build a new release
+
+See the instruction: <<dev-new-release>>
+
+.Special maven profiles
+
+Profiles can be added with option `-P`, followed by a parameter, e.g.
+
+[source]
+----
+mvn install -P upload-release
+----
+
+* `upload-release` Copies the generated `sakuli-zipped-release-vX.X.X.zip`, `sakuli-vX.X.X-installer.jar` file and maven artifacts to the http://labs.consol.de/sakuli/[ConSol Labs] server. Your private key for the ssh connection have to be configured in maven config file `.m2/settings.xml`:
+
+.Example of Maven config file `.m2/settings.xml`
+[source,xml]
+----
+    <servers>
+        <server>
+            <id>labs-consol-sakuli-install</id>
+            <username>sakuli</username>
+            <privateKey>${user.home}/.ssh/id_rsa</privateKey>
+        </server>
+
+        <server>
+            <id>labs-consol-sakuli-repository</id>
+            <username>maven-repository</username>
+            <privateKey>${user.home}/.ssh/id_rsa</privateKey>
+        </server>
+    </servers>
+----
+
+* `ui-tests` Enables the UI based test in phase *integration-test* in the modul `integration-test` and `java-dsl`.
+* `generate-manual` This profile will generate the AsciiDoc documentation in the module *docs-manual*, see <<dev-ascii-doc>>.
+* `generate-markdown` This profile will generate Markdown file in the module *docs* the file link:../testdefintion/sakuli-api.md[Sakuli-API].
+
+TIP: To use the profile behind a *HTTP/HTTPS* proxy, be aware that the following things are configured:
+
+1) include in your `$M2_HOME/settings.xml` the proxy tag (if needed):
+[source,xml]
+----
+  <proxies>
+  <proxy>
+      <id>my-proxy-config</id>
+      <active>true</active>
+      <protocol>http</protocol>
+      <host>proxy.company.com</host>
+      <port>8888</port>
+  </proxy>
+  </proxies>
+----
+
+2) configure your system *HTTP* and *HTTPS* proxy over Environment (for Ubuntu). Set in `bash.rc`:
+[source]
+----
+  export http_proxy=http://proxy.company.com:8888/
+  export https_proxy=http://proxy.company.com:8888/
+  export ftp_proxy=http://proxy.company.com:8888/
+----
+
+* `cl` (internal use)
+ This profile will be only to build a custom installer for CL.
+
+
+
+
+.Add new artifacts to remote repo
+
+for example for the sahi JARs, more information see: https://maven.apache.org/guides/mini/guide-3rd-party-jars-remote.html[guide-3rd-party-jars-remote].
+
+*install to local repo*
+
+[source]
+----
+mvn install:install-file -DgroupId=net.sf.sahi -DartifactId=sahi -Dversion=5.1 -Dpackaging=jar -Dfile=sahi-5.1.jar
+
+mvn install:install-file -DgroupId=net.sf.sahi -DartifactId=ant-sahi -Dversion=5.1 -Dpackaging=jar -Dfile=ant-sahi-5.1.jar
+
+mvn install:install-file -DgroupId=net.sf.sahi -DartifactId=sahi-install -Dversion=5.1 -Dpackaging=zip -Dfile=sahi-install-5.1.zip
+----
+
+*install to remote repo*
+
+[source]
+----
+mvn deploy:deploy-file -DgroupId=net.sf.sahi -DartifactId=sahi -Dversion=5.1 -Dpackaging jar -Dfile=sahi-5.1.jar -Drepository=labs-consol-sakuli-repository -Durl=scpexe://labs.consol.de/home/maven-repository/www/htdocs/repository
+----
+
+or copy the local artifacts via SCP:
+[source]
+----
+scp -r ~.m2/repository/net/sf/sahi/sahi/5.1 maven-repository@labs.consol.de:/home/maven-repository/www/htdocs/repository/net/sf/sahi/sahi/5.1
+----

@@ -28,9 +28,9 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>docs</artifactId>
+    <artifactId>docs-sakuli-api</artifactId>
     <version>1.0.2</version>
-    <name>docs</name>
+    <name>${project.artifactId}</name>
     <description>maven module to build the markdown api docs from jsdoc</description>
 
     <packaging>pom</packaging>
@@ -40,7 +40,7 @@
         <node.modules.dir>${node.dir}/node_modules</node.modules.dir>
         <js-src.target>${project.build.directory}/js_src</js-src.target>
         <js-src.source>${project.parent.basedir}/src/common/src/main/resources/org/sakuli/common/libs/js</js-src.source>
-        <markdown.output.directory>${project.parent.basedir}/docs</markdown.output.directory>
+        <markdown.output.directory>${project.parent.basedir}/docs/manual/testdefinition</markdown.output.directory>
     </properties>
 
     <profiles>

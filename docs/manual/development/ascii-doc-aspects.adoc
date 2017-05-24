@@ -1,0 +1,48 @@
+
+[[dev-ascii-doc]]
+=== AsciiDoc documentation aspects
+[#git-edit-section]
+:page-path: docs/manual/development/ascii-doc-aspects.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+.Sakuli API generation
+
+Currently there is no fully automated way between the documented Sakuli API in git-link:docs/manual/testdefinition/sakuli-api.md["docs/manual/testdefinition/sakuli-api.md"] and the final git-link:docs/manual/testdefinition/sakuli-api.adoc["docs/manual/testdefinition/sakuli-api.adoc"] .
+
+*Following Steps have to be executed:*
+
+1) Generate the `sakuli-api.md` file
+Run the maven markdown generation build:
+[source]
+----
+mvn install -f src/docs-sakuli-api/pom.xml -P generate-markdown
+----
+The markdown file will be generated under: `docs/manual/testdefinition/sakuli-api.md`
+
+2) Convert to AsciiDoc
+
+* https://plugins.jetbrains.com/plugin/7391-asciidoc[IntelliJ AsciiDoc Plugin]
+image:asciidoc-intellij-plugin.png[asciidoc intellij plugin]
+
+* http://pandoc.org/MANUAL.html#using-pandoc[Pandoc]
+[source,console]
+----
+pandoc -s -S sakuli-api.md -t asciidoc -o sakuli-api.adoc
+----
+
+3) Copy & paste the changed content to one of matching the files and maybe adjust heading level to `.Class.method()`:
+
+[source]
+----
+$ ls docs/manual/testdefinition/sakuli-api*.adoc
+docs/manual/testdefinition/sakuli-api.adoc
+docs/manual/testdefinition/sakuli-api-application.adoc
+docs/manual/testdefinition/sakuli-api-environment.adoc
+docs/manual/testdefinition/sakuli-api-key.adoc
+docs/manual/testdefinition/sakuli-api-logger.adoc
+docs/manual/testdefinition/sakuli-api-mouse-button.adoc
+docs/manual/testdefinition/sakuli-api-region.adoc
+docs/manual/testdefinition/sakuli-api-testcase.adoc
+----
+
+//TODO TS write how to execute and build the documentation

@@ -1,0 +1,38 @@
+
+[[dev-sikuli-supplemental-pack]]
+=== sikulix-supplemental package
+[#git-edit-section]
+:page-path: docs/manual/development/linux-native-libs/linux-sikuli-supplemental-pack.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+CAUTION: Only for Linux Operating Systems!
+
+The current build `libVisionProxy.so` is already included in the fork https://github.com/toschneck/SikuliX-2014[toschneck/SikuliX-2014] and the following maven dependency:
+
+[source]
+----
+ <dependency>
+     <groupId>com.sikulix</groupId>
+     <artifactId>sikulixapi-complete</artifactId>
+     <version>1.1.990/version> <1>
+ </dependency>
+----
+<1> Version can be newer, but with prefix `1.1.99`
+
+.Build sikulix-supplemental package (Ubuntu)
+
+* Download under https://github.com/RaiMan/SikuliX-2014/blob/master/Setup/src/main/resources/SikuliX-1.1.0-Beta-Supplemental-Linux.zip[SikuliX-2014/Setup/SikuliX-1.1.0-Beta-Supplemental-Linux.zip]
+* Unzip and read included README
+* Do the following steps.
+
+[source]
+----
+sudo apt-get install libcv-dev
+
+sudo apt-get install libtesseract-dev
+
+./ubuntu14_openCV_symbolic_links.sh
+
+./makeVisionProxy 
+----
+* replace the `libVisionProxy.so` file
