@@ -44,6 +44,9 @@
         <ascii.build.output.directory>${project.build.directory}/generated-docs</ascii.build.output.directory>
         <gh-pages.working.dir>${project.build.directory}/checkout</gh-pages.working.dir>
         <gh-pages.target.dir>${gh-pages.working.dir}/${sakuli.version}</gh-pages.target.dir>
+        <ascii.build.output.directory.pdf>${project.build.directory}/tmp-pdf</ascii.build.output.directory.pdf>
+        <pdf.path>pdf/sakuli_documentation_${sakuli.version}.pdf</pdf.path>
+        <pdf.target.path>${ascii.build.output.directory}/${pdf.path}</pdf.target.path>
     </properties>
 
     <scm>
@@ -52,8 +55,6 @@
     </scm>
 
     <!-- TODO TS: after merge into dev, add to Jenkins-Job `Sakuli_CI, Sakuli_CI_feature_branch` remove source trigger-->
-    <!-- TODO TS: include api generation + update docu -->
-    <!--TODO TS enable § anchor links like in asciidoc docu-->
     <profiles>
 
         <profile>
@@ -66,7 +67,7 @@
             </activation>
             <build>
                 <plugins>
-                    <!-- generate git/build information for `book.json` to set correct edit link -->
+                    <!-- generate git/build information for docs, e.g. to set correct edit link -->
                     <plugin>
                         <groupId>pl.project13.maven</groupId>
                         <artifactId>git-commit-id-plugin</artifactId>
@@ -101,6 +102,7 @@
                                             <directory>${docs.source.dir}</directory>
                                             <excludes>
                                                 <exclude>target/</exclude>
+                                                <exclude>*.xmind</exclude>
                                             </excludes>
                                         </resource>
                                         <!--Filtered resources: replace ${xxxx.xxx.xxx} properties in files -->
@@ -109,6 +111,7 @@
                                             <filtering>true</filtering>
                                             <includes>
                                                 <include>index.*</include>
+                                                <include>download.*</include>
                                             </includes>
                                         </resource>
                                     </resources>
@@ -117,7 +120,7 @@
                         </executions>
                     </plugin>
 
-                    <!-- generate aciidoc HTML and PDF -->
+                    <!-- generate asciidoc HTML and PDF -->
                     <plugin>
                         <groupId>org.asciidoctor</groupId>
                         <artifactId>asciidoctor-maven-plugin</artifactId>
@@ -129,8 +132,7 @@
                                 <toc>left</toc>
                             </attributes>
                             <sourceDirectory>${ascii.build.source.dir}</sourceDirectory>
-                            <!--<imagesDir>pics</imagesDir>-->
-                            <!--<outputDirectory>${ascii.build.output.directory}</outputDirectory>-->
+                            <sourceDocumentName>index.adoc</sourceDocumentName>
                         </configuration>
                         <executions>
                             <execution>
@@ -140,6 +142,18 @@
                                     <goal>process-asciidoc</goal>
                                 </goals>
                             </execution>
+                            <execution>
+                                <id>generate PDF</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>process-asciidoc</goal>
+                                </goals>
+                                <configuration>
+                                    <backend>pdf</backend>
+                                    <sourceHighlighter>rouge</sourceHighlighter>
+                                    <outputDirectory>${ascii.build.output.directory.pdf}</outputDirectory>
+                                </configuration>
+                            </execution>
                         </executions>
                         <!--See https://jmini.github.io/asciidoctorj-gh-edit/-->
                         <dependencies>
@@ -148,7 +162,31 @@
                                 <artifactId>gh-edit</artifactId>
                                 <version>3.0.0</version>
                             </dependency>
+                            <dependency>
+                                <groupId>org.asciidoctor</groupId>
+                                <artifactId>asciidoctorj-pdf</artifactId>
+                                <version>1.5.0-alpha.14</version>
+                            </dependency>
                         </dependencies>
+                    </plugin>
+                    <!-- copy and rename PDF file -->
+                    <plugin>
+                        <groupId>com.coderplus.maven.plugins</groupId>
+                        <artifactId>copy-rename-maven-plugin</artifactId>
+                        <version>1.0</version>
+                        <executions>
+                            <execution>
+                                <id>rename-pdf-file</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>rename</goal>
+                                </goals>
+                                <configuration>
+                                    <sourceFile>${ascii.build.output.directory.pdf}/index.pdf</sourceFile>
+                                    <destinationFile>${pdf.target.path}</destinationFile>
+                                </configuration>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
@@ -174,31 +212,8 @@
                 </pluginRepository>
             </pluginRepositories>
         </profile>
-        <profile>
-            <id>doc-pdf</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.asciidoctor</groupId>
-                        <artifactId>asciidoctor-maven-plugin</artifactId>
-                        <configuration>
-                            <backend>pdf</backend>
-                            <sourceHighlighter>rouge</sourceHighlighter>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.asciidoctor</groupId>
-                                <artifactId>asciidoctorj-pdf</artifactId>
-                                <version>1.5.0-alpha.11</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-                <defaultGoal>generate-resources asciidoctor:process-asciidoc</defaultGoal>
-            </build>
-        </profile>
 
-        <!--profil to sync and deploy the gitbook docu to http://consol.github.io/sakuli-->
+        <!--profile to sync and deploy the docu to http://consol.github.io/sakuli-->
         <profile>
             <id>upload-manual</id>
             <activation>
@@ -223,7 +238,7 @@
                         <executions>
                             <!-- copies the fresh generated file to the `gh-pages` branch -->
                             <execution>
-                                <id>gh-pages:copy-new-gitbook-sources1</id>
+                                <id>gh-pages:copy-new-doc-sources1</id>
                                 <phase>post-integration-test</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
@@ -231,7 +246,7 @@
                             </execution>
                             <!-- this is needed for step `gh-pages-remove-for-deploy2`, so that removed files will be updated also-->
                             <execution>
-                                <id>gh-pages:copy-new-gitbook-sources2</id>
+                                <id>gh-pages:copy-new-doc-sources2</id>
                                 <phase>install</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
@@ -324,8 +339,7 @@
                                 <toc>left</toc>
                             </attributes>
                             <sourceDirectory>${docs.source.dir}</sourceDirectory>
-                            <!--<imagesDir>pics</imagesDir>-->
-                            <!--<outputDirectory>${ascii.build.output.directory}</outputDirectory>-->
+                            <sourceDocumentName>index.adoc</sourceDocumentName>
                         </configuration>
                         <executions>
                             <execution>

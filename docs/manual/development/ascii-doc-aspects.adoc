@@ -5,6 +5,42 @@
 :page-path: docs/manual/development/ascii-doc-aspects.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
+.Generate AciiDoc Dokumentation
+
+Execute:
+
+`mvn install -f src/docs-manual/pom.xml -P generate-manual`
+
+The http://asciidoctor.org/docs/asciidoctor-maven-plugin[Asciidoctor-maven-plugin] now generates an HTML page and the PDF:
+
+[source]
+----
+ $ ls src/docs-manual/target/generated-docs/
+ $ ls src/docs-manual/target/generated-docs/pdf
+----
+
+Then you can open the file `src/docs-manual/target/generated-docs/index.html` in your favorite browser.
+
+.Upload to GitHub Pages
+If you want to update the Github Page http://consol.github.io/sakuli[consol.github.io/sakuli], just add the profile `upload-manual`:
+
+`mvn install -f src/docs-manual/pom.xml -P generate-manual,upload-manual`
+
+*OR* use the Jenkins CI job http://labs-build.consol.de/view/Sakuli/job/Sakuli_CI_update_documentation/[Sakuli_CI_update_documentation]
+
+.Live Rendering in Browser
+
+During the writing of the documentation it is useful to have a "live watch" possibility. There you can do the following
+
+[source]
+----
+live-server src/docs-manual/target/generated-docs & <1>
+
+mvn clean install -f src/docs-manual/pom.xml -P generate-manual-watch <2>
+----
+<1> Opens a webserver under http://127.0.0.1:8080 with automatic refresh when any file get updated, see https://github.com/tapio/live-server#installation[tapio/live-server].
+<2> Use the `auto-refresh` goal of the http://asciidoctor.org/docs/asciidoctor-maven-plugin[Asciidoctor-maven-plugin]
+
 .Sakuli API generation
 
 Currently there is no fully automated way between the documented Sakuli API in git-link:docs/manual/testdefinition/sakuli-api.md["docs/manual/testdefinition/sakuli-api.md"] and the final git-link:docs/manual/testdefinition/sakuli-api.adoc["docs/manual/testdefinition/sakuli-api.adoc"] .

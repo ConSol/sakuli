@@ -49,11 +49,12 @@ image:sakuli_logo_small.png[sakuli-logo]
 
 *Documentation for version: `${sakuli.version}`*
 
+*link:${pdf.path}[Download PDF]*
+
 [#git-edit-section]
 :page-path: docs/index.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-//TODO TS update to github pages structure
 //TODO check internal links, see http://asciidoctor.org/docs/user-manual/#internal-cross-references
 
 *All different versions of our documentation you will find under:*
