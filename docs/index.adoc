@@ -158,7 +158,9 @@ include::manual/integration/integration.adoc[]
 === Monitoring
 include::manual/integration/monitoring/omd-gearman.adoc[]
 include::manual/integration/monitoring/omd-sql-database.adoc[]
-
+include::manual/integration/monitoring/icinga2api.adoc[]
+//
+//                            dd
 //TODO TS go on here
 
 === Continuous Integration
