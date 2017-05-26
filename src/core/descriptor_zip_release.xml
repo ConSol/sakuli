@@ -36,11 +36,11 @@
             <outputDirectory>/${sakuli.filename}</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>${parent.basedir}/docs</directory>
-            <excludes>
+            <directory>${parent.basedir}/src/docs-manual/target/generated-docs/pdf</directory>
+            <includes>
                 <!-- excludes the whole docs/development folder -->
-                <exclude>**/development/</exclude>
-            </excludes>
+                <include>*.pdf</include>
+            </includes>
             <outputDirectory>/${sakuli.filename}/docs</outputDirectory>
         </fileSet>
 

@@ -35,10 +35,10 @@
 
     <modules>
         <module>src/common</module>
-        <module>src/core</module>
-        <module>src/integration-test</module>
         <module>src/docs-sakuli-api</module>
         <module>src/docs-manual</module>
+        <module>src/core</module>
+        <module>src/integration-test</module>
         <module>src/java-dsl</module>
         <module>src/installer</module>
     </modules>
