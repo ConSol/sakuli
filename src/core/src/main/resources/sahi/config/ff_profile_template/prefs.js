@@ -145,4 +145,8 @@ user_pref("browser.history_expire_visits", 1);
 user_pref("dom.storage.enabled", true);
 user_pref("places.history.enabled", false);
 user_pref("browser.send_pings", false);
+// disable script timeout / fix for js warnings
+user_pref("dom.max_child_script_run_time", 0);
+user_pref("dom.max_chrome_script_run_time", 0);
+user_pref("dom.max_script_run_time", 0);
 
