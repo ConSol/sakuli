@@ -232,6 +232,9 @@
                             <resources>
                                 <resource>
                                     <directory>${ascii.build.output.directory}</directory>
+                                    <excludes>
+                                        <exclude>docinfo*.html</exclude>
+                                    </excludes>
                                 </resource>
                             </resources>
                         </configuration>
