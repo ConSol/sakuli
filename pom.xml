@@ -37,7 +37,7 @@
         <module>src/common</module>
         <module>src/core</module>
         <module>src/integration-test</module>
-        <module>src/docs</module>
+        <module>src/docs-sakuli-api</module>
         <module>src/docs-manual</module>
         <module>src/java-dsl</module>
         <module>src/installer</module>
@@ -97,7 +97,7 @@
                         <exclude>**/integration/**/*</exclude>
                     </excludes>
                     <environmentVariables>
-                        <SAKULI_HOME />
+                        <SAKULI_HOME/>
                     </environmentVariables>
                 </configuration>
             </plugin>
@@ -121,7 +121,7 @@
                     <pushHotfixes>true</pushHotfixes>
                     <pushReleases>true</pushReleases>
                     <updateDependencies>true</updateDependencies>
-                    <scmCommentPrefix>mvn-jgitflow: </scmCommentPrefix>
+                    <scmCommentPrefix>mvn-jgitflow:</scmCommentPrefix>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <enableSshAgent>true</enableSshAgent>
                     <useReleaseProfile>true</useReleaseProfile>
@@ -230,6 +230,21 @@
                     <version>1.0-m5.1</version>
                 </plugin>
 
+                <plugin>
+                    <groupId>com.coderplus.maven.plugins</groupId>
+                    <artifactId>copy-rename-maven-plugin</artifactId>
+                    <version>1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.6.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.asciidoctor</groupId>
+                    <artifactId>asciidoctor-maven-plugin</artifactId>
+                    <version>1.5.3</version>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-scm-plugin</artifactId>

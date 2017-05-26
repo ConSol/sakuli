@@ -124,13 +124,9 @@
                     <plugin>
                         <groupId>org.asciidoctor</groupId>
                         <artifactId>asciidoctor-maven-plugin</artifactId>
-                        <version>1.5.3</version>
                         <configuration>
                             <backend>html</backend>
                             <sourceHighlighter>coderay</sourceHighlighter>
-                            <attributes>
-                                <toc>left</toc>
-                            </attributes>
                             <sourceDirectory>${ascii.build.source.dir}</sourceDirectory>
                             <sourceDocumentName>index.adoc</sourceDocumentName>
                         </configuration>
@@ -141,6 +137,11 @@
                                 <goals>
                                     <goal>process-asciidoc</goal>
                                 </goals>
+                                <configuration>
+                                    <attributes>
+                                        <toc>left</toc>
+                                    </attributes>
+                                </configuration>
                             </execution>
                             <execution>
                                 <id>generate PDF</id>
@@ -173,7 +174,6 @@
                     <plugin>
                         <groupId>com.coderplus.maven.plugins</groupId>
                         <artifactId>copy-rename-maven-plugin</artifactId>
-                        <version>1.0</version>
                         <executions>
                             <execution>
                                 <id>rename-pdf-file</id>
@@ -254,6 +254,50 @@
                             </execution>
                         </executions>
                     </plugin>
+
+                    <!--create the index.adoc page for the available versions: folder `v*`-->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>create-index.adoc page</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${project.build.scriptSourceDirectory}/create_index_adoc.sh</executable>
+                                    <arguments>
+                                        <argument>${gh-pages.working.dir}</argument>
+                                        <argument>${project.build.directory}/src_index/index.adoc</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--transform the index.adoc page for all version to a index.html-->
+                    <plugin>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctor-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-index-hmtl</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>process-asciidoc</goal>
+                                </goals>
+                                <configuration>
+                                    <backend>html</backend>
+                                    <sourceDirectory>${project.build.directory}/src_index</sourceDirectory>
+                                    <sourceDocumentName>index.adoc</sourceDocumentName>
+                                    <outputDirectory>${gh-pages.working.dir}</outputDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <!--add the modified files to gh-pages branch-->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-scm-plugin</artifactId>
@@ -283,6 +327,18 @@
                                 <configuration>
                                     <includes>${sakuli.version}/</includes>
                                     <message>Add new sakuli documentation for ${sakuli.version}</message>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gh-pages-deploy-new-index-html</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>add</goal>
+                                    <goal>checkin</goal>
+                                </goals>
+                                <configuration>
+                                    <includes>index.html</includes>
+                                    <message>modify index.html page</message>
                                 </configuration>
                             </execution>
 
@@ -331,7 +387,6 @@
                     <plugin>
                         <groupId>org.asciidoctor</groupId>
                         <artifactId>asciidoctor-maven-plugin</artifactId>
-                        <version>1.5.3</version>
                         <configuration>
                             <backend>html</backend>
                             <sourceHighlighter>coderay</sourceHighlighter>
