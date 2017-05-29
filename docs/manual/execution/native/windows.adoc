@@ -1,4 +1,5 @@
 
+:imagesdir: ../../../images
 ==== Windows Client
 [#git-edit-section]
 :page-path: docs/manual/execution/native/windows.adoc

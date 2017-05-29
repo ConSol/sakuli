@@ -42,54 +42,14 @@ endif::[]
 ifdef::basebackend-html[toc::[]]
 
 :sectnums!:
+:imagesdir: images
 
 image:sakuli_logo_small.png[sakuli-logo]
 
-= General
-
-*Documentation for version: `${sakuli.version}`*
-
-*link:${pdf.path}[Download PDF]*
-
-[#git-edit-section]
-:page-path: docs/index.adoc
-git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
-
 //TODO check internal links, see http://asciidoctor.org/docs/user-manual/#internal-cross-references
 
-*All different versions of our documentation you will find under:*
-
-*http://consol.github.io/sakuli[consol.github.io/sakuli]*
-
-** *_Stable/Latest version:_* latest tagged `vX.X.X` documentation
-** *_Dev version:_* latest `vX.X.X-SNAPSHOT` version
-
-[[contributors]]
-== Contributors
-
-At this point we want to thank all contributors, which helped to move this great project by submitting code, writing documentation, or adapting other tools to play well together with Sakuli.
-
-* Tobias Schneck - Sakuli Team / Project Leader, Core Development
-* Simon Meggle - Sakuli Team / Project Leader, Monitoring Integration
-* Christoph Deppisch - Sakuli Team / Core Development
-* Georgi Todorov - Sakuli Team / Core Development
-* Lukas Höfer - Sakuli Team / Consultant
-* Sven Nierlein
-* Philip Griesbacher - Sakuli Go Starter
-* Thomas Rothenbacher
-
-(did we forget you? Please poke us):
-
-[[supporters]]
-== Valued supporters
-
-Very special thanks to all customers which always nourish this project with new ideas and impulses and make it possible in the first place to give it back to the community as Open Source Software. Thumbs up!
-
-* LIDL Stiftung &amp; Co. KG
-* Deutsche Pfandbriefbank AG
-* Siemens AG, Global Services Information Technology
-
 // STRUCTURE
+include::general.adoc[]
 include::download.adoc[]
 include::why-sakuli.adoc[]
 include::concept.adoc[]

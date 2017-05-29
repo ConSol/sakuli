@@ -29,8 +29,8 @@
         <fileSet>
             <directory>${parent.basedir}/</directory>
             <includes>
-                <include>changelog.md</include>
-                <include>README.md</include>
+                <include>docs/changelog.adoc</include>
+                <include>README.adoc</include>
                 <include>*.txt</include>
             </includes>
             <outputDirectory>/${sakuli.filename}</outputDirectory>

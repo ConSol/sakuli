@@ -1,4 +1,5 @@
 
+:imagesdir: images
 [[concept]]
 == Concept
 
