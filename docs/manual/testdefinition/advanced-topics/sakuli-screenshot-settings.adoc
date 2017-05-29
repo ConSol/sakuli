@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 ==== Screenshot settings
 [#git-edit-section]
 :page-path: docs/manual/testdefinition/advanced-topics/sakuli-screenshot-settings.adoc

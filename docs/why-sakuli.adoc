@@ -1,4 +1,6 @@
 
+:imagesdir: images
+
 [[why-sakuli]]
 == Why Sakuli?
 
@@ -13,7 +15,7 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 * *Far from reality*: There are tools to test web applications on protocol level - but to know whether a web application is working or not requires a test from the user's perspective.
 * *Unflexible*: Hardly one of these tools brings the ability to integrate into other systems (like Nagios or Jenkins).
 
-TODO something missing?
+//TODO something missing?
 
 [[why-sakuli.key-features]]
 === Key Features
@@ -22,8 +24,8 @@ TODO something missing?
 * End-2-End monitoring of application functionality and quality
 * Combines two automation technologies:
 * DOM based web testing
-* image pattern based UI automation (for non-web content)
+* Image pattern based UI automation (for non-web content)
 * Scalable from single-client up to multi-node container setup for parallel execution
 * Integration of test results into
-* monitoring systems (e.g. Nagios/Icinga)
+* Monitoring systems (e.g. Nagios/Icinga)
 * CI builds (e.g. Jenkins)

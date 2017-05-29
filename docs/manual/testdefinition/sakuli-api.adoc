@@ -1,4 +1,6 @@
 
+:imagesdir: ../../images
+
 [[sakuli-api]]
 === Sakuli API
 

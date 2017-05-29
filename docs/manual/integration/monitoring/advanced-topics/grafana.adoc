@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../../images
+
 ===== Grafana
 
 [#git-edit-section]
@@ -6,4 +8,4 @@
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 tbd
-//TODO SM how to use!
+//TODO SM how to use

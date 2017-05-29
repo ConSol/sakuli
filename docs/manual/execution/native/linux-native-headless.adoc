@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 ===== Headless Sakuli checks on Linux
 [#git-edit-section]
 :page-path: docs/manual/execution/native/linux-native-headless.adoc
@@ -9,7 +11,7 @@ Running Sakuli on the user desktop is nice, but has the drawback that the sessio
 For that reason we advise to run Linux based Sakuli checks in in one of the following modes: 
 
 * in a virtual display (="headless"), which is straightforward in Linux (documented on this page)
-* in a link:docker-images.md[Docker container] (more scalable)
+* in a <<docker-images>> (more scalable)
 
 ====== Installing and configuring the VNC server
 

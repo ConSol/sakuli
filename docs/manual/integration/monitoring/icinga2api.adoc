@@ -1,4 +1,7 @@
 
+:imagesdir: ../../../images
+
+[[icinga2-integration]]
 ==== Icinga2 REST API
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/icinga2api.adoc
@@ -50,7 +53,7 @@ object Host "sakuliclient01" {
 }
 ----
 
-Create the following *service* object for the first test case. _freshness_threshold_ should be slightly higher than the interval Sakuli tests are planned (if you are using PNP4Nagios, see also link:advanced-topics/installation-omd.md#rrd-heartbeat[RRD heartbeat] )
+Create the following *service* object for the first test case. _freshness_threshold_ should be slightly higher than the interval Sakuli tests are planned (if you are using PNP4Nagios, see also <<pnp4nagios-rrd-heartbeat>> )
 
 [source]
 ----

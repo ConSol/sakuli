@@ -169,6 +169,6 @@ What next? Well, it depends…
 
 * Read our link:first-steps.adoc[first-steps tutorial] and learn to handle Sakuli
 * Integrate Sakuli results in monitoring systems:
-* link:installation-omd.adoc[Open Monitoring Distribution (OMD)].
-* link:forwarder-icinga2.adoc[Icinga2]
-* Sakuli can also be integrated in *continuous integration environments like Jenkins*. Documentation is coming in the next time (…have one?)
+** <<omd-integration-native>>
+** <<icinga2-integration>>
+* Sakuli can also be integrated in *continuous integration* environments like <<jenkins-integration>>

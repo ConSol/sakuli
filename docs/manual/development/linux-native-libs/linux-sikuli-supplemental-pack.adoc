@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 [[dev-sikuli-supplemental-pack]]
 === sikulix-supplemental package
 [#git-edit-section]

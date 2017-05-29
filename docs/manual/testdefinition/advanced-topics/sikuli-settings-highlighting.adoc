@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 ===== Highlighting Regions
 
 [#git-edit-section]

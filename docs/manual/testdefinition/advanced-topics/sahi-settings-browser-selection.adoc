@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 ===== Browser selection
 [#git-edit-section]
 :page-path: docs/manual/testdefinition/advanced-topics/sahi-settings-browser-selection.adoc

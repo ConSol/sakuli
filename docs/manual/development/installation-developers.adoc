@@ -1,4 +1,6 @@
 
+:imagesdir: ../../images
+
 [[dev-installation]]
 === Installation Guide for Sakuli-Developers
 [#git-edit-section]

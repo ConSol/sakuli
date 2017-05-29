@@ -1,4 +1,6 @@
 
+:imagesdir: images
+
 = General
 
 [#git-edit-section]

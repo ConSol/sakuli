@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 [[sahi-controller]]
 ==== Sahi Controller
 

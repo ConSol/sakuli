@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 [[docker-compose]]
 ==== Docker Compose
 [#git-edit-section]

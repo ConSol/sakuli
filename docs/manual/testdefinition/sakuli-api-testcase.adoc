@@ -1,4 +1,6 @@
 
+:imagesdir: ../../images
+
 [[TestCase]]
 ==== TestCase
 

@@ -1,4 +1,6 @@
 
+:imagesdir: images
+
 [[dev-new-release]]
 === How to create a new release
 [#git-edit-section]
@@ -105,10 +107,7 @@ git push --delete origin sakuli-X.X.X`
 *General*
 
 * Check your maven settings in `~/.m2/settings.xml`:
-* Ensure that your private key has access rights for user 'link:mailto:&#115;a&#107;&#x75;&#x6c;&#x69;&#x40;&#108;&#x61;&#x62;s&#46;&#x63;&#111;n&#115;&#111;&#108;.&#100;e[&#115;a&#107;&#x75;&#x6c;&#x69;&#x40;&#108;&#x61;&#x62;s&#46;&#x63;&#111;n&#115;&#111;&#108;.&#100;e]'
-* Ensure that your private key is added to ssh-agent:
- `
- ssh-add &lt;path-to-key&gt;
-`
-* Check proxy settings - the server `labs.consol.de` must be reachable'
-* Ensure that the ConSol-Labs server is configured correctly, see link:installation-developers.md#database-setup[Installation Developers]
+* Ensure that your private key has access rights for user `sakuli@labs.consol.de`
+* Ensure that your private key is added to ssh-agent: `ssh-add <path-to-key>`
+* Check proxy settings - the server `labs.consol.de` must be reachable
+* Ensure that the ConSol-Labs server is configured correctly, see <<sql-database>>

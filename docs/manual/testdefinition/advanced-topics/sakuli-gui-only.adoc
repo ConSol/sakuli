@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 ==== GUI-only tests
 
 [#git-edit-section]

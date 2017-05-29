@@ -1,4 +1,7 @@
 
+:imagesdir: ../../../../images
+
+[[omd-integration-native]]
 ===== Native OMD Integration
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/advanced-topics/omd-native.adoc

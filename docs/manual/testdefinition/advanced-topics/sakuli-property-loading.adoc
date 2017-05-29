@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 [[property-loading-mechanism]]
 ==== Property loading mechanism
 [#git-edit-section]

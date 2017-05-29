@@ -1,4 +1,5 @@
 
+:imagesdir: ../../images
 
 [[sakuli-testdefintion]]
 == Sakuli Testdefinition

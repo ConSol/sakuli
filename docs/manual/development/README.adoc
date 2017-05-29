@@ -1,4 +1,6 @@
 
+:imagesdir: ../../images
+
 == Developer Documentation
 [#git-edit-section]
 :page-path: docs/manual/development/README.adoc
@@ -10,6 +12,6 @@ In this section you will find a few helpful documentation for developers who wan
 * Jenkins-CI http://labs-build.consol.de/view/Sakuli/[labs-build.consol.de/view/Sakuli]
 * https://waffle.io/ConSol/sakuli?source=ConSol%2Fdocker-headless-vnc-container,ConSol%2Fsakuli,ConSol%2Fsakuli-examples,ConSol%2Fsakuli-go-wrapper[Waffel GitHub Issue Board]
 * <<dev-new-release>>
-* Some additional link:maven-aspects.md[Maven aspects]
+* Some additional <<dev-maven-aspects>>
 * <<dev-ascii-doc>>
 * (only for Linux) <<dev-sikuli-supplemental-pack>>

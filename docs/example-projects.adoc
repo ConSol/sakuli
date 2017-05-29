@@ -1,4 +1,6 @@
 
+:imagesdir: images
+
 [[examples]]
 = Example projects on GitHub
 

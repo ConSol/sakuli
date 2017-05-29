@@ -1,4 +1,6 @@
 
+:imagesdir: ../../images
+
 //==== Test in Java
 //TODO see jaxenter article
 //

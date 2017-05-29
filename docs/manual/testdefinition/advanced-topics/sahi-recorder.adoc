@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 [[sahi-recorder]]
 ==== Sahi Recorder
 [#git-edit-section]

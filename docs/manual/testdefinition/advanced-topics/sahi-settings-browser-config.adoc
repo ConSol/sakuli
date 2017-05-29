@@ -1,4 +1,7 @@
 
+:imagesdir: ../../../images
+
+[[sahi-browser-configuration]]
 ===== Browser configuration
 [#git-edit-section]
 :page-path: docs/manual/testdefinition/advanced-topics/sahi-settings-browser-config.adoc

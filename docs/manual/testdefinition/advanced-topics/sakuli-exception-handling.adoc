@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 ==== Exception handling
 [#git-edit-section]
 :page-path: docs/manual/testdefinition/advanced-topics/sakuli-exception-handling.adoc

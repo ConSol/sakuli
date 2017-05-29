@@ -1,4 +1,6 @@
 
+:imagesdir: ../../images
+
 [[sql-database]]
 === SQL Database
 

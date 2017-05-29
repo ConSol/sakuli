@@ -1,4 +1,5 @@
 
+:imagesdir: ../../../images
 [[docker-images]]
 ==== Sakuli Docker Images
 [#git-edit-section]

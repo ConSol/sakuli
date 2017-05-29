@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 [[rdp-peculiarities]]
 ===== RDP peculiarities
 [#git-edit-section]

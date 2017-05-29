@@ -1,4 +1,6 @@
 
+:imagesdir: ../../images
+
 [[dev-ascii-doc]]
 === AsciiDoc documentation aspects
 [#git-edit-section]
@@ -81,4 +83,18 @@ docs/manual/testdefinition/sakuli-api-region.adoc
 docs/manual/testdefinition/sakuli-api-testcase.adoc
 ----
 
-//TODO TS write how to execute and build the documentation
+.Update changelog
+
+*Replace GitHub issues `#999` numbers with links:*
+
+Search Regex:
+[source,regex]
+----
+#(\d+)
+----
+
+Replace expression:
+[source, regex]
+----
+https://github.com/ConSol/sakuli/issues/$1[#$1]`
+----

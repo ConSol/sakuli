@@ -1,4 +1,7 @@
 
+:imagesdir: ../../../images
+
+[[upgrade_process]]
 ==== Upgrade process
 [#git-edit-section]
 :page-path: docs/manual/execution/native/upgrade-process.adoc

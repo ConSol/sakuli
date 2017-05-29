@@ -1,4 +1,6 @@
 
+:imagesdir: images
+
 [[media]]
 = Media
 
@@ -8,7 +10,7 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 .Monitoring Minutes
 
-Episode 9 of the *_ConSol Monitoring Minutes_* shows the main features of Sakuli in 15 minutes. The machine used in this video is an instance of our demo appliance (see above). 
+Episode 9 of the *_ConSol Monitoring Minutes_* shows the main features of Sakuli in 15 minutes. The machine used in this video is an instance of our demo appliance.
 
 https://www.youtube.com/watch?v=S6NROEOYF6w[End2End Monitoring mit Sakuli und Nagios - ConSol Monitoring Minutes 9]
 

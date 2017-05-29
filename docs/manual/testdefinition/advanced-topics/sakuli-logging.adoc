@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 ==== Logging
 [#git-edit-section]
 :page-path: docs/manual/testdefinition/advanced-topics/sakuli-logging.adoc

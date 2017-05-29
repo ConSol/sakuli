@@ -1,6 +1,7 @@
 
+//:imagesdir: ../../../images
 //===== Headless Sakuli checks on Windows
-//TODO done
+//TODO write how to use with windows terminal server (m-net use case)
 
 //[#git-edit-section]
 //:page-path: docs/manual/execution/native/windows-native-headless.adoc

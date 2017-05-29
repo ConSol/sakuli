@@ -1,4 +1,6 @@
 
+:imagesdir: images
+
 = Publications
 
 [#git-edit-section]

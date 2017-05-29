@@ -1,6 +1,8 @@
+
 //TODO extracted from installation-client.md
 
 //TODO ubuntu installation screenshots
+:imagesdir: ../../../images
 
 ==== Linux Client
 [#git-edit-section]
@@ -10,7 +12,7 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 ===== How to install Sakuli natively on Linux
 
 This page describes the steps to *install and test* Sakuli on *Linux*.
-If you want to *update* Sakuli, see the link:upgrade-process.md[upgrade process] documentation.
+If you want to *update* Sakuli, see the <<upgrade_process>> documentation.
 
 The default installation path of a particular Sakuli version is referenced as `$SAKULI_HOME` (also called the "_version_" folder) which is inside of the folder "sakuli":
 
@@ -45,10 +47,8 @@ You can run Sakuli on physical as well as on virtual Linux machines.
 * Run Sakuli with a dedicated user
 * Sakuli needs a reliable and predictable desktop environment: make sure that there are no pop-up windows of services or applications
 * If Sakuli is running within a VM, change the desktop resolution to a fixed value (e.g. 1024x768) and disable any auto-resizing mechanisms of the guest display. This ensures that the guest's resolution does not change in case that you resize its window.
-* Other optional steps see link:./troubleshooting-tuning-sakuli-client.md#desktop-tuning["Desktop tuning"].
-* 
-
-the client should not have more than one physical screen
+* Other optional steps see <<gnome-session-fallback>>.
+* the client should *not* have more than one physical screen
 
 ===== Sakuli installation
 
@@ -58,12 +58,10 @@ the client should not have more than one physical screen
 
 Execute `java -jar sakuli-vX.X.X-installer.jar` to start the installer:
 
-//FIXME
 image:installer_1.png[inst_1]
 
 After you have accepted the licence and choose the installation folder, select the packages to install:
 
-//FIXME
 image:installer_2.png[inst_2]
 
 . will set/update the environment variable `$SAKULI_HOME` to the new version.
@@ -105,8 +103,8 @@ image:installer_4_l.png[controller_linux]
 
 ====== Additional documentation:
 
-* If you are sitting behing a company proxy, refer to link:./sakuli-additional-settings.md#sahi-behind-a-proxy[Proxy settings].
-* Refer to link:./additional-settings.md#browser-configuration[Browser configuration]) for instructions how to register other browsers.
+* If you are sitting behing a company proxy, refer to <<sahi_behind_a_proxy>>.
+* Refer to <<sahi-browser-configuration>> for instructions how to register other browsers.
 
 ===== Additional software
 
@@ -123,7 +121,7 @@ Install the following packages if you are on Linux:
 
 (optional)
 
-Currently, _each_ Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like http://phantomjs.org[PhantomJS]. Refer to link:./additional-settings.md#browser-configuration[Browser configuration] for more information.
+Currently, _each_ Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like http://phantomjs.org[PhantomJS]. Refer to <<sahi-browser-configuration>> for more information.
 
 Attention: PhantomJS 2 is currently unsupported. Use version 1.9.x
 
@@ -173,8 +171,9 @@ image:u_vnc_test.png[vnc test example]
 ===== Next steps
 What next? Well, it depends…
 
+//TODO update link if moved to examples
 * Read our link:first-steps.md[first-steps tutorial] and learn to handle Sakuli
 * Integrate Sakuli results in monitoring systems:
-* link:installation-omd.md[Open Monitoring Distribution (OMD)].
-* link:forwarder-icinga2.md[Icinga2]
-* Sakuli can also be integrated in *continuous integration environments like Jenkins*. Documentation is coming in the next time (…have one?)
+** <<omd-integration-native>>
+** <<icinga2-integration>>
+* Sakuli can also be integrated in *continuous integration* environments like <<jenkins-integration>>

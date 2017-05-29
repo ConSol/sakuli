@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../../images
+
 ===== PNP4Nagios
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/advanced-topics/pnp4nagios.adoc
@@ -23,9 +25,10 @@ If this value is _"SINGLE"_ on your system and you do not want to change it glob
 OMD[sakuli]:~$ cp __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/check_sakuli.cfg ~/etc/pnp4nagios/check_commands/
 ----
 
+[[pnp4nagios-rrd-heartbeat]]
 ====== RRD heartbeat
 
-Each RRD file contains a heartbeat value, which determines how much time must pass without any new update, before RRDtool writes an UNKNOWN value (nan) into the data slot (the graph will have a gap then). In PNP4nagios heartbeat is defined at approx. 2 1/2 hours. If your Sakuli check runs only every 2 hours, this value will be fine. But for a 5 minute interval, this is way too long. As a consequence, the graph line will be continuously drawed even Sakuli did no check for two hours. Hence, always make sure to adapt the heartbeat to a value which is slightly higher than the interval of Sakuli checks (and indeally the same as link:integration/monitoring/forwarder-gearman.md#create-a-nagios-service[freshness_threshold], if you use the gearman receiver): 
+Each RRD file contains a heartbeat value, which determines how much time must pass without any new update, before RRDtool writes an UNKNOWN value (nan) into the data slot (the graph will have a gap then). In PNP4nagios heartbeat is defined at approx. 2 1/2 hours. If your Sakuli check runs only every 2 hours, this value will be fine. But for a 5 minute interval, this is way too long. As a consequence, the graph line will be continuously drawed even Sakuli did no check for two hours. Hence, always make sure to adapt the heartbeat to a value which is slightly higher than the interval of Sakuli checks (and indeally the same as <<omd-gearman-freshness_threshold>>, if you use the gearman receiver):
 
 [source]
 ----

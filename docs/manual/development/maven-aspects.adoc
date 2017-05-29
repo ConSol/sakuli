@@ -1,4 +1,6 @@
 
+:imagesdir: ../../images
+
 [[dev-maven-aspects]]
 === Maven aspects
 [#git-edit-section]
@@ -63,7 +65,7 @@ mvn install -P upload-release
 
 * `ui-tests` Enables the UI based test in phase *integration-test* in the modul `integration-test` and `java-dsl`.
 * `generate-manual` This profile will generate the AsciiDoc documentation in the module *docs-manual*, see <<dev-ascii-doc>>.
-* `generate-markdown` This profile will generate Markdown file in the module *docs* the file link:../testdefintion/sakuli-api.md[Sakuli-API].
+* `generate-markdown` This profile will generate Markdown file in the module *docs* the file <<sakuli-api>>.
 
 TIP: To use the profile behind a *HTTP/HTTPS* proxy, be aware that the following things are configured:
 

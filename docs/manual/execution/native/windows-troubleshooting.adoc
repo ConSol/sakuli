@@ -1,4 +1,5 @@
 
+:imagesdir: ../../../images
 ===== Windows Troubleshooting
 [#git-edit-section]
 :page-path: docs/manual/execution/native/windows-troubleshooting.adoc
@@ -9,6 +10,7 @@ If you have some errors with your Windows installation, you can check the follow
 ====== Change Windows theme and title bar colors
 
 Windows 7 comes by default with an "aero" theme, which is quite awkward for Sikuli, because there are many transparency effects which cause window elements to change their appearance dependend on the elements below. For that, change the theme to "Windows Classic".
+
 image:w_classictheme.jpg[classic]
 
 Furthermore, change the colors of *active* and *inactive* title bars to *non gradient*:

@@ -1,4 +1,6 @@
 
+:imagesdir: ../../images
+
 === Troubleshooting
 
 [#git-edit-section]

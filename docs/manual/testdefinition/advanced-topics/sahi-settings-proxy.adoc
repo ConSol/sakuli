@@ -1,4 +1,7 @@
 
+:imagesdir: ../../../images
+
+[[sahi_behind_a_proxy]]
 ===== Sahi behind a proxy
 [#git-edit-section]
 :page-path: docs/manual/testdefinition/advanced-topics/sahi-settings-proxy.adoc

@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 ==== Sakuli Java DSL
 [#git-edit-section]
 :page-path: docs/manual/execution/maven/java-DSL.adoc
@@ -9,7 +11,7 @@ capabilities as the Javascript API.
 
 ===== Usage
 
-The Sakuli Java DSL comes to you as Maven module JAR file. You can add the module to your Sakuli project as Maven dependency. Currently the Java tests have to be written with the [TestNG] unit framework, so also provide the [TestNG] Maven dependency in your project POM:
+The Sakuli Java DSL comes to you as Maven module JAR file. You can add the module to your Sakuli project as Maven dependency. Currently the Java tests have to be written with the http://testng.org[TestNG] unit framework, so also provide the http://testng.org[TestNG] Maven dependency in your project POM:
 
 [source,xml]
 ----

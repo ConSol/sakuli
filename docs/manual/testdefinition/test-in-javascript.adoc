@@ -1,4 +1,6 @@
 
+:imagesdir: ../../images
+
 //=== Test in JavaScript
 //TODO see jaxenter article
 

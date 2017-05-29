@@ -1,4 +1,6 @@
 
+:imagesdir: ../../../images
+
 [[omd-gearman]]
 ==== OMD - Gearman Daemon
 [#git-edit-section]
@@ -92,7 +94,8 @@ define host {
 }
 ----
 
-Create the following service object for the first test case. _freshness_threshold_ should be slightly higher than the interval Sakuli tests are planned (see also link:advanced-topics/installation-omd.md#rrd-heartbeat[RRD heartbeat] )
+[[omd-gearman-freshness_threshold]]
+Create the following service object for the first test case. _freshness_threshold_ should be slightly higher than the interval Sakuli tests are planned (see also <<pnp4nagios-rrd-heartbeat>> )
 
 [source]
 ----

@@ -1,3 +1,6 @@
+
+:imagesdir: ../../../images
+
 ===== HTTPS support in Sahi
 [#git-edit-section]
 :page-path: docs/manual/testdefinition/advanced-topics/sahi-https.adoc

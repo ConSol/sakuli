@@ -46,8 +46,6 @@ ifdef::basebackend-html[toc::[]]
 
 image:sakuli_logo_small.png[sakuli-logo]
 
-//TODO check internal links, see http://asciidoctor.org/docs/user-manual/#internal-cross-references
-
 // STRUCTURE
 include::general.adoc[]
 include::download.adoc[]
@@ -127,6 +125,7 @@ include::manual/integration/monitoring/advanced-topics/omd-native.adoc[]
 include::manual/integration/monitoring/advanced-topics/pnp4nagios.adoc[]
 include::manual/integration/monitoring/advanced-topics/grafana.adoc[]
 
+[[continuous_integration]]
 === Continuous Integration
 include::manual/integration/ci/jenkins.adoc[]
 include::manual/integration/sql-database.adoc[]
