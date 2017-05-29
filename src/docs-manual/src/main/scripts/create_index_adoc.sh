@@ -40,7 +40,7 @@ for filepath in `find "$ROOT" -maxdepth 1 -mindepth 1 -name 'v*' -type d| sort`;
   echo "
 |$folderName
 |link:$folderName/index.html[HTML]
-|link:$folderName/pdf/sakuli_documentation_$folderName.pdf[PDF]
+|link:$folderName/pdf/sakuli_documentation_$folderName.pdf[PDF^]
 " >> $OUTPUT
 done
 

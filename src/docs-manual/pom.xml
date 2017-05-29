@@ -112,6 +112,7 @@
                                             <includes>
                                                 <include>index.*</include>
                                                 <include>download.*</include>
+                                                <include>general.*</include>
                                             </includes>
                                         </resource>
                                     </resources>
