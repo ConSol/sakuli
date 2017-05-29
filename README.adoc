@@ -12,20 +12,17 @@ image:./docs/images/sakuli_logo_small.png[sakuli-logo]
 
 = Quick Links
 
-link::docs/general.adoc[General]
+// STRUCTURE
+include::docs/general.adoc[General]
+include::docs/download.adoc[Download]
+include::docs/why-sakuli.adoc[Why Sakuli?]
+include::docs/concept.adoc[Concept]
 
-include::docs/concept.adoc[]
+= http://consol.github.io/sakuli[Manual]
 
-
-* link:#Introduction[*Introduction*]
-** link:#concept-of-sakuli[Concept of Sakuli]
-** link:#history-of-sakuli[History]
-** link:#why-sakuli[Why Sakuli]
-* link:#resources[*Resources*]
-** link:./docs/index.md[*Documentation*]
-** link:#example-projects-on-github[Example projects]
-** link:docs/site/publication.md[Publication]
-** link:docs/site/events.md[Events]
-** link:changelog.md[Change Log]
-** link:#help[Help]
-** link:#thanks[Thanks]
+include::docs/example-projects.adoc[Example Projects]
+include::docs/publications.adoc[Publications]
+include::docs/events.adoc[Events]
+include::docs/media.adoc[Media]
+include::docs/changelog.adoc[Changlog]
+include::docs/support.adoc[Support]
