@@ -1,0 +1,130 @@
+
+:imagesdir: ../../images
+
+[[dev-installation]]
+=== Installation Guide for Sakuli-Developers
+[#git-edit-section]
+:page-path: docs/manual/development/how-to-release.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+.Requirements
+
+For the following guide you need
+
+* Access to the issue-tracker tool (currently GitHub-Issues and internal GitLab)
+* Git
+* Development environment (we advise IntelliJ IDEA)
+* Maven 3 (check version `mvn -version`)
+
+CAUTION: *For Ubuntu users!!!* - check the maven version over ` apt show maven` )
+
+* Java JDK 1.8
+* Please use the original Oracle JDK - OpenJDK unfortunately won't work for the JavaFX based integration test, until https://github.com/ConSol/sakuli/issues/245[#245] is not closed. Also see <<dev-java-fx>>
+* Ensure that your `JAVA_HOME` system variable links to the correct jdk-version
+
+.Sakuli Setup
+
+*Import*
+
+* Check out the project via git
+* Import the project as a maven-project
+
+*Maven Settings*
+
+* Ensure that you have at least installed maven 3, run `mvn -version`
+* Config the local maven settings `~/.m2/settings.xml` for your environment as follows:
+
+[source,xml]
+----
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+<server>
+ <id>labs-consol-sakuli-install</id>
+ <username>sakuli</username>
+ <privateKey>${user.home}/.ssh/your-key-file</privateKey>
+ </server>
+
+<server>
+ <id>labs-consol-sakuli-repository</id>
+ <username>maven-repository</username>
+ <privateKey>${user.home}/.ssh/your-key-file</privateKey>
+ </server>
+
+</settings>
+----
+
+.Install Sahi
+
+* Download Sahi5 from https://labs.consol.de/sakuli/install/3rd-party[https://labs.consol.de/sakuli/install/3rd-party] and execute the sahi installation:
+
+[source]
+----
+java -jar install_sahi_v50_20141105.jar.jar
+----
+
+* Install Sahi into `<project-dir>/sahi`. Ensure that this path is set in `sahi.proxy.homePath` in file `sakuli.properties`.
+
+TIP: You only need to install the components: Sahi Core, Tools Userdata
+
+.Database Setup (optional, only needed for <<sql-database>> integration)
+
+Setup a local MySQL database to save the results of test case executions. The database won't be needed for running `mvn install`.
+
+* *User:* `sakuli`
+* *Password:* `sakuli`
+* *Database:* `sakuli`
+* *SQL-Script:* git-link:src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database.sql[link-text="create_sakuli_database.sql", mode="view", link-window="_blank"]
+
+If you want to use a Docker-Container, you can build and run it with the following commands:
+
+[source,bash]
+----
+cd src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database
+docker build -t=your-user/mysql-sakuli .
+docker run --name mysql-sakuli -p 3306:3306 your-user/mysql-sakuli
+----
+
+.IDE configuration
+
+* Execute `mvn clean verify` to ensure that the setup is correct
+* Include the license header to your IDE
+* For IntelliJ see http://www.jetbrains.com/idea/webhelp/generating-and-updating-copyright-notice.html[Help] or our predefined copyright configuration:
+** link:intellij/copyright/profiles_settings.xml[]
+** link:intellij/copyright/sakuli_copyright[]
+** License Header
+[source]
+----
+include::intellij/copyright/license_header.txt[]
+----
+
+* In order to run Sakuli test cases directly from the IDE, you need to build up a run configuration. For IntelliJ see the predefined run configurations under
+  git-link:docs/manual/development/intellij/runConfigurations[link-text="intellij/runConfigurations", mode="view", link-window="_blank"]
+* *classpath of module:* `sakuli-core`
+* *working directory:* `$MODULE_DIR$`
+* *main class:* `org.sakuli.starter.SakuliStarter`
+* *program arguments:*
+[[source]
+----
+-run <path to your Sakuli test suite folder> --sakuli_home <path to your "main" folder> --sahi_home <path to your sahi folder>
+----
+e.g. for the provided Win7 example use:
+[source]
+----
+-run ../sakuli_test_suites/example src/main/_include ../sahi
+----
+* To run the testng tests correctly and prevent wrong file paths, set the default TestNG config like follow: image:intellij_testng_run_config.png[intellij testng config]
+
+CAUTION: *Startup error*: If you run your Sakuli test the first time, you might get a native library error, caused by Sikuli, saying that it could not find the correct native library to work with. At the same time, Sikuli already tried to fix the problem by modyfing PATH. *Solution*: Just log out and in again, so that the modified PATH-Variable will be read. Sakuli should start now without any error.
+
+
+[[dev-java-fx]]
+.Install JavaFX
+
+. Ensure that you have installed the latest JDK-8 version with included JavaFX
+. Ensure that the system variable `java.home` points to your JDK directory and includes the file `${java.home}/lib/ext/jfxrt.jar`
+. _(optional)_ Download the JavaFX SceneBuilder for development from http://www.oracle.com/technetwork/java/javase/downloads/javafxscenebuilder-download-2157683.html[Oracle]
+. _(optional)_ Install the SceneBuilder to your IDE:
+** Intellij see http://docs.oracle.com/javafx/scenebuilder/1/use_java_ides/sb-with-intellij.htm[Oracle-Help-Page]

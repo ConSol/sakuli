@@ -1,0 +1,148 @@
+= Sakuli E2E testing and -monitoring
+The Sakuli Team <sakuli@consol.de>
+:revnumber: ${sakuli.version}
+:revdate: ${git.build.time}
+:sectanchors:
+:sectlinks:
+:sectnumlevels: 4
+:toc: macro
+:toclevels: 5
+:toc-title: Sakuli E2E
+:doctype: book
+:icons: font
+:docinfo1:
+:max-include-depth: 999
+
+ifndef::ebook-format[:leveloffset: 1]
+
+// URIs:
+:uri-org: https://github.com/ConSol
+:uri-repo: {uri-org}/sakuli
+:uri-project: {uri-repo}
+ifdef::env-site[:uri-project: link:]
+:uri-issues: {uri-repo}/issues
+:uri-contributors: {uri-repo}/graphs/contributors
+:uri-rel-file-base: link:
+:uri-rel-tree-base: link:
+ifdef::env-site[]
+:uri-rel-file-base: {uri-repo}/blob/${git.branch}/
+:uri-rel-tree-base: {uri-repo}/tree/${git.branch}/
+endif::[]
+
+
+// EDIT on Github config
+// see: https://jmini.github.io/asciidoctorj-gh-edit
+:git-repository: ConSol/sakuli
+:git-branch: ${git.branch}
+:git-edit: [link-text="edit", mode="edit", link-window="_blank"]
+:git-view: [link-text="view", mode="view", link-window="_blank"]
+
+*Copyright © 2017 ConSol Software GmbH - http://www.sakuli.org[www.sakuli.org]*
+
+ifdef::basebackend-html[toc::[]]
+
+:sectnums!:
+:imagesdir: images
+
+image:sakuli_logo_small.png[sakuli-logo]
+
+// STRUCTURE
+include::general.adoc[]
+include::download.adoc[]
+include::why-sakuli.adoc[]
+include::concept.adoc[]
+
+:sectnums:
+[[manual]]
+= Manual
+== Introduction
+include::manual/execution/execution-types.adoc[]
+
+=== Native Execution
+include::manual/execution/native/windows.adoc[]
+include::manual/execution/native/windows-rdp-peculiarities.adoc[]
+include::manual/execution/native/windows-troubleshooting.adoc[]
+include::manual/execution/native/windows-native-headless.adoc[]
+include::manual/execution/native/linux.adoc[]
+include::manual/execution/native/linux-native-headless.adoc[]
+include::manual/execution/native/linux-troubleshooting.adoc[]
+include::manual/execution/native/upgrade-process.adoc[]
+
+
+=== Maven Execution
+include::manual/execution/maven/java-DSL.adoc[]
+
+[[containerized_execution]]
+=== Containerized Execution
+include::manual/execution/containerized/docker-images.adoc[]
+include::manual/execution/containerized/docker-compose.adoc[]
+
+include::manual/testdefinition/testdefinition.adoc[]
+include::manual/testdefinition/test-in-javascript.adoc[]
+include::manual/testdefinition/test-in-java.adoc[]
+//Sakuli API
+include::manual/testdefinition/sakuli-api.adoc[]
+include::manual/testdefinition/sakuli-api-testcase.adoc[]
+include::manual/testdefinition/sakuli-api-application.adoc[]
+include::manual/testdefinition/sakuli-api-environment.adoc[]
+include::manual/testdefinition/sakuli-api-key.adoc[]
+include::manual/testdefinition/sakuli-api-logger.adoc[]
+include::manual/testdefinition/sakuli-api-mouse-button.adoc[]
+include::manual/testdefinition/sakuli-api-region.adoc[]
+
+include::manual/testdefinition/starter.adoc[]
+
+=== Additional Topics
+This page contains different topics regarding the configuration of both *Sakuli* and its components: *Sahi* and *Sikuli*.
+
+include::manual/testdefinition/advanced-topics/sakuli-property-loading.adoc[]
+include::manual/testdefinition/advanced-topics/sakuli-exception-handling.adoc[]
+include::manual/testdefinition/advanced-topics/sakuli-logging.adoc[]
+include::manual/testdefinition/advanced-topics/sakuli-encryption.adoc[]
+include::manual/testdefinition/advanced-topics/sakuli-screenshot-settings.adoc[]
+include::manual/testdefinition/advanced-topics/sakuli-gui-only.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-controller.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-recorder.adoc[]
+
+==== Sahi settings
+include::manual/testdefinition/advanced-topics/sahi-settings-browser-selection.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-settings-browser-config.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-settings-proxy.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-https.adoc[]
+
+==== Sikuli settings
+include::manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc[]
+
+include::manual/testdefinition/troubleshooting.adoc[]
+
+//== Integration documentation
+include::manual/integration/integration.adoc[]
+=== Monitoring
+include::manual/integration/monitoring/omd-gearman.adoc[]
+include::manual/integration/monitoring/omd-sql-database.adoc[]
+include::manual/integration/monitoring/icinga2api.adoc[]
+==== Advanced Topics
+include::manual/integration/monitoring/advanced-topics/omd-native.adoc[]
+include::manual/integration/monitoring/advanced-topics/pnp4nagios.adoc[]
+include::manual/integration/monitoring/advanced-topics/grafana.adoc[]
+
+[[continuous_integration]]
+=== Continuous Integration
+include::manual/integration/ci/jenkins.adoc[]
+include::manual/integration/sql-database.adoc[]
+
+//== Developer Documentation
+include::manual/development/README.adoc[]
+include::manual/development/installation-developers.adoc[]
+include::manual/development/how-to-release.adoc[]
+include::manual/development/maven-aspects.adoc[]
+include::manual/development/ascii-doc-aspects.adoc[]
+include::manual/development/linux-native-libs/linux-sikuli-supplemental-pack.adoc[]
+
+include::example-projects.adoc[]
+include::publications.adoc[]
+include::events.adoc[]
+include::media.adoc[]
+include::changelog.adoc[]
+include::support.adoc[]
+//TODO DEL

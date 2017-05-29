@@ -1,0 +1,20 @@
+
+:imagesdir: ../../images
+
+[[integration_in_other_tools]]
+== Integration in other Tools
+
+[#git-edit-section]
+:page-path: docs/manual/integration/integration.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+//TODO write
+//What integration possibilities do we have?
+//* Monitoring Systems
+//* Continuous Integration Systems
+//* Weitere Integration möglich, contact us ;-)
+
+
+Sakuli can hand over test result to "*Forwarder*", which can be currently feed different tools like Nagios based monitoring systems or continuous integration server. If no forwarder is defined, a result summary is printed out in the end of a suite.
+
+include::forwarder-overview.adoc[]

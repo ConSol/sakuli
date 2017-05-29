@@ -1,0 +1,12 @@
+
+:imagesdir: ../../../images
+
+[[jenkins-integration]]
+==== Jenkins
+[#git-edit-section]
+:page-path: docs/manual/integration/ci/jenkins.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Sakuli can also be integrated in *continuous integration* environments like *Jenkins*. Documentation is coming in the next time (…have one?)
+
+//TODO TS: write how to execute in Jenkins

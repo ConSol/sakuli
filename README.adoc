@@ -1,0 +1,38 @@
+image:./docs/images/sakuli_logo_small.png[sakuli-logo]
+
+_An end-to-end testing tool for web sites and common UIs with multiple monitoring integrations_
+
+//TODO copy & paste some content from concept
+
+= Documentation
+The complete versions of our documentation you can find under:
+
+*http://consol.github.io/sakuli[consol.github.io/sakuli]*
+
+** *_Stable/Latest version:_* latest tagged `vX.X.X` documentation
+** *_Dev version:_* latest `vX.X.X-SNAPSHOT` version
+
+= Quick Links
+
+// STRUCTURE
+include::docs/general.adoc[General]
+
+include::docs/download.adoc[Download]
+
+include::docs/why-sakuli.adoc[Why Sakuli?]
+
+include::docs/concept.adoc[Concept]
+
+*http://consol.github.io/sakuli[Manual]*
+
+include::docs/example-projects.adoc[Example Projects]
+
+include::docs/publications.adoc[Publications]
+
+include::docs/events.adoc[Events]
+
+include::docs/media.adoc[Media]
+
+include::docs/changelog.adoc[Changlog]
+
+include::docs/support.adoc[Support]

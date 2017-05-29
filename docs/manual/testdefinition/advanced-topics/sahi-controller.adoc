@@ -1,0 +1,83 @@
+
+:imagesdir: ../../../images
+
+[[sahi-controller]]
+==== Sahi Controller
+
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sahi-controller.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+
+TIP: Use the Sahi Controller to identify elements on the page to write and test Sahi methods!
+
+There are two ways to get Sahi instructions into your testcase `your-testcase.js`:
+
+* identify, copy &amp; paste from the Sahi Controller
+* record by the Sahi Controller, copy &amp; paste from the file, see <<sahi-recorder>>
+
+[[sahi-open-controller]]
+.Open the Sahi Controller
+
+Add to your testcase the following line, at position where you want to identify your HTML object:
+
+[source,js]
+----
+//.... your testcode
+env.sleep(9999);
+----
+
+Then start your test suite and the Sakuli test should appear and stop at that position for 9999 seconds. The "sleep" statement is a nice trick when writing long tests; wherever you put a 9999s sleep in, the test will execute until this position and wait. Think of it like a breakpoint when debugging a program.
+
+Now open the Sahi Controller (hold the `ALT` key on Windows or `CTRL + ALT` on Linux and doubleclick anywhere on the page) to open this window:
+
+image:tutorial_contoller.png[sahi_controller]
+
+[[sahi-controller-copy-paste]]
+.copy/paste code
+
+First, we want Sahi to check if there is for example the Sakuli Logo on the page. Hold the `CTRL` key and move the mouse pointer on the logo. Watch the Sahi Controller: it detects the HTML elements below the mouse pointer and generates the http://sahipro.com/docs/sahi-apis/accessor-apis.html#_image[accessor method for "image"] automatically:
+
+image:tutorial_logo_accessor.png[logo_accessor]
+
+Click on "Assert" to let Sahi autogenerate http://sahipro.com/docs/sahi-apis/assertions.html[assertion methods]:
+
+image:tutorial_assert2.png[assert]
+
+Just copy the second line (which checks the visibility of an element) into the clipboard and paste it into your testcase `your-testcase.js` before the `env.sleep(9999)` statement.
+
+Further, we want for example to assure that the contact form of the web page os displayed correctly. Move the mouse pointer down to the "Kontakt" link; Sahi should display the accessor `_image(&quot;Kontakt zu ConSol&quot;)`
+
+. This time use the "click" button on the controller
+. To execute a click; this also generates the complete http://sahipro.com/docs/sahi-apis/action-apis.html[browser action] statement
+. copy/paste also into the test case
+
+image:tutorial_click_action.png[click]
+
+In the end, Sahi should check that the appeared popup window contains the text "Schreiben Sie uns!". You guessed it - move the mouse pointer over this text and click the "Assert" button again. The fourth assertion is the right one, which we also paste into the test script: 
+
+image:tutorial_contains_text.png[contains_text]
+
+Now remove the "sleep" statement from the script file; it should look now like that: 
+
+[source,js]
+----
+_dynamicInclude($includeFolder);
+var testCase = new TestCase(60, 70);
+var env = new Environment()
+
+try{
+    //your code
+    _assert(_isVisible(_image("sakuli.png")));
+    _click(_image("Kontakt zu conSol"));
+    _assertContainsText("Schreiben Sie uns!", _heading3("Schreiben Sie uns!"));
+    //env.sleep(9999);
+
+} catch (e) {
+    testCase.handleException(e);
+} finally {
+    testCase.saveResult();
+}
+----
+
+TIP: Perhaps you want Sahi to highlight the items it is acting on: just use the `_highlight()` method from the http://sahipro.com/docs/sahi-apis/debug-helper-apis.html[debug helper API] to mark each element with a red border before accessing it: `_highlight(_image("sakuli.png"));`

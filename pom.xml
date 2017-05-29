@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.sakuli</groupId>
@@ -34,9 +35,10 @@
 
     <modules>
         <module>src/common</module>
+        <module>src/docs-sakuli-api</module>
+        <module>src/docs-manual</module>
         <module>src/core</module>
         <module>src/integration-test</module>
-        <module>src/docs</module>
         <module>src/java-dsl</module>
         <module>src/installer</module>
     </modules>
@@ -96,7 +98,7 @@
                         <exclude>**/integration/**/*</exclude>
                     </excludes>
                     <environmentVariables>
-                        <SAKULI_HOME />
+                        <SAKULI_HOME/>
                     </environmentVariables>
                 </configuration>
             </plugin>
@@ -220,7 +222,7 @@
                 <plugin>
                     <groupId>pl.project13.maven</groupId>
                     <artifactId>git-commit-id-plugin</artifactId>
-                    <version>2.2.0</version>
+                    <version>2.2.2</version>
                 </plugin>
 
                 <plugin>
@@ -228,6 +230,28 @@
                     <artifactId>jgitflow-maven-plugin</artifactId>
                     <version>1.0-m5.1</version>
                 </plugin>
+
+                <plugin>
+                    <groupId>com.coderplus.maven.plugins</groupId>
+                    <artifactId>copy-rename-maven-plugin</artifactId>
+                    <version>1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.6.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.asciidoctor</groupId>
+                    <artifactId>asciidoctor-maven-plugin</artifactId>
+                    <version>1.5.3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>1.9.5</version>
+                </plugin>
+
             </plugins>
 
         </pluginManagement>

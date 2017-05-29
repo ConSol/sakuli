@@ -1,0 +1,351 @@
+
+:imagesdir: ../../images
+
+[[Environment]]
+==== Environment
+
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/sakuli-api-environment.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Environment - Represents the environment of the current test host.
+
+*Params*
+
+* optResumeOnException `Boolean` - (optional) if this parameter is undefined, it will be false.
+
+*Members*
+
+* link:#Environment[Environment]
+* link:#Environment.setSimilarity[Environment.setSimilarity(similarity)]
+* link:#Environment.resetSimilarity[Environment.resetSimilarity()]
+* link:#Environment.getRegionFromFocusedWindow[Environment.getRegionFromFocusedWindow()]
+* link:#Environment.takeScreenshot[Environment.takeScreenshot(pathName)]
+* link:#Environment.sleep[Environment.sleep(seconds)]
+* link:#Environment.getClipboard[Environment.getClipboard()]
+* link:#Environment.setClipboard[Environment.setClipboard(text)]
+* link:#Environment.pasteClipboard[Environment.pasteClipboard()]
+* link:#Environment.copyIntoClipboard[Environment.copyIntoClipboard()]
+* link:#Environment.cleanClipboard[Environment.cleanClipboard()]
+* link:#Environment.paste[Environment.paste(text)]
+* link:#Environment.pasteMasked[Environment.pasteMasked(text)]
+* link:#Environment.pasteAndDecrypt[Environment.pasteAndDecrypt(text)]
+* link:#Environment.type[Environment.type(text, optModifiers)]
+* link:#Environment.typeMasked[Environment.typeMasked(text, optModifiers)]
+* link:#Environment.typeAndDecrypt[Environment.typeAndDecrypt(text, optModifiers)]
+* link:#Environment.decryptSecret[Environment.decryptSecret(secret)]
+* link:#Environment.keyDown[Environment.keyDown(keys)]
+* link:#Environment.keyUp[Environment.keyUp(keys)]
+* link:#Environment.write[Environment.write(text)]
+* link:#Environment.mouseWheelDown[Environment.mouseWheelDown(steps)]
+* link:#Environment.mouseWheelUp[Environment.mouseWheelUp(steps)]
+* link:#Environment.isWindows[Environment.isWindows()]
+* link:#Environment.isLinux[Environment.isLinux()]
+* link:#Environment.getOsIdentifier[Environment.getOsIdentifier()]
+* link:#Environment.runCommand[Environment.runCommand(command, optThrowException)]
+
+
+[[Environment.setSimilarity]]
+.Environment.setSimilarity(similarity)
+
+Set a new default similarity for the screen capturing methods.
+
+*Params*
+
+* similarity `number` - value between 0 and 1, default = 0.8
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.resetSimilarity]]
+.Environment.resetSimilarity()
+
+Resets the current similarty of the screen capturing methods to the original default value of 0.8.
+
+*Returns*: - this link:#Environment[Environment] or NULL on errors.
+
+[[Environment.getRegionFromFocusedWindow]]
+.Environment.getRegionFromFocusedWindow()
+
+Get a Region object from the current focused window
+
+*Returns*: - a Region object from the current focused window
+ or NULL on errors.
+
+[[Environment.takeScreenshot]]
+.Environment.takeScreenshot(pathName)
+
+Takes a screenshot of the current screen and saves it to the overgiven path.
+If there ist just a file name, the screenshot will be saved in your testsuite log folder.
+
+*Params*
+
+* pathName `String` - `pathname/filname.format` or just `filename.format`
+
+*Example*
+[source,js]
+----
+environment.takeScreenshot("test.jpg");
+----
+
+
+[[Environment.sleep]]
+.Environment.sleep(seconds)
+
+Blocks the current testcase execution for x seconds
+
+*Params*
+
+* seconds `number` - to sleep
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.getClipboard]]
+.Environment.getClipboard()
+
+*Returns*: - the current content of the clipboard as String or NULL on errors
+
+[[Environment.setClipboard]]
+.Environment.setClipboard(text)
+
+sets the String paramter to the system clipboard
+
+*Params*
+
+* text `String` - text as string
+
+*Returns*: - this Environment.
+
+[[Environment.pasteClipboard]]
+.Environment.pasteClipboard()
+
+pastes the current clipboard content into the focused area.
+Will do the same as "STRG + V".
+
+*Returns*: - this Environment.
+
+[[Environment.copyIntoClipboard]]
+.Environment.copyIntoClipboard()
+
+copy the current selected item or text to the clipboard.
+Will do the same as "STRG + C".
+
+*Returns*: - this Environment.
+
+[[Environment.cleanClipboard]]
+.Environment.cleanClipboard()
+
+Clean the content of the clipboard.
+
+
+[[Environment.paste]]
+.Environment.paste(text)
+
+pastes the text at the current position of the focus/carret <br/>using the
+clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
+
+*Params*
+
+* text `String` - a string, which might contain unicode characters
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.pasteMasked]]
+.Environment.pasteMasked(text)
+
+makes a masked paste(String) without any logging.
+
+*Params*
+
+* text `String` - a string, which might contain unicode characters
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.pasteAndDecrypt]]
+.Environment.pasteAndDecrypt(text)
+
+combines pasteMasked(String) and decryptSecret(String).
+
+*Params*
+
+* text `String` - encrypted secret
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.type]]
+.Environment.type(text, optModifiers)
+
+Enters the given text one character/key after another using keyDown/keyUp.
+<p/>
+About the usable Key constants see documentation of Key.
+The function could also type UTF-8 unicode characters, if the OS supports it.
+The text is entered at the current position of the focus.
+
+*Params*
+
+* text `String` - containing characters and/or Key constants
+* optModifiers `String` - (optional) an String with only Key constants.
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.typeMasked]]
+.Environment.typeMasked(text, optModifiers)
+
+Enters the given text one character/key after another using keyDown/keyUp.
+The entered text will be masked at the logging.
+<p/>
+About the usable Key constants see documentation of Key.
+The function could also type UTF-8 unicode characters, if the OS supports it.
+The text is entered at the current position of the focus.
+
+*Params*
+
+* text `String` - containing characters and/or Key constants
+* optModifiers `String` - (optional) an String with only Key constants.
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.typeAndDecrypt]]
+.Environment.typeAndDecrypt(text, optModifiers)
+
+Decrypt and enters the given text one character/key after another using keyDown/keyUp.
+The entered text will be masked at the logging. For the details of the decryption see decryptSecret(String).
+<p/>
+About the usable Key constants see documentation of Key.
+The function could also type UTF-8 unicode characters, if the OS supports it.
+The text is entered at the current position of the focus.
+
+*Params*
+
+* text `String` - containing characters and/or Key constants
+* optModifiers `String` - (optional) an String with only Key constants.
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.decryptSecret]]
+.Environment.decryptSecret(secret)
+
+Decrypt a encrypted secret and returns the value at runtime.
+The decryption will only work if the encryption and decryption happen on the same physical machine.
+There will be no logging with the decrypted secret during this step.
+<p/>
+To create a encrypted secret see "sakuli-manual.md".
+
+*Params*
+
+* secret `String` - encrypted secret as String
+
+*Returns*: - decrypted String
+
+[[Environment.keyDown]]
+.Environment.keyDown(keys)
+
+Press and hold the given keys including modifier keys <br/>
+use the key constants defined in class Key, <br/>
+which only provides a subset of a US-QWERTY PC keyboard layout <br/>
+might be mixed with simple characters<br/>
+use + to concatenate Key constants
+
+*Params*
+
+* keys `String` - valid keys
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.keyUp]]
+.Environment.keyUp(keys)
+
+release the given keys (see Environment.keyDown(…)).
+
+*Params*
+
+* keys `String` - valid keys
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.write]]
+.Environment.write(text)
+
+Compact alternative for type() with more options
+
+:hardbreaks:
+- special keys and options are coded as #XN. or #X+ or #X- where X is a reference for a special key and N is an optional repeat factor
+A modifier key as #X. modifies the next following key the trailing . ends the special key, the + (press and hold) or - (release) does the same, but signals press-and-hold or release additionally.
+except #W / #w all special keys are not case-sensitive
+a #wn. inserts a wait of n millisecs or n secs if n less than 60
+a #Wn. sets the type delay for the following keys (must be &gt; 60 and denotes millisecs)
+
+- otherwise taken as normal wait
+*Example:* wait 2 secs then type CMD/CTRL - N then wait 1 sec then type DOWN 3 times
+*Windows/Linux:* write("#w2.#C.n#W1.#d3.")
+*Mac:* write("#w2.#M.n#W1.#D3.")
+for more details about the special key codes and examples consult the sikuliX docs.
+
+:!hardbreaks:
+
+*Params*
+
+* text `String` - a coded text interpreted as a series of key actions (press/hold/release)
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.mouseWheelDown]]
+.Environment.mouseWheelDown(steps)
+
+move the mouse pointer to the given target location and move the
+wheel the given steps down.
+
+*Params*
+
+* steps `number` - the number of steps
+
+
+[[Environment.mouseWheelUp]]
+.Environment.mouseWheelUp(steps)
+
+move the mouse pointer to the given target location and move the
+wheel the given steps up.
+
+*Params*
+
+* steps `number` - the number of steps
+
+
+[[Environment.isWindows]]
+.Environment.isWindows()
+
+*Returns*: `boolean` - true, if the OS is any instance of an Windows based OS
+
+[[Environment.isLinux]]
+.Environment.isLinux()
+
+*Returns*: `boolean` - true, if the OS is any instance of an Linux based OS
+
+[[Environment.getOsIdentifier]]
+.Environment.getOsIdentifier()
+
+*Returns*: `string` - identifier of the current OS
+
+[[Environment.runCommand]]
+.Environment.runCommand(command, optThrowException)
+
+Runs the assigned command on the host and returns the result. *Attention:* this is OS depended feature! So be
+aware which os you are running, maybe us to check `Environment#isLinux()` or `Environment#isWindows()`.
+
+*Params*
+
+* command `string` - OS depended command as `String`
+* optThrowException `boolean` - defines if an exception should be thrown, if the exit code != 0
+
+*Returns*: - the result as `CommandLineResult` object, you can use the methods `result.getOutput()` and `result.getExitCode()`
+
+*Example:*
+[source,js]
+----
+var app;
+if(environmen.runCommand('uname --machine') == 'x86_64'){
+    //open app from other path
+    app = new Application('/lib64/appname');
+} else {
+    app = new Application('/lib/appname');
+}
+----
