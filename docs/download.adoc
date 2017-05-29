@@ -6,24 +6,62 @@
 :page-path: docs/download.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-//TODO Links zu
-* Installer *-&gt; http://labs.consol.de/sakuli/install/[Download]*
-* Maven Decencies
-* GH-Pages index.html
-* PDF-Documentation: *link:${pdf.path}[Download PDF]*
-* REMOVE Readthedocs state
+.Installer
+Our Java based installer or the raw ZIP file can be downloaded form http://labs.consol.de/sakuli/install/[labs.consol.de/sakuli/install^]:
 
+* https://labs.consol.de/sakuli/install/sakuli-${sakuli.version}-installer.jar[sakuli-${sakuli.version}-installer.jar]
+* https://labs.consol.de/sakuli/install/sakuli-${sakuli.version}.zip[sakuli-${sakuli.version}.zip]
+
+.Maven Dependencies
+See <<_maven_execution>>.
+
+.Docker images
+See <<_containerized_execution>>
+
+
+.PDF-Documentation
+*link:${pdf.path}[Download PDF]*
+
+.branches & builds
 |===
 |branch |build state |docker images state
 
 |`master`
 |image:http://labs-build.consol.de/buildStatus/icon?job=Sakuli_perform_release[Build Status,link=http://labs-build.consol.de/view/Sakuli/job/Sakuli_perform_release/]
-|`consol/sakuli-ubuntu-xfce`<br/> https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce.svg[![]](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/[https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/]) https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce.svg[![]](http://microbadger.com/images/consol/sakuli-ubuntu-xfce[http://microbadger.com/images/consol/sakuli-ubuntu-xfce]) <br/> `consol/sakuli-centos-xfce`<br/> https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce.svg[![]](https://hub.docker.com/r/consol/sakuli-centos-xfce/[https://hub.docker.com/r/consol/sakuli-centos-xfce/]) https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce.svg[![]](http://microbadger.com/images/consol/sakuli-centos-xfce[http://microbadger.com/images/consol/sakuli-centos-xfce]) <br/> `consol/sakuli-ubuntu-xfce-java`<br/> https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce-java.svg[![]](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/[https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/]) https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce-java.svg[![]](http://microbadger.com/images/consol/sakuli-ubuntu-xfce-java[http://microbadger.com/images/consol/sakuli-ubuntu-xfce-java]) <br/> `consol/sakuli-centos-xfce-java`<br/> https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce-java.svg[![]](https://hub.docker.com/r/consol/sakuli-centos-xfce-java/[https://hub.docker.com/r/consol/sakuli-centos-xfce-java/]) https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce-java.svg[![]](http://microbadger.com/images/consol/sakuli-centos-xfce-java)
-[http://microbadger.com/images/consol/sakuli-centos-xfce-java)
-]
+|`consol/sakuli-ubuntu-xfce`
+image:https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce.svg[dockerhub state,link=https://hub.docker.com/r/consol/sakuli-ubuntu-xfce]
+image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-ubuntu-xfce]
+
+`consol/sakuli-centos-xfce`
+image:https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce.svg[dockerhub state, link=https://hub.docker.com/r/consol/sakuli-centos-xfce/]
+image:https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-centos-xfce]
+
+`consol/sakuli-ubuntu-xfce-java`
+image:https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce-java.svg[dockerhub state, linke=https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/]
+image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce-java.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-ubuntu-xfce-java]
+
+`consol/sakuli-centos-xfce-java`
+image:https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce-java.svg[dockerhub state, linke=https://hub.docker.com/r/consol/sakuli-centos-xfce-java/]
+image:https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce-java.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-centos-xfce-java]
+
 
 |`dev`
 |image:http://labs-build.consol.de/buildStatus/icon?job=Sakuli_CI[Build Status,link=http://labs-build.consol.de/view/Sakuli/job/Sakuli_CI/]
-|`consol/sakuli-ubuntu-xfce:dev`<br/> https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce:dev.svg[![]](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/[https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/]) https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce:dev.svg[![]](http://microbadger.com/images/consol/sakuli-ubuntu-xfce[http://microbadger.com/images/consol/sakuli-ubuntu-xfce]) <br/> `consol/sakuli-centos-xfce:dev`<br/> https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce:dev.svg[![]](https://hub.docker.com/r/consol/sakuli-centos-xfce/[https://hub.docker.com/r/consol/sakuli-centos-xfce/]) https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce:dev.svg[![]](http://microbadger.com/images/consol/sakuli-centos-xfce[http://microbadger.com/images/consol/sakuli-centos-xfce]) <br/>`consol/sakuli-ubuntu-xfce-java:dev`<br/> https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce-java:dev.svg[![]](https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/[https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/]) https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce-java:dev.svg[![]](http://microbadger.com/images/consol/sakuli-ubuntu-xfce-java[http://microbadger.com/images/consol/sakuli-ubuntu-xfce-java]) <br/> `consol/sakuli-centos-xfce-java:dev`<br/> https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce-java:dev.svg[![]](https://hub.docker.com/r/consol/sakuli-centos-xfce-java/[https://hub.docker.com/r/consol/sakuli-centos-xfce-java/]) https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce-java:dev.svg[![]](http://microbadger.com/images/consol/sakuli-centos-xfce-java)[http://microbadger.com/images/consol/sakuli-centos-xfce-java)]
+|`consol/sakuli-ubuntu-xfce:dev`
+image:https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce:dev.svg[dockerhub state,link=https://hub.docker.com/r/consol/sakuli-ubuntu-xfce]
+image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce:dev.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-ubuntu-xfce]
+
+
+`consol/sakuli-centos-xfce:dev`
+image:https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce:dev.svg[dockerhub state, link=https://hub.docker.com/r/consol/sakuli-centos-xfce/]
+image:https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce:dev.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-centos-xfce]
+
+`consol/sakuli-ubuntu-xfce-java:dev`
+image:https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce-java:dev.svg[dockerhub state, linke=https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/]
+image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce-java:dev.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-ubuntu-xfce-java]
+
+`consol/sakuli-centos-xfce-java:dev`
+image:https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce-java:dev.svg[dockerhub state, linke=https://hub.docker.com/r/consol/sakuli-centos-xfce-java/]
+image:https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce-java:dev.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-centos-xfce-java]
 
 |===
