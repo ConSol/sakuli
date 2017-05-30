@@ -10,7 +10,7 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 This page describes how the results of the Sakuli tests *example_windows7/ubuntu/opensuse* can be written into a *MySQL database* which can be read by other 3rd party systems.
 
-//TODO:described sql schema and how results will be placed there.
+//TODO SM:described sql schema and how results will be placed there.
 
 [[sql-database-create-db]]
 ===== Create Sakuli DB
@@ -67,7 +67,7 @@ Execute the example test case:
 
 The database should now contain the results.
 
-// TODO add SQL DB result
+// TODO SM Hinweis für statements in perl datei
 
 [[sql-database-optional-cleanup]]
 ===== Database cleanup (optional)

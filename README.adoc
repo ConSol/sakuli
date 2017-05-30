@@ -2,7 +2,7 @@ image:./docs/images/sakuli_logo_small.png[sakuli-logo]
 
 _An end-to-end testing tool for web sites and common UIs with multiple monitoring integrations_
 
-//TODO copy & paste some content from concept
+//TODO TS & SM: copy & paste some content from concept
 
 = Documentation
 The complete versions of our documentation you can find under:

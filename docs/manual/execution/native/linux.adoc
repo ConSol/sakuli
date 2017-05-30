@@ -1,7 +1,7 @@
 
-//TODO extracted from installation-client.md
+//TODO SM extracted from installation-client.md
 
-//TODO ubuntu installation screenshots
+//TODO SM ubuntu installation screenshots
 :imagesdir: ../../../images
 
 ==== Linux Client
@@ -28,13 +28,12 @@ Values surrounded by double underscores are have to be filled individually by yo
 
 You can run Sakuli on physical as well as on virtual Linux machines.
 
-//FIXME: Bitarchitektur?
-//FIXME: Distri?
+//FIXME SM: Bitarchitektur?  empfohlen 64-bit
+//FIXME SM: Distri?
 
 * one of the following *Linux OS* with any desktop environment:
 * *Ubuntu 14/16*
 * *CentOS 6/7*
-* *OpenSUSE FIXME*
 * *RAM*: 2GB or more
 * *CPU*: at least two CPU cores
 * *Software:*
@@ -171,7 +170,7 @@ image:u_vnc_test.png[vnc test example]
 ===== Next steps
 What next? Well, it depends…
 
-//TODO update link if moved to examples
+//TODO SM update link if moved to examples
 * Read our link:first-steps.md[first-steps tutorial] and learn to handle Sakuli
 * Integrate Sakuli results in monitoring systems:
 ** <<omd-integration-native>>
