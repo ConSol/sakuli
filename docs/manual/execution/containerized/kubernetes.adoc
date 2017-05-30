@@ -1,0 +1,78 @@
+
+:imagesdir: ../../../images
+
+[[kubernetes]]
+==== Kubernetes
+[#git-edit-section]
+:page-path: docs/manual/execution/containerized/kubernetes.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+
+Following we will discribe, how to use Kubernetes for Sakuli E2E testing and monitoring. First go the folder of the Kubernetes conf:
+
+[source]
+----
+cd <project-path>/docker/kubernetes
+----
+
+There you will find the following kubernetes config example `kubernetes.sakuli.example.pod.run.yaml`:
+
+[source, yaml]
+----
+include:: ../../../../../../docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml[]
+----
+
+[[kubernetes-start-pod]]
+===== Start execution pod
+
+To start an execution of a Sakuli E2E testing container in the kubernetes cluster, execute from the command line:
+
+[source]
+----
+kubectl create -f kubernetes.sakuli.example.pod.run.yaml
+----
+
+This creates the following components in the Kubernetes cluster:
+* new Namespace `sakuli`
+* 1 Pod with the sakuli container running
+* 1 Service to make the container ports `6901` and `5901` accessible 
+
+Take a look to the running pods on the Kubernetes dashboard
+
+[source]
+----
+http://<kubernets-cluster-ip>:30000/#!/pod?namespace=sakuli
+----
+
+image:k8s_pods.png[kubernetes container details]
+
+or get a list of all running pods in the `sakuli` namespace:
+
+[source]
+----
+kubectl get pod --namespace=sakuli --show-all
+----
+
+Also you can take a look at the log output
+
+[source]
+----
+kubectl logs --namespace=sakuli test-sakuli-kub
+----
+
+If you wan't to take a look to the UI during the test execution, you can connect (only during the container runtime) to the container through the defined external HTTP port `32001` of the service `test-sakuli-kub`:
+
+[source]
+----
+http://<kubernets-cluster-ip>:32001/vnc_auto.html?password=sakuli&view_only=true
+----
+
+image:os_container_webvnc.png[kubernetes container via webvnc]
+
+[[kubernetes-delete-pod]]
+===== Delete execution pod
+
+[source]
+----
+kubectl delete -f kubernetes.sakuli.example.pod.run.yaml
+----
