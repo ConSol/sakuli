@@ -8,7 +8,7 @@
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 
-Following we will discribe, how to use Kubernetes for Sakuli E2E testing and monitoring. First go the folder of the Kubernetes conf:
+Following we will describe, how to use link:https://www.openshift.com/[Kubernetes] for Sakuli E2E testing and monitoring. First go the folder of the Kubernetes conf:
 
 [source]
 ----

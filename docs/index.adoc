@@ -78,6 +78,7 @@ include::manual/execution/maven/java-DSL.adoc[]
 include::manual/execution/containerized/docker-images.adoc[]
 include::manual/execution/containerized/docker-compose.adoc[]
 include::manual/execution/containerized/kubernetes.adoc[]
+include::manual/execution/containerized/openshift.adoc[]
 
 //Testdefinition
 include::manual/testdefinition/testdefinition.adoc[]
