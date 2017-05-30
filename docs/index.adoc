@@ -58,6 +58,7 @@ include::concept.adoc[]
 == Introduction
 include::manual/execution/execution-types.adoc[]
 
+[[native-execution]]
 === Native Execution
 include::manual/execution/native/windows.adoc[]
 include::manual/execution/native/windows-rdp-peculiarities.adoc[]
@@ -68,11 +69,11 @@ include::manual/execution/native/linux-native-headless.adoc[]
 include::manual/execution/native/linux-troubleshooting.adoc[]
 include::manual/execution/native/upgrade-process.adoc[]
 
-
+[[maven-execution]]
 === Maven Execution
 include::manual/execution/maven/java-DSL.adoc[]
 
-[[containerized_execution]]
+[[containerized-execution]]
 === Containerized Execution
 include::manual/execution/containerized/docker-images.adoc[]
 include::manual/execution/containerized/docker-compose.adoc[]
@@ -145,4 +146,3 @@ include::events.adoc[]
 include::media.adoc[]
 include::changelog.adoc[]
 include::support.adoc[]
-//TODO DEL

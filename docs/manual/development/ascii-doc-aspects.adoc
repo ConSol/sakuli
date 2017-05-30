@@ -96,5 +96,5 @@ Search Regex:
 Replace expression:
 [source, regex]
 ----
-https://github.com/ConSol/sakuli/issues/$1[#$1]`
+https://github.com/ConSol/sakuli/issues/$1[#$1]
 ----

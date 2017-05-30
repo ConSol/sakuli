@@ -5,7 +5,7 @@
 :page-path: docs/manual/execution/native/windows.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-//TODO extracted from installation-client
+//TODO SM extracted from installation-client
 
 ===== How to install Sakuli natively on Windows
 
@@ -26,7 +26,7 @@ Values surrounded by double underscores are have to be filled individually by yo
 
 You can run Sakuli on physical as well as on virtual Linux machines.
 
-//FIXME: Bitarchitektur?
+//FIXME: Bitarchitektur? empfohlen 64-bit
 
 * *OS*: *Microsoft Windows* (version 7 and higher)
 * *RAM*: 2GB or more
@@ -104,7 +104,7 @@ image:installer_4_w.png[controller_windows]
 
 ===== Additional software
 
-//TODO change to Windows
+//TODO SM change to Windows
 ====== additional packages on Linux
 
 (required)

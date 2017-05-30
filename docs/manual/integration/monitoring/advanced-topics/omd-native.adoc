@@ -65,4 +65,4 @@ Depending on your environment, you can set up on of these two possible forwarder
 ** + PNP graphs
 ** + all suite/case/step performance values are stored in database and can be used for further reporting
 
-//TODO mention PNP + delivered default templates
+//TODO SM mention PNP + delivered default templates

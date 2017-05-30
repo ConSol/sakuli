@@ -19,7 +19,7 @@ image:sakuli_concept.png[sakuli concept]
 * *Windows*
 * *MacOS*
 * *Linux*: Ubuntu Linux (14.04 + 16.04), CentOS 7 and OpenSUSE 13.2 are tested.
-* *Docker Containers*: see <<containerized_execution>>
+* *Docker Containers*: see <<containerized-execution>>
 
 The *Sakuli* project brings together two Open-Source end-to-end testing tools which perfectly fit together: http://www.sahi.co.in/[Sahi] for *web-based tests* (by injecting JavaScript code into the browser), as well as the screenshot-based testing tool http://sikulix.com/[Sikuli], which allows the execution of *keyboard and mouse actions* on screen areas that have been defined by previously recorded screenshots and are recognized using the OpenCV engine.
 
