@@ -28,9 +28,8 @@
 |- Integration in Icinga2 through passive checks +
 - preconfigured graph- templates for OMD
 
-//TODO uncomment in version 1.1.0
-//|CheckMK-Forwarder
-//|- Agent Spool File
-//|- Integration in CheckMK through customizable spool file +
-//- preconfigured service templates
+|<<check_mk-integration>>
+|- Agent Spool File
+|- Integration in CheckMK through customizable spool file +
+- preconfigured service templates
 |=======================================================================
