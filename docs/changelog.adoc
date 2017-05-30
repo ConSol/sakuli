@@ -10,9 +10,8 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 .Version 1.1.0-beta
 
-//TODO TS update <<link>>
-* link:docs/openshift.md[OpenShift] and enhanced
-link:docs/docker-images.md[docker support] (https://github.com/ConSol/sakuli/issues/218[#218]):
+* <<openshift>> and enhanced
+<<docker-images>> support (https://github.com/ConSol/sakuli/issues/218[#218]):
 * add different OpenShift templates under `docker/openshift`:
 ** Docker Image Build from sources
 ** Deployment Config for continuous test running

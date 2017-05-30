@@ -129,6 +129,7 @@ include::manual/integration/monitoring/icinga2api.adoc[]
 include::manual/integration/monitoring/advanced-topics/omd-native.adoc[]
 include::manual/integration/monitoring/advanced-topics/pnp4nagios.adoc[]
 include::manual/integration/monitoring/advanced-topics/grafana.adoc[]
+include::manual/integration/monitoring/advanced-topics/omd-containerized.adoc[]
 
 [[continuous_integration]]
 === Continuous Integration

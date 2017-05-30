@@ -1,0 +1,12 @@
+**Please visit our Documentation under: http://consol.github.io/sakuli[consol.github.io/sakuli]**
+
+
+You can find further information about the usage of Sakuli Docker containers here:
+
+* *https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/containerized/docker-images.adoc[Docker Images]*
+* *https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/containerized/docker-compose.adoc[Docker Compose]*
+* *https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/containerized/openshift.adoc[OpenShift]*
+* *https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/containerized/kubernetes.adoc[Kubernetes]*
+* *https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/monitoring/advanced-topics/omd-containerized.adoc[Containerized OMD Integration]*
+
+_Published by github-pages_
