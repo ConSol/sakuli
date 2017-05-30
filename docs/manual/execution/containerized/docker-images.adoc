@@ -28,7 +28,8 @@ The repository's subfolder https://github.com/ConSol/sakuli/tree/master/docker[`
 |`consol/sakuli-ubuntu-icewm-java` |Ubuntu 16.04 |IceWm |Java 8, Maven, TestNG-Test
 |===
 
-== Image tags
+[[docker-image-tags]]
+===== Image tags
 
 The build process on DockerHub is triggered by Github hooks; that means that you are always getting the current version for the two branches
 
@@ -51,7 +52,7 @@ Each Sakuli docker image is installed with the following components:
 * https://github.com/ConSol/sakuli[*Sakuli*] in the latest stable version
 
 Since version `1.1.0` all containers run as non-root user.
-The running containers are accessible with VNC (default password: _`sakuli`_) by:
+The running containers are accessible with VNC (default password: `sakuli`) by:
 
 * *VNC viewer*: `DOCKER_HOST:5901`
 * *noVNC HTML5 client*: link: http://localhost:6901/vnc_auto.html?password=sakuli[]
@@ -263,15 +264,17 @@ For example, the password for VNC could be set like this:
 Further information about the usage of Sakuli docker containers can be found at:
 
 //TODO TS update
-* link:openshift.md[Usage of Sakuli containers in OpenShift]
-* link:kubernetes.md[Usage of Sakuli containers in Kubernetes]
-* link:omd-labs-sakuli.md[Usage of Sakuli containers together with OMD-Labs Docker Images]
+//* link:openshift.md[Usage of Sakuli containers in OpenShift]
+//* link:kubernetes.md[Usage of Sakuli containers in Kubernetes]
+//* link:omd-labs-sakuli.md[Usage of Sakuli containers together with OMD-Labs Docker Images]
 * Publications:
-** *https://labs.consol.de/sakuli/development/2016/10/14/sakuli-java-dsl.html[Containerized UI-Tests in Java with Sakuli and Docker]*
+** https://jaxenter.de/sakuli-testing-monitoring-container-54374[JAXenter: End-2-End-Testing und -Monitoring im Container-Zeitalter]
+** https://www.informatik-aktuell.de/entwicklung/methoden/graphical-user-interface-gui-in-containern-testen.html[Informatik Aktuell: Software-Test im Container: So können Sie Graphical User Interfaces mit Docker und Sakuli testen]
+** https://labs.consol.de/sakuli/development/2016/10/14/sakuli-java-dsl.html[Containerized UI-Tests in Java with Sakuli and Docker]
 * Presentations:
-** *https://speakerdeck.com/toschneck/containerized-end-2-end-testing-containerdays-2016-in-hamburg[Containerized End-2-End-Testing - ContainerDays 2016 Hamburg]*
-** *https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/[Containerized End-2-End-Testing - ConSol CM Testing]*
+** https://speakerdeck.com/toschneck/containerized-end-2-end-testing-containerdays-2016-in-hamburg[Containerized End-2-End-Testing - ContainerDays 2016 Hamburg]
+** https://rawgit.com/toschneck/presentation/sakuli-testautomation-day/index.html#/[Containerized End-2-End-Testing - ConSol CM Testing]
 * Example projects on GitHub:
-** *https://github.com/ConSol/sakuli-examples[ConSol/sakuli-examples]*
-** *https://github.com/toschneck/sakuli-example-bakery-testing[toschneck/sakuli-example-bakery-testing]*
-** *https://github.com/ConSol/sakuli-example-testautomation-day[ConSol/sakuli-example-testautomation-day]*
+** https://github.com/ConSol/sakuli-examples[ConSol/sakuli-examples]
+** https://github.com/toschneck/sakuli-example-bakery-testing[toschneck/sakuli-example-bakery-testing]
+** https://github.com/ConSol/sakuli-example-testautomation-day[ConSol/sakuli-example-testautomation-day]
