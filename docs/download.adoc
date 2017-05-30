@@ -14,10 +14,10 @@ Our Java based installer or the raw ZIP file can be downloaded form http://labs.
 * https://labs.consol.de/sakuli/install/sakuli-${sakuli.version}.zip[sakuli-${sakuli.version}.zip^]
 
 .Maven Dependencies
-See <<_maven_execution>>.
+See <<maven-execution>>.
 
 .Docker images
-See <<_containerized_execution>>
+See <<containerized-execution>>
 
 
 .PDF-Documentation
