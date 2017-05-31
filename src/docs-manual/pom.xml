@@ -209,6 +209,7 @@
 
         <!--profile to sync and deploy the docu to http://consol.github.io/sakuli-->
         <profile>
+            <id>upload-manual</id>
             <build>
                 <plugins>
                     <plugin>
