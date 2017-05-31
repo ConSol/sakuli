@@ -1,6 +1,6 @@
 
 :imagesdir: ../../../images
-===== Windows Troubleshooting
+===== Troubleshooting
 [#git-edit-section]
 :page-path: docs/manual/execution/native/windows-troubleshooting.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
@@ -18,7 +18,7 @@ image:w_titlebar.jpg[titlebars]
 
 ====== RDP related settings
 
-The following steps have only to be done if you are accessing the Sakuli Client via RDP. 
+The following steps have only to be done if you are accessing the Sakuli Client via RDP.
 
 .Disable Clipboard Sharing
 
@@ -26,7 +26,7 @@ The "paste" function of Sakuli uses the clipboard at runtime to decrypt and past
 
 image:w_clipboard.jpg[clipboard]
 
-This can be set globally in the registry *of your local host*: 
+This can be set globally in the registry *of your local host*:
 
 . `regedit`
 . `[ HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client ]`
@@ -36,7 +36,7 @@ This can be set globally in the registry *of your local host*:
 
 If you minimize the Remote Desktop window (the window that display the remote computer’s desktop), the operating system switches the remote session to a "GUI-less mode" which does not transfer any window data anymore. As a result, Sakuli is unable to interact with the tested application’s GUI, as the whole screen is not visible.
 
-To disable the "GUI-less" mode *on your local host*: 
+To disable the "GUI-less" mode *on your local host*:
 
 . `regedit`
 . `[ HKEY_CURRENT_USER\Software\Microsoft\Terminal Server Client ]`

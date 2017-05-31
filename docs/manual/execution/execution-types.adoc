@@ -8,7 +8,7 @@
 :page-path: docs/manual/execution/execution-types.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-Due to the fact, that E2E testing or monitoring have to be as near as possible at the end user, Sakuli support different execution types. Each of the types have a special purpose:
+Sakuli supports different execution types. Each of the types have a special purpose:
 
 :hardbreaks:
 .Overview Sakuli Execution Types
@@ -24,14 +24,14 @@ Due to the fact, that E2E testing or monitoring have to be as near as possible a
 
 |<<maven-execution>>
 (Java DSL)
-//TODO add here the slenium extension also
+//TODO TS add here the slenium extension also
 |+ Easy integration in maven build cycle
 + Well known test structure and execution context for Java developers
 + Good writing and debug support through well known Java IDEs
 
 |<<containerized-execution>>
 (Docker Images, Docker Compose)
-//TODO add kubernetes and openshift
+//TODO TS add kubernetes and openshift
 |+ Ready to use E2E environment without installation process
 + Tests run in a real desktop and using a real browser or native client
 + Easy integration in server environments for running headless UI tests
@@ -39,4 +39,3 @@ Due to the fact, that E2E testing or monitoring have to be as near as possible a
 + Scalable environment with all advantages of the container technology
 |===
 :!hardbreaks:
-

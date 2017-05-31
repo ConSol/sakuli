@@ -1,7 +1,7 @@
 
 :imagesdir: ../../../images
 
-===== Linux Troubleshooting
+===== Troubleshooting
 [#git-edit-section]
 :page-path: docs/manual/execution/native/linux-troubleshooting.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
@@ -11,7 +11,7 @@ If you have some errors with your Linux installation, you can check the followin
 [[gnome-session-fallback]]
 ====== Install GNOME session fallback theme
 
-Sakuli can test on Unity, of course - but https://apps.ubuntu.com/cat/applications/gnome-session-fallback/[gnome-session-fallback] is more than sufficient… 
+Sakuli can test on Unity, of course - but https://apps.ubuntu.com/cat/applications/gnome-session-fallback/[gnome-session-fallback] is more than sufficient…
 
 `sudo apt-get install gnome-session-fallback`
 
@@ -21,7 +21,7 @@ image:u_theme_select.jpg[fallback]
 
 image:u_flashback.jpg[flashback]
 
-The Ubuntu menu bar should have changed now to the "classical" one: 
+The Ubuntu menu bar should have changed now to the "classical" one:
 
 image:u_menu.jpg[menu]
 

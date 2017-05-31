@@ -1,7 +1,4 @@
 
-//TODO SM extracted from installation-client.md
-
-//TODO SM ubuntu installation screenshots
 :imagesdir: ../../../images
 
 ==== Linux Client
@@ -9,10 +6,10 @@
 :page-path: docs/manual/execution/native/linux.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-===== How to install Sakuli natively on Linux
+===== Installation
 
-This page describes the steps to *install and test* Sakuli on *Linux*.
-If you want to *update* Sakuli, see the <<upgrade_process>> documentation.
+This page describes the steps to *install and test* Sakuli on *Ubuntu Linux 16.04 LTS*.
+For other distributions (CentOS, OpenSuSE, ...) they be mostly identical. If you want to *update* Sakuli, see the link:upgrade-process.adoc[upgrade process] documentation.
 
 The default installation path of a particular Sakuli version is referenced as `$SAKULI_HOME` (also called the "_version_" folder) which is inside of the folder "sakuli":
 
@@ -24,22 +21,19 @@ The default installation path of a particular Sakuli version is referenced as `$
 
 Values surrounded by double underscores are have to be filled individually by you (e.g. `__IP_ADDRESS__`).
 
-===== Prerequisites
-
+====== Machine requirements
 You can run Sakuli on physical as well as on virtual Linux machines.
 
-//FIXME SM: Bitarchitektur?  empfohlen 64-bit
-//FIXME SM: Distri?
-
-* one of the following *Linux OS* with any desktop environment:
-* *Ubuntu 14/16*
-* *CentOS 6/7*
+* *Linux OS* (here: Ubuntu 16.04 LTS Desktop)
+* *64 Bit* (recommended)
 * *RAM*: 2GB or more
 * *CPU*: at least two CPU cores
-* *Software:*
-* Java JRE &gt;= 1.8
 
-===== Recommendations
+====== Software requirements
+
+`sudo apt-get install openjdk-8-jre tesseract-ocr wmctrl xdotool`
+
+====== Recommendations
 
 * Set the desktop background to a homogenous color.
 * disable any screen locking mechanisms
@@ -49,7 +43,7 @@ You can run Sakuli on physical as well as on virtual Linux machines.
 * Other optional steps see <<gnome-session-fallback>>.
 * the client should *not* have more than one physical screen
 
-===== Sakuli installation
+====== Sakuli installation
 
 * Download the *Sakuli Installer* from http://labs.consol.de/sakuli/install[http://labs.consol.de/sakuli/install]
 * current *development* snapshot = `sakuli-vX.X.X-SNAPSHOT-installer.jar`
@@ -57,76 +51,79 @@ You can run Sakuli on physical as well as on virtual Linux machines.
 
 Execute `java -jar sakuli-vX.X.X-installer.jar` to start the installer:
 
-image:installer_1.png[inst_1]
+image:installer_1_linux.png[inst_1]
 
-After you have accepted the licence and choose the installation folder, select the packages to install:
+Read and accept the licence, choose the installation folder (any path the current user has _rw_ permissions is ok) and select the packages to install:
 
-image:installer_2.png[inst_2]
+image:installer_2_linux.png[inst_2]
 
-. will set/update the environment variable `$SAKULI_HOME` to the new version.
-. will set/update environment settings which have proved as best practice for UI tests.
-. will install one example test suite per OS which will help you to test and understand Sakuli.
-. will install Firefox Portable, which can be used exclusively for Sakuli Tests.
+. install Sakuli
+. install Sahi
+. set/update the environment variable `$SAKULI_HOME` which points to the new version.
+. set/update `.bashc`
+. install one example test suite per OS which help you to test and understand Sakuli.
+. install Firefox Portable, which can be used exclusively for Sakuli Tests
 
-After the files have been copied, the installer updates the current user's environment.
-
-If you have installed Sakuli on Windows, reboot now to take the registry changes effect (e.g. disabled Cleartype fonts).
-
-In the end you are offered to generate a automatic installation script to install Sakuli headless:
-
-image:installer_3.png[inst_3]
-
-A headless installation (e.g. when building Docker images) can be executed with:
+In the end you are offered to generate a headless installation file which can be executed on other hosts with:
 
 [source]
 ----
 java -jar sakuli-vX.X.X-installer.jar auto-config.xml
 ----
 
-====== Test Sahi
+====== Test
 
-Now is the right time to test if Sahi can start a Sahi-controlled browser. Execute `$SAKULI_HOME/sahi/userdata/bin/start_dashboard.(sh|bat)` to open the *Sahi Dashboard*. It should now list all available browsers on this system (on Windows: also Firefox Portable).
+Now test if Sahi can start a Sahi-controlled browser.
 
-image:inst_dashboards.jpg[dashboards]
+Execute `$SAKULI_HOME/sahi/userdata/bin/start_dashboard.sh` to open the *Sahi Dashboard*. It should now list all available browsers on this system.
+
+image:inst_dashboard_linux.png[dashboards]
 
 Click on any browser icon, it should start and present you the start page of Sahi:
 
 image:sahi_startpage.jpg[sahi_start]
 
-At last, test the *Sahi Controller*:
-* on *Linux* press the ALT+CTRL key
-
-and double-click on any white space. If you are getting a new window showing the "Sahi Controller", you're done. Close all browser windows and Sahi.
+At last, test the *Sahi Controller* by holding the *ALT key* and double-clicking on any white space on the page. If you are getting a new window showing the "Sahi Controller", you're done. Close all browser windows and Sahi.
 
 image:installer_4_l.png[controller_linux]
 
-====== Additional documentation:
+NOTE: On Linux deskops the ALT key is often predefined to drag windows. In this case, open `$SAKULI_HOME/sahi/config/sahi.properties` and change the "hotkey" property:
+
+[source]
+----
+controller.hotkey=SHIFT
+----
+
+You are now ready to run the *first minimal Sakuli test* to see if Sakuli and its components are working well together. Open a new terminal to start a test:
+
+[source,bash]
+----
+sakuli run __INST_DIR__/example_test_suites/example_ubuntu/
+----
+
+Sakuli should now
+
+. open *Firefox* with the Sakuli welcome page, highlight some page elements
+. open the *calculator* and calculate _525+100=625_
+. open an *editor* and write a *status message*
+
+
+
+===== Additional documentation
 
 * If you are sitting behing a company proxy, refer to <<sahi_behind_a_proxy>>.
 * Refer to <<sahi-browser-configuration>> for instructions how to register other browsers.
 
-===== Additional software
+===== Optional software
 
-====== additional packages on Linux
-
-(required)
-
-Install the following packages if you are on Linux:
-
-* Ubuntu: `sudo apt-get install tesseract-ocr wmctrl xdotool`
-* openSUSE `sudo zypper install tesseract wmctrl xdotool`
 
 ====== PhantomJS
-
-(optional)
 
 Currently, _each_ Sakuli test requires to start a browser, which is not very handy for pure Sikuli GUI tests (=where no browser at all is needed). For that case, use a headless browser like http://phantomjs.org[PhantomJS]. Refer to <<sahi-browser-configuration>> for more information.
 
 Attention: PhantomJS 2 is currently unsupported. Use version 1.9.x
 
 ====== Screenshot tool
-
-(optional)
 
 Use a screenshot tool which is able to
 
@@ -142,37 +139,17 @@ Always make sure that screenshots are saved without compression. Sikuli uses a d
 
 ====== Editor
 
-(optional)
-
-You're doing better if you do _not_ use gEdit or Windows Notepad to edit Sakuli files. It is recommended to use an Editor with JavaScript support, e. g.:
-
-* on *Linux* use https://atom.io[Atom]
+It is recommended to use an Editor with JavaScript support, e.g. https://atom.io[Atom]
 
 It also possible to use professional programming IDEs like https://www.jetbrains.com/idea/[IntelliJ], https://netbeans.org/[Netbeans] or https://eclipse.org[Eclipse].
 
-===== Test
-
-You are now ready to run the *first minimal Sakuli test* to see if Sakuli and its components are working well together. Open a new terminal to start a test:
-
-* *Ubuntu*: `sakuli run __INST_DIR__/example_test_suites/example_ubuntu/`
-* *openSUSE*: `sakuli run __INST_DIR__/example_test_suites/example_opensuse/`
-
-Sakuli should now
-
-. open *Firefox* with the Sakuli welcome page, highlight some page elements
-. open the *calculator* and calculate _525+100=625_
-. open an *editor* and write a *status message*
-
-image:u_vnc_test.png[vnc test example]
-
-*Congratulations - you have installed Sakuli!*
 
 ===== Next steps
-What next? Well, it depends…
 
-//TODO SM update link if moved to examples
 * Read our link:first-steps.md[first-steps tutorial] and learn to handle Sakuli
 * Integrate Sakuli results in monitoring systems:
 ** <<omd-integration-native>>
 ** <<icinga2-integration>>
+//FIXME: check_mk
+
 * Sakuli can also be integrated in *continuous integration* environments like <<jenkins-integration>>
