@@ -83,8 +83,8 @@
         <res id="CustomLangpack.xml_eng" src="langpacks/eng.xml"/>
         <res id="CustomLangpack.xml_deu" src="langpacks/deu.xml"/>
         <res id="HTMLLicencePanel.licence" src="${sakuli.install.src.core}/LICENSE-2.0.txt"/>
-        <res id="installer.langsel.img" src="${sakuli.install.src.core}/docs/images/sakuli_logo_small.png"/>
-        <res id="Heading.image" src="${sakuli.install.src.core}/docs/images/sakuli_logo_small.png"/>
+        <res id="installer.langsel.img" src="pic/sakuli_logo_small.png"/>
+        <res id="Heading.image" src="pic/sakuli_logo_small.png"/>
         <res id="ProcessPanel.Spec.xml" src="ProcessPanel.Spec.xml"/>
         <res id="HTMLInfoPanel.info" src="reboot-hint.html"/>
         <res id="HTMLInfoPanel.info_deu" src="reboot-hint.html_deu"/>
