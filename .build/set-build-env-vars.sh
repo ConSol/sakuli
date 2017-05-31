@@ -18,5 +18,12 @@ echo "VERSION_SURFIX=$VERSION_SURFIX" >> $WORKSPACE/myjob.properties
 
 echo "SAKULI_FEATURE_VERSION=$SAKULI_VERSION-$FEATURE_NAME" >> $WORKSPACE/myjob.properties
 
+if [[ $SAKULI_BRANCH == dev ]] || [[ $SAKULI_BRANCH == feature* ]] ; then
+    SAKULI_DOC_BRANCH=$SAKULI_BRANCH
+else
+    SAKULI_DOC_BRANCH=master
+fi
+echo "SAKULI_DOC_BRANCH=$SAKULI_DOC_BRANCH" >> $WORKSPACE/myjob.properties
+
 # jenkins will use the myjob.properties as environment vars
 cat $WORKSPACE/myjob.properties

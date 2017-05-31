@@ -54,17 +54,10 @@
         <developerConnection>${project.parent.scm.developerConnection}</developerConnection>
     </scm>
 
-    <!-- TODO TS: after merge into dev, add to Jenkins-Job `Sakuli_CI, Sakuli_CI_feature_branch` remove source trigger-->
     <profiles>
 
         <profile>
             <id>generate-manual</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
             <build>
                 <plugins>
                     <!-- generate git/build information for docs, e.g. to set correct edit link -->
@@ -216,13 +209,6 @@
 
         <!--profile to sync and deploy the docu to http://consol.github.io/sakuli-->
         <profile>
-            <id>upload-manual</id>
-            <activation>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
             <build>
                 <plugins>
                     <plugin>

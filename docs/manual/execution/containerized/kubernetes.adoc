@@ -15,12 +15,8 @@ Following we will describe, how to use link:https://www.openshift.com/[Kubernete
 cd <project-path>/docker/kubernetes
 ----
 
-There you will find the following kubernetes config example `kubernetes.sakuli.example.pod.run.yaml`:
-
-[source, yaml]
-----
-include:: ../../../../../../docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml[]
-----
+You will find the kubernetes config example under:
+`git-link:docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml[link-text="docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml", mode="view", link-window="_blank"]`
 
 [[kubernetes-start-pod]]
 ===== Start execution pod
