@@ -2,17 +2,17 @@
 :imagesdir: ../../../images
 
 [[omd-gearman]]
-==== OMD - Gearman Daemon
+==== Gearman forwarder
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/omd-gearman.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-This page describes how the results of the Sakuli tests (e.g. example_windows7/ubuntu/opensuse) can be transmitted directly into the *Gearman result queue* of the OMD monitoring system.
+This page describes how the results of Sakuli tests can be transmitted directly into the *Gearman result queue* of a monitoring system.
+
+NOTE: If you do not use a gearman-enabled monitoring system in a https://labs.consol.de/OMD/[OMD] environment, the procedure may vary.
 
 image:sakuli-gearman.png[sakuli-db-forwarder]
 
-* Nagios *host*: property `sakuli.forwarder.gearman.nagios.hostname` (define globally or per suite)
-* Nagios *service*: property `testsuite.id` in `testsuite.properties`
 
 ===== OMD Configuration
 
@@ -51,14 +51,6 @@ hosts=no
 do_hostchecks=no
 ----
 
-IMPORTANT: At the time of the creation of this documents, Sakuli does not encrypt any gearman results by default. Therefore, set `accept_clear_results` in `server.cfg`:
-
-[source]
-----
-OMD[sakuli]:~$ vim ~/etc/mod-gearman/server.cfg
-accept_clear_results=yes
-----
-
 Restart OMD:
 
 [source]
@@ -67,6 +59,12 @@ OMD[sakuli]:~$ omd start
 ----
 
 ====== Create a Nagios service
+
+The receiving host/service in the monitoring system derives from the following <<property-loading-mechanism,properties>>:
+
+* *host*: `sakuli.forwarder.gearman.nagios.hostname` (defined globally or per suite)
+* *service*: `testsuite.id` (defined in `testsuite.properties`)
+
 
 Create a check_command, which will be executed only if Nagios did not receive a Sakuli result within the last 30 minutes. This ensures that you get a notification even if no passive check results arrive in Nagios at all:
 
@@ -134,7 +132,7 @@ The check is waiting now for check results from a Sakuli client.
 
 .Modify Sakuli gearman forwarder parameter
 
-On the Sakuli client you must set the global properties for the gearman receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):.
+On the Sakuli client you must set the global <<property-loading-mechanism,properties>> for the gearman receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):.
 
 [source,properties]
 ----
@@ -168,7 +166,7 @@ image:omd-ok-details.png[omd_pending2]
 ===== Using AES encryption (optional)
 
 The gearman forwarder supports AES encryption when sending checked results to the OMD server. The AES encryption uses a 32 byte (256 bit) secret key that
-has to be given in the properties.
+has to be given in the <<property-loading-mechanism,properties>>.
 
 [source,properties]
 ----

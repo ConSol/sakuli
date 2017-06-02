@@ -8,7 +8,7 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 .Verbosity
 
-The logging verbosity of all compoments _Sakuli, Sahi, Sikuli, Spring_ - and _Java_ in general can be changed individually.
+The logging verbosity of all compoments _Sakuli, Sahi, Sikuli, Spring_ - and _Java_ in general can be changed individually with <<property-loading-mechanism,properties>>.
 
 IMPORTANT: "Verbosity" means one of the levels `DEBUG - INFO - WARN - ERROR`
 

@@ -72,6 +72,7 @@
                                 <configuration>
                                     <generateGitPropertiesFile>false</generateGitPropertiesFile>
                                     <skipPoms>false</skipPoms>
+                                    <verbose>true</verbose>
                                     <useNativeGit>true</useNativeGit>
                                 </configuration>
                             </execution>

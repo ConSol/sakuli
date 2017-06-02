@@ -2,12 +2,14 @@
 :imagesdir: ../../../images
 
 [[icinga2-integration]]
-==== Icinga2 REST API
+==== Icinga2 forwarder
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/icinga2api.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-This page describes how the results of Sakuli tests can be sent to the http://docs.icinga.org/icinga2/snapshot/doc/module/icinga2/chapter/icinga2-api[REST API] of an https://www.icinga.org/[Icinga2] monitoring instance. 
+This page describes how the results of Sakuli tests can be sent to the http://docs.icinga.org/icinga2/snapshot/doc/module/icinga2/chapter/icinga2-api[REST API] of an https://www.icinga.org/[Icinga2] monitoring instance.
+
+NOTE: This part of the documentation does _not_ apply to OMD. Some steps may vary for Icinga2 on OMD.
 
 image:sakuli-icinga2.png[sakuli-icinga2]
 
@@ -19,7 +21,7 @@ The steps to enable the Icinga2 API are described in the http://docs.icinga.org/
 
 ====== Create a Icinga2 service
 
-Create a *check_command*, which will be executed only if Icinga did not receive a Sakuli result within a certain time. This ensures that you get a notification even if no passive check results arrive in Icinga at all: 
+Create a *check_command*, which will be executed only if Icinga did not receive a Sakuli result within a certain time. This ensures that you get a notification even if no passive check results arrive in Icinga at all:
 
 [source]
 ----
@@ -41,7 +43,7 @@ object CheckCommand "check_sakuli" {
 }
 ----
 
-Create a *host* object for the Sakuli client: 
+Create a *host* object for the Sakuli client:
 
 [source]
 ----
@@ -69,24 +71,24 @@ object Service "sakuli_demo" {
 }
 ----
 
-Reload Icinga2: 
+Reload Icinga2:
 
 [source]
 ----
 service icinga2 reload
 ----
 
-Now open Icingaweb2; you should see the Sakuli host with the service _"sakuli_demo"_ attached: 
+Now open Icingaweb2; you should see the Sakuli host with the service _"sakuli_demo"_ attached:
 
 image:icingaweb2-pending2.png[icingaweb2-pending2]
 
-The check is waiting now for check results from a Sakuli client. 
+The check is waiting now for check results from a Sakuli client.
 
 ===== Sakuli Client Configuration
 
 .Sakuli Icinga2 forwarder parameter
 
-On the Sakuli client you must set the global properties for the Icinga2 receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):
+On the Sakuli client you must set the global <<property-loading-mechanism,properties>> for the Icinga2 receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):
 
 [source,properties]
 ----
@@ -120,14 +122,14 @@ Icinga2 integration is very new; we did not yet dive into the configuration of G
 
 ====== PNP4Nagios
 
-Set the RRD storage type of PNP to MULTIPLE, which creates one RRD file per perfdata label: 
+Set the RRD storage type of PNP to MULTIPLE, which creates one RRD file per perfdata label:
 
 [source]
 ----
 echo "RRD_STORAGE_TYPE = MULTIPLE" > /etc/pnp4nagios/check_commands/check_sakuli.cfg
 ----
 
-Copy the PNP graph template `check_sakuli.php` from `%SAKULI_HOME%/setup/nagios/` on the client to `/usr/share/nagios/html/pnp4nagios/templates/` on the Icinga2 server. 
+Copy the PNP graph template `check_sakuli.php` from `%SAKULI_HOME%/setup/nagios/` on the client to `/usr/share/nagios/html/pnp4nagios/templates/` on the Icinga2 server.
 
 ====== Grafana
 
@@ -136,4 +138,3 @@ tbd
 ====== Graphite
 
 tbd
-

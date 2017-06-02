@@ -1,0 +1,11 @@
+
+:imagesdir: ../../../images
+
+==== Grafana graphs
+
+[#git-edit-section]
+:page-path: docs/manual/integration/monitoring/graph_grafana.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+tbd
+//TODO SM how to use

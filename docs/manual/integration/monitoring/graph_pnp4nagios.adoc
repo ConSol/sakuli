@@ -1,16 +1,16 @@
 
-:imagesdir: ../../../../images
+:imagesdir: ../../../images
 
-===== PNP4Nagios
+==== PNP4Nagios graphs
 [#git-edit-section]
-:page-path: docs/manual/integration/monitoring/advanced-topics/pnp4nagios.adoc
+:page-path: docs/manual/integration/monitoring/graph_pnp4nagios.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-====== RRD Storage Type
+===== RRD Storage Type
 
 In PNP4Nagios RRD Storage type "MULTIPLE" is of great importance for Sakuli checks, because the number of steps can change by time (=if you are adding/deleting some).
 
-Verify `RRD_STORAGE_TYPE` in `process_perfdata.cfg`: 
+Verify `RRD_STORAGE_TYPE` in `process_perfdata.cfg`:
 
 [source]
 ----
@@ -18,7 +18,7 @@ OMD[sakuli]:~$ vim ~/etc/pnp4nagios/process_perfdata.cfg
   RRD_STORAGE_TYPE = MULTIPLE
 ----
 
-If this value is _"SINGLE"_ on your system and you do not want to change it globally, use the _custom check_command_ cfg file. PNP4Nagios will then use storage type _"MULTIPLE"_ only for this check_command then: 
+If this value is _"SINGLE"_ on your system and you do not want to change it globally, use the _custom check_command_ cfg file. PNP4Nagios will then use storage type _"MULTIPLE"_ only for this check_command then:
 
 [source]
 ----
@@ -26,7 +26,7 @@ OMD[sakuli]:~$ cp __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/check_sakuli.cfg 
 ----
 
 [[pnp4nagios-rrd-heartbeat]]
-====== RRD heartbeat
+===== RRD heartbeat
 
 Each RRD file contains a heartbeat value, which determines how much time must pass without any new update, before RRDtool writes an UNKNOWN value (nan) into the data slot (the graph will have a gap then). In PNP4nagios heartbeat is defined at approx. 2 1/2 hours. If your Sakuli check runs only every 2 hours, this value will be fine. But for a 5 minute interval, this is way too long. As a consequence, the graph line will be continuously drawed even Sakuli did no check for two hours. Hence, always make sure to adapt the heartbeat to a value which is slightly higher than the interval of Sakuli checks (and indeally the same as <<omd-gearman-freshness_threshold>>, if you use the gearman receiver):
 
@@ -37,27 +37,27 @@ OMD[sakuli]:~$ cd ~/var/pnp4nagios/perfdata/sakulihost/
 OMD[sakuli]:~$ for file in sakuli_e2e_webshop*.rrd; do rrdtool tune $file --heartbeat 1:180; done
 ----
 
-====== install PNP graph template
+===== install PNP graph template
 
-Copy the PNP4nagios graph template into the templates folder: 
+Copy the PNP4nagios graph template into the templates folder:
 
 [source]
 ----
 OMD[sakuli]:~$ cp __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/nagios/check_sakuli.php ~/etc/pnp4nagios/templates/
 ----
 
-====== Include CPU/Memory metrics in Sakuli graphs (optional)
+===== CPU/Memory metrics
 
 If Sakuli reports a long check runtime, it is good to know the CPU/Memory metrics on the Sakuli client machine, because CPU/IO bottlenecks affect Sakuli tests, too.
 
-The following optional enhancement displays the *CPU/Memory graph* lines of the Sakuli test client in the suite/case graph. By setting *custom host macros*, the graph template knows where to fetch these data from. 
+The following optional enhancement displays the *CPU/Memory graph* lines of the Sakuli test client in the suite/case graph. By setting *custom host macros*, the graph template knows where to fetch these data from.
 
 .Linux client with CPU check, displayed by a yellow line
 image:pnp_graph.png[PNP graph]
 
 .add CPU load check (for Linux Sakuli clients)
 
-Add this *command* to `commands.cfg`: 
+Add this *command* to `commands.cfg`:
 
 [source]
 ----
@@ -67,7 +67,7 @@ define command{
 }
 ----
 
-Add this *service* to `services.cfg`: 
+Add this *service* to `services.cfg`:
 
 [source]
 ----
@@ -93,14 +93,14 @@ define host {
 }
 ----
 
-Now reload OMD: 
+Now reload OMD:
 
 [source]
 ----
-omd reload   
+omd reload
 ----
 
-You should see now the following service on `sakuli_client`: 
+You should see now the following service on `sakuli_client`:
 
 image:svc_cpu.png[PNP graph]
 
@@ -120,7 +120,7 @@ Install *NSClient++* on the Windows client. Then add this *command check_nrpe_ar
     }
 ----
 
-Then add these *services* to Nagios: 
+Then add these *services* to Nagios:
 
 [source]
 ----
@@ -139,7 +139,7 @@ Then add these *services* to Nagios:
     }
 ----
 
-Add these host macros to every Nagios host where Sakuli checks are defined: 
+Add these host macros to every Nagios host where Sakuli checks are defined:
 
 [source]
 ----
@@ -149,22 +149,22 @@ Add these host macros to every Nagios host where Sakuli checks are defined:
     _E2E_MEM_SVC                   Mem_Usage
 ----
 
-Now reload OMD: 
+Now reload OMD:
 
 [source]
 ----
-omd reload  
+omd reload
 ----
 
 NOTE: The value of `_E2E_CPU_SVC` and `_E2E_MEM_SVC` refer to the file name of the corresponding RRD file. `CPU_Usage_5` for example means to get the the CPU usage data from `$OMD_ROOT/var/pnp4nagios/perfdata/[_E2E_CPU_HOST]/CPU_Usage_5.rrd`.
 
 .XML update delay
 
-As soon as the created services produce perfdata for the first time, their XML file created by PNP4Nagios will also contain the host macros created in the step before. If not, check if `XML_UPDATE_DELAY` in `etc/pnp4nagios/process_perfdata.cfg` is set too high. 
+As soon as the created services produce perfdata for the first time, their XML file created by PNP4Nagios will also contain the host macros created in the step before. If not, check if `XML_UPDATE_DELAY` in `etc/pnp4nagios/process_perfdata.cfg` is set too high.
 
 .Change PNP working mode
 
-OMD runs PNP by default in *http://docs.pnp4nagios.org/pnp-0.6/modes#bulk_mode_with_npcdmod[Bulk Mode with NPCD and npcdmod.o]*. In this mode the Nagios broker module `npcdmod.o` reads the performance directly from the monitoring core and writes them in _var/spool/perfdata_. This data are not expandable with *custom macros* - therefore the mode has to be changed to *http://docs.pnp4nagios.org/pnp-0.6/modes#bulk_mode_with_npcd[Bulk Mode with NPCD]*. (the performance of both modes will be equal). 
+OMD runs PNP by default in *http://docs.pnp4nagios.org/pnp-0.6/modes#bulk_mode_with_npcdmod[Bulk Mode with NPCD and npcdmod.o]*. In this mode the Nagios broker module `npcdmod.o` reads the performance directly from the monitoring core and writes them in _var/spool/perfdata_. This data are not expandable with *custom macros* - therefore the mode has to be changed to *http://docs.pnp4nagios.org/pnp-0.6/modes#bulk_mode_with_npcd[Bulk Mode with NPCD]*. (the performance of both modes will be equal).
 
 In this mode the monitoring core itself writes perfdata to the spool directory (instead of _npcdmod.o_). The format of this data can be freely defined by adapting `service_perfdata_file_template`. In the following code block you can see that the four *custom host macros* were added to this template string. Perfdata files are then moved to _var/spool/perfdata_ every 15 seconds by the monitoring core.
 

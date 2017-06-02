@@ -121,17 +121,19 @@ include::manual/testdefinition/troubleshooting.adoc[]
 
 //== Integration documentation
 include::manual/integration/integration.adoc[]
-=== Monitoring
+
+=== Monitoring integration
+include::manual/integration/monitoring/omd_preparation.adoc[]
 include::manual/integration/monitoring/omd-gearman.adoc[]
 include::manual/integration/monitoring/omd-sql-database.adoc[]
 include::manual/integration/monitoring/icinga2api.adoc[]
 include::manual/integration/monitoring/checkmk.adoc[]
-==== Advanced Topics
-include::manual/integration/monitoring/advanced-topics/omd-native.adoc[]
 include::manual/integration/monitoring/advanced-topics/omd-containerized.adoc[]
+include::manual/integration/monitoring/graph_grafana.adoc[]
+include::manual/integration/monitoring/graph_pnp4nagios.adoc[]
+include::manual/integration/monitoring/screenshot_history.adoc[]
 include::manual/integration/monitoring/advanced-topics/forwarder-templates.adoc[]
-include::manual/integration/monitoring/advanced-topics/pnp4nagios.adoc[]
-include::manual/integration/monitoring/advanced-topics/grafana.adoc[]
+
 
 [[continuous_integration]]
 === Continuous Integration

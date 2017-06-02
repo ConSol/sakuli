@@ -7,13 +7,9 @@
 :page-path: docs/general.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-*Documentation for version: `${sakuli.version}`*
+*Documentation for version: `${sakuli.version}`* (also available as a *link:${pdf.path}[PDF document^]*)
 
-*link:${pdf.path}[Download PDF^]*
-
-*All different versions of our documentation you will find under:*
-
-*http://consol.github.io/sakuli[consol.github.io/sakuli]*
+The documentation of all former Sakuli versions can be found on http://consol.github.io/sakuli[consol.github.io/sakuli]
 
 ** *_Stable/Latest version:_* latest tagged `vX.X.X` documentation
 ** *_Dev version:_* latest `vX.X.X-SNAPSHOT` version
