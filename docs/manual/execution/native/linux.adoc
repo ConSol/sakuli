@@ -1,6 +1,7 @@
 
 :imagesdir: ../../../images
 
+[[linux]]
 ==== Linux Client
 [#git-edit-section]
 :page-path: docs/manual/execution/native/linux.adoc
@@ -148,7 +149,8 @@ It also possible to use professional programming IDEs like https://www.jetbrains
 
 * Read our link:first-steps.md[first-steps tutorial] and learn to handle Sakuli
 * Integrate Sakuli results in monitoring systems:
-** <<omd-integration-native>>
+** <<omd-gearman>>
+** <<omd-sql-database>>
 ** <<icinga2-integration>>
 //FIXME: check_mk
 

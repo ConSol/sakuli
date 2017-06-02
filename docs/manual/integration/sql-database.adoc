@@ -8,9 +8,9 @@
 :page-path: docs/manual/integration/sql-database.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-This page describes how the results of the Sakuli tests *example_windows7/ubuntu/opensuse* can be written into a *MySQL database* which can be read by other 3rd party systems.
+This page describes how the results of Sakuli can be stored into a *MySQL database* which can be read by other 3rd party systems.
 
-//TODO SM:described sql schema and how results will be placed there.
+image:sql_schema.png[sakuli-db-schema]
 
 [[sql-database-create-db]]
 ===== Create Sakuli DB
@@ -37,7 +37,7 @@ Check the connection with your favorit SQL tool:
 [[sql-database-enable-forwarder]]
 ===== Enable database forwarder
 
-On the Sakuli client you must set the global properties for the database receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):
+On the Sakuli client you must set the <<property-loading-mechanism,properties>> for the database receiver. For this, edit `sakuli.properties` in the folder containing the test suites (you can copy the lines from `__SAKULI_HOME__/conf/sakuli-default.properties`):
 
 [source,properties]
 ----
@@ -67,12 +67,16 @@ Execute the example test case:
 
 The database should now contain the results.
 
-// TODO SM Hinweis für statements in perl datei
+===== Integration in other tools
+
+You can find queries using the Sakuli DB in `/setup/nagios/CheckMySQLHealthSakuli.pm` in the extracted Sakuli sources folder.
+
+We are looking forward to reading your story of how you integrated the DB results in your toolchain. 
 
 [[sql-database-optional-cleanup]]
 ===== Database cleanup (optional)
 
-Sakuli's database can get very large over time. Use the following database maintenance script to keep only the most recent data. 
+Sakuli's database can get very large over time. Use the following database maintenance script to keep only the most recent data.
 
 Create a crontab entry for a automatic database cleanup of data older than 90 days:
 

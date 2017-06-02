@@ -1,0 +1,11 @@
+
+:imagesdir: ../../../images
+
+==== Screenshot history
+
+[#git-edit-section]
+:page-path: docs/manual/integration/monitoring/screenshot_history.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+tbd
+//TODO SM Screenshot history
