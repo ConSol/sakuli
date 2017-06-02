@@ -265,7 +265,7 @@ Further information about the usage of Sakuli docker containers can be found at:
 
 * <<openshift>>
 * <<kubernetes>>
-* <<omd-integration-containerized>>
+* <<omd-containerized>>
 * Publications:
 ** https://jaxenter.de/sakuli-testing-monitoring-container-54374[JAXenter: End-2-End-Testing und -Monitoring im Container-Zeitalter]
 ** https://www.informatik-aktuell.de/entwicklung/methoden/graphical-user-interface-gui-in-containern-testen.html[Informatik Aktuell: Software-Test im Container: So können Sie Graphical User Interfaces mit Docker und Sakuli testen]

@@ -28,7 +28,7 @@
 - JSON Data
 |- Integration in *Icinga2* as *passive checks*
 
-|<<check_mk-integration, check_mk>>
+|<<check_mk, check_mk>>
 |- Result spool file on check_mk agent
 |- Integration in CheckMK through customizable spool file +
 - preconfigured service templates

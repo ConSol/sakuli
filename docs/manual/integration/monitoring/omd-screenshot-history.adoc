@@ -1,7 +1,7 @@
 
-:imagesdir: ../../../../images
+:imagesdir: ../../../images
 
-===== OMD - Screenshot history
+==== OMD Screenshot History
 
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/advanced-topics/omd-screenshot-history.adoc

@@ -140,6 +140,6 @@ It also possible to use professional programming IDEs like https://www.jetbrains
 ** <<omd-gearman>>
 ** <<omd-sql-database>>
 ** <<icinga2-integration>>
-//FIXME: check_mk
+** <<check_mk>>
 
 * Sakuli can also be integrated in *continuous integration* environments like <<jenkins-integration>>

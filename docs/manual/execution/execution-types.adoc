@@ -16,22 +16,21 @@ Sakuli supports different execution types. Each of the types have a special purp
 |===
 
 |<<native-execution>>
-(Windows, Linux, MacOS)
+(<<windows,Windows>>, <<linux, Linux>>, , MacOS)
 |+ Supports all end user platforms
 + Installable directly on the end user client
 + Easy JavaScript based API syntax
 + Direct execution of test scripts without compile process
 
 |<<maven-execution>>
-(Java DSL)
+(<<sakuli-java-dsl, Java DSL>>)
 //TODO TS add here the slenium extension also
 |+ Easy integration in maven build cycle
 + Well known test structure and execution context for Java developers
 + Good writing and debug support through well known Java IDEs
 
 |<<containerized-execution>>
-(Docker Images, Docker Compose)
-//TODO TS add kubernetes and openshift
+(<<docker-images, Docker Images>>, <<docker-compose>>, <<kubernetes>>, <<openshift>>)
 |+ Ready to use E2E environment without installation process
 + Tests run in a real desktop and using a real browser or native client
 + Easy integration in server environments for running headless UI tests

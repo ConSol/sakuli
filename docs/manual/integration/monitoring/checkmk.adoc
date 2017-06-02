@@ -1,7 +1,7 @@
 
 :imagesdir: ../../../images
 
-[[check_mk-integration]]
+[[check_mk]]
 ==== Check_MK
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/checkmk.adoc

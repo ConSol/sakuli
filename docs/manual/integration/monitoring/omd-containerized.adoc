@@ -1,8 +1,8 @@
 
-:imagesdir: ../../../../images
+:imagesdir: ../../../images
 
-[[omd-integration-containerized]]
-===== Containerized OMD Integration
+[[omd-containerized]]
+==== OMD Containerized
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/advanced-topics/omd-containerized.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
@@ -28,7 +28,7 @@ Each "omd-labs-sakuli" image build gets triggered by webhook when a new "omd-lab
 
 The image already contains a "demo" site.
 
-====== Usage
+===== Usage
 
 .Run the "demo" site in OMD Labs Edition:
 
@@ -73,6 +73,6 @@ make build
 docker run -p 8443:443 local/omd-labs-centos-sakuli
 ----
 
-====== Ansible drop-ins
+===== Ansible drop-ins
 
 You can also configure this OMD labs container with Ansible playbooks. See https://github.com/ConSol/omd-labs-docker[https://github.com/ConSol/omd-labs-docker] for more information.

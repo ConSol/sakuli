@@ -2,7 +2,7 @@
 :imagesdir: ../../../../images
 
 [[forwarder-template]]
-===== Forwarder Templates
+==== Forwarder Templates
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/advanced-topics/forwarder-templates.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
@@ -13,7 +13,7 @@ Using templates for the forwarder output makes it possible to easily modify the 
 
 Here we want to describe how Jtwig is working, how to use a customized template and what you have to pay attention to.
 
-====== JTwig template
+===== JTwig template
 
 http://jtwig.org/[Jtwig] is a template engine based on Java, which has a simple and understandable syntax und is easy to use. The following snippet shows an example of a Jtwig template used in Sakuli.
 
@@ -34,7 +34,7 @@ The input for this template is the `testCase` object, which has a set ot test st
 The whole http://jtwig.org/[Jtwig] feature set is supported and can be used within the Sakuli forwarder.
 For more detailed information about Jtwig templates, please refer to http://jtwig.org/[Jtwig].
 
-====== Customized Jtwig Functions
+===== Customized Jtwig Functions
 
 http://jtwig.org/[Jtwig] comes with a list of functions like `abs`, `concat` etc, which can be used within a template. In addition to the standard functions, Jtwig supports the implementation and injection of custom functions. Sakuli provides following custom functions:
 
@@ -46,7 +46,7 @@ http://jtwig.org/[Jtwig] comes with a list of functions like `abs`, `concat` etc
 
 Please refer to the Sakuli git-link:src/common/src/main/resources/org/sakuli/common/config/templates[link-text="default Jtwig templates", mode="view", link-window="_blank"], to see the custom functions in action.
 
-====== Handling of white spaces and new lines
+.Handling of white spaces and new lines
 
 The forwarder implementation provides a special handling of white spaces and new lines within the templates. For this feature the `jtwig-spaceless-extension` has been used, which comes with a SpaceRemover interface. This has been implemented by the `LeadingWhitespaceRemover`. The `LeadingWhitespaceRemover` is configured in the twig template engine and removes all leading whitespaces for every line and all line endings within the template. It can be activated by adding the text snippet or the whole template within the following tags `{% spaceless %}` and `{% endspaceless %}`.
 The `LeadingWhitespaceRemover` has been introduced, to make the implementation and maintaining of the templates easier.
@@ -55,7 +55,7 @@ Since the leading white spaces and the new lines are removed, some special place
 * `$whitespace$` - the placeholder will be replaced by a real white space.
 * `$newline$` - the placeholder will be replaced by a new line `&#39;\n&#39;`.
 
-====== Using a customized templates
+.Using a customized templates
 
 Sakuli provides a default template set, which is placed within the templates directory under `__SAKULI_HOME__/config/templates` within the Sakuli home folder (e.g. the default Check_MK templates can be found in a subdirectory `check_mk`).
 
@@ -63,7 +63,7 @@ The property `sakuli.forwarder.template.folder` defines the path to the main.twi
 
 Before customizing a default template, it is essential to copy the templates to a new location and configure that location as the template location in Sakuli, otherwise installing a new Sakuli release would overwrite the modified templates within the config directory.
 
-====== Structure of the default main template
+.Structure of the default main template
 
 Generally the forwarder is expecting to find a certain template file named `main.twig` within the configured template directory. The default `main.twig` template doesn't contain the whole output, but includes further templates to make the single templates more readable. Since the templates are fully customizable, the user can decide how the templates are structured, whether to use nested templates or to define everything within a single file.
 
@@ -81,6 +81,6 @@ The following snippet shows the default `main.twig` template provided by Sakuli 
     {% endspaceless %}
 ----
 
-====== Supported Forwarder
+.Supported Forwarder
 
-* Check_MK: see <<check_mk-integration>>
+* Check_MK: see <<check_mk>>
