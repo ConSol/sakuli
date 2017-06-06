@@ -2,7 +2,7 @@
 :imagesdir: ../../images
 
 [[dev-installation]]
-=== Installation Guide for Sakuli-Developers
+=== Installation guide for Sakuli-Developers
 [#git-edit-section]
 :page-path: docs/manual/development/how-to-release.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
@@ -16,7 +16,7 @@ For the following guide you need
 * Development environment (we advise IntelliJ IDEA)
 * Maven 3 (check version `mvn -version`)
 
-CAUTION: *For Ubuntu users!!!* - check the maven version over ` apt show maven` )
+CAUTION: *For Ubuntu users!!!* - check the maven version with `apt show maven`
 
 * Java JDK 1.8
 * Please use the original Oracle JDK - OpenJDK unfortunately won't work for the JavaFX based integration test, until https://github.com/ConSol/sakuli/issues/245[#245] is not closed. Also see <<dev-java-fx>>

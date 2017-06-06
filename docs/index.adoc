@@ -126,7 +126,8 @@ include::manual/integration/monitoring/omd-sql-database.adoc[]
 include::manual/integration/monitoring/icinga2api.adoc[]
 include::manual/integration/monitoring/graph_grafana.adoc[]
 include::manual/integration/monitoring/graph_pnp4nagios.adoc[]
-include::manual/integration/monitoring/screenshot_history.adoc[]
+//TODO include
+//include::manual/integration/monitoring/screenshot_history.adoc[]
 
 
 [[continuous_integration]]

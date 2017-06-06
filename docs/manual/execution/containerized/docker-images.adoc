@@ -14,6 +14,7 @@ Docker allows you to run a Sakuli test in an isolated environment, called "conta
 
 The repository's subfolder https://github.com/ConSol/sakuli/tree/master/docker[`./docker`] contains all source files Sakuli docker images are made of. Currently we provide images on https://hub.docker.com[DockerHub] for:
 
+//TODO: update ubuntu version
 * CentOS 7 (https://hub.docker.com/r/consol/sakuli-centos-xfce/[consol/sakuli-centos-xfce], https://hub.docker.com/r/consol/sakuli-centos-xfce-java/[consol/sakuli-centos-xfce-java])
 * Ubuntu 14.04 LTS (https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/[consol/sakuli-ubuntu-xfce], https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/[consol/sakuli-ubuntu-xfce-java])
 
@@ -75,7 +76,7 @@ docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce
 docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce:dev
 ----
 
-The container will execute a small headless self-test and exit afterwards. Read on to learn how to execute your own JavaScript or Java based tests within this containers. 
+The container will execute a small headless self-test and exit afterwards. Read on to learn how to execute your own JavaScript or Java based tests within this containers.
 
 [[docker-javascript-based-test]]
 ===== Run JavaScript based Test
@@ -95,7 +96,7 @@ CMD ["run $SAKULI_TEST_SUITE"]
 
 There is more than one way to integrate a custom testsuite in a container, discussed in the following.
 
-NOTE: Assume you want to run a suite called `suite_1` located on your host at the path `/home/myuser/my-sakuli-testsuites` - use one of the following ways:
+Assume you want to run a suite called `suite_1` located on your host at the path `/home/myuser/my-sakuli-testsuites` - use one of the following ways:
 
 [[docker-run-command]]
 ====== docker run command
@@ -105,7 +106,7 @@ Mount the suite folder on your host into the container and override `CMD` from D
 [source,bash]
 ----
 # running tests in chrome
-~$ docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce 'run "$SAKULI_TEST_SUITE" -browser chrome'   
+~$ docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce 'run "$SAKULI_TEST_SUITE" -browser chrome'
 ----
 
 To get all possible command line parameters call `docker run consol/sakuli-ubuntu-xfce -help`.
@@ -120,6 +121,7 @@ CMD can be overwritten in two ways:
 ----
 
 This command will
+
  * mount the test suites folder to `/my-sakuli-testsuites` within the container
  * execute the suite `suite_1`
 
@@ -128,7 +130,7 @@ This command will
 See <<docker-compose-run-command>>.
 
 [[docker-environmen-variable]]
-====== Environment variable SAKULI_TEST_SUITE`
+====== Environment variable `SAKULI_TEST_SUITE`
 
 Mount a folder on your host into the container and override the environment variable `SAKULI_TEST_SUITE`.
 
@@ -154,7 +156,7 @@ Also for Sakuli test writen in Java and executed through https://maven.apache.or
 * https://hub.docker.com/r/consol/sakuli-centos-xfce-java/[consol/sakuli-centos-xfce-java]
 * https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/[consol/sakuli-ubuntu-xfce-java].
 
-More information about how to write a Java based Sakuli test, see <<sakuli_java_dsl>>. Now take a look at the important lines in the _Dockerfile_ which define how the container will start:
+For more information about how to write a Java based Sakuli test see <<sakuli_java_dsl>>. Now take a look at the important lines in the _Dockerfile_ which define how the container will start:
 
 [source,Dockerfile]
 ----

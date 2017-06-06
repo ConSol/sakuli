@@ -18,8 +18,8 @@ There are already a variety of free end2end/automation tools on the market (Sahi
 //TODO something missing?
 
 [[why-sakuli.key-features]]
-=== Key Features
-
+== Key Features
+//TODO TS: git edit buttons
 * Platform-independent UI testing tool
 * End-2-End monitoring of application functionality and quality
 * Combines two automation technologies:

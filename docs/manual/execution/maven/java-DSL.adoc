@@ -1,6 +1,7 @@
 
 :imagesdir: ../../../images
 
+[sakuli_java_dsl]
 ==== Sakuli Java DSL
 [#git-edit-section]
 :page-path: docs/manual/execution/maven/java-DSL.adoc
