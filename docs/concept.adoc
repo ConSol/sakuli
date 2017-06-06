@@ -31,3 +31,5 @@ image:sakuli_components.png[Components of Sakuli]
 The integration of Sakuli in other tools can be done by different so called *forwarder modules*:
 
 include::manual/integration/forwarder-overview.adoc[]
+
+TIP: For more information see <<integration_in_other_tools>>
