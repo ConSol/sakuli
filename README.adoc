@@ -1,10 +1,12 @@
 image:./docs/images/sakuli_logo_small.png[sakuli-logo]
 
+//TODO TS update version during release
+
+:sakuli-latest-version: v1.0.2
+:sakuli-doc-base-url: http://consol.github.io/sakuli
+:sakuli-doc-url: {sakuli-doc-base-url}/{sakuli-latest-version}
+
 _An end-to-end testing tool for web sites and common UIs with multiple monitoring integrations_
-
-//TODO TS & SM: copy & paste some content from concept
-
-//TODO TS: version variable
 
 = About the project
 image:./docs/images/sakuli_concept.png[sakuli concept]
@@ -13,9 +15,9 @@ image:./docs/images/sakuli_concept.png[sakuli concept]
 
 *Sakuli* is written in Java and runs on many platforms:
 
-* <<windows,Windows>>
-* <<linux,Linux>>
-* <<containerized-execution,Docker containers>>
+* {sakuli-doc-url}/#windows[Windows]
+* {sakuli-doc-url}/#linux[Linux]
+* {sakuli-doc-url}/#containerized-execution[Docker containers]
 * MacOS
 
 The *Sakuli* project brings together two Open-Source end-to-end testing tools which perfectly fit together: http://www.sahi.co.in/[Sahi] for *web-based tests* (by injecting JavaScript code into the browser), as well as the screenshot-based testing tool http://sikulix.com/[Sikuli], which allows the execution of *keyboard and mouse actions* on screen areas that have been defined by previously recorded screenshots and are recognized using the OpenCV engine.
@@ -33,25 +35,26 @@ The *Sakuli* project brings together two Open-Source end-to-end testing tools wh
 ** CI builds (e.g. Jenkins)
 
 
-
 = Documentation
 The complete versions of our documentation you can find under:
 
-*http://consol.github.io/sakuli/v1.0.2/[consol.github.io/sakuli]*
+*{sakuli-doc-base-url}[consol.github.io/sakuli]*
 
-** *_Stable/Latest version:_* latest tagged `vX.X.X` documentation
 ** *_Dev version:_* latest `vX.X.X-SNAPSHOT` version
 
+** *_Stable/Latest version:_* *{sakuli-doc-url}[{sakuli-latest-version}]*
+
+
 = Quick links
-//TODO TS: Links
 
-//Download-Link
-include::docs/publications.adoc[Publications]
+*{sakuli-doc-url}/#download[Download]*
 
-include::docs/events.adoc[Events]
+*{sakuli-doc-url}/#publications[Publications]*
 
-include::docs/media.adoc[Media]
+*{sakuli-doc-url}/#events[Events]*
 
-include::docs/changelog.adoc[Changlog]
+*{sakuli-doc-url}/#media[Media]*
 
-include::docs/support.adoc[Support]
+*{sakuli-doc-url}/#changelog[Change Log]*
+
+*{sakuli-doc-url}/#support[Support]*

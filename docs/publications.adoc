@@ -1,6 +1,7 @@
 
 :imagesdir: images
 
+[[publications]]
 = Publications
 
 [#git-edit-section]
