@@ -14,7 +14,7 @@ That's the reason why Sakuli is able to *encrypt* them on the command line, and 
 
 Among other parameters, Sakuli uses the MAC address of a local network interface card as a encryption salt. Hence no virtual adapters can be choosen.
 
-You can decide whether Sakuli should automatically select an adapter…
+You can decide whether Sakuli should automatically select an adapter by setting the following <<property-loading-mechanism,properties>>:
 
 [source,properties]
 ----

@@ -10,7 +10,7 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 ===== Installation
 
 This page describes the steps to *install and test* Sakuli on *Windows*.
-If you want to *update* Sakuli, see the link:upgrade-process.adoc[upgrade process] documentation.
+If you want to *update* Sakuli, see the <<upgrade_process>> documentation.
 
 The default installation path of a particular Sakuli version is referenced as `%SAKULI_HOME%` (also called the "_version_" folder) which is inside of the folder "sakuli":
 
@@ -83,7 +83,7 @@ image:inst_dashboard.png[dashboards]
 
 Click on any browser icon: it should start and present you the start page of Sahi:
 
-image:sahi_startpage.png[sahi_start]
+image:sahi_startpage.jpg[sahi_start]
 
 At last, test the *Sahi Controller* by holding the *ALT key* and double-clicking on any white space on the page. If you are getting a new window showing the "Sahi Controller", you're done. Close all browser windows and Sahi.
 

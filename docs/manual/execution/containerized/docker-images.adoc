@@ -87,7 +87,7 @@ docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce
 docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce:dev
 ----
 
-The container will execute a small headless self-test and exit afterwards. Read on to learn how to execute your own JavaScript or Java based tests within this containers. 
+The container will execute a small headless self-test and exit afterwards. Read on to learn how to execute your own JavaScript or Java based tests within this containers.
 
 [[docker-javascript-based-test]]
 ===== Run JavaScript based Test
@@ -105,7 +105,7 @@ ENTRYPOINT ["/dockerstartup/startup.sh"]
 
 There is more than one way to integrate a custom testsuite in a container, discussed in the following.
 
-NOTE: Assume you want to run a suite called `suite_1` located on your host at the path `/home/myuser/my-sakuli-testsuites` - use one of the following ways:
+Assume you want to run a suite called `suite_1` located on your host at the path `/home/myuser/my-sakuli-testsuites` - use one of the following ways:
 
 [[docker-run-command]]
 ====== docker run command
@@ -130,6 +130,7 @@ CMD can be overwritten in two ways:
 ----
 
 This command will
+
  * mount the test suites folder to `/my-sakuli-testsuites` within the container
  * execute the suite `suite_1`
 
@@ -138,7 +139,7 @@ This command will
 See <<docker-compose-run-command>>.
 
 [[docker-environmen-variable]]
-====== Environment variable SAKULI_TEST_SUITE`
+====== Environment variable `SAKULI_TEST_SUITE`
 
 Mount a folder on your host into the container and overwrite the environment variable `SAKULI_TEST_SUITE`.
 
@@ -159,7 +160,7 @@ See <<docker-compose-environmen-variable>>.
 [[docker-java-based-test]]
 ===== Run Java based test
 
-Also for Sakuli test writen in Java and executed through https://maven.apache.org[Maven], we provide to preconfigured docker images: https://hub.docker.com/search/?isAutomated=0&isOfficial=0&page=1&pullCount=0&q=sakuli-java&starCount=0[consol/sakuli-xxx-xxx-java]. More information about how to write a Java based Sakuli test, see <<sakuli-java-dsl>>. Now take a look at the important lines in the _Dockerfile_ which define how the container will start:
+Also for Sakuli test writen in Java and executed through https://maven.apache.org[Maven], we provide to preconfigured docker images: https://hub.docker.com/search/?isAutomated=0&isOfficial=0&page=1&pullCount=0&q=sakuli-java&starCount=0[consol/sakuli-xxx-xxx-java]. For more information about how to write a Java based Sakuli test see <<sakuli-java-dsl>>. Now take a look at the important lines in the _Dockerfile_ which define how the container will start:
 
 [source,Dockerfile]
 ----

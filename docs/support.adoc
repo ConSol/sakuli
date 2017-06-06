@@ -1,6 +1,7 @@
 
 :imagesdir: images
 
+[[support]]
 = Support
 
 [#git-edit-section]

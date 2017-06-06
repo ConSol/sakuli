@@ -7,13 +7,13 @@
 :page-path: docs/manual/development/ascii-doc-aspects.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-.Generate AciiDoc Dokumentation
+.Generate AsciiDoc documentation
 
 Execute:
 
 `mvn install -f src/docs-manual/pom.xml -P generate-manual`
 
-The http://asciidoctor.org/docs/asciidoctor-maven-plugin[Asciidoctor-maven-plugin] now generates an HTML page and the PDF:
+The http://asciidoctor.org/docs/asciidoctor-maven-plugin[Asciidoctor-maven-plugin] now generates a HTML page and the PDF:
 
 [source]
 ----
@@ -21,7 +21,7 @@ The http://asciidoctor.org/docs/asciidoctor-maven-plugin[Asciidoctor-maven-plugi
  $ ls src/docs-manual/target/generated-docs/pdf
 ----
 
-Then you can open the file `src/docs-manual/target/generated-docs/index.html` in your favorite browser.
+Then you can open the file `src/docs-manual/target/generated-docs/index.html` in your favourite browser.
 
 .Upload to GitHub Pages
 If you want to update the Github Page http://consol.github.io/sakuli[consol.github.io/sakuli], just add the profile `upload-manual`:
@@ -30,18 +30,26 @@ If you want to update the Github Page http://consol.github.io/sakuli[consol.gith
 
 *OR* use the Jenkins CI job http://labs-build.consol.de/view/Sakuli/job/Sakuli_CI_update_documentation/[Sakuli_CI_update_documentation]
 
-.Live Rendering in Browser
+.Live preview in browser
 
-During the writing of the documentation it is useful to have a "live watch" possibility. There you can do the following
+While writing the documentation it is useful to have a live preview. For this you can do the following:
+
+Start the `auto-refresh` goal of the http://asciidoctor.org/docs/asciidoctor-maven-plugin[Asciidoctor-maven-plugin], which re-creates the html pages as soon as there are changes on the file system:
+[source]
+----
+mvn clean install -f src/docs-manual/pom.xml -P generate-manual-watch
+----
+Then use one of the following methods to serve the documentation locally with an ad-hoc webserver:
 
 [source]
 ----
-live-server src/docs-manual/target/generated-docs & <1>
-
-mvn clean install -f src/docs-manual/pom.xml -P generate-manual-watch <2>
+python -m SimpleHTTPServer <1>
+live-server src/docs-manual/target/generated-docs <2>
 ----
-<1> Opens a webserver under http://127.0.0.1:8080 with automatic refresh when any file get updated, see https://github.com/tapio/live-server#installation[tapio/live-server].
-<2> Use the `auto-refresh` goal of the http://asciidoctor.org/docs/asciidoctor-maven-plugin[Asciidoctor-maven-plugin]
+
+<1> Open a small python adhoc web server on http://127.0.0.1:8000 (manual refresh)
+<2> Install and open the NPM based https://github.com/tapio/live-server#installation["live-server"] on http://127.0.0.1:8080; will refresh the broewser window on every page recreation.
+
 
 .Sakuli API generation
 

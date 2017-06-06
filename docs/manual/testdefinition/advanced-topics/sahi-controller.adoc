@@ -54,11 +54,11 @@ Further, we want for example to assure that the contact form of the web page os 
 
 image:tutorial_click_action.png[click]
 
-In the end, Sahi should check that the appeared popup window contains the text "Schreiben Sie uns!". You guessed it - move the mouse pointer over this text and click the "Assert" button again. The fourth assertion is the right one, which we also paste into the test script: 
+In the end, Sahi should check that the appeared popup window contains the text "Schreiben Sie uns!". You guessed it - move the mouse pointer over this text and click the "Assert" button again. The fourth assertion is the right one, which we also paste into the test script:
 
 image:tutorial_contains_text.png[contains_text]
 
-Now remove the "sleep" statement from the script file; it should look now like that: 
+Now remove the "sleep" statement from the script file; it should look now like that:
 
 [source,js]
 ----

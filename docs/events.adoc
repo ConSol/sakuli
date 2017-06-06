@@ -1,5 +1,6 @@
 
 :imagesdir: images
+[[events]]
 = Events
 
 [#git-edit-section]

@@ -10,7 +10,7 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 ===== Installation
 
 This page describes the steps to *install and test* Sakuli on *Ubuntu Linux 16.04 LTS*.
-For other distributions (CentOS, OpenSuSE, ...) they be mostly identical. If you want to *update* Sakuli, see the link:upgrade-process.adoc[upgrade process] documentation.
+For other distributions (CentOS, OpenSuSE, ...) they be mostly identical. If you want to *update* Sakuli, see the <<upgrade_process>> documentation.
 
 The default installation path of a particular Sakuli version is referenced as `$SAKULI_HOME` (also called the "_version_" folder) which is inside of the folder "sakuli":
 
@@ -61,7 +61,7 @@ image:installer_2_linux.png[inst_2]
 . install Sakuli
 . install Sahi
 . set/update the environment variable `$SAKULI_HOME` which points to the new version.
-. set/update `.bashc`
+. set/update `.bashrc`
 . install one example test suite per OS which help you to test and understand Sakuli.
 . install Firefox Portable, which can be used exclusively for Sakuli Tests
 

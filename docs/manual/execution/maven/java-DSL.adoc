@@ -7,7 +7,7 @@
 :page-path: docs/manual/execution/maven/java-DSL.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-Sakuli provides a Java DSL for writing test cases in pure Java. The DSL is designed as fluent API and provides the exact same capabilities as the Javascript API. The Sakuli Java API enables users to write Sakuli tests in pure Java unit tests using JUnit or TestNG. The good news about that is that you are able to access any native application UI with screen related actions as easy as in JavaScript API.  
+Sakuli provides a Java DSL for writing test cases in pure Java. The DSL is designed as fluent API and provides the exact same capabilities as the Javascript API. The Sakuli Java API enables users to write Sakuli tests in pure Java unit tests using JUnit or TestNG. The good news about that is that you are able to access any native application UI with screen related actions as easy as in JavaScript API.
 
 ===== Usage
 
