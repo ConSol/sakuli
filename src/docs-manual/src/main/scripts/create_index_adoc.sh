@@ -26,7 +26,7 @@ echo ":docinfo1:
 
 image::sakuli_logo_smaller.png[sakuli-logo]
 
-Bellow you will find all currently available documentations for the different sakuli versions:
+Below you will find all currently available documentations for the different sakuli versions:
 
 
 |===

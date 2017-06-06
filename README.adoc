@@ -4,29 +4,48 @@ _An end-to-end testing tool for web sites and common UIs with multiple monitorin
 
 //TODO TS & SM: copy & paste some content from concept
 
+//TODO TS: version variable
+
+= About the project
+image:./docs/images/sakuli_concept.png[sakuli concept]
+
+*Sakuli simulates user actions* on graphical user interfaces (web, fat client, citrix, …), and provides the obtained information (runtime, result, screenshots) to third party (e.g. Nagios compatible monitoring) systems.
+
+*Sakuli* is written in Java and runs on many platforms:
+
+* <<windows,Windows>>
+* <<linux,Linux>>
+* <<containerized-execution,Docker containers>>
+* MacOS
+
+The *Sakuli* project brings together two Open-Source end-to-end testing tools which perfectly fit together: http://www.sahi.co.in/[Sahi] for *web-based tests* (by injecting JavaScript code into the browser), as well as the screenshot-based testing tool http://sikulix.com/[Sikuli], which allows the execution of *keyboard and mouse actions* on screen areas that have been defined by previously recorded screenshots and are recognized using the OpenCV engine.
+
+= Key Features
+
+* Platform-independent UI testing tool
+* End-2-End monitoring of application functionality and quality
+* Combines two automation technologies:
+** DOM based web testing
+** Image pattern based UI automation (for non-web content)
+* Scalable from single-client up to multi-node container setup for parallel execution
+* Integration of test results into
+** Monitoring systems (e.g. Nagios/Icinga)
+** CI builds (e.g. Jenkins)
+
+
+
 = Documentation
 The complete versions of our documentation you can find under:
 
-*http://consol.github.io/sakuli[consol.github.io/sakuli]*
+*http://consol.github.io/sakuli/v1.0.2/[consol.github.io/sakuli]*
 
 ** *_Stable/Latest version:_* latest tagged `vX.X.X` documentation
 ** *_Dev version:_* latest `vX.X.X-SNAPSHOT` version
 
-= Quick Links
+= Quick links
+//TODO TS: Links
 
-// STRUCTURE
-include::docs/general.adoc[General]
-
-include::docs/download.adoc[Download]
-
-include::docs/why-sakuli.adoc[Why Sakuli?]
-
-include::docs/concept.adoc[Concept]
-
-*http://consol.github.io/sakuli[Manual]*
-
-include::docs/example-projects.adoc[Example Projects]
-
+//Download-Link
 include::docs/publications.adoc[Publications]
 
 include::docs/events.adoc[Events]
