@@ -1,4 +1,13 @@
+
+:imagesdir: images
+
 == Branches & build status
+
+[#git-edit-section]
+:page-path: docs/build_states.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+
 |===
 |branch |build state |docker images state
 

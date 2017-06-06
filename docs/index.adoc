@@ -49,7 +49,9 @@ image:sakuli_logo_small.png[sakuli-logo]
 // STRUCTURE
 include::general.adoc[]
 include::download.adoc[]
+include::build_states.adoc[]
 include::why-sakuli.adoc[]
+include::key-features.adoc[]
 include::concept.adoc[]
 
 :sectnums:
