@@ -1,7 +1,5 @@
 image:./docs/images/sakuli_logo_small.png[sakuli-logo]
 
-//TODO TS update version during release
-
 :sakuli-latest-version: v1.0.2
 :sakuli-doc-base-url: http://consol.github.io/sakuli
 :sakuli-doc-url: {sakuli-doc-base-url}/{sakuli-latest-version}
