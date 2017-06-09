@@ -147,7 +147,7 @@ It also possible to use professional programming IDEs like https://www.jetbrains
 
 ===== Next steps
 
-* Read our link:first-steps.md[first-steps tutorial] and learn to handle Sakuli
+* Read our https://github.com/ConSol/sakuli-examples/blob/master/tutorials/first-steps/first-steps.md[first-steps tutorial] and learn to handle Sakuli
 * Integrate Sakuli results in monitoring systems:
 ** <<omd-gearman>>
 ** <<omd-sql-database>>

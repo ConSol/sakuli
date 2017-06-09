@@ -47,6 +47,8 @@ The complete versions of our documentation you can find under:
 
 *{sakuli-doc-url}/#download[Download]*
 
+*{sakuli-doc-url}/#examples[Sakuli Examples]*
+
 *{sakuli-doc-url}/#publications[Publications]*
 
 *{sakuli-doc-url}/#events[Events]*
