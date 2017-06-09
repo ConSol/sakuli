@@ -7,39 +7,12 @@
 :page-path: docs/manual/integration/monitoring/omd-preparation.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-//TODO SM: add check_mk
-This chapter describes all necessary steps to prepare a OMD site with a *Nagios* compatible monitoring system to receive Sakuli test results with one of the forwarders <<omd-gearman,gearman>>, <<omd-sql-database,database>> or <<icinga2-integration,icinga2-api>>. OMD with Thruk as web frontend is highly recommended, but any other Nagios based system will do also (the configuration steps may vary then). The steps described here refer to Nagios as monitoring core.
+This chapter describes all necessary steps to prepare a OMD site with a *Nagios* compatible monitoring system to receive Sakuli test results with one of the forwarders <<omd-gearman,gearman>>, <<omd-sql-database,database>> or <<icinga2-integration,icinga2-api>>. For some parts of this documentation, OMD with Thruk as web frontend will be presupposed, but any other Nagios based system will do also (the configuration steps may vary then).
 
 ===== Requirements
 
 * *https://labs.consol.de/OMD/[OMD]* installed on a Linux operating system
-* a running *OMD site* (here: *sakuli*)
-
-===== Download Sakuli sources
-
-General note: you should download the *same package version of Sakuli* as you did on the clients. *Do not mix versions*.
-
-Download *Sakuli* from http://labs.consol.de/sakuli/install[http://labs.consol.de/sakuli/install] into a temporary folder `__TEMP__`.
-[source]
-----
-cd __TEMP__
-wget http://labs.consol.de/sakuli/install/sakuli-vx.x.x-SNAPSHOT.zip
-----
-
-Decompress it:
-[source]
-----
-unzip sakuli-vx.x.x-SNAPSHOT.zip
-----
-
-===== Configuration
-
-All following steps should be done as the *OMD site user* (here: "sakuli"):
-
-[source]
-----
-su - sakuli
-----
+* a running *OMD site*
 
 ====== HTML escaping
 
@@ -50,7 +23,5 @@ Sakuli will produce HTML formatted output. *HTML escaping* in the monitoring cor
 OMD[sakuli]:~$ vim etc/nagios/cgi.cfg
     escape_html_tags=0
 ----
-
-
 
 Now choose one of the <<forwarders>>.
