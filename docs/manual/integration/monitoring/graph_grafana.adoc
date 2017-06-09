@@ -1,11 +1,44 @@
 
 :imagesdir: ../../../images
 
+[[grafana_graphs]]
 ==== Grafana graphs
 
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/graph_grafana.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-tbd
-//TODO SM how to use
+NOTE: This section is written for OMD-Labs environments with InfluxDB/Grafana enabled. It may be useful for others too, but the steps may vary then.
+
+//TODO SM: Grafana screenshot
+
+===== Feature activation
+Check the https://labs.consol.de/de/nagios/omd/2015/10/21/activate-nagflux.html[OMD Labs documentation] for infos on how to enable Grafana/InfluxDB.
+
+TIP: OMD-Labs already contains a graph template `check_sakuli` for https://github.com/Griesbacher/histou/[Histou], the Grafana templating system.
+
+
+[[screenshot_annotations]]
+===== Screenshot annotations
+
+Grafana graphs can also show screenshots of the <<screenshot_history>> as http://docs.grafana.org/reference/annotations/[anotations].
+
+Execute the Sakuli Makefile to patch the influxDB init script. It will restart InfluxDB and create the Sakuli image database:
+
+[source]
+----
+OMD[demo]:~/share/sakuli/setup$ make grafana
+patch -d /omd/sites/demo -p0 < ./omd/etc/init.d/sakuli_influxdb.patch
+patching file etc/init.d/influxdb
+omd restart influxdb
+Stopping influxdb.....OK
+Starting influxdb....OK
+----
+
+In case of an exception, the <<screenshot_history_eh,screenshot history event_handler>> saves the image on the file system *and* its path into the InfluxDB database "sakuli" (measurement: *images*).
+
+Violet vertical lines in the Sakuli graph indicate a saved screenshot. Hover the mouse over the bottom of the line to show the thumbnail:
+
+image:grafana_screenshot.png[grafana_screenshot]
+
+Click the thumbnail to get the image enlarged. 
