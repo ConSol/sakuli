@@ -133,7 +133,6 @@ include::manual/integration/monitoring/checkmk.adoc[]
 include::manual/integration/monitoring/screenshot_history.adoc[]
 include::manual/integration/monitoring/graph_grafana.adoc[]
 include::manual/integration/monitoring/graph_pnp4nagios.adoc[]
-include::manual/integration/monitoring/omd-containerized.adoc[]
 include::manual/integration/monitoring/forwarder-templates.adoc[]
 
 
