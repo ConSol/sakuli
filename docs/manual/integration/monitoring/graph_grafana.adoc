@@ -10,7 +10,7 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 NOTE: This section is written for OMD-Labs environments with InfluxDB/Grafana enabled. It may be useful for others too, but the steps may vary then.
 
-//TODO SM: Grafana screenshot
+image:grafana.png[grafana,1000]
 
 ===== Feature activation
 Check the https://labs.consol.de/de/nagios/omd/2015/10/21/activate-nagflux.html[OMD Labs documentation] for infos on how to enable Grafana/InfluxDB.
@@ -41,4 +41,4 @@ Violet vertical lines in the Sakuli graph indicate a saved screenshot. Hover the
 
 image:grafana_screenshot.png[grafana_screenshot]
 
-Click the thumbnail to get the image enlarged. 
+Click the thumbnail to get the image enlarged.
