@@ -8,20 +8,21 @@
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 
-Following we will describe, how to use link:https://www.openshift.com/[Kubernetes] for Sakuli E2E testing and monitoring. First go the folder of the Kubernetes conf:
+The following section describes how to use link:https://www.openshift.com/[Kubernetes] for Sakuli E2E tests and monitoring. First go the folder of the Kubernetes configuration:
 
 [source]
 ----
 cd <project-path>/docker/kubernetes
 ----
 
-You will find the kubernetes config example under:
+//TODO TS: was ist git-link? Sieht komisch aus
+You will find the kubernetes config example in:
 `git-link:docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml[link-text="docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml", mode="view", link-window="_blank"]`
 
 [[kubernetes-start-pod]]
 ===== Start execution pod
 
-To start an execution of a Sakuli E2E testing container in the kubernetes cluster, execute from the command line:
+To execute a Sakuli E2E testing container in the kubernetes cluster create a pod:
 
 [source]
 ----
@@ -29,11 +30,12 @@ kubectl create -f kubernetes.sakuli.example.pod.run.yaml
 ----
 
 This creates the following components in the Kubernetes cluster:
-* new Namespace `sakuli`
-* 1 Pod with the sakuli container running
-* 1 Service to make the container ports `6901` and `5901` accessible 
 
-Take a look to the running pods on the Kubernetes dashboard
+* a new namespace `sakuli`
+* a pod with the Sakuli container running
+* a service to make the container ports `6901` and `5901` accessible
+
+Now view the running pods on the Kubernetes dashboard:
 
 [source]
 ----
@@ -49,18 +51,18 @@ or get a list of all running pods in the `sakuli` namespace:
 kubectl get pod --namespace=sakuli --show-all
 ----
 
-Also you can take a look at the log output
+You can also take a look at the log output:
 
 [source]
 ----
 kubectl logs --namespace=sakuli test-sakuli-kub
 ----
 
-If you wan't to take a look to the UI during the test execution, you can connect (only during the container runtime) to the container through the defined external HTTP port `32001` of the service `test-sakuli-kub`:
+If you want to watch the test execution you can connect to the container on the external HTTP port `32001` of the service `test-sakuli-kub`:
 
 [source]
 ----
-http://<kubernets-cluster-ip>:32001/vnc_auto.html?password=sakuli&view_only=true
+http://<kubernetes-cluster-ip>:32001/vnc_auto.html?password=sakuli&view_only=true
 ----
 
 image:os_container_webvnc.png[kubernetes container via webvnc]
@@ -68,6 +70,7 @@ image:os_container_webvnc.png[kubernetes container via webvnc]
 [[kubernetes-delete-pod]]
 ===== Delete execution pod
 
+Delete the Sakuli pod with the following command:
 [source]
 ----
 kubectl delete -f kubernetes.sakuli.example.pod.run.yaml
