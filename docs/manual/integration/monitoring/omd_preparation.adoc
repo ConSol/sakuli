@@ -1,0 +1,27 @@
+
+:imagesdir: ../../../images
+
+[[omd-preparation]]
+==== OMD preparation
+[#git-edit-section]
+:page-path: docs/manual/integration/monitoring/omd-preparation.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+This chapter describes all necessary steps to prepare a OMD site with a *Nagios* compatible monitoring system to receive Sakuli test results with one of the forwarders <<omd-gearman,gearman>>, <<omd-sql-database,database>>, <<check_mk>> or <<icinga2-integration,icinga2-api>>. For some parts of this documentation, OMD with Thruk as web frontend will be presupposed, but any other Nagios based system will do also (the configuration steps may vary then).
+
+===== Requirements
+
+* *https://labs.consol.de/OMD/[OMD]* installed on a Linux operating system
+* a running *OMD site*
+
+====== HTML escaping
+
+Sakuli will produce HTML formatted output. *HTML escaping* in the monitoring core must be turned off:
+
+[source]
+----
+OMD[sakuli]:~$ vim etc/nagios/cgi.cfg
+    escape_html_tags=0
+----
+
+Now choose one of the <<forwarders>>.

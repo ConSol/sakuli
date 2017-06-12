@@ -1,2 +1,0 @@
-MAILTO=""
-# */1 * * * * perl $OMD_ROOT/local/bin/sakuli_gearman_proxy.pl -c $OMD_ROOT/etc/mod-gearman/sakuli_gearman_proxy.cfg &
