@@ -26,7 +26,7 @@ $SAKULI_HOME/bin/sakuli "$@"
 res=$?
 echo "SAKULI_RETURN_VAL: $res"
 
-if [[ $KUBERNETES_RUN_MODE = "job" ]]; then
+if [[ $KUBERNETES_RUN_MODE = "job" ]] && [ "$res" -ge 0 -a "$res" -le 6 ]; then
     echo "KUBERNETES_RUN_MODE=$KUBERNETES_RUN_MODE => return exit code 0"
     res=0
     echo "EXIT_CODE: $res"
