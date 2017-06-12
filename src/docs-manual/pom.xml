@@ -58,6 +58,13 @@
 
         <profile>
             <id>generate-manual</id>
+            <!--activate profile in release build to ensure that PDF will attached to installer files-->
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <!-- generate git/build information for docs, e.g. to set correct edit link -->
