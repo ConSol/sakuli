@@ -67,6 +67,40 @@ http://<kubernetes-cluster-ip>:32001/vnc_auto.html?password=sakuli&view_only=tru
 
 image:os_container_webvnc.png[kubernetes container via webvnc]
 
+
+[[kubernetes-job-config]]
+===== Job Config
+The Kubernetes https://kubernetes.io/docs/api-reference/v1.5/#job-v1[Job] object checks exit code of executed job. By default, the Sakuli container will return the value of the sakuli test execution (`0` ok, `1-6` warning to critical state codes). To prevent that the job will be rescheduled you can set the environment variable `KUBERNETES_RUN_MODE` to `job` and the container will return `0` for all "normal" sakuli executions. Like in this example:
+
+.sakuli.job.run.yaml
+[source, yml]
+----
+        # ...
+        containers:
+        - name: sakuli-job-pod
+          image: consol/sakuli-ubuntu-xfce
+          imagePullPolicy: Always
+          env:
+            - name: KUBERNETES_RUN_MODE
+              value: job
+          args:
+       # ...
+----
+
+As indicator that the environment variable is set, the output will contain:
+[source,commandline]
+----
+===========  SAKULI Testsuite "example_xfce" execution FINISHED - ERRORS ======================
+
+ERROR [2017-06-12 17:21:56.959] - ERROR:
+CASE "case1": Can't find "[id=not-valid, path=/headless/sakuli/test/case1/not-valid.png ]" inR[0,0 1280x1024]@S(0)waitFor function in 5 sec.
+
+SAKULI_RETURN_VAL: 6
+KUBERNETES_RUN_MODE=job => return exit code 0
+EXIT_CODE: 0
+----
+
+
 [[kubernetes-delete-pod]]
 ===== Delete execution pod
 

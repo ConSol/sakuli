@@ -50,6 +50,9 @@ objects:
         - name: ${E2E_TEST_NAME}-pod-c1
           image: ${IMAGE}
           imagePullPolicy: Always
+          env:
+            - name: KUBERNETES_RUN_MODE
+              value: job
           args:
             ### make normal UI startup to connect via: oc rsh <pod-name> bash
             #- --tail-log
