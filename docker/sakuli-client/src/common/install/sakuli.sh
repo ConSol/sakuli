@@ -28,9 +28,5 @@ echo "add to $HOME/.bashrc: use correct UMASK '${SAKULI_UMASK:-0000}'"
 # files can be deleted afterwards
 echo 'umask ${SAKULI_UMASK:-0000} && echo umask set to $(umask)' >> $HOME/.bashrc
 
-#TODO TS check if this later needed after showroom is finished
-echo "link /usr/bin/sakuli -> $STARTUPDIR/sakuli_startup.sh"
-ln -s $STARTUPDIR/sakuli_startup.sh /usr/bin/sakuli
-
 echo -e "\n\nInstalled Sakuli:"
 $SAKULI_HOME/bin/sakuli -version
