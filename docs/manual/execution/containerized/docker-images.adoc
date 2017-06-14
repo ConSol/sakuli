@@ -14,7 +14,6 @@ Docker allows you to run a Sakuli test in an isolated environment, called "conta
 
 The repository's subfolder https://github.com/ConSol/sakuli/tree/master/docker[`./docker`] contains all source files Sakuli docker images are made of. Currently we provide images on https://hub.docker.com[DockerHub] for:
 
-//TODO: update ubuntu version
 * CentOS 7 (https://hub.docker.com/r/consol/sakuli-centos-xfce/[consol/sakuli-centos-xfce], https://hub.docker.com/r/consol/sakuli-centos-xfce-java/[consol/sakuli-centos-xfce-java])
 * Ubuntu 14.04 LTS (https://hub.docker.com/r/consol/sakuli-ubuntu-xfce/[consol/sakuli-ubuntu-xfce], https://hub.docker.com/r/consol/sakuli-ubuntu-xfce-java/[consol/sakuli-ubuntu-xfce-java])
 
