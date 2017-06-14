@@ -29,18 +29,18 @@
         <fileSet>
             <directory>${parent.basedir}/</directory>
             <includes>
-                <include>changelog.md</include>
-                <include>README.md</include>
+                <include>docs/changelog.adoc</include>
+                <include>README.adoc</include>
                 <include>*.txt</include>
             </includes>
             <outputDirectory>/${sakuli.filename}</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>${parent.basedir}/docs</directory>
-            <excludes>
+            <directory>${parent.basedir}/src/docs-manual/target/generated-docs/pdf</directory>
+            <includes>
                 <!-- excludes the whole docs/development folder -->
-                <exclude>**/development/</exclude>
-            </excludes>
+                <include>*.pdf</include>
+            </includes>
             <outputDirectory>/${sakuli.filename}/docs</outputDirectory>
         </fileSet>
 

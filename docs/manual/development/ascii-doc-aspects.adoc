@@ -1,0 +1,108 @@
+
+:imagesdir: ../../images
+
+[[dev-ascii-doc]]
+=== AsciiDoc documentation aspects
+[#git-edit-section]
+:page-path: docs/manual/development/ascii-doc-aspects.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+.Generate AsciiDoc documentation
+
+Execute:
+
+`mvn install -f src/docs-manual/pom.xml -P generate-manual`
+
+The http://asciidoctor.org/docs/asciidoctor-maven-plugin[Asciidoctor-maven-plugin] now generates a HTML page and the PDF:
+
+[source]
+----
+ $ ls src/docs-manual/target/generated-docs/
+ $ ls src/docs-manual/target/generated-docs/pdf
+----
+
+Then you can open the file `src/docs-manual/target/generated-docs/index.html` in your favourite browser.
+
+.Upload to GitHub Pages
+If you want to update the Github Page http://consol.github.io/sakuli[consol.github.io/sakuli], just add the profile `upload-manual`:
+
+`mvn install -f src/docs-manual/pom.xml -P generate-manual,upload-manual`
+
+*OR* use the Jenkins CI job http://labs-build.consol.de/view/Sakuli/job/Sakuli_CI_update_documentation/[Sakuli_CI_update_documentation]
+
+.Live preview in browser
+
+While writing the documentation it is useful to have a live preview. For this you can do the following:
+
+Start the `auto-refresh` goal of the http://asciidoctor.org/docs/asciidoctor-maven-plugin[Asciidoctor-maven-plugin], which re-creates the html pages as soon as there are changes on the file system:
+[source]
+----
+mvn clean install -f src/docs-manual/pom.xml -P generate-manual-watch
+----
+Then use one of the following methods to serve the documentation locally with an ad-hoc webserver:
+
+[source]
+----
+python -m SimpleHTTPServer <1>
+live-server src/docs-manual/target/generated-docs <2>
+----
+
+<1> Open a small python adhoc web server on http://127.0.0.1:8000 (manual refresh)
+<2> Install and open the NPM based https://github.com/tapio/live-server#installation["live-server"] on http://127.0.0.1:8080; will refresh the broewser window on every page recreation.
+
+
+.Sakuli API generation
+
+Currently there is no fully automated way between the documented Sakuli API in git-link:docs/manual/testdefinition/sakuli-api.md["docs/manual/testdefinition/sakuli-api.md"] and the final git-link:docs/manual/testdefinition/sakuli-api.adoc["docs/manual/testdefinition/sakuli-api.adoc"] .
+
+*Following Steps have to be executed:*
+
+1) Generate the `sakuli-api.md` file
+Run the maven markdown generation build:
+[source]
+----
+mvn install -f src/docs-sakuli-api/pom.xml -P generate-markdown
+----
+The markdown file will be generated under: `docs/manual/testdefinition/sakuli-api.md`
+
+2) Convert to AsciiDoc
+
+* https://plugins.jetbrains.com/plugin/7391-asciidoc[IntelliJ AsciiDoc Plugin]
+image:asciidoc-intellij-plugin.png[asciidoc intellij plugin]
+
+* http://pandoc.org/MANUAL.html#using-pandoc[Pandoc]
+[source,console]
+----
+pandoc -s -S sakuli-api.md -t asciidoc -o sakuli-api.adoc
+----
+
+3) Copy & paste the changed content to one of matching the files and maybe adjust heading level to `.Class.method()`:
+
+[source]
+----
+$ ls docs/manual/testdefinition/sakuli-api*.adoc
+docs/manual/testdefinition/sakuli-api.adoc
+docs/manual/testdefinition/sakuli-api-application.adoc
+docs/manual/testdefinition/sakuli-api-environment.adoc
+docs/manual/testdefinition/sakuli-api-key.adoc
+docs/manual/testdefinition/sakuli-api-logger.adoc
+docs/manual/testdefinition/sakuli-api-mouse-button.adoc
+docs/manual/testdefinition/sakuli-api-region.adoc
+docs/manual/testdefinition/sakuli-api-testcase.adoc
+----
+
+.Update changelog
+
+*Replace GitHub issues `#999` numbers with links:*
+
+Search Regex:
+[source,regex]
+----
+#(\d+)
+----
+
+Replace expression:
+[source, regex]
+----
+https://github.com/ConSol/sakuli/issues/$1[#$1]
+----
