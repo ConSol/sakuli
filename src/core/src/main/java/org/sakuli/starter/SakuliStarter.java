@@ -19,7 +19,6 @@
 package org.sakuli.starter;
 
 import org.apache.commons.cli.*;
-import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.state.TestSuiteState;
@@ -30,6 +29,7 @@ import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.services.TeardownServiceHelper;
 import org.sakuli.starter.helper.CmdPrintHelper;
 import org.sakuli.starter.helper.SakuliFolderHelper;
+import org.sakuli.utils.CipherUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

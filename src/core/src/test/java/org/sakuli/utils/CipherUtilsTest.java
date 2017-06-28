@@ -19,7 +19,6 @@
 package org.sakuli.utils;
 
 import org.mockito.MockitoAnnotations;
-import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.exceptions.SakuliCipherException;
 import org.testng.Assert;
@@ -87,5 +86,14 @@ public class CipherUtilsTest {
             Assert.assertTrue(e.getMessage().contains(e.interfaceLog));
         }
 
+    }
+
+    @Test
+    public void testConvertToByteArray() throws Exception {
+        byte[] target =
+                {
+                        0x63, 0x6f, 0x6e, 0x31, 0x33, 0x53, 0x61, 0x6b, 0x53, 0x6f
+                };
+        Assert.assertEquals(CipherUtil.convertStringToBytes("con13SakSo"), target);
     }
 }

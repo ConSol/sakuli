@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sakuli.actions.environment;
+package org.sakuli.utils;
 
 import org.apache.commons.codec.binary.Base64;
 import org.sakuli.datamodel.properties.ActionProperties;
@@ -30,6 +30,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.NetworkInterface;
+import java.nio.charset.Charset;
+import java.security.InvalidParameterException;
 import java.util.Enumeration;
 
 import static java.net.NetworkInterface.getNetworkInterfaces;
@@ -42,10 +44,11 @@ import static java.net.NetworkInterface.getNetworkInterfaces;
  */
 @Component
 public class CipherUtil {
-    private static byte[] keyPart1 =
+    private static byte[] netKeyPart1 =
             {
                     0x63, 0x6f, 0x6e, 0x31, 0x33, 0x53, 0x61, 0x6b, 0x53, 0x6f
             };//"con13SakSo"
+    private static String ivKey = "IVcon17SakSoENVS";
     private static String algorithm = "AES/CBC/PKCS5Padding";
     private String interfaceName;
     private boolean autodetect;
@@ -76,6 +79,16 @@ public class CipherUtil {
             }
         }
         throw new Exception("No network interface with a MAC address is present, please check your os settings!");
+    }
+
+    /**
+     * Converts a String input to a byte array
+     */
+    static byte[] convertStringToBytes(String s) {
+        if (s == null) {
+            throw new InvalidParameterException("can't convert null String to byte array");
+        }
+        return s.getBytes(Charset.defaultCharset());
     }
 
     /**
@@ -171,16 +184,17 @@ public class CipherUtil {
         }
     }
 
+    /**
+     * build the initialization vector
+     *
+     * @return byte array wrapped {@link IvParameterSpec}
+     */
     private IvParameterSpec getIV() {
-        // build the initialization vector.  This example is all zeros, but it
-        // TODO could be any value or generated using a random number generator.
-        byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        IvParameterSpec ivspec = new IvParameterSpec(iv);
-        return ivspec;
+        return new IvParameterSpec(convertStringToBytes(ivKey));
     }
 
     /**
-     * generates the key for encryption from salt (keyPart1) and the MAC address of the choosen interface.
+     * generates the key for encryption from salt (netKeyPart1) and the MAC address of the choosen interface.
      *
      * @return valid {@link SecretKeySpec}
      */
@@ -188,9 +202,9 @@ public class CipherUtil {
         // the length of the MAC address must be 6, to get secrect key length of 16 bytes
         assert (macOfEncryptionInterface.length == 6);
         byte[] keyPar2 = macOfEncryptionInterface;
-        byte[] key = new byte[keyPart1.length + keyPar2.length];
-        System.arraycopy(keyPart1, 0, key, 0, keyPart1.length);
-        System.arraycopy(keyPar2, 0, key, keyPart1.length, keyPar2.length);
+        byte[] key = new byte[netKeyPart1.length + keyPar2.length];
+        System.arraycopy(netKeyPart1, 0, key, 0, netKeyPart1.length);
+        System.arraycopy(keyPar2, 0, key, netKeyPart1.length, keyPar2.length);
         return new SecretKeySpec(key, "AES");
     }
 

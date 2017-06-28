@@ -60,7 +60,7 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
             ctx.getEnvironment().setActiveProfiles(configuredProfiles);
             ctx.refresh();
         } else if (configuredProfiles.length == 0) {
-            logger.info("no spring context profile activated", configuredProfiles);
+            logger.info("no spring context profile activated");
         }
     }
 
