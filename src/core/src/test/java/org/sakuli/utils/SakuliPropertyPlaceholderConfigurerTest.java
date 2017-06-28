@@ -25,10 +25,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.sakuli.BaseTest;
 import org.sakuli.PropertyHolder;
-import org.sakuli.datamodel.properties.ActionProperties;
-import org.sakuli.datamodel.properties.SahiProxyProperties;
-import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.datamodel.properties.TestSuiteProperties;
+import org.sakuli.datamodel.properties.*;
 import org.sakuli.loader.BeanLoader;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -85,7 +82,7 @@ public class SakuliPropertyPlaceholderConfigurerTest {
         verify(testling).addPropertiesFromFile(props,
                 Paths.get(PPROPERTY_TEST_FOLDER_PATH).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER, true);
         verify(testling, never()).modifyPropertiesConfiguration(anyString(), anyListOf(String.class), any(Properties.class));
-        assertNull(props.getProperty(ActionProperties.ENCRYPTION_INTERFACE_AUTODETECT), null);
+        assertNull(props.getProperty(CipherProperties.ENCRYPTION_INTERFACE_AUTODETECT), null);
         assertEquals(props.getProperty(TestSuiteProperties.SUITE_ID), "0001_testsuite_example");
     }
 

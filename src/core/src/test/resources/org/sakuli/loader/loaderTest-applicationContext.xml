@@ -24,10 +24,12 @@
     <context:annotation-config/>
     <context:component-scan base-package="org.sakuli.utils"/>
     <context:component-scan base-package="org.sakuli.actions.settings"/>
+    <context:component-scan base-package="org.sakuli.services.cipher"/>
 
     <bean class="org.sakuli.datamodel.properties.SakuliProperties"/>
     <bean class="org.sakuli.datamodel.properties.ForwarderProperties"/>
     <bean class="org.sakuli.datamodel.properties.ActionProperties"/>
+    <bean class="org.sakuli.datamodel.properties.CipherProperties"/>
     <bean class="org.sakuli.loader.BaseActionLoaderImpl"/>
 
     <bean id="propertyResolver"
@@ -63,9 +65,6 @@
     </bean>
     <bean id="org.sakuli.actions.screenbased.ScreenshotActions" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.actions.screenbased.ScreenshotActions"/>
-    </bean>
-    <bean id="org.sakuli.actions.environment.CipherUtil" class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.utils.CipherUtil"/>
     </bean>
     <bean id="org.sakuli.datamodel.properties.SahiProxyProperties" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.datamodel.properties.SahiProxyProperties"/>

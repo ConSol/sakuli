@@ -256,7 +256,7 @@ public class TypingUtil<A extends Action> {
      */
     public String decryptSecret(String secret) {
         try {
-            return action.getLoader().getCipherUtil().decrypt(secret);
+            return action.getLoader().getCipherService().decrypt(secret);
         } catch (SakuliCipherException e) {
             action.getLoader().getExceptionHandler().handleException(e, action.getResumeOnException());
         }

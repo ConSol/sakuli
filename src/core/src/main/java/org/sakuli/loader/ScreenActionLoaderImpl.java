@@ -33,7 +33,7 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.utils.CipherUtil;
+import org.sakuli.services.cipher.CipherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -101,8 +101,8 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     }
 
     @Override
-    public CipherUtil getCipherUtil() {
-        return baseLoader.getCipherUtil();
+    public CipherService getCipherService() {
+        return baseLoader.getCipherService();
     }
 
     @Override

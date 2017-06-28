@@ -67,9 +67,6 @@
         <constructor-arg value="org.sakuli.actions.screenbased.ScreenshotActions">
         </constructor-arg>
     </bean>
-    <bean id="org.sakuli.actions.environment.CipherUtil" class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.utils.CipherUtil"/>
-    </bean>
     <bean id="org.sakuli.datamodel.properties.SahiProxyProperties" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.datamodel.properties.SahiProxyProperties">
         </constructor-arg>
@@ -90,6 +87,7 @@
 
     <bean id="org.sakuli.datamodel.properties.ActionProperties"
           class="org.sakuli.datamodel.properties.ActionProperties"/>
+    <bean class="org.sakuli.datamodel.properties.CipherProperties"/>
 
     <bean class="org.sakuli.actions.settings.ScreenBasedSettings">
         <constructor-arg index="0" ref="org.sakuli.datamodel.properties.ActionProperties"/>

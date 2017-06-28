@@ -20,6 +20,7 @@ package org.sakuli.utils;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
@@ -48,6 +49,7 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
     public static String SAKULI_HOME_FOLDER_VALUE;
     public static String SAHI_HOME_VALUE;
     public static String TEST_SUITE_BROWSER;
+    public static String ENCRYPTION_INTERFACE_VALUE;
     protected boolean loadSakuliProperties = true;
     protected boolean loadSakuliDefaultProperties = true;
     protected boolean loadTestSuiteProperties = true;
@@ -76,6 +78,12 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         }
         if (isNotEmpty(TEST_SUITE_BROWSER)) {
             props.setProperty(TestSuiteProperties.BROWSER_NAME, TEST_SUITE_BROWSER);
+        }
+
+        //set encryption interface of CLI input
+        if (isNotEmpty(ENCRYPTION_INTERFACE_VALUE)) {
+            props.setProperty(CipherProperties.ENCRYPTION_INTERFACE, ENCRYPTION_INTERFACE_VALUE);
+            props.setProperty(CipherProperties.ENCRYPTION_INTERFACE_AUTODETECT, "false");
         }
         modifySahiProperties(props);
         super.loadProperties(props);

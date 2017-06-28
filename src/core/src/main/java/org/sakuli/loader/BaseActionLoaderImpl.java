@@ -30,7 +30,7 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.utils.CipherUtil;
+import org.sakuli.services.cipher.CipherService;
 import org.sakuli.utils.CleanUpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,8 +61,6 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
     private TestSuite testSuite;
     @Autowired
     private TestSuiteProperties testSuiteProperties;
-    @Autowired
-    private CipherUtil cipherUtil;
     @Autowired
     private SakuliProperties sakuliProperties;
     @Autowired
@@ -244,11 +242,8 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
     }
 
     @Override
-    public CipherUtil getCipherUtil() {
-        return cipherUtil;
-    }
-
-    public void setCipherUtil(CipherUtil cipherUtil) {
-        this.cipherUtil = cipherUtil;
+    public CipherService getCipherService() {
+        //can't be autowired because of SpringProfile implementation
+        return BeanLoader.loadBean(CipherService.class);
     }
 }

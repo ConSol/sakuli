@@ -16,22 +16,16 @@
  * limitations under the License.
  */
 
-package org.sakuli.utils;
+package org.sakuli.services.cipher;
 
-import org.apache.commons.codec.binary.Base64;
-import org.sakuli.datamodel.properties.ActionProperties;
+import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.exceptions.SakuliCipherException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.NetworkInterface;
-import java.nio.charset.Charset;
-import java.security.InvalidParameterException;
 import java.util.Enumeration;
 
 import static java.net.NetworkInterface.getNetworkInterfaces;
@@ -42,24 +36,23 @@ import static java.net.NetworkInterface.getNetworkInterfaces;
  * @author tschneck
  *         Date: 06.08.13
  */
+@ProfileCipherInterface
 @Component
-public class CipherUtil {
+public class NetworkInterfaceCipher extends AbstractCipher {
     private static byte[] netKeyPart1 =
             {
                     0x63, 0x6f, 0x6e, 0x31, 0x33, 0x53, 0x61, 0x6b, 0x53, 0x6f
             };//"con13SakSo"
-    private static String ivKey = "IVcon17SakSoENVS";
-    private static String algorithm = "AES/CBC/PKCS5Padding";
     private String interfaceName;
     private boolean autodetect;
     private byte[] macOfEncryptionInterface;
     private String interfaceLog = "";
 
-    public CipherUtil() {
+    public NetworkInterfaceCipher() {
     }
 
     @Autowired
-    public CipherUtil(ActionProperties cipherProps) {
+    public NetworkInterfaceCipher(CipherProperties cipherProps) {
         interfaceName = cipherProps.getEncryptionInterface();
         autodetect = cipherProps.isEncryptionInterfaceAutodetect();
     }
@@ -81,14 +74,9 @@ public class CipherUtil {
         throw new Exception("No network interface with a MAC address is present, please check your os settings!");
     }
 
-    /**
-     * Converts a String input to a byte array
-     */
-    static byte[] convertStringToBytes(String s) {
-        if (s == null) {
-            throw new InvalidParameterException("can't convert null String to byte array");
-        }
-        return s.getBytes(Charset.defaultCharset());
+    @Override
+    String getPreLogOutput() {
+        return interfaceLog;
     }
 
     /**
@@ -118,7 +106,7 @@ public class CipherUtil {
 
             }
             if (macOfEncryptionInterface == null) {
-                throw new SakuliCipherException("Cannot resolve MAC address ... please check your config of the property: " + ActionProperties.ENCRYPTION_INTERFACE + "=" + interfaceName, interfaceLog);
+                throw new SakuliCipherException("Cannot resolve MAC address ... please check your config of the property: " + CipherProperties.ENCRYPTION_INTERFACE + "=" + interfaceName, interfaceLog);
             }
         } catch (Exception e) {
             throw new SakuliCipherException(e, interfaceLog);
@@ -129,7 +117,7 @@ public class CipherUtil {
      * checks if {@link #autodetect} is enabled and returns:
      * <ul>
      * <li>true: the first valid interface at this computer</li>
-     * <li>false: the interface name defined at the property {@link ActionProperties#ENCRYPTION_INTERFACE}</li>
+     * <li>false: the interface name defined at the property {@link CipherProperties#ENCRYPTION_INTERFACE}</li>
      * </ul>
      */
     private String checkEthInterfaceName() throws Exception {
@@ -148,57 +136,12 @@ public class CipherUtil {
     }
 
     /**
-     * Encrypts the secret into a encrypted {@link String}, based on the MAC address of the first network interface of a machine.
-     * Therewith it should be secured, that an encrypted secret is only valid on one physical machine.
-     *
-     * @param strToEncrypt the secret
-     * @return a encrypted String, which is coupled to one physical machine
-     * @throws SakuliCipherException if the encryption fails.
-     */
-    public String encrypt(String strToEncrypt) throws SakuliCipherException {
-        try {
-            Cipher cipher = Cipher.getInstance(algorithm);
-            cipher.init(Cipher.ENCRYPT_MODE, getKey(), getIV());
-            return Base64.encodeBase64String(cipher.doFinal(strToEncrypt.getBytes()));
-        } catch (Exception e) {
-            throw new SakuliCipherException(e, interfaceLog);
-        }
-    }
-
-    /**
-     * Decrypts a String to the secret. The decryption must be take place on the same physical machine like the encryption, see {@link #encrypt(String)}.
-     *
-     * @param strToDecrypt String to encrypt
-     * @return the decrypted secret
-     * @throws SakuliCipherException if the decryption fails.
-     */
-    public String decrypt(String strToDecrypt) throws SakuliCipherException {
-        try {
-            Cipher cipher = Cipher.getInstance(algorithm);
-            cipher.init(Cipher.DECRYPT_MODE, getKey(), getIV());
-            return new String(cipher.doFinal(Base64.decodeBase64(strToDecrypt)));
-        } catch (IllegalBlockSizeException e) {
-            throw new SakuliCipherException("Maybe this secret hasn't been encrypted correctly! Maybe encrypt it again!", interfaceLog, e);
-        } catch (Exception e) {
-            throw new SakuliCipherException(e, interfaceLog);
-        }
-    }
-
-    /**
-     * build the initialization vector
-     *
-     * @return byte array wrapped {@link IvParameterSpec}
-     */
-    private IvParameterSpec getIV() {
-        return new IvParameterSpec(convertStringToBytes(ivKey));
-    }
-
-    /**
      * generates the key for encryption from salt (netKeyPart1) and the MAC address of the choosen interface.
      *
      * @return valid {@link SecretKeySpec}
      */
-    private SecretKeySpec getKey() {
+    @Override
+    protected SecretKeySpec getKey() {
         // the length of the MAC address must be 6, to get secrect key length of 16 bytes
         assert (macOfEncryptionInterface.length == 6);
         byte[] keyPar2 = macOfEncryptionInterface;

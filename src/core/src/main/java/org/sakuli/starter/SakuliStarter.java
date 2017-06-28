@@ -20,21 +20,20 @@ package org.sakuli.starter;
 
 import org.apache.commons.cli.*;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliCipherException;
 import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.services.TeardownServiceHelper;
+import org.sakuli.starter.helper.CipherDelegator;
 import org.sakuli.starter.helper.CmdPrintHelper;
 import org.sakuli.starter.helper.SakuliFolderHelper;
-import org.sakuli.utils.CipherUtil;
+import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
-import java.util.AbstractMap;
 import java.util.Map.Entry;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
@@ -117,6 +116,9 @@ public class SakuliStarter {
             final String ethInterface = getOptionValue(cmd, anInterface);
             final String strToEncrypt = getOptionValue(cmd, encrypt);
 
+            if (cmd.hasOption(anInterface.getLongOpt())) {
+                SakuliPropertyPlaceholderConfigurer.ENCRYPTION_INTERFACE_VALUE = ethInterface;
+            }
             if (cmd.hasOption(run.getLongOpt()) || cmd.hasOption(run.getOpt())) {
                 TestSuite testSuite = runTestSuite(testSuiteFolderPath, sakuliMainFolderPath, browserValue, sahiHomePath);
                 //return the state as system exit parameter
@@ -126,7 +128,7 @@ public class SakuliStarter {
             } else if (cmd.hasOption(encrypt.getLongOpt()) || cmd.hasOption(encrypt.getOpt())) {
                 System.out.printf("\nString to Encrypt: %s \n...", strToEncrypt);
                 final Entry<String, String> secret = encryptSecret(strToEncrypt, ethInterface);
-                System.out.printf("\nEncrypted secret with interface '%s': %s", secret.getKey(), secret.getValue());
+                System.out.printf("\nEncrypted secret with '%s': %s", secret.getKey(), secret.getValue());
                 System.out.println("\n\n... now copy the secret to your testcase!");
                 System.exit(0);
             } else {
@@ -241,16 +243,7 @@ public class SakuliStarter {
      * @throws SakuliCipherException
      */
     public static Entry<String, String> encryptSecret(String strToEncrypt, String ethInterface) throws SakuliCipherException {
-        ActionProperties cipherProps = new ActionProperties();
-        if (isNotEmpty(ethInterface)) {
-            cipherProps.setEncryptionInterface(ethInterface);
-            cipherProps.setEncryptionInterfaceAutodetect(false);
-        } else {
-            cipherProps.setEncryptionInterfaceAutodetect(true);
-        }
-        CipherUtil cipher = new CipherUtil(cipherProps);
-        cipher.scanNetworkInterfaces();
-        return new AbstractMap.SimpleEntry<>(cipher.getInterfaceName(), cipher.encrypt(strToEncrypt));
+        return CipherDelegator.encrypt(strToEncrypt, ethInterface);
     }
 
 }

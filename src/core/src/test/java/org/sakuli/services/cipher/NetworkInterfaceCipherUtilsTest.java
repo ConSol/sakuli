@@ -16,13 +16,14 @@
  * limitations under the License.
  */
 
-package org.sakuli.utils;
+package org.sakuli.services.cipher;
 
 import org.mockito.MockitoAnnotations;
-import org.sakuli.datamodel.properties.ActionProperties;
+import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.exceptions.SakuliCipherException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import javax.crypto.IllegalBlockSizeException;
@@ -31,33 +32,40 @@ import javax.crypto.IllegalBlockSizeException;
  * @author tschneck
  *         Date: 06.08.13
  */
-public class CipherUtilsTest {
+public class NetworkInterfaceCipherUtilsTest {
 
-    private CipherUtil testling;
+    private NetworkInterfaceCipher testling;
+
+    @DataProvider(name = "secrects")
+    public static Object[][] secrects() {
+        return new Object[][]{
+                {"testSecrect"}
+                , {"t"}
+                , {"akdföadjfaödfjkadfjaödfjaö"}
+                , {""}
+                , {"ADKAKADFKADFLAFJ$ß0??!"}
+        };
+    }
 
     @BeforeMethod
     public void setUp() throws Throwable {
         MockitoAnnotations.initMocks(this);
-        ActionProperties props = new ActionProperties();
+        CipherProperties props = new CipherProperties();
         props.setEncryptionInterfaceAutodetect(true);
-        testling = new CipherUtil(props);
+        testling = new NetworkInterfaceCipher(props);
         testling.scanNetworkInterfaces();
     }
 
-    @Test
-    public void testEncrypt() throws Throwable {
+    @Test(dataProvider = "secrects")
+    public void testEncrypt(String testSecrect) throws Throwable {
         //check if MAC-Adrress is reachable
-
-        String testSecrect = "testSecrect";
         Assert.assertNotNull(testling.encrypt(testSecrect));
-
     }
 
-    @Test
-    public void testEncryptAndDecrypt() throws Throwable {
-        String testSecrect = "testSecrect";
+    @Test(dataProvider = "secrects")
+    public void testEncryptAndDecrypt(String testSecrect) throws Throwable {
         String encrypted = testling.encrypt(testSecrect);
-        Assert.assertEquals(testSecrect, testling.decrypt(encrypted));
+        Assert.assertEquals(testSecrect, testling.decrypt(encrypted + ""));
     }
 
     @Test(expectedExceptions = SakuliCipherException.class)
@@ -75,10 +83,10 @@ public class CipherUtilsTest {
     @Test
     public void testChipherException() throws Throwable {
         try {
-            ActionProperties props = new ActionProperties();
+            CipherProperties props = new CipherProperties();
             props.setEncryptionInterfaceAutodetect(false);
             props.setEncryptionInterface("etNOVALID");
-            testling = new CipherUtil(props);
+            testling = new NetworkInterfaceCipher(props);
             testling.scanNetworkInterfaces();
             Assert.assertTrue(false, "Error, no exception is thrown");
         } catch (SakuliCipherException e) {
@@ -88,12 +96,4 @@ public class CipherUtilsTest {
 
     }
 
-    @Test
-    public void testConvertToByteArray() throws Exception {
-        byte[] target =
-                {
-                        0x63, 0x6f, 0x6e, 0x31, 0x33, 0x53, 0x61, 0x6b, 0x53, 0x6f
-                };
-        Assert.assertEquals(CipherUtil.convertStringToBytes("con13SakSo"), target);
-    }
 }
