@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
@@ -45,7 +46,7 @@ public class CipherUtil {
             {
                     0x63, 0x6f, 0x6e, 0x31, 0x33, 0x53, 0x61, 0x6b, 0x53, 0x6f
             };//"con13SakSo"
-    private static String algorithm = "AES/ECB/PKCS5Padding";
+    private static String algorithm = "AES/CBC/PKCS5Padding";
     private String interfaceName;
     private boolean autodetect;
     private byte[] macOfEncryptionInterface;
@@ -144,7 +145,7 @@ public class CipherUtil {
     public String encrypt(String strToEncrypt) throws SakuliCipherException {
         try {
             Cipher cipher = Cipher.getInstance(algorithm);
-            cipher.init(Cipher.ENCRYPT_MODE, getKey());
+            cipher.init(Cipher.ENCRYPT_MODE, getKey(), getIV());
             return Base64.encodeBase64String(cipher.doFinal(strToEncrypt.getBytes()));
         } catch (Exception e) {
             throw new SakuliCipherException(e, interfaceLog);
@@ -161,13 +162,21 @@ public class CipherUtil {
     public String decrypt(String strToDecrypt) throws SakuliCipherException {
         try {
             Cipher cipher = Cipher.getInstance(algorithm);
-            cipher.init(Cipher.DECRYPT_MODE, getKey());
+            cipher.init(Cipher.DECRYPT_MODE, getKey(), getIV());
             return new String(cipher.doFinal(Base64.decodeBase64(strToDecrypt)));
         } catch (IllegalBlockSizeException e) {
             throw new SakuliCipherException("Maybe this secret hasn't been encrypted correctly! Maybe encrypt it again!", interfaceLog, e);
         } catch (Exception e) {
             throw new SakuliCipherException(e, interfaceLog);
         }
+    }
+
+    private IvParameterSpec getIV() {
+        // build the initialization vector.  This example is all zeros, but it
+        // TODO could be any value or generated using a random number generator.
+        byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        IvParameterSpec ivspec = new IvParameterSpec(iv);
+        return ivspec;
     }
 
     /**
