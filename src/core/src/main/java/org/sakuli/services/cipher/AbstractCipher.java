@@ -25,7 +25,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
 
 /**
@@ -45,7 +45,7 @@ public abstract class AbstractCipher implements CipherService {
         if (s == null) {
             throw new InvalidParameterException("can't convert null String to byte array");
         }
-        return s.getBytes(Charset.defaultCharset());
+        return s.getBytes(StandardCharsets.UTF_8);
     }
 
     /**
