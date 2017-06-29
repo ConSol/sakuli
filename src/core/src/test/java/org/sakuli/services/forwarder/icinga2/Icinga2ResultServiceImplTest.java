@@ -115,13 +115,13 @@ public class Icinga2ResultServiceImplTest {
     @Test
     public void testPrintJson() throws Exception {
         String json = Icinga2ResultServiceImpl.convertToJSON(Entity.json(getRequestExample()));
-        Assert.assertEquals(json, "{\n" +
-                "  \"check_source\" : \"check_sakuli\",\n" +
-                "  \"exit_status\" : 0,\n" +
-                "  \"performance_data\" : [ \"suite__state=0;;;;\", \"suite__warning=50s;;;;\", \"suite__critical=60s;;;;\", \"suite_example_ubuntu_0=49.31s;50;60;;\", \"c_001__state=0;;;;\", \"c_001__warning=40s;;;;\", \"c_001__critical=50s;;;;\", \"c_001_case1=25.22s;40;50;;\", \"s_001_001_Test_Sahi_landing_page=1.96s;15;;;\", \"s_001_002_Calculation=8.96s;30;;;\", \"s_001_003_Editor=8.38s;30;;;\" ],\n" +
-                "  \"plugin_output\" : \"Sakuli suite 'example_ubuntu_0' (ID: 25100) ran in 49.31 seconds.\"\n" +
+        Assert.assertEquals(json, String.format("{%n" +
+                "  \"check_source\" : \"check_sakuli\",%n" +
+                "  \"exit_status\" : 0,%n" +
+                "  \"performance_data\" : [ \"suite__state=0;;;;\", \"suite__warning=50s;;;;\", \"suite__critical=60s;;;;\", \"suite_example_ubuntu_0=49.31s;50;60;;\", \"c_001__state=0;;;;\", \"c_001__warning=40s;;;;\", \"c_001__critical=50s;;;;\", \"c_001_case1=25.22s;40;50;;\", \"s_001_001_Test_Sahi_landing_page=1.96s;15;;;\", \"s_001_002_Calculation=8.96s;30;;;\", \"s_001_003_Editor=8.38s;30;;;\" ],%n" +
+                "  \"plugin_output\" : \"Sakuli suite 'example_ubuntu_0' (ID: 25100) ran in 49.31 seconds.\"%n" +
                 "}"
-        );
+        ));
 
     }
 
