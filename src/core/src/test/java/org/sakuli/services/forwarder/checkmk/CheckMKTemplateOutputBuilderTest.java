@@ -47,7 +47,8 @@ import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -415,7 +416,9 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
         String output = testling.createOutput();
-        Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.CRITICAL_IN_CASE.name()));
+        String expected = loadExpectedOutput(TestSuiteState.CRITICAL_IN_CASE.name());
+        Assert.assertEquals(output.getBytes(), expected.getBytes());
+        Assert.assertEquals(output, expected);
     }
 
     @Test
