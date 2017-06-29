@@ -18,6 +18,7 @@
 
 package org.sakuli.services.cipher;
 
+import org.apache.commons.codec.binary.Hex;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.exceptions.SakuliCipherException;
@@ -65,7 +66,11 @@ public class NetworkInterfaceCipherUtilsTest {
     @Test(dataProvider = "secrects")
     public void testEncryptAndDecrypt(String testSecrect) throws Throwable {
         String encrypted = testling.encrypt(testSecrect);
-        Assert.assertEquals(testSecrect, testling.decrypt(encrypted + ""));
+        final String result = testling.decrypt(encrypted);
+        System.out.println("RESULT:   " + Hex.encodeHexString(result.getBytes()));
+        System.out.println("EXPECTED: " + Hex.encodeHexString(testSecrect.getBytes()));
+        Assert.assertEquals(testSecrect.getBytes(), result.getBytes());
+        Assert.assertEquals(testSecrect, result);
     }
 
     @Test(expectedExceptions = SakuliCipherException.class)
