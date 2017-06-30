@@ -25,9 +25,10 @@ import java.util.Map;
 import static org.testng.Assert.assertNotNull;
 
 public class SakuliStarterTest {
+    //TODO TS write test
     @Test
     public void testEncryptSceret() throws Throwable {
-        Map.Entry<String, String> result = SakuliStarter.encryptSecret("test", null);
+        Map.Entry<String, String> result = SakuliStarter.encryptSecret("test", null, null);
         assertNotNull(result.getKey());
         assertNotNull(result.getValue());
     }

@@ -40,10 +40,11 @@ public class CipherDelegator {
      * @return a entry with "secret, generation-info"
      * @throws SakuliCipherException
      */
-    public static Map.Entry<String, String> encrypt(String strToEncrypt, String ethInterface) throws SakuliCipherException {
+    public static Map.Entry<String, String> encrypt(String strToEncrypt, String ethInterface, String masterkey) throws SakuliCipherException {
         CipherProperties cipherProps = new CipherProperties();
+        //TODO TS USE keybased
+//        if (isEmpty( ethInterface) )
         if (isNotEmpty(ethInterface)) {
-            //TODO TS USE keybased
             cipherProps.setEncryptionInterface(ethInterface);
             cipherProps.setEncryptionInterfaceAutodetect(false);
         } else {

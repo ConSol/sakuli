@@ -18,7 +18,10 @@
 
 package org.sakuli.services.cipher;
 
+import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.exceptions.SakuliCipherException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -39,8 +42,8 @@ public class AesKeyHelper {
 
     public static final int KEYSIZE = 128;
     public static final String ALGORITHM = "AES";
-    //    TODO TS validate later!
-    private static final Object CLI_COMMAND = "sakuli encrypt generate-masterkey";
+    private static final String CLI_COMMAND = "sakuli create masterkey";
+    private static final Logger LOGGER = LoggerFactory.getLogger(AesKeyHelper.class);
 
     /**
      * extracted from https://stackoverflow.com/questions/35907877/aes-encryption-ivs
@@ -76,6 +79,18 @@ public class AesKeyHelper {
             return new BASE64Encoder().encode(createRandomKey().getEncoded());
         } catch (Exception e) {
             throw new SakuliCipherException(e, "Unexpected error during converting of AES key to Base64");
+        }
+    }
+
+    public static void printRandomBase64Key() {
+        try {
+            System.out.printf("%nCreate a Sakuli encryption master key (%s %s bit):%n%n", ALGORITHM, KEYSIZE);
+            System.out.println(createRandomBase64Key());
+            System.out.printf("%n... now add this as environment var '%s' or property '%s' %n",
+                    CipherProperties.ENCRYPTION_KEY_ENV, CipherProperties.ENCRYPTION_KEY);
+        } catch (SakuliCipherException e) {
+            LOGGER.error("can't create encryption key", e);
+            System.exit(-1);
         }
     }
 

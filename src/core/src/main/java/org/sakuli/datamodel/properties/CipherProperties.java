@@ -29,6 +29,7 @@ public class CipherProperties extends AbstractProperties {
 
     public static final String ENCRYPTION_MODE = "sakuli.encryption.mode";
     public static final String ENCRYPTION_KEY = "sakuli.encryption.key";
+    public static final String ENCRYPTION_KEY_ENV = "SAKULI_ENCRYPTION_KEY";
     public static final String ENCRYPTION_INTERFACE = "sakuli.encryption.interface";
     public static final String ENCRYPTION_INTERFACE_AUTODETECT = "sakuli.encryption.interface.autodetect";
     protected static final String ENCRYPTION_MODE_ENVIRONMENT = "environment";

@@ -26,6 +26,7 @@ import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.services.TeardownServiceHelper;
+import org.sakuli.services.cipher.AesKeyHelper;
 import org.sakuli.starter.helper.CipherDelegator;
 import org.sakuli.starter.helper.CmdPrintHelper;
 import org.sakuli.starter.helper.SakuliFolderHelper;
@@ -83,6 +84,19 @@ public class SakuliStarter {
             .isRequired(false)
             .withLongOpt("interface")
             .create("i");
+    private final static Option masterkey = OptionBuilder
+            .withArgName("base64 AES key")
+            .hasArg()
+            .withDescription("(optional)  AES base64 key used by command 'encrypt'")
+            .isRequired(false)
+            .withLongOpt("masterkey")
+            .create("m");
+    private final static Option create = OptionBuilder
+            .withArgName("object")
+            .hasArg()
+            .withDescription("create a sakuli object")
+            .withLongOpt("create")
+            .create();
     /**
      * {@link System#exit(int)} value if the help is printed out. This value will be used in the `sakuli` starter
      */
@@ -107,6 +121,8 @@ public class SakuliStarter {
         options.addOption(sahiHome);
         options.addOption(encrypt);
         options.addOption(anInterface);
+        options.addOption(masterkey);
+        options.addOption(create);
         try {
             CommandLine cmd = parser.parse(options, args);
             final String browserValue = getOptionValue(cmd, browser);
@@ -115,7 +131,10 @@ public class SakuliStarter {
             final String sahiHomePath = getOptionValue(cmd, sahiHome);
             final String ethInterface = getOptionValue(cmd, anInterface);
             final String strToEncrypt = getOptionValue(cmd, encrypt);
+            final String strMasterkey = getOptionValue(cmd, masterkey);
+            final String strCreate = getOptionValue(cmd, create);
 
+            //TODO TS check not interface & masterkey
             if (cmd.hasOption(anInterface.getLongOpt())) {
                 SakuliPropertyPlaceholderConfigurer.ENCRYPTION_INTERFACE_VALUE = ethInterface;
             }
@@ -124,10 +143,14 @@ public class SakuliStarter {
                 //return the state as system exit parameter
                 //return values are corresponding to the error codes in file "sahi_return_codes.txt"
                 System.exit(testSuite.getState().getErrorCode());
-
+            } else if (cmd.hasOption(create.getLongOpt())) {
+                if (masterkey.getLongOpt().equals(strCreate)) {
+                    AesKeyHelper.printRandomBase64Key();
+                    System.exit(0);
+                }
             } else if (cmd.hasOption(encrypt.getLongOpt()) || cmd.hasOption(encrypt.getOpt())) {
                 System.out.printf("\nString to Encrypt: %s \n...", strToEncrypt);
-                final Entry<String, String> secret = encryptSecret(strToEncrypt, ethInterface);
+                final Entry<String, String> secret = encryptSecret(strToEncrypt, ethInterface, strMasterkey);
                 System.out.printf("\nEncrypted secret with '%s': %s", secret.getKey(), secret.getValue());
                 System.out.println("\n\n... now copy the secret to your testcase!");
                 System.exit(0);
@@ -242,8 +265,9 @@ public class SakuliStarter {
      * @return a Key-Value Pair of used interface for the encryption and the encrypted secret as strings.
      * @throws SakuliCipherException
      */
-    public static Entry<String, String> encryptSecret(String strToEncrypt, String ethInterface) throws SakuliCipherException {
-        return CipherDelegator.encrypt(strToEncrypt, ethInterface);
+    //TODO TS refactor
+    public static Entry<String, String> encryptSecret(String strToEncrypt, String ethInterface, String masterkey) throws SakuliCipherException {
+        return CipherDelegator.encrypt(strToEncrypt, ethInterface, masterkey);
     }
 
 }
