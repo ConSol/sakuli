@@ -18,7 +18,6 @@
 
 package org.sakuli.services.cipher;
 
-import org.apache.commons.codec.binary.Hex;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.exceptions.SakuliCipherException;
@@ -27,7 +26,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import javax.crypto.IllegalBlockSizeException;
+import java.io.IOException;
 
 /**
  * @author tschneck
@@ -36,14 +35,14 @@ import javax.crypto.IllegalBlockSizeException;
 public class NetworkInterfaceCipherUtilsTest {
 
     private NetworkInterfaceCipher testling;
+    private CipherProperties props;
 
-    @DataProvider(name = "secrects")
+    @DataProvider(name = "secrets")
     public static Object[][] secrects() {
         return new Object[][]{
                 {"testSecrect"}
                 , {"t"}
                 , {"akdföadjfaödfjkadfjaödfjaö"}
-                , {""}
                 , {"ADKAKADFKADFLAFJ$ß0??!"}
         };
     }
@@ -51,7 +50,7 @@ public class NetworkInterfaceCipherUtilsTest {
     @BeforeMethod
     public void setUp() throws Throwable {
         MockitoAnnotations.initMocks(this);
-        CipherProperties props = new CipherProperties();
+        props = new CipherProperties();
         props.setEncryptionInterfaceAutodetect(true);
         testling = new NetworkInterfaceCipher(props);
         testling.scanNetworkInterfaces();
@@ -66,9 +65,11 @@ public class NetworkInterfaceCipherUtilsTest {
     @Test(dataProvider = "secrects")
     public void testEncryptAndDecrypt(String testSecrect) throws Throwable {
         String encrypted = testling.encrypt(testSecrect);
-        final String result = testling.decrypt(encrypted);
-        System.out.println("RESULT:   " + Hex.encodeHexString(result.getBytes()));
-        System.out.println("EXPECTED: " + Hex.encodeHexString(testSecrect.getBytes()));
+        final NetworkInterfaceCipher cipher2 = new NetworkInterfaceCipher(props);
+        cipher2.scanNetworkInterfaces();
+        final String result = cipher2.decrypt(encrypted);
+        System.out.println("RESULT:   " + result);
+        System.out.println("EXPECTED: " + testSecrect);
         Assert.assertEquals(testSecrect.getBytes(), result.getBytes());
         Assert.assertEquals(testSecrect, result);
     }
@@ -78,9 +79,21 @@ public class NetworkInterfaceCipherUtilsTest {
         try {
             testling.decrypt("nonEncrypted");
         } catch (SakuliCipherException e) {
-            Assert.assertNotNull(e.interfaceLog);
-            Assert.assertTrue(e.getSuppressed()[0] instanceof IllegalBlockSizeException);
-            Assert.assertTrue(e.getMessage().contains("Maybe this secret hasn't been encrypted"));
+            Assert.assertNotNull(e.cipherLog);
+            Assert.assertTrue(e.getCause().getCause() instanceof IOException);
+            Assert.assertTrue(e.getMessage().contains("Error during decryption of secret 'nonEncrypted'"));
+            throw e;
+        }
+    }
+
+    @Test(expectedExceptions = SakuliCipherException.class)
+    public void testEmptyTestException() throws Throwable {
+        try {
+            testling.decrypt("");
+        } catch (SakuliCipherException e) {
+            Assert.assertNotNull(e.cipherLog);
+            Assert.assertTrue(e.getCause() instanceof SakuliCipherException);
+            Assert.assertTrue(e.getMessage().contains("Empty secret can not en-/decrypted!"));
             throw e;
         }
     }
@@ -95,8 +108,8 @@ public class NetworkInterfaceCipherUtilsTest {
             testling.scanNetworkInterfaces();
             Assert.assertTrue(false, "Error, no exception is thrown");
         } catch (SakuliCipherException e) {
-            Assert.assertNotNull(e.interfaceLog);
-            Assert.assertTrue(e.getMessage().contains(e.interfaceLog));
+            Assert.assertNotNull(e.cipherLog);
+            Assert.assertTrue(e.getMessage().contains(e.cipherLog));
         }
 
     }

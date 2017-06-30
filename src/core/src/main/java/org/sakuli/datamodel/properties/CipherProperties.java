@@ -73,4 +73,19 @@ public class CipherProperties extends AbstractProperties {
         return ENCRYPTION_MODE_ENVIRONMENT.equals(encryptionMode);
     }
 
+    public String getEncryptionMode() {
+        return encryptionMode;
+    }
+
+    public void setEncryptionMode(String encryptionMode) {
+        this.encryptionMode = encryptionMode;
+    }
+
+    public String getEncryptionKey() {
+        return encryptionKey;
+    }
+
+    public void setEncryptionKey(String encryptionKey) {
+        this.encryptionKey = encryptionKey;
+    }
 }

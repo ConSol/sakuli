@@ -18,15 +18,11 @@
 
 package org.sakuli.services.cipher;
 
-import org.apache.commons.codec.binary.Base64;
 import org.sakuli.exceptions.SakuliCipherException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidParameterException;
+import javax.crypto.SecretKey;
 
 /**
  * Abstract class for the supported ciphers modules
@@ -35,18 +31,9 @@ import java.security.InvalidParameterException;
  *         Date: 6/28/17
  */
 public abstract class AbstractCipher implements CipherService {
-    private static String IV_KEY = "IVcon17SakSoENVS";
-    private static String ALGORITHM = "AES/CBC/PKCS5Padding";
 
-    /**
-     * Converts a String input to a byte array
-     */
-    static byte[] convertStringToBytes(String s) {
-        if (s == null) {
-            throw new InvalidParameterException("can't convert null String to byte array");
-        }
-        return s.getBytes(StandardCharsets.UTF_8);
-    }
+    private static Logger LOGGER = LoggerFactory.getLogger(CipherService.class);
+
 
     /**
      * Encrypts the secret into a encrypted {@link String}, based on the MAC address of the first network interface of a machine.
@@ -58,15 +45,14 @@ public abstract class AbstractCipher implements CipherService {
      */
     public String encrypt(String strToEncrypt) throws SakuliCipherException {
         try {
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
-            cipher.init(Cipher.ENCRYPT_MODE, getKey(), getIV());
-            return Base64.encodeBase64String(cipher.doFinal(strToEncrypt.getBytes()));
+            LOGGER.debug("encrypt secret: {}", strToEncrypt);
+            final String encrypted = AesCbcCipher.encryptString(strToEncrypt, getKey());
+            LOGGER.debug("encrypted secret: {}", encrypted);
+            return encrypted;
         } catch (Exception e) {
-            throw new SakuliCipherException(e, getPreLogOutput());
+            throw new SakuliCipherException(e, "Error during encryption of secret, by cipher: " + getCipherInfoOutput());
         }
     }
-
-    abstract String getPreLogOutput();
 
     /**
      * Decrypts a String to the secret. The decryption must be take place on the same physical machine like the encryption, see {@link #encrypt(String)}.
@@ -77,27 +63,22 @@ public abstract class AbstractCipher implements CipherService {
      */
     public String decrypt(String strToDecrypt) throws SakuliCipherException {
         try {
-            Cipher cipher = Cipher.getInstance(ALGORITHM);
-            cipher.init(Cipher.DECRYPT_MODE, getKey(), getIV());
-            return new String(cipher.doFinal(Base64.decodeBase64(strToDecrypt)));
-        } catch (IllegalBlockSizeException e) {
-            throw new SakuliCipherException("Maybe this secret hasn't been encrypted correctly! Maybe encrypt it again!", getPreLogOutput(), e);
+            LOGGER.debug("decrypt secret: {}", strToDecrypt);
+            final String decrypted = AesCbcCipher.decryptString(strToDecrypt, getKey());
+            LOGGER.debug("decrypted secret: {}", decrypted);
+            return decrypted;
         } catch (Exception e) {
-            throw new SakuliCipherException(e, getPreLogOutput());
+            throw new SakuliCipherException(e, "Error during decryption of secret '" + strToDecrypt + "', by cipher: " + getCipherInfoOutput());
         }
     }
 
     /**
-     * build the initialization vector
-     *
-     * @return byte array wrapped {@link IvParameterSpec}
+     * @return a cipher specific output message, how the secret key has been created
      */
-    protected IvParameterSpec getIV() {
-        return new IvParameterSpec(AbstractCipher.convertStringToBytes(IV_KEY));
-    }
+    abstract String getCipherInfoOutput();
 
     /**
      * @return the expected master key for the encryption
      */
-    protected abstract SecretKeySpec getKey();
+    protected abstract SecretKey getKey() throws SakuliCipherException;
 }

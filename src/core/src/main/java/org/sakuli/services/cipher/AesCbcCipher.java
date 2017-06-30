@@ -23,22 +23,23 @@ package org.sakuli.services.cipher;
  * Date: 6/29/17
  */
 
+import org.apache.commons.lang.StringUtils;
+import org.sakuli.exceptions.SakuliCipherException;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-import javax.crypto.*;
+import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Optional;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class AesCbcCipher {
 
@@ -63,28 +64,11 @@ public class AesCbcCipher {
         }
         return new IvParameterSpec(iv);
     }
-//
-//    public static void main(String[] args) throws Exception {
-//        final SecureRandom rng = new SecureRandom();
-//        // you somehow need to distribute this key
-//        //new BASE64Encoder().encode(aesKey.getEncoded())
-//        final SecretKey aesKey = createKey("AES", 128, Optional.empty(), Optional.of(rng));
-//        final String secret = "owlstead";
-//
-//        final byte[] plaintext = secret.getBytes(UTF_8);
-//        final byte[] ciphertext = encryptBytes(rng, aesKey, plaintext);
-//
-//        final byte[] decrypted = decryptBytes(aesKey, ciphertext);
-//
-//        final String result = new String(decrypted, UTF_8);
-//        System.out.println(result);
-//        assert result.equals(secret);
-//    }
 
-    protected static byte[] decryptBytes(SecretKey aesKey, byte[] ciphertext) throws NoSuchAlgorithmException, NoSuchPaddingException, IOException, InvalidKeyException, InvalidAlgorithmParameterException {
-        //TODO wrapp exception
+    public static byte[] decryptBytes(SecretKey aesKey, byte[] ciphertext) throws SakuliCipherException {
+        checkCipherParameters(aesKey, ciphertext);
         final byte[] decrypted;
-        {
+        try {
             final ByteArrayInputStream bais = new ByteArrayInputStream(ciphertext);
 
             final Cipher aesCBC = Cipher.getInstance(CBC_ALGORITHM);
@@ -100,14 +84,17 @@ public class AesCbcCipher {
                 }
                 decrypted = baos.toByteArray();
             }
+            return decrypted;
+        } catch (Exception e) {
+            throw new SakuliCipherException(e, "Error during decrypting secret!");
         }
-        return decrypted;
     }
 
-    protected static byte[] encryptBytes(SecureRandom rng, SecretKey aesKey, byte[] plaintext) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IOException {
-        //TODO wrapp exception
+    public static byte[] encryptBytes(SecureRandom rng, SecretKey aesKey, byte[] plaintext) throws SakuliCipherException {
+        checkCipherParameters(aesKey, plaintext);
         final byte[] ciphertext;
-        {
+        try {
+
             final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             final Cipher aesCBC = Cipher.getInstance(CBC_ALGORITHM);
@@ -121,24 +108,61 @@ public class AesCbcCipher {
             }
 
             ciphertext = baos.toByteArray();
+            return ciphertext;
+        } catch (Exception e) {
+            throw new SakuliCipherException(e, "Error during encrypting secret!");
         }
-        return ciphertext;
     }
 
-    public String encryptString(String secret, SecretKey aesKey) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
+    public static String encryptString(String secret, SecretKey aesKey) throws SakuliCipherException {
         final SecureRandom rng = new SecureRandom();
-        final byte[] plaintext = secret.getBytes(UTF_8);
-        final byte[] ciphertext = encryptBytes(rng, aesKey, plaintext);
+        final byte[] ciphertext = encryptBytes(rng, aesKey, convertStringToBytes(secret));
         return new BASE64Encoder().encode(ciphertext);
 
     }
 
-    public String decryptString(String encryptedStringBase64, SecretKey aesKey) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
-        final byte[] ciphertext = new BASE64Decoder().decodeBuffer(encryptedStringBase64);
+    public static String decryptString(String encryptedStringBase64, SecretKey aesKey) throws SakuliCipherException {
+        if (StringUtils.isEmpty(encryptedStringBase64)) {
+            throw new SakuliCipherException("Empty secret can not en-/decrypted!");
+        }
+        final byte[] ciphertext;
+        try {
+            ciphertext = new BASE64Decoder().decodeBuffer(encryptedStringBase64);
+        } catch (IOException e) {
+            throw new SakuliCipherException("Can not decrypt invalid Base64 secret: " + encryptedStringBase64);
+        }
 
         final byte[] decrypted = decryptBytes(aesKey, ciphertext);
-        final String result = new String(decrypted, UTF_8);
-        return result;
+        return convertBytesToString(decrypted);
+    }
+
+    private static void checkCipherParameters(SecretKey aesKey, byte[] plaintext) throws SakuliCipherException {
+        if (aesKey == null || aesKey.getEncoded() == null || aesKey.getEncoded().length == 0) {
+            throw new SakuliCipherException("Provided AES key is null or empty");
+        }
+        if (plaintext == null || plaintext.length == 0) {
+            throw new SakuliCipherException("Empty secret can not en-/decrypted!");
+        }
+    }
+
+    /**
+     * Converts a String input to a byte array
+     */
+    static byte[] convertStringToBytes(String s) {
+        if (s == null) {
+            return null;
+        }
+        return s.getBytes(StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Converts a byte array input to a string
+     */
+    static String convertBytesToString(byte[] b) {
+        if (b == null) {
+            return null;
+        }
+        return new String(b, StandardCharsets.UTF_8);
     }
 
 }

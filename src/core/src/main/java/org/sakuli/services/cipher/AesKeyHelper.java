@@ -80,9 +80,12 @@ public class AesKeyHelper {
     }
 
     public static SecretKey readBase64Keay(String base64Key) throws SakuliCipherException {
-        final String error_msg = String.format(" - have to be bas64 encoded %s key (%s bit)! Please use the Sakuli CLI command '%s' " +
+        final String error_msg = String.format(" - master key have to be bas64 encoded %s key (%s bit)! Please use the Sakuli CLI command '%s' " +
                         "to generate a valid masterkey!",
                 ALGORITHM, KEYSIZE, CLI_COMMAND);
+        if (base64Key == null) {
+            throw new SakuliCipherException("master key is NULL " + error_msg);
+        }
         try {
             byte[] origKeyByte = new BASE64Decoder().decodeBuffer(base64Key);
             return new SecretKeySpec(origKeyByte, 0, origKeyByte.length, ALGORITHM);

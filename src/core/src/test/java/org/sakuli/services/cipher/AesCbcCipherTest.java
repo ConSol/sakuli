@@ -18,7 +18,7 @@
 
 package org.sakuli.services.cipher;
 
-import org.apache.commons.codec.binary.Hex;
+import org.sakuli.exceptions.SakuliCipherException;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -38,7 +38,6 @@ public class AesCbcCipherTest {
                 , {"t"}
                 , {"akdfjkald"}
                 , {"akdföadjfaödfjkadfjaödfjaö"}
-                , {""}
                 , {"ADKAKADFKADFLAFJ$ß0??!"}
         };
     }
@@ -46,19 +45,12 @@ public class AesCbcCipherTest {
     @Test(dataProvider = "secrets")
     public void testEnAndDecryptWithAESKey(String testSecret) throws Exception {
         final SecretKey aesKey = AesKeyHelper.createRandomKey();
-
-        final AesCbcCipher cipher1 = new AesCbcCipher();
-        final String encrypted = cipher1.encryptString(testSecret, aesKey);
-
+        final String encrypted = AesCbcCipher.encryptString(testSecret, aesKey);
         System.out.println("ENCRYPTED:   " + encrypted);
-        System.out.println("ENCRYPTED:   " + Hex.encodeHexString(encrypted.getBytes()));
 
-        final AesCbcCipher cipher2 = new AesCbcCipher();
-        final String result = cipher2.decryptString(encrypted, aesKey);
+        final String result = AesCbcCipher.decryptString(encrypted, aesKey);
         System.out.println("RESULT:   " + result);
-        System.out.println("RESULT:   " + Hex.encodeHexString(result.getBytes()));
         System.out.println("EXPECTED: " + testSecret);
-        System.out.println("EXPECTED: " + Hex.encodeHexString(testSecret.getBytes()));
         Assert.assertEquals(testSecret.getBytes(), result.getBytes());
         Assert.assertEquals(testSecret, result);
     }
@@ -66,19 +58,12 @@ public class AesCbcCipherTest {
     @Test(dataProvider = "secrets")
     public void testEnAndDecryptWithBase64Key(String testSecret) throws Exception {
         final String aesKey = AesKeyHelper.createRandomBase64Key();
-        System.out.println("aes = [" + aesKey + "]");
-        final AesCbcCipher cipher1 = new AesCbcCipher();
-        final String encrypted = cipher1.encryptString(testSecret, AesKeyHelper.readBase64Keay(aesKey));
-
+        final String encrypted = AesCbcCipher.encryptString(testSecret, AesKeyHelper.readBase64Keay(aesKey));
         System.out.println("ENCRYPTED:   " + encrypted);
-        System.out.println("ENCRYPTED:   " + Hex.encodeHexString(encrypted.getBytes()));
 
-        final AesCbcCipher cipher2 = new AesCbcCipher();
-        final String result = cipher2.decryptString(encrypted, AesKeyHelper.readBase64Keay(aesKey));
+        final String result = AesCbcCipher.decryptString(encrypted, AesKeyHelper.readBase64Keay(aesKey));
         System.out.println("RESULT:   " + result);
-        System.out.println("RESULT:   " + Hex.encodeHexString(result.getBytes()));
         System.out.println("EXPECTED: " + testSecret);
-        System.out.println("EXPECTED: " + Hex.encodeHexString(testSecret.getBytes()));
         Assert.assertEquals(testSecret.getBytes(), result.getBytes());
         Assert.assertEquals(testSecret, result);
     }
@@ -87,8 +72,53 @@ public class AesCbcCipherTest {
     public void testFixedKeyAndSecret() throws Exception {
         final String masterkey = "Bsqs/IR1jW+eibNrdYvlAQ==";
         final String encryptedText = "SZUs7Oy0U9QyC5P3QhphzIPJV9txOkppIsiwproRd8g=";
-        final AesCbcCipher cipher = new AesCbcCipher();
-        Assert.assertEquals(cipher.decryptString(encryptedText, AesKeyHelper.readBase64Keay(masterkey)), "akdfjkald");
+        Assert.assertEquals(AesCbcCipher.decryptString(encryptedText, AesKeyHelper.readBase64Keay(masterkey)), "akdfjkald");
+    }
+
+
+    @Test
+    public void testConvertToByteArray() throws Exception {
+        byte[] target = {
+                0x63, 0x6f, 0x6e, 0x31, 0x33, 0x53, 0x61, 0x6b, 0x53, 0x6f
+        };
+        Assert.assertEquals(AesCbcCipher.convertStringToBytes("con13SakSo"), target);
+        Assert.assertEquals(AesCbcCipher.convertBytesToString(target), "con13SakSo");
+    }
+
+    @Test(expectedExceptions = SakuliCipherException.class,
+            expectedExceptionsMessageRegExp = "Provided AES key is null or empty")
+    public void testKeyNull() throws Exception {
+        AesCbcCipher.encryptString("bkkala", null);
+    }
+
+    @Test(expectedExceptions = SakuliCipherException.class,
+            expectedExceptionsMessageRegExp = "Empty secret can not en-/decrypted!")
+    public void testSecretEmpty() throws Exception {
+        AesCbcCipher.encryptString("", AesKeyHelper.createRandomKey());
+    }
+
+    @Test(expectedExceptions = SakuliCipherException.class,
+            expectedExceptionsMessageRegExp = "Empty secret can not en-/decrypted!")
+    public void testSecretNull() throws Exception {
+        AesCbcCipher.encryptString(null, AesKeyHelper.createRandomKey());
+    }
+
+    @Test(expectedExceptions = SakuliCipherException.class,
+            expectedExceptionsMessageRegExp = "Provided AES key is null or empty")
+    public void testKeyNullDecrypt() throws Exception {
+        AesCbcCipher.decryptString("bkkala", null);
+    }
+
+    @Test(expectedExceptions = SakuliCipherException.class,
+            expectedExceptionsMessageRegExp = "Empty secret can not en-/decrypted!")
+    public void testSecretEmptyDecrypt() throws Exception {
+        AesCbcCipher.decryptString("", AesKeyHelper.createRandomKey());
+    }
+
+    @Test(expectedExceptions = SakuliCipherException.class,
+            expectedExceptionsMessageRegExp = "Empty secret can not en-/decrypted!")
+    public void testSecretNullDecrypt() throws Exception {
+        AesCbcCipher.decryptString(null, AesKeyHelper.createRandomKey());
     }
 
     //TODO add error tests

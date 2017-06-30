@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
@@ -75,12 +76,15 @@ public class NetworkInterfaceCipher extends AbstractCipher {
     }
 
     @Override
-    String getPreLogOutput() {
-        return interfaceLog;
+    String getCipherInfoOutput() {
+        return String.format(
+                "AES Key generated from network interface: Check if you specified the correct interface at the property '%s'. " +
+                        "Available interfaces are: %s ",
+                CipherProperties.ENCRYPTION_INTERFACE, interfaceLog);
     }
 
     /**
-     * fetch the local network interfaceLog and reads out the MAC of the chosen encryption interface.
+     * fetch the local network cipherLog and reads out the MAC of the chosen encryption interface.
      * Must be called before the methods {@link #encrypt(String)} or {@link #decrypt(String)}.
      *
      * @throws SakuliCipherException for wrong interface names and MACs.
@@ -138,10 +142,10 @@ public class NetworkInterfaceCipher extends AbstractCipher {
     /**
      * generates the key for encryption from salt (netKeyPart1) and the MAC address of the choosen interface.
      *
-     * @return valid {@link SecretKeySpec}
+     * @return valid {@link SecretKey}
      */
     @Override
-    protected SecretKeySpec getKey() {
+    protected SecretKey getKey() {
         // the length of the MAC address must be 6, to get secrect key length of 16 bytes
         assert (macOfEncryptionInterface.length == 6);
         byte[] keyPar2 = macOfEncryptionInterface;
