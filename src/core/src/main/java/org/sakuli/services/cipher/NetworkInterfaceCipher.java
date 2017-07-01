@@ -32,7 +32,7 @@ import java.util.Enumeration;
 import static java.net.NetworkInterface.getNetworkInterfaces;
 
 /**
- * a util class to encrypt and decrypt secrets based on the MAC address of a network interface.
+ * a util class to encrypt and decrypt secrets based on the MAC address of a assigned or determined network interface.
  *
  * @author tschneck
  *         Date: 06.08.13
@@ -160,5 +160,9 @@ public class NetworkInterfaceCipher extends AbstractCipher {
      */
     public String getInterfaceName() {
         return interfaceName;
+    }
+
+    public void printNetworkInterfaces() {
+        System.out.println("Available network interfaces for encryption:\n" + interfaceLog);
     }
 }

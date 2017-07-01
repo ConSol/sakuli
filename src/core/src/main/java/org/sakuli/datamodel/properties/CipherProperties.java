@@ -21,6 +21,8 @@ package org.sakuli.datamodel.properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.Properties;
+
 /**
  * @author tschneck Date: 14.05.14
  */
@@ -32,8 +34,8 @@ public class CipherProperties extends AbstractProperties {
     public static final String ENCRYPTION_KEY_ENV = "SAKULI_ENCRYPTION_KEY";
     public static final String ENCRYPTION_INTERFACE = "sakuli.encryption.interface";
     public static final String ENCRYPTION_INTERFACE_AUTODETECT = "sakuli.encryption.interface.autodetect";
-    protected static final String ENCRYPTION_MODE_ENVIRONMENT = "environment";
-    protected static final String ENCRYPTION_MODE_INTERFACE = "interface";
+    public static final String ENCRYPTION_MODE_ENVIRONMENT = "environment";
+    public static final String ENCRYPTION_MODE_INTERFACE = "interface";
 
     //defaults
     protected static final String ENCRYPTION_MODE_DEFAULT = ENCRYPTION_MODE_INTERFACE;
@@ -49,6 +51,15 @@ public class CipherProperties extends AbstractProperties {
     private String encryptionInterface;
     @Value("${" + ENCRYPTION_INTERFACE_AUTODETECT + ":" + ENCRYPTION_INTERFACE_AUTODETECT_DEFAULT + "}")
     private boolean encryptionInterfaceAutodetect;
+
+    public static CipherProperties load(Properties props) {
+        CipherProperties result = new CipherProperties();
+        result.setEncryptionInterface(props.getProperty(ENCRYPTION_INTERFACE, ENCRYPTION_INTERFACE_DEFAULT));
+        result.setEncryptionInterfaceAutodetect(Boolean.valueOf(props.getProperty(ENCRYPTION_INTERFACE_AUTODETECT, ENCRYPTION_INTERFACE_AUTODETECT_DEFAULT)));
+        result.setEncryptionKey(props.getProperty(ENCRYPTION_KEY, ENCRYPTION_KEY_DEFAULT));
+        result.setEncryptionMode(props.getProperty(ENCRYPTION_MODE, ENCRYPTION_MODE_DEFAULT));
+        return result;
+    }
 
     public String getEncryptionInterface() {
         return encryptionInterface;

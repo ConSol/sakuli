@@ -21,7 +21,6 @@ package org.sakuli.starter;
 import org.apache.commons.cli.*;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliCipherException;
 import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
@@ -134,10 +133,7 @@ public class SakuliStarter {
             final String strMasterkey = getOptionValue(cmd, masterkey);
             final String strCreate = getOptionValue(cmd, create);
 
-            //TODO TS check not interface & masterkey
-            if (cmd.hasOption(anInterface.getLongOpt())) {
-                SakuliPropertyPlaceholderConfigurer.ENCRYPTION_INTERFACE_VALUE = ethInterface;
-            }
+            checkAndAssignEncryptionOptions(strMasterkey, ethInterface);
             if (cmd.hasOption(run.getLongOpt()) || cmd.hasOption(run.getOpt())) {
                 TestSuite testSuite = runTestSuite(testSuiteFolderPath, sakuliMainFolderPath, browserValue, sahiHomePath);
                 //return the state as system exit parameter
@@ -147,10 +143,13 @@ public class SakuliStarter {
                 if (masterkey.getLongOpt().equals(strCreate)) {
                     AesKeyHelper.printRandomBase64Key();
                     System.exit(0);
+                } else {
+                    System.err.println("create object '" + strCreate + "' not supported - choose a coorect value!");
+                    System.exit(-1);
                 }
             } else if (cmd.hasOption(encrypt.getLongOpt()) || cmd.hasOption(encrypt.getOpt())) {
                 System.out.printf("\nString to Encrypt: %s \n...", strToEncrypt);
-                final Entry<String, String> secret = encryptSecret(strToEncrypt, ethInterface, strMasterkey);
+                final Entry<String, String> secret = CipherDelegator.encrypt(strToEncrypt);
                 System.out.printf("\nEncrypted secret with '%s': %s", secret.getKey(), secret.getValue());
                 System.out.println("\n\n... now copy the secret to your testcase!");
                 System.exit(0);
@@ -166,6 +165,20 @@ public class SakuliStarter {
             e.printStackTrace();
             System.err.println("Error: " + e.getMessage());
             System.exit(TestSuiteState.ERRORS.getErrorCode());
+        }
+    }
+
+    protected static void checkAndAssignEncryptionOptions(String masterkey, String ethInterface) throws SakuliInitException {
+        if (isNotEmpty(masterkey) && isNotEmpty(ethInterface)) {
+            throw new SakuliInitException("Encryption setup error: Masterkey and network interface specified, please specify only one option!");
+        }
+        if (isNotEmpty(masterkey)) {
+            LOGGER.debug("set masterkey '{}' for encryption", masterkey);
+            SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE = masterkey;
+        }
+        if (isNotEmpty(ethInterface)) {
+            LOGGER.debug("set '{}' as encryption interface", ethInterface);
+            SakuliPropertyPlaceholderConfigurer.ENCRYPTION_INTERFACE_VALUE = ethInterface;
         }
     }
 
@@ -255,19 +268,6 @@ public class SakuliStarter {
             BeanLoader.releaseContext();
         }
         return result;
-    }
-
-    /**
-     * Encrypt a secret based on the assigned interface.
-     *
-     * @param strToEncrypt secret to encrypt
-     * @param ethInterface name of network interface, if NULL use the auto-detection
-     * @return a Key-Value Pair of used interface for the encryption and the encrypted secret as strings.
-     * @throws SakuliCipherException
-     */
-    //TODO TS refactor
-    public static Entry<String, String> encryptSecret(String strToEncrypt, String ethInterface, String masterkey) throws SakuliCipherException {
-        return CipherDelegator.encrypt(strToEncrypt, ethInterface, masterkey);
     }
 
 }

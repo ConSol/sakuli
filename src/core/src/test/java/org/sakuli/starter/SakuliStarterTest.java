@@ -18,18 +18,47 @@
 
 package org.sakuli.starter;
 
+import org.sakuli.exceptions.SakuliInitException;
+import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Map;
-
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 public class SakuliStarterTest {
-    //TODO TS write test
+
+    @AfterMethod
+    @BeforeMethod
+    public void setUp() throws Exception {
+        SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE = null;
+        SakuliPropertyPlaceholderConfigurer.ENCRYPTION_INTERFACE_VALUE = null;
+    }
+
+    @Test(expectedExceptions = SakuliInitException.class,
+            expectedExceptionsMessageRegExp = ".*Masterkey and network interface specified. please specify only one option.*")
+    public void testDoubledEncryptionMode() throws Exception {
+        SakuliStarter.checkAndAssignEncryptionOptions("keyvalue", "eth1");
+    }
+
     @Test
-    public void testEncryptSceret() throws Throwable {
-        Map.Entry<String, String> result = SakuliStarter.encryptSecret("test", null, null);
-        assertNotNull(result.getKey());
-        assertNotNull(result.getValue());
+    public void testCheckMasterkey() throws Exception {
+        SakuliStarter.checkAndAssignEncryptionOptions("keyvalue", "");
+        assertNull(SakuliPropertyPlaceholderConfigurer.ENCRYPTION_INTERFACE_VALUE);
+        assertEquals(SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE, "keyvalue");
+        SakuliStarter.checkAndAssignEncryptionOptions("keyvalue2", null);
+        assertNull(SakuliPropertyPlaceholderConfigurer.ENCRYPTION_INTERFACE_VALUE);
+        assertEquals(SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE, "keyvalue2");
+    }
+
+    @Test
+    public void testCheckInterface() throws Exception {
+        SakuliStarter.checkAndAssignEncryptionOptions("", "eth1");
+        assertNull(SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE);
+        assertEquals(SakuliPropertyPlaceholderConfigurer.ENCRYPTION_INTERFACE_VALUE, "eth1");
+        SakuliStarter.checkAndAssignEncryptionOptions(null, "eth2");
+        assertNull(SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE);
+        assertEquals(SakuliPropertyPlaceholderConfigurer.ENCRYPTION_INTERFACE_VALUE, "eth2");
     }
 }

@@ -20,12 +20,13 @@ package org.sakuli.starter.helper;
 
 import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.exceptions.SakuliCipherException;
+import org.sakuli.services.cipher.EnvironmentCipher;
 import org.sakuli.services.cipher.NetworkInterfaceCipher;
+import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 
 import java.util.AbstractMap;
 import java.util.Map;
-
-import static org.apache.commons.lang.StringUtils.isNotEmpty;
+import java.util.Properties;
 
 /**
  * Helper class to delegate which cipher implementation should be used.
@@ -35,23 +36,26 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
  */
 public class CipherDelegator {
     /**
+     * Delegation class to encrypt a secret without starting the whole Spring context.
+     *
      * @param strToEncrypt
-     * @param ethInterface
      * @return a entry with "secret, generation-info"
      * @throws SakuliCipherException
      */
-    public static Map.Entry<String, String> encrypt(String strToEncrypt, String ethInterface, String masterkey) throws SakuliCipherException {
-        CipherProperties cipherProps = new CipherProperties();
-        //TODO TS USE keybased
-//        if (isEmpty( ethInterface) )
-        if (isNotEmpty(ethInterface)) {
-            cipherProps.setEncryptionInterface(ethInterface);
-            cipherProps.setEncryptionInterfaceAutodetect(false);
-        } else {
-            cipherProps.setEncryptionInterfaceAutodetect(true);
+    public static Map.Entry<String, String> encrypt(String strToEncrypt) throws SakuliCipherException {
+        Properties props = new Properties();
+        SakuliPropertyPlaceholderConfigurer.assignEncryptionProperties(props);
+        CipherProperties cipherProps = CipherProperties.load(props);
+
+        switch (cipherProps.getEncryptionMode()) {
+            case CipherProperties.ENCRYPTION_MODE_ENVIRONMENT:
+                return new AbstractMap.SimpleEntry<>("environment masterkey", new EnvironmentCipher(cipherProps).encrypt(strToEncrypt));
+            case CipherProperties.ENCRYPTION_MODE_INTERFACE:
+                NetworkInterfaceCipher cipher = new NetworkInterfaceCipher(cipherProps);
+                cipher.scanNetworkInterfaces();
+                return new AbstractMap.SimpleEntry<>("interface " + cipher.getInterfaceName(), cipher.encrypt(strToEncrypt));
+            default:
+                throw new SakuliCipherException("unexpected error during encryption");
         }
-        NetworkInterfaceCipher cipher = new NetworkInterfaceCipher(cipherProps);
-        cipher.scanNetworkInterfaces();
-        return new AbstractMap.SimpleEntry<>("interface " + cipher.getInterfaceName(), cipher.encrypt(strToEncrypt));
     }
 }
