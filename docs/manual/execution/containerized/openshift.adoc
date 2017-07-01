@@ -7,8 +7,8 @@
 :page-path: docs/manual/execution/containerized/openshift.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-//TODO TS: git-link ??
 The following section describes how to use link:https://www.openshift.com/[OpenShift] for Sakuli E2E testing and monitoring.
+The following content uses as example the image `consol/sakuli-ubuntu-xfce` of the Dockerfile `git-link:docker/Dockerfile.sakuli.ubuntu.xfce[link-text="Dockerfile.sakuli.ubuntu.xfce", mode="view", link-window="_blank"]`.
 
 First you have to create your OpenShift project on the command line:
 
@@ -18,9 +18,7 @@ cd openshift
 oc new-project my-project
 ----
 
-Then you can use the provided templates:
-
-// TODO TS: hier fehlt doch was, oder? Im nächsten Abschnit gehts mit dem gleichen command wieder los.
+Then you can use the provided templates from `git-link:docker/openshift[link-text="docker/openshift", mode="view", link-window="_blank"]`.
 
 [[openshift-run-image]]
 ===== Run image from Dockerhub
@@ -72,8 +70,7 @@ If you want to build the image in your own infrastructure just use the configura
 oc process -f openshift.sakuli.example.image.build.yaml -v IMAGE=sakuli-oc-image | oc create -f -
 ----
 
-//TODO TS: image statt Dockerfile = korrekt?
-Alternatively you can build a custom image in a specific branch:
+Alternatively you can build a custom Docker image in a specific branch:
 
 [source]
 ----

@@ -15,7 +15,6 @@ The following section describes how to use link:https://www.openshift.com/[Kuber
 cd <project-path>/docker/kubernetes
 ----
 
-//TODO TS: was ist git-link? Sieht komisch aus
 You will find the kubernetes config example in:
 `git-link:docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml[link-text="docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml", mode="view", link-window="_blank"]`
 
