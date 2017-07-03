@@ -12,7 +12,7 @@ echo "SAKULI_BRANCH=$SAKULI_BRANCH" > $WORKSPACE/myjob.properties
 FEATURE_NAME=${GIT_BRANCH:$(expr index \"$GIT_BRANCH\" '#') -1 }
 echo "FEATURE_NAME=$FEATURE_NAME" >> $WORKSPACE/myjob.properties
 
-SAKULI_VERSION="$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v '\[')"
+SAKULI_VERSION="$(mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v -e '\[' -e 'Download' )"
 echo "SAKULI_VERSION=$SAKULI_VERSION" >> $WORKSPACE/myjob.properties
 VERSION_SURFIX=${SAKULI_VERSION:$(expr index \"$SAKULI_VERSION\" 'SNAPSHOT') +7 }
 echo "VERSION_SURFIX=$VERSION_SURFIX" >> $WORKSPACE/myjob.properties
