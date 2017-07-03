@@ -18,9 +18,13 @@
 
 package org.sakuli.datamodel.properties;
 
+import org.sakuli.exceptions.SakuliInitException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -59,6 +63,14 @@ public class CipherProperties extends AbstractProperties {
         result.setEncryptionKey(props.getProperty(ENCRYPTION_KEY, ENCRYPTION_KEY_DEFAULT));
         result.setEncryptionMode(props.getProperty(ENCRYPTION_MODE, ENCRYPTION_MODE_DEFAULT));
         return result;
+    }
+
+    @PostConstruct
+    public void validatePropertyValues() throws SakuliInitException {
+        final List<String> acceptedValsEnMode = Arrays.asList(ENCRYPTION_MODE_ENVIRONMENT, ENCRYPTION_MODE_INTERFACE);
+        if (!acceptedValsEnMode.contains(encryptionMode)) {
+            throw new SakuliInitException(String.format("Value of property '%s=%s' is not valid! Accepted values are: %s", ENCRYPTION_MODE, encryptionMode, acceptedValsEnMode));
+        }
     }
 
     public String getEncryptionInterface() {
