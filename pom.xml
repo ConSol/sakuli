@@ -37,13 +37,14 @@
         <module>src/ocr-tessdata-extractor</module>
         <module>src/basic-test-util</module>
         <module>src/sakuli-common</module>
+        <module>src/docs-sakuli-api</module>
+        <module>src/docs-manual</module>
         <module>src/sakuli-core</module>
         <module>src/sakuli-sahi-setup</module>
         <module>src/sakuli-installer</module>
         <module>src/sakuli-java-dsl</module>
         <module>src/sakuli-selenium-setup</module>
         <module>src/integration-test</module>
-        <module>src/docs</module>
     </modules>
 
     <properties>
@@ -189,6 +190,11 @@
                     <version>2.17</version>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>0.0.26</version>
@@ -234,6 +240,28 @@
                     <artifactId>jgitflow-maven-plugin</artifactId>
                     <version>1.0-m5.1</version>
                 </plugin>
+
+                <plugin>
+                    <groupId>com.coderplus.maven.plugins</groupId>
+                    <artifactId>copy-rename-maven-plugin</artifactId>
+                    <version>1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.6.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.asciidoctor</groupId>
+                    <artifactId>asciidoctor-maven-plugin</artifactId>
+                    <version>1.5.3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>1.9.5</version>
+                </plugin>
+
             </plugins>
 
         </pluginManagement>

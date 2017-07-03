@@ -1,0 +1,27 @@
+
+:imagesdir: ../../../images
+
+==== Screenshot settings
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sakuli-screenshot-settings.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+
+To set the format and destination folder for screenshots taken by Sakuli change the following <<property-loading-mechanism,properties>>:
+
+
+|===
+|Property | Description
+
+|`sakuli.screenshot.onError=true`
+|take a screenshot in case of an exception
+
+|`sakuli.screenshot.dir=${sakuli.log.folder}/_screenshots`
+|folder for screenshot files (if activated)
+
+|`sakuli.screenshot.format=jpg`
+|screenshot file format (Possible values: jpg, png)
+
+|`sakuli.forwarder.gearman.nagios.template.screenshotDivWidth=640px`
+| Screenshot dimensions for results sent to Gearmand
+|===

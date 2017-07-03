@@ -1,0 +1,38 @@
+
+:imagesdir: ../../../images
+
+==== Exception handling
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sakuli-exception-handling.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Some objects (*Region, Application, Environment*) allow on their creation to specify the optional boolean argument `resumeOnException`, which controls whether the script should resume on an exception which is related to the object or one of its method (default: false).
+
+Setting this to _true_ can be useful if you want to raise a custom exception or no exception at all.
+
+.Property values of `sakuli.exception.suppressResumedExceptions`
+|===
+|Value | Impact
+
+|`true`
+| the exception will be logged and appear in the test result
+
+|`false`
+| the exception will NEITHER be logged NOR appear in the test result.
+|===
+
+
+.Example:
+
+[source,js]
+----
+// create region "foo"
+var foo = new Region("bar.png",true);
+// if "image" is not found, the script will resume
+var baz = foo.find("image");
+// throw your "own" exception.
+// If you do not, and suppressResumedExceptions=true, the exception will be suppressed.
+if (baz == null){
+    throw "Sorry, I could not find image 'image'.";
+}
+----

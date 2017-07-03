@@ -416,7 +416,9 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
         String output = testling.createOutput();
-        Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.CRITICAL_IN_CASE.name()));
+        String expected = loadExpectedOutput(TestSuiteState.CRITICAL_IN_CASE.name());
+        Assert.assertEquals(output.getBytes(), expected.getBytes());
+        Assert.assertEquals(output, expected);
     }
 
     @Test

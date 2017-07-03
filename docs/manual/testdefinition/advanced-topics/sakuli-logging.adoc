@@ -1,0 +1,69 @@
+
+:imagesdir: ../../../images
+
+==== Logging
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sakuli-logging.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+.Verbosity
+
+The logging verbosity of all compoments _Sakuli, Sahi, Sikuli, Spring_ - and _Java_ in general can be changed individually with <<property-loading-mechanism,properties>>.
+
+IMPORTANT: "Verbosity" means one of the levels `DEBUG - INFO - WARN - ERROR`
+
+.Log level verbosity properties
+|===
+|Property | Description
+
+|`log.level.sakuli=__LEVEL__`
+|logging level for *Sakuli* output
+
+|`log.level.sikuli=__LEVEL__`
+|logging level for *Sikuli* output
+
+|`log.level.sahi=__LEVEL__`
+|logging level for *Sahi* output
+
+|`log.level.spring=__LEVEL__`
+|logging level for the *Spring* framework (only used internally)
+
+|`log.level.root=__LEVEL__`
+|logging level for all other *Java classes and libraries*
+|===
+
+.Log file folder / pattern
+|===
+|Property | Description
+
+|`sakuli.log.pattern=%-5level [%d{YYYY-MM-dd HH:mm:ss.SSS}] - %msg%n`
+|Format string
+
+|`sakuli.log.folder=${sakuli.testsuite.folder}/_logs`
+|Log folder
+|===
+
+In general it is also possible to add your own Logback configuration under `__SAKULI_HOME__/config/sakuli-log-config.xml`. For more information about the Logback syntax please refer to the http://logback.qos.ch/manual/configuration.html[Logback manual].
+
+.Log file rotation
+Control the age of your log-files in the `sakuli.properties`, to prevent disk space erros.
+
+|===
+|Property | Description
+
+|`sakuli.log.maxAge=14`
+|Deletes all files that are older than (default) 14 days in the defined `sakuli.log.folder`.
+|===
+
+On Linux you can additional configure *logrotate* to tidy up old log files:
+
+[source,bash]
+----
+vim /etc/logrotate.d/sakuli
+
+__SUITE_FOLDER__/*/_logs/* __SUITE_FOLDER__/*/_logs/_screenshots/* {
+    size 1k
+    missingok
+    maxage 2
+}
+----

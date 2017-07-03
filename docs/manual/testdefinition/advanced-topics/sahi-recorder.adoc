@@ -1,0 +1,16 @@
+
+:imagesdir: ../../../images
+
+[[sahi-recorder]]
+==== Sahi Recorder
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sahi-recorder.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Another method to <<sahi-controller-copy-paste>> is to record all steps into a file. For this, open the Sahi controller (<<sahi-open-controller>>), enter a filename and click on "record":
+
+image:tutorial_record.png[sahi_recorder]
+
+NOTE: actions like clicks are written to file automatically. All other actions like assertions can be written to file by clicking the button "Append to Script": image:tutorial_append.png[sahi_recorder_append_to_script]
+
+After you have clicked on "stop", open the recorded file, copy everything and paste the lines in to the Sakuli testcase `your-testcase.js` file.

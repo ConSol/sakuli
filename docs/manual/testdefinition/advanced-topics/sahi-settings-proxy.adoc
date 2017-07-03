@@ -1,0 +1,34 @@
+
+:imagesdir: ../../../images
+
+[[sahi_behind_a_proxy]]
+===== Sahi behind a proxy
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sahi-settings-proxy.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Set the following <<property-loading-mechanism,properties>> (globally in `sakuli.properties`) to define a proxy Sahi should connect to.
+
+[source,properties]
+----
+### HTTP/HTTPS proxy Settings
+### Set these properties, to enable the test execution behind company proxies
+# Use external proxy server for HTTP*
+ext.http.proxy.enable=true
+ext.http.proxy.host=proxy.yourcompany.com
+ext.http.proxy.port=8080
+ext.http.proxy.auth.enable=false
+ext.http.proxy.auth.name=user
+ext.http.proxy.auth.password=password
+
+# Use external proxy server for HTTPS
+ext.https.proxy.enable=true
+ext.https.proxy.host=proxy.server.com
+ext.https.proxy.port=8080
+ext.https.proxy.auth.enable=false
+ext.https.proxy.auth.name=user
+ext.https.proxy.auth.password=password
+
+# There is only one bypass list for both secure and insecure.
+ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.verisign.com
+----

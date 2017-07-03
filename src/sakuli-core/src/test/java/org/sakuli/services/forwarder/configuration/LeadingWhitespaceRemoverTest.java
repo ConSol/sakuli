@@ -46,4 +46,25 @@ public class LeadingWhitespaceRemoverTest {
         assertEquals(lwr.removeSpaces(input), expectedOutput);
     }
 
+    @Test
+    public void testMultiline() throws Exception {
+        String multilineCRLF = "\r\n" +
+                "\r\n" +
+                "    <<<local>>>$newline$\r\n" +
+                "\r\n" +
+                "2 service_description suite__state=2;;;;\r\n" +
+                "|suite__warning=300s;;;;|suite__critical=400s;;;;|suite_example_xfce=46.96s;300;400;;\r\n" +
+                "\r\n";
+        String multilineLF = "\n" +
+                "\n" +
+                "    <<<local>>>$newline$\n" +
+                "\n" +
+                "2 service_description suite__state=2;;;;\n" +
+                "|suite__warning=300s;;;;|suite__critical=400s;;;;|suite_example_xfce=46.96s;300;400;;\n" +
+                "\n";
+        String expected = "<<<local>>>\n" +
+                "2 service_description suite__state=2;;;;|suite__warning=300s;;;;|suite__critical=400s;;;;|suite_example_xfce=46.96s;300;400;;";
+        assertEquals(new LeadingWhitespaceRemover().removeSpaces(multilineLF), expected);
+        assertEquals(new LeadingWhitespaceRemover().removeSpaces(multilineCRLF), expected);
+    }
 }

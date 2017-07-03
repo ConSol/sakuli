@@ -1,0 +1,99 @@
+
+:imagesdir: ../../../images
+
+[[screenshot_history]]
+==== Screenshot history
+
+[#git-edit-section]
+:page-path: docs/manual/integration/monitoring/screenshot_history.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+INFO: This section applies to http://http://labs.consol.de/OMD/[OMD-Labs] and the web interface https://www.thruk.org/[Thruk]. To use the screenshot history functionality on other platforms/web interfaces, the steps may vary.
+
+===== Feature description
+In case of an exception, Sakuli takes a screenshot of the current screen and embeds this image into the *service output* (base64 encoded). The user is able to view the screenshot on the monitoring user interface.
+
+The drawback of this method is that the screenshot only resists in the monitoring core's memory; as soon as the test recovers, the test output changes back to OK and the image is gone. There are the Nagios/Naemon event logs to inspect former exceptions, but they do not contain the screenshots (fortunately).
+
+With the *Screenshot history* feature, the monitoring core (Nagios/Naemon/Icinga) fires a event handler script each time the check has a CRITICAL result. The script analyzes the service output, parses the image data and stores it on the local file system within a folder structure published by the OMD site apache process. Sakuli services contain a https://www.thruk.org/documentation/action-menu.html[Thruk action menu] which allow the user to see all saved screenshots.
+
+===== Activating the feature
+
+Use the Makefile located in `$OMD_ROOT/share/sakuli/` to enable the feature:
+
+[source,bash]
+----
+OMD[demo]:~/share/sakuli/setup$ make screenshot_history
+cp ./omd/local/lib/nagios/plugins/sakuli_screenshot_eventhandler.sh /omd/sites/demo/local/lib/nagios/plugins/
+cp ./omd/etc/nagios/conf.d/sakuli_screenshot_eventhandler.cfg /omd/sites/demo/etc/core/conf.d/
+cp ./omd/local/bin/sakuli_screenshot_cleanup.sh /omd/sites/demo/local/bin/
+cp ./omd/etc/cron.d/sakuli_screenshot_cleanup /omd/sites/demo/etc/cron.d/
+cp ./omd/etc/thruk/ssi/*.ssi /omd/sites/demo/etc/thruk/ssi/
+cp ./omd/etc/thruk/thruk_local.d/sakuli_action_menu.conf /omd/sites/demo/etc/thruk/thruk_local.d/
+cp ./omd/etc/apache/conf.d/sakuli_screenshots.conf /omd/sites/demo/etc/apache/conf.d/
+omd reload crontab
+Removing Crontab...OK
+Initializing Crontab...OK
+omd reload apache
+Reloading dedicated Apache for site demo
+omd reload core
+Reloading naemon configuration (PID: 3511)... OK
+----
+
+[[screenshot_history_eh]]
+===== Event handler
+Now assign the command `sakuli_screenshot_eventhandler` to all Sakuli services:
+
+[source]
+----
+define service {
+  service_description            example_xfce
+  host_name                      sakuli_client
+  use                            tpl_s_sakuli_gearman_grafana
+  event_handler                  sakuli_screenshot_eventhandler
+  event_handler_enabled          1
+}
+----
+
+Each time a CRITICAL Sakuli result comes in, the eventhandler will log its actions:
+
+[source]
+----
+OMD[demo]:$ tail -f var/log/sakuli_screenshot_eventhandler.log
+...
+[6893] 06/08/17 03:28:27 ---------------------------------------
+[6893] 06/08/17 03:28:27 HOST/SERVICE: sakuli_client / example_xfce
+[6893] 06/08/17 03:28:27 STATE: CRITICAL
+[6893] 06/08/17 03:28:27 LASTSERVICECHECK: 1496892468
+[6893] 06/08/17 03:28:27 PLUGIN_OUT: [CRIT] Sakuli suite "example_xfce" (23.11s) EXCEPTION: 'CASE "case1": STEP "Test_Sahi_landing_page": _highlight(_link("XSSL Manager")): TypeError: el is undefined Sahi.prototype._highlight@http://sahi ...\
+[6893] 06/08/17 03:28:27 Found screenshot format: jpg
+[6893] 06/08/17 03:28:27 IMG_DIR: /omd/sites/demo/var/sakuli/screenshots/sakuli_client/example_xfce/1496892468
+[6893] 06/08/17 03:28:27 Moving /omd/sites/demo/tmp/sakuli/screenshot_1496892468.jpg to /omd/sites/demo/var/sakuli/screenshots/sakuli_client/example_xfce/1496892468/screenshot.jpg
+[6893] 06/08/17 03:28:27 Writing image path to InfluxDB...
+[6893] 06/08/17 03:28:27 InfluxDB responded: < HTTP/1.1 404 Not Found
+[6955] 06/08/17 03:29:18 ---------------------------------------
+----
+
+===== Thruk action_menu
+Open `$OMD_ROOT/etc/thruk/thruk_local.d/sakuli_action_menu.conf` and adapt the section `<action_menu_apply>`. The following example applies the action_menu only on services whose host names begin with "sakuli". See the https://www.thruk.org/documentation/configuration.html#action-menu-settings[Thruk documentation for more examples].
+
+[source]
+----
+# Apply the action_menu on all services of hosts starting with "sakuli"
+<action_menu_apply>
+     sakuli_history_menu = ^sakuli.*;.+$
+</action_menu_apply>
+----
+
+After reloading the web server you should see a small dropdown arrow on each Sakuli service, giving you access to the screenshot history lightbox:
+
+image:screenshot_hist_action_menu.png[screenshot_hist_action_menu]
+
+image:screenshot_hist_lightbox.png[screenshot_hist_lightbox,500]
+
+The lightbox always shows the last/current screenshot and the error message. To navigate forth/back, use the left/right arrow keys or the buttons in the bottom right corner. Press Esc to close the box again.
+
+===== Grafana integration
+Read the <<screenshot_annotations,Grafana screenshot annotations>> section if you want to integrate the screnshots as Grafana annotations.
+
+NOTE: For PNP4Nagios there is no such feature available.

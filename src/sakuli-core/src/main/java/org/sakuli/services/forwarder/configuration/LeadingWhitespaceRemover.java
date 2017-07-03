@@ -45,7 +45,7 @@ public class LeadingWhitespaceRemover implements SpaceRemover {
     @Override
     public String removeSpaces(String input) {
         return input
-                .replaceAll("(?m)^[\\s\\t]+|\\n", "")
+                .replaceAll("(?m)^[\\s\\t]+|\\n|\\r", "")
                 .replaceAll("\\$whitespace\\$", " ")
                 .replaceAll("\\$newline\\$", "\n");
     }

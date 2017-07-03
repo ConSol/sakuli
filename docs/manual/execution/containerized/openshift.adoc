@@ -1,0 +1,152 @@
+
+:imagesdir: ../../../images
+
+[[openshift]]
+==== OpenShift
+[#git-edit-section]
+:page-path: docs/manual/execution/containerized/openshift.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+The following section describes how to use link:https://www.openshift.com/[OpenShift] for Sakuli E2E testing and monitoring.
+The following content uses as example the image `consol/sakuli-ubuntu-xfce` of the Dockerfile `git-link:docker/Dockerfile.sakuli.ubuntu.xfce[link-text="Dockerfile.sakuli.ubuntu.xfce", mode="view", link-window="_blank"]`.
+
+First you have to create your OpenShift project on the command line:
+
+[source]
+----
+cd openshift
+oc new-project my-project
+----
+
+Then you can use the provided templates from `git-link:docker/openshift[link-text="docker/openshift", mode="view", link-window="_blank"]`.
+
+[[openshift-run-image]]
+===== Run image from Dockerhub
+
+[source]
+----
+cd openshift
+oc new-project my-project
+----
+
+As soon as you are logged in to OpenShift and have selected your project, you can simply run the image by using the configuration `git-link:docker/openshift/openshift.sakuli.example.pod.run.yaml[link-text="openshift.sakuli.example.pod.run.yaml", mode="view", link-window="_blank"]`:
+
+[source]
+----
+oc process -f openshift.sakuli.example.pod.run.yaml -v E2E_TEST_NAME=single-pod | oc create -f -
+----
+
+After the deployment you will see the new deployed service on the OpenShift management UI :
+
+[source]
+----
+https://__YOUR-OS-MANAGEMENT-URL__/console/project/my-project/overview`
+----
+
+image:os_run_only.png[openshift management consol run-only service]
+
+Watch the test execution within the container with this URL:
+
+[source]
+----
+http://my-run-only-pod-my-project.__YOUR-OS-URL__/?password=sakuli`
+----
+
+image:os_container_webvnc.png[openshift container via webvnc]
+
+If you want to use another Sakuli image (here: Ubuntu) just use the `IMAGE` var:
+
+[source]
+----
+oc process -f openshift.sakuli.example.pod.run.yaml -v E2E_TEST_NAME=single-pod -v IMAGE=consol/sakuli-ubuntu-icewm | oc create -f -
+----
+
+===== Build &amp; run your own image
+
+If you want to build the image in your own infrastructure just use the configuration `git-link:docker/openshift/openshift.sakuli.example.image.build.yaml[link-text="openshift.sakuli.example.image.build.yaml", mode="view", link-window="_blank"]`:
+
+[source]
+----
+oc process -f openshift.sakuli.example.image.build.yaml -v IMAGE=sakuli-oc-image | oc create -f -
+----
+
+Alternatively you can build a custom Docker image in a specific branch:
+
+[source]
+----
+oc process -f openshift.sakuli.example.image.build.yaml \
+    -v IMAGE=sakuli-oc-image-icewm \
+    -v SOURCE_REPOSITORY_REF=dev \
+    -v SOURCE_DOCKERFILE=Dockerfile.sakuli.ubuntu.icewm \
+    | oc create -f -
+----
+
+====== Use images from oc docker registry
+
+To use an already builded image from the internal OpenShift registry you have to specify the image in the pattern `<registry-ip>/<your-project>/<image-name>[:<tag>]`:
+
+[source]
+----
+oc process -f openshift.sakuli.example.pod.run.yaml -v IMAGE=10.0.0.X:5000/my-project/sakuli-oc-image,E2E_TEST_NAME=oc-image-test-2 | oc create -f -
+----
+
+===== Run git based tests
+
+====== Git based test definitions on volume mounts
+
+An effective way to execute your own Sakuli tests is that you mount the testsuite into the container. For this you can use the template `openshift.sakuli.gitvolume.pod.run.yaml`. The template will checkout the git repository and mount it as a read-only volume into the container where Sakuli will execute it:
+
+[source]
+----
+oc process -f openshift.sakuli.gitvolume.pod.run.yaml \
+    -v GIT_TEST_SUITE_REPO=https://github.com/ConSol/sakuli-examples \
+    -v GIT_TEST_SUITE_PATH=docker-xfce/part_01/example_xfce \
+    | oc create -f -
+----
+
+IMPORTANT: If something went wrong, you maybe have to enable this volume type in the cluster - see next section.
+
+====== Enable gitRepo volumes:
+
+Login as administrator:
+
+[source]
+----
+oc login -u system:admin
+----
+
+Edit the security :
+
+[source]
+----
+oc edit securitycontextconstraints/restricted
+----
+
+add `gitRepo` to `volumes`:
+
+[source]
+----
+volumes:
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- secret
+- gitRepo
+----
+
+===== Other useful commands
+
+====== Delete specific application or E2E test
+
+[source]
+----
+oc process -f openshift.sakuli.example.pod.run.yaml -v E2E_TEST_NAME=single-job | oc delete --grace-period=5 -f -
+----
+
+====== Delete all running pods and configs
+
+[source]
+----
+oc delete dc --all && oc delete routes --all && oc delete pods --all && oc delete services --all && oc delete jobs --all
+----

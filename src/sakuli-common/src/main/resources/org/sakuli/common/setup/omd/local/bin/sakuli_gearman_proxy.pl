@@ -147,13 +147,16 @@ sub forward_job {
     unless (service_exists($h, $s, $ls)) {
         # Missing service
         out("MISSING HOST/SERVICE!!");
-	$decoded =~ s/host_name=.*\n/host_name=$err_h\n/;
-	$decoded =~ s/service_description.*\n/service_description=$err_s\n/;
-	$decoded =~ s/return_code=.*\n/return_code=$err_r\n/;
-	$decoded =~ s/output=.*\\n/output=Ergebnis für Prüfung $s an $h hat kein Monitoring-Objekt!\\\\n/;
+	      $decoded =~ s/host_name=.*\n/host_name=$err_h\n/;
+	      $decoded =~ s/service_description.*\n/service_description=$err_s\n/;
+	      $decoded =~ s/return_code=.*\n/return_code=$err_r\n/;
+	      $decoded =~ s/output=.*\\n/output=Ergebnis für Prüfung $s an $h hat kein Monitoring-Objekt!\\\\n/;
     } else {
+#
+# $decoded is the raw gearman package data. You can do here what you want.
+#
         $decoded =~ s/output=\[OK\] Sakuli suite (.*) ok.*\\n/output=Der IT-Service $1 steht ohne Einschränkung zur Verfügung.\\\\n/;
-#        $decoded =~ s/output=\[WARN\] Sakuli suite (.*) warning in step.*\\n/Der IT-Service $1 weist aktuell Performance-Probleme auf und steht nicht in gewohnter Qualität zur Verfügung./;
+        $decoded =~ s/output=\[WARN\] Sakuli suite (.*) warning in step.*\\n/Der IT-Service $1 weist aktuell Performance-Probleme auf und steht nicht in gewohnter Qualität zur Verfügung./;
         $decoded =~ s/return_code=1(.*)output=\[WARN\] Sakuli suite (.*) warning in step.*\\n/return_code=2$1output=Der IT-Service $2 weist aktuell Performance-Probleme auf und steht nicht in gewohnter Qualität zur Verfügung./;
         $decoded =~ s/output=\[CRIT\] Sakuli suite (.*) critical in case.*\\n/output=Störung des IT-Service $1 erkannt. Ein Prüfschritt hat die vorgegebene Maximalzeit überschritten.\\\\n/;
         $decoded =~ s/output=\[CRIT\] Sakuli suite (.*) \(\d+\.\d+s\) EXCEPTION.*STEP (.*?): .*\\n/output=Störung des IT-Service $1 erkannt. Festgestellt in Prüfschritt $2.\\\\n/;

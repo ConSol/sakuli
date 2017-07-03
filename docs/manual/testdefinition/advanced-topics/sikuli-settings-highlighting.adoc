@@ -1,0 +1,20 @@
+
+:imagesdir: ../../../images
+
+===== Highlighting Regions
+
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+
+|===
+|Property | Description
+
+|`sakuli.highlight.seconds=1.1f`
+|duration for auto-highlighting and `highlight()` method
+
+|`sakuli.autoHighlight.enabled=false`
+| If true, every region gets highlighted automatically for `sakuli.highlight.seconds`
+|===
+

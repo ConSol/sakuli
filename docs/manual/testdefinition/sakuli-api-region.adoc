@@ -1,0 +1,572 @@
+
+:imagesdir: ../../images
+
+[[Region]]
+==== Region
+
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/sakuli-api-region.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Region - Represents a region as a part of or the hole screen.
+
+*Params*
+
+* optResumeOnException `Boolean` - if true, the test execution won't stop on an occurring error. Default: false.
+
+*Example*
+[source,js]
+----
+var screen = new Region();   //represents the hole screen`
+----
+
+*Members*
+
+* link:#Region[Region]
+* link:#Region.find[Region.find(imageName)]
+* link:#Region.findRegion[Region.findRegion()]
+* link:#Region.exists[Region.exists(imageName, optWaitSeconds)]
+* link:#Region.click[Region.click()]
+* link:#Region.doubleClick[Region.doubleClick()]
+* link:#Region.rightClick[Region.rightClick()]
+* link:#Region.mouseMove[Region.mouseMove()]
+* link:#Region.mouseDown[Region.mouseDown(mouseButton)]
+* link:#Region.mouseUp[Region.mouseUp(mouseButton)]
+* link:#Region.dragAndDropTo[Region.dragAndDropTo(targetRegion)]
+* link:#Region.waitForImage[Region.waitForImage(imageName, seconds)]
+* link:#Region.paste[Region.paste(text)]
+* link:#Region.pasteMasked[Region.pasteMasked(text)]
+* link:#Region.pasteAndDecrypt[Region.pasteAndDecrypt(text)]
+* link:#Region.type[Region.type(text, optModifiers)]
+* link:#Region.typeMasked[Region.typeMasked(text, optModifiers)]
+* link:#Region.typeAndDecrypt[Region.typeAndDecrypt(text, optModifiers)]
+* link:#Region.keyDown[Region.keyDown(keys)]
+* link:#Region.keyUp[Region.keyUp(keys)]
+* link:#Region.write[Region.write(text)]
+* link:#Region.deleteChars[Region.deleteChars(amountOfChars)]
+* link:#Region.mouseWheelDown[Region.mouseWheelDown(steps)]
+* link:#Region.mouseWheelUp[Region.mouseWheelUp(steps)]
+* link:#Region.move[Region.move(offsetX, offsetY)]
+* link:#Region.grow[Region.grow(range)]
+* link:#Region.grow[Region.grow(width, height)]
+* link:#Region.above[Region.above(range)]
+* link:#Region.below[Region.below(range)]
+* link:#Region.left[Region.left(range)]
+* link:#Region.right[Region.right(range)]
+* link:#Region.setH[Region.setH(height)]
+* link:#Region.getH[Region.getH()]
+* link:#Region.setW[Region.setW(width)]
+* link:#Region.getW[Region.getW()]
+* link:#Region.setX[Region.setX(x)]
+* link:#Region.getX[Region.getX()]
+* link:#Region.setY[Region.setY(y)]
+* link:#Region.getY[Region.getY()]
+* link:#Region.highlight[Region.highlight(seconds)]
+* link:#Region.takeScreenshot[Region.takeScreenshot(filename)]
+* link:#Region.sleep[Region.sleep(seconds)]
+* link:#Region.extractText[Region.extractText()]
+
+
+[[Region.find]]
+.Region.find(imageName)
+
+Finds an image inside this region immediately.
+
+*Params*
+
+* imageName `String` - name of the preloaded picture
+ (if not set, the find operation will take place on the predefined region object.)
+
+*Returns*: - the found Region or if the target can't be found null.
+
+[[Region.findRegion]]
+.Region.findRegion()
+
+Finds a target in this Region immediately;
+
+*Returns*: - the found Region or if the target can't be found null.
+
+[[Region.exists]]
+.Region.exists(imageName, optWaitSeconds)
+
+Check whether the give pattern is visible on the screen.
+
+*Params*
+
+* imageName `String` - if set, the function search inside the given region for the image
+* optWaitSeconds `number` - if set, the function search for x seconds for the pattern.
+
+*Returns*: - this Region or null
+
+[[Region.click]]
+.Region.click()
+
+makes a mouse click on the center of the Region.
+
+*Returns*: - the Region or NULL on errors.
+
+[[Region.doubleClick]]
+.Region.doubleClick()
+
+makes a double click on the center of the Region.
+
+*Returns*: - the Region or NULL on errors.
+
+[[Region.rightClick]]
+.Region.rightClick()
+
+makes a right click on the center of the Region.
+
+*Returns*: - the Region or NULL on errors.
+
+[[Region.mouseMove]]
+.Region.mouseMove()
+
+Move the mouse pointer to the center of the link:#Region[Region] and "hovers" it.
+
+*Returns*: - the link:#Region[Region] or NULL on errors.
+
+[[Region.mouseDown]]
+.Region.mouseDown(mouseButton)
+
+Low-level mouse action to press the assigned link:#MouseButton[MouseButton] on the current position.
+
+*Params*
+
+* mouseButton - on of link:#MouseButton[MouseButton] values
+
+*Returns*: - the link:#Region[Region] or NULL on errors.
+
+*Example*
+Press and release the right mouse button vor 3 seconds on a specified region:
+[source,js]
+----
+var region = new Region().find("your-pattern.png");
+region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+----
+
+
+[[Region.mouseUp]]
+.Region.mouseUp(mouseButton)
+
+Low-level mouse action to release the assigned link:#MouseButton[MouseButton].
+
+*Params*
+
+* mouseButton - on of link:#MouseButton[MouseButton] values
+
+*Returns*: - the link:#Region[Region] or NULL on errors.
+
+*Example*
+
+Press and release the right mouse button vor 3 seconds on a specified region:
+[source,js]
+----
+var region = new Region().find("your-pattern.png");
+region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+----
+
+
+[[Region.dragAndDropTo]]
+.Region.dragAndDropTo(targetRegion)
+
+Drag from region's current position and drop at given targetRegion and using the left mouse.
+
+*Params*
+
+* targetRegion <code>link:#Region[Region]</code> - target where to drop
+
+*Returns*: - the Region or NULL on failure
+
+*Example*
+move the bubble button 20px to the rigth:
+[source,js]
+----
+var bubble = screen.find("bubble.png");
+bubble.dragAndDropTo(bubble.right(20));
+----
+
+
+[[Region.waitForImage]]
+.Region.waitForImage(imageName, seconds)
+
+Blocks and waits until a target which is specified by the optImageName is found in the hole
+Screen within a given time period in seconds.
+
+*Params*
+
+* imageName `String` - name of the image pattern
+* seconds `number` - the maximum time to waitFor in seconds
+
+*Returns*: - a Region object representing the region occupied by the found target,
+ or null if the target can not be found within the given time.
+
+[[Region.paste]]
+.Region.paste(text)
+
+pastes the text at the current position of the focus/carret <br/>using the
+clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
+
+*Params*
+
+* text `String` - as a string, which might contain unicode characters
+
+*Returns*: - this Region or NULL on errors.
+
+[[Region.pasteMasked]]
+.Region.pasteMasked(text)
+
+makes a masked paste(String) without any logging.
+
+*Params*
+
+* text `String` - a string, which might contain unicode characters
+
+*Returns*: - this Region or NULL on errors.
+
+[[Region.pasteAndDecrypt]]
+.Region.pasteAndDecrypt(text)
+
+combines pasteMasked(String) and decryptSecret(String).
+
+*Params*
+
+* text `String` - encrypted secret
+
+*Returns*: - this Region or NULL on errors.
+
+[[Region.type]]
+.Region.type(text, optModifiers)
+
+Enters the given text one character/key after another using keyDown/keyUp.
+<p/>
+About the usable Key constants see documentation of Key.
+The function could also type UTF-8 unicode characters, if the OS supports it.
+The text is entered at the current position of the focus.
+
+*Params*
+
+* text `String` - containing characters and/or Key constants
+* optModifiers `String` - (optional) an String with only Key constants.
+
+*Returns*: - this Region or NULL on errors.
+
+[[Region.typeMasked]]
+.Region.typeMasked(text, optModifiers)
+
+Enters the given text one character/key after another using keyDown/keyUp.
+The entered text will be masked at the logging.
+<p/>
+About the usable Key constants see documentation of Key.
+The function could also type UTF-8 unicode characters, if the OS supports it.
+The text is entered at the current position of the focus.
+
+*Params*
+
+* text `String` - containing characters and/or Key constants
+* optModifiers `String` - (optional) an String with only Key constants.
+
+*Returns*: - this Region or NULL on errors.
+
+[[Region.typeAndDecrypt]]
+.Region.typeAndDecrypt(text, optModifiers)
+
+Decrypt and enters the given text one character/key after another using keyDown/keyUp.
+The entered text will be masked at the logging. For the deatails of the decryption see decryptSecret(String).
+<p/>
+About the usable Key constants see documentation of Key.
+The function could also type UTF-8 unicode characters, if the OS supports it.
+The text is entered at the current position of the focus.
+
+*Params*
+
+* text `String` - containing characters and/or Key constants
+* optModifiers `String` - (optional) an String with only Key constants.
+
+*Returns*: - this Region or NULL on errors.
+
+[[Region.keyDown]]
+.Region.keyDown(keys)
+
+Press and hold the given keys including modifier keys <br/>
+use the key constants defined in class Key, <br/>
+which only provides a subset of a US-QWERTY PC keyboard layout <br/>
+might be mixed with simple characters<br/>
+use + to concatenate Key constants
+
+*Params*
+
+* keys `String` - valid keys
+
+*Returns*: - this Region or NULL on errors.
+
+[[Region.keyUp]]
+.Region.keyUp(keys)
+
+release the given keys (see Region.keyDown(…)).
+
+*Params*
+
+* keys `String` - valid keys
+
+*Returns*: - this Region or NULL on errors.
+
+[[Region.write]]
+.Region.write(text)
+
+Compact alternative for type() with more options
+
+:hardbreaks:
+- special keys and options are coded as #XN. or #X+ or #X- where X is a reference for a special key and N is an optional repeat factor
+A modifier key as #X. modifies the next following key the trailing . ends the special key, the + (press and hold) or - (release) does the same, but signals press-and-hold or release additionally.
+except #W / #w all special keys are not case-sensitive
+a #wn. inserts a wait of n millisecs or n secs if n less than 60
+a #Wn. sets the type delay for the following keys (must be &gt; 60 and denotes millisecs)
+
+- otherwise taken as normal wait
+*Example:* wait 2 secs then type CMD/CTRL - N then wait 1 sec then type DOWN 3 times
+*Windows/Linux:* write("#w2.#C.n#W1.#d3.")
+*Mac:* write("#w2.#M.n#W1.#D3.")
+for more details about the special key codes and examples consult the sikuliX docs.
+
+:!hardbreaks:
+
+*Params*
+
+* text `String` - a coded text interpreted as a series of key actions (press/hold/release)
+
+*Returns*: - this Region or NULL on errors.
+
+[[Region.deleteChars]]
+.Region.deleteChars(amountOfChars)
+
+delete a amount of chars in a field
+
+*Params*
+
+* amountOfChars `number` - number of chars to delete
+
+*Returns*: - this Region or null on errors
+
+[[Region.mouseWheelDown]]
+.Region.mouseWheelDown(steps)
+
+move the mouse pointer to the given target location and move the
+wheel the given steps down.
+
+*Params*
+
+* steps `number` - the number of steps
+
+
+[[Region.mouseWheelUp]]
+.Region.mouseWheelUp(steps)
+
+move the mouse pointer to the given target location and move the
+wheel the given steps up.
+
+*Params*
+
+* steps `number` - the number of steps
+
+
+[[Region.move]]
+.Region.move(offsetX, offsetY)
+
+Set a offset to a specific Region and returns the new Region object.
+The offset function will move the Region's rectangle x pixels to the right and y pixels down.
+The size of the rectangle will be the same.
+
+*Params*
+
+* offsetX `number` - x-value for the offset action
+* offsetY `number` - y-value for the offset action
+
+*Returns*: - a Region with the new coordinates
+
+[[Region.grow]]
+.Region.grow(range)
+
+create a region enlarged range pixels on each side
+
+*Params*
+
+* range `number` - of pixels
+
+*Returns*: - a new Region
+
+[[Region.grow]]
+.Region.grow(width, height)
+
+create a region with enlarged range pixels
+
+*Params*
+
+* width `number` - in pixels to grow in both directions
+* height `number` - in pixels to grow in both directions
+
+*Returns*: - a new Region
+
+[[Region.above]]
+.Region.above(range)
+
+*Params*
+
+* range `number` - of pixels
+
+*Returns*: - a new Region that is defined above the current region’s top border
+with a height of range number of pixels.
+
+[[Region.below]]
+.Region.below(range)
+
+*Params*
+
+* range `number` - of pixels
+
+*Returns*: - a new Region that is defined below the current region’s bottom border
+with a height of range number of pixels.
+
+[[Region.left]]
+.Region.left(range)
+
+*Params*
+
+* range `number` - of pixels
+
+*Returns*: - a new Region that is defined on the left the current region’s left border
+with a width of range number of pixels.
+
+[[Region.right]]
+.Region.right(range)
+
+*Params*
+
+* range `number` - of pixels
+
+*Returns*: - a new Region that is defined on the right the current region’s right border
+with a width of range number of pixels.
+
+[[Region.setH]]
+.Region.setH(height)
+
+set the height, based form the upper left corner downsides
+
+*Params*
+
+* height `number` - in pixels
+
+
+[[Region.getH]]
+.Region.getH()
+
+*Returns*: - height as int value
+
+[[Region.setW]]
+.Region.setW(width)
+
+set the width, based form the upper left corner to the right
+
+*Params*
+
+* width `number`
+
+
+[[Region.getW]]
+.Region.getW()
+
+*Returns*: - width as int value
+
+[[Region.setX]]
+.Region.setX(x)
+
+set the X coordinate of the upper left corner.
+
+*Params*
+
+* x `number`
+
+
+[[Region.getX]]
+.Region.getX()
+
+*Returns*: - width as int value
+
+[[Region.setY]]
+.Region.setY(y)
+
+set the Y coordinate of the upper left corner.
+
+*Params*
+
+* y `number`
+
+
+[[Region.getY]]
+.Region.getY()
+
+*Returns*: - Y coordinate of the upper left corner
+
+[[Region.highlight]]
+.Region.highlight(seconds)
+
+*Params*
+
+* seconds `number` - highlights this Region for x seconds
+or the default time
+
+
+[[Region.takeScreenshot]]
+.Region.takeScreenshot(filename)
+
+Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
+filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
+
+*Params*
+
+* filename `String` - name of the screenshot, e.g. `region_screenshot`.
+ Default: screenshot
+
+*Returns*: `String` - file path to the created screenshot OR null on errors
+
+[[Region.sleep]]
+.Region.sleep(seconds)
+
+Blocks the current testcase execution for x seconds
+
+*Params*
+
+* seconds `number` - to sleep
+
+*Returns*: - this Region or NULL on errors.
+
+[[Region.extractText]]
+.Region.extractText()
+
+*Returns*: - from this region a extracted Text as String
+
+[[RegionRectangle]]
+===== RegionRectangle
+
+RegionRectangle (extends link:#Region[Region]) - Represents a region specified by the x and y coordinates, width and
+height as a part of the screen.
+
+*Params*
+
+* x `number` - – x position of a rectangle on the screen.
+* y `number` - – y position of a rectangle on the screen.
+* w `number` - – width of a rectangle in pixel.
+* h `number` - – height of a rectangle in pixel.
+* optResumeOnException `Boolean` - (optional) if true, the test execution won't stop on an occurring error.
+Default: false.
+
+*Example*
+[source,js]
+----
+var notepadRegion = new RegionRectangle(0,0,100,100);
+//represents a region which start at x=0, y=o (left upper corner) and have a size of 100px * 100px.
+----
+
+*Members*
+
+* link:#RegionRectangle[RegionRectangle]

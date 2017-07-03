@@ -1,0 +1,28 @@
+
+:imagesdir: ../../images
+
+[[MouseButton]]
+==== MouseButton
+
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/sakuli-api-mouse-button.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+
+MouseButton - representing the possible mouse action button.
+
+The following *MouseButton* values are possible:
+
+`LEFT`, `RIGHT`, `MIDDLE`
+
+*Example*
+Press and release the right mouse button vor 3 seconds on a specified region:
+[source,js]
+----
+var region = new Region().find("your-pattern.png");
+region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
+----
+
+*Members*
+
+* link:#MouseButton[MouseButton]
