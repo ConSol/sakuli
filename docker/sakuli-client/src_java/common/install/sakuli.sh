@@ -21,7 +21,7 @@ for javasuite in "java-selenium-example" "java-example";  do
     mvn test clean -Duser.home=$HOME -Dtest=TriggerDownload -DfailIfNoTests=false -Dsakuli.version=$SAKULI_VERSION
 done
 rm -rf "$SAKULI_TEST_SUITE"
-mv $tmpdir/sakuli-examples-feature-sakuli-se/java-selenium-example "$SAKULI_TEST_SUITE"
+mv $tmpdir/sakuli-examples-feature-sakuli-se/java-example "$SAKULI_TEST_SUITE"
 ls -la "$SAKULI_TEST_SUITE"
 rm -rvf $tmpdir
 
