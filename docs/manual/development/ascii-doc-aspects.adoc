@@ -55,7 +55,7 @@ live-server src/docs-manual/target/generated-docs <2>
 
 Currently there is no fully automated way between the documented Sakuli API in git-link:docs/manual/testdefinition/sakuli-api.md["docs/manual/testdefinition/sakuli-api.md"] and the final git-link:docs/manual/testdefinition/sakuli-api.adoc["docs/manual/testdefinition/sakuli-api.adoc"] .
 
-*Following Steps have to be executed:*
+*The following steps have to be executed:*
 
 1) Generate the `sakuli-api.md` file
 Run the maven markdown generation build:
