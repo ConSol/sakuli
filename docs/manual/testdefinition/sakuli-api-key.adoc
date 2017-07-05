@@ -8,7 +8,7 @@
 :page-path: docs/manual/testdefinition/sakuli-api-key.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-Key - representing some Key constants which can be used in type functions as input text and as modifier keys.
+Key - representing some key constants which can be used in type functions as input text and as modifier keys.
 
 The following *Key* values are possible:
 
@@ -22,14 +22,26 @@ The following *Key* values are possible:
 To enable the key command `ALTGR` for unix systems please bind it to `CTRL + ALT`, for more information
 see http://unix.stackexchange.com/questions/157834/how-to-bind-altgr-to-ctrl-alt[stackexchange.com - how-to-bind-altgr-to-ctrl-alt].
 
-*Example*
-Closing an window over typing the short cut `ALT + F4`:
+*Examples*
+Closing an window by typing the shortcut `ALT + F4`:
 [source,js]
 ----
 env.type(Key.F4, Key.ALT);
 ----
 
+Open the file manager on Windows with `WIN + e`:
+[source,js]
+----
+env.type("e", Key.META)
+----
+
+Type `CTRL + ALT + b` (CTRL + ALT = ALTGR): 
+[source,js]
+----
+env.type("b", Key.ALTGR)
+----
+
+
 *Members*
 
 * link:#Key[Key]
-
