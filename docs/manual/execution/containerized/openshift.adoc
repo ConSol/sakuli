@@ -135,6 +135,9 @@ volumes:
 - gitRepo
 ----
 
+===== Job Config
+Currently OpenShift (Version 3.5) have no different behaviour as Kubernetes itself, so take a look at <<kubernetes-job-config>>.
+
 ===== Other useful commands
 
 ====== Delete specific application or E2E test
