@@ -24,22 +24,26 @@ package org.sakuli.exceptions;
  */
 public class SakuliCipherException extends SakuliException {
 
-    public String interfaceLog;
+    public String cipherLog;
+
+    public SakuliCipherException(String message) {
+        super(message);
+    }
 
     /**
      * @param message exception message
      */
-    public SakuliCipherException(String message, String interfaceLog) {
+    public SakuliCipherException(String message, String cipherLog) {
         super(message);
-        this.interfaceLog = interfaceLog;
+        this.cipherLog = cipherLog;
     }
 
     /**
      * @param e any {@link Throwable}
      */
-    public SakuliCipherException(Throwable e, String interfaceLog) {
+    public SakuliCipherException(Throwable e, String cipherLog) {
         super(e);
-        this.interfaceLog = interfaceLog;
+        this.cipherLog = cipherLog;
     }
 
     /**
@@ -48,14 +52,16 @@ public class SakuliCipherException extends SakuliException {
      * @param mainMessage
      * @param suppressedThrowable
      */
-    public SakuliCipherException(String mainMessage, String interfaceLog, Throwable suppressedThrowable) {
+    public SakuliCipherException(String mainMessage, String cipherLog, Throwable suppressedThrowable) {
         super(mainMessage);
         this.addSuppressed(suppressedThrowable);
-        this.interfaceLog = interfaceLog;
+        this.cipherLog = cipherLog;
     }
+
 
     @Override
     public String getMessage() {
-        return super.getMessage() + "\n==> Interfaces: " + interfaceLog;
+        return (cipherLog != null ? "Cipher LOG: " + cipherLog + "\n => DETAILS: " : "")
+                + super.getMessage();
     }
 }

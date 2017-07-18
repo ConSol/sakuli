@@ -16,12 +16,13 @@
  * limitations under the License.
  */
 
-package org.sakuli.actions.environment;
+package org.sakuli.utils;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.lang.StringUtils;
+import org.sakuli.actions.environment.Environment;
 import org.sakuli.exceptions.SakuliException;
 
 import java.io.ByteArrayOutputStream;

@@ -18,6 +18,8 @@
 
 package org.sakuli.utils;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.datamodel.properties.ForwarderProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +45,15 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
     public static final String GEARMAN = "GEARMAN";
     public static final String INCINGA2 = "ICINGA2";
     public static final String CHECK_MK = "CHECK_MK";
+    public static final String CIPHER_INTERFACE = "CIPHER_INTERFACE";
+    public static final String CIPHER_ENV = "CIPHER_ENV";
+
     private static final Logger logger = LoggerFactory.getLogger(SpringProfilesInitializer.class);
     private ConfigurableApplicationContext ctx;
     @Autowired
     private ForwarderProperties forwarderProperties;
+    @Autowired
+    private CipherProperties cipherProperties;
 
     public void setApplicationContext(ApplicationContext ac) throws BeansException {
         ctx = (ConfigurableApplicationContext) ac;
@@ -55,12 +62,12 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
     public void afterPropertiesSet() throws Exception {
         String[] configuredProfiles = getConfiguredProfiles();
         String[] activeProfiles = ctx.getEnvironment().getActiveProfiles();
-        if (configuredProfiles.length > 0 && activeProfiles.length == 0) {
+        if (!ArrayUtils.isEquals(configuredProfiles, activeProfiles)) {
             logger.info("activate the spring context profiles '{}'", Arrays.toString(configuredProfiles));
             ctx.getEnvironment().setActiveProfiles(configuredProfiles);
             ctx.refresh();
         } else if (configuredProfiles.length == 0) {
-            logger.info("no spring context profile activated", configuredProfiles);
+            logger.info("no spring context profile activated");
         }
     }
 
@@ -77,6 +84,13 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
         }
         if (forwarderProperties.isCheckMKEnabled()) {
             profileNames.add(CHECK_MK);
+        }
+
+        //cipher profiles
+        if (cipherProperties.isEncryptionModeEnv()) {
+            profileNames.add(CIPHER_ENV);
+        } else if (cipherProperties.isEncryptionModeInterface()) {
+            profileNames.add(CIPHER_INTERFACE);
         }
         return profileNames.toArray(new String[profileNames.size()]);
     }

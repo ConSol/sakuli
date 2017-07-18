@@ -20,7 +20,6 @@ package org.sakuli.loader;
 
 import net.sf.sahi.report.Report;
 import net.sf.sahi.rhino.RhinoScriptRunner;
-import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.actions.screenbased.ScreenshotActions;
 import org.sakuli.actions.settings.ScreenBasedSettings;
 import org.sakuli.datamodel.TestCase;
@@ -34,6 +33,7 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.services.cipher.CipherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -101,8 +101,8 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     }
 
     @Override
-    public CipherUtil getCipherUtil() {
-        return baseLoader.getCipherUtil();
+    public CipherService getCipherService() {
+        return baseLoader.getCipherService();
     }
 
     @Override
