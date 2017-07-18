@@ -23,18 +23,26 @@ import org.sakuli.exceptions.SakuliCipherException;
 import org.sakuli.services.cipher.EnvironmentCipher;
 import org.sakuli.services.cipher.NetworkInterfaceCipher;
 import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Properties;
 
+import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+
 /**
- * Helper class to delegate which cipher implementation should be used.
+ * Helper class to delegate which cipher implementation should be used, if the cipher get called from the
+ * {@link org.sakuli.starter.SakuliStarter} directly without Spring context.
  *
  * @author tschneck
  *         Date: 6/28/17
  */
 public class CipherDelegator {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CipherDelegator.class);
+
     /**
      * Delegation class to encrypt a secret without starting the whole Spring context.
      *
@@ -43,6 +51,7 @@ public class CipherDelegator {
      * @throws SakuliCipherException
      */
     public static Map.Entry<String, String> encrypt(String strToEncrypt) throws SakuliCipherException {
+        loadEnvironmentVariables();
         Properties props = new Properties();
         SakuliPropertyPlaceholderConfigurer.assignEncryptionProperties(props);
         CipherProperties cipherProps = CipherProperties.load(props);
@@ -56,6 +65,20 @@ public class CipherDelegator {
                 return new AbstractMap.SimpleEntry<>("interface " + cipher.getInterfaceName(), cipher.encrypt(strToEncrypt));
             default:
                 throw new SakuliCipherException("unexpected error during encryption");
+        }
+    }
+
+    /**
+     * Loads the environment value of {@link CipherProperties#ENCRYPTION_KEY_ENV} if no CLI option value is parsed.
+     */
+    static void loadEnvironmentVariables() {
+        //CLI argument wins against environment var
+        if (isBlank(SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE)) {
+            final String envKey = System.getenv(CipherProperties.ENCRYPTION_KEY_ENV);
+            if (isNotBlank(envKey)) {
+                SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE = envKey;
+                LOGGER.info("use environment var '{}' for encryption", CipherProperties.ENCRYPTION_KEY_ENV);
+            }
         }
     }
 }

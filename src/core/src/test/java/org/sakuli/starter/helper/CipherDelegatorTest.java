@@ -75,4 +75,11 @@ public class CipherDelegatorTest {
         assertEquals(networkInterfaceCipher.decrypt(kv.getValue()), testSecret);
     }
 
+    @Test
+    public void testEnvBasedKeyLoading() throws Exception {
+        SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE = "test-key";
+        CipherDelegator.loadEnvironmentVariables();
+        assertEquals(SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE, "test-key");
+    }
+
 }
