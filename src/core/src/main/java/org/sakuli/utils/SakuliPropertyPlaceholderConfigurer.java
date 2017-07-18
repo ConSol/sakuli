@@ -92,7 +92,7 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         loadSakuliDefaultProperties(props);
         loadSakuliProperties(props);
         loadTestSuiteProperties(props);
-        //TODO TS load ENV properties
+        loadEnvironmentVariablesToProperties(props);
 
         //overwrite if set sahi proxy home
         if (isNotEmpty(SAHI_HOME_VALUE)) {
@@ -123,6 +123,10 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
     protected void loadTestSuiteProperties(Properties props) {
         String testSuitePropFile = Paths.get(TEST_SUITE_FOLDER_VALUE).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER;
         addPropertiesFromFile(props, testSuitePropFile, loadTestSuiteProperties);
+    }
+
+    protected void loadEnvironmentVariablesToProperties(Properties props) {
+        EnvironmentPropertyConfigurer.resolveDashedProperties(props);
     }
 
     @PreDestroy

@@ -187,7 +187,29 @@ public class SakuliPropertyPlaceholderConfigurerTest {
     }
 
     @Test
+    public void testBrowserEnvironmentVariableOnly() throws IOException {
+        final String val = "my-new-browser";
+        doAnswer(a -> ((Properties) a.getArguments()[0]).put(TestSuiteProperties.BROWSER_NAME, val))
+                .when(testling).loadEnvironmentVariablesToProperties(any());
+        Properties props = new Properties();
+        testling.loadProperties(props);
+        assertEquals(props.get(TestSuiteProperties.BROWSER_NAME), val);
+    }
+
+    @Test
     public void testEncryptionEnvironment() throws IOException {
+        final String key = "my-key-val";
+        SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE = key;
+        Properties props = new Properties();
+        testling.loadProperties(props);
+        assertEquals(props.get(CipherProperties.ENCRYPTION_KEY), key);
+        assertEquals(props.get(CipherProperties.ENCRYPTION_MODE), CipherProperties.ENCRYPTION_MODE_ENVIRONMENT);
+    }
+
+    @Test
+    public void testEncryptionEnvironmentVariable() throws IOException {
+        doAnswer(a -> ((Properties) a.getArguments()[0]).put(CipherProperties.ENCRYPTION_KEY, "some-other-key-val"))
+                .when(testling).loadEnvironmentVariablesToProperties(any());
         final String key = "my-key-val";
         SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE = key;
         Properties props = new Properties();
