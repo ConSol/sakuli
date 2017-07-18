@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/ConSol/sakuli.png?label=ready&title=Ready)](https://waffle.io/ConSol/sakuli?utm_source=badge)
 ![sakuli-logo](./docs/pics/sakuli_logo_small.png)
 
 |branch  |build state|docs state| docker images state
