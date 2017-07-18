@@ -246,10 +246,9 @@ public class TypingUtil<A extends Action> {
 
     /*
      *Decrypt a encrypted secret and returns the value at runtime.
-     * The decryption will only work if the encryption and decryption happen on the same physical machine.
+     * The decryption will only work like described at https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sakuli-encryption.adoc .
      * There will be no logging with the decrypted secret during this step.
      * <p/>
-     * To create a encrypted secret see "README.txt".
      *
      * @param secret encrypted secret as {@link String}
      * @return decrypted {@link String}
