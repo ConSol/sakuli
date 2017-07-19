@@ -32,7 +32,7 @@ try {
 
     testCase.endOfStep("Test Sahi landing page", 30);
     appCalc.open();
-    screen.waitForImage("calculator.png", 10);
+    screen.waitForImage("calculator.png", 10).highlight();
 
     env.type("525");
     env.sleep(1);
