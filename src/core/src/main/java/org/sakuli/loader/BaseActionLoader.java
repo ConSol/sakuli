@@ -20,7 +20,6 @@ package org.sakuli.loader;
 
 import net.sf.sahi.report.Report;
 import net.sf.sahi.rhino.RhinoScriptRunner;
-import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
@@ -31,6 +30,7 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.services.cipher.CipherService;
 
 import java.nio.file.Path;
 
@@ -65,7 +65,7 @@ public interface BaseActionLoader {
 
     Report getSahiReport();
 
-    CipherUtil getCipherUtil();
+    CipherService getCipherService();
 
     /**
      * init method to signalise the context that a new {@link TestCase} starts.

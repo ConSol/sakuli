@@ -1,23 +1,114 @@
 
 :imagesdir: ../../../images
 
+[[encryption]]
 ==== Secret De-/Encryption
 [#git-edit-section]
 :page-path: docs/manual/testdefinition/advanced-topics/sakuli-encryption.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-.Interface selection
-
 Neither Sahi nor Sikuli have a way to prevent *sensible data* (passwords, PINs, etc.) from being logged and stored in the script in *clear text*.
 
-That's the reason why Sakuli is able to *encrypt* them on the command line, and to *decrypt* them again on runtime just for the moment when they are needed. There is no (quick) way to decrypt those secrets again on the command line, so this is rather a way to obscure things not everybody should see than high-secure a encryption mechanism.
+That's the reason why Sakuli is able to *encrypt* them on the command line, and to *decrypt* them again on runtime just for the moment when they are needed. There is no (quick) way to decrypt those secrets again on the command line, so this is rather a way to obscure things not everybody should see than high-secure a encryption mechanism. Since version `v1.1.0` Sakuli provides two different possibilities to en-/decrypt secrets, each use the cipher algorithm `AES/CBC/PKCS5Padding`:
+
+NOTE: In this chapter the usage of the Sakuli CLI is defined for Linux `sakuli` but works on Windows `sakuli.exe` in the same way!
+
+[[encryption-environment]]
+.Encryption Mode `environment` (default):
+
+Since version `v1.1.0` Sakuli uses an environment based master-key  mechanism as default way to de-/encrypt secrets.
+
+*1) Create a new Masterkey*
+
+First we have to create a new masterkey:
+
+[source,bash]
+----
+sakuli create masterkey
+=========== Calling Sakuli JAR =====================================================
+
+
+Create a Sakuli encryption master key (AES 128 bit):
+
+ny3bC1ZKuHzg7saT1hRCMQ== <1>
+
+... now add this as environment var 'SAKULI_ENCRYPTION_KEY' or property 'sakuli.encryption.key'
+----
+<1> masterkey
+
+*2) Encrypt a secret*
+
+To encrypt secrets, you can also use the command line. To use the generated masterkey from above, you can ether set the environment variable `SAKULI_ENCRYPTION_KEY` or define the CLI option `-masterkey <secret>`:
+
+[source,bash]
+----
+export SAKULI_ENCRYPTION_KEY=ny3bC1ZKuHzg7saT1hRCMQ== <1>
+sakuli encrypt foo
+=========== Calling Sakuli JAR =====================================================
+
+
+String to Encrypt: foo
+...INFO  [2017-07-18 16:01:28.311] - use environment var 'SAKULI_ENCRYPTION_KEY' for encryption
+
+Encrypted secret with 'environment masterkey': tn9PPXjwgH6VDTIEEWTdY9G2StrYxCrX1tXCueA3HwY=  <3>
+
+... now copy the secret to your testcase!
+----
+[source,bash]
+----
+sakuli encrypt foo -masterkey ny3bC1ZKuHzg7saT1hRCMQ== <2>
+=========== Calling Sakuli JAR =====================================================
+
+
+String to Encrypt: foo 
+...
+Encrypted secret with 'environment masterkey': mLzYiksPjmoqbdivBMDhYglcbnYCzv3iVdpmnmdXbV4=  <3>
+
+... now copy the secret to your testcase!
+----
+<1> masterkey defined by environment variable
+<2> masterkey defined through CLI option
+<3> encrypted secret
+
+The encryption secret can now be used in our test case definition.
+
+
+*3) Decrypt a secret*
+
+For decrypting the secret, just define the masterkey with one of the following options:
+
+* Environment variable `SAKULI_ENCRYPTION_KEY`
+* Sakuli run option `sakuli run <test suite> -masterkey <masterkey>`
+* <<property-loading-mechanism, Sakuli property>> `sakuli.encryption.key`
+
+
+After that Sakuli will automatically decrypt the a secret during runtime of the test cases, by using one of the following methods:
+
+* <<Environment.pasteAndDecrypt>>
+* <<Environment.typeAndDecrypt>>
+* <<Environment.decryptSecret>>
+
+_Example usage in testcase:_
+[source, javascript]
+----
+//testcase.js
+    env.typeAndDecrypt("eKcf2WLQIab6APvi4BKKBiJdP31SK86z/oOJRUAQkdE=");
+----
+
+CAUTION: Due to the fact, that Sakuli doesn't know how you want to provide your secrets like the masterkey, you have to think about yourself what is the best and safest way to provide it!
+
+[[encryption-interface]]
+.Encryption Mode `interface`:
 
 Among other parameters, Sakuli uses the MAC address of a local network interface card as a encryption salt. Hence no virtual adapters can be choosen.
+
+*1) Choosing a NIC*
 
 You can decide whether Sakuli should automatically select an adapter by setting the following <<property-loading-mechanism,properties>>:
 
 [source,properties]
 ----
+sakuli.encrpytion.mode=interface
 sakuli.encryption.interface.autodetect=true
 ----
 
@@ -25,19 +116,28 @@ sakuli.encryption.interface.autodetect=true
 
 [source,properties]
 ----
+sakuli.encrpytion.mode=interface
 sakuli.encryption.interface.autodetect=false
 sakuli.encryption.interface=eth0
 ----
 
+A second possibility is to use Sakuli starter option:
+[source,bash]
+----
+# use autodetect
+sakuli COMMAND ARGUMENT -interface auto
+# use specific interface
+sakuli COMMAND ARGUMENT -interface eth0
+----
 
-.Encrypt a secret
+*2) Encrypt a secret*
 
 To encrypt secrets on the command line, Sakuli uses the MAC address of a NIC on the local machine (Windows/Linux). The following command lets Sakuli decide which NIC will be used:
 
 [source,bash]
 ----
-sakuli encrypt foo
-=========== Calling Sakuli JAR: java -classpath C:\Program Files (x86)\sakuli\sakuli-v0.9.3-SNAPSHOT\libs\jav\sakuli.jar;C:\Program Files (x86)\sakuli\sakuli-v0.9.3-SNAPSHOT\libs\java\* org.sakuli.starter.SakuliStarter --sakuli_home C:\Program Files (x86)\sakuli\sakuli-v0.9.3-SNAPSHOT --encrypt foo ===========
+sakuli encrypt foo -interface auto
+=========== Calling Sakuli JAR =====================================================
 
 String to Encrypt: foo
 ...
@@ -48,9 +148,17 @@ Encrypted secret with interface 'eth3': CKXIAZmO7rSoBVMGgJZPDQ==
 
 Add `-interface eth0` to select eth0 as salt interface. Add `-interface list` to get a list of all available adapters.
 
-.Decrypt a secret
+*3) Decrypt a secret*
 
-To decrypt and use a secret in Sakuli test cases, use one of the following methods:
+To decrypt a secret define the interface encryption mode in your `sakuli.properties` or `testsuite.properties` (see <<property-loading-mechanism>>).
+
+[source,properties]
+----
+sakuli.encrpytion.mode=interface
+sakuli.encryption.interface.autodetect=true
+----
+
+After that Sakuli will automatically decrypt the a secret during runtime of the test cases, by using one of the following methods:
 
 * <<Environment.pasteAndDecrypt>>
 * <<Environment.typeAndDecrypt>>

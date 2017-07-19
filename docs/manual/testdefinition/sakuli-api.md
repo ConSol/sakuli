@@ -522,7 +522,7 @@ The text is entered at the current position of the focus.
 <a name="Environment.decryptSecret"></a>
 ##Environment.decryptSecret(secret)
 Decrypt a encrypted secret and returns the value at runtime.
-The decryption will only work if the encryption and decryption happen on the same physical machine.
+The decryption will only work like described at https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sakuli-encryption.adoc .
 There will be no logging with the decrypted secret during this step.
 <p/>
 To create a encrypted secret see "sakuli-manual.md".
