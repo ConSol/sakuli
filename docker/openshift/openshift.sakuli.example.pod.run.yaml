@@ -40,15 +40,26 @@ objects:
     - name: ${E2E_TEST_NAME}-pod-c1
       image: ${IMAGE}
       imagePullPolicy: Always
+      env:
+        - name: JVM_HEAP_XMX_MAX
+          value: '350'
+        - name: TZ
+          value: 'Europe/Berlin'
+        ### set e.g. debug level
+        #- name: LOG_LEVEL_SAKULI
+        # value: 'DEBUG'
+        ### define browser over env var
+        #- name: TESTSUITE_BROWSER
+        #  value: 'chrome'
       args:
         ### make normal UI startup to connect via: oc rsh <pod-name> bash
         #- --tail-log
-        ### run in chrome
+        ### run in chrome via command line
         # - run
         # - /headless/sakuli/test
         # - -browser
         # - chrome
-        ### set e.g. debug level
+        ### set e.g. debug level via command line
         #- -D
         #- log.level.sakuli=DEBUG
       ### checks that vnc server is up and running
@@ -65,6 +76,10 @@ objects:
           scheme: HTTP
         initialDelaySeconds: 1
         timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 750m
+          memory: 2200Mi
 ### Service -> POD config
 - apiVersion: v1
   kind: Service
