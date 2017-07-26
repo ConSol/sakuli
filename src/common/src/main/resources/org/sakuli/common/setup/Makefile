@@ -4,7 +4,7 @@ endif
 
 all: screenshot_history gearman_proxy grafana config mysql
 
-screenshot_history:
+screenshot_history: config
 	cp ./omd/local/lib/nagios/plugins/sakuli_screenshot_eventhandler.sh $(OMD_ROOT)/local/lib/nagios/plugins/
 	cp ./omd/etc/nagios/conf.d/sakuli_screenshot_eventhandler.cfg $(OMD_ROOT)/etc/core/conf.d/
 	cp ./omd/local/bin/sakuli_screenshot_cleanup.sh $(OMD_ROOT)/local/bin/
@@ -28,7 +28,8 @@ config:
 	mkdir -p $(OMD_ROOT)/local/share/nagios/htdocs/images/logos/
 	cp ./omd/local/share/nagios/htdocs/images/logos/sakuli.png $(OMD_ROOT)/local/share/nagios/htdocs/images/logos/
 	cp ./omd/etc/nagios/conf.d/sakuli_nagios_templates.cfg $(OMD_ROOT)/etc/core/conf.d/
-	omd reload core
+	sed -i 's|\(escape_html_tags=\)1|\10|' $(OMD_ROOT)/etc/core/cgi.cfg
+	omd reload core || true
 
 mysql: config
 	mkdir -p $(OMD_ROOT)/etc/check_mysql_health/
