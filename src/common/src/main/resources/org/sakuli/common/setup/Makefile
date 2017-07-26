@@ -6,8 +6,10 @@ all: screenshot_history gearman_proxy grafana config mysql
 
 screenshot_history: config
 	cp ./omd/local/lib/nagios/plugins/sakuli_screenshot_eventhandler.sh $(OMD_ROOT)/local/lib/nagios/plugins/
+	chmod +x $(OMD_ROOT)/local/lib/nagios/plugins/sakuli_screenshot_eventhandler.sh
 	cp ./omd/etc/nagios/conf.d/sakuli_screenshot_eventhandler.cfg $(OMD_ROOT)/etc/core/conf.d/
 	cp ./omd/local/bin/sakuli_screenshot_cleanup.sh $(OMD_ROOT)/local/bin/
+	chmod +x $(OMD_ROOT)/local/bin/sakuli_screenshot_cleanup.sh
 	cp ./omd/etc/cron.d/sakuli_screenshot_cleanup $(OMD_ROOT)/etc/cron.d/
 	cp ./omd/etc/thruk/ssi/*.ssi $(OMD_ROOT)/etc/thruk/ssi/
 	cp ./omd/etc/thruk/thruk_local.d/sakuli_action_menu.conf $(OMD_ROOT)/etc/thruk/thruk_local.d/
