@@ -1,0 +1,140 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: sakuli-e2e-cron-job
+metadata:
+  annotations:
+    description: Sakuli End-2-End testing client template (run as cron job)
+    iconClass: icon-beaker
+    tags: consol, sakuli, e2e-testing, e2e-monitoring
+    version: 1.1.0
+  creationTimestamp: null
+  name: sakuli-e2e-cron-job
+### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
+parameters:
+- description: The name for the E2E test suite.
+  name: E2E_TEST_NAME
+  required: true
+  value: sakuli-my-example
+- description: 'Custom hostname for http service route.  Leave blank for default hostname, e.g.: <E2E_TEST_NAME-name>-<project>.<default-domain-suffix>'
+  name: HOSTNAME_HTTP
+- description: 'Sakuli End-2-End image, see `docker search sakuli`'
+  name: IMAGE
+  required: true
+  value: consol/sakuli-ubuntu-xfce
+- description: 'cron expression for scheduling the sakuli jobs'
+  name: CRON_EXPR
+  required: true
+  value: '*/5 * * * *'
+### Configuration of OpenShift objects
+objects:
+### Cron Job config (run on scheduled times)
+- apiVersion: batch/v2alpha1
+  kind: CronJob
+  metadata:
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}-job
+  spec:
+    schedule: '${CRON_EXPR}'
+    concurrencyPolicy: Forbid
+    ### Limits not supported now :( will come in 3.6 maybe
+    successfulJobsHistoryLimit: 2
+    failedJobsHistoryLimit: 5
+    jobTemplate:
+      spec:
+        template:
+          metadata:
+            labels:
+              application: ${E2E_TEST_NAME}
+              job: ${E2E_TEST_NAME}-job
+            name: ${E2E_TEST_NAME}-job
+          spec:
+            ### ensure that the pod won't start again
+            restartPolicy: Never
+            dnsPolicy: ClusterFirst
+            terminationGracePeriodSeconds: 5
+            containers:
+            - name: ${E2E_TEST_NAME}-pod-c1
+              image: ${IMAGE}
+              imagePullPolicy: Always
+              env:
+                - name: KUBERNETES_RUN_MODE
+                  value: 'job'
+                - name: JVM_HEAP_XMX_MAX
+                  value: '350'
+                - name: TZ
+                  value: 'Europe/Berlin'
+                ### set e.g. debug level
+                #- name: LOG_LEVEL_SAKULI
+                # value: 'DEBUG'
+                ### define browser over env var
+                #- name: TESTSUITE_BROWSER
+                #  value: 'chrome'
+              args:
+                ### make normal UI startup to connect via: oc rsh <pod-name> bash
+                #- --tail-log
+                ### run in chrome via command line
+                # - run
+                # - /headless/sakuli/test
+                # - -browser
+                # - chrome
+                ### set e.g. debug level via command line
+                #- -D
+                #- log.level.sakuli=DEBUG
+              ### checks that vnc server is up and running
+              livenessProbe:
+                tcpSocket:
+                  port: 5901
+                initialDelaySeconds: 1
+                timeoutSeconds: 1
+              ### checks if http-vnc connection is working
+              readinessProbe:
+                httpGet:
+                  path: /
+                  port: 6901
+                  scheme: HTTP
+                initialDelaySeconds: 1
+                timeoutSeconds: 1
+              ### specifiy resource limits
+              resources:
+                limits:
+                  cpu: 750m
+                  memory: 2200Mi
+### Service -> POD config
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      description: Sakuli client vnc and http port
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}-ser
+  spec:
+    ports:
+    - name: http-port-tcp
+      protocol: TCP
+      port: 6901
+      targetPort: 6901
+    - name: vnc-port-tcp
+      protocol: TCP
+      port: 5901
+      targetPort: 5901
+    selector:
+      job: ${E2E_TEST_NAME}-job
+### Route -> Service config
+- apiVersion: v1
+  id: ${E2E_TEST_NAME}-http
+  kind: Route
+  metadata:
+    annotations:
+      description: Route for vnc's http service.
+    labels:
+      application: ${E2E_TEST_NAME}
+    name: ${E2E_TEST_NAME}-http
+  spec:
+    host: ${HOSTNAME_HTTP}
+    to:
+      name: ${E2E_TEST_NAME}-ser
+    port:
+      targetPort: http-port-tcp
