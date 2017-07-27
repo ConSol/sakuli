@@ -38,7 +38,7 @@ ny3bC1ZKuHzg7saT1hRCMQ== <1>
 
 *2) Encrypt a secret*
 
-To encrypt secrets, you can also use the command line. To use the generated masterkey from above, you can ether set the environment variable `SAKULI_ENCRYPTION_KEY` or define the CLI option `-masterkey <secret>`:
+To encrypt secrets, you can also use the command line. To use the generated masterkey from above, you can either set the environment variable `SAKULI_ENCRYPTION_KEY`...
 
 [source,bash]
 ----
@@ -50,19 +50,24 @@ sakuli encrypt foo
 String to Encrypt: foo
 ...INFO  [2017-07-18 16:01:28.311] - use environment var 'SAKULI_ENCRYPTION_KEY' for encryption
 
-Encrypted secret with 'environment masterkey': tn9PPXjwgH6VDTIEEWTdY9G2StrYxCrX1tXCueA3HwY=  <3>
+Encrypted secret with 'environment masterkey':
+tn9PPXjwgH6VDTIEEWTdY9G2StrYxCrX1tXCueA3HwY=  <3>
 
 ... now copy the secret to your testcase!
 ----
+
+or define the CLI option `-masterkey <secret>`:
+
 [source,bash]
 ----
 sakuli encrypt foo -masterkey ny3bC1ZKuHzg7saT1hRCMQ== <2>
 =========== Calling Sakuli JAR =====================================================
 
 
-String to Encrypt: foo 
+String to Encrypt: foo
 ...
-Encrypted secret with 'environment masterkey': mLzYiksPjmoqbdivBMDhYglcbnYCzv3iVdpmnmdXbV4=  <3>
+Encrypted secret with 'environment masterkey':
+mLzYiksPjmoqbdivBMDhYglcbnYCzv3iVdpmnmdXbV4=  <3>
 
 ... now copy the secret to your testcase!
 ----
@@ -82,7 +87,7 @@ For decrypting the secret, just define the masterkey with one of the following o
 * <<property-loading-mechanism, Sakuli property>> `sakuli.encryption.key`
 
 
-After that Sakuli will automatically decrypt the a secret during runtime of the test cases, by using one of the following methods:
+After that Sakuli will automatically decrypt secrets during runtime of the test cases when using one of the following methods:
 
 * <<Environment.pasteAndDecrypt>>
 * <<Environment.typeAndDecrypt>>
@@ -95,7 +100,7 @@ _Example usage in testcase:_
     env.typeAndDecrypt("eKcf2WLQIab6APvi4BKKBiJdP31SK86z/oOJRUAQkdE=");
 ----
 
-CAUTION: Due to the fact, that Sakuli doesn't know how you want to provide your secrets like the masterkey, you have to think about yourself what is the best and safest way to provide it!
+CAUTION: Both the environment variable and the property file containing the master key must be protected against other users. (User environment instead of system environment variable / set proper file permissions)
 
 [[encryption-interface]]
 .Encryption Mode `interface`:
@@ -158,7 +163,7 @@ sakuli.encrpytion.mode=interface
 sakuli.encryption.interface.autodetect=true
 ----
 
-After that Sakuli will automatically decrypt the a secret during runtime of the test cases, by using one of the following methods:
+After that Sakuli will automatically decrypt secrets during runtime of the test cases when using one of the following methods:
 
 * <<Environment.pasteAndDecrypt>>
 * <<Environment.typeAndDecrypt>>
