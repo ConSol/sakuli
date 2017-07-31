@@ -51,6 +51,7 @@ String to Encrypt: foo
 ...INFO  [2017-07-18 16:01:28.311] - use environment var 'SAKULI_ENCRYPTION_KEY' for encryption
 
 Encrypted secret with 'environment masterkey':
+
 tn9PPXjwgH6VDTIEEWTdY9G2StrYxCrX1tXCueA3HwY=  <3>
 
 ... now copy the secret to your testcase!
@@ -67,6 +68,7 @@ sakuli encrypt foo -masterkey ny3bC1ZKuHzg7saT1hRCMQ== <2>
 String to Encrypt: foo
 ...
 Encrypted secret with 'environment masterkey':
+
 mLzYiksPjmoqbdivBMDhYglcbnYCzv3iVdpmnmdXbV4=  <3>
 
 ... now copy the secret to your testcase!
