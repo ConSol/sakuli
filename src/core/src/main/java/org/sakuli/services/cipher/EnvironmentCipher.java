@@ -18,6 +18,7 @@
 
 package org.sakuli.services.cipher;
 
+import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.exceptions.SakuliCipherException;
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ import javax.crypto.SecretKey;
 
 /**
  * @author tschneck
- *         Date: 6/28/17
+ * Date: 6/28/17
  */
 @ProfileCipherEnv
 @Component
@@ -50,6 +51,9 @@ public class EnvironmentCipher extends AbstractCipher {
 
     @Override
     protected SecretKey getKey() throws SakuliCipherException {
+        if (StringUtils.isEmpty(cipherProperties.getEncryptionKey())) {
+            throw new SakuliCipherException("No masterkey for cipher found. Please specify an masterkey, see 'sakuli[.exe] -examples'");
+        }
         LOGGER.debug("read master key from environment: {}", cipherProperties.getEncryptionKey());
         return AesKeyHelper.readBase64Keay(cipherProperties.getEncryptionKey());
     }

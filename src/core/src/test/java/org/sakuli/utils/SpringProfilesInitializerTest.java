@@ -27,7 +27,7 @@ import org.sakuli.datamodel.properties.ForwarderProperties;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.ResultService;
 import org.sakuli.services.cipher.CipherService;
-import org.sakuli.services.cipher.NetworkInterfaceCipher;
+import org.sakuli.services.cipher.EnvironmentCipher;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -88,7 +88,8 @@ public class SpringProfilesInitializerTest {
 
         final Map<String, CipherService> resultCipher = BeanLoader.loadMultipleBeans(CipherService.class);
         assertEquals(resultCipher.size(), 1);
-        assertEquals(resultCipher.values().iterator().next().getClass(), NetworkInterfaceCipher.class);
+        //default cipher
+        assertEquals(resultCipher.values().iterator().next().getClass(), EnvironmentCipher.class);
 
     }
 

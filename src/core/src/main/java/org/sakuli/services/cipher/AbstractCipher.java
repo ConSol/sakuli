@@ -28,7 +28,7 @@ import javax.crypto.SecretKey;
  * Abstract class for the supported ciphers modules
  *
  * @author tschneck
- *         Date: 6/28/17
+ * Date: 6/28/17
  */
 public abstract class AbstractCipher implements CipherService {
 
@@ -49,6 +49,8 @@ public abstract class AbstractCipher implements CipherService {
             final String encrypted = AesCbcCipher.encryptString(strToEncrypt, getKey());
             LOGGER.debug("encrypted secret: {}", encrypted);
             return encrypted;
+        } catch (SakuliCipherException e) {
+            throw e;
         } catch (Exception e) {
             throw new SakuliCipherException(e, "Error during encryption of secret, by cipher: " + getCipherInfoOutput());
         }

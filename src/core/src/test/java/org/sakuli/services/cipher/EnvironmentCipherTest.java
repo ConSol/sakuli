@@ -106,7 +106,7 @@ public class EnvironmentCipherTest {
         } catch (SakuliCipherException e) {
             Assert.assertNotNull(e.cipherLog);
             Assert.assertEquals(e.getCause().getClass(), SakuliCipherException.class);
-            assertContains(e.getMessage(), "master key is NULL");
+            assertContains(e.getMessage(), "Please specify an masterkey");
             throw e;
         }
     }
@@ -117,7 +117,7 @@ public class EnvironmentCipherTest {
         try {
             testling.decrypt("irrelevant");
         } catch (SakuliCipherException e) {
-            assertContains(e.getMessage(), "Empty key");
+            assertContains(e.getMessage(), "Please specify an masterkey");
             throw e;
         }
     }

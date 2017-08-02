@@ -42,7 +42,7 @@ public class CipherProperties extends AbstractProperties {
     public static final String ENCRYPTION_MODE_INTERFACE = "interface";
 
     //defaults
-    protected static final String ENCRYPTION_MODE_DEFAULT = ENCRYPTION_MODE_INTERFACE;
+    protected static final String ENCRYPTION_MODE_DEFAULT = ENCRYPTION_MODE_ENVIRONMENT;
     protected static final String ENCRYPTION_KEY_DEFAULT = "null";
     protected static final String ENCRYPTION_INTERFACE_DEFAULT = "null";
     protected static final String ENCRYPTION_INTERFACE_AUTODETECT_DEFAULT = "true";
@@ -58,9 +58,9 @@ public class CipherProperties extends AbstractProperties {
 
     public static CipherProperties load(Properties props) {
         CipherProperties result = new CipherProperties();
-        result.setEncryptionInterface(props.getProperty(ENCRYPTION_INTERFACE, ENCRYPTION_INTERFACE_DEFAULT));
+        result.setEncryptionInterface(props.getProperty(ENCRYPTION_INTERFACE, null));
         result.setEncryptionInterfaceAutodetect(Boolean.valueOf(props.getProperty(ENCRYPTION_INTERFACE_AUTODETECT, ENCRYPTION_INTERFACE_AUTODETECT_DEFAULT)));
-        result.setEncryptionKey(props.getProperty(ENCRYPTION_KEY, ENCRYPTION_KEY_DEFAULT));
+        result.setEncryptionKey(props.getProperty(ENCRYPTION_KEY, null));
         result.setEncryptionMode(props.getProperty(ENCRYPTION_MODE, ENCRYPTION_MODE_DEFAULT));
         return result;
     }
