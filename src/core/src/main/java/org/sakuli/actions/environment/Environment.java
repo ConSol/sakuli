@@ -38,10 +38,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
+import static org.sakuli.actions.screenbased.RegionImpl.resolveTakeScreenshotPath;
 
 /**
  * This is a Singeton because the Function should be stateless
@@ -136,28 +135,22 @@ public class Environment implements Action {
     }
 
     /**
-     * Takes a screenshot of the current screen and saves it to the overgiven path. If there ist just a file name, the
-     * screenshot will be saved in your testsuite log folder.
+     *      * TODO TS update javascript and API docu
+     *      * TODO TS add method to API with takeScreenshotWithTimestamp
+     * Takes a screenshot of the current screen and saves it to the assigned path. If there ist just a file name, the
+     * screenshot will be saved in your current testcase folder.
+     * Supported formats: `jpg` and `png`
      *
-     * @param pathName "pathname/filname.format" or just "filename.format"<br> for example "test.png".
+     * @param filename "pathname/filename.format" or just "filename.format"<br> for example "test.png".
      */
     @LogToResult(message = "take a screenshot from the current screen and save it to the file system", logClassInstance = false)
-    public String takeScreenshot(final String pathName) {
-        Path folderPath;
-        String message;
-        if (pathName.contains(File.separator)) {
-            folderPath = Paths.get(pathName.substring(0, pathName.lastIndexOf(File.separator)));
-            message = pathName.substring(pathName.lastIndexOf(File.separator) + 1, pathName.lastIndexOf("."));
-        } else {
-            folderPath = loader.getActionProperties().getScreenShotFolder();
-            message = pathName.substring(0, pathName.lastIndexOf("."));
-        }
-
+    public String takeScreenshot(final String filename) {
         try {
-            loader.getScreen().capture();
-            return loader.getScreenshotActions().takeScreenshot(message, folderPath, pathName.substring(pathName.lastIndexOf(".") + 1)).toFile().getAbsolutePath();
+            return getLoader().getScreenshotActions().takeScreenshot(
+                    resolveTakeScreenshotPath(filename, getLoader()))
+                    .toString();
         } catch (IOException e) {
-            loader.getExceptionHandler().handleException("Can't create Screenshot for path '" + pathName + "': " + e.getMessage(), resumeOnException);
+            loader.getExceptionHandler().handleException("Can't create Screenshot for path '" + filename + "': " + e.getMessage(), resumeOnException);
         }
         return null;
     }

@@ -29,9 +29,12 @@ import org.sikuli.script.Screen;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import static org.sakuli.actions.screenbased.RegionImpl.resolveTakeScreenshotPath;
+
 /**
  * @author Tobias Schneck
  */
+@SuppressWarnings("UnusedReturnValue")
 public class Region implements Action {
 
     private RegionImpl regionImpl;
@@ -553,11 +556,9 @@ public class Region implements Action {
      */
     @LogToResult
     public Path takeScreenshot(String filename) {
-        Path filePath = RegionImpl.resolveTakeScreenshotFolder(filename, getLoader());
         try {
             return getLoader().getScreenshotActions().takeScreenshot(
-                    filePath.getFileName().toString(),
-                    filePath.getParent(),
+                    resolveTakeScreenshotPath(filename, getLoader()),
                     regionImpl.getRect());
         } catch (IOException e) {
             getLoader().getExceptionHandler().handleException(e);

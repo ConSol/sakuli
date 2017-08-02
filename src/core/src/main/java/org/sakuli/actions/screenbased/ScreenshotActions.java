@@ -18,10 +18,10 @@
 
 package org.sakuli.actions.screenbased;
 
+import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.Screen;
 import org.sakuli.datamodel.properties.ActionProperties;
-import org.sikuli.script.ScreenImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,29 +30,97 @@ import org.springframework.stereotype.Component;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 
 @Component
 public class ScreenshotActions {
     private static final int MAX_FILENAME_LENGTH = 50;
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final float autohighlightSeconds;
-
-    private String screenShotFormat;
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ScreenshotActions.class);
+    private final static List<String> allowedScreenshotFormats = Collections.unmodifiableList(Arrays.asList("jpg", "png"));
+    private String defaultScreenShotFormat;
     private Screen screen;
 
     @Autowired
     public ScreenshotActions(Screen screen, ActionProperties props) {
         this.screen = screen;
-        screenShotFormat = props.getScreenShotFormat();
-        autohighlightSeconds = props.getDefaultHighlightSeconds();
+        defaultScreenShotFormat = props.getScreenShotFormat();
+    }
+
+    /**
+     * Transfers a {@link BufferedImage} to an picture and saves it
+     *
+     * @param message          Prefixed filename of the picture (timestamp will be added)
+     * @param folderPath       Folder of the place, where the picture should be stored
+     * @param screenShotFormat
+     * @return {@link java.nio.file.Path} ot the screenshot.
+     * @throws java.io.IOException
+     */
+    static Path createPictureFromBufferedImage(String message, Path folderPath, String screenShotFormat, BufferedImage bufferedImage) throws IOException {
+        LOGGER.info("create screen shot for error \"" + message + "\"");
+        //generate a valid file name
+        String fileName = TestSuite.GUID_DATE_FORMATE.format(new Date())
+                + "_"
+                + replaceSpecialCharacters(message)
+                + "." + screenShotFormat;
+        if (fileName.length() > MAX_FILENAME_LENGTH) {
+            fileName = fileName.substring(0, MAX_FILENAME_LENGTH) + "." + screenShotFormat;
+        }
+
+        //create file
+        Path pictureFile = folderPath.resolve(fileName);
+        return createPictureFromBufferedImage(pictureFile, screenShotFormat, bufferedImage);
+    }
+
+    /**
+     * Transfers a {@link BufferedImage} to an picture and saves it
+     *
+     * @param pictureFile      Path to the final image
+     * @param screenShotFormat
+     * @return {@link java.nio.file.Path} ot the screenshot.
+     * @throws java.io.IOException
+     */
+    static Path createPictureFromBufferedImage(Path pictureFile, String screenShotFormat, BufferedImage bufferedImage) throws IOException {
+        Path absPath = pictureFile.normalize().toAbsolutePath();
+        //check Folder
+        if (!Files.exists(absPath.getParent())) {
+            Files.createDirectory(absPath.getParent());
+        }
+
+        if (Files.exists(absPath)) {
+            LOGGER.info("overwrite screenshot '{}'", absPath);
+            Files.delete(absPath);
+        }
+
+        Files.createFile(pictureFile);
+        OutputStream outputStream = Files.newOutputStream(pictureFile);
+
+        if (!allowedScreenshotFormats.contains(screenShotFormat)) {
+            throw new IOException("Format '" + screenShotFormat + "' is not supported! Use " + allowedScreenshotFormats.toString());
+        }
+        //write image
+        ImageIO.write(bufferedImage, screenShotFormat, outputStream);
+        LOGGER.info("screen shot saved to file \"" + pictureFile.toFile().getAbsolutePath() + "\"");
+        return pictureFile;
+    }
+
+    private static String replaceSpecialCharacters(String string) {
+        return string.replaceAll("[^a-zA-Z0-9]", "_").replaceAll("_+", "_");
+    }
+
+    /**
+     * serrated method to generate the buffered image, to mock the screen usage in tests
+     */
+    BufferedImage createBufferedImage(Rectangle rectangle) {
+        return rectangle == null ? screen.capture().getImage() : screen.capture(rectangle).getImage();
     }
 
     /**
@@ -63,22 +131,8 @@ public class ScreenshotActions {
      * @return {@link java.nio.file.Path} ot the screenshot.
      * @throws IOException
      */
-    public Path takeScreenshot(String message, Path folderPath) throws IOException {
-        return createPictureFromBufferedImage(message, folderPath, screen.capture().getImage());
-    }
-
-    /**
-     * Takes a screenshot of the assigned area and save in the given format;
-     *
-     * @param message    Filename of the picture
-     * @param folderPath Folder of the place, where the picture should be stored
-     * @param rectangle  if not null, the screenshot only shows the defined rectangle
-     * @return {@link java.nio.file.Path} ot the screenshot.
-     * @throws IOException
-     */
-    public Path takeScreenshot(String message, Path folderPath, Rectangle rectangle) throws IOException {
-        ScreenImage screenImage = rectangle == null ? screen.capture() : screen.capture(rectangle);
-        return createPictureFromBufferedImage(message, folderPath, screenImage.getImage());
+    public Path takeScreenshotWithTimestamp(String message, Path folderPath) throws IOException {
+        return takeScreenshotWithTimestamp(message, folderPath, null);
     }
 
     /**
@@ -90,52 +144,47 @@ public class ScreenshotActions {
      * @return
      * @throws IOException
      */
-    public Path takeScreenshot(String message, Path folderPath, String format) throws IOException {
-        String standardFormat = screenShotFormat;
-        screenShotFormat = format;
-        Path pic = takeScreenshot(message, folderPath);
-        screenShotFormat = standardFormat;
-        return pic;
+    public Path takeScreenshotWithTimestamp(String message, Path folderPath, String format) throws IOException {
+        return createPictureFromBufferedImage(
+                message,
+                folderPath,
+                StringUtils.isEmpty(format) ? this.defaultScreenShotFormat : format,
+                createBufferedImage(null));
     }
 
     /**
-     * Transfers a {@link BufferedImage} to an picture and saves it
+     * Takes a screenshot of the hole screen area and save in the given format;
      *
-     * @param message    Filename of the picture
-     * @param folderPath Folder of the place, where the picture should be stored
+     * @param picturePath Path to the final image
      * @return {@link java.nio.file.Path} ot the screenshot.
-     * @throws java.io.IOException
+     * @throws IOException
      */
-    public Path createPictureFromBufferedImage(String message, Path folderPath, BufferedImage bufferedImage) throws IOException {
-        logger.info("create screen shot for error \"" + message + "\"");
-        //check Folder
-        if (!Files.exists(folderPath)) {
-            Files.createDirectory(folderPath);
-        }
-
-        //generate a valid file name
-        String fileName = TestSuite.GUID_DATE_FORMATE.format(new Date())
-                + "_"
-                + replaceSpecialCharacters(message)
-                + "." + screenShotFormat;
-        if (fileName.length() > MAX_FILENAME_LENGTH) {
-            fileName = fileName.substring(0, MAX_FILENAME_LENGTH) + "." + screenShotFormat;
-        }
-
-        //create file
-        Path pictureFile = Paths.get(URI.create(folderPath.toUri() + fileName));
-        Files.createFile(pictureFile);
-        OutputStream outputStream = Files.newOutputStream(pictureFile);
-
-        //write image
-        ImageIO.write(bufferedImage, screenShotFormat, outputStream);
-        logger.info("screen shot saved to file \""
-                + pictureFile.toFile().getAbsolutePath() + "\"");
-        return pictureFile;
+    public Path takeScreenshot(Path picturePath) throws IOException {
+        return takeScreenshot(picturePath, null);
     }
 
-    private String replaceSpecialCharacters(String string) {
-        return string.replaceAll("[^a-zA-Z0-9]", "_").replaceAll("_+", "_");
+    /**
+     * Takes a screenshot of the assigned area and save in the given format;
+     *
+     * @param picturePath Path to the final image
+     * @param rectangle   if not null, the screenshot only shows the defined rectangle
+     * @return {@link java.nio.file.Path} ot the screenshot.
+     * @throws IOException
+     */
+    public Path takeScreenshot(Path picturePath, Rectangle rectangle) throws IOException {
+        if (!Files.isDirectory(picturePath)) {
+            String filename = picturePath.getFileName().toString();
+            String format = defaultScreenShotFormat;
+            if (filename.contains(".")) {
+                format = filename.substring(filename.lastIndexOf(".") + 1);
+            } else {
+                //add default screenshot format
+                picturePath = picturePath.getParent().resolve(filename + "." + format);
+            }
+            return createPictureFromBufferedImage(picturePath, format, createBufferedImage(rectangle));
+        }
+        throw new IOException("Path to a file in format [folder-path]" + File.separator + "screenshotname[.png|jpg] expected!");
+
     }
 
 }

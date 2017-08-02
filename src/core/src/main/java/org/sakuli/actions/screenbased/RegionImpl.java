@@ -78,15 +78,15 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         return null;
     }
 
-    static Path resolveTakeScreenshotFolder(String filename, BaseActionLoader loader) {
+    public static Path resolveTakeScreenshotPath(String filename, BaseActionLoader loader) {
         Path path = Paths.get(filename);
         if (path.isAbsolute()) {
             return path;
         }
         TestCase currentTestCase = loader.getCurrentTestCase();
-        Path folderPath = currentTestCase != null ? currentTestCase.getTcFile() : null;
+        Path folderPath = currentTestCase != null ? currentTestCase.getTcFile().getParent() : null;
         if (folderPath == null || !Files.exists(folderPath)) {
-            LOGGER.warn("The test case folder could be found => Fallback: Use test suite folder!");
+            LOGGER.warn("The test case folder could not be found => Fallback: Use test suite folder!");
             folderPath = loader.getTestSuite().getTestSuiteFolder();
         }
         return folderPath.resolve(filename);

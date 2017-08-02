@@ -54,8 +54,8 @@ public class RegionImplTest {
         Path examplePath = Paths.get(BaseTest.TEST_FOLDER_PATH + File.separator + "case" + File.separator + "tc.js");
         when(tc.getTcFile()).thenReturn(examplePath);
         when(loader.getCurrentTestCase()).thenReturn(tc);
-        Path result = RegionImpl.resolveTakeScreenshotFolder("test", loader);
-        assertEquals(result.toString(), examplePath.toString() + File.separator + "test");
+        Path result = RegionImpl.resolveTakeScreenshotPath("screenshot.png", loader);
+        assertEquals(result.toString(), BaseTest.TEST_FOLDER_PATH + File.separator + "case" + File.separator + "screenshot.png");
         verify(loader, never()).getTestSuite();
         verify(loader).getCurrentTestCase();
     }
@@ -63,14 +63,14 @@ public class RegionImplTest {
     @Test
     public void testResolveTakeScreenshotFolderFallback() throws Exception {
         TestCase tc = mock(TestCase.class);
-        Path examplePath = Paths.get(BaseTest.TEST_FOLDER_PATH + File.separator + "NO_tc.js");
+        Path examplePath = Paths.get(BaseTest.TEST_FOLDER_PATH + File.separator + "NO_FOLDER" + File.separator + "tc.js");
         when(tc.getTcFile()).thenReturn(examplePath);
         when(loader.getCurrentTestCase()).thenReturn(tc);
         TestSuite ts = mock(TestSuite.class);
         when(ts.getTestSuiteFolder()).thenReturn(Paths.get(BaseTest.TEST_FOLDER_PATH));
         when(loader.getTestSuite()).thenReturn(ts);
 
-        Path result = RegionImpl.resolveTakeScreenshotFolder("test", loader);
+        Path result = RegionImpl.resolveTakeScreenshotPath("test", loader);
         assertEquals(result.toString(), Paths.get(BaseTest.TEST_FOLDER_PATH) + File.separator + "test");
         verify(loader).getTestSuite();
         verify(loader).getCurrentTestCase();
@@ -79,7 +79,7 @@ public class RegionImplTest {
     @Test
     public void testResolveTakeScreenshotFolderAbsolutPath() throws Exception {
         String filename = Settings.isWindows() ? "C:\\test" : "/home/test";
-        Path result = RegionImpl.resolveTakeScreenshotFolder(filename, loader);
+        Path result = RegionImpl.resolveTakeScreenshotPath(filename, loader);
         assertEquals(result.toString(), filename);
         verify(loader, never()).getTestSuite();
         verify(loader, never()).getCurrentTestCase();
