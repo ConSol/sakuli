@@ -144,13 +144,13 @@ public class SakuliStarter {
                     AesKeyHelper.printRandomBase64Key();
                     System.exit(0);
                 } else {
-                    System.err.println("create object '" + strCreate + "' not supported - choose a coorect value!");
+                    System.err.println("create object '" + strCreate + "' not supported - choose a correct value!");
                     System.exit(-1);
                 }
             } else if (cmd.hasOption(encrypt.getLongOpt()) || cmd.hasOption(encrypt.getOpt())) {
-                System.out.printf("\nString to Encrypt: %s \n...", strToEncrypt);
+                System.out.printf("%nString to Encrypt: %s %n...", strToEncrypt);
                 final Entry<String, String> secret = CipherDelegator.encrypt(strToEncrypt);
-                System.out.printf("\nEncrypted secret with '%s': %s", secret.getKey(), secret.getValue());
+                System.out.printf("%nEncrypted secret with '%s':%n%n%s", secret.getKey(), secret.getValue());
                 System.out.println("\n\n... now copy the secret to your testcase!");
                 System.exit(0);
             } else {
