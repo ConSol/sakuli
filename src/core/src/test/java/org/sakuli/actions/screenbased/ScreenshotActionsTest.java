@@ -60,7 +60,7 @@ public class ScreenshotActionsTest {
     @BeforeMethod
     public void setUp() throws Exception {
         props = mock(ActionProperties.class);
-        when(props.getScreenShotFormat()).thenReturn("png");
+        when(props.getScreenshotformat()).thenReturn("png");
         MockitoAnnotations.initMocks(this);
         BufferedImage bufferedImage = ImageIO.read(Paths.get(getResource("buffered-image.png", this.getClass())).toFile());
         doReturn(bufferedImage).when(testling).createBufferedImage(any());

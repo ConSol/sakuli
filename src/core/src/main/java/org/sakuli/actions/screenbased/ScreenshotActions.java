@@ -46,13 +46,13 @@ public class ScreenshotActions {
     private static final int MAX_FILENAME_LENGTH = 50;
     protected static final Logger LOGGER = LoggerFactory.getLogger(ScreenshotActions.class);
     private final static List<String> allowedScreenshotFormats = Collections.unmodifiableList(Arrays.asList("jpg", "png"));
-    private String defaultScreenShotFormat;
+    private String defaultScreenshotFormat;
     private Screen screen;
 
     @Autowired
     public ScreenshotActions(Screen screen, ActionProperties props) {
         this.screen = screen;
-        defaultScreenShotFormat = props.getScreenShotFormat();
+        defaultScreenshotFormat = props.getScreenshotformat();
     }
 
     /**
@@ -84,11 +84,11 @@ public class ScreenshotActions {
      * Transfers a {@link BufferedImage} to an picture and saves it
      *
      * @param pictureFile      Path to the final image
-     * @param screenShotFormat
+     * @param screenshotFormat
      * @return {@link java.nio.file.Path} ot the screenshot.
      * @throws java.io.IOException
      */
-    static Path createPictureFromBufferedImage(Path pictureFile, String screenShotFormat, BufferedImage bufferedImage) throws IOException {
+    static Path createPictureFromBufferedImage(Path pictureFile, String screenshotFormat, BufferedImage bufferedImage) throws IOException {
         Path absPath = pictureFile.normalize().toAbsolutePath();
         //check Folder
         if (!Files.exists(absPath.getParent())) {
@@ -103,11 +103,11 @@ public class ScreenshotActions {
         Files.createFile(pictureFile);
         OutputStream outputStream = Files.newOutputStream(pictureFile);
 
-        if (!allowedScreenshotFormats.contains(screenShotFormat)) {
-            throw new IOException("Format '" + screenShotFormat + "' is not supported! Use " + allowedScreenshotFormats.toString());
+        if (!allowedScreenshotFormats.contains(screenshotFormat)) {
+            throw new IOException("Format '" + screenshotFormat + "' is not supported! Use " + allowedScreenshotFormats.toString());
         }
         //write image
-        ImageIO.write(bufferedImage, screenShotFormat, outputStream);
+        ImageIO.write(bufferedImage, screenshotFormat, outputStream);
         LOGGER.info("screen shot saved to file \"" + pictureFile.toFile().getAbsolutePath() + "\"");
         return pictureFile;
     }
@@ -148,7 +148,7 @@ public class ScreenshotActions {
         return createPictureFromBufferedImage(
                 message,
                 folderPath,
-                StringUtils.isEmpty(format) ? this.defaultScreenShotFormat : format,
+                StringUtils.isEmpty(format) ? this.defaultScreenshotFormat : format,
                 createBufferedImage(null));
     }
 
@@ -174,7 +174,7 @@ public class ScreenshotActions {
     public Path takeScreenshot(Path picturePath, Rectangle rectangle) throws IOException {
         if (!Files.isDirectory(picturePath)) {
             String filename = picturePath.getFileName().toString();
-            String format = defaultScreenShotFormat;
+            String format = defaultScreenshotFormat;
             if (filename.contains(".")) {
                 format = filename.substring(filename.lastIndexOf(".") + 1);
             } else {
