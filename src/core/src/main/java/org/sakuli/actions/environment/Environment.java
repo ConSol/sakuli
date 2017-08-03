@@ -38,9 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-
-import static org.sakuli.actions.screenbased.RegionImpl.resolveTakeScreenshotPath;
+import java.nio.file.Path;
 
 /**
  * This is a Singeton because the Function should be stateless
@@ -135,24 +133,36 @@ public class Environment implements Action {
     }
 
     /**
-     *      * TODO TS update javascript and API docu
-     *      * TODO TS add method to API with takeScreenshotWithTimestamp
+     * TODO TS update javascript and API docu
      * Takes a screenshot of the current screen and saves it to the assigned path. If there ist just a file name, the
      * screenshot will be saved in your current testcase folder.
      * Supported formats: `jpg` and `png`
      *
      * @param filename "pathname/filename.format" or just "filename.format"<br> for example "test.png".
      */
-    @LogToResult(message = "take a screenshot from the current screen and save it to the file system", logClassInstance = false)
-    public String takeScreenshot(final String filename) {
-        try {
-            return getLoader().getScreenshotActions().takeScreenshot(
-                    resolveTakeScreenshotPath(filename, getLoader()))
-                    .toString();
-        } catch (IOException e) {
-            loader.getExceptionHandler().handleException("Can't create Screenshot for path '" + filename + "': " + e.getMessage(), resumeOnException);
-        }
-        return null;
+    @LogToResult(logClassInstance = false)
+    public Path takeScreenshot(final String filename) {
+        return getLoader().getScreenshotActions().takeScreenshot(filename, null);
+    }
+
+    /**
+     * TODO TS update javascript and API docu && test on js
+     * <p>
+     * Takes a screenshot of the current screen and add the current timestamp in the file name like e.g.:
+     * ```
+     * env.takeScreenshotWithTimestamp("my-screenshot");
+     * ```
+     * saved under:`mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
+     *
+     * @param filenamePostfix postfix for the final filename
+     * @param optFolderPath   optional FolderPath, where to save the screenshot.
+     *                        If null or empty: testscase folder will be used
+     * @param optFormat       optional format, for the screenshot (currently supported: jpg and png)
+     *                        If null or empty use property `sakuli.screenshot.format`
+     */
+    @LogToResult(logClassInstance = false)
+    public Path takeScreenshotWithTimestamp(final String filenamePostfix, final String optFolderPath, final String optFormat) {
+        return getLoader().getScreenshotActions().takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat, null);
     }
 
     /**

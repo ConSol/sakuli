@@ -19,10 +19,8 @@
 package org.sakuli.actions.screenbased;
 
 import org.sakuli.actions.Action;
-import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.actions.ImageLibObject;
 import org.sakuli.exceptions.SakuliException;
-import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sikuli.basics.Settings;
 import org.sikuli.script.FindFailed;
@@ -31,10 +29,6 @@ import org.sikuli.script.Match;
 import org.sikuli.script.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * @author Tobias Schneck
@@ -78,19 +72,6 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
         return null;
     }
 
-    public static Path resolveTakeScreenshotPath(String filename, BaseActionLoader loader) {
-        Path path = Paths.get(filename);
-        if (path.isAbsolute()) {
-            return path;
-        }
-        TestCase currentTestCase = loader.getCurrentTestCase();
-        Path folderPath = currentTestCase != null ? currentTestCase.getTcFile().getParent() : null;
-        if (folderPath == null || !Files.exists(folderPath)) {
-            LOGGER.warn("The test case folder could not be found => Fallback: Use test suite folder!");
-            folderPath = loader.getTestSuite().getTestSuiteFolder();
-        }
-        return folderPath.resolve(filename);
-    }
 
     /**
      * {@link Region#find(String)}.

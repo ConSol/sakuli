@@ -20,14 +20,21 @@ package org.sakuli.actions.screenbased;
 
 import org.apache.commons.lang.StringUtils;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.sakuli.BaseTest;
+import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.ActionProperties;
+import org.sakuli.loader.BaseActionLoader;
+import org.sikuli.basics.Settings;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,11 +46,12 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 import static org.sakuli.AbstractLogAwareTest.getResource;
 import static org.sakuli.BaseTest.assertRegExMatch;
-import static org.testng.Assert.assertNotEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 @SuppressWarnings("ConstantConditions")
 public class ScreenshotActionsTest {
+    @Mock
+    private BaseActionLoader loader;
 
     private ActionProperties props;
     @Spy
@@ -55,6 +63,44 @@ public class ScreenshotActionsTest {
 
     private static String getDayPrefix() {
         return new SimpleDateFormat("yyyy_MM_dd").format(new Date());
+    }
+
+
+    @Test
+    public void testResolveTakeScreenshotFolder() throws Exception {
+        TestCase tc = mock(TestCase.class);
+        Path examplePath = Paths.get(BaseTest.TEST_FOLDER_PATH + File.separator + "case" + File.separator + "tc.js");
+        when(tc.getTcFile()).thenReturn(examplePath);
+        when(loader.getCurrentTestCase()).thenReturn(tc);
+        Path result = testling.resolveTakeScreenshotPath("screenshot.png");
+        assertEquals(result.toString(), BaseTest.TEST_FOLDER_PATH + File.separator + "case" + File.separator + "screenshot.png");
+        verify(loader, never()).getTestSuite();
+        verify(loader).getCurrentTestCase();
+    }
+
+    @Test
+    public void testResolveTakeScreenshotFolderFallback() throws Exception {
+        TestCase tc = mock(TestCase.class);
+        Path examplePath = Paths.get(BaseTest.TEST_FOLDER_PATH + File.separator + "NO_FOLDER" + File.separator + "tc.js");
+        when(tc.getTcFile()).thenReturn(examplePath);
+        when(loader.getCurrentTestCase()).thenReturn(tc);
+        TestSuite ts = mock(TestSuite.class);
+        when(ts.getTestSuiteFolder()).thenReturn(Paths.get(BaseTest.TEST_FOLDER_PATH));
+        when(loader.getTestSuite()).thenReturn(ts);
+
+        Path result = testling.resolveTakeScreenshotPath("test");
+        assertEquals(result.toString(), Paths.get(BaseTest.TEST_FOLDER_PATH) + File.separator + "test");
+        verify(loader).getTestSuite();
+        verify(loader).getCurrentTestCase();
+    }
+
+    @Test
+    public void testResolveTakeScreenshotFolderAbsolutPath() throws Exception {
+        String filename = Settings.isWindows() ? "C:\\test" : "/home/test";
+        Path result = testling.resolveTakeScreenshotPath(filename);
+        assertEquals(result.toString(), filename);
+        verify(loader, never()).getTestSuite();
+        verify(loader, never()).getCurrentTestCase();
     }
 
     @BeforeMethod
@@ -93,7 +139,7 @@ public class ScreenshotActionsTest {
         assertTrue(Files.exists(result));
 
         //try to create a second
-        Path result2 = testling.takeScreenshotWithTimestamp("screenshot-timestamp", rootpath, "png");
+        Path result2 = testling.takeScreenshotWithTimestamp("screenshot-timestamp", rootpath, "png", null);
         assertRegExMatch(result2.toString(),
                 ".*org.sakuli.actions.screenbased." + getDayPrefix() + ".*screenshot_timestamp.png");
         assertTrue(Files.exists(result2));
@@ -102,7 +148,7 @@ public class ScreenshotActionsTest {
 
     @Test
     public void testCreatePictureFromBufferedImageTimestampJPG() throws Exception {
-        Path jpgResult = testling.takeScreenshotWithTimestamp("screenshot-jpg", rootpath, "jpg");
+        Path jpgResult = testling.takeScreenshotWithTimestamp("screenshot-jpg", rootpath, "jpg", null);
         assertRegExMatch(jpgResult.toString(),
                 ".*org.sakuli.actions.screenbased." + getDayPrefix() + ".*screenshot_jpg.jpg");
         assertTrue(Files.exists(jpgResult));
@@ -121,4 +167,45 @@ public class ScreenshotActionsTest {
                 ".*org.sakuli.actions.screenbased." + getDayPrefix() + ".*x{10,20}.png");
     }
 
+
+    @Test
+    public void testTakeScreenshotWithTimestamp() throws Exception {
+        Path result = testling.takeScreenshotWithTimestamp("screenshot-timestamp", rootpath.toString(), null, null);
+        assertRegExMatch(result.toString(),
+                ".*org.sakuli.actions.screenbased." + getDayPrefix() + ".*screenshot_timestamp.png");
+        assertTrue(Files.exists(result));
+
+        //try to create a second
+        Path result2 = testling.takeScreenshotWithTimestamp("screenshot-timestamp", rootpath.toString(), "png", null);
+        assertRegExMatch(result2.toString(),
+                ".*org.sakuli.actions.screenbased." + getDayPrefix() + ".*screenshot_timestamp.png");
+        assertTrue(Files.exists(result2));
+        assertNotEquals(result.toString(), result2.toString());
+        verify(loader, never()).getExceptionHandler();
+    }
+
+    @Test
+    public void testTakeScreenshotWithTimestampEmptyDestinationSuite() throws Exception {
+        TestSuite ts = mock(TestSuite.class);
+        when(ts.getTestSuiteFolder()).thenReturn(rootpath);
+        when(loader.getTestSuite()).thenReturn(ts);
+
+        Path result = testling.takeScreenshotWithTimestamp("screenshot-suite", "", null, null);
+        assertRegExMatch(result.toString(),
+                ".*org.sakuli.actions.screenbased." + getDayPrefix() + ".*screenshot_suite.png");
+        assertTrue(Files.exists(result));
+
+        //try for testcase
+        Path tcRoot = Files.createDirectories(rootpath.resolve("testcase_tmp"));
+        TestCase tc = mock(TestCase.class);
+        when(tc.getTcFile()).thenReturn(tcRoot.resolve("tc.js"));
+        when(loader.getCurrentTestCase()).thenReturn(tc);
+
+        Path result2 = testling.takeScreenshotWithTimestamp("screenshot-tc", "", null, null);
+        assertRegExMatch(result2.toString(),
+                ".*org.sakuli.actions.screenbased.testcase_tmp." + getDayPrefix() + ".*screenshot_tc.png");
+        assertTrue(Files.exists(result2));
+        assertNotEquals(result.toString(), result2.toString());
+        verify(loader, never()).getExceptionHandler();
+    }
 }

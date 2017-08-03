@@ -610,8 +610,8 @@ function initRegion(that, javaObject) {
      * Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
      * filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
      *
-     * @param {String} filename name of the screenshot, e.g. `region_screenshot`.
-     *                 Default: screenshot
+     * @param {String} filename name of the screenshot, e.g. `region_screenshot.png`.
+     *                          Default: screenshot.png
      *
      * @return {String} file path to the created screenshot OR null on errors
      * @memberOf Region
@@ -622,6 +622,34 @@ function initRegion(that, javaObject) {
             filename = "screenshot";
         }
         var path = that.javaObject.takeScreenshot(filename);
+        return path != null ? path.toString() : null;
+    };
+
+
+    /**
+     * Takes a screenshot of this Region and add the current timestamp in the file name like e.g.:
+     * @example
+     * ```
+     * region.takeScreenshotWithTimestamp("my-screenshot");
+     * ```
+     * saved under:`mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
+     *
+     *
+     * @param {String} filenamePostfix postfix for the final filename
+     *                                 Default: screenshot
+     * @param {String} optFolderPath   optional FolderPath, where to save the screenshot.
+     *                                 If null or empty: testscase folder will be used
+     * @param {string} optFormat       optional format, for the screenshot (currently supported: jpg and png)
+     *                                 If null or empty use property `sakuli.screenshot.format`
+     * @return {String} file path to the created screenshot OR null on errors
+     * @memberOf Region
+     * @method takeScreenshotWithTimestamp
+     */
+    that.takeScreenshotWithTimestamp = function (filenamePostfix, optFolderPath, optFormat) {
+        if (undefined == filenamePostfix) {
+            filenamePostfix = "screenshot";
+        }
+        var path = that.javaObject.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat);
         return path != null ? path.toString() : null;
     };
 

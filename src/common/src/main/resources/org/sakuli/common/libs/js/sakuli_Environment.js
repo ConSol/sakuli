@@ -86,6 +86,34 @@ function initEnvironment(that, javaObject) {
     };
 
     /**
+     * Takes a screenshot of the current screen and add the current timestamp in the file name like e.g.:
+     * @example
+     * ```
+     * env.takeScreenshotWithTimestamp("my-screenshot");
+     * ```
+     * saved under:`mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
+     *
+     *
+     * @param {String} filenamePostfix postfix for the final filename
+     *                                 Default: screenshot
+     * @param {String} optFolderPath   optional FolderPath, where to save the screenshot.
+     *                                 If null or empty: testscase folder will be used
+     * @param {string} optFormat       optional format, for the screenshot (currently supported: jpg and png)
+     *                                 If null or empty use property `sakuli.screenshot.format`
+     * @return {String} file path to the created screenshot OR null on errors
+     * @memberOf Region
+     * @method takeScreenshotWithTimestamp
+     */
+    that.takeScreenshotWithTimestamp = function (filenamePostfix, optFolderPath, optFormat) {
+        if (undefined == filenamePostfix) {
+            filenamePostfix = "screenshot";
+        }
+        var path = that.javaObject.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat);
+        return path != null ? path.toString() : null;
+    };
+
+
+    /**
      * Blocks the current testcase execution for x seconds
      *
      * @param {number} seconds to sleep
