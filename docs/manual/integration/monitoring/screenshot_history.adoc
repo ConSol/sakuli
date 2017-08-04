@@ -24,34 +24,18 @@ Use the Makefile located in `$OMD_ROOT/share/sakuli/` to enable the feature:
 [source,bash]
 ----
 OMD[demo]:~/share/sakuli/setup$ make screenshot_history
-cp ./omd/local/lib/nagios/plugins/sakuli_screenshot_eventhandler.sh /omd/sites/demo/local/lib/nagios/plugins/
-cp ./omd/etc/nagios/conf.d/sakuli_screenshot_eventhandler.cfg /omd/sites/demo/etc/core/conf.d/
-cp ./omd/local/bin/sakuli_screenshot_cleanup.sh /omd/sites/demo/local/bin/
-cp ./omd/etc/cron.d/sakuli_screenshot_cleanup /omd/sites/demo/etc/cron.d/
-cp ./omd/etc/thruk/ssi/*.ssi /omd/sites/demo/etc/thruk/ssi/
-cp ./omd/etc/thruk/thruk_local.d/sakuli_action_menu.conf /omd/sites/demo/etc/thruk/thruk_local.d/
-cp ./omd/etc/apache/conf.d/sakuli_screenshots.conf /omd/sites/demo/etc/apache/conf.d/
-omd reload crontab
-Removing Crontab...OK
-Initializing Crontab...OK
-omd reload apache
-Reloading dedicated Apache for site demo
-omd reload core
-Reloading naemon configuration (PID: 3511)... OK
 ----
 
 [[screenshot_history_eh]]
-===== Event handler
-Now assign the command `sakuli_screenshot_eventhandler` to all Sakuli services:
+===== Event handler template
+Use the service template `tpl_s_sakuli_screenshot_history` in all Sakuli services to enable the eventhandler:
 
 [source]
 ----
 define service {
   service_description            example_xfce
   host_name                      sakuli_client
-  use                            tpl_s_sakuli_gearman_grafana
-  event_handler                  sakuli_screenshot_eventhandler
-  event_handler_enabled          1
+  use                            tpl_s_sakuli_gearman_grafana, tpl_s_sakuli_screenshot_history
 }
 ----
 

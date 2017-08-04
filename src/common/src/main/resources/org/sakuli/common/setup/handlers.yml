@@ -1,0 +1,8 @@
+--- 
+
+- name: omd_reload_apache
+  shell: omd reload apache
+- name: omd_reload_core
+  shell: omd reload core
+- name: omd_reload_crontab
+  shell: omd reload crontab
