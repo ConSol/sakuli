@@ -63,7 +63,9 @@ var screen = new Region();   //represents the hole screen`
 * link:#Region.getY[Region.getY()]
 * link:#Region.highlight[Region.highlight(seconds)]
 * link:#Region.takeScreenshot[Region.takeScreenshot(filename)]
+* link:#Region.takeScreenshotWithTimestamp[Region.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)]
 * link:#Region.sleep[Region.sleep(seconds)]
+* link:#Region.sleepMs[Region.sleepMs(milliseconds)]
 * link:#Region.extractText[Region.extractText()]
 
 
@@ -524,10 +526,33 @@ filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the s
 
 *Params*
 
-* filename `String` - name of the screenshot, e.g. `region_screenshot`.
- Default: screenshot
+* filename `String` - name of the screenshot, e.g. `region_screenshot.png`.
+ Default: screenshot.png
 
 *Returns*: `String` - file path to the created screenshot OR null on errors
+
+
+[[Region.takeScreenshotWithTimestamp]]
+.Region.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)
+
+Takes a screenshot of this Region and add the current timestamp in the file name like e.g.:
+
+*Params*
+
+* filenamePostfix `String` - postfix for the final filename
+ Default: screenshot
+* optFolderPath `String` - optional FolderPath, where to save the screenshot.
+ If null or empty: testscase folder will be used
+* optFormat `string` - optional format, for the screenshot (currently supported: jpg and png)
+ If null or empty use property `sakuli.screenshot.format`
+
+*Returns*: `String` - file path to the created screenshot OR null on errors
+*Example*
+[source,js]
+----
+region.takeScreenshotWithTimestamp("my-screenshot");
+----
+saved under: `mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
 
 [[Region.sleep]]
 .Region.sleep(seconds)
@@ -537,6 +562,17 @@ Blocks the current testcase execution for x seconds
 *Params*
 
 * seconds `number` - to sleep
+
+*Returns*: - this Region or NULL on errors.
+
+[[Region.sleepMs]]
+.Region.sleepMs(milliseconds)
+
+Blocks the current testcase execution for x milliseconds
+
+*Params*
+
+* milliseconds `number` - to sleep
 
 *Returns*: - this Region or NULL on errors.
 

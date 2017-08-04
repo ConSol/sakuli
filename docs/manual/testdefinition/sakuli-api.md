@@ -28,6 +28,7 @@
   * [Environment.resetSimilarity()](#Environment.resetSimilarity)
   * [Environment.getRegionFromFocusedWindow()](#Environment.getRegionFromFocusedWindow)
   * [Environment.takeScreenshot(pathName)](#Environment.takeScreenshot)
+  * [Environment.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)](#Environment.takeScreenshotWithTimestamp)
   * [Environment.sleep(seconds)](#Environment.sleep)
   * [Environment.sleepMs(milliseconds)](#Environment.sleepMs)
   * [Environment.getClipboard()](#Environment.getClipboard)
@@ -99,6 +100,7 @@
   * [Region.getY()](#Region.getY)
   * [Region.highlight(seconds)](#Region.highlight)
   * [Region.takeScreenshot(filename)](#Region.takeScreenshot)
+  * [Region.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)](#Region.takeScreenshotWithTimestamp)
   * [Region.sleep(seconds)](#Region.sleep)
   * [Region.sleepMs(milliseconds)](#Region.sleepMs)
   * [Region.extractText()](#Region.extractText)
@@ -343,6 +345,7 @@ Environment - Represents the environment of the current test host.
   * [Environment.resetSimilarity()](#Environment.resetSimilarity)
   * [Environment.getRegionFromFocusedWindow()](#Environment.getRegionFromFocusedWindow)
   * [Environment.takeScreenshot(pathName)](#Environment.takeScreenshot)
+  * [Environment.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)](#Environment.takeScreenshotWithTimestamp)
   * [Environment.sleep(seconds)](#Environment.sleep)
   * [Environment.sleepMs(milliseconds)](#Environment.sleepMs)
   * [Environment.getClipboard()](#Environment.getClipboard)
@@ -400,6 +403,26 @@ If there ist just a file name, the screenshot will be saved in your testsuite lo
 ```
 environment.takeScreenshot("test.jpg");
 ```
+
+<a name="Environment.takeScreenshotWithTimestamp"></a>
+##Environment.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)
+Takes a screenshot of the current screen and add the current timestamp in the file name like e.g.:
+
+**Params**
+
+- filenamePostfix `String` - postfix for the final filename
+                                Default: screenshot  
+- optFolderPath `String` - optional FolderPath, where to save the screenshot.
+                                If null or empty: testscase folder will be used  
+- optFormat `string` - optional format, for the screenshot (currently supported: jpg and png)
+                                If null or empty use property `sakuli.screenshot.format`  
+
+**Returns**: `String` - file path to the created screenshot OR null on errors  
+**Example**  
+```
+env.takeScreenshotWithTimestamp("my-screenshot");
+```
+saved under: `mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
 
 <a name="Environment.sleep"></a>
 ##Environment.sleep(seconds)
@@ -769,6 +792,7 @@ Region - Represents a region as a part of or the hole screen.
   * [Region.getY()](#Region.getY)
   * [Region.highlight(seconds)](#Region.highlight)
   * [Region.takeScreenshot(filename)](#Region.takeScreenshot)
+  * [Region.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)](#Region.takeScreenshotWithTimestamp)
   * [Region.sleep(seconds)](#Region.sleep)
   * [Region.sleepMs(milliseconds)](#Region.sleepMs)
   * [Region.extractText()](#Region.extractText)
@@ -1142,10 +1166,30 @@ filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the s
 
 **Params**
 
-- filename `String` - name of the screenshot, e.g. `region_screenshot`.
-                Default: screenshot  
+- filename `String` - name of the screenshot, e.g. `region_screenshot.png`.
+                         Default: screenshot.png  
 
 **Returns**: `String` - file path to the created screenshot OR null on errors  
+<a name="Region.takeScreenshotWithTimestamp"></a>
+##Region.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)
+Takes a screenshot of this Region and add the current timestamp in the file name like e.g.:
+
+**Params**
+
+- filenamePostfix `String` - postfix for the final filename
+                                Default: screenshot  
+- optFolderPath `String` - optional FolderPath, where to save the screenshot.
+                                If null or empty: testscase folder will be used  
+- optFormat `string` - optional format, for the screenshot (currently supported: jpg and png)
+                                If null or empty use property `sakuli.screenshot.format`  
+
+**Returns**: `String` - file path to the created screenshot OR null on errors  
+**Example**  
+```
+region.takeScreenshotWithTimestamp("my-screenshot");
+```
+saved under: `mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
+
 <a name="Region.sleep"></a>
 ##Region.sleep(seconds)
 Blocks the current testcase execution for x seconds

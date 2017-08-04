@@ -17,6 +17,7 @@
  */
 
 /**** Exclude this global variables from JSLint Warnings ****/
+
 /* global navigator, window, java, Packages,saveResult,step, $output, _set, _stopOnError, _logExceptionAsFailure,_resolvePath,_include, $sahi_userdata, $guid, $capture, initialize */
 
 /**
@@ -84,6 +85,40 @@ function initEnvironment(that, javaObject) {
     that.takeScreenshot = function (pathName) {
         return that.javaObject.takeScreenshot(pathName);
     };
+
+    /**
+     * Takes a screenshot of the current screen and add the current timestamp in the file name like e.g.:
+     * @example
+     * ```
+     * env.takeScreenshotWithTimestamp("my-screenshot");
+     * ```
+     * saved under: `mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
+     *
+     *
+     * @param {String} filenamePostfix postfix for the final filename
+     *                                 Default: screenshot
+     * @param {String} optFolderPath   optional FolderPath, where to save the screenshot.
+     *                                 If null or empty: testscase folder will be used
+     * @param {string} optFormat       optional format, for the screenshot (currently supported: jpg and png)
+     *                                 If null or empty use property `sakuli.screenshot.format`
+     * @return {String} file path to the created screenshot OR null on errors
+     * @memberOf Environment
+     * @method takeScreenshotWithTimestamp
+     */
+    that.takeScreenshotWithTimestamp = function (filenamePostfix, optFolderPath, optFormat) {
+        if (undefined == filenamePostfix) {
+            filenamePostfix = "screenshot";
+        }
+        if (undefined == optFolderPath) {
+            optFolderPath = '';
+        }
+        if (undefined == optFormat) {
+            optFormat = '';
+        }
+        var path = that.javaObject.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat);
+        return path != null ? path.toString() : null;
+    };
+
 
     /**
      * Blocks the current testcase execution for x seconds

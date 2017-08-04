@@ -60,7 +60,7 @@ public class ActionProperties extends AbstractProperties {
     private String screenShotFolderPropertyValue;
     private Path screenShotFolder;
     @Value("${" + SCREENSHOT_FORMAT_PROPERTY + "}")
-    private String screenShotFormat;
+    private String screenshotformat;
 
     @PostConstruct
     public void initFolders() throws IOException {
@@ -157,11 +157,11 @@ public class ActionProperties extends AbstractProperties {
         this.screenShotFolder = screenShotFolder;
     }
 
-    public String getScreenShotFormat() {
-        return screenShotFormat;
+    public String getScreenshotformat() {
+        return screenshotformat;
     }
 
-    public void setScreenShotFormat(String screenShotFormat) {
-        this.screenShotFormat = screenShotFormat;
+    public void setScreenshotformat(String screenshotformat) {
+        this.screenshotformat = screenshotformat;
     }
 }
