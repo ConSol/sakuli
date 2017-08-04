@@ -16,14 +16,25 @@ NOTE: If you want to run OMD-Labs in a container then check out the https://gith
 * *https://labs.consol.de/OMD/[OMD]* installed on a Linux operating system
 * a running *OMD site*
 
-====== HTML escaping
+===== Nagios configuration
+Use the Makefile located in `$OMD_ROOT/share/sakuli/` to
 
-Sakuli will produce HTML formatted output. *HTML escaping* in the monitoring core must be turned off:
+* install predefined Nagios/Naemon service templates
+* install the Sakuli logo
+* enable HTML interpretation in the service output
 
 [source]
 ----
-OMD[sakuli]:~$ vim etc/nagios/cgi.cfg
-    escape_html_tags=0
+OMD[demo]:~/share/sakuli/setup$ make config
+cp ./omd/local/lib/nagios/plugins/sakuli_screenshot_eventhandler.sh /omd/sites/demo/local/lib/nagios/plugins/
+cp ./omd/etc/nagios/conf.d/sakuli_screenshot_eventhandler.cfg /omd/sites/demo/etc/core/conf.d/
+mkdir -p /omd/sites/demo/local/share/nagios/htdocs/images/logos/
+cp ./omd/local/share/nagios/htdocs/images/logos/sakuli.png /omd/sites/demo/local/share/nagios/htdocs/images/logos/
+cp ./omd/etc/nagios/conf.d/sakuli_nagios_templates.cfg /omd/sites/demo/etc/core/conf.d/
+[ -w /omd/sites/demo/etc/core/cgi.cfg ] && sed -i 's|\(escape_html_tags=\)1|\10|' /omd/sites/demo/etc/core/cgi.cfg || true
+sed -i 's|\(escape_html_tags=\)1|\10|' /omd/sites/demo/etc/thruk/cgi.cfg
+omd reload core || true
+Reloading naemon configuration (PID: 9114)... OK
 ----
 
 Now choose one of the <<forwarders>>.
