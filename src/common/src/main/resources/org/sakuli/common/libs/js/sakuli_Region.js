@@ -17,6 +17,7 @@
  */
 
 /**** Exclude this global variables from JSLint Warnings ****/
+
 /* global navigator, window, java, Packages,saveResult,step, $output, _set, _stopOnError, _logExceptionAsFailure,_resolvePath,_include, $sahi_userdata, $guid, $capture, initialize */
 
 /**
@@ -632,7 +633,7 @@ function initRegion(that, javaObject) {
      * ```
      * region.takeScreenshotWithTimestamp("my-screenshot");
      * ```
-     * saved under:`mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
+     * saved under: `mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
      *
      *
      * @param {String} filenamePostfix postfix for the final filename
@@ -648,6 +649,12 @@ function initRegion(that, javaObject) {
     that.takeScreenshotWithTimestamp = function (filenamePostfix, optFolderPath, optFormat) {
         if (undefined == filenamePostfix) {
             filenamePostfix = "screenshot";
+        }
+        if (undefined == optFolderPath) {
+            optFolderPath = '';
+        }
+        if (undefined == optFormat) {
+            optFormat = '';
         }
         var path = that.javaObject.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat);
         return path != null ? path.toString() : null;
