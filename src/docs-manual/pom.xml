@@ -116,6 +116,12 @@
                                                 <include>general.*</include>
                                             </includes>
                                         </resource>
+                                        <resource>
+                                            <directory>${pom.parent.basedir}/src/common/src/main/resources/org/sakuli/common/config</directory>
+                                            <includes>
+                                                <include>sakuli-default.properties</include>
+                                            </includes>
+                                        </resource>
                                     </resources>
                                 </configuration>
                             </execution>

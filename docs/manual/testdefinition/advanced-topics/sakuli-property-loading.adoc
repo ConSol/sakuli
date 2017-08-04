@@ -20,3 +20,13 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
   -&gt; valid for only one test run
 
 We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file and would overwrite the existing one; your changes would not be preserved.
+
+===== Property Reference
+
+The file `sakuli-default.properties` contains all possible configuration possibilities and default values:
+
+//INFO: will be created during build through maven copy plugin
+[source, properties]
+----
+include::../../../sakuli-default.properties[]
+----
