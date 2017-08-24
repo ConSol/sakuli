@@ -14,8 +14,6 @@
       copy:
         src: ./omd/etc/cron.d/sakuli_screenshot_cleanup
         dest: "{{ OMD_ROOT }}/etc/cron.d/"
-      notify:
-        - omd_reload_crontab
     - name: Thruk - Sakuli SSIs
       copy:
         src: "{{ item }}"
@@ -30,7 +28,3 @@
       copy:
         src: ./omd/etc/apache/conf.d/sakuli_screenshots.conf
         dest: "{{ OMD_ROOT }}/etc/apache/conf.d/"
-      notify:
-        - omd_reload_apache
-  handlers:
-    - include: handlers.yml

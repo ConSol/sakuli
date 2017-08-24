@@ -1,0 +1,1 @@
+1a5f492 Sakuli setup with make/Ansible #257

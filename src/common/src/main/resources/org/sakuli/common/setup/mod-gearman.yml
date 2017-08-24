@@ -30,5 +30,3 @@
         path: "{{ OMD_ROOT }}/etc/mod-gearman/secret.key"
         regexp: '.*'
         line: "{{ GEARMAN_SECRET }}"
-    - name: OMD start
-      shell: omd start

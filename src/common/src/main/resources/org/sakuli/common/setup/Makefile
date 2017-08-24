@@ -1,4 +1,6 @@
 
+AP=~/bin/ansible-playbook
+
 screenshot_history: config
 	ansible-playbook -i localhost, -c local screenshot_history.yml
 
@@ -19,5 +21,5 @@ mysql: config
 grafana:
 	ansible-playbook -i localhost, -c local grafana.yml
 
-pnp4nagios: 
+pnp4nagios:
 	ansible-playbook -i localhost, -c local pnp4nagios.yml

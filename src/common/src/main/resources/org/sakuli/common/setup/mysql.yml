@@ -44,11 +44,7 @@
       copy:
         src: ./omd/etc/cron.d/sakuli_mysql_purge
         dest: "{{ OMD_ROOT }}/etc/cron.d/"
-      notify:
-        - omd_reload_crontab
 
-    - name: stop omd
-      shell: omd stop
     - name: enable MySQL
       shell: omd config set MYSQL on
 
@@ -60,7 +56,7 @@
     - name: prepare db
       shell: mysql_install_db
     - name: start db
-      shell: omd start
+      shell: omd start mysql
     - name: create database
       shell: mysql < database/create_sakuli_database.sql
     - name: create user
@@ -69,6 +65,3 @@
         password: "{{ MYSQL_PASSWORD }}"
         priv: 'sakuli.*:ALL'
         state: present
-
-  handlers:
-    - include: handlers.yml
