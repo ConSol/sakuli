@@ -1,1 +1,1 @@
-1a5f492 Sakuli setup with make/Ansible #257
+e5a15893f8a3df104b14ccb9c578606f375c5800
