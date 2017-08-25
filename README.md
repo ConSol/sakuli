@@ -78,7 +78,7 @@ Use this demo appliance to see all the features of Sakuli in action. *sakulidemo
 
 User accounts: *root/root* and *sakuli/sakuli*.
 
-It is recommended to fix the VM's resolution to 1024x768px for this demo. In general Sakuli does not relies on any resolution limitation.
+It is recommended to fix the VM's resolution to 1024x768px for this demo. In general Sakuli does not rely on any resolution limitation.
 
 Don't use this in production.
 
