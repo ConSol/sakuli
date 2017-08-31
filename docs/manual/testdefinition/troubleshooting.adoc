@@ -36,6 +36,7 @@ C:\Program Files\Internet Explorer\iexplore.exe
 java%sakuli.jar
 ----
 
+[[image-recognition-problem]]
 ==== Sikuli does not recognize images
 
 If Sikuli does not recognize regions on the screen or does recognize the wrong ones, check the following list of possible reasons: 

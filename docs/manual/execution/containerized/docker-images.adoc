@@ -64,15 +64,15 @@ The following example command pulls the CentOS7 image from https://hub.docker.co
 
 [source,bash]
 ----
-docker pull consol/sakuli-centos-xfce
+~$ docker pull consol/sakuli-centos-xfce
 ----
 
 Alternatively, you can build this image from the sources:
 
 [source,bash]
 ----
-git clone https://github.com/ConSol/sakuli.git
-docker build -t consol/sakuli-centos-xfce docker/sakuli-centos-xfce .
+~$ git clone https://github.com/ConSol/sakuli.git
+~$ docker build -t consol/sakuli-centos-xfce docker/sakuli-centos-xfce .
 ----
 
 .Start/test a Sakuli container
@@ -82,9 +82,9 @@ Once you have pulled/built the image, you can start a container on top of it whi
 [source,bash]
 ----
 # default tag "latest" = Sakuli stable
-docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce
+~$ docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce
 # tag "dev" = Sakuli Snapshot version of dev branch
-docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce:dev
+~$ docker run -it -p 5901:5901 -p 6901:6901 consol/sakuli-centos-xfce:dev
 ----
 
 The container will execute a small headless self-test and exit afterwards. Read on to learn how to execute your own JavaScript or Java based tests within this containers.
@@ -230,7 +230,7 @@ Add the `--user` flag to your docker run command:
 
 [source]
 ----
-docker run -it --user 0 -p 6911:6901 consol/sakuli-ubuntu-xfce
+~$ docker run -it --user 0 -p 6911:6901 consol/sakuli-ubuntu-xfce
 ----
 
 .Using user and group id of host system
@@ -239,7 +239,7 @@ Add the `--user` flag to your docker run command:
 
 [source]
 ----
-docker run -it -p 6911:6901 --user $(id -u):$(id -g) consol/sakuli-ubuntu-xfce
+~$ docker run -it -p 6911:6901 --user $(id -u):$(id -g) consol/sakuli-ubuntu-xfce
 ----
 
 [[docker-vnc-env-variables]]
@@ -259,6 +259,58 @@ For example, the password for VNC could be set like this:
      consol/sakuli-ubuntu-xfce
 ----
 
+===== Create Screenhots for Sakuli tests
+
+Due to the fact, that your application under test is running in the container specific UI environment, it's also recommend to create the screenhot snippets for the <<sakuli-testdefintion>> in the inside of the container. This prevent some issues with recognizing images because of bad image compression, see <<image-recognition-problem>>.
+
+====== Use `takeScreenshot` method
+To get a new screenshot of some application window, you can modify you current test case and add for example the bellow code snippets of the method <<Region.takeScreenshot>>:
+[[source,javascript]]
+-----
+//entire screen:
+env.takeScreenshot("/tmp/my-screenshot.png");
+
+//specific region
+new RegionRectangle(0,0,100,100).takeScreenshot("/tmp/my-screenshot.png");
+
+//extended region of an existing one
+new Region().find("calculator-logo.png").grow(200,200).takeScreenshot("/tmp/my-screenshot.png");
+-----
+
+After the test suite run, you can copy out the created screenshot from docker container, if needed crop it with some image manipulating tool, and add it to our test suite.
+
+[[source,bash]]
+-----
+~$ docker cp <containter-id>:/tmp/my-scrot-screenshot.png $(pwd)/my-testsuite/
+~$ ls -la my-testsuite/
+-----
+
+====== Use `scrot` tool
+Before using *https://wiki.ubuntuusers.de/Scrot/[Scrot]* prepare your container UI like you will needed for the screenshot via VNC `http://<dockerhost>:<mapped-port>/vnc_auto.html?password=sakuli`. If you wan't to stop the sakuli test execution on a particular point, just use the <<Environment.sleep>> method:
+
+[[source,javascript]]
+-----
+    new Application("/usr/bin/gnome-calculator").open();
+    env.sleep(Number.MAX_VALUE);
+-----
+
+The test case will stop at the above defined position. Then you can login to the container via `docker exec` and create a new screenshot with the `scrot <filename>` command. If you use the `scrot -s` flag you can select a rectangle, over the VNC control page `http://<docker-host>:<mapped-port>/vnc_auto.html?password=sakuli`.
+
+[[source,bash]]
+-----
+~$ docker exec -it <container-id> bash
+~$ scrot -s /tmp/my-scrot-screenshot.png
+~$ ls -la /tmp/*.png
+-rw-rw-rw- 1 default root 35329 Aug 29 15:28 /tmp/my-scrot-screenshot.png
+-----
+
+Now you can copy out the created screenshot from docker container and add it to our test suite.
+
+[[source,bash]]
+----
+~$ docker cp <containter-id>:/tmp/my-scrot-screenshot.png $(pwd)/my-testsuite/
+----
+
 [[docker-further-information]]
 ===== Further Information
 
@@ -266,7 +318,8 @@ Further information about the usage of Sakuli docker containers can be found at:
 
 * <<openshift>>
 * <<kubernetes>>
-* <<omd-containerized>>
+//TODO write/refresh page for sakuli based omd images
+* https://github.com/ConSol/omd-labs-docker[Containerized OMD]
 * Publications:
 ** https://jaxenter.de/sakuli-testing-monitoring-container-54374[JAXenter: End-2-End-Testing und -Monitoring im Container-Zeitalter]
 ** https://www.informatik-aktuell.de/entwicklung/methoden/graphical-user-interface-gui-in-containern-testen.html[Informatik Aktuell: Software-Test im Container: So können Sie Graphical User Interfaces mit Docker und Sakuli testen]
