@@ -311,6 +311,14 @@ Now you can copy out the created screenshot from docker container and add it to 
 ~$ docker cp <containter-id>:/tmp/my-scrot-screenshot.png $(pwd)/my-testsuite/
 ----
 
+===== View only VNC
+To prevent unwanted control over the VNC connection, it's possible to set environment variable `VNC_VIEW_ONLY=true`. If set the docker startup script will create a random cryptic password for the control connection and use the value of `VNC_PW` for the view only connection.
+
+[[source,bash]]
+----
+~$ docker run -it -p 6901:6901 -e VNC_VIEW_ONLY=true  consol/sakuli-ubuntu-xfce
+----
+
 [[docker-further-information]]
 ===== Further Information
 
