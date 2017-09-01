@@ -9,14 +9,17 @@
       set_fact: GEARMAND_PORT="{{ lookup('env', 'GEARMAND_PORT')|default('0.0.0.0:4730', true) }}"
     - name: GEARMAN_SECRET
       set_fact: GEARMAN_SECRET="{{ lookup('env', 'GEARMAN_SECRET')|default('sakuli_secret', true)}}"
-    - name: GEARMAND_ON
-      shell: grep "CONFIG_MOD_GEARMAN='off'" {{ OMD_ROOT}}/etc/omd/site.conf
-      register: gearman_grep
-      ignore_errors: yes
-    - name: Check if mod-gearman is already enabled
-      fail:
-        msg: "Mod-Gearman is already enabled on this site. I won't touch anything here..."
-      when: gearman_grep.rc > 0
+    # Preconfig detection commented out, because the Playbook must be able to run
+    # multiple times in containerized environments.
+    # See https://github.com/ConSol/sakuli/issues/273
+    # - name: GEARMAND_ON
+    #   shell: grep "CONFIG_MOD_GEARMAN='off'" {{ OMD_ROOT}}/etc/omd/site.conf
+    #   register: gearman_grep
+    #   ignore_errors: yes
+    # - name: Check if mod-gearman is already enabled
+    #   fail:
+    #     msg: "Mod-Gearman is already enabled on this site. I won't touch anything here..."
+    #   when: gearman_grep.rc > 0
     - name: OMD config
       shell: "omd {{ item }}"
       with_items:

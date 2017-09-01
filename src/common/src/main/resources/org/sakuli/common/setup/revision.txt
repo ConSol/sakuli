@@ -1,0 +1,1 @@
+00fb80b Disabled preconfig detection in Ansible playbooks Closes #273

@@ -13,14 +13,16 @@
       set_fact: MYSQL_USER="{{ lookup('env', 'MYSQL_USER')|default('sakuli', true) }}"
     - name: MYSQL_PASSWORD
       set_fact: MYSQL_PASSWORD="{{ lookup('env', 'MYSQL_PASSWORD')|default('sakuli', true)}}"
-
-    - name: MYSQL_ON
-      shell: grep "CONFIG_MYSQL='off'" {{ OMD_ROOT}}/etc/omd/site.conf
-      register: mysql_grep
-      ignore_errors: yes
-    - fail:
-        msg: "MySQL is already enabled on this site. I won't touch anything here..."
-      when: mysql_grep.rc > 0
+# Preconfig detection commented out, because the Playbook must be able to run
+# multiple times in containerized environments.
+# See https://github.com/ConSol/sakuli/issues/273
+    # - name: MYSQL_ON
+    #   shell: grep "CONFIG_MYSQL='off'" {{ OMD_ROOT}}/etc/omd/site.conf
+    #   register: mysql_grep
+    #   ignore_errors: yes
+    # - fail:
+    #     msg: "MySQL is already enabled on this site. I won't touch anything here..."
+    #   when: mysql_grep.rc > 0
 
     - name: check_mysql_health dir
       file:
