@@ -16,7 +16,9 @@ echo -e "\n\n------------------ START SAKULI CONTAINER -------------------------
 if [ -n "$SKIP" ]; then
     echo -e "\n\n------------------ VNC STARTUP skipped -----------------------------"
 else
-    $STARTUPDIR/vnc_startup.sh
+    #script need at least one terminating command
+    $STARTUPDIR/vnc_startup.sh echo "VNC ready!"
+    echo -e "\n\n------------------ VNC STARTUP finished -----------------------------"
 fi
 
 #env

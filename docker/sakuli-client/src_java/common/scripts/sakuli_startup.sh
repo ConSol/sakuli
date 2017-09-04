@@ -10,7 +10,7 @@ source $HOME/.bashrc
 echo -e "\n\n------------------ START SAKULI CONTAINER ---------------------------"
 
 ## start UI and VNC components
-$STARTUPDIR/vnc_startup.sh
+$STARTUPDIR/vnc_startup.sh echo "VNC ready!"
 echo -e "\n\n------------------ VNC STARTUP finished -----------------------------"
 #env
 echo -e "\n\n------------------ SAKULI TEST EXECUTION start ----------------------"
