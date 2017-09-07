@@ -16,3 +16,7 @@
       patch:
         src: ./omd/etc/init.d/sakuli_influxdb.patch
         basedir: "{{ OMD_ROOT }}"
+    - name: copy Grafana/Histou template
+      copy:
+        src: ./omd/etc/histou/templates/custom/check_sakuli.php
+        dest: "{{ OMD_ROOT }}/etc/histou/templates/custom/"
