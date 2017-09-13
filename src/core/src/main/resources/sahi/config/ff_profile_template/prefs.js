@@ -109,13 +109,14 @@ user_pref("toolkit.startup.max_resumed_crashes", -1);
 //custom firefox settings added by sakuli
 user_pref("browser.cache.disk.capacity", 0);
 user_pref("browser.cache.disk.enable", false);
-user_pref("browser.cache.disk.smart_size.enabled", false);
+user_pref("browser.sessionhistory.max_total_viewers", 1); //Pages that were recently visited are stored in memory
 user_pref("browser.cache.disk_cache_ssl", false);
-user_pref("browser.cache.memory.enable", false);
-user_pref("browser.cache.offline.capacity", 0);
+user_pref("browser.cache.memory.capacity", 10240); //10240 KB, recommended by http://kb.mozillazine.org/Browser.cache.memory.capacity for 256MB physical RAM
+user_pref("browser.cache.memory.enable", true); // must true for browser.cache.memory.capacity
+user_pref("browser.cache.offline.capacity", -1);
 user_pref("browser.cache.offline.enable", false);
-user_pref("browser.sessionstore.max_tabs_undo", 0);
-user_pref("browser.sessionstore.max_windows_undo", 0);
+user_pref("browser.sessionstore.max_tabs_undo", -1);
+user_pref("browser.sessionstore.max_windows_undo", -1);
 user_pref("browser.selfsupport.url", "");
 user_pref("devtools.cache.disabled", true);
 user_pref("network.http.use-cache", false);
@@ -136,13 +137,12 @@ user_pref("datareporting.healthreport.service.enabled", false);
 user_pref("datareporting.policy.dataSubmissionEnabled", false);
 user_pref("datareporting.policy.dataSubmissionEnabled.v2", false);
 //history
-user_pref("browser.history_expire_days", 1);
-user_pref("browser.history_expire_days.mirror", 1);
-user_pref("browser.history_expire_days_min", 1);
-user_pref("browser.history_expire_sites", 1);
-user_pref("browser.history_expire_visits", 1);
+user_pref("browser.history_expire_days", -1);
+user_pref("browser.history_expire_days.mirror", -1);
+user_pref("browser.history_expire_days_min", -1);
+user_pref("browser.history_expire_sites", -1);
+user_pref("browser.history_expire_visits", -1);
 // enable this so that websites can load all stuff, see https://github.com/ConSol/sakuli/issues/216
 user_pref("dom.storage.enabled", true);
 user_pref("places.history.enabled", false);
 user_pref("browser.send_pings", false);
-
