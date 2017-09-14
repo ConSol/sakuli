@@ -22,7 +22,7 @@
         <displayName>Firefox</displayName>
         <icon>firefox.png</icon>
         <path>open -n -a Firefox.app</path>
-        <options>--args -profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
+        <options>--args -profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote -private</options>
         <processName>Firefox</processName>
         <capacity>5</capacity>
         <force>true</force>
