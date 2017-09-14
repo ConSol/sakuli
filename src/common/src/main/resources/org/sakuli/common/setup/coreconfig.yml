@@ -5,8 +5,8 @@
   tasks:
     - name: pretask
       include: pretasks.yml
-    - name: initialize tmp filesystem
-      shell: omd start core && omd stop core
+    - name: initialize tmp dir
+      command: "mkdir -p {{ OMD_ROOT }}/tmp"
     - name: Core - eventhandler script
       copy:
         src: ./omd/local/lib/nagios/plugins/sakuli_screenshot_eventhandler.sh
