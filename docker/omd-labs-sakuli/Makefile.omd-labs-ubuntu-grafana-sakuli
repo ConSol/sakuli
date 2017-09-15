@@ -1,34 +1,14 @@
-# This file is used to manage local images
-# depending of the current dir and branch.
-# Branch 'master' leads to no tag (=latest),
-# others to "local/[dirname]:[branchname]
-
-# run 'make echo' to show the image name you're working on.
-
-REPO = local/omd-labs-ubuntu-sakuli
-TAG  = $(shell git rev-parse --abbrev-ref HEAD|sed 's/master/latest/')
-IMAGE=$(REPO):$(TAG)
-DOCKERFILE = Dockerfile.omd-labs-ubuntu-sakuli
-
-ifdef SOURCE_BRANCH
-	BUILDARGS = --build-arg SOURCE_BRANCH=$(SOURCE_BRANCH)
-else
-	BUILDARGS = --build-arg SOURCE_BRANCH=$(TAG)
-endif
-
-ifdef NEW_SITENAME
-  SITENAME = $(NEW_SITENAME)
-else
-  SITENAME = demo
-endif
-BUILDARGS += --build-arg NEW_SITENAME=$(SITENAME)
-
-echo "buildargs: $(BUILDARGS)"
 
 .PHONY: build start echo bash
 
+REPO = local/omd-labs-ubuntu-sakuli
+TAG  = grafana
+IMAGE=$(REPO):$(TAG)
+DOCKERFILE = Dockerfile.omd-labs-ubuntu-grafana-sakuli
+
+
 build:
-	# use the local base image with tag = branchname
+	# use the local base image with tag = grapher name
 	sed 's@^\(FROM\) consol\(/omd-labs-.*\):\(.*\)@\1 local\2:\3@' $(DOCKERFILE) > $(DOCKERFILE).local
 	docker build -f $(DOCKERFILE).local $(BUILDARGS) -t $(IMAGE) .
 	@rm $(DOCKERFILE).local
