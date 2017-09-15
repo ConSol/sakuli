@@ -1,1 +1,0 @@
-f87b761 added Sakuli Grafana template 2f1fba, fixes dashboard load when too much annotations
