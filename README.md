@@ -18,7 +18,6 @@
     * [**Documentation**](./docs/index.md)
     * [**Docker Images**](docs/docker-images.md)
     * [Example projects](#example-projects-on-github)
-    * [Demo](#demo-virtual-machine)
     * [Media](#media)
     * [Events](#events)
     * [Changelog](#changelog)
@@ -67,20 +66,6 @@ There are already a variety of free end2end/automation tools on the market (Sahi
  * **[ConSol/sakuli-examples](https://github.com/ConSol/sakuli-examples)**
  * **[toschneck/sakuli-example-bakery-testing](https://github.com/toschneck/sakuli-example-bakery-testing)**
  * **[ConSol/sakuli-example-testautomation-day](https://github.com/ConSol/sakuli-example-testautomation-day)**
-
-## Demo virtual machine
-
-![d](./docs/pics/appliance_collage.jpg)
-
-Use this demo appliance to see all the features of Sakuli in action. *sakulidemo* contains OMD/Nagios with two Sakuli checks.  
-
-* **sakulidemo.ova v0.2**: Download the .ova file from [http://labs.consol.de/sakuli/demo](http://labs.consol.de/sakuli/demo) and import this machine into Virtualbox.
-
-User accounts: *root/root* and *sakuli/sakuli*.
-
-It is recommended to fix the VM's resolution to 1024x768px for this demo. In general Sakuli does not rely on any resolution limitation.
-
-Don't use this in production.
 
 ## Media
 
@@ -197,10 +182,10 @@ The guys behind Sakuli:
 <table>
 <tr>
 <td>
-**ConSol Software GmbH** <br/>
-*Franziskanerstr. 38, D-81669 München* <br/>
-*Tel. +49-89-45841-100, Fax +49-89-45841-111*<br/>
-*Homepage: http://www.consol.de E-Mail: [info@consol.de](info@consol.de)*
+<b>ConSol Software GmbH</b><br/>
+Franziskanerstr. 38, D-81669 München<br/>
+Tel. +49-89-45841-100, Fax +49-89-45841-111<br/>
+Homepage: http://www.consol.de E-Mail: [info@consol.de](info@consol.de)
 </td>
 </tr>
 <table>
