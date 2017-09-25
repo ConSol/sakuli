@@ -43,6 +43,8 @@ ENV SAKULI_ROOT=$HOME/sakuli \
     SAKULI_HOME=$HOME/sakuli/sakuli-v$SAKULI_VERSION \
     # Testsuite folder default permissions after text execution
     SAKULI_UMASK=0000 \
+    # Define the example which will be used as default test
+    SAKULI_EXAMPLE_TEST_SUITE=example_icewm \
     # Define Sakuli default startup testsuite
     SAKULI_TEST_SUITE=$HOME/sakuli/test
 WORKDIR $SAKULI_ROOT
