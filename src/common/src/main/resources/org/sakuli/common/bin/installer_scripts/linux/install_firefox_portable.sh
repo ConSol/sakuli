@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 if [ ! "${1:0:1}" == "" ]; then
     FF_VERS=$1
@@ -7,7 +8,7 @@ if [ ! "${1:0:1}" == "" ]; then
         echo "download Firefox $FF_VERS and install it to '$FF_INST'."
         mkdir -p "$FF_INST"
         FF_URL=http://releases.mozilla.org/pub/firefox/releases/$FF_VERS/linux-x86_64/en-US/firefox-$FF_VERS.tar.bz2
-        cd "$FF_INST" && wget wget -qO- $FF_URL | tar xvj
+        wget -qO- $FF_URL | tar xvj -C $FF_INST/
         exit $?
     fi
 fi
