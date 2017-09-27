@@ -38,7 +38,7 @@ import static org.apache.commons.lang.StringUtils.isNotBlank;
  * {@link org.sakuli.starter.SakuliStarter} directly without Spring context.
  *
  * @author tschneck
- *         Date: 6/28/17
+ * Date: 6/28/17
  */
 public class CipherDelegator {
     private static final Logger LOGGER = LoggerFactory.getLogger(CipherDelegator.class);

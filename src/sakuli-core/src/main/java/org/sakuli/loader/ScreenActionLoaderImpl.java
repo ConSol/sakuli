@@ -18,8 +18,6 @@
 
 package org.sakuli.loader;
 
-import net.sf.sahi.report.Report;
-import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.sakuli.actions.screenbased.ScreenshotActions;
 import org.sakuli.actions.settings.ScreenBasedSettings;
 import org.sakuli.datamodel.TestCase;

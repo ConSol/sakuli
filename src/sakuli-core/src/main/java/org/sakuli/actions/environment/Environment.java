@@ -19,8 +19,6 @@
 package org.sakuli.actions.environment;
 
 import org.sakuli.actions.Action;
-import org.sakuli.actions.environment.CommandLineUtil.CommandLineResult;
-import org.sakuli.actions.ModifySahiTimer;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.screenbased.Region;
 import org.sakuli.actions.screenbased.RegionImpl;

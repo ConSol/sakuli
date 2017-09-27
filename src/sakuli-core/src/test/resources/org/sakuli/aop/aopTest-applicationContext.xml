@@ -66,10 +66,6 @@
         <constructor-arg value="org.sakuli.actions.screenbased.ScreenshotActions">
         </constructor-arg>
     </bean>
-    <bean id="org.sakuli.actions.environment.CipherUtil" class="org.sakuli.MockitoFactoryBean">
-        <constructor-arg value="org.sakuli.actions.environment.CipherUtil">
-        </constructor-arg>
-    </bean>
     <bean id="org.sakuli.datamodel.properties.ForwarderProperties" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.datamodel.properties.ForwarderProperties">
         </constructor-arg>

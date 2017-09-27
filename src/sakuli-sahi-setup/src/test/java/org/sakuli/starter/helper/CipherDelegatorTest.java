@@ -35,7 +35,7 @@ import static org.testng.Assert.assertTrue;
 
 /**
  * @author tschneck
- *         Date: 7/1/17
+ * Date: 7/1/17
  */
 public class CipherDelegatorTest {
 

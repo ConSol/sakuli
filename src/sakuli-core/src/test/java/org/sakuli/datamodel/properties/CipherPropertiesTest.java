@@ -23,8 +23,6 @@ import org.testng.annotations.Test;
 
 import java.util.Properties;
 
-import static org.testng.Assert.*;
-
 /**
  * @author tschneck
  *         Date: 7/3/17

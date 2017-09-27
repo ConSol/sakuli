@@ -18,8 +18,6 @@
 
 package org.sakuli.loader;
 
-import net.sf.sahi.report.Report;
-import net.sf.sahi.rhino.RhinoScriptRunner;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;

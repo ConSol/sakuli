@@ -23,7 +23,10 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.sakuli.BaseTest;
 import org.sakuli.PropertyHolder;
-import org.sakuli.datamodel.properties.*;
+import org.sakuli.datamodel.properties.ActionProperties;
+import org.sakuli.datamodel.properties.CipherProperties;
+import org.sakuli.datamodel.properties.SakuliProperties;
+import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.loader.BeanLoader;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -223,64 +226,4 @@ public class SakuliPropertyPlaceholderConfigurerTest {
         assertEquals(props.get(CipherProperties.ENCRYPTION_INTERFACE_AUTODETECT), "true");
     }
 
-    @SuppressWarnings("unchecked")
-    @Test
-    public void testModifySahiProperties() throws Exception {
-        Properties props = new Properties();
-        doNothing().when(testling).modifyPropertiesConfiguration(anyString(), anyListOf(String.class), any(Properties.class));
-        testling.setWritePropertiesToSahiConfig(true);
-        testling.modifySahiProperties(props);
-
-        ArgumentCaptor<List> argumentCaptorSahiProp = ArgumentCaptor.forClass(List.class);
-        ArgumentCaptor<List> argumentCaptorLogProp = ArgumentCaptor.forClass(List.class);
-        verify(testling).modifyPropertiesConfiguration(contains(SahiProxyProperties.SAHI_PROPERTY_FILE_APPENDER), argumentCaptorSahiProp.capture(), eq(props));
-        verify(testling).modifyPropertiesConfiguration(contains(SahiProxyProperties.SAHI_LOG_PROPERTY_FILE_APPENDER), argumentCaptorLogProp.capture(), eq(props));
-
-        assertTrue(argumentCaptorSahiProp.getValue().containsAll(
-                Arrays.asList("logs.dir", "ext.http.proxy.enable", "ext.http.proxy.host", "ext.http.proxy.port",
-                        "ext.http.proxy.auth.enable", "ext.http.proxy.auth.name", "ext.http.proxy.auth.password",
-                        "ext.https.proxy.enable", "ext.https.proxy.host", "ext.https.proxy.port",
-                        "ext.https.proxy.auth.enable", "ext.https.proxy.auth.name", "ext.https.proxy.auth.password",
-                        "ext.http.both.proxy.bypass_hosts", "ssl.client.keystore.type", "ssl.client.cert.path", "ssl.client.cert.password")),
-                "currently contains: " + argumentCaptorSahiProp.getValue().toString());
-        assertTrue(argumentCaptorLogProp.getValue().containsAll(
-                Arrays.asList("handlers", "java.util.logging.ConsoleHandler.level", "java.util.logging.FileHandler.level",
-                        "java.util.logging.ConsoleHandler.formatter", "java.util.logging.FileHandler.formatter",
-                        "java.util.logging.FileHandler.limit", "java.util.logging.FileHandler.count",
-                        "java.util.logging.FileHandler.pattern")),
-                "currently contains: " + argumentCaptorLogProp.getValue().toString());
-    }
-
-    @Test
-    public void testModifyPropertyFile() throws Exception {
-        Path targetProps = Paths.get(this.getClass().getResource("properties-test/target.properties").toURI());
-
-        Properties basicProps = new Properties();
-        basicProps.put("test.prop.1", "test-value-1");
-        basicProps.put("test.prop.2", "test-value-2");
-        testling.modifyPropertiesConfiguration(targetProps.toAbsolutePath().toString(), Arrays.asList("test.prop.1", "test.prop.2"), basicProps);
-        PropertiesConfiguration targetProfConf = new PropertiesConfiguration(targetProps.toFile());
-        assertEquals(targetProfConf.getString("test.prop.1"), "test-value-1");
-        assertEquals(targetProfConf.getString("test.prop.2"), "test-value-2");
-
-        testling.restoreProperties();
-        targetProfConf = new PropertiesConfiguration(targetProps.toFile());
-        assertEquals(targetProfConf.getString("test.prop.1"), "xyz");
-        assertEquals(targetProfConf.getString("test.prop.2"), "zyx");
-    }
-
-    @Test
-    public void testModifySahiProxyPortInPropertyFile() throws Exception {
-        Path targetProps = Paths.get(this.getClass().getResource("properties-test/target.properties").toURI());
-
-        Properties basicProps = new Properties();
-        basicProps.put(SahiProxyProperties.PROXY_PORT, "9000");
-        testling.modifySahiProxyPortPropertiesConfiguration(targetProps.toAbsolutePath().toString(), basicProps);
-        PropertiesConfiguration targetProfConf = new PropertiesConfiguration(targetProps.toFile());
-        assertEquals(targetProfConf.getString(SahiProxyProperties.SAHI_PROPERTY_PROXY_PORT_MAPPING), "9000");
-
-        testling.restoreProperties();
-        targetProfConf = new PropertiesConfiguration(targetProps.toFile());
-        assertEquals(targetProfConf.getString(SahiProxyProperties.SAHI_PROPERTY_PROXY_PORT_MAPPING), null);
-    }
 }

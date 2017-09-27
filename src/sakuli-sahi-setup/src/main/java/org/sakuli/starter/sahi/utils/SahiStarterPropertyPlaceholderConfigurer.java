@@ -20,8 +20,6 @@ package org.sakuli.starter.sahi.utils;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.sakuli.datamodel.properties.CipherProperties;
-import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.starter.sahi.datamodel.properties.SahiProxyProperties;
@@ -58,26 +56,6 @@ public class SahiStarterPropertyPlaceholderConfigurer extends SakuliPropertyPlac
         modifiedSahiConfigProps = new HashMap<>();
     }
 
-    /**
-     * Determines the encryption mode of the CLI based values and set it to the assigned 'props'
-     */
-    public static void assignEncryptionProperties(Properties props) {
-        if (isNotEmpty(ENCRYPTION_INTERFACE_VALUE)) {
-            props.setProperty(CipherProperties.ENCRYPTION_MODE, CipherProperties.ENCRYPTION_MODE_INTERFACE);
-            if (ENCRYPTION_INTERFACE_VALUE.equals("auto")) {
-                props.setProperty(CipherProperties.ENCRYPTION_INTERFACE, "");
-                props.setProperty(CipherProperties.ENCRYPTION_INTERFACE_AUTODETECT, "true");
-            } else {
-                props.setProperty(CipherProperties.ENCRYPTION_INTERFACE, ENCRYPTION_INTERFACE_VALUE);
-                props.setProperty(CipherProperties.ENCRYPTION_INTERFACE_AUTODETECT, "false");
-            }
-        }
-        if (isNotEmpty(ENCRYPTION_KEY_VALUE)) {
-            props.setProperty(CipherProperties.ENCRYPTION_MODE, CipherProperties.ENCRYPTION_MODE_ENVIRONMENT);
-            props.setProperty(CipherProperties.ENCRYPTION_KEY, ENCRYPTION_KEY_VALUE);
-        }
-    }
-
     @Override
     protected void loadProperties(Properties props) throws IOException {
         super.loadProperties(props);
@@ -87,16 +65,8 @@ public class SahiStarterPropertyPlaceholderConfigurer extends SakuliPropertyPlac
             props.setProperty(SahiProxyProperties.PROXY_HOME_FOLDER, SAHI_HOME_VALUE);
             props.setProperty(SahiProxyProperties.PROXY_CONFIG_FOLDER, SAHI_HOME_VALUE + File.separator + "userdata");
         }
-        if (isNotEmpty(TEST_SUITE_BROWSER)) {
-            props.setProperty(TestSuiteProperties.BROWSER_NAME, TEST_SUITE_BROWSER);
-        }
-        assignEncryptionProperties(props);
 
         modifySahiProperties(props);
-    }
-
-    protected void loadEnvironmentVariablesToProperties(Properties props) {
-        EnvironmentPropertyConfigurer.resolveDashedProperties(props);
     }
 
     @PreDestroy
