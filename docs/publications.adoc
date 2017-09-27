@@ -8,6 +8,8 @@
 :page-path: docs/publications.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
+04/2017: https://www.sigs-datacom.de/digital/objektspektrum[OBJEKTspektrum: End-2-End-UI-Tests mit Sakuli in Container-Umgebungen - "Time-to-Test" im Griff] (Tobias Schneck, Simon Meggle)
+
 03/2017: https://jaxenter.de/sakuli-testing-monitoring-container-54374[JAXenter: End-2-End-Testing und -Monitoring im Container-Zeitalter] (Tobias Schneck)
 
 01/2017: https://www.consol.de/fileadmin/pdf/news/news-events/01_2017-Java_aktuell-Magazin-Christoph-Deppisch-und-Tobias-Schneck_Automatisiertes-Testen-in-Zeiten-von-Microservices.pdf[Java aktuell: Automatisiertes Testen in Zeiten von Microservices] (Christoph Deppisch / Tobias Schneck)

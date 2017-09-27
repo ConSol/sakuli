@@ -2,10 +2,20 @@
 
 . $OMD_ROOT/etc/omd/site.conf
 
+
 STATE=$1
 HOST=$2
 SERVICE=$3
 LASTSERVICECHECK=$4
+SERVICEATTEMPT=$5
+
+function usage() {
+    echo "Wrong number of arguments."
+    echo "Usage: $0 STATE HOSTNAME SERVICEDESCRIPTION LASTSERVICECHECK SERVICEATTEMPT"
+    exit 1
+}
+
+[ $# -ne 5 ] && usage; 
 
 LOG=${OMD_ROOT}/var/log/sakuli_screenshot_eventhandler.log
 IMG_ROOT=${OMD_ROOT}/var/sakuli/screenshots/$HOST/$SERVICE
@@ -19,29 +29,32 @@ function log() {
 
 mkdir -p $TMP
 
+log "---------------------------------------"
+log "STATE: $STATE"
+log "HOST/SERVICE: $HOST / $SERVICE"
+log "LASTSERVICECHECK: $LASTSERVICECHECK"
+log "SERVICEATTEMPT: $SERVICEATTEMPT"
+
 case $STATE in
 "OK")
+    log "$STATE => nothing to do. "
     ;;
 "WARNING")
+    log "$STATE => nothing to do. "
     ;;
 "UNKNOWN")
+    log "$STATE => nothing to do. "
     ;;
 "CRITICAL")
-    log "---------------------------------------"
-    log "HOST/SERVICE: $HOST / $SERVICE"
-    log "STATE: $STATE"
-    log "LASTSERVICECHECK: $LASTSERVICECHECK"
+    log "$STATE => handling event..."
+    PL_OUT_SHORT=$(echo -e "GET services\nColumns: plugin_output\nFilter: host_name = $HOST\nFilter: description = $SERVICE" | unixcat ~/tmp/run/live)
+    PL_OUT_LONG=$(echo -e "GET services\nColumns: long_plugin_output\nFilter: host_name = $HOST\nFilter: description = $SERVICE" | unixcat ~/tmp/run/live)
 
-    OUT=$(echo -e "GET services\nColumns: plugin_output\nFilter: host_name = $HOST\nFilter: description = $SERVICE" | unixcat ~/tmp/run/live)
-    OUTLONG=$(echo -e "GET services\nColumns: long_plugin_output\nFilter: host_name = $HOST\nFilter: description = $SERVICE" | unixcat ~/tmp/run/live)
+    log "Fetched plugin out from livestatus: $PL_OUT_SHORT"
 
-    log "PLUGIN_OUT: $OUT"
-
-    IMG=$(echo $OUTLONG | sed 's/^.*base64,\(.*\)".*$/\1/')
+    IMG=$(echo $PL_OUT_LONG | sed 's/^.*base64,\(.*\)".*$/\1/')
     #src="data:image/jpg
-    FORMAT=$(echo $OUTLONG | sed 's/^.*data:image\/\(.*\);.*$/\1/' )
-
-    log "Found screenshot format: $FORMAT"
+    FORMAT=$(echo $PL_OUT_LONG | sed 's/^.*data:image\/\(.*\);.*$/\1/' )
     TMPNAME=screenshot_${LASTSERVICECHECK}.${FORMAT}
     echo "$IMG" | base64 -d > $TMP/${TMPNAME}
 
@@ -52,15 +65,15 @@ case $STATE in
     mkdir -p "$IMG_DIR"
     log "Moving $TMP/${TMPNAME} to $IMG_DIR/screenshot.${FORMAT}"
     mv $TMP/${TMPNAME} "$IMG_DIR/screenshot.${FORMAT}"
-    echo "$OUT" > "$IMG_DIR/output.txt"
+    echo "$PL_OUT_SHORT" > "$IMG_DIR/output.txt"
 
     # write image path to InfluxDB
     if [ "$CONFIG_INFLUXDB"x == "onx" ]; then
         log "Writing image path to InfluxDB..."
         eval $(grep '^USER=' $OMD_ROOT/etc/init.d/influxdb)
         eval $(grep '^PASS=' $OMD_ROOT/etc/init.d/influxdb)
-        OUT=$(curl -v -XPOST 'http://'$CONFIG_INFLUXDB_HTTP_TCP_PORT'/write?db=sakuli&u='$USER'&p='$PASS'&precision=s' --data-binary 'images,host='$HOST',service='$SERVICE' path="<div class=\"sakuli-popup\">/sakuli/'$HOST'/'$SERVICE'/'$LASTSERVICECHECK'/</div>" '$LASTSERVICECHECK  2>&1 | grep '< HTTP')
-        log "InfluxDB responded: $OUT"
+        INFLUX_OUT=$(curl -v -XPOST 'http://'$CONFIG_INFLUXDB_HTTP_TCP_PORT'/write?db=sakuli&u='$USER'&p='$PASS'&precision=s' --data-binary 'images,host='$HOST',service='$SERVICE' path="<div class=\"sakuli-popup\">/sakuli/'$HOST'/'$SERVICE'/'$LASTSERVICECHECK'/</div>" '$LASTSERVICECHECK  2>&1 | grep '< HTTP')
+        log "InfluxDB responded: $INFLUX_OUT"
     fi
 
     ;;

@@ -86,6 +86,7 @@
 
     <bean id="org.sakuli.datamodel.properties.ActionProperties"
           class="org.sakuli.datamodel.properties.ActionProperties"/>
+    <bean class="org.sakuli.datamodel.properties.CipherProperties"/>
 
     <bean class="org.sakuli.actions.settings.ScreenBasedSettings">
         <constructor-arg index="0" ref="org.sakuli.datamodel.properties.ActionProperties"/>

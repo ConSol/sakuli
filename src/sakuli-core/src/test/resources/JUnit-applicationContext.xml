@@ -26,6 +26,7 @@
 
     <bean class="org.sakuli.datamodel.properties.SakuliProperties"/>
     <bean class="org.sakuli.datamodel.properties.ForwarderProperties"/>
+    <bean class="org.sakuli.datamodel.properties.CipherProperties"/>
 
     <bean id="propertyResolver"
           class="org.sakuli.utils.SakuliPropertyPlaceholderConfigurer">
@@ -55,5 +56,4 @@
     <bean id="org.sakuli.loader.ScreenActionLoader" class="org.sakuli.MockitoFactoryBean">
         <constructor-arg value="org.sakuli.loader.ScreenActionLoaderImpl"/>
     </bean>
-
 </beans>

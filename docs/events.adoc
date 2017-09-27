@@ -8,8 +8,17 @@
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 :hardbreaks:
+July 11, 2017: https://www.consol.de/news/details/review-openshift-kooperationsevent-von-consol-und-red-hat-am-110717[ConSol/Redhat OpenShift Day - everything Continuous] (Tobias Schneck)
+*-> Slides:* https://www.slideshare.net/TobiasSchneck/continuous-testing-integration-und-uitesting-mit-openshiftbuildpipelines[Continuous Testing: Integration- und UI-Testing mit OpenShift-Build-Pipelines]
+*-> Demo Code:* image:github-logo-inline.png[github_
+               -logo] https://github.com/toschneck/openshift-example-bakery-ci-pipeline[toschneck/openshift-example-bakery-ci-pipeline]
 
-April 27, 2017: http://www.jugs.de/tt2017/abstracts.html#link07[Stuttgarter Test-Tage, Stuttgart]: Testing - Selenium? Rich-Clients? Containers? (Tobias Schneck)
+
+May 4, 2017: https://mathias-kettner.de/check_mk_konferenz_2017.html[Check_MK Conference 2017] (Hardy Düttmann, ITeRATIO)
+*-> Slides:* https://mathias-kettner.de/download/2017-Konferenz-Hardy_Duettmann-End2End.pdf[End-To-End-Monitoring with Check_MK]
+*-> Video:* https://www.youtube.com/watch?v=cX0-zLxI_Zg[YouTube: Hardy Düttmann | End-To-End-Monitoring with Check_MK]
+
+April 27, 2017: http://www.jugs.de/tt2017/abstracts.html#link07[Stuttgarter Test-Tage, Stuttgart] (Tobias Schneck)
 *-> Slides:* https://www.slideshare.net/TobiasSchneck/testing-selenium-richclients-containers[Testing - Selenium? Rich-Clients? Containers?]
 
 January 30 - February 3, 2017: http://www.oop-konferenz.de/[OOP 2017, Munich] (Tobias Schneck)

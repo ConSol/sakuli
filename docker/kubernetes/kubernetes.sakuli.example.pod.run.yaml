@@ -18,8 +18,7 @@ spec:
   terminationGracePeriodSeconds: 5
   containers:
   - name: test-sakuli-kub
-    ##  TODO TS: remove tag after finishing
-    image: consol/sakuli-ubuntu-xfce:dev
+    image: consol/sakuli-ubuntu-xfce
     imagePullPolicy: Always
     args:
       ### make normal UI startup to connect via: oc rsh <pod-name> bash

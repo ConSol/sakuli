@@ -16,7 +16,9 @@ echo -e "\n\n------------------ START SAKULI CONTAINER -------------------------
 if [ -n "$SKIP" ]; then
     echo -e "\n\n------------------ VNC STARTUP skipped -----------------------------"
 else
-    $STARTUPDIR/vnc_startup.sh
+    #script need at least one terminating command
+    $STARTUPDIR/vnc_startup.sh echo "VNC ready!"
+    echo -e "\n\n------------------ VNC STARTUP finished -----------------------------"
 fi
 
 #env
@@ -25,4 +27,10 @@ echo "Executing: 'sakuli $@'"
 $SAKULI_HOME/bin/sakuli "$@"
 res=$?
 echo "SAKULI_RETURN_VAL: $res"
+
+if [[ $KUBERNETES_RUN_MODE = "job" ]] && [ "$res" -ge 0 -a "$res" -le 6 ]; then
+    echo "KUBERNETES_RUN_MODE=$KUBERNETES_RUN_MODE => return exit code 0"
+    res=0
+    echo "EXIT_CODE: $res"
+fi
 exit $res

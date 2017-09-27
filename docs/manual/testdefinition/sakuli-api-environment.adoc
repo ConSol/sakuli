@@ -21,7 +21,9 @@ Environment - Represents the environment of the current test host.
 * link:#Environment.resetSimilarity[Environment.resetSimilarity()]
 * link:#Environment.getRegionFromFocusedWindow[Environment.getRegionFromFocusedWindow()]
 * link:#Environment.takeScreenshot[Environment.takeScreenshot(pathName)]
+* link:#Environment.takeScreenshotWithTimestamp[Environment.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)]
 * link:#Environment.sleep[Environment.sleep(seconds)]
+* link:#Environment.sleepMs[Environment.sleepMs(milliseconds)]
 * link:#Environment.getClipboard[Environment.getClipboard()]
 * link:#Environment.setClipboard[Environment.setClipboard(text)]
 * link:#Environment.pasteClipboard[Environment.pasteClipboard()]
@@ -87,6 +89,27 @@ If there ist just a file name, the screenshot will be saved in your testsuite lo
 environment.takeScreenshot("test.jpg");
 ----
 
+[[Environment.takeScreenshotWithTimestamp]]
+.Environment.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)
+
+Takes a screenshot of the current screen and add the current timestamp in the file name like e.g.:
+
+*Params*
+
+* filenamePostfix `String` - postfix for the final filename
+ Default: screenshot
+* optFolderPath `String` - optional FolderPath, where to save the screenshot.
+ If null or empty: testscase folder will be used
+* optFormat `string` - optional format, for the screenshot (currently supported: jpg and png)
+ If null or empty use property `sakuli.screenshot.format`
+
+*Returns*: `String` - file path to the created screenshot OR null on errors
+*Example*
+[source,js]
+----
+env.takeScreenshotWithTimestamp("my-screenshot");
+----
+saved under: `mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
 
 [[Environment.sleep]]
 .Environment.sleep(seconds)
@@ -96,6 +119,17 @@ Blocks the current testcase execution for x seconds
 *Params*
 
 * seconds `number` - to sleep
+
+*Returns*: - this Environment or NULL on errors.
+
+[[Environment.sleepMs]]
+.Environment.sleepMs(milliseconds)
+
+Blocks the current testcase execution for x milliseconds
+
+*Params*
+
+* milliseconds `number` - to sleep
 
 *Returns*: - this Environment or NULL on errors.
 
@@ -225,7 +259,7 @@ The text is entered at the current position of the focus.
 .Environment.decryptSecret(secret)
 
 Decrypt a encrypted secret and returns the value at runtime.
-The decryption will only work if the encryption and decryption happen on the same physical machine.
+The decryption will only work like described at https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sakuli-encryption.adoc .
 There will be no logging with the decrypted secret during this step.
 <p/>
 To create a encrypted secret see "sakuli-manual.md".

@@ -27,6 +27,7 @@ At this point we want to thank all contributors, which helped to move this great
 * Sven Nierlein
 * Philip Griesbacher - Sakuli Go Starter
 * Thomas Rothenbacher
+* Christopher Kreft
 
 (did we forget you? Please poke us):
 

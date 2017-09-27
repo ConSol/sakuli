@@ -7,13 +7,27 @@
 :page-path: docs/manual/testdefinition/advanced-topics/sakuli-property-loading.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-*Sakuli properties* are predefined in `__SAKULI_HOME__/config/sakuli-default.properties`; these values should/can be *overridden* in the following order (last match wins): 
+*Sakuli properties* are predefined in `__SAKULI_HOME__/config/sakuli-default.properties`; these values should/can be *overwritten* in the following order (last match wins):
 
 . as a *global testsuite property* in `test-suites-folder/sakuli.properties`
  -&gt; valid for *all test suites* within this folder
 . as a *testsuite property* in `test-suites-folder/test-suite/testsuite.properties`
  -&gt; valid for the **test suite** itself and **all test cases** within it 
-. as a *Java VM option* like `-D log.level.sakuli=DEBUG`, as option of the Sakuli starter
+. as a *Java VM option* as option of the Sakuli starter, like `sakuli run -D log.level.sakuli=DEBUG`,
  -&gt; valid for only one test run
+. as a *environment variable*  matching the property key in dashed uppercase writing, e.g. `LOG_LEVEL_SAKULI=DEBUG`  -&gt; overwrites property `log.level.sakuli` as long as environment variable is defined
+. as a *explicit starter option* (if present) of the Sakuli CLI, e.g. `sakuli run test -browser chrome`
+  -&gt; valid for only one test run
 
 We do not recommend to change any values in `__SAKULI_HOME__/config/sakuli-default.properties` as a new version of Sakuli will have its own default property file and would overwrite the existing one; your changes would not be preserved.
+
+[[sakuli-default-properties]]
+===== Property Reference
+
+The file `sakuli-default.properties` contains all possible configuration possibilities and default values:
+
+//INFO: will be created during build through maven copy plugin
+[source, properties]
+----
+include::../../../sakuli-default.properties[]
+----

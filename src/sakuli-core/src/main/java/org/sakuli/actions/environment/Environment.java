@@ -20,6 +20,7 @@ package org.sakuli.actions.environment;
 
 import org.sakuli.actions.Action;
 import org.sakuli.actions.environment.CommandLineUtil.CommandLineResult;
+import org.sakuli.actions.ModifySahiTimer;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.screenbased.Region;
 import org.sakuli.actions.screenbased.RegionImpl;
@@ -29,6 +30,8 @@ import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
+import org.sakuli.utils.CommandLineUtil;
+import org.sakuli.utils.CommandLineUtil.CommandLineResult;
 import org.sikuli.script.App;
 import org.sikuli.script.IRobot;
 import org.sikuli.script.Key;
@@ -36,10 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * This is a Singeton because the Function should be stateless
@@ -135,30 +135,36 @@ public class Environment implements Action {
     }
 
     /**
-     * Takes a screenshot of the current screen and saves it to the overgiven path. If there ist just a file name, the
-     * screenshot will be saved in your testsuite log folder.
+     * TODO TS update javascript and API docu
+     * Takes a screenshot of the current screen and saves it to the assigned path. If there ist just a file name, the
+     * screenshot will be saved in your current testcase folder.
+     * Supported formats: `jpg` and `png`
      *
-     * @param pathName "pathname/filname.format" or just "filename.format"<br> for example "test.png".
+     * @param filename "pathname/filename.format" or just "filename.format"<br> for example "test.png".
      */
-    @LogToResult(message = "take a screenshot from the current screen and save it to the file system", logClassInstance = false)
-    public String takeScreenshot(final String pathName) {
-        Path folderPath;
-        String message;
-        if (pathName.contains(File.separator)) {
-            folderPath = Paths.get(pathName.substring(0, pathName.lastIndexOf(File.separator)));
-            message = pathName.substring(pathName.lastIndexOf(File.separator) + 1, pathName.lastIndexOf("."));
-        } else {
-            folderPath = loader.getActionProperties().getScreenShotFolder();
-            message = pathName.substring(0, pathName.lastIndexOf("."));
-        }
+    @LogToResult(logClassInstance = false)
+    public Path takeScreenshot(final String filename) {
+        return getLoader().getScreenshotActions().takeScreenshot(filename, null);
+    }
 
-        try {
-            loader.getScreen().capture();
-            return loader.getScreenshotActions().takeScreenshot(message, folderPath, pathName.substring(pathName.lastIndexOf(".") + 1)).toFile().getAbsolutePath();
-        } catch (IOException e) {
-            loader.getExceptionHandler().handleException("Can't create Screenshot for path '" + pathName + "': " + e.getMessage(), resumeOnException);
-        }
-        return null;
+    /**
+     * TODO TS update javascript and API docu && test on js
+     * <p>
+     * Takes a screenshot of the current screen and add the current timestamp in the file name like e.g.:
+     * ```
+     * env.takeScreenshotWithTimestamp("my-screenshot");
+     * ```
+     * saved under:`mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
+     *
+     * @param filenamePostfix postfix for the final filename
+     * @param optFolderPath   optional FolderPath, where to save the screenshot.
+     *                        If null or empty: testscase folder will be used
+     * @param optFormat       optional format, for the screenshot (currently supported: jpg and png)
+     *                        If null or empty use property `sakuli.screenshot.format`
+     */
+    @LogToResult(logClassInstance = false)
+    public Path takeScreenshotWithTimestamp(final String filenamePostfix, final String optFolderPath, final String optFormat) {
+        return getLoader().getScreenshotActions().takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat, null);
     }
 
     /**

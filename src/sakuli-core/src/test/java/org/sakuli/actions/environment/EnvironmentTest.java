@@ -21,6 +21,7 @@ package org.sakuli.actions.environment;
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.BaseTest;
 import org.sakuli.exceptions.SakuliException;
+import org.sakuli.utils.CommandLineUtil;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
