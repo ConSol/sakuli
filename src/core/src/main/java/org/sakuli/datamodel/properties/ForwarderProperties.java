@@ -31,10 +31,12 @@ public class ForwarderProperties extends AbstractProperties {
     public static final String GEARMAN_ENABLED = "sakuli.forwarder.gearman.enabled";
     public static final String ICINGA_ENABLED = "sakuli.forwarder.icinga2.enabled";
     public static final String CHECK_MK_ENABLED = "sakuli.forwarder.check_mk.enabled";
+    public static final String JSON_ENABLED = "sakuli.forwarder.json.enabled";
     protected static final boolean DATABASE_ENABLED_DEFAULT = false;
     protected static final boolean GEARMAN_ENABLED_DEFAULT = false;
     protected static final boolean ICINGA_ENABLED_DEFAULT = false;
     protected static final boolean CHECK_MK_ENABLED_DEFAULT = false;
+    protected static final boolean JSON_ENABLED_DEFAULT = true;
 
     @Value("${" + DATABASE_ENABLED + ":" + DATABASE_ENABLED_DEFAULT + "}")
     private boolean databaseEnabled;
@@ -44,6 +46,9 @@ public class ForwarderProperties extends AbstractProperties {
     private boolean icinga2Enabled;
     @Value("${" + CHECK_MK_ENABLED + ":" + CHECK_MK_ENABLED_DEFAULT + "}")
     private boolean checkMKEnabled;
+
+    @Value("${" + JSON_ENABLED + ":" + JSON_ENABLED_DEFAULT + "}")
+    private boolean jsonEnabled;
 
     public boolean isDatabaseEnabled() {
         return databaseEnabled;
@@ -71,6 +76,14 @@ public class ForwarderProperties extends AbstractProperties {
 
     public boolean isCheckMKEnabled() {
         return checkMKEnabled;
+    }
+
+    public void setJsonEnabled(boolean jsonEnabled) {
+        this.jsonEnabled = jsonEnabled;
+    }
+
+    public boolean isJsonEnabled() {
+        return jsonEnabled;
     }
 
 }

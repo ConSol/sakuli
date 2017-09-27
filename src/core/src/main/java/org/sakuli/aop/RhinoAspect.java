@@ -27,11 +27,18 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.sakuli.actions.logging.LogToResult;
+import org.sakuli.datamodel.TestAction;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.actions.LogResult;
-import org.sakuli.loader.*;
+import org.sakuli.loader.BaseActionLoader;
+import org.sakuli.loader.BaseActionLoaderImpl;
+import org.sakuli.loader.BeanLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.apache.commons.lang.StringUtils.removeEnd;
@@ -118,6 +125,8 @@ public class RhinoAspect extends BaseSakuliAspect {
         if (logToResult != null) {
             StringBuilder message = createLoggingString(joinPoint, logToResult);
 
+            addActionsToCurrentStep(extractTestAction(joinPoint, logToResult));
+
             //log the action to log file and print
             switch (logToResult.level()) {
                 case ERROR:
@@ -145,6 +154,34 @@ public class RhinoAspect extends BaseSakuliAspect {
                 }
             }
         }
+    }
+
+    //TODO evtl. move the test action creation to a new service
+    private List<TestAction> cachedTestActions = new ArrayList<>();
+
+    protected void addActionsToCurrentStep(TestAction currentTestAction) {
+        if (currentTestAction != null) {
+            cachedTestActions.add(currentTestAction);
+        }
+        TestCaseStep currentTestCaseStep = BeanLoader.loadBaseActionLoader().getCurrentTestCaseStep();
+        if (currentTestCaseStep != null) {
+            currentTestCaseStep.addActions(cachedTestActions);
+            //reset the list of actions, since those actions have already been added to the current test step.
+            cachedTestActions = new ArrayList<>();
+        }
+    }
+
+    protected TestAction extractTestAction(JoinPoint joinPoint, LogToResult logToResult) {
+        if (logToResult.logArgsOnly()) {
+            return null;
+        }
+        return TestAction.createSakuliTestAction(
+                        joinPoint.getSignature().getDeclaringType().getSimpleName(),
+                        joinPoint.getSignature().getName(),
+                        joinPoint.getArgs(),
+                        logToResult.message(),
+                        BeanLoader.loadBaseActionLoader().getSakuliProperties().getSakuliDocBaseUrl()
+                );
     }
 
     /**
@@ -213,6 +250,7 @@ public class RhinoAspect extends BaseSakuliAspect {
             else if (logResult.getDebugInfo() == null
                     || !logResult.getDebugInfo().startsWith("org.sakuli.actions.")) {
                 logger.info(logResult.getMessage());
+                addActionsToCurrentStep(TestAction.createSahiTestAction(logResult.getMessage(), BeanLoader.loadBaseActionLoader().getSakuliProperties().getSahiDocUrl()));
             }
         }
 

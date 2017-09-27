@@ -28,6 +28,21 @@ function set_sakuli_root {
     fi
 }
 
+function remove_sakuli_root {
+    echo "remove 'SAKULI_HOME' from '.bashrc'"
+    [ -r ~/.bashrc ] && sed -i '/export SAKULI_HOME/d' ~/.bashrc
+}
+
+function set_sakuli_root {
+    if [ -d "$1" ]; then
+        echo "set 'SAKULI_ROOT' in '.bashrc' to: $1"
+        echo "export SAKULI_ROOT=\"$1\"" >> ~/.bashrc
+    else
+        echo "new 'SAKULI_ROOT' path '$1' does not exists!"
+        exit 1
+    fi
+}
+
 function set_path {
     echo "$PATH"
     if grep -q SAKULI_HOME/bin: ~/.bashrc 2>/dev/null; then

@@ -1,0 +1,264 @@
+{
+  "browserName": "firefox",
+  "browserInfo": "Mozilla/5.0 (Macintosh, Intel Mac OS X 10.10, rv:49.0) Gecko/20100101 Firefox/49.0",
+  "host": "MacBookProConsol.fritz.box",
+  "testSuiteFolder": "/Users/georgi/Projects/testautomatisierung/sakuli/example_test_suites/example_macos",
+  "testSuiteFile": "/Users/georgi/Projects/testautomatisierung/sakuli/example_test_suites/example_macos/testsuite.suite",
+  "dbJobPrimaryKey": -1,
+  "testCases": {
+    "case1": {
+      "startUrl": "http://sahi.example.com/_s_/dyn/Driver_initialized",
+      "lastURL": "http://sahi.example.com/_s_/dyn/Driver_initialized",
+      "steps": [
+        {
+          "testActions": [
+            {
+              "object": "TestCaseAction",
+              "method": "getIdFromPath",
+              "args": [
+                "/Users/georgi/Projects/testautomatisierung/sakuli/example_test_suites/example_macos/case1/undefined"
+              ],
+              "message": "convert the path of the test case file to a valid test case ID",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#TestCaseAction.getIdFromPath"
+            },
+            {
+              "object": "TestCaseAction",
+              "method": "init",
+              "args": [
+                "case1",
+                60,
+                70,
+                [
+                  "/Users/georgi/Projects/testautomatisierung/sakuli/example_test_suites/example_macos/case1"
+                ]
+              ],
+              "message": "init a new test case",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#TestCaseAction.init"
+            },
+            {
+              "object": "_highlight(_link(\"SSL Manager\"));",
+              "method": "_highlight(_link(\"SSL Manager\"));",
+              "args": null,
+              "message": null,
+              "documentationURL": "http://sahipro.com/docs/sahi-apis/action-apis.html"
+            },
+            {
+              "object": "_highlight(_link(\"Logs\"));",
+              "method": "_highlight(_link(\"Logs\"));",
+              "args": null,
+              "message": null,
+              "documentationURL": "http://sahipro.com/docs/sahi-apis/action-apis.html"
+            },
+            {
+              "object": "_highlight(_link(\"Online Documentation\"));",
+              "method": "_highlight(_link(\"Online Documentation\"));",
+              "args": null,
+              "message": null,
+              "documentationURL": "http://sahipro.com/docs/sahi-apis/action-apis.html"
+            },
+            {
+              "object": "_highlight(_link(\"Test Pages\"));",
+              "method": "_highlight(_link(\"Test Pages\"));",
+              "args": null,
+              "message": null,
+              "documentationURL": "http://sahipro.com/docs/sahi-apis/action-apis.html"
+            },
+            {
+              "object": "_highlight(_link(\"Sample Application\"));",
+              "method": "_highlight(_link(\"Sample Application\"));",
+              "args": null,
+              "message": null,
+              "documentationURL": "http://sahipro.com/docs/sahi-apis/action-apis.html"
+            },
+            {
+              "object": "TestCaseAction",
+              "method": "addTestCaseStep",
+              "args": [
+                "Test Sahi landing page",
+                "1506528264044",
+                "1506528265467",
+                30
+              ],
+              "message": "add a step to the current test case",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#TestCaseAction.addTestCaseStep"
+            }
+          ],
+          "startDate": "Sep 27, 2017 6:04:24 PM",
+          "stopDate": "Sep 27, 2017 6:04:25 PM",
+          "exception": null,
+          "state": "OK",
+          "name": "Test_Sahi_landing_page",
+          "dbPrimaryKey": -1,
+          "warningTime": 30,
+          "criticalTime": -1,
+          "id": "Test_Sahi_landing_page",
+          "creationDate": "2017-09-27T16:04:19.472Z"
+        },
+        {
+          "testActions": [
+            {
+              "object": "Application",
+              "method": "open",
+              "args": [],
+              "message": "open application",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#Application.open"
+            },
+            {
+              "object": "Environment",
+              "method": "sleep",
+              "args": [
+                4.0
+              ],
+              "message": "sleep and do nothing for x seconds",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#Environment.sleep"
+            },
+            {
+              "object": "Environment",
+              "method": "type",
+              "args": [
+                "525"
+              ],
+              "message": "type over system keyboard",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#Environment.type"
+            },
+            {
+              "object": "Environment",
+              "method": "sleep",
+              "args": [
+                2.0
+              ],
+              "message": "sleep and do nothing for x seconds",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#Environment.sleep"
+            },
+            {
+              "object": "Region",
+              "method": "find",
+              "args": [
+                "plus.png"
+              ],
+              "message": "find the image in this region",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#Region.find"
+            },
+            {
+              "object": "Region",
+              "method": "click",
+              "args": [],
+              "message": "",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#Region.click"
+            },
+            {
+              "object": "Region",
+              "method": "type",
+              "args": [
+                "100"
+              ],
+              "message": "type over system keyboard",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#Region.type"
+            },
+            {
+              "object": "Region",
+              "method": "find",
+              "args": [
+                "result.png"
+              ],
+              "message": "find the image in this region",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#Region.find"
+            },
+            {
+              "object": "Region",
+              "method": "click",
+              "args": [],
+              "message": "",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#Region.click"
+            },
+            {
+              "object": "TestCaseAction",
+              "method": "addTestCaseStep",
+              "args": [
+                "Calculation",
+                "1506528265467",
+                "1506528276537",
+                30
+              ],
+              "message": "add a step to the current test case",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#TestCaseAction.addTestCaseStep"
+            }
+          ],
+          "startDate": "Sep 27, 2017 6:04:25 PM",
+          "stopDate": "Sep 27, 2017 6:04:36 PM",
+          "exception": null,
+          "state": "OK",
+          "name": "Calculation",
+          "dbPrimaryKey": -1,
+          "warningTime": 30,
+          "criticalTime": -1,
+          "id": "Calculation",
+          "creationDate": "2017-09-27T16:04:19.473Z"
+        },
+        {
+          "testActions": [
+            {
+              "object": "Application",
+              "method": "open",
+              "args": [],
+              "message": "open application",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#Application.open"
+            },
+            {
+              "object": "Environment",
+              "method": "paste",
+              "args": [
+                "Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting..."
+              ],
+              "message": "",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#Environment.paste"
+            },
+            {
+              "object": "TestCaseAction",
+              "method": "addTestCaseStep",
+              "args": [
+                "Editor",
+                "1506528276537",
+                "1506528278204",
+                30
+              ],
+              "message": "add a step to the current test case",
+              "documentationURL": "http://consol.github.io/sakuli/v1.0.2/index.html#TestCaseAction.addTestCaseStep"
+            }
+          ],
+          "startDate": "Sep 27, 2017 6:04:36 PM",
+          "stopDate": "Sep 27, 2017 6:04:38 PM",
+          "exception": null,
+          "state": "OK",
+          "name": "Editor",
+          "dbPrimaryKey": -1,
+          "warningTime": 30,
+          "criticalTime": -1,
+          "id": "Editor",
+          "creationDate": "2017-09-27T16:04:19.474Z"
+        }
+      ],
+      "tcFile": "/Users/georgi/Projects/testautomatisierung/sakuli/example_test_suites/example_macos/case1/sakuli_demo.js",
+      "startDate": "Sep 27, 2017 6:04:24 PM",
+      "stopDate": "Sep 27, 2017 6:04:42 PM",
+      "exception": null,
+      "state": "OK",
+      "name": "case1",
+      "dbPrimaryKey": -1,
+      "warningTime": 60,
+      "criticalTime": 70,
+      "id": "case1",
+      "creationDate": "2017-09-27T16:04:19.469Z"
+    }
+  },
+  "startDate": "Sep 27, 2017 6:04:19 PM",
+  "stopDate": "Sep 27, 2017 6:04:46 PM",
+  "exception": null,
+  "state": "OK",
+  "name": "example test suite for Sakuli",
+  "dbPrimaryKey": -1,
+  "warningTime": 120,
+  "criticalTime": 140,
+  "id": "example_macos",
+  "creationDate": "2017-09-27T16:04:19.279Z"
+}

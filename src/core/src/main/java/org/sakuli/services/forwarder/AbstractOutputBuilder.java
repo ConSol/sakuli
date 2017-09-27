@@ -44,7 +44,7 @@ import static org.sakuli.services.forwarder.gearman.TextPlaceholder.*;
  * @author tschneck
  *         Date: 2/24/16
  */
-public abstract class AbstractOutputBuilder {
+public abstract class   AbstractOutputBuilder {
     public final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.YY HH:mm:ss");
     protected Logger LOGGER = LoggerFactory.getLogger(getClass());
 
