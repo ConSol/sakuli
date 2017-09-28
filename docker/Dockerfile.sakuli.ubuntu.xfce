@@ -1,6 +1,6 @@
 # This Dockerfile is used to build a sakuli image based on Ubuntu
 
-FROM consol/ubuntu-xfce-vnc:dev
+FROM consol/ubuntu-xfce-vnc:1.2.1
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2017-09-01
@@ -43,6 +43,8 @@ ENV SAKULI_ROOT=$HOME/sakuli \
     SAKULI_HOME=$HOME/sakuli/sakuli-v$SAKULI_VERSION \
     # Testsuite folder default permissions after text execution
     SAKULI_UMASK=0000 \
+    # Define the example which will be used as default test
+    SAKULI_EXAMPLE_TEST_SUITE=example_xfce \
     # Define Sakuli default startup testsuite
     SAKULI_TEST_SUITE=$HOME/sakuli/test
 WORKDIR $SAKULI_ROOT
