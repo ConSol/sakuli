@@ -32,18 +32,17 @@ try {
 
     testCase.endOfStep("Test Sahi landing page",30);
     appCalc.open();
-//    screen.waitForImage("calculator.png", 10);
+    screen.waitForImage("calculator.png", 10);
 
-    env.sleep(4);
     env.type("525");
     env.sleep(2);
     screen.find("plus.png").click().type("100");
     screen.find("result.png").click();
-//    screen.waitForImage("625", 5);
+    screen.waitForImage("625", 5);
     testCase.endOfStep("Calculation",30);
 
     appGedit.open();
-//    screen.waitForImage("gedit.png", 5);
+    screen.waitForImage("gedit.png", 10);
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
     testCase.endOfStep("Editor",30);
     env.sleep(4);
