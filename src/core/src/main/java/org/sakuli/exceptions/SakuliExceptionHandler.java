@@ -207,6 +207,7 @@ public class SakuliExceptionHandler {
         if (loader.getCurrentTestCase() != null) {
             if (loader.getCurrentTestCaseStep() != null) {
                 loader.getCurrentTestCaseStep().addException(e);
+                loader.getCurrentTestCaseStep().addActions(loader.getCurrentTestCase().getAndResetTestActions());
             } else {
                 loader.getCurrentTestCase().addException(e);
             }

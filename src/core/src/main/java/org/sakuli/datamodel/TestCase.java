@@ -18,7 +18,6 @@
 
 package org.sakuli.datamodel;
 
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.exceptions.SakuliException;
 import org.springframework.util.CollectionUtils;
@@ -44,6 +43,8 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
      */
     private String lastURL;
     private List<TestCaseStep> steps;
+
+    private List<TestAction> testActions = new ArrayList<>();
 
     private Path tcFile;
 
@@ -211,4 +212,20 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
         }
         return caseErrorMessage.toString();
     }
+
+    public void addAction(TestAction testAction) {
+        this.testActions.add(testAction);
+    }
+
+    public List<TestAction> getTestActions() {
+        return testActions;
+    }
+
+    //reset the list of actions, since those actions have already been added to the current test step.
+    public List<TestAction> getAndResetTestActions() {
+        List<TestAction> actionsToBeReturned = new ArrayList<>(testActions);
+        testActions.clear();
+        return actionsToBeReturned;
+    }
+
 }

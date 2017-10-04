@@ -69,6 +69,17 @@ public class JsonResultServiceImpl extends AbstractResultService {
 
     protected Path createJsonFilePath() throws SakuliForwarderException {
         String outputDirAsString = jsonProperties.getOutputJsonDir();
+        createDirectoryIfNotExists(outputDirAsString);
+        String fileName = new StringBuilder()
+                .append(testSuite.getId())
+                .append("_")
+                .append(new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss.SSS").format(new Date()))
+                .append(".json")
+                .toString();
+        return Paths.get(outputDirAsString + File.separator + fileName);
+    }
+
+    protected void createDirectoryIfNotExists(String outputDirAsString) throws SakuliForwarderException {
         Path outputDir = Paths.get(outputDirAsString);
         if (!Files.exists(outputDir)) {
             try {
@@ -78,13 +89,6 @@ public class JsonResultServiceImpl extends AbstractResultService {
                         String.format("Unexpected error during creating the json output directory '%s'", outputDirAsString));
             }
         }
-        String fileName = new StringBuilder()
-                .append(testSuite.getId())
-                .append("_")
-                .append(new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss.SSS").format(new Date()))
-                .append(".json")
-                .toString();
-        return Paths.get(outputDirAsString + File.separator + fileName);
     }
 
     private void writeToFile(Path file, String output) throws SakuliForwarderException {

@@ -18,21 +18,32 @@
 
 package org.sakuli.services.forwarder.json.serializer;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import org.apache.commons.lang.StringUtils;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
-import java.lang.reflect.Type;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import static org.testng.Assert.assertEquals;
 
 /**
- * Created by georgi on 27/09/17.
+ * Created by georgi on 29/09/17.
  */
-public final class PathSerializer implements JsonSerializer<Path> {
-    @Override
-    public JsonElement serialize(final Path src, final Type typeOfSrc, final JsonSerializationContext context) {
-        return new JsonPrimitive(src == null ? StringUtils.EMPTY : src.toAbsolutePath().normalize().toString());
+public class PathSerializerTest {
+
+    PathSerializer testling = new PathSerializer();
+
+    @DataProvider
+    public Object[][] serializeDP() {
+        return new Object[][]{
+                {null, "\"\""},
+                {Paths.get("testPath"), "\"" + Paths.get("testPath").toAbsolutePath().normalize().toString() + "\""},
+        };
     }
+
+    @Test(dataProvider = "serializeDP")
+    public void serialize(Path path, String expectedPathAsJson) {
+        assertEquals(testling.serialize(path, Path.class, null).toString(), expectedPathAsJson);
+    }
+
 }

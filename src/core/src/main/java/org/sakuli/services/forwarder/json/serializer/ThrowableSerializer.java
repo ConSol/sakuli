@@ -25,6 +25,7 @@ import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Type;
+import java.nio.file.Path;
 
 /**
  * Created by georgi on 27/09/17.
@@ -43,7 +44,7 @@ public class ThrowableSerializer implements JsonSerializer<Throwable> {
         obj.addProperty("stackTrace", sw.toString());
         obj.addProperty("detailMessage", src.getMessage());
         if (SakuliExceptionWithScreenshot.class.isAssignableFrom(src.getClass())) {
-            obj.addProperty("screenshot", ((SakuliExceptionWithScreenshot)src).getScreenshot().toString());
+            obj.add("screenshot", context.serialize(((SakuliExceptionWithScreenshot)src).getScreenshot(), Path.class));
         }
 
         return obj;

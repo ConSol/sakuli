@@ -213,6 +213,8 @@ public class TestCaseAction {
             step.setStartDate(new Date(Long.parseLong(startTime)));
             step.setStopDate(new Date(Long.parseLong(stopTime)));
             step.setWarningTime(warningTime);
+
+            step.addActions(loader.getCurrentTestCase().getAndResetTestActions());
         } catch (NullPointerException | NumberFormatException e) {
             loader.getExceptionHandler().handleException(e);
         }

@@ -34,7 +34,7 @@ import java.lang.reflect.Type;
  * Created by georgi on 27/09/17.
  */
 public class DateTimeSerializer implements JsonSerializer<DateTime> {
-    final DateTimeFormatter DATE_TIME_FORMATTER = ISODateTimeFormat.dateTime().withZone(DateTimeZone.UTC);
+    final DateTimeFormatter DATE_TIME_FORMATTER = ISODateTimeFormat.dateTime();
 
     @Override
     public JsonElement serialize(final DateTime src, final Type typeOfSrc, final JsonSerializationContext context) {

@@ -21,7 +21,6 @@ package org.sakuli.services.forwarder.json;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import org.sikuli.script.Region;
-import org.slf4j.Logger;
 
 /**
  * Created by georgi on 27/09/17.
@@ -30,9 +29,7 @@ public class GsonExclusionStrategy implements ExclusionStrategy {
 
     @Override
     public boolean shouldSkipClass(Class<?> c) {
-        return Logger.class.isAssignableFrom(c)
-                || Region.class.isAssignableFrom(c)
-                ;
+        return Region.class.isAssignableFrom(c);
     }
 
     @Override

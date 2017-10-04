@@ -94,4 +94,8 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
         this.testActions.addAll(testActions);
     }
 
+    public List<TestAction> getTestActions() {
+        return testActions;
+    }
+
 }
