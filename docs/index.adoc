@@ -140,6 +140,7 @@ include::manual/integration/monitoring/forwarder-templates.adoc[]
 === Continuous Integration
 include::manual/integration/ci/jenkins.adoc[]
 include::manual/integration/sql-database.adoc[]
+include::manual/integration/json-forwarder.adoc[]
 
 //== Developer Documentation
 include::manual/development/README.adoc[]

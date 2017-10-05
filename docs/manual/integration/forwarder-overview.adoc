@@ -12,6 +12,11 @@
 |- <<continuous_integration>> server +
 - Locale test runs
 
+|<<json-forwarder,json>>
+|- Output files in JSON format
+|- Sakuli GUI +
+- Interface to 3rd party systems
+
 |<<sql-database,database>>
 |- JDBC-SQL
 |- Integration in *Nagios* based monitoring systems as *active checks* with  link:https://labs.consol.de/de/nagios/check_mysql_health/index.html[check_mysql_health] +
