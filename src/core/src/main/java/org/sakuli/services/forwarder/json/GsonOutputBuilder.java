@@ -23,12 +23,14 @@ import com.google.gson.GsonBuilder;
 import org.joda.time.DateTime;
 import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.AbstractOutputBuilder;
+import org.sakuli.services.forwarder.json.serializer.DateSerializer;
 import org.sakuli.services.forwarder.json.serializer.DateTimeSerializer;
 import org.sakuli.services.forwarder.json.serializer.PathSerializer;
 import org.sakuli.services.forwarder.json.serializer.ThrowableSerializer;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
+import java.util.Date;
 
 /**
  * Created by georgi on 27/09/17.
@@ -46,6 +48,7 @@ public class GsonOutputBuilder extends AbstractOutputBuilder {
         try {
             Gson gsonBuilder = new GsonBuilder()
                     .setExclusionStrategies(new GsonExclusionStrategy())
+                    .registerTypeAdapter(Date.class, new DateSerializer())
                     .registerTypeAdapter(DateTime.class, new DateTimeSerializer())
                     .registerTypeAdapter(Path.class, new PathSerializer())
                     .registerTypeHierarchyAdapter(Throwable.class, new ThrowableSerializer())
