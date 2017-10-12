@@ -23,8 +23,7 @@
         <displayName>Firefox</displayName>
         <icon>firefox.png</icon>
         <path>/usr/bin/firefox</path>
-        <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote -private -width 9999 -height 9999
-        </options>
+        <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote -width 9999 -height 9999</options>
         <processName>firefox</processName>
         <capacity>5</capacity>
     </browserType>
@@ -34,8 +33,7 @@
         <displayName>Firefox portable</displayName>
         <icon>firefox.png</icon>
         <path>$SAKULI_HOME/../firefox/firefox</path>
-        <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote -private -width 9999 -height 9999
-        </options>
+        <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote -width 9999 -height 9999</options>
         <processName>firefox</processName>
         <capacity>5</capacity>
     </browserType>
