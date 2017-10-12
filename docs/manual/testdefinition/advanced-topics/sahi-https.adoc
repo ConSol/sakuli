@@ -67,6 +67,8 @@ Now go back to the SSL Manager overview and click the "refresh" button. Every pr
 
 image:tutorial_refresh.png[refresh]
 
+NOTE: Ensure that firefox really save the certificates permanently! image:tutorial_certs_ff_save.png[firefox save certificates]
+
 .Internet Explorer
 
 See Sahi description http://sahipro.com/docs/using-sahi/sahi-configuration-basic.html#Configure%20SSL[Configure SSL in Sahi].
