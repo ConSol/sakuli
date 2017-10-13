@@ -9,6 +9,7 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 This documentation is not complete yet. Any help is appreciated.
 
+[[sahi-https-accept-self-signed]]
 ====== Solution 1: accept self-signed certificates
 
 This will work on most systems, especially the ones you have full control over.
@@ -24,6 +25,7 @@ This will work on most systems, especially the ones you have full control over.
 
 image:https_ok.png[https_ok]
 
+[[sahi-https-certificate-import]]
 ====== Solution 2: manual certificate import
 
 WARNING: This is a browser-specific solution and can be different in newer Browser versions or other operating systems!
@@ -67,8 +69,39 @@ Now go back to the SSL Manager overview and click the "refresh" button. Every pr
 
 image:tutorial_refresh.png[refresh]
 
-NOTE: Ensure that firefox really save the certificates permanently! image:tutorial_certs_ff_save.png[firefox save certificates]
+NOTE: Ensure that Firefox really save the certificates permanently! image:tutorial_certs_ff_save.png[Firefox save certificates]
 
 .Internet Explorer
 
 See Sahi description http://sahipro.com/docs/using-sahi/sahi-configuration-basic.html#Configure%20SSL[Configure SSL in Sahi].
+
+[[sahi-https-automatic-certificate-usage]]
+====== Automatic HTTPS Certificate Usage
+To run your tests on different hosts, <<containerized-execution>> or orchestrated by some continuous integration tool(e.g. <<jenkins-integration,Jenkins>>), it's necessary that you can share the HTTPS config for different hosts.
+
+NOTE: The usage is described for the Firefox browser. For other browser try to copy there certificate store.
+
+. You have to accept the Sahi fake certificates, like seen above:
+    * <<sahi-https-accept-self-signed>>
+    * <<sahi-https-certificate-import>>
+
+. Now two things happend:
+    * Sahi added a Java Keystore for each accepted certificate domain (e.g. `sahi_example_com`, `www_github_com`) in `~/sakuli/sahi/userdata/certs/`.
+    * The Firefox profile `~/sakuli/sahi/userdata/browser/ff/profiles/sahi0` now contains an updated version of:
+    ** `cert8.db` - certificate store
+    ** `key3.db` - key parts of certificates
+    ** `cert_override.txt` - list of certificate exceptions
+
+. Ensure that above files will be copied before the tests starts like described here:
+    * copy all created Sahi fake certificates:
+
+    sahi_example_com  -->  __SAKULI_ROOT__/sahi/userdata/certs/
+    www_github_com    -->  __SAKULI_ROOT__/sahi/userdata/certs/
+
+    * copy the Firefox certificate store to Sahi default profile
+
+    cert8.db          -->  __SAKULI_ROOT__/sahi/config/ff_profile_template/
+    key3.db           -->  __SAKULI_ROOT__/sahi/config/ff_profile_template/
+    cert_override.txt -->  __SAKULI_ROOT__/sahi/config/ff_profile_template/
+
+Fore more information see: <<docker-https-sahi, Docker - Writing HTTPS Sahi web tests>>, <<java-dsl-https, JavaDSL - HTTPS Sites>>

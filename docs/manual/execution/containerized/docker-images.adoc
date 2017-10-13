@@ -319,6 +319,54 @@ To prevent unwanted control over the VNC connection, it's possible to set enviro
 ~$ docker run -it -p 6901:6901 -e VNC_VIEW_ONLY=true  consol/sakuli-ubuntu-xfce
 ----
 
+[[docker-https-sahi]]
+===== Writing HTTPS Sahi web tests
+Depending on the Sahi proxy, Sakuli will break the HTTPS connections between the website and test engine. Due to that case it is necessary to import the URL specific self-signed certificates like described at <<sahi-https>>. In a containerized environment we need to prepare the browser before the tests starts with the expected certificates like described at <<sahi-https-automatic-certificate-usage>>. For example if you use the Firefox browser you can do the following steps:
+
+. Start your preferred Sakuli docker image with `docker run -it -p 6901:6901 consol/sakuli-ubuntu-xfce bash` to enter the container and connect into it by VNC http://localhost:6901/vnc_auto.html?password=sakuli
+
+. Start Sahi dashboard:
+
+    ~$ cd $SAKULI_ROOT/sahi/userdata/bin && ./start_dashboard.sh
+
+. Create the firefox certificates for https://labs.consol.de like described at <<sahi-https-accept-self-signed, Sahi HTTPS - Accept self-signed certificates>>
+
+. Now copy the following created files to a folder at your dockerhost:
+    * Sahi fake certificates
+
+    ~$ mkdir -p ssl_files
+    ~$ export CONAINER_ID=<your-docker-container-id>
+    ~$ docker cp $CONAINER_ID:/headless/sakuli/sahi/userdata/certs ssl_files/sahi_certs
+
+    * Firefox ertificate store
+
+    ~$ mkdir -p ssl_files/ff_profile
+    ~$ docker cp $CONAINER_ID:/headless/sakuli/sahi/userdata/browser/ff/profiles/sahi0/cert8.db ssl_files/ff_profile/
+    ~$ docker cp $CONAINER_ID:/headless/sakuli/sahi/userdata/browser/ff/profiles/sahi0/key3.db  ssl_files/ff_profile/
+    ~$ docker cp $CONAINER_ID:/headless/sakuli/sahi/userdata/browser/ff/profiles/sahi0/cert_override.txt ssl_files/ff_profile/
+
+. After this you should have the following structure:
+
+    ~$ tree ssl_files
+    ssl_files
+    ├── ff_profile
+    │   ├── cert8.db
+    │   ├── cert_override.txt
+    │   └── key3.db
+    └── sahi_certs
+        ├── labs_consol_de
+        ├── sahi_example_com
+        ├── shavar_services_mozilla_com
+        └── tiles_services_mozilla_com
+    2 directories, 7 files
+
+. At least you have just to add the files to the correct place in Docker image `Dockerfile`:
+
+    FROM consol/sakuli-ubuntu-xfce
+    ### INSTALL sahi https certificats
+    COPY ssl_files/ff_profile $SAKULI_ROOT/sahi/config/ff_profile_template
+    COPY ssl_files/sahi_certs $SAKULI_ROOT/sahi/userdata/certs
+
 [[docker-further-information]]
 ===== Further Information
 
