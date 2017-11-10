@@ -6,12 +6,6 @@
     OMD_ROOT: "/opt/omd/sites/{{ SITENAME }}"
   tasks:
 
-    # temporärer fix, bis neue RPMs gebaut sind
-    - name: copy coreconfig.yaml
-      copy:
-        src: coreconfig.yml
-        dest: /opt/omd/versions/default/share/sakuli/setup/
-
     - name: configure Sakuli extension
       become: yes
       become_user: "{{ SITENAME }}"
