@@ -343,7 +343,8 @@
                                 </goals>
                                 <configuration>
                                     <includes>index.html</includes>
-                                    <message>modify index.html page</message>
+                                    <includes>latest/</includes>
+                                    <message>modify index.html page and latest</message>
                                 </configuration>
                             </execution>
 
@@ -356,6 +357,7 @@
                                 </goals>
                                 <configuration>
                                     <includes>${sakuli.version}/</includes>
+                                    <includes>latest/</includes>
                                 </configuration>
                             </execution>
                             <execution>
@@ -366,6 +368,7 @@
                                 </goals>
                                 <configuration>
                                     <includes>${sakuli.version}/</includes>
+                                    <includes>latest/</includes>
                                 </configuration>
                             </execution>
                             <execution>
