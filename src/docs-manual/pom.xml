@@ -357,7 +357,6 @@
                                 </goals>
                                 <configuration>
                                     <includes>${sakuli.version}/</includes>
-                                    <includes>latest/</includes>
                                 </configuration>
                             </execution>
                             <execution>
@@ -368,7 +367,6 @@
                                 </goals>
                                 <configuration>
                                     <includes>${sakuli.version}/</includes>
-                                    <includes>latest/</includes>
                                 </configuration>
                             </execution>
                             <execution>
