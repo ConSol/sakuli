@@ -140,7 +140,7 @@ Low-level mouse action to press the assigned link:#MouseButton[MouseButton] on t
 *Returns*: - the link:#Region[Region] or NULL on errors.
 
 *Example*
-Press and release the right mouse button vor 3 seconds on a specified region:
+Press and release the right mouse button for 3 seconds on a specified region:
 [source,js]
 ----
 var region = new Region().find("your-pattern.png");
@@ -161,7 +161,7 @@ Low-level mouse action to release the assigned link:#MouseButton[MouseButton].
 
 *Example*
 
-Press and release the right mouse button vor 3 seconds on a specified region:
+Press and release the right mouse button for 3 seconds on a specified region:
 [source,js]
 ----
 var region = new Region().find("your-pattern.png");

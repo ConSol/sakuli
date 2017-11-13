@@ -335,15 +335,15 @@ Depending on the Sahi proxy, Sakuli will break the HTTPS connections between the
     * Sahi fake certificates
 
     ~$ mkdir -p ssl_files
-    ~$ export CONAINER_ID=<your-docker-container-id>
-    ~$ docker cp $CONAINER_ID:/headless/sakuli/sahi/userdata/certs ssl_files/sahi_certs
+    ~$ export CONTAINER_ID=<your-docker-container-id>
+    ~$ docker cp $CONTAINER_ID:/headless/sakuli/sahi/userdata/certs ssl_files/sahi_certs
 
-    * Firefox ertificate store
+    * Firefox certificate store
 
     ~$ mkdir -p ssl_files/ff_profile
-    ~$ docker cp $CONAINER_ID:/headless/sakuli/sahi/userdata/browser/ff/profiles/sahi0/cert8.db ssl_files/ff_profile/
-    ~$ docker cp $CONAINER_ID:/headless/sakuli/sahi/userdata/browser/ff/profiles/sahi0/key3.db  ssl_files/ff_profile/
-    ~$ docker cp $CONAINER_ID:/headless/sakuli/sahi/userdata/browser/ff/profiles/sahi0/cert_override.txt ssl_files/ff_profile/
+    ~$ docker cp $CONTAINER_ID:/headless/sakuli/sahi/userdata/browser/ff/profiles/sahi0/cert8.db ssl_files/ff_profile/
+    ~$ docker cp $CONTAINER_ID:/headless/sakuli/sahi/userdata/browser/ff/profiles/sahi0/key3.db  ssl_files/ff_profile/
+    ~$ docker cp $CONTAINER_ID:/headless/sakuli/sahi/userdata/browser/ff/profiles/sahi0/cert_override.txt ssl_files/ff_profile/
 
 . After this you should have the following structure:
 
@@ -359,6 +359,10 @@ Depending on the Sahi proxy, Sakuli will break the HTTPS connections between the
         ├── shavar_services_mozilla_com
         └── tiles_services_mozilla_com
     2 directories, 7 files
+
+. Update the permissions to ensure that the files can be read by container user:
+
+    ~$ chmod a+rw ssl_files/
 
 . At least you have just to add the files to the correct place in Docker image `Dockerfile`:
 

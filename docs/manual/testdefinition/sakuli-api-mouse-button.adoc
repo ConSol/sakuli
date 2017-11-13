@@ -16,7 +16,7 @@ The following *MouseButton* values are possible:
 `LEFT`, `RIGHT`, `MIDDLE`
 
 *Example*
-Press and release the right mouse button vor 3 seconds on a specified region:
+Press and release the right mouse button for 3 seconds on a specified region:
 [source,js]
 ----
 var region = new Region().find("your-pattern.png");

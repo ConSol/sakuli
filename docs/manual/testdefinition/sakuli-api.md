@@ -728,7 +728,7 @@ The following __MouseButton__ values are possible:
 `LEFT`, `RIGHT`, `MIDDLE`
 
 **Example**  
-Press and release the right mouse button vor 3 seconds on a specified region:
+Press and release the right mouse button for 3 seconds on a specified region:
 ```
 var region = new Region().find("your-pattern.png");
 region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
@@ -852,7 +852,7 @@ Low-level mouse action to press the assigned [MouseButton](#MouseButton) on the 
 
 **Returns**:  - the [Region](#Region) or NULL on errors.  
 **Example**  
-Press and release the right mouse button vor 3 seconds on a specified region:
+Press and release the right mouse button for 3 seconds on a specified region:
 ```
 var region = new Region().find("your-pattern.png");
 region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
@@ -868,7 +868,7 @@ Low-level mouse action to release the assigned [MouseButton](#MouseButton).
 
 **Returns**:  - the [Region](#Region) or NULL on errors.  
 **Example**  
-Press and release the right mouse button vor 3 seconds on a specified region:
+Press and release the right mouse button for 3 seconds on a specified region:
 ```
 var region = new Region().find("your-pattern.png");
 region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);

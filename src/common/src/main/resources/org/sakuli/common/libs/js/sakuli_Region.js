@@ -160,7 +160,7 @@ function initRegion(that, javaObject) {
     /**
      * Low-level mouse action to press the assigned {@link MouseButton} on the current position.
      *
-     * @example Press and release the right mouse button vor 3 seconds on a specified region:
+     * @example Press and release the right mouse button for 3 seconds on a specified region:
      * ```
      * var region = new Region().find("your-pattern.png");
      * region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
@@ -178,7 +178,7 @@ function initRegion(that, javaObject) {
     /**
      * Low-level mouse action to release the assigned {@link MouseButton}.
      *
-     * @example Press and release the right mouse button vor 3 seconds on a specified region:
+     * @example Press and release the right mouse button for 3 seconds on a specified region:
      * ```
      * var region = new Region().find("your-pattern.png");
      * region.mouseDown(MouseButton.RIGHT).sleep(3).mouseUp(MouseButton.RIGHT);
