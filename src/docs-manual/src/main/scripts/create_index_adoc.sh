@@ -21,7 +21,7 @@ echo "OUTPUT FILE: $OUTPUT"
 echo "OUTPUT DIR: $OUTPUT_DIR"
 mkdir -p $OUTPUT_DIR
 
-function createLatest (){
+function createLatestDocu (){
     echo "------ update latest files ----"
     latestDocRoot=$( find "$ROOT" -maxdepth 1 -mindepth 1 -name 'v*' -type d -print0 | xargs -0 ls -dt | grep -iv snapshot | head -1)
     echo "latest Doc: $latestDocRoot"
@@ -33,7 +33,6 @@ function createLatest (){
 
     echo "copy '$latestDocRoot' -> '$targetDocRoot'"
     cp -r $latestDocRoot $targetDocRoot
-    mv -v $(find $targetDocRoot -name 'sakuli_documentation*.pdf') $targetDocRoot/pdf/sakuli_documentation_latest.pdf
     echo "------ finished: update latest files ----"
 }
 
@@ -57,12 +56,13 @@ function addFolderEntryToAdoc (){
 
     for filepath in `find "$ROOT" -maxdepth 1 -mindepth 1 -name $pattern -type d| sort`; do
       folderName=`basename "$filepath"`
+      relPDF=$(cd $ROOT && find $folderName -name 'sakuli_documentation*.pdf')
       echo "generate adoc table entry for '$folderName'"
       echo "-------------------------------------------"
       echo "
 |$folderName
 |link:$folderName/index.html[HTML]
-|link:$folderName/pdf/sakuli_documentation_$folderName.pdf[PDF^]
+|link:$relPDF[PDF^]
 " >> $OUTPUT
     done
 }
@@ -79,7 +79,7 @@ function copyDesignFile (){
     cp -v $SCRIPTPATH/docinfo*.html $OUTPUT_DIR/
 }
 
-createLatest
+createLatestDocu
 createHeader
 addFolderEntryToAdoc 'latest'
 addFolderEntryToAdoc 'v*'
