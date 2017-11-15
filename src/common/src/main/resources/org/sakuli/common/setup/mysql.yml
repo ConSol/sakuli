@@ -38,6 +38,11 @@
         src: ./omd/etc/nagios/conf.d/sakuli_nagios_check_mysql.cfg
         dest: "{{ OMD_ROOT}}/etc/core/conf.d/"
 
+    - name: sample resource cfg file
+      copy:
+        src: ./omd/etc/nagios/resource.cfg.sakuli-db.sample
+        dest: "{{ OMD_ROOT}}/etc/core/"
+
     - name: database cleanup script
       copy:
         src: ./omd/local/bin/sakuli_mysql_purge.sh

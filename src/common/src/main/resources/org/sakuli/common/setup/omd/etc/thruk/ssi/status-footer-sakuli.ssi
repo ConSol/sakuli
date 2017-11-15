@@ -55,14 +55,14 @@ function changeImage(i) {
                         }
                 ) &&
 		jQuery.ajax({
-			// https://localhost:8443/demo/sakuli/sakuli_client/example_xfce/1500858250/
-			url: lb_items[i].url, 
-			success: function(data) { 
+			// https://localhost:8443/SITENAME/sakuli/sakuli_client/example_xfce/1500858250/
+			url: lb_items[i].url,
+			success: function(data) {
 				// the 3rd href on the apache index page
 				image = jQuery(data).find('a')[2].text.trim();
-				lb_items[i].image = image; 
-			}, 
-			error: function(exception){alert('Exeption: There seems to be no image file in ' + base_url + t + '!' + exception);} 
+				lb_items[i].image = image;
+			},
+			error: function(exception){alert('Exeption: There seems to be no image file in ' + base_url + t + '!' + exception);}
 		})
         ).then ( function() {
                 lb_index = i;
@@ -106,7 +106,7 @@ function lightbox(h, s) {
                         };
                         lb_items.push(img_hash);
                       });
-                  } 
+                  }
                 })
         ).then ( function() {
 	// timestamp array loaded, now show the last image in array

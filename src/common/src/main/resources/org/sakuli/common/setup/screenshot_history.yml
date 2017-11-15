@@ -25,6 +25,6 @@
         src: ./omd/etc/thruk/thruk_local.d/sakuli_action_menu.conf
         dest: "{{ OMD_ROOT }}/etc/thruk/thruk_local.d/"
     - name: Apache - sakuli_screenshots.conf
-      copy:
-        src: ./omd/etc/apache/conf.d/sakuli_screenshots.conf
-        dest: "{{ OMD_ROOT }}/etc/apache/conf.d/"
+      template:
+        src: ./omd/etc/apache/conf.d/sakuli_screenshots.conf.j2
+        dest: "{{ OMD_ROOT }}/etc/apache/conf.d/sakuli_screenshots.conf"
