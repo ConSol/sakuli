@@ -1,6 +1,6 @@
 # This Dockerfile is used to build a sakuli image based on Ubuntu
 
-FROM consol/ubuntu-xfce-vnc:1.2.1
+FROM consol/ubuntu-xfce-vnc:dev
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2017-09-01
