@@ -1,7 +1,7 @@
 FROM consol/omd-labs-centos:nightly
 
 MAINTAINER Simon Meggle "simon.meggle@consol.de"
-ENV REFRESHED_AT 2017-09-15
+ENV REFRESHED_AT 2017-11-20
 
 ENV TZ Europe/Berlin
 

@@ -1,9 +1,9 @@
 # This Dockerfile is used to build a sakuli image based on CentOS
 
-FROM consol/centos-xfce-vnc:1.2.1
+FROM consol/centos-xfce-vnc:1.2.2
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-09-01
+ENV REFRESHED_AT 2017-11-20
 
 LABEL io.k8s.description="Sakuli headless testing container with IceWM window manager, firefox and chromium" \
       io.k8s.display-name="Sakuli testing container based on Centos and IceWM" \
