@@ -1,9 +1,9 @@
 # This Dockerfile is used to build a sakuli image based on Ubuntu
 
-FROM consol/ubuntu-icewm-vnc:dev
+FROM consol/ubuntu-icewm-vnc:1.2.2
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-09-01
+ENV REFRESHED_AT 2017-11-20
 
 LABEL io.k8s.description="Sakuli headless testing container (maven java tests) with IceWM window manager, firefox and chromium" \
       io.k8s.display-name="Sakuli testing container (maven java tests) based on Ubuntu and IceWM" \
