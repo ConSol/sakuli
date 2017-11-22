@@ -2,7 +2,7 @@
 :imagesdir: images
 
 [[examples]]
-= Example projects on GitHub
+= Example projects and Tutorials on GitHub
 
 [#git-edit-section]
 :page-path: docs/example-projects.adoc
@@ -10,4 +10,5 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 * *https://github.com/ConSol/sakuli-examples[ConSol/sakuli-examples]*
 * *https://github.com/toschneck/sakuli-example-bakery-testing[toschneck/sakuli-example-bakery-testing]*
+* *https://github.com/toschneck/openshift-example-bakery-ci-pipeline[toschneck/openshift-example-bakery-ci-pipeline]*
 * *https://github.com/ConSol/sakuli-example-testautomation-day[ConSol/sakuli-example-testautomation-day]*
