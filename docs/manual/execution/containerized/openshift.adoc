@@ -151,11 +151,13 @@ git-link:{docker/openshift/openshift.sakuli.s2i.build.yaml}{git-view}[Sakuli tes
 to create ready to run Sakuli container, based on Sakuli S2I, using the previously defined S2I image stream, running the
 configured suite.
 
-
 ====== Advantages of Sakuli S2I
+Beside the general advantages of OpenShift S2I, Sakuli S2I adds additional ones in terms of test automation.
 
+* Keep the test suites close to your applications code and reference the suits in the build config.
+* If the tests change, you just have to start a new build of your Sakuli test container.
+* Reduces CI/CD pipeline processing time by just updating the suite in the sakuli container environment.
 
-[[openshift-s2i-modify-base-image]]
 ====== Modify the base image
 
 
