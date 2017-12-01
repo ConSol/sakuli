@@ -15,7 +15,7 @@ parameters:
 - description: The name for the taged target image
   name: IMAGE
   required: true
-  value: sakuli-s2i-testsuite-image
+  value: sakuli-s2i-testsuite
 
 - description: Git source URI for the testsuite
   name: TESTSUITE_REPOSITORY_URL
