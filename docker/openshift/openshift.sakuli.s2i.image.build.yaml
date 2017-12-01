@@ -17,7 +17,7 @@ parameters:
   required: true
   value: sakuli-s2i
 
-- description: Git source URI for application
+- description: Git source URI of the s2i project
   name: SOURCE_REPOSITORY_URL
   required: true
   value: https://github.com/ConSol/sakuli.git
@@ -27,12 +27,12 @@ parameters:
   value: "master"
   required: true
 
-- description: Source Folder where the Dockerfile is placed example `docker`
+- description: Source folder where the Dockerfile is placed
   name: SOURCE_DOCKER_CONTEXT_DIR
   value: docker
   required: true
 
-- description: Name of the Dockerfile for example Dockerfile.sakuli.ubuntu.xfce
+- description: Name of the Dockerfile
   name: SOURCE_DOCKERFILE
   value: Dockerfile.sakuli.s2i
   required: true
