@@ -179,6 +179,20 @@ oc process -f openshift.sakuli.s2i.build.yaml -p "BASE_IMAGE=my-sakuli-ubuntu-op
 
 The values available in the `BASE_IMAGE_KIND` correlate to the values of the `dockerStrategy.from.kind` definition.
 
+====== Example workflow
+
+Setup your Sakuli-S2I image.
+[source]
+----
+oc process -f openshift.sakuli.s2i.build.yaml -p "IMAGE=sakuli-ubuntu-xfce-s2i" -p "BASE_IMAGE=consol/sakuli-ubuntu-xfce"
+----
+Add the test suite of your choice to the S2I image
+[source]
+----
+oc process -f openshift.sakuli.s2i.build.yaml -p "IMAGE=test-customer-workflow" -p "BASE_IMAGE=sakuli-ubuntu-xfce-s2i" -p "TESTSUITE_REPOSITORY_URL=http://github.com/SoftwareCompany/SoftwareProduct" -p "TESTSUITE_CONTEXT_DIR=e2e/customer-workflow"
+----
+Run your test container `test-customer-workflow`
+
 ===== Other useful commands
 
 ====== Delete specific application or E2E test
