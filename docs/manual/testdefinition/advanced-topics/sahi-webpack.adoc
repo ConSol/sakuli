@@ -1,0 +1,30 @@
+
+:imagesdir: ../../../images
+
+[[sahi-webpack-dev-server]]
+===== Sahi and webpack-dev-server
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sahi-webpack.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Due to issue https://github.com/ConSol/sakuli/issues/295[sahi test not run with webpack dev server #295] Sahi OS have currently some problems with the "auto loading" function of the https://github.com/webpack/webpack-dev-server[webpack-dev-server]. If you use the startup option `webpack-dev-server --inline` Sahi may will throw this error:
+
+[source,bash]
+----
+....
+ERROR [2017-12-01 13:00:12.332] - ERROR:
+CASE "tests": _sahi.setServerVar('lastURL', window.document.location.href); Window/Domain not found:  popupNameFromStep=; derivedName=; windowName=; windowTitle=; wasOpened=0; domain=guestbook ...
+----
+
+Important in this error message is `Window/Domain not found:  popupNameFromStep=; derivedName=; windowName=; windowTitle=; wasOpened=0` which will produced by the auto load function https://webpack.js.org/configuration/dev-server/#devserver-inline["inline Hot Module Replacement"]. This automatic refresh won't work well with the http://sahipro.com/docs/introduction/architecture.html#Architecture[Sahi proxy injection architecture], so we have to disable the webpack auto reload function with the `--no-inline` option:
+
+[source,json]
+----
+  "scripts": {
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "e2e-server": "webpack-dev-server --no-inline --progress --config build/webpack.dev.conf.js",
+  },
+----
+
+For more the issue https://github.com/ConSol/sakuli/issues/295[#295].
+
