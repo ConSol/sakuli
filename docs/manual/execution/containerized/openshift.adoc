@@ -191,7 +191,11 @@ Add the test suite of your choice to the S2I image
 ----
 oc process -f openshift.sakuli.s2i.build.yaml -p "IMAGE=test-xfce" -p "BASE_IMAGE=sakuli-ubuntu-xfce-s2i" -p "TESTSUITE_REPOSITORY_URL=https://github.com/ConSol/sakuli.git" -p "TESTSUITE_CONTEXT_DIR=example_test_suites/example_xfce" | oc apply -f -
 ----
-Run your test container `test-customer-workflow`
+Run your test container `test-xfce`
+[source]
+----
+oc run test-xfce --image=<your-docker-registry-ip>:5000/<your-project>/test-xfce --restart=OnFailure
+----
 
 ===== Other useful commands
 
