@@ -371,6 +371,16 @@ Depending on the Sahi proxy, Sakuli will break the HTTPS connections between the
     COPY ssl_files/ff_profile $SAKULI_ROOT/sahi/config/ff_profile_template
     COPY ssl_files/sahi_certs $SAKULI_ROOT/sahi/userdata/certs
 
+[[docker-images-known-issues]]
+===== Known Issues
+
+[[docker-images-known-issues-chromium-crash]]
+====== Chromium crashes
+
+According to https://github.com/ConSol/docker-headless-vnc-container[ConSol/docker-headless-vnc-container] issue https://github.com/ConSol/docker-headless-vnc-container/issues/53[Chromium crashes with high VNC_RESOLUTION #53] there is a problem when you use some graphic/work intensive websites in the Docker container (especially with high resolutions e.g. `1920x1080`). It can happen that Chromium crashes without any specific reason. The problem there is the too small `/dev/shm` size in the container. Currently there is no other way, as define this size on startup via `--shm-size` option, see https://github.com/ConSol/docker-headless-vnc-container/issues/53#issuecomment-347265977[ConSol/docker-headless-vnc-container #53 - Solution]:
+
+    docker run --shm-size=256m -it -p 6901:6901 -e VNC_RESOLUTION=1920x1080 consol/sakuli-centos-xfce run <your-test-suite>
+
 [[docker-further-information]]
 ===== Further Information
 
@@ -378,7 +388,6 @@ Further information about the usage of Sakuli docker containers can be found at:
 
 * <<openshift>>
 * <<kubernetes>>
-//TODO write/refresh page for sakuli based omd images
 * https://github.com/ConSol/omd-labs-docker[Containerized OMD]
 * Publications:
 ** https://jaxenter.de/sakuli-testing-monitoring-container-54374[JAXenter: End-2-End-Testing und -Monitoring im Container-Zeitalter]
