@@ -22,8 +22,8 @@ Important in this error message is `Window/Domain not found:  popupNameFromStep=
 [source,json]
 ----
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js", <1>
-    "e2e-server": "webpack-dev-server --no-inline --progress --config build/webpack.dev.conf.js", <2>
+<1> "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+<2> "e2e-server": "webpack-dev-server --no-inline --progress --config build/webpack.dev.conf.js",
   },
 ----
 <1> for development with "auto reload"
