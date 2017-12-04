@@ -115,6 +115,7 @@ include::manual/testdefinition/advanced-topics/sahi-settings-browser-selection.a
 include::manual/testdefinition/advanced-topics/sahi-settings-browser-config.adoc[]
 include::manual/testdefinition/advanced-topics/sahi-settings-proxy.adoc[]
 include::manual/testdefinition/advanced-topics/sahi-https.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-webpack.adoc[]
 
 ==== Sikuli settings
 include::manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc[]
