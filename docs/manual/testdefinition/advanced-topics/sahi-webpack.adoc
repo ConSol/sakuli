@@ -18,13 +18,16 @@ CASE "tests": _sahi.setServerVar('lastURL', window.document.location.href); Wind
 
 Important in this error message is `Window/Domain not found:  popupNameFromStep=; derivedName=; windowName=; windowTitle=; wasOpened=0` which will produced by the auto load function https://webpack.js.org/configuration/dev-server/#devserver-inline["inline Hot Module Replacement"]. This automatic refresh won't work well with the http://sahipro.com/docs/introduction/architecture.html#Architecture[Sahi proxy injection architecture], so we have to disable the webpack auto reload function with the `--no-inline` option:
 
+.package.json
 [source,json]
 ----
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "e2e-server": "webpack-dev-server --no-inline --progress --config build/webpack.dev.conf.js",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js", <1>
+    "e2e-server": "webpack-dev-server --no-inline --progress --config build/webpack.dev.conf.js", <2>
   },
 ----
+<1> for development with "auto reload"
+<2> for end-to-end testing with disabled "auto reload" for Sakuli
 
 For more the issue https://github.com/ConSol/sakuli/issues/295[#295].
 
