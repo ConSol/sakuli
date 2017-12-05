@@ -3,7 +3,7 @@
 FROM consol/ubuntu-xfce-vnc:1.2.2
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-11-20
+ENV REFRESHED_AT 2017-12-04
 
 LABEL io.k8s.description="Sakuli headless testing container with Xfce window manager, firefox and chromium" \
       io.k8s.display-name="Sakuli testing container based on Ubuntu and Xfce" \
@@ -39,13 +39,13 @@ RUN $INST_SCRIPTS/java_jce_test/jce_test.sh
 
 ### Install Sakuli
 ARG SAKULI_VERSION=1.1.0-SNAPSHOT
+# SAKULI_UMASK: Testsuite folder default permissions after text execution
+# SAKULI_EXAMPLE_TEST_SUITE: Define the example which will be used as default test
+# SAKULI_TEST_SUITE: Define Sakuli default startup testsuite
 ENV SAKULI_ROOT=$HOME/sakuli \
     SAKULI_HOME=$HOME/sakuli/sakuli-v$SAKULI_VERSION \
-    # Testsuite folder default permissions after text execution
     SAKULI_UMASK=0000 \
-    # Define the example which will be used as default test
     SAKULI_EXAMPLE_TEST_SUITE=example_xfce \
-    # Define Sakuli default startup testsuite
     SAKULI_TEST_SUITE=$HOME/sakuli/test
 WORKDIR $SAKULI_ROOT
 # Install the $SAKULI_VERSION and create the example testsuite under $SAKULI_TEST_SUITE

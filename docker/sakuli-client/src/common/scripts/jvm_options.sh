@@ -47,4 +47,7 @@ echo "JVM_HEAP_XMX: $JVM_HEAP_XMX MB"
 
 # set correct java startup
 export _JAVA_OPTIONS="-Duser.home=$HOME -Xmx${JVM_HEAP_XMX}m"
+# add docker jvm flags, can maybe removed with JDK9, see https://github.com/ConSol/sakuli/issues/291
+export _JAVA_OPTIONS="$_JAVA_OPTIONS -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+
 echo "set _JAVA_OPTIONS: $_JAVA_OPTIONS"
