@@ -91,7 +91,7 @@ public class Application extends App {
         LOGGER.debug("verify app " + appID + " is running");
         if (!app.isRunning(tries)) {
             LOGGER.warn("verified {} times if application '" + appID + "' is running", tries);
-            loader.getExceptionHandler().handleException("Application '" + appID + "' is not running", true);
+            loader.getExceptionHandler().handleException("Application '" + appID + "' is not running", resumeOnException);
         }
         LOGGER.info("Application '" + appID + "' is running");
         return this;
