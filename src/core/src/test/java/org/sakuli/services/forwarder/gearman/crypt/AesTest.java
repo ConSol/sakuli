@@ -22,14 +22,20 @@ import org.gearman.common.GearmanException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import java.security.InvalidKeyException;
 
 /**
  * @author Christoph Deppisch
  */
 public class AesTest {
 
-    /** Logger */
+    /**
+     * Logger
+     */
     private static Logger log = LoggerFactory.getLogger(AesTest.class);
 
     private final String text = "Secret text to encrypt";
@@ -93,4 +99,9 @@ public class AesTest {
         Aes.decrypt(encrypted, "wrongPassword");
     }
 
+    @Test(expectedExceptions = GearmanException.class,
+            expectedExceptionsMessageRegExp = "Cryptography Algorithm '" + Aes.CRYPT_ALGORITHM + "' not supported from installed JRE.*")
+    public void testJCEmessage() throws Exception {
+        Aes.catchCipherError("encrypting", new InvalidKeyException("Illegal key size or default parameters"));
+    }
 }
