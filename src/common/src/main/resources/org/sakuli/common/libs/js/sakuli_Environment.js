@@ -454,6 +454,31 @@ function initEnvironment(that, javaObject) {
         return that.javaObject.runCommand(command, optThrowException);
     };
 
+    /**
+     * Reads out the environment variable with the assigned key
+     *
+     * @param {string} key of environment variable as {@link String}
+     * @return {string} value or null
+     * @memberOf Environment
+     * @method getEnv
+     */
+    that.getEnv = function (key) {
+        return that.javaObject.getEnv(key);
+    }
+
+    /**
+     * Reads out the property value with the assigned key
+     *
+     * @param {string} key of property as {@link String}
+     * @return {string} value or null
+     * @memberOf Environment
+     * @method getEnv
+     */
+    that.getProperty = function (key) {
+        return that.javaObject.getProperty(key);
+    }
+
+
     /*****************************************************************************************************
      * INTERNAL CLASS FUNCTIONS - NOT REACHABLE IN THE TEST CASE EXECUTION
      *****************************************************************************************************/

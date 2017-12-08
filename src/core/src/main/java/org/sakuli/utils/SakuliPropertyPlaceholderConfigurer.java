@@ -57,9 +57,11 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
     protected boolean writePropertiesToSahiConfig = true;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private Map<String, Map<String, Object>> modifiedSahiConfigProps;
+    private Properties propsRef;
 
     public SakuliPropertyPlaceholderConfigurer() {
         modifiedSahiConfigProps = new HashMap<>();
+        propsRef = new Properties();
     }
 
     /**
@@ -106,6 +108,14 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
 
         modifySahiProperties(props);
         super.loadProperties(props);
+        this.propsRef = props;
+    }
+
+    /**
+     * @return the reference to the loaded {@link Properties} inside the spring context
+     */
+    public Properties getPropsRef() {
+        return this.propsRef;
     }
 
     protected void loadSakuliDefaultProperties(Properties props) {

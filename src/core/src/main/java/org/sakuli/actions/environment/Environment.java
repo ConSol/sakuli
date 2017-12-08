@@ -31,6 +31,7 @@ import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sakuli.utils.CommandLineUtil;
 import org.sakuli.utils.CommandLineUtil.CommandLineResult;
+import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.sikuli.script.App;
 import org.sikuli.script.IRobot;
 import org.sikuli.script.Key;
@@ -39,6 +40,9 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
 import java.nio.file.Path;
+import java.util.Properties;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * This is a Singeton because the Function should be stateless
@@ -430,6 +434,28 @@ public class Environment implements Action {
         return OSUtils.identifyOS();
     }
 
+    /**
+     * Reads out the environment variable with the assigned key
+     *
+     * @return {@link String} value or null
+     */
+    @LogToResult(logClassInstance = false)
+    public String getEnv(String key) {
+        String result = System.getenv(key);
+        return isBlank(result) ? null : result;
+    }
+
+    /**
+     * Reads out the property value with the assigned key
+     *
+     * @return {@link String} value or null
+     */
+    @LogToResult(logClassInstance = false)
+    public String getProperty(String key) {
+        final Properties propsRef = BeanLoader.loadBean(SakuliPropertyPlaceholderConfigurer.class).getPropsRef();
+        String result = (propsRef != null) ? propsRef.getProperty(key) : null;
+        return isBlank(result) ? null : result;
+    }
 
     @Override
     public boolean getResumeOnException() {
