@@ -181,7 +181,7 @@ Drag from region's current position and drop at given targetRegion and using the
 *Returns*: - the Region or NULL on failure
 
 *Example*
-move the bubble button 20px to the rigth:
+move the bubble button 20px to the right:
 [source,js]
 ----
 var bubble = screen.find("bubble.png");
@@ -207,7 +207,7 @@ Screen within a given time period in seconds.
 .Region.paste(text)
 
 pastes the text at the current position of the focus/carret <br/>using the
-clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
+clipboard and ctrl/cmd-v (paste keyboard shortcut)
 
 *Params*
 
@@ -274,7 +274,7 @@ The text is entered at the current position of the focus.
 .Region.typeAndDecrypt(text, optModifiers)
 
 Decrypt and enters the given text one character/key after another using keyDown/keyUp.
-The entered text will be masked at the logging. For the deatails of the decryption see decryptSecret(String).
+The entered text will be masked at the logging. For the details of the decryption see decryptSecret(String).
 <p/>
 About the usable Key constants see documentation of Key.
 The function could also type UTF-8 unicode characters, if the OS supports it.
@@ -521,32 +521,37 @@ or the default time
 [[Region.takeScreenshot]]
 .Region.takeScreenshot(filename)
 
-Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
-filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
+Takes a screenshot of this link:#Region[Region] and saves it to the assigned path. If there ist just a file name, the
+screenshot will be saved in your current testcase folder.
+Supported formats: `jpg` and `png`
 
 *Params*
 
-* filename `String` - name of the screenshot, e.g. `region_screenshot.png`.
- Default: screenshot.png
+* filename `String` - `pathname/filename.format` or just `filename.format` for example `test.png`.
 
-*Returns*: `String` - file path to the created screenshot OR null on errors
+*Returns*: `Path` - to the created screenshot OR null on errors
+*Example*
+[source,js]
+----
+region.takeScreenshot("test.png");
+----
 
 
 [[Region.takeScreenshotWithTimestamp]]
 .Region.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)
 
-Takes a screenshot of this Region and add the current timestamp in the file name like e.g.:
+Takes a screenshot of this link:#Region[Region] and add the current timestamp in the file name like e.g.:
 
 *Params*
 
 * filenamePostfix `String` - postfix for the final filename
  Default: screenshot
 * optFolderPath `String` - optional FolderPath, where to save the screenshot.
- If null or empty: testscase folder will be used
+ If null or empty: testcase folder will be used
 * optFormat `string` - optional format, for the screenshot (currently supported: jpg and png)
  If null or empty use property `sakuli.screenshot.format`
 
-*Returns*: `String` - file path to the created screenshot OR null on errors
+*Returns*: `Path` - to the created screenshot OR null on errors
 *Example*
 [source,js]
 ----

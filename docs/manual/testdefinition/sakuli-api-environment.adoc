@@ -20,7 +20,7 @@ Environment - Represents the environment of the current test host.
 * link:#Environment.setSimilarity[Environment.setSimilarity(similarity)]
 * link:#Environment.resetSimilarity[Environment.resetSimilarity()]
 * link:#Environment.getRegionFromFocusedWindow[Environment.getRegionFromFocusedWindow()]
-* link:#Environment.takeScreenshot[Environment.takeScreenshot(pathName)]
+* link:#Environment.takeScreenshot[Environment.takeScreenshot(filename)]
 * link:#Environment.takeScreenshotWithTimestamp[Environment.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)]
 * link:#Environment.sleep[Environment.sleep(seconds)]
 * link:#Environment.sleepMs[Environment.sleepMs(milliseconds)]
@@ -45,6 +45,8 @@ Environment - Represents the environment of the current test host.
 * link:#Environment.isLinux[Environment.isLinux()]
 * link:#Environment.getOsIdentifier[Environment.getOsIdentifier()]
 * link:#Environment.runCommand[Environment.runCommand(command, optThrowException)]
+* link:#Environment.getEnv[Environment.getEnv(key)]
+* link:#Environment.getProperty[Environment.getProperty(key)]
 
 
 [[Environment.setSimilarity]]
@@ -61,7 +63,7 @@ Set a new default similarity for the screen capturing methods.
 [[Environment.resetSimilarity]]
 .Environment.resetSimilarity()
 
-Resets the current similarty of the screen capturing methods to the original default value of 0.8.
+Resets the current similarity of the screen capturing methods to the original default value of 0.8.
 
 *Returns*: - this link:#Environment[Environment] or NULL on errors.
 
@@ -74,19 +76,21 @@ Get a Region object from the current focused window
  or NULL on errors.
 
 [[Environment.takeScreenshot]]
-.Environment.takeScreenshot(pathName)
+.Environment.takeScreenshot(filename)
 
-Takes a screenshot of the current screen and saves it to the overgiven path.
-If there ist just a file name, the screenshot will be saved in your testsuite log folder.
+Takes a screenshot of the current screen and saves it to the assigned path. If there ist just a file name, the
+screenshot will be saved in your current testcase folder.
+Supported formats: `jpg` and `png`
 
 *Params*
 
-* pathName `String` - `pathname/filname.format` or just `filename.format`
+* filename `String` - `pathname/filename.format` or just `filename.format` for example `test.png`.
 
+*Returns*: `Path` - to the created screenshot OR null on errors
 *Example*
 [source,js]
 ----
-environment.takeScreenshot("test.jpg");
+environment.takeScreenshot("test.png");
 ----
 
 [[Environment.takeScreenshotWithTimestamp]]
@@ -99,7 +103,7 @@ Takes a screenshot of the current screen and add the current timestamp in the fi
 * filenamePostfix `String` - postfix for the final filename
  Default: screenshot
 * optFolderPath `String` - optional FolderPath, where to save the screenshot.
- If null or empty: testscase folder will be used
+ If null or empty: testcase folder will be used
 * optFormat `string` - optional format, for the screenshot (currently supported: jpg and png)
  If null or empty use property `sakuli.screenshot.format`
 
@@ -141,7 +145,7 @@ Blocks the current testcase execution for x milliseconds
 [[Environment.setClipboard]]
 .Environment.setClipboard(text)
 
-sets the String paramter to the system clipboard
+sets the String parameter to the system clipboard
 
 *Params*
 
@@ -153,7 +157,7 @@ sets the String paramter to the system clipboard
 .Environment.pasteClipboard()
 
 pastes the current clipboard content into the focused area.
-Will do the same as "STRG + V".
+Will do the same as "CTRL + V".
 
 *Returns*: - this Environment.
 
@@ -161,7 +165,7 @@ Will do the same as "STRG + V".
 .Environment.copyIntoClipboard()
 
 copy the current selected item or text to the clipboard.
-Will do the same as "STRG + C".
+Will do the same as "CTRL + C".
 
 *Returns*: - this Environment.
 
@@ -175,7 +179,7 @@ Clean the content of the clipboard.
 .Environment.paste(text)
 
 pastes the text at the current position of the focus/carret <br/>using the
-clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
+clipboard and ctrl/cmd-v (paste keyboard shortcut)
 
 *Params*
 
@@ -383,3 +387,26 @@ if(environmen.runCommand('uname --machine') == 'x86_64'){
     app = new Application('/lib/appname');
 }
 ----
+
+[[Environment.getEnv]]
+.Environment.getEnv(key)
+
+Reads out the environment variable with the assigned key
+
+*Params*
+
+* key `string` - of environment variable
+
+*Returns*: `string` - value or `null`
+<a name="Environment.getProperty"></a>
+
+[[Environment.getProperty]]
+.Environment.getProperty(key)
+
+Reads out the property value with the assigned key
+
+*Params*
+
+* key `string` - of property
+
+*Returns*: `string` - value or `null`

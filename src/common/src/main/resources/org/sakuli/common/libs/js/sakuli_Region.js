@@ -195,7 +195,7 @@ function initRegion(that, javaObject) {
     /**
      * Drag from region's current position and drop at given targetRegion and using the left mouse.
      *
-     * @example move the bubble button 20px to the rigth:
+     * @example move the bubble button 20px to the right:
      * ```
      *  var bubble = screen.find("bubble.png");
      *  bubble.dragAndDropTo(bubble.right(20));
@@ -227,7 +227,7 @@ function initRegion(that, javaObject) {
 
     /**
      * pastes the text at the current position of the focus/carret <br/>using the
-     * clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
+     * clipboard and ctrl/cmd-v (paste keyboard shortcut)
      *
      * @param {String} text as a string, which might contain unicode characters
      * @return this Region or NULL on errors.
@@ -307,7 +307,7 @@ function initRegion(that, javaObject) {
 
     /**
      * Decrypt and enters the given text one character/key after another using keyDown/keyUp.
-     * The entered text will be masked at the logging. For the deatails of the decryption see decryptSecret(String).
+     * The entered text will be masked at the logging. For the details of the decryption see decryptSecret(String).
      * <p/>
      * About the usable Key constants see documentation of Key.
      * The function could also type UTF-8 unicode characters, if the OS supports it.
@@ -608,13 +608,16 @@ function initRegion(that, javaObject) {
     };
 
     /**
-     * Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
-     * filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
+     * Takes a screenshot of this {@link Region} and saves it to the assigned path. If there ist just a file name, the
+     * screenshot will be saved in your current testcase folder.
+     * Supported formats: `jpg` and `png`
      *
-     * @param {String} filename name of the screenshot, e.g. `region_screenshot.png`.
-     *                          Default: screenshot.png
-     *
-     * @return {String} file path to the created screenshot OR null on errors
+     * @param {String} filename `pathname/filename.format` or just `filename.format` for example `test.png`.
+     * @example
+     *  ```
+     *  region.takeScreenshot("test.png");
+     *  ```
+     * @return {Path} to the created screenshot OR null on errors
      * @memberOf Region
      * @method takeScreenshot
      */
@@ -628,7 +631,7 @@ function initRegion(that, javaObject) {
 
 
     /**
-     * Takes a screenshot of this Region and add the current timestamp in the file name like e.g.:
+     * Takes a screenshot of this {@link Region} and add the current timestamp in the file name like e.g.:
      * @example
      * ```
      * region.takeScreenshotWithTimestamp("my-screenshot");
@@ -639,10 +642,10 @@ function initRegion(that, javaObject) {
      * @param {String} filenamePostfix postfix for the final filename
      *                                 Default: screenshot
      * @param {String} optFolderPath   optional FolderPath, where to save the screenshot.
-     *                                 If null or empty: testscase folder will be used
+     *                                 If null or empty: testcase folder will be used
      * @param {string} optFormat       optional format, for the screenshot (currently supported: jpg and png)
      *                                 If null or empty use property `sakuli.screenshot.format`
-     * @return {String} file path to the created screenshot OR null on errors
+     * @return {Path} to the created screenshot OR null on errors
      * @memberOf Region
      * @method takeScreenshotWithTimestamp
      */

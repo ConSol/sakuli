@@ -48,7 +48,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     }
 
     /**
-     * Creates a new Region from the position paramters
+     * Creates a new Region from the position parameters
      */
     public RegionImpl(int x, int y, int w, int h, boolean resumeOnException, ScreenActionLoader loader) {
         super(x, y, w, h, loader.getScreen());

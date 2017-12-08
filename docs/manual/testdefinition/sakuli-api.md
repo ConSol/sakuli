@@ -27,7 +27,7 @@
   * [Environment.setSimilarity(similarity)](#Environment.setSimilarity)
   * [Environment.resetSimilarity()](#Environment.resetSimilarity)
   * [Environment.getRegionFromFocusedWindow()](#Environment.getRegionFromFocusedWindow)
-  * [Environment.takeScreenshot(pathName)](#Environment.takeScreenshot)
+  * [Environment.takeScreenshot(filename)](#Environment.takeScreenshot)
   * [Environment.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)](#Environment.takeScreenshotWithTimestamp)
   * [Environment.sleep(seconds)](#Environment.sleep)
   * [Environment.sleepMs(milliseconds)](#Environment.sleepMs)
@@ -52,6 +52,8 @@
   * [Environment.isLinux()](#Environment.isLinux)
   * [Environment.getOsIdentifier()](#Environment.getOsIdentifier)
   * [Environment.runCommand(command, optThrowException)](#Environment.runCommand)
+  * [Environment.getEnv(key)](#Environment.getEnv)
+  * [Environment.getProperty(key)](#Environment.getProperty)
 * [Key](#Key)
 * [Logger](#Logger)
   * [Logger.logError(message)](#Logger.logError)
@@ -160,7 +162,7 @@ If a relative path is assigned, the current testcase folder will be used as curr
 ##TestCase.endOfStep(stepName, optWarningTime)
 A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
 particular runtime. When a case starts, Sakuli starts a "step" timer. It gets read out, stored with the 
-step name, and resetted each time endOfStep() is called. 
+step name, and the timer will set to `0` each time endOfStep() is called.
 If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state 
 "WARNING" (there is no CRITICAL state).
 
@@ -344,7 +346,7 @@ Environment - Represents the environment of the current test host.
   * [Environment.setSimilarity(similarity)](#Environment.setSimilarity)
   * [Environment.resetSimilarity()](#Environment.resetSimilarity)
   * [Environment.getRegionFromFocusedWindow()](#Environment.getRegionFromFocusedWindow)
-  * [Environment.takeScreenshot(pathName)](#Environment.takeScreenshot)
+  * [Environment.takeScreenshot(filename)](#Environment.takeScreenshot)
   * [Environment.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)](#Environment.takeScreenshotWithTimestamp)
   * [Environment.sleep(seconds)](#Environment.sleep)
   * [Environment.sleepMs(milliseconds)](#Environment.sleepMs)
@@ -369,6 +371,8 @@ Environment - Represents the environment of the current test host.
   * [Environment.isLinux()](#Environment.isLinux)
   * [Environment.getOsIdentifier()](#Environment.getOsIdentifier)
   * [Environment.runCommand(command, optThrowException)](#Environment.runCommand)
+  * [Environment.getEnv(key)](#Environment.getEnv)
+  * [Environment.getProperty(key)](#Environment.getProperty)
 
 <a name="Environment.setSimilarity"></a>
 ##Environment.setSimilarity(similarity)
@@ -381,7 +385,7 @@ Set a new default similarity for the screen capturing methods.
 **Returns**:  - this Environment or NULL on errors.  
 <a name="Environment.resetSimilarity"></a>
 ##Environment.resetSimilarity()
-Resets the current similarty of the screen capturing methods to the original default value of 0.8.
+Resets the current similarity of the screen capturing methods to the original default value of 0.8.
 
 **Returns**:  - this [Environment](#Environment) or NULL on errors.  
 <a name="Environment.getRegionFromFocusedWindow"></a>
@@ -391,17 +395,19 @@ Get a Region object from the current focused window
 **Returns**:  - a Region object from the current focused window
         or NULL on errors.  
 <a name="Environment.takeScreenshot"></a>
-##Environment.takeScreenshot(pathName)
-Takes a screenshot of the current screen and saves it to the overgiven path.
-If there ist just a file name, the screenshot will be saved in your testsuite log folder.
+##Environment.takeScreenshot(filename)
+Takes a screenshot of the current screen and saves it to the assigned path. If there ist just a file name, the
+screenshot will be saved in your current testcase folder.
+Supported formats: `jpg` and `png`
 
 **Params**
 
-- pathName `String` - `pathname/filname.format` or just `filename.format`  
+- filename `String` - `pathname/filename.format` or just `filename.format` for example `test.png`.  
 
+**Returns**: `Path` - to the created screenshot OR null on errors  
 **Example**  
 ```
-environment.takeScreenshot("test.jpg");
+environment.takeScreenshot("test.png");
 ```
 
 <a name="Environment.takeScreenshotWithTimestamp"></a>
@@ -413,11 +419,11 @@ Takes a screenshot of the current screen and add the current timestamp in the fi
 - filenamePostfix `String` - postfix for the final filename
                                 Default: screenshot  
 - optFolderPath `String` - optional FolderPath, where to save the screenshot.
-                                If null or empty: testscase folder will be used  
+                                If null or empty: testcase folder will be used  
 - optFormat `string` - optional format, for the screenshot (currently supported: jpg and png)
                                 If null or empty use property `sakuli.screenshot.format`  
 
-**Returns**: `String` - file path to the created screenshot OR null on errors  
+**Returns**: `Path` - to the created screenshot OR null on errors  
 **Example**  
 ```
 env.takeScreenshotWithTimestamp("my-screenshot");
@@ -447,7 +453,7 @@ Blocks the current testcase execution for x milliseconds
 **Returns**:  - the current content of the clipboard as String or NULL on errors  
 <a name="Environment.setClipboard"></a>
 ##Environment.setClipboard(text)
-sets the String paramter to the system clipboard
+sets the String parameter to the system clipboard
 
 **Params**
 
@@ -457,13 +463,13 @@ sets the String paramter to the system clipboard
 <a name="Environment.pasteClipboard"></a>
 ##Environment.pasteClipboard()
 pastes the current clipboard content into the focused area.
-Will do the same as "STRG + V".
+Will do the same as "CTRL + V".
 
 **Returns**:  - this Environment.  
 <a name="Environment.copyIntoClipboard"></a>
 ##Environment.copyIntoClipboard()
 copy the current selected item or text to the clipboard.
-Will do the same as "STRG + C".
+Will do the same as "CTRL + C".
 
 **Returns**:  - this Environment.  
 <a name="Environment.cleanClipboard"></a>
@@ -473,7 +479,7 @@ Clean the content of the clipboard.
 <a name="Environment.paste"></a>
 ##Environment.paste(text)
 pastes the text at the current position of the focus/carret <br/>using the
-clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
+clipboard and ctrl/cmd-v (paste keyboard shortcut)
 
 **Params**
 
@@ -648,11 +654,29 @@ if(environmen.runCommand('uname --machine') == 'x86_64'){
 }
 ```
 
+<a name="Environment.getEnv"></a>
+##Environment.getEnv(key)
+Reads out the environment variable with the assigned key
+
+**Params**
+
+- key `string` - of environment variable  
+
+**Returns**: `string` - value or `null`  
+<a name="Environment.getProperty"></a>
+##Environment.getProperty(key)
+Reads out the property value with the assigned key
+
+**Params**
+
+- key `string` - of property  
+
+**Returns**: `string` - value or `null`  
 <a name="Key"></a>
 #Key
-Key - representing some Key constants which can be used in type functions as input text and as modifier keys.
+All non-character keys are represented by *Key* constants which can be used in type functions.
 
-The following __Key__ values are possible:
+The following [Key](#Key) values are available:
 
 `SPACE`, `ENTER`, `BACKSPACE`, `TAB`, `ESC`, `UP`, `RIGHT`, `DOWN`, `LEFT`, `PAGE_UP`, `PAGE_DOWN`, `DELETE`, `END`,
 `HOME`, `INSERT`, `F1`, `F2`, `F3`, `F4`, `F5`, `F6`, `F7`, `F8`, `F9`, `F10`, `F11`, `F12`, `F13`, `F14`, `F15`,
@@ -660,15 +684,31 @@ The following __Key__ values are possible:
 `NUM1`, `NUM2`, `NUM3`, `NUM4`, `NUM5`, `NUM6`, `NUM7`, `NUM8`, `NUM9`, `SEPARATOR`, `NUM_LOCK`, `ADD`, `MINUS`,
 `MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`
 
-__Using `Key.ALTGR` on Unix:__
-To enable the key command `ALTGR` for unix systems please bind it to `CTRL + ALT`, for more information
-see [stackexchange.com - how-to-bind-altgr-to-ctrl-alt](http://unix.stackexchange.com/questions/157834/how-to-bind-altgr-to-ctrl-alt).
-
 **Example**  
+Press `F1`:
+
+    env.type(Key.F1);
+
+Close a window by typing the shortcut `ALT + F4`
+
+    // the second parameter is the held (="modifier") key
+    env.type(Key.F4, Key.ALT);
+
+Open the file manager on Windows with shortcut `WIN + e`:
+
+    env.type("e", Key.META)
+
+Do something application specific with shortcut `CTRL + ALT + b` (CTRL + ALT = ALTGR):
+
+    env.type("b", Key.ALTGR)
+
 Closing an window over typing the short cut `ALT + F4`:
-```
-env.type(Key.F4, Key.ALT);
-```
+
+    env.type(Key.F4, Key.ALT);
+
+__Using `Key.ALTGR` on Unix:__
+TIP: To enable the key command `ALTGR` on unix systems please bind it to `CTRL + ALT`. For more information
+see [stackexchange.com - how-to-bind-altgr-to-ctrl-alt](http://unix.stackexchange.com/questions/157834/how-to-bind-altgr-to-ctrl-alt).
 
 **Members**
 
@@ -884,7 +924,7 @@ Drag from region's current position and drop at given targetRegion and using the
 
 **Returns**:  - the Region or NULL on failure  
 **Example**  
-move the bubble button 20px to the rigth:
+move the bubble button 20px to the right:
 ```
 var bubble = screen.find("bubble.png");
 bubble.dragAndDropTo(bubble.right(20));
@@ -905,7 +945,7 @@ Screen within a given time period in seconds.
 <a name="Region.paste"></a>
 ##Region.paste(text)
 pastes the text at the current position of the focus/carret <br/>using the
-clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
+clipboard and ctrl/cmd-v (paste keyboard shortcut)
 
 **Params**
 
@@ -962,7 +1002,7 @@ The text is entered at the current position of the focus.
 <a name="Region.typeAndDecrypt"></a>
 ##Region.typeAndDecrypt(text, optModifiers)
 Decrypt and enters the given text one character/key after another using keyDown/keyUp.
-The entered text will be masked at the logging. For the deatails of the decryption see decryptSecret(String).
+The entered text will be masked at the logging. For the details of the decryption see decryptSecret(String).
 <p/>
 About the usable Key constants see documentation of Key.
 The function could also type UTF-8 unicode characters, if the OS supports it.
@@ -1161,29 +1201,34 @@ or the default time
 
 <a name="Region.takeScreenshot"></a>
 ##Region.takeScreenshot(filename)
-Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
-filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
+Takes a screenshot of this [Region](#Region) and saves it to the assigned path. If there ist just a file name, the
+screenshot will be saved in your current testcase folder.
+Supported formats: `jpg` and `png`
 
 **Params**
 
-- filename `String` - name of the screenshot, e.g. `region_screenshot.png`.
-                         Default: screenshot.png  
+- filename `String` - `pathname/filename.format` or just `filename.format` for example `test.png`.  
 
-**Returns**: `String` - file path to the created screenshot OR null on errors  
+**Returns**: `Path` - to the created screenshot OR null on errors  
+**Example**  
+```
+region.takeScreenshot("test.png");
+```
+
 <a name="Region.takeScreenshotWithTimestamp"></a>
 ##Region.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat)
-Takes a screenshot of this Region and add the current timestamp in the file name like e.g.:
+Takes a screenshot of this [Region](#Region) and add the current timestamp in the file name like e.g.:
 
 **Params**
 
 - filenamePostfix `String` - postfix for the final filename
                                 Default: screenshot  
 - optFolderPath `String` - optional FolderPath, where to save the screenshot.
-                                If null or empty: testscase folder will be used  
+                                If null or empty: testcase folder will be used  
 - optFormat `string` - optional format, for the screenshot (currently supported: jpg and png)
                                 If null or empty use property `sakuli.screenshot.format`  
 
-**Returns**: `String` - file path to the created screenshot OR null on errors  
+**Returns**: `Path` - to the created screenshot OR null on errors  
 **Example**  
 ```
 region.takeScreenshotWithTimestamp("my-screenshot");
