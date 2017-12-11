@@ -142,19 +142,19 @@ Currently OpenShift (Version 3.5) have no different behaviour as Kubernetes itse
 ===== OpenShift source to image (S2I)
 It's possible to use all the features of Sakuli combined with the power of
 https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build[OpenShift S2I].
-This empowers you to create s2i base images configured as you desire. The only thing you have to do is to add your test
+This empowers you to create S2I base images configured as you desire. The only thing you have to do is to add your test
 suite to the runnable sakuli test environment by configuration. Please find an example
-git-link:docker/openshift/openshift.sakuli.s2i.image.build.yaml[link-text="s2i build config template", mode="view", link-window="_blank"]
+git-link:docker/openshift/openshift.sakuli.s2i.image.build.yaml[link-text="S2I build config template openshift.sakuli.s2i.image.build.yaml", mode="view", link-window="_blank"]
 in our template section. This template will provide you a build config and a image stream containing the Sakuli S2I
 image, so that you can easily build up the Sakuli test container for your suites. In addition, we provide a
-git-link:docker/openshift/openshift.sakuli.s2i.build.yaml[link-text="Sakuli test container template", mode="view", link-window="_blank"]
+git-link:docker/openshift/openshift.sakuli.s2i.build.yaml[link-text="Sakuli test container template openshift.sakuli.s2i.build.yaml", mode="view", link-window="_blank"]
 to create ready to run Sakuli container, based on Sakuli S2I, using the previously defined S2I image stream, running the
 configured suite.
 
 ====== Advantages of Sakuli S2I
 Beside the general advantages of OpenShift S2I, Sakuli S2I adds additional ones in terms of test automation.
 
-* Keep the test suites close to your applications code and reference the suits in the build config.
+* Keep the test suites close to your applications code and reference the test suits in the build config.
 * If the tests change, you just have to start a new build of your Sakuli test container.
 * Reduces CI/CD pipeline processing time by just updating the suite in the sakuli container environment.
 
@@ -164,7 +164,7 @@ link:docker/openshift/openshift.sakuli.s2i.build.yaml[Sakuli test container temp
 provides the possibility to exchange the base image of your Sakuli test environment, so that all available
 <<docker-image-os-types>> can be used.
 
-[source]
+[source,bash]
 ----
 oc process -f openshift.sakuli.s2i.build.yaml -p "BASE_IMAGE=consol/sakuli-ubuntu-xfce"
 ----
@@ -172,7 +172,7 @@ oc process -f openshift.sakuli.s2i.build.yaml -p "BASE_IMAGE=consol/sakuli-ubunt
 In terms that you have designed your own Sakuli base image, you're also able to define the Source where the image
 should be taken from.
 
-[source]
+[source,bash]
 ----
 oc process -f openshift.sakuli.s2i.build.yaml -p "BASE_IMAGE=my-sakuli-ubuntu-openbox" -p "BASE_IMAGE_KIND=ImageStream"
 ----

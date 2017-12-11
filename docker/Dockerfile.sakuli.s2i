@@ -5,10 +5,9 @@ LABEL io.openshift.s2i.destination=/tmp
 
 USER root
 
-COPY s2i/* /opt/sakuli/s2i/
-RUN chmod 775 /opt/sakuli/s2i/*
-
-RUN chmod -R 775 ${SAKULI_TEST_SUITE} && \
+COPY openshift/s2i/* /opt/sakuli/s2i/
+RUN chmod 775 /opt/sakuli/s2i/* && \
+    chmod -R 775 ${SAKULI_TEST_SUITE} && \
     chgrp -R root ${SAKULI_TEST_SUITE}
 
 USER 1984
