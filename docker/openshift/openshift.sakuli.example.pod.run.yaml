@@ -10,7 +10,7 @@ metadata:
     version: 1.1.0
   creationTimestamp: null
   name: sakuli-e2e-run-pod
-### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
+### template parameter defined via `oc process -f this.yaml -p PARAMETER=value`
 parameters:
 - description: The name for the E2E test suite.
   name: E2E_TEST_NAME
