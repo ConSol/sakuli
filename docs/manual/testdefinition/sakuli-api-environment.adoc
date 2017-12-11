@@ -398,7 +398,6 @@ Reads out the environment variable with the assigned key
 * key `string` - of environment variable
 
 *Returns*: `string` - value or `null`
-<a name="Environment.getProperty"></a>
 
 [[Environment.getProperty]]
 .Environment.getProperty(key)
