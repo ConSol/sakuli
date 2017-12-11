@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cat <<EOF
+This is a S2I base image to run sakuli test suites.
+By default the image executes 'sakuli run ${SAKULI_TEST_SUITE}'.
+EOF

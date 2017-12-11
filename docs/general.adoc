@@ -25,9 +25,10 @@ At this point we want to thank all contributors, which helped to move this great
 * Georgi Todorov - Sakuli Team / Core Development
 * Lukas Höfer - Sakuli Team / Consultant
 * Sven Nierlein
-* Philip Griesbacher - Sakuli Go Starter
+* Philip Griesbacher - https://github.com/ConSol/sakuli-go-wrapper:[Sakuli Go Starter]
 * Thomas Rothenbacher
 * Christopher Kreft
+* Sven Hettwer - <<openshift-s2i, OpenShift S2I build>>
 
 (did we forget you? Please poke us):
 

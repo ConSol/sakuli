@@ -138,6 +138,65 @@ volumes:
 ===== Job Config
 Currently OpenShift (Version 3.5) have no different behaviour as Kubernetes itself, so take a look at <<kubernetes-job-config>>.
 
+[[openshift-s2i]]
+===== OpenShift source to image (S2I)
+It's possible to use all the features of Sakuli combined with the power of
+https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build[OpenShift S2I].
+This empowers you to create S2I base images configured as you desire. The only thing you have to do is to add your test
+suite to the runnable sakuli test environment by configuration. Please find an example
+git-link:docker/openshift/openshift.sakuli.s2i.image.build.yaml[link-text="S2I build config template openshift.sakuli.s2i.image.build.yaml", mode="view", link-window="_blank"]
+in our template section. This template will provide you a build config and a image stream containing the Sakuli S2I
+image, so that you can easily build up the Sakuli test container for your suites. In addition, we provide a
+git-link:docker/openshift/openshift.sakuli.s2i.build.yaml[link-text="Sakuli test container template openshift.sakuli.s2i.build.yaml", mode="view", link-window="_blank"]
+to create ready to run Sakuli container, based on Sakuli S2I, using the previously defined S2I image stream, running the
+configured suite.
+
+====== Advantages of Sakuli S2I
+Beside the general advantages of OpenShift S2I, Sakuli S2I adds additional ones in terms of test automation.
+
+* Keep the test suites close to your applications code and reference the test suits in the build config.
+* If the tests change, you just have to start a new build of your Sakuli test container.
+* Reduces CI/CD pipeline processing time by just updating the suite in the sakuli container environment.
+
+====== Modify the base image
+The
+link:docker/openshift/openshift.sakuli.s2i.build.yaml[Sakuli test container template]
+provides the possibility to exchange the base image of your Sakuli test environment, so that all available
+<<docker-image-os-types>> can be used.
+
+[source,bash]
+----
+oc process -f openshift.sakuli.s2i.build.yaml -p "BASE_IMAGE=consol/sakuli-ubuntu-xfce"
+----
+
+In terms that you have designed your own Sakuli base image, you're also able to define the Source where the image
+should be taken from.
+
+[source,bash]
+----
+oc process -f openshift.sakuli.s2i.build.yaml -p "BASE_IMAGE=my-sakuli-ubuntu-openbox" -p "BASE_IMAGE_KIND=ImageStream"
+----
+
+The values available in the `BASE_IMAGE_KIND` correlate to the values of the `dockerStrategy.from.kind` definition.
+
+====== Example workflow
+
+Setup your Sakuli-S2I image.
+[source]
+----
+oc process -f openshift.sakuli.s2i.image.build.yaml -p "IMAGE=sakuli-ubuntu-xfce-s2i" -p "BASE_IMAGE=consol/sakuli-ubuntu-xfce:dev" | oc apply -f -
+----
+Add the test suite of your choice to the S2I image
+[source]
+----
+oc process -f openshift.sakuli.s2i.build.yaml -p "IMAGE=test-xfce" -p "BASE_IMAGE=sakuli-ubuntu-xfce-s2i" -p "TESTSUITE_REPOSITORY_URL=https://github.com/ConSol/sakuli.git" -p "TESTSUITE_CONTEXT_DIR=example_test_suites/example_xfce" | oc apply -f -
+----
+Run your test container `test-xfce`
+[source]
+----
+oc run test-xfce --image=<your-docker-registry-ip>:5000/<your-project>/test-xfce --restart=OnFailure
+----
+
 ===== Other useful commands
 
 ====== Delete specific application or E2E test
@@ -147,7 +206,7 @@ Currently OpenShift (Version 3.5) have no different behaviour as Kubernetes itse
 oc process -f openshift.sakuli.example.pod.run.yaml -v E2E_TEST_NAME=single-job | oc delete --grace-period=5 -f -
 ----
 
-====== Delete all running pods and configs
+====== Delete all running pods and configsŷ
 
 [source]
 ----
