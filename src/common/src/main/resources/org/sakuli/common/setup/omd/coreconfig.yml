@@ -9,12 +9,12 @@
       command: "mkdir -p {{ OMD_ROOT }}/tmp"
     - name: Core - eventhandler script
       copy:
-        src: ./omd/local/lib/nagios/plugins/sakuli_screenshot_eventhandler.sh
+        src: ./local/lib/nagios/plugins/sakuli_screenshot_eventhandler.sh
         dest: "{{ OMD_ROOT }}/local/lib/nagios/plugins/"
         mode: 0775
     - name: Core - eventhandler command
       copy:
-        src: ./omd/etc/nagios/conf.d/sakuli_screenshot_eventhandler.cfg
+        src: ./etc/nagios/conf.d/sakuli_screenshot_eventhandler.cfg
         dest: "{{ OMD_ROOT }}/etc/core/conf.d/"
     - name: Core - logo directory
       file:
@@ -23,11 +23,11 @@
         recurse: yes
     - name: Core - Sakuli logo
       copy:
-        src: ./omd/local/share/nagios/htdocs/images/logos/sakuli.png
+        src: ./local/share/nagios/htdocs/images/logos/sakuli.png
         dest: "{{ OMD_ROOT }}/local/share/nagios/htdocs/images/logos/"
     - name: Core - Sakuli templates
       copy:
-        src: ./omd/etc/nagios/conf.d/sakuli_nagios_templates.cfg
+        src: ./etc/nagios/conf.d/sakuli_nagios_templates.cfg
         dest: "{{ OMD_ROOT }}/etc/core/conf.d/"
     - name: Escape HTML tags
       lineinfile:

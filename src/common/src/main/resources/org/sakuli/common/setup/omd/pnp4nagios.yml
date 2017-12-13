@@ -16,5 +16,5 @@
         - "NAGFLUX off"
     - name: copy PNP4Nagios template
       copy:
-        src: ./omd/etc/pnp4nagios/templates/check_sakuli.php
+        src: ./etc/pnp4nagios/templates/check_sakuli.php
         dest: "{{ OMD_ROOT }}/etc/pnp4nagios/templates/"

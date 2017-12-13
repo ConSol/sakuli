@@ -19,7 +19,7 @@ image:sakuli-db.png[sakuli-db-forwarder]
 
 If not already done for other reasons, a site-specific MySQL instance has to be started. That's the place where Sakuli clients can store their check results.
 
-Use the Makefile located in `$OMD_ROOT/share/sakuli/` to configure mysql:
+Use the Makefile located in `$OMD_ROOT/share/sakuli/omd/` to configure mysql:
 
 * enable MySQL in OMD
 * create & initialize the database
@@ -31,7 +31,7 @@ Use the Makefile located in `$OMD_ROOT/share/sakuli/` to configure mysql:
 
 [source]
 ----
-OMD[demo]:~/share/sakuli/setup$ make mysql [enter]
+OMD[demo]:~/share/sakuli/setup/omd$ make mysql [enter]
 ...
 ----
 ====== check the connection to the Sakuli DB

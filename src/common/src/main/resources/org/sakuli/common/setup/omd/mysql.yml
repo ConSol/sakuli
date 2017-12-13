@@ -30,26 +30,26 @@
         path: "{{ OMD_ROOT}}/etc/check_mysql_health/ "
     - name: check_mysql_health perl module
       copy:
-        src: ./omd/etc/check_mysql_health/CheckMySQLHealthSakuli.pm
+        src: ./etc/check_mysql_health/CheckMySQLHealthSakuli.pm
         dest: "{{ OMD_ROOT}}/etc/check_mysql_health/"
 
     - name: check_mysql_health command
       copy:
-        src: ./omd/etc/nagios/conf.d/sakuli_nagios_check_mysql.cfg
+        src: ./etc/nagios/conf.d/sakuli_nagios_check_mysql.cfg
         dest: "{{ OMD_ROOT}}/etc/core/conf.d/"
 
     - name: sample resource cfg file
       copy:
-        src: ./omd/etc/nagios/resource.cfg.sakuli-db.sample
+        src: ./etc/nagios/resource.cfg.sakuli-db.sample
         dest: "{{ OMD_ROOT}}/etc/core/"
 
     - name: database cleanup script
       copy:
-        src: ./omd/local/bin/sakuli_mysql_purge.sh
+        src: ./local/bin/sakuli_mysql_purge.sh
         dest: "{{ OMD_ROOT}}/local/bin/"
     - name: cron - database cleanup script
       copy:
-        src: ./omd/etc/cron.d/sakuli_mysql_purge
+        src: ./etc/cron.d/sakuli_mysql_purge
         dest: "{{ OMD_ROOT }}/etc/cron.d/"
 
     - name: enable MySQL
@@ -57,7 +57,7 @@
 
     - name: templating mysql config file
       template:
-        src: ./omd/.my.cnf.j2
+        src: ./.my.cnf.j2
         dest: "{{ OMD_ROOT}}/.my.cnf"
 
     - name: prepare db
@@ -65,7 +65,7 @@
     - name: start db
       shell: omd start mysql
     - name: create database
-      shell: mysql < database/create_sakuli_database.sql
+      shell: mysql < ../database/create_sakuli_database.sql
     - name: create user
       mysql_user:
         name: "{{ MYSQL_USER }}"

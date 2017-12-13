@@ -18,7 +18,7 @@ image:sakuli-gearman.png[sakuli-db-forwarder]
 
 ====== Enable and configure mod-gearman
 
-Use the Makefile located in `$OMD_ROOT/share/sakuli/` to configure mod_gearman:
+Use the Makefile located in `$OMD_ROOT/share/sakuli/omd/` to configure mod_gearman:
 
 * enable all services for mod_gearman
 * set the bind IP and port (default: `0.0.0.0:4730`; overwrite with e.g. `export GEARMAND_PORT=192.168.130.10:4731`)
@@ -26,7 +26,7 @@ Use the Makefile located in `$OMD_ROOT/share/sakuli/` to configure mod_gearman:
 
 [source]
 ----
-OMD[demo]:~/share/sakuli/setup$ make gearman [enter]
+OMD[demo]:~/share/sakuli/setup/omd$ make gearman [enter]
 ...
 ----
 
@@ -128,11 +128,7 @@ Use the Makefile located in `$OMD_ROOT/share/sakuli/` to enable the feature:
 
 [source]
 ----
-OMD[demo]:~/share/sakuli/setup$ make gearman_proxy
-cp ./omd/etc/init.d/sakuli_gearman_proxy /omd/sites/demo/etc/init.d/
-chmod +x /omd/sites/demo/etc/init.d/sakuli_gearman_proxy
-cp ./omd/local/bin/sakuli_gearman_proxy.pl /omd/sites/demo/local/bin/
-cp ./omd/etc/mod-gearman/sakuli_gearman_proxy.cfg /omd/sites/demo/etc/mod-gearman/
+OMD[demo]:~/share/sakuli/setup/omd$ make gearman_proxy
 ----
 
 Edit `etc/mod-gearman/sakuli_gearman_proxy.cfg`:
