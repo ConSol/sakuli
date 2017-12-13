@@ -7,15 +7,15 @@
       include: pretasks.yml
     - name: gearman_proxy init script
       copy: 
-        src: ./omd/etc/init.d/sakuli_gearman_proxy
+        src: ./etc/init.d/sakuli_gearman_proxy
         dest: "{{ OMD_ROOT }}/etc/init.d/"
         mode: 0775
     - name: gearman_proxy script
       copy: 
-        src: ./omd/local/bin/sakuli_gearman_proxy.pl 
+        src: ./local/bin/sakuli_gearman_proxy.pl 
         dest: "{{ OMD_ROOT}}/local/bin/"
         mode: 0775
     - name: gearman_proxy config
       copy: 
-        src: ./omd/etc/mod-gearman/sakuli_gearman_proxy.cfg 
+        src: ./etc/mod-gearman/sakuli_gearman_proxy.cfg 
         dest: "{{ OMD_ROOT}}/etc/mod-gearman/"

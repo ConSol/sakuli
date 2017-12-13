@@ -27,12 +27,7 @@ Execute the Sakuli Makefile to patch the influxDB init script. It will restart I
 
 [source]
 ----
-OMD[demo]:~/share/sakuli/setup$ make grafana
-patch -d /omd/sites/demo -p0 < ./omd/etc/init.d/sakuli_influxdb.patch
-patching file etc/init.d/influxdb
-omd restart influxdb
-Stopping influxdb.....OK
-Starting influxdb....OK
+OMD[demo]:~/share/sakuli/setup/omd$ make grafana
 ----
 
 In case of an exception, the <<screenshot_history_eh,screenshot history event_handler>> saves the image on the file system *and* its path into the InfluxDB database "sakuli" (measurement: *images*).

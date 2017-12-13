@@ -14,5 +14,5 @@
         - "NAGFLUX on"
     - name: apply influxdb patch to create sakuli db
       patch:
-        src: ./omd/etc/init.d/sakuli_influxdb.patch
+        src: ./etc/init.d/sakuli_influxdb.patch
         basedir: "{{ OMD_ROOT }}"

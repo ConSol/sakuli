@@ -7,24 +7,24 @@
       include: pretasks.yml
     - name: sakuli_screenshot_cleanup.sh
       copy:
-        src: ./omd/local/bin/sakuli_screenshot_cleanup.sh
+        src: ./local/bin/sakuli_screenshot_cleanup.sh
         dest: "{{ OMD_ROOT }}/local/bin/"
         mode: 0770
     - name: cron - sakuli_screenshot_cleanup cron
       copy:
-        src: ./omd/etc/cron.d/sakuli_screenshot_cleanup
+        src: ./etc/cron.d/sakuli_screenshot_cleanup
         dest: "{{ OMD_ROOT }}/etc/cron.d/"
     - name: Thruk - Sakuli SSIs
       copy:
         src: "{{ item }}"
         dest: "{{ OMD_ROOT }}/etc/thruk/ssi"
       with_fileglob:
-        - ./omd/etc/thruk/ssi/*.ssi
+        - ./etc/thruk/ssi/*.ssi
     - name: Thruk - sakuli_action_menu.conf
       copy:
-        src: ./omd/etc/thruk/thruk_local.d/sakuli_action_menu.conf
+        src: ./etc/thruk/thruk_local.d/sakuli_action_menu.conf
         dest: "{{ OMD_ROOT }}/etc/thruk/thruk_local.d/"
     - name: Apache - sakuli_screenshots.conf
       template:
-        src: ./omd/etc/apache/conf.d/sakuli_screenshots.conf.j2
+        src: ./etc/apache/conf.d/sakuli_screenshots.conf.j2
         dest: "{{ OMD_ROOT }}/etc/apache/conf.d/sakuli_screenshots.conf"

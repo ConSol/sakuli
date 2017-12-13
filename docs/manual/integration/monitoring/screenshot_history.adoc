@@ -19,11 +19,11 @@ With the *Screenshot history* feature, the monitoring core (Nagios/Naemon/Icinga
 
 ===== Activating the feature
 
-Use the Makefile located in `$OMD_ROOT/share/sakuli/` to enable the feature:
+Use the Makefile located in `$OMD_ROOT/share/sakuli/omd/` to enable the feature:
 
-[source,bash]
+[source]
 ----
-OMD[demo]:~/share/sakuli/setup$ make screenshot_history
+OMD[demo]:~/share/sakuli/setup/omd$ make screenshot_history
 ----
 
 [[screenshot_history_eh]]
