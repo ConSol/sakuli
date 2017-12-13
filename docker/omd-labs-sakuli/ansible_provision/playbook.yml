@@ -17,7 +17,7 @@
         - "screenshot_history"
         - "gearman"
       args:
-        chdir: "$OMD_ROOT/share/sakuli/setup"
+        chdir: "$OMD_ROOT/share/sakuli/setup/omd"
 
     - name: set Nagios core
       command: "omd config {{ SITENAME }} set CORE nagios"
