@@ -119,17 +119,16 @@
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/install_firefox_portable.sh">
-                <os family="unix"/>
-                <os family="mac"/>
+                <os family="linux"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_sakuli_home.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_ui_testing_variables.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
         </pack>
@@ -140,46 +139,46 @@
             <!-- mark files as executable -->
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/bin/dashboard.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/bin/sahi.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/tools/changeproxy.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/tools/revertproxy.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true" targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/bin/web.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/start_dashboard.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/start_sahi.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/start_web.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/testrunner.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
         </pack>
@@ -207,7 +206,7 @@
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_sakuli_home.sh">
             </executable>
-            <os family="unix"/>
+            <os family="linux"/>
             <os family="mac"/>
             <!-- INSTALLER: set SAKULI_HOME and PATH execute via 'ProcessPanel.Spec.xml-->
             <!-- UNINSTALLER: remove set environment pathes-->
@@ -244,7 +243,7 @@
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_ui_testing_variables.sh">
             </executable>
-            <os family="unix"/>
+            <os family="linux"/>
             <os family="mac"/>
             <!-- INSTALLER: set ui environment variables via 'ProcessPanel.Spec.xml-->
             <!-- UNINSTALLER: remove variables from environment pathes-->
@@ -257,17 +256,17 @@
                      override="true"/>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.example}/start_example_opensuse.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.example}/start_example_ubuntu.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.example}/start_example_xfce.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
         </pack>
@@ -289,7 +288,7 @@
             <description>Download and install Firefox Portable v${package.name.firefox.version} to
                 'SAKULI_HOME\${sakuli.install.target.firefox.win}' and configure as browser type 'firefox_portable'.
             </description>
-            <os family="unix"/>
+            <os family="linux"/>
             <!-- INSTALLER: Will executed via 'ProcessPanel.Spec.xml-->
         </pack>
         <!-- @formatter:on -->
