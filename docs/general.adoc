@@ -7,6 +7,12 @@
 :page-path: docs/general.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
+* *Project Homepage: http://www.sakuli.org/[www.sakuli.org]*
+* *Blog Entries: https://labs.consol.de/tags/sakuli/[labs.consol.de/sakuli]*
+* *Tutorials & Examples: https://github.com/ConSol/sakuli-examples[github.com/ConSol/sakuli-examples]*
+
+'''
+
 *Documentation for version: `${sakuli.version}`* (also available as a *link:${pdf.path}[PDF document^]*)
 
 The documentation of all former Sakuli versions can be found on http://consol.github.io/sakuli[consol.github.io/sakuli]

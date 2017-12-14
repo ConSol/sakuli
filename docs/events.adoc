@@ -8,6 +8,14 @@
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 :hardbreaks:
+June 5, 2018: Meetup of https://www.meetup.com/de-DE/jugthde[Java User Group Thüringen]
+*-> Talk:* https://www.meetup.com/de-DE/jugthde/events/245643418/[OpenShift-Build-Pipelines: Build -> Test -> Run!]
+
+April 24 - 26, 2018: https://apex.doag.org/de/home[APEX Connect 2018] (Tobias Schneck)
+*-> Talk:* UI-Testing - Selenium? Rich-Clients? Containers?
+
+'''
+
 July 11, 2017: https://www.consol.de/news/details/review-openshift-kooperationsevent-von-consol-und-red-hat-am-110717[ConSol/Redhat OpenShift Day - everything Continuous] (Tobias Schneck)
 *-> Slides:* https://www.slideshare.net/TobiasSchneck/continuous-testing-integration-und-uitesting-mit-openshiftbuildpipelines[Continuous Testing: Integration- und UI-Testing mit OpenShift-Build-Pipelines]
 *-> Demo Code:* image:github-logo-inline.png[github_

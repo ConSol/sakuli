@@ -9,6 +9,8 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 This chapter describes all necessary steps to prepare a OMD site with a *Nagios* compatible monitoring system to receive Sakuli test results with one of the forwarders <<omd-gearman,gearman>>, <<omd-sql-database,database>>, <<check_mk>> or <<icinga2-integration,icinga2-api>>. For some parts of this documentation, OMD with Thruk as web frontend will be presupposed, but any other Nagios based system will do also (the configuration steps may vary then).
 
+[[omd-docker]]
+===== OMD Docker image
 NOTE: If you want to run OMD-Labs in a container then check out the https://github.com/ConSol/omd-labs-docker[OMD-Labs on Docker project].
 
 ===== Requirements

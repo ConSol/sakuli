@@ -85,7 +85,7 @@ NOTE: The usage is described for the Firefox browser. For other browser try to c
     * <<sahi-https-accept-self-signed>>
     * <<sahi-https-certificate-import>>
 
-. Now two things happend:
+. Now two things happened:
     * Sahi added a Java Keystore for each accepted certificate domain (e.g. `sahi_example_com`, `www_github_com`) in `~/sakuli/sahi/userdata/certs/`.
     * The Firefox profile `~/sakuli/sahi/userdata/browser/ff/profiles/sahi0` now contains an updated version of:
     ** `cert8.db` - certificate store

@@ -125,6 +125,7 @@ include::manual/testdefinition/troubleshooting.adoc[]
 //== Integration documentation
 include::manual/integration/integration.adoc[]
 
+[[monitoring-integration]]
 === Monitoring integration
 include::manual/integration/monitoring/omd_preparation.adoc[]
 include::manual/integration/monitoring/omd-gearman.adoc[]
