@@ -16,6 +16,11 @@ function set_var {
 
 FF_VARS=("MOZ_DISABLE_OOP_PLUGINS" "MOZ_DISABLE_AUTO_SAFE_MODE" "MOZ_DISABLE_SAFE_MODE_KEY")
 
+# add empty line to ensure that bash has a new line
+if [ "${1:0:3}" == "set" ]; then
+    echo "" >> ~/.bashrc
+fi
+
 for ((i=0; i < ${#FF_VARS[@]}; i++))
 do
   cur_var=${FF_VARS[$i]}
