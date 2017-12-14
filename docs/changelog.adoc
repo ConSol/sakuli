@@ -36,6 +36,7 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 * Add <<encryption-environment, Encryption Mode `environment`>> Cipher with masterkey setup as default (https://github.com/ConSol/sakuli/issues/197[#197])
 * Add environment variable `SAKULI_ROOT` to Windows / Linux installer (https://github.com/ConSol/sakuli/issues/191[#191])
 * Add automatic parsing from dashed environment vars, see <<property-loading-mechanism>> (https://github.com/ConSol/sakuli/issues/238[#238])
+* Add Mac compatible `sakuli` binary to installer (https://github.com/ConSol/sakuli/issues/298[#298], https://github.com/ConSol/sakuli-go-wrapper/issues/4[ConSol/sakuli-go-wrapper/ #4]
 * Update Sakuli Examples:
 ** Add https://github.com/ConSol/sakuli-examples/blob/master/docker-xfce-omd/README.adoc[Sakuli Tutorial - Docker based E2E application monitoring]
 ** Update https://github.com/ConSol/sakuli-examples/blob/master/first-steps/first-steps.md[first steps tutorial]
