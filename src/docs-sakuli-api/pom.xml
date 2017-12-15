@@ -44,13 +44,14 @@
     </properties>
 
     <profiles>
-        <!--TODO TS integrate into AsciiDoc process-->
+        <!--TODO integrate into AsciiDoc process https://github.com/ConSol/sakuli/issues/255-->
         <profile>
             <id>generate-markdown</id>
             <activation>
                 <property>
                     <name>performRelease</name>
-                    <value>true</value>
+                    <!--false ase long #255 is not finished-->
+                    <value>false</value>
                 </property>
             </activation>
             <build>
