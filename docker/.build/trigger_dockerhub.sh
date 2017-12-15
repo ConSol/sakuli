@@ -20,6 +20,10 @@ URLS=(
 if [[ ${GIT_TAG:0:1} == "v" ]] ; then
     PAYLOAD='{"source_type": "Tag", "source_name": "'$GIT_TAG'"}'
 elif [[ $GIT_TAG == "master" ]] ; then
+    echo "DockerHub will not be triggered: use script 'tag_image.sh'"
+    #PAYLOAD='{"docker_tag": "'latest'"}'
+    exit 0
+fi
     PAYLOAD='{"docker_tag": "'latest'"}'
 else
     PAYLOAD='{"docker_tag": "'$GIT_TAG'"}'
