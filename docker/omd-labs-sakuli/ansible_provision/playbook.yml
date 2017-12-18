@@ -1,0 +1,26 @@
+---
+
+- name: "Configure Sakuli E2E checks for Site: {{ SITENAME }}"
+  hosts: all
+  environment:
+    OMD_ROOT: "/opt/omd/sites/{{ SITENAME }}"
+  tasks:
+
+    - name: configure Sakuli extension
+      become: yes
+      become_user: "{{ SITENAME }}"
+      become_method: "su"
+      become_flags: "-"
+      command: make "{{ item }}"
+      with_items:
+        - "{{ GRAPHER }}"
+        - "screenshot_history"
+        - "gearman"
+      args:
+        chdir: "$OMD_ROOT/share/sakuli/setup/omd"
+
+    - name: set Nagios core
+      command: "omd config {{ SITENAME }} set CORE nagios"
+
+    - name: set timezone
+      shell: echo 'TZ=Europe/Berlin' >> $OMD_ROOT/etc/environment

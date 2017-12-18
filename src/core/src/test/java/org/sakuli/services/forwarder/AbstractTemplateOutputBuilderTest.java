@@ -102,7 +102,7 @@ public class AbstractTemplateOutputBuilderTest extends BaseTest {
     }
 
     @Test(expectedExceptions = FileNotFoundException.class,
-            expectedExceptionsMessageRegExp = "JTwig template folder for check_MK could not be found under '.*/tmp_output_builder_.*/check_mk/main.twig'")
+            expectedExceptionsMessageRegExp = "JTwig template folder for check_MK could not be found under '.*tmp_output_builder_.*check_mk.main.twig'")
     public void testGetTemplatePathFileNotExists() throws Exception {
         doReturn(tmp_output_builder_test.toString()).when(sakuliProperties).getForwarderTemplateFolder();
         doReturn("check_MK").when(testling).getConverterName();

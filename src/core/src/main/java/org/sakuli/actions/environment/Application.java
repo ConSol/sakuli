@@ -78,18 +78,22 @@ public class Application extends App {
     @Override
     public Application open() {
         App app = super.open();
-        sleep(sleepMillis);
         if (app == null) {
-            loader.getExceptionHandler().handleException("Application '" + getName() + " could not be opend! ... Please check the application name or path!", resumeOnException);
+            loader.getExceptionHandler().handleException("Application '" + this.getName() + " could not be opened! ... Please check the application name or path!", resumeOnException);
             return null;
         }
+        /*** automatic sleep for long loading applications, see {@link #setSleepTime(Integer)} **/
+        sleep(sleepMillis);
+
+        final String appID = "" + app.getName() +
+                ((app.getPID() != null && app.getPID() > 0) ? " PID:" + app.getPID() : "");
         final int tries = 5;
-        for (int i = 0; i < tries && this.getPID() <= 0; i++) {
-            LOGGER.info("wait {} ms more for finish loading application {} - {} of {} tries",
-                    sleepMillis, this.getName(), i, tries);
-            sleep(sleepMillis);
+        LOGGER.debug("verify app " + appID + " is running");
+        if (!app.isRunning(tries)) {
+            LOGGER.warn("verified {} times if application '" + appID + "' is running", tries);
+            loader.getExceptionHandler().handleException("Application '" + appID + "' failed to open or is not running", resumeOnException);
         }
-        LOGGER.info("\"{}\" - PID: {}", this.getName(), this.getPID());
+        LOGGER.info("Application '" + appID + "' is running");
         return this;
     }
 
@@ -113,11 +117,12 @@ public class Application extends App {
     public Application focusWindow(Integer windowNumber) {
         LOGGER.debug("Focus window \"" + windowNumber + "\" in application \"" + getName() + "\".");
         App app = super.focus(windowNumber);
-        sleep(sleepMillis);
         if (app == null) {
             LOGGER.warn("Application '{}' could not be focused! ... Please check if the application has been opened before or is already focused!", getName());
             return this;
         }
+        /*** automatic sleep for long loading applications, see {@link #setSleepTime(Integer)} **/
+        sleep(sleepMillis);
         return this;
     }
 

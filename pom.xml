@@ -22,7 +22,7 @@
 
     <groupId>org.sakuli</groupId>
     <artifactId>root</artifactId>
-    <version>1.1.0-beta</version>
+    <version>1.1.0</version>
     <packaging>pom</packaging>
 
     <name>sakuli-parent</name>
@@ -34,9 +34,10 @@
 
     <modules>
         <module>src/common</module>
+        <module>src/docs-sakuli-api</module>
+        <module>src/docs-manual</module>
         <module>src/core</module>
         <module>src/integration-test</module>
-        <module>src/docs</module>
         <module>src/java-dsl</module>
         <module>src/installer</module>
     </modules>
@@ -50,7 +51,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- needed for no errors on javadoc generation (maven-javadoc-plugin) -->
         <additionalparam>-Xdoclint:none</additionalparam>
-        <dependencies.sakuli-go-wrapper.version>1.0.3</dependencies.sakuli-go-wrapper.version>
+        <dependencies.sakuli-go-wrapper.version>1.1.0</dependencies.sakuli-go-wrapper.version>
         <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
@@ -60,7 +61,7 @@
         <test.group.ui>ui</test.group.ui>
         <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
         <!-- special sakuli-version 99x - change this later to latest stable version-->
-        <sikulixapi.version>1.1.999</sikulixapi.version>
+        <sikulixapi.version>1.1.1000</sikulixapi.version>
         <sahi.version>5.1</sahi.version>
         <izpack.version>5.0.6</izpack.version>
     </properties>
@@ -183,6 +184,11 @@
                     <version>2.17</version>
                 </plugin>
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>2.5.2</version>
+                </plugin>
+                <plugin>
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>0.0.26</version>
@@ -220,7 +226,7 @@
                 <plugin>
                     <groupId>pl.project13.maven</groupId>
                     <artifactId>git-commit-id-plugin</artifactId>
-                    <version>2.2.0</version>
+                    <version>2.2.2</version>
                 </plugin>
 
                 <plugin>
@@ -228,6 +234,28 @@
                     <artifactId>jgitflow-maven-plugin</artifactId>
                     <version>1.0-m5.1</version>
                 </plugin>
+
+                <plugin>
+                    <groupId>com.coderplus.maven.plugins</groupId>
+                    <artifactId>copy-rename-maven-plugin</artifactId>
+                    <version>1.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.6.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.asciidoctor</groupId>
+                    <artifactId>asciidoctor-maven-plugin</artifactId>
+                    <version>1.5.3</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>1.9.5</version>
+                </plugin>
+
             </plugins>
 
         </pluginManagement>

@@ -1,0 +1,107 @@
+
+:imagesdir: ../../../images
+
+[[sahi-https]]
+===== HTTPS support in Sahi
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sahi-https.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+This documentation is not complete yet. Any help is appreciated.
+
+[[sahi-https-accept-self-signed]]
+====== Solution 1: accept self-signed certificates
+
+This will work on most systems, especially the ones you have full control over.
+
+. Open Sahi Dashboard, start the browser.
+. On the Sahi start page, navigate to the https site you want Sahi to trust (e.g. https://github.com[https://github.com])
+. You will be presented a message that this page "connection is not secure/trusted".
+. On *Firefox*, click *"I understand the risks."*
+. On *Chrome*, click *"Proceed anyway (unsecure)"*
+. On *IE*, click *"Continue to the website (not recommended)"*.
+. Once the page has loaded, click *"SSL Manager"* from the Sahi start page
+. You should be presented a green check mark right of the https URL, indicating that Chrome accepted the site's certificate, signed by Sahi:
+
+image:https_ok.png[https_ok]
+
+[[sahi-https-certificate-import]]
+====== Solution 2: manual certificate import
+
+WARNING: This is a browser-specific solution and can be different in newer Browser versions or other operating systems!
+
+.Google Chrome (Windows)
+
+. Open Sahi Dashboard, start _Chrome_
+. On the Sahi start page, navigate to the https site you want Sahi to trust (e.g. https://github.com[https://github.com] )
+. You will be presented a message that this page "connection is not secure". Click on the *red-crossed locker symbol* left of the URL in the address bar and then *"Certificate information"*
+. Change to tab *"Details"* and press *"Copy to File…"*
+. In the following export assistent, save the certificate as *"Cryptographic Message Syntax Standard PKCS #7 Certificates (.P7B)"&quot;*
+. Go to Chrome preferences, *"Manage certificates"*
+. *"Import…"* -&gt; select the exported *.p7b* certificate (in the "Open" dialogue, chnange the filename extension filter to *"PKCS#1"* )
+. Choose *"Trusted Root Certification Authorities"* as certificate store
+. Accept the Import confirmation.
+. Restart Chrome from the Sahi dashboard.
+. From the Sahi start page (step #2), click *"SSL Manager"*
+. You should be presented a green check mark right of the https URL, indicating that Chrome accepted the site's certificate, signed by Sahi:
+
+image:https_ok.png[https_ok]
+
+.Mozilla Firefox
+
+. Open Sahi Dashboard, start _Firefox/Firefox portable_
+. On the Sahi start page, navigate to the https site you want Sahi to trust (e.g. https://github.com[https://github.com] )
+. You will be presented a message that this page "connection is not secure". Click on I understand the risks" and add the certificate exception. Now navigate back to the sahi start page and click on the Link "SSL Manager&quot;:
+
+image:tutorial_ssl_manager.png[ssl manager]
+
+You will be promptet again a security warning for connecting to "sahi.example.com" (a local dummy domain), add the certificate here also as an exception.
+
+The following page contains a list of all so far trusted and untrusted domains and their certificates. To import the red marked into the browser's certificate store, open the links by clicking them with the middle mouse key. This opens the page within a new tab; only in this way you are allowed to add the certificate exception.
+
+image:tutorial_certs.png[certs]
+
+You can close every opened tab when it is displaying "Successfully connected" for the domain:
+
+image:tutorial_connected.png[connected]
+
+Now go back to the SSL Manager overview and click the "refresh" button. Every previously untrusted domain should now be marked as OK:
+
+image:tutorial_refresh.png[refresh]
+
+NOTE: Ensure that Firefox really save the certificates permanently! image:tutorial_certs_ff_save.png[Firefox save certificates]
+
+.Internet Explorer
+
+See Sahi description http://sahipro.com/docs/using-sahi/sahi-configuration-basic.html#Configure%20SSL[Configure SSL in Sahi].
+
+[[sahi-https-automatic-certificate-usage]]
+====== Automatic HTTPS Certificate Usage
+To run your tests on different hosts, <<containerized-execution>> or orchestrated by some continuous integration tool(e.g. <<jenkins-integration,Jenkins>>), it's necessary that you can share the HTTPS config for different hosts.
+
+NOTE: The usage is described for the Firefox browser. For other browser try to copy there certificate store.
+
+. You have to accept the Sahi fake certificates, like seen above:
+    * <<sahi-https-accept-self-signed>>
+    * <<sahi-https-certificate-import>>
+
+. Now two things happened:
+    * Sahi added a Java Keystore for each accepted certificate domain (e.g. `sahi_example_com`, `www_github_com`) in `~/sakuli/sahi/userdata/certs/`.
+    * The Firefox profile `~/sakuli/sahi/userdata/browser/ff/profiles/sahi0` now contains an updated version of:
+    ** `cert8.db` - certificate store
+    ** `key3.db` - key parts of certificates
+    ** `cert_override.txt` - list of certificate exceptions
+
+. Ensure that above files will be copied before the tests starts like described here:
+    * copy all created Sahi fake certificates:
+
+    sahi_example_com  -->  __SAKULI_ROOT__/sahi/userdata/certs/
+    www_github_com    -->  __SAKULI_ROOT__/sahi/userdata/certs/
+
+    * copy the Firefox certificate store to Sahi default profile
+
+    cert8.db          -->  __SAKULI_ROOT__/sahi/config/ff_profile_template/
+    key3.db           -->  __SAKULI_ROOT__/sahi/config/ff_profile_template/
+    cert_override.txt -->  __SAKULI_ROOT__/sahi/config/ff_profile_template/
+
+Fore more information see: <<docker-https-sahi, Docker - Writing HTTPS Sahi web tests>>, <<java-dsl-https, JavaDSL - HTTPS Sites>>

@@ -1,0 +1,19 @@
+
+:imagesdir: images
+
+[[key-features]]
+== Key Features
+[#git-edit-section]
+:page-path: docs/key-features.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+//TODO something missing?
+* Platform-independent UI testing tool
+* End-2-End monitoring of application functionality and quality
+* Combines two automation technologies:
+** DOM based web testing
+** Image pattern based UI automation (for non-web content)
+* Scalable from single-client up to multi-node container setup for parallel execution
+* Integration of test results into
+** Monitoring systems (e.g. Nagios/Icinga)
+** CI builds (e.g. Jenkins)

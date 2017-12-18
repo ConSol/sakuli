@@ -29,29 +29,28 @@ try {
     _highlight(_link("Online Documentation"));
     _highlight(_link("Test Pages"));
     _highlight(_link("Sample Application"));
-
     testCase.endOfStep("Test Sahi landing page", 30);
-    appCalc.open();
-    screen.waitForImage("calculator.png", 10);
 
-    env.type("525");
-    env.sleep(1);
-    env.setSimilarity(0.99);
-    screen.find("plus.png").highlight().click().type("100");
-    screen.find("result.png").highlight().click();
-    screen.waitForImage("625", 5).highlight();
-    env.resetSimilarity();
+    appCalc.open();
+    var calcRegion = appCalc.getRegion().highlight();
+    calcRegion.waitForImage("calculator.png", 10).highlight();
+    calcRegion.type("525").sleep(1);
+
+    calcRegion.find("plus.png").highlight().click().type("100");
+    calcRegion.find("result.png").highlight().click();
+    calcRegion.waitForImage("625", 5).highlight();
+
     testCase.endOfStep("Calculation", 30);
 
     appNotepad.open();
     appNotepad.getRegion().waitForImage("notepad.png", 10).highlight();
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
     testCase.endOfStep("Editor", 30);
-    env.sleep(2);
+
 } catch (e) {
     testCase.handleException(e);
 } finally {
     appCalc.close(true);      //silent
-    appNotepad.kill(true);   //silent
+    appNotepad.kill(true);   //silent, hard kill
     testCase.saveResult();
 }

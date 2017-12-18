@@ -4,5 +4,5 @@ set -e
 
 echo "Install Screenshot-Tool"
 apt-get update 
-apt-get install -y shutter
+apt-get install -y scrot
 apt-get clean -y

@@ -4,7 +4,7 @@ target
 **/_logs
 /*sahi*/
 firefox
-.idea
+.idea/
 *.iml
 *.log
 *.cache

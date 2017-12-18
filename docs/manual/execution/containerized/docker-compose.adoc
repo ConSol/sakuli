@@ -1,0 +1,106 @@
+
+:imagesdir: ../../../images
+
+[[docker-compose]]
+==== Docker Compose
+[#git-edit-section]
+:page-path: docs/manual/execution/containerized/docker-compose.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+NOTE: Assume you want to run a suite called `suite_1` located on your host at the path `/home/myuser/my-sakuli-testsuites`.
+
+TIP: Like in all docker containers you can overwrite all environment variables in a `docker-compose.yml` like for example the `VNC_PW` (<<docker-vnc-env-variables>>).
+
+A more elegant way as using the `docker run` command to parameterize your container startup, is to pack all into a https://docs.docker.com/compose/[Docker Compose] file. You can create `docker-compose.yml` to integrate a custom testsuite in a container in the following ways:
+
+[[docker-compose-javascripte-based-test]]
+===== Run JavaScript based test
+
+[[docker-compose-run-command]]
+====== docker run command
+
+CAUTION: To have the correct working directory, place the `docker-compose.yml` under `/home/myuser/my-sakuli-testsuites`
+
+[source,yaml]
+----
+sakuli-example-ubuntu:
+  image: consol/sakuli-centos-xfce
+  ports:
+  - 5901:5901
+  - 6901:6901
+  volumes:
+  - .:/my-sakuli-testsuites
+  command: run /my-sakuli-testsuites/suite_1
+----
+
+When executed in the same directory as `docker-compose.yml`, a simple `docker-compose up` will bring up all containers.
+
+TIP: Intentionally, `docker-compose` is made to bring up environments with _multiple_ containers which are linked together, but even with one container it eases the parameter handling.
+
+TIP: `docker-compose up --force-recreate` removes all currently stopped and running containers before it starts the containers, which defined in the `docker-compose.yml`. Otherwise, if a normal `docker-compose up` will called again, the test execution will reattach the instance and the start the test execution again in the same container instance.
+
+
+[[docker-compose-environmen-variable]]
+====== Environment variable SAKULI_TEST_SUITE
+
+Similar to <<docker-compose-run-command>>, the file `docker-compose.yml` would look like this:
+
+[source,yaml]
+----
+sakuli-example-ubuntu:
+  image: consol/sakuli-ubuntu-xfce
+  ports:
+  - 5901:5901
+  - 6901:6901
+  volumes:
+  - .:/my-sakuli-testsuites
+  environment:
+  - SAKULI_TEST_SUITE=/my-sakuli-testsuites/suite_1
+----
+
+[[docker-compose-java-based-test]]
+===== Run Java based test
+
+Similar to the usage of <<docker-java-based-test>>, you can to pack all parameters into a https://docs.docker.com/compose/[Docker Compose] file. Create `docker-compose.yml`:
+
+[source,yaml]
+----
+sakuli-example-ubuntu:
+  image: consol/sakuli-ubuntu-xfce-java
+  ports:
+  - 5901:5901
+  - 6901:6901
+  volumes:
+  - .:/opt/maven
+----
+
+When executed in the same directory as `docker-compose.yml`, a simple `docker-compose up` will bring up all containers.
+
+TIP: Intentionally, `docker-compose` is made to bring up environments with _multiple_ containers which are linked together, but even with one container it eases the parameter handling.
+
+TIP: `docker-compose up --force-recreate` removes all currently stopped and running containers before it starts the containers, which defined in the `docker-compose.yml`. Otherwise, if a normal `docker-compose up` will called again, the test execution will reattach the instance and the start the test execution again in the same container instance.
+
+Like above you can for example also override the default mvn command and use a additional persistent volume for caching the maven dependencies:
+
+[source,yaml]
+----
+version: '2'
+
+services:
+  sakuli_java_test:
+    image: consol/sakuli-ubuntu-xfce-java
+    volumes:
+    - /home/myuser/my-sakuli-maven-project:/opt/maven
+    - data:/root/.m2
+    network_mode: "bridge"
+    ports:
+    - 5911:5901
+    - 6911:6901
+    command: mvn clean install
+    # to keep container running and login via `docker exec -it javaexample_sakuli_java_test_1 bash`
+    # command: --tail-log
+
+volumes:
+  data:
+    driver: local
+----

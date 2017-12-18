@@ -26,12 +26,12 @@ import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sikuli.script.Screen;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 /**
  * @author Tobias Schneck
  */
+@SuppressWarnings("UnusedReturnValue")
 public class Region implements Action {
 
     private RegionImpl regionImpl;
@@ -164,7 +164,7 @@ public class Region implements Action {
     }
 
     /**
-     * makes a rigth click on the center of the {@link Region}.
+     * makes a right click on the center of the {@link Region}.
      *
      * @return the {@link Region} or NULL on errors.
      */
@@ -234,6 +234,7 @@ public class Region implements Action {
     public Region dragAndDropTo(Region targetRegion) {
         return update(regionImpl.dragAndDropTo(targetRegion.getRegionImpl()));
     }
+
     /**
      * Blocks and waits until a target which is specified by the optImageName is found in the hole {@link Screen} within
      * a given time period in seconds.
@@ -545,24 +546,39 @@ public class Region implements Action {
     }
 
     /**
-     * Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
-     * filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
+     * Takes a screenshot of this {@link Region} and saves it to the assigned path. If there ist just a file name, the
+     * screenshot will be saved in your current testcase folder.
+     * Supported formats: `jpg` and `png`
+     * Example:
+     * ```
+     *  region.takeScreenshot("test.png");
+     * ```
      *
-     * @param filename name of the screenshot file, e.g. `region_screenshot`
+     * @param filename {@code pathname/filename.format} or just {@code filename.format}.
      * @return {@link Path} to the created screenshot OR null on errors
      */
     @LogToResult
     public Path takeScreenshot(String filename) {
-        Path filePath = RegionImpl.resolveTakeScreenshotFolder(filename, getLoader());
-        try {
-            return getLoader().getScreenshotActions().takeScreenshot(
-                    filePath.getFileName().toString(),
-                    filePath.getParent(),
-                    regionImpl.getRect());
-        } catch (IOException e) {
-            getLoader().getExceptionHandler().handleException(e);
-        }
-        return null;
+        return getLoader().getScreenshotActions().takeScreenshot(filename, regionImpl.getRect());
+    }
+
+    /**
+     * Takes a screenshot of this {@link Region} and add the current timestamp in the file name like e.g.:
+     * ```
+     * region.takeScreenshotWithTimestamp("my-screenshot");
+     * ```
+     * saved under:`mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
+     *
+     * @param filenamePostfix postfix for the final filename
+     * @param optFolderPath   optional FolderPath, where to save the screenshot.
+     *                        If null or empty: testcase folder will be used
+     * @param optFormat       optional format, for the screenshot (currently supported: jpg and png)
+     *                        If null or empty use property `sakuli.screenshot.format`
+     * @return {@link Path} to the created screenshot OR null on errors
+     */
+    @LogToResult
+    public Path takeScreenshotWithTimestamp(final String filenamePostfix, final String optFolderPath, final String optFormat) {
+        return getLoader().getScreenshotActions().takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat, regionImpl.getRect());
     }
 
     /**

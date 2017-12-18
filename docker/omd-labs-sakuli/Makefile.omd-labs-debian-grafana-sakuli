@@ -1,0 +1,33 @@
+
+.PHONY: build start echo bash
+
+REPO = local/omd-labs-debian-sakuli
+TAG  = grafana
+IMAGE=$(REPO):$(TAG)
+DOCKERFILE = Dockerfile.omd-labs-debian-grafana-sakuli
+
+
+build:
+	# use the local base image with tag = grapher name
+	sed 's@^\(FROM\) consol\(/omd-labs-.*\):\(.*\)@\1 local\2:\3@' $(DOCKERFILE) > $(DOCKERFILE).local
+	docker build -f $(DOCKERFILE).local $(BUILDARGS) -t $(IMAGE) .
+	@rm $(DOCKERFILE).local
+	@echo "Successfully built" $(IMAGE)
+start:
+	docker run -p 8443:443 -d $(IMAGE)
+startvol:
+	docker run -d -p 8443:443         \
+	-v $(shell pwd)/site/local:/omd/sites/$(SITENAME)/local \
+	-v $(shell pwd)/site/etc:/omd/sites/$(SITENAME)/etc     \
+	-v $(shell pwd)/site/var:/omd/sites/$(SITENAME)/var     \
+	$(IMAGE)
+echo:
+	@echo $(IMAGE)
+bash:
+	docker run --rm -p 8443:443 -it $(IMAGE) /bin/bash
+bashvol:
+	docker run --rm -p 8443:443 -it \
+	-v $(shell pwd)/site/local:/omd/sites/$(SITENAME)/local \
+	-v $(shell pwd)/site/etc:/omd/sites/$(SITENAME)/etc     \
+	-v $(shell pwd)/site/var:/omd/sites/$(SITENAME)/var     \
+	$(IMAGE) /bin/bash

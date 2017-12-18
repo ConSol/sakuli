@@ -21,17 +21,18 @@ package org.sakuli.actions.environment;
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.BaseTest;
 import org.sakuli.exceptions.SakuliException;
+import org.sakuli.utils.CommandLineUtil;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.testng.Assert.*;
 
 /**
  * @author tschneck
- *         Date: 06.07.15
+ * Date: 06.07.15
  */
 public class EnvironmentTest extends BaseTest {
 
@@ -75,4 +76,15 @@ public class EnvironmentTest extends BaseTest {
         Environment.runCommand("host?name");
     }
 
+    @Test
+    public void testGetEnv() throws Exception {
+        assertNull(env.getEnv("CUSTOM_NOT_USED"));
+        assertTrue(isNotBlank(env.getEnv("JAVA_HOME")));
+    }
+
+    @Test
+    public void testGetProperty() throws Exception {
+        assertNull(env.getProperty("no.used.property"));
+        assertEquals(env.getProperty("my.custom.property"), "my-login-user");
+    }
 }

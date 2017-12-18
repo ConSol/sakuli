@@ -20,6 +20,7 @@ package org.sakuli.utils;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
@@ -44,19 +45,43 @@ import static org.apache.commons.lang.StringUtils.isNotEmpty;
  */
 public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConfigurer {
 
+    public static String ENCRYPTION_KEY_VALUE;
     public static String TEST_SUITE_FOLDER_VALUE;
     public static String SAKULI_HOME_FOLDER_VALUE;
     public static String SAHI_HOME_VALUE;
     public static String TEST_SUITE_BROWSER;
+    public static String ENCRYPTION_INTERFACE_VALUE;
     protected boolean loadSakuliProperties = true;
     protected boolean loadSakuliDefaultProperties = true;
     protected boolean loadTestSuiteProperties = true;
     protected boolean writePropertiesToSahiConfig = true;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private Map<String, Map<String, Object>> modifiedSahiConfigProps;
+    private Properties propsRef;
 
     public SakuliPropertyPlaceholderConfigurer() {
         modifiedSahiConfigProps = new HashMap<>();
+        propsRef = new Properties();
+    }
+
+    /**
+     * Determines the encryption mode of the CLI based values and set it to the assigned 'props'
+     */
+    public static void assignEncryptionProperties(Properties props) {
+        if (isNotEmpty(ENCRYPTION_INTERFACE_VALUE)) {
+            props.setProperty(CipherProperties.ENCRYPTION_MODE, CipherProperties.ENCRYPTION_MODE_INTERFACE);
+            if (ENCRYPTION_INTERFACE_VALUE.equals("auto")) {
+                props.setProperty(CipherProperties.ENCRYPTION_INTERFACE, "");
+                props.setProperty(CipherProperties.ENCRYPTION_INTERFACE_AUTODETECT, "true");
+            } else {
+                props.setProperty(CipherProperties.ENCRYPTION_INTERFACE, ENCRYPTION_INTERFACE_VALUE);
+                props.setProperty(CipherProperties.ENCRYPTION_INTERFACE_AUTODETECT, "false");
+            }
+        }
+        if (isNotEmpty(ENCRYPTION_KEY_VALUE)) {
+            props.setProperty(CipherProperties.ENCRYPTION_MODE, CipherProperties.ENCRYPTION_MODE_ENVIRONMENT);
+            props.setProperty(CipherProperties.ENCRYPTION_KEY, ENCRYPTION_KEY_VALUE);
+        }
     }
 
     @Override
@@ -69,6 +94,8 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         loadSakuliDefaultProperties(props);
         loadSakuliProperties(props);
         loadTestSuiteProperties(props);
+        loadEnvironmentVariablesToProperties(props);
+
         //overwrite if set sahi proxy home
         if (isNotEmpty(SAHI_HOME_VALUE)) {
             props.setProperty(SahiProxyProperties.PROXY_HOME_FOLDER, SAHI_HOME_VALUE);
@@ -77,8 +104,18 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
         if (isNotEmpty(TEST_SUITE_BROWSER)) {
             props.setProperty(TestSuiteProperties.BROWSER_NAME, TEST_SUITE_BROWSER);
         }
+        assignEncryptionProperties(props);
+
         modifySahiProperties(props);
         super.loadProperties(props);
+        this.propsRef = props;
+    }
+
+    /**
+     * @return the reference to the loaded {@link Properties} inside the spring context
+     */
+    public Properties getPropsRef() {
+        return this.propsRef;
     }
 
     protected void loadSakuliDefaultProperties(Properties props) {
@@ -96,6 +133,10 @@ public class SakuliPropertyPlaceholderConfigurer extends PropertyPlaceholderConf
     protected void loadTestSuiteProperties(Properties props) {
         String testSuitePropFile = Paths.get(TEST_SUITE_FOLDER_VALUE).normalize().toAbsolutePath().toString() + TestSuiteProperties.TEST_SUITE_PROPERTIES_FILE_APPENDER;
         addPropertiesFromFile(props, testSuitePropFile, loadTestSuiteProperties);
+    }
+
+    protected void loadEnvironmentVariablesToProperties(Properties props) {
+        EnvironmentPropertyConfigurer.resolveDashedProperties(props);
     }
 
     @PreDestroy

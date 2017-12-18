@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "---> Copy test suite from repo"
+rm -rf ${SAKULI_TEST_SUITE}/*
+cp -fr /tmp/src/* ${SAKULI_TEST_SUITE}
+chmod -R g+rwx ${SAKULI_TEST_SUITE}/*

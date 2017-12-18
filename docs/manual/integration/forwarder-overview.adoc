@@ -1,0 +1,35 @@
+[[forwarders]]
+
+
+.Sakuli forwarder modules
+[cols="20,25,55"]
+|=======================================================================
+|Forwarder |Technology | Use cases
+
+|default
+|- Log-Files and screenshots +
+- Command line output
+|- <<continuous_integration>> server +
+- Locale test runs
+
+|<<sql-database,database>>
+|- JDBC-SQL
+|- Integration in *Nagios* based monitoring systems as *active checks* with  link:https://labs.consol.de/de/nagios/check_mysql_health/index.html[check_mysql_health] +
+- Persistent storage of results +
+- Ready for own reporting implementations +
+- Interface to 3rd party systems
+
+|<<omd-gearman,gearman>>
+|- http://gearman.org/[Gearman]
+|- Integration in *Nagios* based monitoring systems as *passive checks*
+
+|<<icinga2-integration,icinga2>>
+|- https://docs.icinga.com/icinga2/latest/doc/module/icinga2/chapter/icinga2-api[Icinga2 REST API] +
+- JSON Data
+|- Integration in *Icinga2* as *passive checks*
+
+|<<check_mk, check_mk>>
+|- Result spool file on check_mk agent
+|- Integration in CheckMK through customizable spool file +
+- preconfigured service templates
+|=======================================================================

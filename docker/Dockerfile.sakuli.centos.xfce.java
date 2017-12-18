@@ -1,9 +1,9 @@
 # This Dockerfile is used to build a sakuli image based on CentOS
 
-FROM consol/centos-xfce-vnc:1.1.0
+FROM consol/centos-xfce-vnc:1.2.3
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-04-11
+ENV REFRESHED_AT 2017-12-18
 
 LABEL io.k8s.description="Sakuli headless testing container (maven java tests) with Xfce window manager, firefox and chromium" \
       io.k8s.display-name="Sakuli testing container (maven java tests) based on Centos and Xfce" \
@@ -11,17 +11,17 @@ LABEL io.k8s.description="Sakuli headless testing container (maven java tests) w
       io.openshift.tags="sakuli, centos, xfce, java, maven" \
       io.openshift.non-scalable=true
 
+### Environment config
+ENV VNC_PORT=5901 \
+    NO_VNC_PORT=6901 \
+    VNC_COL_DEPTH=24 \
+    VNC_RESOLUTION=1280x1024 \
+    VNC_PW=sakuli
+
 ## Connection ports for controlling the UI:
 # VNC port:5901
 # noVNC webport, connect via http://IP:6901/vnc_auto.html?password=vncpassword
-ENV VNC_PORT 5901
-ENV NO_VNC_PORT 6901
 EXPOSE $VNC_PORT $NO_VNC_PORT
-
-### Environment config
-ENV VNC_COL_DEPTH 24
-ENV VNC_RESOLUTION 1280x1024
-ENV VNC_PW sakuli
 
 # use root user for installation
 USER root
@@ -41,15 +41,14 @@ RUN $INST_SCRIPTS/java_jce_test/jce_test.sh
 
 ### Install Maven
 ARG MAVEN_VERSION=3.3.9
-ENV MAVEN_HOME /root/apps/maven
+ENV MAVEN_HOME $HOME/apps/maven
 RUN $INST_SCRIPTS/maven.sh
 
 ### Install Sakuli
-ARG SAKULI_VERSION=1.1.0-beta
-# Testsuite folder default permissions after text execution
-ENV SAKULI_UMASK 0000
-# Define Sakuli default startup testsuite
-ENV SAKULI_TEST_SUITE /opt/maven
+ARG SAKULI_VERSION=1.1.0
+# SAKULI_UMASK: Testsuite folder default permissions after text execution
+# SAKULI_TEST_SUITE Define Sakuli default startup testsuite
+ENV SAKULI_UMASK=0000 SAKULI_TEST_SUITE=/opt/maven
 #
 WORKDIR $SAKULI_TEST_SUITE
 # Install the $SAKULI_VERSION and create the example testsuite under $SAKULI_TEST_SUITE

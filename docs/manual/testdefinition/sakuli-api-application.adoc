@@ -1,0 +1,125 @@
+
+:imagesdir: ../../images
+
+[[Application]]
+==== Application
+
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/sakuli-api-application.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Application Class - Represents an application.
+
+*Params*
+
+* applicationNameOrPath `String` - Path to the application file. *Example:* `C:\Windows\system32\notepad.exe`
+* optResumeOnException `Boolean` - Determines whether to ignore exceptions from this class. If this parameter is
+undefined, it will be false.
+
+*Returns*: link:#Application[Application] - an initialized object.
+
+*Example*
+[source,js]
+----
+//windows
+var editor = new Application("notepad.exe");
+//linux
+var editor = new Application("gedit");
+----
+
+*Members*
+
+* link:#Application[Application]
+* link:#Application.open[Application.open()]
+* link:#Application.focus[Application.focus()]
+* link:#Application.focusWindow[Application.focusWindow(windowNumber)]
+* link:#Application.close[Application.close(optSilent)]
+* link:#Application.kill[Application.kill(optSilent)]
+* link:#Application.setSleepTime[Application.setSleepTime(seconds)]
+* link:#Application.getRegion[Application.getRegion()]
+* link:#Application.getRegionForWindow[Application.getRegionForWindow(windowNumber)]
+* link:#Application.getName[Application.getName()]
+
+
+[[Application.open]]
+.Application.open()
+
+Opens the created application.
+For application with a long load time you may need to change the default sleep time with setSleepTime(…).
+
+*Returns*: - this Application object.
+
+[[Application.focus]]
+.Application.focus()
+
+Focuses the current application, if the application is in the background.
+
+*Returns*: - this Application object.
+
+[[Application.focusWindow]]
+.Application.focusWindow(windowNumber)
+
+Focuses a specific window of the application.
+
+*Params*
+
+* windowNumber `number` - identifies the window
+
+*Returns*: - this Application object.
+
+[[Application.close]]
+.Application.close(optSilent)
+
+Closes the already existing application.
+
+*Params*
+
+* optSilent `boolean` - (optional) if true, no exception will be thrown on errors and stop the test execution.
+
+*Returns*: - this Application object.
+
+[[Application.kill]]
+.Application.kill(optSilent)
+
+Kill the already existing application hardly.
+
+*Params*
+
+* optSilent `boolean` - (optional) if true, no exception will be thrown on errors.
+
+*Returns*: - this Application object.
+
+[[Application.setSleepTime]]
+.Application.setSleepTime(seconds)
+
+Sets the sleep time in seconds of the application actions to handle with long loading times.
+The default sleep time is set to 1 seconds.
+
+*Params*
+
+* seconds `number` - sleep time in seconds
+
+*Returns*: - this Application object.
+
+[[Application.getRegion]]
+.Application.getRegion()
+
+Creates and returns a Region object from the application.
+
+*Returns*: - a Region object.
+
+[[Application.getRegionForWindow]]
+.Application.getRegionForWindow(windowNumber)
+
+Creates and returns a Region object from a specific window of the application.
+
+*Params*
+
+* windowNumber `number` - identifies the window
+
+*Returns*: - a Region object.
+
+[[Application.getName]]
+.Application.getName()
+
+*Returns*: - the name of the current application.

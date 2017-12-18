@@ -1,0 +1,110 @@
+
+:imagesdir: ../../../images
+
+[[kubernetes]]
+==== Kubernetes
+[#git-edit-section]
+:page-path: docs/manual/execution/containerized/kubernetes.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+
+The following section describes how to use link:https://www.openshift.com/[Kubernetes] for Sakuli E2E tests and monitoring. First go the folder of the Kubernetes configuration:
+
+[source]
+----
+cd <project-path>/docker/kubernetes
+----
+
+You will find the kubernetes config example in:
+`git-link:docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml[link-text="docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml", mode="view", link-window="_blank"]`
+
+[[kubernetes-start-pod]]
+===== Start execution pod
+
+To execute a Sakuli E2E testing container in the kubernetes cluster create a pod:
+
+[source]
+----
+kubectl create -f kubernetes.sakuli.example.pod.run.yaml
+----
+
+This creates the following components in the Kubernetes cluster:
+
+* a new namespace `sakuli`
+* a pod with the Sakuli container running
+* a service to make the container ports `6901` and `5901` accessible
+
+Now view the running pods on the Kubernetes dashboard:
+
+[source]
+----
+http://<kubernets-cluster-ip>:30000/#!/pod?namespace=sakuli
+----
+
+image:k8s_pods.png[kubernetes container details]
+
+or get a list of all running pods in the `sakuli` namespace:
+
+[source]
+----
+kubectl get pod --namespace=sakuli --show-all
+----
+
+You can also take a look at the log output:
+
+[source]
+----
+kubectl logs --namespace=sakuli test-sakuli-kub
+----
+
+If you want to watch the test execution you can connect to the container on the external HTTP port `32001` of the service `test-sakuli-kub`:
+
+[source]
+----
+http://<kubernetes-cluster-ip>:32001/vnc_auto.html?password=sakuli&view_only=true
+----
+
+image:os_container_webvnc.png[kubernetes container via webvnc]
+
+
+[[kubernetes-job-config]]
+===== Job Config
+The Kubernetes https://kubernetes.io/docs/api-reference/v1.5/#job-v1[Job] object checks exit code of executed job. By default, the Sakuli container will return the value of the sakuli test execution (`0` ok, `1-6` warning to critical state codes). To prevent that the job will be rescheduled you can set the environment variable `KUBERNETES_RUN_MODE` to `job` and the container will return `0` for all "normal" sakuli executions. Like in this example:
+
+.sakuli.job.run.yaml
+[source, yml]
+----
+        # ...
+        containers:
+        - name: sakuli-job-pod
+          image: consol/sakuli-ubuntu-xfce
+          imagePullPolicy: Always
+          env:
+            - name: KUBERNETES_RUN_MODE
+              value: job
+          args:
+       # ...
+----
+
+As indicator that the environment variable is set, the output will contain:
+[source,commandline]
+----
+===========  SAKULI Testsuite "example_xfce" execution FINISHED - ERRORS ======================
+
+ERROR [2017-06-12 17:21:56.959] - ERROR:
+CASE "case1": Can't find "[id=not-valid, path=/headless/sakuli/test/case1/not-valid.png ]" inR[0,0 1280x1024]@S(0)waitFor function in 5 sec.
+
+SAKULI_RETURN_VAL: 6
+KUBERNETES_RUN_MODE=job => return exit code 0
+EXIT_CODE: 0
+----
+
+
+[[kubernetes-delete-pod]]
+===== Delete execution pod
+
+Delete the Sakuli pod with the following command:
+[source]
+----
+kubectl delete -f kubernetes.sakuli.example.pod.run.yaml
+----

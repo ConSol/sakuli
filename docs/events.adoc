@@ -1,0 +1,78 @@
+
+:imagesdir: images
+[[events]]
+= Events
+
+[#git-edit-section]
+:page-path: docs/events.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+:hardbreaks:
+June 5, 2018: Meetup of https://www.meetup.com/de-DE/jugthde[Java User Group Thüringen]
+*-> Talk:* https://www.meetup.com/de-DE/jugthde/events/245643418/[OpenShift-Build-Pipelines: Build -> Test -> Run!]
+
+April 24 - 26, 2018: https://apex.doag.org/de/home[APEX Connect 2018] (Tobias Schneck)
+*-> Talk:* UI-Testing - Selenium? Rich-Clients? Containers?
+
+'''
+
+July 11, 2017: https://www.consol.de/news/details/review-openshift-kooperationsevent-von-consol-und-red-hat-am-110717[ConSol/Redhat OpenShift Day - everything Continuous] (Tobias Schneck)
+*-> Slides:* https://www.slideshare.net/TobiasSchneck/continuous-testing-integration-und-uitesting-mit-openshiftbuildpipelines[Continuous Testing: Integration- und UI-Testing mit OpenShift-Build-Pipelines]
+*-> Demo Code:* image:github-logo-inline.png[github_
+               -logo] https://github.com/toschneck/openshift-example-bakery-ci-pipeline[toschneck/openshift-example-bakery-ci-pipeline]
+
+
+May 4, 2017: https://mathias-kettner.de/check_mk_konferenz_2017.html[Check_MK Conference 2017] (Hardy Düttmann, ITeRATIO)
+*-> Slides:* https://mathias-kettner.de/download/2017-Konferenz-Hardy_Duettmann-End2End.pdf[End-To-End-Monitoring with Check_MK]
+*-> Video:* https://www.youtube.com/watch?v=cX0-zLxI_Zg[YouTube: Hardy Düttmann | End-To-End-Monitoring with Check_MK]
+
+April 27, 2017: http://www.jugs.de/tt2017/abstracts.html#link07[Stuttgarter Test-Tage, Stuttgart] (Tobias Schneck)
+*-> Slides:* https://www.slideshare.net/TobiasSchneck/testing-selenium-richclients-containers[Testing - Selenium? Rich-Clients? Containers?]
+
+January 30 - February 3, 2017: http://www.oop-konferenz.de/[OOP 2017, Munich] (Tobias Schneck)
+
+January 19, 2017: https://www.meetup.com/de-DE/Agile-Testing-Munich/events/235148329/[Agile Testing Meetup - Testen im Zeitalter von Containern, Munich] (Tobias Schneck)
+*-> Slides:* http://www.slideshare.net/TobiasSchneck/containerized-end2end-testing-agile-testing-meetup-at-sddeutsche-zeitung-munich-19012017[Containerized End-2-End-Testing]
+
+'''
+
+November 16, 2016: http://www.containerconf.de/[ContainerConf 2016, Mannheim] (Tobias Schneck)
+
+November 3, 2016: https://www.qs-tag.de[Software QS-Tag 2016, Nuremberg] (Tobias Schneck)
+
+September 30, 2016: http://www.jug-saxony-day.org/[JUG Saxony Day, Dresden] (Tobias Schneck)
+*-> Slides:* http://www.slideshare.net/TobiasSchneck/containerized-end2end-testing-jug-saxony-day[Containerized End-2-End-Testing (German)]
+
+August 31, 2016: http://www.herbstcampus.de/programm.php[Herbstcampus 2016, Nuremberg] (Tobias Schneck)
+
+July 25, 2016: http://www.jugm.de/[JUG München] (Tobias Schneck)
+
+June 27, 2016 http://www.meetup.com/de-DE/Docker-Hamburg/events/229808506[Meetup during the ContainerDays, Hamburg] (Tobias Schneck)
+*-> Slides:* https://speakerdeck.com/toschneck/containerized-end-2-end-testing-containerdays-2016-in-hamburg[Containerized End-2-End-Testing]
+
+March 8-10, 2016: http://www.javaland.eu/de/home/[JavaLand, Brühl] (Tobias Schneck)
+
+March 3, 2016: https://www.consol.de/von-monitoring-bis-managed-service/[Allianz Arena München] (Simon Meggle)
+
+March 1, 2016: https://www.icinga.org/community/events/icinga-camp-berlin/[Icinga Camp, Berlin] (Simon Meggle)
+
+January 26, 2016: https://www.xing.com/communities/groups/linux-stammtisch-muenchen-1057878[Linux-Stamtisch München] (Tobias Schneck)
+
+'''
+
+October 24, 2015: http://ubucon.de/2015/[Ubucon Berlin] (Simon Meggle)
+
+October 13, 2015: https://www.consol.de/testing-integration-day-mit-redhat/[Testing &amp; Integration Day, Allianz Arena Munich] (Tobias Schneck)
+
+June 22, 2015: http://www.meetup.com/de-DE/Agile-Testing-Munich/events/222659146/?eventId=222659146[Agile Testing Munich] (Tobias Schneck)
+
+May 14, 2015: http://2015.opentechsummit.net/[OpenTechSummit] (Simon Meggle)
+
+March 28, 2015: https://www.luga.de/Aktionen/LIT-2015/[LinuxTag Augsburg] (Simon Meggle)
+
+'''
+
+2014: ConSol Internal DevDay (Tobias Schneck)
+*-> Slides:* https://rawgit.com/toschneck/presentation/sakuli-dev-day-presentation/index.html#/[End-to-end testing for web sites and common UIs with full Nagios integration]
+
+:!hardbreaks:

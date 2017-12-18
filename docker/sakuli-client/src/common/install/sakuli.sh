@@ -19,9 +19,9 @@ mkdir -p $SAKULI_HOME
 java -jar /tmp/sakuli/sakuli-v$SAKULI_VERSION-installer.jar $INST_SCRIPTS/sakuli-auto-install.xml
 rm -rf /tmp/sakuli
 
-example_suite=$SAKULI_ROOT/example_test_suites/example_xfce
-echo "Link example suite '$example_suite' to volume mount point: $SAKULI_TEST_SUITE:"
-ln -s $example_suite $SAKULI_TEST_SUITE
+example_suite=$SAKULI_ROOT/example_test_suites/$SAKULI_EXAMPLE_TEST_SUITE
+echo "Copy example suite '$example_suite' 'SAKULI_TEST_SUITE': $SAKULI_TEST_SUITE:"
+cp -r $example_suite $SAKULI_TEST_SUITE
 
 echo "add to $HOME/.bashrc: use correct UMASK '${SAKULI_UMASK:-0000}'"
 # Important for folder permissions to ensure that volume-mounted log

@@ -19,22 +19,21 @@
 package org.sakuli.starter;
 
 import org.apache.commons.cli.*;
-import org.sakuli.actions.environment.CipherUtil;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliCipherException;
 import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.InitializingServiceHelper;
 import org.sakuli.services.TeardownServiceHelper;
+import org.sakuli.services.cipher.AesKeyHelper;
+import org.sakuli.starter.helper.CipherDelegator;
 import org.sakuli.starter.helper.CmdPrintHelper;
 import org.sakuli.starter.helper.SakuliFolderHelper;
+import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
-import java.util.AbstractMap;
 import java.util.Map.Entry;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
@@ -84,6 +83,19 @@ public class SakuliStarter {
             .isRequired(false)
             .withLongOpt("interface")
             .create("i");
+    private final static Option masterkey = OptionBuilder
+            .withArgName("base64 AES key")
+            .hasArg()
+            .withDescription("(optional)  AES base64 key used by command 'encrypt'")
+            .isRequired(false)
+            .withLongOpt("masterkey")
+            .create("m");
+    private final static Option create = OptionBuilder
+            .withArgName("object")
+            .hasArg()
+            .withDescription("create a sakuli object")
+            .withLongOpt("create")
+            .create();
     /**
      * {@link System#exit(int)} value if the help is printed out. This value will be used in the `sakuli` starter
      */
@@ -108,6 +120,8 @@ public class SakuliStarter {
         options.addOption(sahiHome);
         options.addOption(encrypt);
         options.addOption(anInterface);
+        options.addOption(masterkey);
+        options.addOption(create);
         try {
             CommandLine cmd = parser.parse(options, args);
             final String browserValue = getOptionValue(cmd, browser);
@@ -116,17 +130,27 @@ public class SakuliStarter {
             final String sahiHomePath = getOptionValue(cmd, sahiHome);
             final String ethInterface = getOptionValue(cmd, anInterface);
             final String strToEncrypt = getOptionValue(cmd, encrypt);
+            final String strMasterkey = getOptionValue(cmd, masterkey);
+            final String strCreate = getOptionValue(cmd, create);
 
+            checkAndAssignEncryptionOptions(strMasterkey, ethInterface);
             if (cmd.hasOption(run.getLongOpt()) || cmd.hasOption(run.getOpt())) {
                 TestSuite testSuite = runTestSuite(testSuiteFolderPath, sakuliMainFolderPath, browserValue, sahiHomePath);
                 //return the state as system exit parameter
                 //return values are corresponding to the error codes in file "sahi_return_codes.txt"
                 System.exit(testSuite.getState().getErrorCode());
-
+            } else if (cmd.hasOption(create.getLongOpt())) {
+                if (masterkey.getLongOpt().equals(strCreate)) {
+                    AesKeyHelper.printRandomBase64Key();
+                    System.exit(0);
+                } else {
+                    System.err.println("create object '" + strCreate + "' not supported - choose a correct value!");
+                    System.exit(-1);
+                }
             } else if (cmd.hasOption(encrypt.getLongOpt()) || cmd.hasOption(encrypt.getOpt())) {
-                System.out.printf("\nString to Encrypt: %s \n...", strToEncrypt);
-                final Entry<String, String> secret = encryptSecret(strToEncrypt, ethInterface);
-                System.out.printf("\nEncrypted secret with interface '%s': %s", secret.getKey(), secret.getValue());
+                System.out.printf("%nString to Encrypt: %s %n...", strToEncrypt);
+                final Entry<String, String> secret = CipherDelegator.encrypt(strToEncrypt);
+                System.out.printf("%nEncrypted secret with '%s':%n%n%s", secret.getKey(), secret.getValue());
                 System.out.println("\n\n... now copy the secret to your testcase!");
                 System.exit(0);
             } else {
@@ -141,6 +165,20 @@ public class SakuliStarter {
             e.printStackTrace();
             System.err.println("Error: " + e.getMessage());
             System.exit(TestSuiteState.ERRORS.getErrorCode());
+        }
+    }
+
+    protected static void checkAndAssignEncryptionOptions(String masterkey, String ethInterface) throws SakuliInitException {
+        if (isNotEmpty(masterkey) && isNotEmpty(ethInterface)) {
+            throw new SakuliInitException("Encryption setup error: Masterkey and network interface specified, please specify only one option!");
+        }
+        if (isNotEmpty(masterkey)) {
+            LOGGER.debug("set masterkey '{}' for encryption", masterkey);
+            SakuliPropertyPlaceholderConfigurer.ENCRYPTION_KEY_VALUE = masterkey;
+        }
+        if (isNotEmpty(ethInterface)) {
+            LOGGER.debug("set '{}' as encryption interface", ethInterface);
+            SakuliPropertyPlaceholderConfigurer.ENCRYPTION_INTERFACE_VALUE = ethInterface;
         }
     }
 
@@ -230,27 +268,6 @@ public class SakuliStarter {
             BeanLoader.releaseContext();
         }
         return result;
-    }
-
-    /**
-     * Encrypt a secret based on the assigned interface.
-     *
-     * @param strToEncrypt secret to encrypt
-     * @param ethInterface name of network interface, if NULL use the auto-detection
-     * @return a Key-Value Pair of used interface for the encryption and the encrypted secret as strings.
-     * @throws SakuliCipherException
-     */
-    public static Entry<String, String> encryptSecret(String strToEncrypt, String ethInterface) throws SakuliCipherException {
-        ActionProperties cipherProps = new ActionProperties();
-        if (isNotEmpty(ethInterface)) {
-            cipherProps.setEncryptionInterface(ethInterface);
-            cipherProps.setEncryptionInterfaceAutodetect(false);
-        } else {
-            cipherProps.setEncryptionInterfaceAutodetect(true);
-        }
-        CipherUtil cipher = new CipherUtil(cipherProps);
-        cipher.scanNetworkInterfaces();
-        return new AbstractMap.SimpleEntry<>(cipher.getInterfaceName(), cipher.encrypt(strToEncrypt));
     }
 
 }

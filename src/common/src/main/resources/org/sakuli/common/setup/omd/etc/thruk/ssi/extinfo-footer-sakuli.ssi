@@ -1,5 +1,5 @@
 <!--
- SSI for Thruk - CSS screenshot lightbox
+ SSI for Thruk - CSS lightbox to display Sakuli screenshots saved by a Nagios eventhandler
  Simon Meggle <simon.meggle@consol.de>
  See https://github.com/ConSol/sakuli for more information.
 -->
@@ -15,7 +15,7 @@ jQuery(document).ready(function() {
 
 // lightbox button (forward)
 function lb_forward() {
-    if (lb_index < lb_urls.length - 1) {
+    if (lb_index < lb_items.length - 1) {
         changeImage(lb_index + 1);
     } else {
         changeImage(0);
@@ -45,23 +45,35 @@ function lb_button_refresh(i, arr_len) {
     }
 }
 
-// loads screenshot and output text from filesystem and displays them
+// load output.txt and screenshot file for one timestamp
 function changeImage(i) {
         var output;
         jQuery.when(
-                jQuery.get(lb_urls[i] + '/output.txt',
+                jQuery.get(lb_items[i].url + 'output.txt',
                         function(data) {
                                 output = data;
                         }
-                )
+                ) &&
+		jQuery.ajax({
+			// https://localhost:8443/SITENAME/sakuli/sakuli_client/example_xfce/1500858250/
+			url: lb_items[i].url,
+			success: function(data) {
+				// the 3rd href on the apache index page
+				image = jQuery(data).find('a')[2].text.trim();
+				lb_items[i].image = image;
+			},
+			error: function(exception){alert('Exeption: There seems to be no image file in ' + base_url + t + '!' + exception);}
+		})
         ).then ( function() {
                 lb_index = i;
-                var d = new Date(lb_timestamps[i] * 1000);
+                var d = new Date(lb_items[i].timestamp * 1000);
                 var datetime = d.toLocaleDateString() + " " + d.toLocaleTimeString();
+		// assign output.txt
                 jQuery('#lb_footer_left').html('<b>' + datetime + '</b>: ' + output);
-                jQuery('#lb_screenshot').attr('src', lb_urls[i] + '/screenshot.jpg');
-                jQuery('#lb_counter').html(i+1 + '/' + lb_urls.length);
-                lb_button_refresh(lb_index, lb_urls.length);
+		// assign image
+                jQuery('#lb_screenshot').attr('src', lb_items[i].url + lb_items[i].image);
+                jQuery('#lb_counter').html(i+1 + '/' + lb_items.length);
+                lb_button_refresh(lb_index, lb_items.length);
         });
 }
 
@@ -69,13 +81,13 @@ function changeImage(i) {
 // load last screenshot
 // show the lightbox
 function lightbox(h, s) {
-        lb_urls = [];
-        lb_timestamps = [];
+	lb_items = [];
         lb_index = -1;
 
         var url_arr = location.href.split('/');
         //             http                hostname           omd_site
         var base_url = url_arr[0] + "//" + url_arr[2] + "/" + url_arr[3] + "/sakuli/" + h + "/" + s + "/";
+
 
         jQuery.when(
                 jQuery.ajax({
@@ -88,12 +100,16 @@ function lightbox(h, s) {
                         }
                      ).each(function() {
                         t = jQuery(this).attr("href").replace(/\/$/, '');
-                        lb_timestamps.push(t);
-                        lb_urls.push(base_url + t);
-                     });
+			img_hash = {
+                        	timestamp: t,
+                                url: base_url + t + '/'
+                        };
+                        lb_items.push(img_hash);
+                      });
                   }
                 })
         ).then ( function() {
+	// timestamp array loaded, now show the last image in array
                 jQuery("#lb_close").click(function() {
                     jQuery("#lb_screenshots").css("display", "none");
                     jQuery("#lb_background").css("display", "none");
@@ -105,7 +121,7 @@ function lightbox(h, s) {
                 jQuery("#lb_right").click(function() {
                         lb_forward();
                 });
-                lb_index = lb_urls.length - 1;
+                lb_index = lb_items.length - 1;
                 changeImage(lb_index);
                 jQuery("#lb_background").css("display", "block");
                 jQuery("#lb_screenshots").css("display", "block");

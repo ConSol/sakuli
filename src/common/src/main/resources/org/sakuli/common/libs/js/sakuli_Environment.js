@@ -17,6 +17,7 @@
  */
 
 /**** Exclude this global variables from JSLint Warnings ****/
+
 /* global navigator, window, java, Packages,saveResult,step, $output, _set, _stopOnError, _logExceptionAsFailure,_resolvePath,_include, $sahi_userdata, $guid, $capture, initialize */
 
 /**
@@ -49,7 +50,7 @@ function initEnvironment(that, javaObject) {
     };
 
     /**
-     * Resets the current similarty of the screen capturing methods to the original default value of 0.8.
+     * Resets the current similarity of the screen capturing methods to the original default value of 0.8.
      * @return this {@link Environment} or NULL on errors.
      * @memberOf Environment
      * @method resetSimilarity
@@ -70,20 +71,56 @@ function initEnvironment(that, javaObject) {
     };
 
     /**
-     * Takes a screenshot of the current screen and saves it to the overgiven path.
-     * If there ist just a file name, the screenshot will be saved in your testsuite log folder.
+     * Takes a screenshot of the current screen and saves it to the assigned path. If there ist just a file name, the
+     * screenshot will be saved in your current testcase folder.
+     * Supported formats: `jpg` and `png`
      *
-     * @param {String} pathName `pathname/filname.format` or just `filename.format`
+     * @param {String} filename `pathname/filename.format` or just `filename.format` for example `test.png`.
      * @example
      *  ```
-     *  environment.takeScreenshot("test.jpg");
+     *  environment.takeScreenshot("test.png");
      *  ```
+     * @return {Path} to the created screenshot OR null on errors
      * @memberOf Environment
      * @method takeScreenshot
      */
-    that.takeScreenshot = function (pathName) {
-        return that.javaObject.takeScreenshot(pathName);
+    that.takeScreenshot = function (filename) {
+        return that.javaObject.takeScreenshot(filename);
     };
+
+    /**
+     * Takes a screenshot of the current screen and add the current timestamp in the file name like e.g.:
+     * @example
+     * ```
+     * env.takeScreenshotWithTimestamp("my-screenshot");
+     * ```
+     * saved under: `mytestsuite/testcase1/2017_08_03_14_06_13_255_my_screenshot.png`
+     *
+     *
+     * @param {String} filenamePostfix postfix for the final filename
+     *                                 Default: screenshot
+     * @param {String} optFolderPath   optional FolderPath, where to save the screenshot.
+     *                                 If null or empty: testcase folder will be used
+     * @param {string} optFormat       optional format, for the screenshot (currently supported: jpg and png)
+     *                                 If null or empty use property `sakuli.screenshot.format`
+     * @return {Path} to the created screenshot OR null on errors
+     * @memberOf Environment
+     * @method takeScreenshotWithTimestamp
+     */
+    that.takeScreenshotWithTimestamp = function (filenamePostfix, optFolderPath, optFormat) {
+        if (undefined == filenamePostfix) {
+            filenamePostfix = "screenshot";
+        }
+        if (undefined == optFolderPath) {
+            optFolderPath = '';
+        }
+        if (undefined == optFormat) {
+            optFormat = '';
+        }
+        var path = that.javaObject.takeScreenshotWithTimestamp(filenamePostfix, optFolderPath, optFormat);
+        return path != null ? path.toString() : null;
+    };
+
 
     /**
      * Blocks the current testcase execution for x seconds
@@ -119,7 +156,7 @@ function initEnvironment(that, javaObject) {
     };
 
     /**
-     * sets the String paramter to the system clipboard
+     * sets the String parameter to the system clipboard
      *
      * @param {String} text text as string
      * @return this Environment.
@@ -132,7 +169,7 @@ function initEnvironment(that, javaObject) {
 
     /**
      * pastes the current clipboard content into the focused area.
-     * Will do the same as "STRG + V".
+     * Will do the same as "CTRL + V".
      *
      * @return this Environment.
      * @memberOf Environment
@@ -145,7 +182,7 @@ function initEnvironment(that, javaObject) {
 
     /**
      * copy the current selected item or text to the clipboard.
-     * Will do the same as "STRG + C".
+     * Will do the same as "CTRL + C".
      *
      * @return this Environment.
      * @memberOf Environment
@@ -168,7 +205,7 @@ function initEnvironment(that, javaObject) {
 
     /**
      * pastes the text at the current position of the focus/carret <br/>using the
-     * clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
+     * clipboard and ctrl/cmd-v (paste keyboard shortcut)
      *
      * @param {String} text a string, which might contain unicode characters
      * @return this Environment or NULL on errors.
@@ -269,7 +306,7 @@ function initEnvironment(that, javaObject) {
 
     /**
      * Decrypt a encrypted secret and returns the value at runtime.
-     * The decryption will only work if the encryption and decryption happen on the same physical machine.
+     * The decryption will only work like described at https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sakuli-encryption.adoc .
      * There will be no logging with the decrypted secret during this step.
      * <p/>
      * To create a encrypted secret see "sakuli-manual.md".
@@ -418,6 +455,31 @@ function initEnvironment(that, javaObject) {
         }
         return that.javaObject.runCommand(command, optThrowException);
     };
+
+    /**
+     * Reads out the environment variable with the assigned key
+     *
+     * @param {string} key of environment variable
+     * @return {string} value or `null`
+     * @memberOf Environment
+     * @method getEnv
+     */
+    that.getEnv = function (key) {
+        return that.javaObject.getEnv(key);
+    }
+
+    /**
+     * Reads out the property value with the assigned key
+     *
+     * @param {string} key of property
+     * @return {string} value or `null`
+     * @memberOf Environment
+     * @method getProperty
+     */
+    that.getProperty = function (key) {
+        return that.javaObject.getProperty(key);
+    }
+
 
     /*****************************************************************************************************
      * INTERNAL CLASS FUNCTIONS - NOT REACHABLE IN THE TEST CASE EXECUTION

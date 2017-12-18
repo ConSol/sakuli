@@ -22,9 +22,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.BaseTest;
+import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.datamodel.properties.ForwarderProperties;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.ResultService;
+import org.sakuli.services.cipher.CipherService;
+import org.sakuli.services.cipher.EnvironmentCipher;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -40,6 +43,8 @@ public class SpringProfilesInitializerTest {
 
     @Mock
     private ForwarderProperties forwarderProperties;
+    @Mock
+    private CipherProperties cipherProperties;
     @InjectMocks
     private SpringProfilesInitializer testling;
 
@@ -80,6 +85,28 @@ public class SpringProfilesInitializerTest {
         BeanLoader.refreshContext();
         Map<String, ResultService> resultServiceMap = BeanLoader.loadMultipleBeans(ResultService.class);
         assertEquals(resultServiceMap.size(), countOfResultServices);
+
+        final Map<String, CipherService> resultCipher = BeanLoader.loadMultipleBeans(CipherService.class);
+        assertEquals(resultCipher.size(), 1);
+        //default cipher
+        assertEquals(resultCipher.values().iterator().next().getClass(), EnvironmentCipher.class);
+
+    }
+
+    @Test
+    public void testCipherEnv() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        when(cipherProperties.isEncryptionModeEnv()).thenReturn(true);
+        when(cipherProperties.isEncryptionModeInterface()).thenReturn(true);
+        assertEquals(new String[]{SpringProfilesInitializer.CIPHER_ENV}, testling.getConfiguredProfiles());
+    }
+
+    @Test
+    public void testCipherInterface() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        when(cipherProperties.isEncryptionModeEnv()).thenReturn(false);
+        when(cipherProperties.isEncryptionModeInterface()).thenReturn(true);
+        assertEquals(new String[]{SpringProfilesInitializer.CIPHER_INTERFACE}, testling.getConfiguredProfiles());
     }
 
     @AfterMethod

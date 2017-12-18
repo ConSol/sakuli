@@ -41,12 +41,9 @@ public class ActionProperties extends AbstractProperties {
     public static final String DEFAULT_HIGHLIGHT_SEC_DEFAULT = "1.1f";
     public static final String TYPE_DELAY_PROPERTY = "sikuli.typeDelay";
     public static final String CLICK_DELAY_PROPERTY = "sikuli.clickDelay";
-    public static final String ENCRYPTION_INTERFACE = "sakuli.encryption.interface";
-    public static final String ENCRYPTION_INTERFACE_AUTODETECT = "sakuli.encryption.interface.autodetect";
     public static final String SCREENSHOT_FOLDER_PROPERTY = "sakuli.screenshot.dir";
     public static final String SCREENSHOT_FORMAT_PROPERTY = "sakuli.screenshot.format";
-    protected static final String ENCRYPTION_INTERFACE_DEFAULT = "null";
-    protected static final String ENCRYPTION_INTERFACE_AUTODETECT_DEFAULT = "true";
+
     @Value("${" + DEFAULT_REGION_SIMILARITY + "}")
     private double defaultRegionSimilarity;
     @Value("${" + TAKE_SCREENSHOTS + "}")
@@ -59,15 +56,11 @@ public class ActionProperties extends AbstractProperties {
     private double clickDelay;
     @Value("${" + TYPE_DELAY_PROPERTY + "}")
     private double typeDelay;
-    @Value("${" + ENCRYPTION_INTERFACE + ":" + ENCRYPTION_INTERFACE_DEFAULT + "}")
-    private String encryptionInterface;
-    @Value("${" + ENCRYPTION_INTERFACE_AUTODETECT + ":" + ENCRYPTION_INTERFACE_AUTODETECT_DEFAULT + "}")
-    private boolean encryptionInterfaceAutodetect;
     @Value("${" + SCREENSHOT_FOLDER_PROPERTY + "}")
     private String screenShotFolderPropertyValue;
     private Path screenShotFolder;
     @Value("${" + SCREENSHOT_FORMAT_PROPERTY + "}")
-    private String screenShotFormat;
+    private String screenshotformat;
 
     @PostConstruct
     public void initFolders() throws IOException {
@@ -148,22 +141,6 @@ public class ActionProperties extends AbstractProperties {
         return new Double(typeDelay * 1000).intValue();
     }
 
-    public String getEncryptionInterface() {
-        return encryptionInterface;
-    }
-
-    public void setEncryptionInterface(String encryptionInterface) {
-        this.encryptionInterface = encryptionInterface;
-    }
-
-    public boolean isEncryptionInterfaceAutodetect() {
-        return encryptionInterfaceAutodetect;
-    }
-
-    public void setEncryptionInterfaceAutodetect(boolean encryptionInterfaceAutodetect) {
-        this.encryptionInterfaceAutodetect = encryptionInterfaceAutodetect;
-    }
-
     public String getScreenShotFolderPropertyValue() {
         return screenShotFolderPropertyValue;
     }
@@ -180,11 +157,11 @@ public class ActionProperties extends AbstractProperties {
         this.screenShotFolder = screenShotFolder;
     }
 
-    public String getScreenShotFormat() {
-        return screenShotFormat;
+    public String getScreenshotformat() {
+        return screenshotformat;
     }
 
-    public void setScreenShotFormat(String screenShotFormat) {
-        this.screenShotFormat = screenShotFormat;
+    public void setScreenshotformat(String screenshotformat) {
+        this.screenshotformat = screenshotformat;
     }
 }

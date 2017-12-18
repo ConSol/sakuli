@@ -10,7 +10,7 @@ metadata:
     version: 1.1.0
   creationTimestamp: null
   name: sakuli-e2e-run-pod-gitvol
-### template parameter defined via `oc process -f this.yaml -v PARAMETER=value`
+### template parameter defined via `oc process -f this.yaml -p PARAMETER=value`
 parameters:
 - description: The name for the E2E test suite.
   name: E2E_TEST_NAME
@@ -31,7 +31,6 @@ parameters:
 - description: Path to the Sakuli test suite is stored at the GIT_TEST_SUITE_REPO
   name: GIT_TEST_SUITE_PATH
   value: docker-xfce/part_01/example_xfce
-  #TODO #244: change to openshift example
 ### Configuration of OpenShift objects
 objects:
 ### POD config (run one time)
@@ -50,23 +49,33 @@ objects:
     - name: ${E2E_TEST_NAME}-pod-c1
       image: ${IMAGE}
       imagePullPolicy: Always
+      env:
+        - name: JVM_HEAP_XMX_MAX
+          value: '350'
+        - name: TZ
+          value: 'Europe/Berlin'
+          ### logs have to be writen in a writable path
+        - name: SAKULI_LOG_FOLDER
+          value: '/headless/sakuli/logs'
+        ### set e.g. debug level
+        #- name: LOG_LEVEL_SAKULI
+        # value: 'DEBUG'
+        ### define browser over env var
+        #- name: TESTSUITE_BROWSER
+        #  value: 'chrome'
       volumeMounts:
       - mountPath: /headless/sakuli/test
         name: vol-test
-      #TODO #238: change after  is implemented
       args:
         # - --tail-log #make normal UI startup to connect via: oc rsh <pod-name> bash
         - run
         - /headless/sakuli/test/${GIT_TEST_SUITE_PATH}
-        # logs have to be writen in a writable path
-        - -D
-        - sakuli.log.folder=/headless/sakuli/logs
-        ### run in chrome
+        ### run in chrome via command line
         # - run
         # - /headless/sakuli/test
         # - -browser
         # - chrome
-        ### set e.g. debug level
+        ### set e.g. debug level via command line
         #- -D
         #- log.level.sakuli=DEBUG
       ### checks that vnc server is up and running
@@ -83,6 +92,10 @@ objects:
           scheme: HTTP
         initialDelaySeconds: 1
         timeoutSeconds: 1
+      resources:
+        limits:
+          cpu: 750m
+          memory: 2200Mi
     volumes:
     - name: vol-test
       # ensure gitRepo volumes are allowed in openshift, see docu.

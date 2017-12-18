@@ -4,13 +4,28 @@ function remove_sakuli_home {
     echo "remove 'SAKULI_HOME' from '.bashrc'"
     [ -r ~/.bashrc ] && sed -i '/export SAKULI_HOME/d' ~/.bashrc
 }
+function remove_sakuli_root {
+    echo "remove 'SAKULI_ROOT' from '.bashrc'"
+    [ -r ~/.bashrc ] && sed -i '/export SAKULI_ROOT/d' ~/.bashrc
+}
 
 function set_sakuli_home {
     if [ -d "$1" ]; then
         echo "set 'SAKULI_HOME' in '.bashrc' to: $1"
+        # add empty line to ensure that bash has a new line
+        echo "" >> ~/.bashrc
         echo "export SAKULI_HOME=\"$1\"" >> ~/.bashrc
     else
         echo "new 'SAKULI_HOME' path '$1' does not exists!"
+        exit 1
+    fi
+}
+function set_sakuli_root {
+    if [ -d "$1" ]; then
+        echo "set 'SAKULI_ROOT' in '.bashrc' to: $1"
+        echo "export SAKULI_ROOT=\"$1\"" >> ~/.bashrc
+    else
+        echo "new 'SAKULI_ROOT' path '$1' does not exists!"
         exit 1
     fi
 }
@@ -37,9 +52,11 @@ function remove_path {
 }
 
 remove_sakuli_home
+remove_sakuli_root
 remove_path
 if [ ! "${1:0:1}" == "" ]; then
     sakuli_inst_path=$(eval echo $*)
     set_sakuli_home "$sakuli_inst_path"
+    set_sakuli_root $(dirname $sakuli_inst_path)
     set_path
 fi
