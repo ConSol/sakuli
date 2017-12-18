@@ -226,6 +226,12 @@
         <!--profile to sync and deploy the docu to http://consol.github.io/sakuli-->
         <profile>
             <id>upload-manual</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
