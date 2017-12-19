@@ -18,17 +18,23 @@
 
 package org.sakuli.datamodel;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * Created by georgi on 21/09/17.
  */
 public class TestAction {
     private String object;
     private String method;
-    private Object[] args;
+    private List<String> args;
     private String message;
     private String documentationURL;
 
-    private TestAction(String object, String method, Object[] args, String message, String documentationURL) {
+    private TestAction(String object, String method, List<String> args, String message, String documentationURL) {
         this.object = object;
         this.method = method;
         this.args = args;
@@ -37,7 +43,14 @@ public class TestAction {
     }
 
     public static TestAction createSakuliTestAction(String object, String method, Object[] args, String message, String documentationURL) {
-        return new TestAction(object, method, args, message,
+        //resolve object list to strings so no recursive exception will occur on parsing
+        final List<String> argList = Stream.of(Optional.ofNullable(args).orElse(new Object[]{}))
+                .filter(Objects::nonNull)
+                .map(o -> (o instanceof Object[])
+                        ? Stream.of((Object[]) o).map(Object::toString).collect(Collectors.joining(","))
+                        : o.toString())
+                .collect(Collectors.toList());
+        return new TestAction(object, method, argList, message,
                 createDocumentationURL(documentationURL, object, method));
     }
 
@@ -53,7 +66,7 @@ public class TestAction {
         return message;
     }
 
-    public Object[] getArgs() {
+    public List<String> getArgs() {
         return args;
     }
 
