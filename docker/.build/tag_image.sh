@@ -4,11 +4,14 @@ set -e -o pipefail
 SRC_TAG=$1
 TARGET_TAG=$2
 SAVEMODE=$3
+logfile="docker.tagged.images.log"
+
 echo "tag $SRC_TAG -> $TARGET_TAG"
 if [[ $SRC_TAG == "" ]] || [[ $TARGET_TAG == "" ]] ; then
   echo "ERROR: execute script like: tag_image.sh <src-tag> <target-tag> [--save]"
   exit -1
 fi
+echo "" > $logfile
 
 IMAGES=(
     "consol/sakuli-ubuntu-xfce"
@@ -22,8 +25,7 @@ IMAGES=(
 )
 
 #Loop
-for IMAGE in "${IMAGES[@]}"
-do
+for IMAGE in "${IMAGES[@]}"; do
 	echo "IMAGE: $IMAGE:$SRC_TAG"
 	docker pull $IMAGE:$SRC_TAG
 	docker run -it -e TESTSUITE_BROWSER=firefox $IMAGE:$SRC_TAG
@@ -32,5 +34,6 @@ do
 	if [[ "$SAVEMODE" != "--save" ]] ; then
 	    docker push $IMAGE:$TARGET_TAG
     fi
+    echo "$IMAGE:$SRC_TAG" >> $logfile
     echo " - done!"
 done
