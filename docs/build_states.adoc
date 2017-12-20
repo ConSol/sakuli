@@ -7,13 +7,14 @@
 :page-path: docs/build_states.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-
 |===
 |branch |build state |docker images state
 
 |`master`
 |image:http://labs-build.consol.de/buildStatus/icon?job=Sakuli_perform_release[Build Status,link=http://labs-build.consol.de/view/Sakuli/job/Sakuli_perform_release/^]
-|`consol/sakuli-ubuntu-xfce`
+|*https://xfce.org[Xfce]*
+
+`consol/sakuli-ubuntu-xfce`
 image:https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce.svg[dockerhub state,link=https://hub.docker.com/r/consol/sakuli-ubuntu-xfce^]
 image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-ubuntu-xfce^]
 
@@ -29,10 +30,30 @@ image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce-java
 image:https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce-java.svg[dockerhub state, link=https://hub.docker.com/r/consol/sakuli-centos-xfce-java/^]
 image:https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce-java.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-centos-xfce-java^]
 
+*http://www.icewm.org/[IceWM]*
+
+`consol/sakuli-ubuntu-icewm`
+image:https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-icewm.svg[dockerhub state,link=https://hub.docker.com/r/consol/sakuli-ubuntu-icewm^]
+image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-icewm.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-ubuntu-icewm^]
+
+`consol/sakuli-centos-icewm`
+image:https://images.microbadger.com/badges/version/consol/sakuli-centos-icewm.svg[dockerhub state, link=https://hub.docker.com/r/consol/sakuli-centos-icewm/^]
+image:https://images.microbadger.com/badges/image/consol/sakuli-centos-icewm.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-centos-icewm^]
+
+`consol/sakuli-ubuntu-icewm-java`
+image:https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-icewm-java.svg[dockerhub state, link=https://hub.docker.com/r/consol/sakuli-ubuntu-icewm-java/^]
+image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-icewm-java.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-ubuntu-icewm-java^]
+
+`consol/sakuli-centos-icewm-java`
+image:https://images.microbadger.com/badges/version/consol/sakuli-centos-icewm-java.svg[dockerhub state, link=https://hub.docker.com/r/consol/sakuli-centos-icewm-java/^]
+image:https://images.microbadger.com/badges/image/consol/sakuli-centos-icewm-java.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-centos-icewm-java^]
+
 
 |`dev`
 |image:http://labs-build.consol.de/buildStatus/icon?job=Sakuli_CI[Build Status,link=http://labs-build.consol.de/view/Sakuli/job/Sakuli_CI/^]
-|`consol/sakuli-ubuntu-xfce:dev`
+|*https://xfce.org[Xfce]*
+
+`consol/sakuli-ubuntu-xfce:dev`
 image:https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-xfce:dev.svg[dockerhub state,link=https://hub.docker.com/r/consol/sakuli-ubuntu-xfce^]
 image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce:dev.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-ubuntu-xfce^]
 
@@ -48,5 +69,24 @@ image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-xfce-java
 `consol/sakuli-centos-xfce-java:dev`
 image:https://images.microbadger.com/badges/version/consol/sakuli-centos-xfce-java:dev.svg[dockerhub state, link=https://hub.docker.com/r/consol/sakuli-centos-xfce-java/^]
 image:https://images.microbadger.com/badges/image/consol/sakuli-centos-xfce-java:dev.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-centos-xfce-java^]
+
+*http://www.icewm.org/[IceWM]*
+
+`consol/sakuli-ubuntu-icewm:dev`
+image:https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-icewm:dev.svg[dockerhub state,link=https://hub.docker.com/r/consol/sakuli-ubuntu-icewm^]
+image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-icewm:dev.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-ubuntu-icewm^]
+
+
+`consol/sakuli-centos-icewm:dev`
+image:https://images.microbadger.com/badges/version/consol/sakuli-centos-icewm:dev.svg[dockerhub state, link=https://hub.docker.com/r/consol/sakuli-centos-icewm/^]
+image:https://images.microbadger.com/badges/image/consol/sakuli-centos-icewm:dev.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-centos-icewm^]
+
+`consol/sakuli-ubuntu-icewm-java:dev`
+image:https://images.microbadger.com/badges/version/consol/sakuli-ubuntu-icewm-java:dev.svg[dockerhub state, link=https://hub.docker.com/r/consol/sakuli-ubuntu-icewm-java/^]
+image:https://images.microbadger.com/badges/image/consol/sakuli-ubuntu-icewm-java:dev.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-ubuntu-icewm-java^]
+
+`consol/sakuli-centos-icewm-java:dev`
+image:https://images.microbadger.com/badges/version/consol/sakuli-centos-icewm-java:dev.svg[dockerhub state, link=https://hub.docker.com/r/consol/sakuli-centos-icewm-java/^]
+image:https://images.microbadger.com/badges/image/consol/sakuli-centos-icewm-java:dev.svg[microbadger profile, link=http://microbadger.com/images/consol/sakuli-centos-icewm-java^]
 
 |===

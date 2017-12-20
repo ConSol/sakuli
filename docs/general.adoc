@@ -7,6 +7,12 @@
 :page-path: docs/general.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
+* *Project Homepage: http://www.sakuli.org/[www.sakuli.org]*
+* *Blog Entries: https://labs.consol.de/tags/sakuli/[labs.consol.de/sakuli]*
+* *Tutorials & Examples: https://github.com/ConSol/sakuli-examples[github.com/ConSol/sakuli-examples]*
+
+'''
+
 *Documentation for version: `${sakuli.version}`* (also available as a *link:${pdf.path}[PDF document^]*)
 
 The documentation of all former Sakuli versions can be found on http://consol.github.io/sakuli[consol.github.io/sakuli]
@@ -25,9 +31,10 @@ At this point we want to thank all contributors, which helped to move this great
 * Georgi Todorov - Sakuli Team / Core Development
 * Lukas Höfer - Sakuli Team / Consultant
 * Sven Nierlein
-* Philip Griesbacher - Sakuli Go Starter
+* Philip Griesbacher - https://github.com/ConSol/sakuli-go-wrapper:[Sakuli Go Starter]
 * Thomas Rothenbacher
 * Christopher Kreft
+* Sven Hettwer - <<openshift-s2i, OpenShift S2I build>>
 
 (did we forget you? Please poke us):
 

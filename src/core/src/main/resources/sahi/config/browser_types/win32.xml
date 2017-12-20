@@ -23,7 +23,7 @@
         <displayName>Firefox</displayName>
         <icon>firefox.png</icon>
         <path>$ProgramFiles\Mozilla Firefox\firefox.exe</path>
-        <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote -private</options>
+        <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
         <processName>firefox.exe</processName>
         <capacity>5</capacity>
     </browserType>
@@ -33,7 +33,7 @@
         <displayName>Firefox portable</displayName>
         <icon>firefox.png</icon>
         <path>$SAKULI_HOME\..\FirefoxPortable\App\Firefox\firefox.exe</path>
-        <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote -private</options>
+        <options>-profile "$userDir/browser/ff/profiles/sahi$threadNo" -no-remote</options>
         <processName>firefox.exe</processName>
         <capacity>5</capacity>
     </browserType>

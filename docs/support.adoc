@@ -8,7 +8,7 @@
 :page-path: docs/support.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-You want to use Sakuli in your project and need on-site help from our Sakuuli experts? You've got a specific
+You want to use Sakuli in your project and need on-site help from our Sakuli experts? You've got a specific
 question about Sakuli implementation, or you're just looking for some guidelines and best practices in writing test cases or setting up your infrastructure? Please feel
 free to contact us! We will be glad to help you achieve your goals and a stable software application.
 
@@ -23,12 +23,22 @@ Sakuli grew out of multiple software development and monitoring projects at ConS
 enterprise applications but also in develop, operate and monitor those. If you looking for expert assistance regardless of
 which part - talk to us!
 
+More information you also find under our project homepage: *http://www.sakuli.org/[www.sakuli.org]*
+
+[[more]]
+== More Resources
+* *Project Homepage: http://www.sakuli.org/[www.sakuli.org]*
+* *Blog Entries: https://labs.consol.de/tags/sakuli/[labs.consol.de/sakuli]*
+* *Tutorials & Examples: https://github.com/ConSol/sakuli-examples[github.com/ConSol/sakuli-examples]*
+
+
 == Contact
 
 The Sakuli team members will listen on the following channels:
 
-* e-mail: *mailto:sakuli@consol.de[sakuli@consol.de]*
-* GitHub issues: *https://github.com/ConSol/sakuli/issues/new[github.com/ConSol/sakuli/issues/new]*
+* *E-mail: mailto:sakuli@consol.de[sakuli@consol.de]*
+* *GitHub issues: https://github.com/ConSol/sakuli/issues/new[github.com/ConSol/sakuli/issues/new]*
+* *Twitter: https://twitter.com/sakuli_e2e[sakuli_e2e]*
 
 
 The company behind Sakuli:

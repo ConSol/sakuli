@@ -8,14 +8,15 @@ HOST=$2
 SERVICE=$3
 LASTSERVICECHECK=$4
 SERVICEATTEMPT=$5
+SERVICEEVENTID=$6
 
 function usage() {
     echo "Wrong number of arguments."
-    echo "Usage: $0 STATE HOSTNAME SERVICEDESCRIPTION LASTSERVICECHECK SERVICEATTEMPT"
+    echo "Usage: $0 STATE HOSTNAME SERVICEDESCRIPTION LASTSERVICECHECK SERVICEATTEMPT SERVICEEVENTID"
     exit 1
 }
 
-[ $# -ne 5 ] && usage; 
+[ $# -ne 6 ] && usage;
 
 LOG=${OMD_ROOT}/var/log/sakuli_screenshot_eventhandler.log
 IMG_ROOT=${OMD_ROOT}/var/sakuli/screenshots/$HOST/$SERVICE
@@ -34,6 +35,7 @@ log "STATE: $STATE"
 log "HOST/SERVICE: $HOST / $SERVICE"
 log "LASTSERVICECHECK: $LASTSERVICECHECK"
 log "SERVICEATTEMPT: $SERVICEATTEMPT"
+log "SERVICEEVENTID: $SERVICEEVENTID"
 
 case $STATE in
 "OK")

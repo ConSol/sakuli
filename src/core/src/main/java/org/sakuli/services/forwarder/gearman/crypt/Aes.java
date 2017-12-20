@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidKeyException;
 import java.util.Arrays;
 
 /**
@@ -35,11 +36,14 @@ public class Aes {
     public static final int DEFAULT_KEY_LENGTH = 32;
     public static final String CRYPT_ALGORITHM = "AES/ECB/PKCS5Padding";
     private static final Logger LOGGER = LoggerFactory.getLogger(Aes.class);
-    /** Key length in byte that should be used, default is 32 = 256 bit */
+    /**
+     * Key length in byte that should be used, default is 32 = 256 bit
+     */
     public static int keyLength = DEFAULT_KEY_LENGTH;
 
     /**
      * Encrypt text with AES-256/ECP mode.
+     *
      * @param text
      * @param password
      * @return
@@ -51,13 +55,14 @@ public class Aes {
             cipher.init(Cipher.ENCRYPT_MODE, getSecretKey(password));
             return Base64.encodeBase64(cipher.doFinal(text.getBytes()));
         } catch (Exception e) {
-            LOGGER.error("Error while encrypting: ", e);
-            throw new GearmanException("Error while encrypting: " + e.getMessage());
+            catchCipherError("encrypting", e);
+            return null;
         }
     }
 
     /**
      * Decrypt with AES-256/ECP mode.
+     *
      * @param enrcypted
      * @param password
      * @return
@@ -69,17 +74,33 @@ public class Aes {
             cipher.init(Cipher.DECRYPT_MODE, getSecretKey(password));
             return new String(cipher.doFinal(Base64.decodeBase64(enrcypted)));
         } catch (Exception e) {
-            LOGGER.error("Error while decrypting: ", e);
-            throw new GearmanException("Error while decrypting: " + e.getMessage());
+            catchCipherError("decrypting", e);
+            return null;
         }
     }
 
     /**
+     * throws exception or give a hint to install Java JCE
+     */
+    static void catchCipherError(String mode, Exception e) {
+        if (e instanceof InvalidKeyException) {
+            LOGGER.error("JRE can't initialize Cipher " + CRYPT_ALGORITHM, e);
+            throw new GearmanException(String.format(
+                    "Cryptography Algorithm '%s' not supported from installed JRE '%s, %s, %s: %s'. Please ensure that the  Java Cryptography Extension (JCE) is installed, see Sakuli documentation: http://consol.github.io/sakuli/latest/index.html#invalid-key-exception-aes-cryptography",
+                    CRYPT_ALGORITHM,
+                    System.getProperty("java.vm.name", ""), System.getProperty("java.vendor", ""), System.getProperty("java.version", ""), System.getProperty("java.home", "")));
+        }
+        LOGGER.error("Error while " + mode + ": ", e);
+        throw new GearmanException("Error while " + mode + ": " + e.getMessage());
+    }
+
+    /**
      * Create proper secret key spec from password.
+     *
      * @param password
      * @return
      */
-    private static SecretKeySpec getSecretKey(String password){
+    private static SecretKeySpec getSecretKey(String password) {
         try {
             byte[] key = Arrays.copyOf(password.getBytes(), keyLength); // use only first 256 bit
             return new SecretKeySpec(key, "AES");

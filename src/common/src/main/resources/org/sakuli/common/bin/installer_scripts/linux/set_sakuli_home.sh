@@ -12,6 +12,8 @@ function remove_sakuli_root {
 function set_sakuli_home {
     if [ -d "$1" ]; then
         echo "set 'SAKULI_HOME' in '.bashrc' to: $1"
+        # add empty line to ensure that bash has a new line
+        echo "" >> ~/.bashrc
         echo "export SAKULI_HOME=\"$1\"" >> ~/.bashrc
     else
         echo "new 'SAKULI_HOME' path '$1' does not exists!"

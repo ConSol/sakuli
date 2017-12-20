@@ -17,19 +17,18 @@
   ~ limitations under the License.
   -->
 
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>1.1.0-SNAPSHOT</version>
+        <version>1.2.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>docs-manual</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <description>maven module to build the AsciiDoc based sakuli documentation: http://consol.github.io/sakuli
     </description>
@@ -117,7 +116,9 @@
                                             </includes>
                                         </resource>
                                         <resource>
-                                            <directory>${pom.parent.basedir}/src/common/src/main/resources/org/sakuli/common/config</directory>
+                                            <directory>
+                                                ${pom.parent.basedir}/src/common/src/main/resources/org/sakuli/common/config
+                                            </directory>
                                             <includes>
                                                 <include>sakuli-default.properties</include>
                                             </includes>
@@ -224,6 +225,12 @@
         <!--profile to sync and deploy the docu to http://consol.github.io/sakuli-->
         <profile>
             <id>upload-manual</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -244,15 +251,7 @@
                             <!-- copies the fresh generated file to the `gh-pages` branch -->
                             <execution>
                                 <id>gh-pages:copy-new-doc-sources1</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                            </execution>
-                            <!-- this is needed for step `gh-pages-remove-for-deploy2`, so that removed files will be updated also-->
-                            <execution>
-                                <id>gh-pages:copy-new-doc-sources2</id>
-                                <phase>install</phase>
+                                <phase>pre-integration-test</phase>
                                 <goals>
                                     <goal>copy-resources</goal>
                                 </goals>
@@ -267,7 +266,7 @@
                         <executions>
                             <execution>
                                 <id>create-index.adoc page</id>
-                                <phase>post-integration-test</phase>
+                                <phase>pre-integration-test</phase>
                                 <goals>
                                     <goal>exec</goal>
                                 </goals>
@@ -276,6 +275,19 @@
                                     <arguments>
                                         <argument>${gh-pages.working.dir}</argument>
                                         <argument>${project.build.directory}/src_index/index.adoc</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>do-git-add-all</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${project.build.scriptSourceDirectory}/git_add.sh</executable>
+                                    <arguments>
+                                        <argument>${gh-pages.working.dir}</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -288,7 +300,7 @@
                         <executions>
                             <execution>
                                 <id>generate-index-hmtl</id>
-                                <phase>post-integration-test</phase>
+                                <phase>pre-integration-test</phase>
                                 <goals>
                                     <goal>process-asciidoc</goal>
                                 </goals>
@@ -323,59 +335,16 @@
 
                             <!-- adds the modified and new files -->
                             <execution>
-                                <id>gh-pages-deploy1</id>
+                                <id>gh-pages-scm-commit</id>
                                 <phase>post-integration-test</phase>
                                 <goals>
-                                    <goal>add</goal>
+                                    <!-- add will be done by exec plugin calling git_add.sh< -->
                                     <goal>checkin</goal>
                                 </goals>
                                 <configuration>
-                                    <includes>${sakuli.version}/</includes>
-                                    <message>Add new sakuli documentation for ${sakuli.version}</message>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>gh-pages-deploy-new-index-html</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>add</goal>
-                                    <goal>checkin</goal>
-                                </goals>
-                                <configuration>
-                                    <includes>index.html</includes>
-                                    <message>modify index.html page</message>
-                                </configuration>
-                            </execution>
-
-                            <!-- all after this is needed, so that removed files will be updated also-->
-                            <execution>
-                                <id>gh-pages-remove-for-deploy2</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>remove</goal>
-                                </goals>
-                                <configuration>
-                                    <includes>${sakuli.version}/</includes>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>gh-pages-add2</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>add</goal>
-                                </goals>
-                                <configuration>
-                                    <includes>${sakuli.version}/</includes>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>gh-pages-deploy2</id>
-                                <phase>install</phase>
-                                <goals>
-                                    <goal>checkin</goal>
-                                </goals>
-                                <configuration>
-                                    <message>Remove old files of sakuli documentation ${sakuli.version}</message>
+                                    <!--<includes>*.*</includes>-->
+                                    <!--<includes>**/*</includes>-->
+                                    <message>Add new/updated sakuli documentation for ${sakuli.version}</message>
                                 </configuration>
                             </execution>
                         </executions>

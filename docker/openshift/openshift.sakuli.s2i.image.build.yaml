@@ -1,0 +1,112 @@
+apiVersion: v1
+kind: Template
+labels:
+  template: sakuli-s2i-image-build
+metadata:
+  annotations:
+    description: Sakuli S2I base image
+    iconClass: icon-beaker
+    tags: consol, sakuli, custom-image, s2i, source-to-image
+    version: 1.1.0
+  creationTimestamp: null
+  name: sakuli-s2i-image-build
+### template parameter defined via `oc process -f this.yaml -p "PARAMETER=value"`
+parameters:
+- description: The name for the taged target image
+  name: IMAGE
+  required: true
+  value: sakuli-s2i
+
+- description: Git source URI of the s2i project
+  name: SOURCE_REPOSITORY_URL
+  required: true
+  value: https://github.com/ConSol/sakuli.git
+
+- description: Git branch/tag reference
+  name: SOURCE_REPOSITORY_REF
+  value: "master"
+  required: true
+
+- description: Source folder where the Dockerfile is placed
+  name: SOURCE_DOCKER_CONTEXT_DIR
+  value: docker
+  required: true
+
+- description: Name of the Dockerfile
+  name: SOURCE_DOCKERFILE
+  value: Dockerfile.sakuli.s2i
+  required: true
+
+- description: |-
+    The kind of source to obtain the image from. For more information, please visit
+    https://docs.openshift.com/container-platform/3.7/dev_guide/builds/build_strategies.html#docker-strategy-from
+  name: BASE_IMAGE_KIND
+  required: true
+  value: DockerImage
+
+- description: The name of the base image
+  name: BASE_IMAGE
+  required: true
+  value: consol/sakuli-centos-xfce
+
+- description: GitHub trigger secret
+  from: '[a-zA-Z0-9]{8}'
+  generate: expression
+  name: GITHUB_WEBHOOK_SECRET
+  required: true
+
+- description: Generic build trigger secret
+  from: '[a-zA-Z0-9]{8}'
+  generate: expression
+  name: GENERIC_WEBHOOK_SECRET
+  required: true
+
+- description: Image tag of the target image
+  name: IMAGE_TAG
+  required: true
+  value: latest
+
+### Configuration of OpenShift objects
+objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      application: ${IMAGE}
+    name: ${IMAGE}
+
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      build: ${IMAGE}
+    name: ${IMAGE}
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${IMAGE}:${IMAGE_TAG}
+    source:
+      type: Git
+      git:
+        ref: ${SOURCE_REPOSITORY_REF}
+        uri: ${SOURCE_REPOSITORY_URL}
+      contextDir: ${SOURCE_DOCKER_CONTEXT_DIR}
+    strategy:
+      type: Docker
+      dockerStrategy:
+        dockerfilePath: ${SOURCE_DOCKERFILE}
+        from:
+          kind: ${BASE_IMAGE_KIND}
+          name: ${BASE_IMAGE}
+        noCache: false
+    triggers:
+    - github:
+        secret: ${GITHUB_WEBHOOK_SECRET}
+      type: GitHub
+    - generic:
+        secret: ${GENERIC_WEBHOOK_SECRET}
+      type: Generic
+    - imageChange: {}
+      type: ImageChange
+    - type: ConfigChange

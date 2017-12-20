@@ -1,10 +1,10 @@
 ############################################
 # OMD settings, please use them to make your config
 # portable, but dont change them
-$USER1$=/omd/sites/demo/lib/nagios/plugins
-$USER2$=/omd/sites/demo/local/lib/nagios/plugins
-$USER3$=demo
-$USER4$=/omd/sites/demo
+$USER1$=/omd/sites/{{ OMD_SITE }}/lib/nagios/plugins
+$USER2$=/omd/sites/{{ OMD_SITE }}/local/lib/nagios/plugins
+$USER3$={{ OMD_SITE }}
+$USER4$=/omd/sites/{{ OMD_SITE }}
 ############################################
 
 # database name
@@ -16,6 +16,6 @@ $USER12$=sakuli
 # database port
 $USER13$=3306
 # check_mysql_health dyndir
-$USER15$=/opt/omd/sites/demo/etc/check_mysql_health/
+$USER15$=/opt/omd/sites/{{ OMD_SITE }}/etc/check_mysql_health/
 # database IP
 $USER16$=127.0.0.1

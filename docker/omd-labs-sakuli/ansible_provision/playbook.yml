@@ -6,12 +6,6 @@
     OMD_ROOT: "/opt/omd/sites/{{ SITENAME }}"
   tasks:
 
-    # temporärer fix, bis neue RPMs gebaut sind
-    - name: copy coreconfig.yaml
-      copy:
-        src: coreconfig.yml
-        dest: /opt/omd/versions/default/share/sakuli/setup/
-
     - name: configure Sakuli extension
       become: yes
       become_user: "{{ SITENAME }}"
@@ -23,7 +17,7 @@
         - "screenshot_history"
         - "gearman"
       args:
-        chdir: "$OMD_ROOT/share/sakuli/setup"
+        chdir: "$OMD_ROOT/share/sakuli/setup/omd"
 
     - name: set Nagios core
       command: "omd config {{ SITENAME }} set CORE nagios"

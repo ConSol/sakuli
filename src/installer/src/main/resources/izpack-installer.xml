@@ -96,6 +96,11 @@
         <pack id="sakuli.core" name="Sakuli v${sakuli.version}" required="yes">
             <description>Sakuli v${sakuli.version}</description>
             <fileset dir="${sakuli.install.src.core}" targetdir="${INSTALL_PATH}/${sakuli.install.target.core}"/>
+            <!--overwrite sakuli binary on macs -->
+            <singlefile src="${sakuli.install.src.core}/bin/sakuli.darwin" override="true"
+                        target="${INSTALL_PATH}/${sakuli.install.target.core}/bin/sakuli">
+                <os family="mac"/>
+            </singlefile>
             <!-- mark files as executable -->
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.core}/bin/sakuli">
@@ -114,17 +119,16 @@
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/install_firefox_portable.sh">
-                <os family="unix"/>
-                <os family="mac"/>
+                <os family="linux"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_sakuli_home.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_ui_testing_variables.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
         </pack>
@@ -135,53 +139,55 @@
             <!-- mark files as executable -->
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/bin/dashboard.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/bin/sahi.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/tools/changeproxy.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/tools/revertproxy.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true" targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/bin/web.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/start_dashboard.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/start_sahi.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/start_web.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.sahi}/userdata/bin/testrunner.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
         </pack>
         <pack id="sakuli.win.env" name="${package.name.set.default.win}" preselected="true"
               required="${package.set.default.required}">
             <!-- @formatter:off -->
-            <description>Set 'SAKULI_HOME' to v${sakuli.version} and make it possible to execute 'sakuli.exe' from CMD.</description>
+            <description>Set 'SAKULI_HOME' to v${sakuli.version} and make it possible to execute 'sakuli.exe' from
+                CMD.
+            </description>
             <!-- @formatter:on -->
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_sakuli_home.bat">
@@ -193,12 +199,14 @@
         <pack id="sakuli.linux.env" name="${package.name.set.default.linux}" preselected="true"
               required="${package.set.default.required}">
             <!-- @formatter:off -->
-            <description>Set 'SAKULI_HOME' to v${sakuli.version} in '.bashrc' and make it possible to execute 'sakuli' from commandline.</description>
+            <description>Set 'SAKULI_HOME' to v${sakuli.version} in '.bashrc' and make it possible to execute 'sakuli'
+                from commandline.
+            </description>
             <!-- @formatter:on -->
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_sakuli_home.sh">
             </executable>
-            <os family="unix"/>
+            <os family="linux"/>
             <os family="mac"/>
             <!-- INSTALLER: set SAKULI_HOME and PATH execute via 'ProcessPanel.Spec.xml-->
             <!-- UNINSTALLER: remove set environment pathes-->
@@ -209,15 +217,16 @@
               required="${package.set.testing.vars.required}">
             <description>Set entries in the Windows registry (on uninstall, the changes will reverted):
                 * Environment variables:
-                    * Disable Firefox plugin container: MOZ_DISABLE_OOP_PLUGINS
-                    * Disable Firefox safe mode: MOZ_DISABLE_AUTO_SAFE_MODE, MOZ_DISABLE_SAFE_MODE_KEY
+                * Disable Firefox plugin container: MOZ_DISABLE_OOP_PLUGINS
+                * Disable Firefox safe mode: MOZ_DISABLE_AUTO_SAFE_MODE, MOZ_DISABLE_SAFE_MODE_KEY
                 * Windows registry:
-                    * Disable graphical effects, screen saver and error reporting:
-                      'HKEY_CURRENT_USER\Control Panel\Desktop', 'ForegroundLockTimeout' -> '0'
-                      'HKEY_CURRENT_USER\Control Panel\Desktop', 'FontSmoothingType' -> '0'
-                      'HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics', 'MinAnimate' -> '0'
-                      'HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects', 'VisualFXSetting' -> '2'
-                      'HKEY_CURRENT_USER\Software\Microsoft\Windows\Windows Error Reporting', 'Disabled' -> '1'
+                * Disable graphical effects, screen saver and error reporting:
+                'HKEY_CURRENT_USER\Control Panel\Desktop', 'ForegroundLockTimeout' -> '0'
+                'HKEY_CURRENT_USER\Control Panel\Desktop', 'FontSmoothingType' -> '0'
+                'HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics', 'MinAnimate' -> '0'
+                'HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects', 'VisualFXSetting'
+                -> '2'
+                'HKEY_CURRENT_USER\Software\Microsoft\Windows\Windows Error Reporting', 'Disabled' -> '1'
             </description>
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/win/set_ui_testing_variables.bat">
@@ -234,7 +243,7 @@
             <executable stage="uninstall" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.installerScripts}/linux/set_ui_testing_variables.sh">
             </executable>
-            <os family="unix"/>
+            <os family="linux"/>
             <os family="mac"/>
             <!-- INSTALLER: set ui environment variables via 'ProcessPanel.Spec.xml-->
             <!-- UNINSTALLER: remove variables from environment pathes-->
@@ -247,17 +256,17 @@
                      override="true"/>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.example}/start_example_opensuse.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.example}/start_example_ubuntu.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
             <executable stage="never" keep="true"
                         targetfile="${INSTALL_PATH}/${sakuli.install.target.example}/start_example_xfce.sh">
-                <os family="unix"/>
+                <os family="linux"/>
                 <os family="mac"/>
             </executable>
         </pack>
@@ -266,15 +275,20 @@
         <pack id="sakuli.win.firefox" name="${package.name.firefox.win}" preselected="${package.firefox.preselected}"
               required="${package.firefox.required}">
             <!-- INSTALLER: trigger job in 'ProcessPanel.Spec.xml' -->
-            <description>Install Firefox Portable v${package.name.firefox.version} to 'SAKULI_HOME\${sakuli.install.target.firefox.win}' and configure it as browser type 'firefox_portable'.</description>
-            <fileset dir="${sakuli.install.src.firefox.win}" targetdir="${INSTALL_PATH}/${sakuli.install.target.firefox.win}"/>
+            <description>Install Firefox Portable v${package.name.firefox.version} to
+                'SAKULI_HOME\${sakuli.install.target.firefox.win}' and configure it as browser type 'firefox_portable'.
+            </description>
+            <fileset dir="${sakuli.install.src.firefox.win}"
+                     targetdir="${INSTALL_PATH}/${sakuli.install.target.firefox.win}"/>
             <os family="windows"/>
             <!--Anti-Virus-checked: https://www.virustotal.com/de/file/ee06345a08531c07c1381ff6d8bb8acade45aa1c5d14ef9190727140dda81780/analysis/ -->
         </pack>
         <pack id="sakuli.linux.firefox" name="${package.name.firefox.linux}"
               preselected="${package.firefox.preselected}" required="${package.firefox.required}">
-            <description>Download and install Firefox Portable v${package.name.firefox.version} to 'SAKULI_HOME\${sakuli.install.target.firefox.win}' and configure as browser type 'firefox_portable'.</description>
-            <os family="unix"/>
+            <description>Download and install Firefox Portable v${package.name.firefox.version} to
+                'SAKULI_HOME\${sakuli.install.target.firefox.win}' and configure as browser type 'firefox_portable'.
+            </description>
+            <os family="linux"/>
             <!-- INSTALLER: Will executed via 'ProcessPanel.Spec.xml-->
         </pack>
         <!-- @formatter:on -->
@@ -282,7 +296,9 @@
         <pack id="sakuli.win.qres" name="Install QRes" preselected="true" required="${package.qres.required}">
             <!-- @formatter:off -->
             <!-- Anti-Virus-checked: https://www.virustotal.com/de/file/5b268a80e2a8a6972c457a99cfc6a41dbe7057772a0ff0ebfb9769870140376d/analysis/1448890652/-->
-            <description>QRes is a easy to use command line utility to change screen resolution, color depth, display modes, refresh rate and so on.</description>
+            <description>QRes is a easy to use command line utility to change screen resolution, color depth, display
+                modes, refresh rate and so on.
+            </description>
             <fileset dir="qres" targetdir="${INSTALL_PATH}/qres"/>
             <os family="windows"/>
             <!-- @formatter:on -->

@@ -8,7 +8,66 @@
 :page-path: docs/changelog.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-.Version 1.1.0-beta
+[[version-1.1.0]]
+.http://consol.github.io/sakuli/v1.1.0/index.html[*Version 1.1.0*]
+* Merge PR <<openshift-s2i, Sakuli OpenShift Source-2-Image (S2I) Build>> from http://github.com/FMAOuroboros[Sven Hettwer] (https://github.com/ConSol/sakuli/issues/296[#296])
+* Add methods to read environment variables and property values (https://github.com/ConSol/sakuli/issues/251[#251]):
+** <<Environment.getEnv>>
+** <<Environment.getProperty>>
+* Improve error message if AES algorithm is not possible due to missing Java Cryptography Extension (https://github.com/ConSol/sakuli/issues/277[#277], <<invalid-key-exception-aes-cryptography, Invalid Key Exception in AES>>)
+* Fix <<Application.open>>: won't fail if application could not started and improve error message (https://github.com/ConSol/sakuli/issues/264[#264])
+
+* <<docker-images, Docker images>>:
+** Fix calculation of JVM_HEAP_XMX with to high count of cgroup memory limit in bytes (https://github.com/ConSol/sakuli/issues/280[#280])
+** Add default JVM options `-XX:+UseCGroupMemoryLimitForHeap` for optimized jvm runtime in Docker (https://github.com/ConSol/sakuli/issues/291[#291])
+** Use version https://github.com/ConSol/docker-headless-vnc-container/releases/tag/1.2.2[`1.2.2`] of Docker headless VNC image due to  hanging vnc handshake if container is offline (https://github.com/ConSol/docker-headless-vnc-container/issues/50[ConSol/docker-headless-vnc-container #50])
+** Optimize memory usage of Firefox and Chrome (https://github.com/ConSol/sakuli/issues/276[#276])
+** Use https://en.wikipedia.org/wiki/Scrot[Scrot] as screenshot tool footprint (https://github.com/ConSol/sakuli/issues/250[#250])
+** Add missing lsb-release package to Ubuntu image
+* <<kubernetes>> and <<openshift>> Support (https://github.com/ConSol/sakuli/issues/258[#258]):
+** Update git-link:docker[link-text="Templates", mode="view", link-window="_blank"] with latest optimizations
+** Add `KUBERNETES_RUN_MODE` environment variable to have better <<kubernetes-job-config>> support
+
+* Fix drag and drop won't work on every native desktop (https://github.com/ConSol/sakuli/issues/292[#292])
+* Revert (https://github.com/ConSol/sakuli/issues/276[#276] "use private mode of firefox for tests" due to the fact that the SSL certificate handling is worse in this mode (https://github.com/ConSol/sakuli/issues/285[#285])
+* Use PNG as default error screenshot format to improve default compression and make it usable for images in test cases (https://github.com/ConSol/sakuli/issues/174[#174])
+* Increase details of error output at availability check in Linux Util, to show if used tools like `wmctrl` is missing (https://github.com/ConSol/sakuli/issues/266[#266], https://github.com/RaiMan/SikuliX-2014/pull/279[RaiMan/SikuliX-2014 #279])
+* Fix method `<<Region.takeScreenshot>>`, `<<Environment.takeScreenshot>>` to save the screenshot on a fixed path without timestamp and add method `<<Region.takeScreenshotWithTimestamp>>, `<<Environment.takeScreenshotWithTimestamp>>` (https://github.com/ConSol/sakuli/issues/263[#263])
+* Add <<encryption-environment, Encryption Mode `environment`>> Cipher with masterkey setup as default (https://github.com/ConSol/sakuli/issues/197[#197])
+* Add environment variable `SAKULI_ROOT` to Windows / Linux installer (https://github.com/ConSol/sakuli/issues/191[#191])
+* Add automatic parsing from dashed environment vars, see <<property-loading-mechanism>> (https://github.com/ConSol/sakuli/issues/238[#238])
+* Add Mac compatible `sakuli` binary to installer (https://github.com/ConSol/sakuli/issues/298[#298], https://github.com/ConSol/sakuli-go-wrapper/issues/4[ConSol/sakuli-go-wrapper/ #4]
+* Update Sakuli Examples:
+** Add https://github.com/ConSol/sakuli-examples/blob/master/docker-xfce-omd/README.adoc[Sakuli Tutorial - Docker based E2E application monitoring]
+** Update https://github.com/ConSol/sakuli-examples/blob/master/first-steps/first-steps.md[first steps tutorial]
+** Add `git-link:example_test_suites/example_icewm[link-text="example_icewm", mode="view", link-window="_blank"]` for icewm docker containers (https://github.com/ConSol/sakuli/issues/241[#241])
+** Add validation of Sahi logo to `git-link:example_test_suites/example_icewm[link-text="example_icewm", mode="view", link-window="_blank"]`, `git-link:example_test_suites/example_xfce[link-text="example_xfce", mode="view", link-window="_blank"]` docker containers
+** Update `git-link:example_test_suites/example_windows8[link-text="example_windows8", mode="view", link-window="_blank"]`
+
+* Update Documentation:
+** Update git-link:README.adoc[link-text="README", mode="view", link-window="_blank"] page and change documentation to github-pages/ascii-doc setup, new official Documentation: http://consol.github.io/sakuli/ (https://github.com/ConSol/sakuli/issues/243[#243])
+** Provide the latest documentation link (https://github.com/ConSol/sakuli/issues/283[#283]): http://consol.github.io/sakuli/latest
+** How to use <<sahi-webpack-dev-server>> (https://github.com/ConSol/sakuli/issues/295[#295])
+** How to fix <<docker-images-known-issues-chromium-crash, chromium crashes with high VNC resolution>> (https://github.com/ConSol/docker-headless-vnc-container/issues/53[ConSol/docker-headless-vnc-container #53])
+** Add  <<invalid-key-exception-aes-cryptography, usage of OpenJDK in case of `InvalidKeyException`>> to gearman encryption documentation (https://github.com/ConSol/sakuli/issues/91[#91])
+** Add documentation for <<docker-https-sahi,automatically importing firefox ssl certificates in docker>> (https://github.com/ConSol/sakuli/issues/285[#285])
+** Improve documentation of <<property-loading-mechanism>>:  add "Property References" to documentation (https://github.com/ConSol/sakuli/issues/261[#261])
+** Update <<events>> and <<publications>>
+
+
+* <<omd-gearman,OMD Monitoring Integration>>:
+** Fixed <<screenshot_history, screenshot event handler>> parameter (https://github.com/ConSol/sakuli/issues/294[#294])
+** Add Sakuli setup for different <<monitoring-integration,OMD setups>> with make/Ansible (https://github.com/ConSol/sakuli/issues/257[#257])
+** Replaced all "demo" occurrences with placeholder and modify Ansible template (https://github.com/ConSol/sakuli/issues/293[#293])
+** Removed Grafana template; distributed by Histou project https://github.com/Griesbacher/histou[Griesbacher/histou]
+** Thruk SSI: Add png/jpg support (https://github.com/ConSol/sakuli/issues/208[#208])
+** Fix linefeed problem under windows for <<check_mk>> template engine (https://github.com/ConSol/sakuli/issues/176[#176])
+** Moved OMD setup Ansible playbooks into separate folder git-link:src/common/src/main/resources/org/sakuli/common/setup/omd[link-text="omd", mode="view", link-window="_blank"]
+** Documentation: <<omd-gearman>>, <<omd-docker>>, <<gearman_proxy>>, <<screenshot_history>>, <<grafana_graphs>>, <<check_mk>>.
+
+
+[[version-1.1.0-beta]]
+.http://consol.github.io/sakuli/v1.1.0-beta/index.html[**Version 1.1.0-beta**]
 
 * <<openshift>> and enhanced
 <<docker-images>> support (https://github.com/ConSol/sakuli/issues/218[#218]):
@@ -49,7 +108,8 @@ after 60; adapted Thruk SSI (https://github.com/ConSol/sakuli/issues/236[#236])
 * change dependency `sakuli-go-wrapper` to fixed version
 * smaller bugfixes and documentation update
 
-.Version 1.0.2 (Bugfix + some small features)
+[[version-1.0.2]]
+.http://consol.github.io/sakuli/v1.0.2/index.html[*Version 1.0.2* (Bugfix + some small features)]
 
 * issue https://github.com/ConSol/sakuli/issues/210[#210]: upgrade Sahi to version `5.1` due to Sahi compatibility issue with Chrome 53+ and `region._click()`
 * fix docker images
@@ -64,13 +124,13 @@ after 60; adapted Thruk SSI (https://github.com/ConSol/sakuli/issues/236[#236])
 * fix https://github.com/ConSol/sakuli/issues/177[#177] add description for the javaDSL and update the documentation
 * issue https://github.com/ConSol/sakuli/issues/205[#205]: use maven-jgitflow for releases and branching
 
-.Version 1.0.1 (Bugfix)
+.*Version 1.0.1* (Bugfix)
 
 * fix https://github.com/ConSol/sakuli/issues/190[#190]: fix Docker centos image: use tagged version `consol/centos-xfce-vnc:1.0.1`
 * Use consistent file naming and fix broken links in docs
 * fix example_xfce for new centos 7 version
 
-.Version 1.0.0
+.*Version 1.0.0*
 
 * First step tutorial and https documentation. Fixes https://github.com/ConSol/sakuli/issues/161[#161], fixes https://github.com/ConSol/sakuli/issues/53[#53] partially.
 * fix https://github.com/ConSol/sakuli/issues/32[#32] highlight function on linux does not work (in underlying SikuliX library)
@@ -86,7 +146,7 @@ after 60; adapted Thruk SSI (https://github.com/ConSol/sakuli/issues/236[#236])
 * fix maven snapshot repository path of the `labs.consol.de` maven-repository
 '''
 
-.Version 0.9.3
+.*Version 0.9.3*
 
 * Move to a new binary starter for Windows and Linux (sakuli.exe / sakuli), https://github.com/ConSol/sakuli/issues/150[#150]:
 ** modify VNC documentation to flag `-preHook` and `postHook`
@@ -157,7 +217,7 @@ Options:
 ** add a property sakuli.log.maxAge in days (default 14 days)
 ** deletes all files that are older than the defined days in the folder `sakuli.log.folder`
 
-.Version 0.9.2
+.*Version 0.9.2*
 
 * add setting some firefox variables (`MOZ_DISABLE_OOP_PLUGINS`, `MOZ_DISABLE_AUTO_SAFE_MODE`, `MOZ_DISABLE_SAFE_MODE_KEY`) for UI testing to the installer, see https://github.com/ConSol/sakuli/issues/158[#158].
 * Executable JAR installer `sakuli-vX.X.X-installer.jar`, downloadable via https://labs.consol.de/sakuli/install, see https://github.com/ConSol/sakuli/issues/24[#24].
@@ -199,7 +259,7 @@ image:installer_2.png[inst_2]
 * Rename README.md to index.md in case of https://readthedocs.org/projects/sakuli/[https://readthedocs.org/projects/sakuli/]
 * headless-linux.md: Added crontab documentation.
 
-.Version 0.9.1
+.*Version 0.9.1*
 
 * fix https://github.com/ConSol/sakuli/issues/116[#116] wrong comma in gearman output
 * sakuli.bat: added SAKULI_HOME fallback if env var not set https://github.com/ConSol/sakuli/issues/124[#124]
@@ -236,7 +296,7 @@ image:installer_2.png[inst_2]
 * fix https://github.com/ConSol/sakuli/issues/95[#95] state of suite/case/step is always 'OK', if no error occurs and warning + critical time is 0
 * close https://github.com/ConSol/sakuli/issues/81[#81] Expanded color array in PHP template and change numbering scheme for cases and steps to 3-digits
 
-.Version 0.9.0
+.*Version 0.9.0*
 
 * close https://github.com/ConSol/sakuli/issues/74[#74] extract logging functions to separate javascript class Logger
 * close https://github.com/ConSol/sakuli/issues/70[#70] rename sakuli.screenbased.* properties to sikuli.*
@@ -250,7 +310,7 @@ image:installer_2.png[inst_2]
 * fix https://github.com/ConSol/sakuli/issues/11[#11] custom sahi-port handling (use different ports for sahi-proxy)
 * close https://github.com/ConSol/sakuli/issues/7[#7] update sahi-jar verison to sahi 5.0
 
-.Version 0.5.0
+.*Version 0.5.0*
 
 * rename sakuli.autoHighlight.seconds to sakuli.highlight.seconds
 * Documentation
@@ -273,7 +333,7 @@ image:installer_2.png[inst_2]
 * https://github.com/ConSol/sakuli/issues/60[#60] introduce a 'sakuli-default.properties' file to move the sakuli.properties to the test suite root
 * https://github.com/ConSol/sakuli/issues/60[#60] introduce new file system structure
 
-.Version 0.4.9 (Bugfix Release)
+.*Version 0.4.9* (Bugfix Release)
 
 * add https://github.com/ConSol/sakuli/issues/106[#106] add warn/crit thresholds as perfdata values for the Gearman results
 ** Adaption for 3-digit case/step ids
@@ -302,7 +362,7 @@ image:installer_2.png[inst_2]
 * add testcase.endOfStep function without warning time
 * add https://github.com/ConSol/sakuli/issues/81[#81] change numbering scheme for cases and steps to always three digits to expanded color array in PHP template
 
-.Version 0.4.8
+.*Version 0.4.8*
 
 * fix bug: test suite has stat 'OK' instead of 'RUNNING' during the execution
 * improve logging for more information, see http://consol.github.io/sakuli[Sakuli - Manual]
@@ -310,19 +370,19 @@ image:installer_2.png[inst_2]
 * refactor data structure, see https://github.com/ConSol/sakuli/issues/60[#60]
 * extract `sakuli.properties` to the test suits folder and introduce a `sakuli-default.properties` file.
 
-.Version 0.4.7
+.*Version 0.4.7*
 
 * add function `getLastUrl()` to the `TestCase` functions, to enable URL based test case handling.
 * uncomment some receiver properties in `sakuli.properties` to make the property overriding more generic.
 * fix bug that `new Region("image_pattern.png").click();` always clicks on the center of the screen
 * introduce experimental JAVA-DSL as new module
 
-.Version 0.4.6
+.*Version 0.4.6*
 
 * add `sleep()` method to Region
 * `keyUp(...)`, `keyDown(...)` and `write(...)` method to the Region and Environment functions to have more control over the typing.
 
-.Version 0.4.5
+.*Version 0.4.5*
 
 * add method to set an delay for the sahi-status-requests, so that no key or click events will be lost by the JavaScript engine of the Browser, see new entry in `sakuli.properties`:
 [source,properties]
@@ -339,7 +399,7 @@ image:installer_2.png[inst_2]
  #sahi.proxy.requestDelayOnSikuliInput.refreshTime
 ----
 
-.Version 0.4.1
+.*Version 0.4.1*
 
 * update release build so that the zipped-release files can be downloaded from http://labs.consol.de/sakuli/install[http://labs.consol.de/sakuli/install].
 * remove zipped-release files from git repository
@@ -351,7 +411,7 @@ image:installer_2.png[inst_2]
 * fixed some typos
 * set up jenkins build
 
-.Version 0.4.0
+.*Version 0.4.0*
 
 * centralized the configuration of properties files:
 ** `_include/sakuli.properties` now contains all possible configuration options for Sakuli. These are the _default values_ for all tests
@@ -370,7 +430,7 @@ image:installer_2.png[inst_2]
 * Bugfixing and extended unit tests.
 * Update the documentation
 
-.Version 0.4.2
+.*Version 0.4.2*
 
 * Introducing receiver concept: For each receiver the results will be sent. Currently Supported JDBC-Databases and the Gearman
  receiver.
@@ -378,4 +438,4 @@ image:installer_2.png[inst_2]
 * Gearman receiver: sent all data directly to your OMD/Nagios distribution. Currently it is missing that the screenshots
  will also be transferred. This will be fixed in the next version
 
-* Bufixing in maven build, exception handling, testcase ids and added some more unit tests
+* Bugfixing in maven build, exception handling, testcase ids and added some more unit tests

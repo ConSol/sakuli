@@ -164,7 +164,7 @@ public class Region implements Action {
     }
 
     /**
-     * makes a rigth click on the center of the {@link Region}.
+     * makes a right click on the center of the {@link Region}.
      *
      * @return the {@link Region} or NULL on errors.
      */
@@ -546,11 +546,15 @@ public class Region implements Action {
     }
 
     /**
-     * TODO TS update docu
-     * Takes a screenshot of the current Region in the screen and saves it the current testcase folder with the assigned
-     * filename. If an absolute Path is assigned like e.g. `/home/user/test.jpg`, the screenshot will be saved at that place.
+     * Takes a screenshot of this {@link Region} and saves it to the assigned path. If there ist just a file name, the
+     * screenshot will be saved in your current testcase folder.
+     * Supported formats: `jpg` and `png`
+     * Example:
+     * ```
+     *  region.takeScreenshot("test.png");
+     * ```
      *
-     * @param filename name of the screenshot file, e.g. `region_screenshot`
+     * @param filename {@code pathname/filename.format} or just {@code filename.format}.
      * @return {@link Path} to the created screenshot OR null on errors
      */
     @LogToResult
@@ -559,8 +563,7 @@ public class Region implements Action {
     }
 
     /**
-     * TODO TS update docu
-     * Takes a screenshot of the region and add the current timestamp in the file name like e.g.:
+     * Takes a screenshot of this {@link Region} and add the current timestamp in the file name like e.g.:
      * ```
      * region.takeScreenshotWithTimestamp("my-screenshot");
      * ```
@@ -568,9 +571,10 @@ public class Region implements Action {
      *
      * @param filenamePostfix postfix for the final filename
      * @param optFolderPath   optional FolderPath, where to save the screenshot.
-     *                        If null or empty: testscase folder will be used
+     *                        If null or empty: testcase folder will be used
      * @param optFormat       optional format, for the screenshot (currently supported: jpg and png)
      *                        If null or empty use property `sakuli.screenshot.format`
+     * @return {@link Path} to the created screenshot OR null on errors
      */
     @LogToResult
     public Path takeScreenshotWithTimestamp(final String filenamePostfix, final String optFolderPath, final String optFormat) {

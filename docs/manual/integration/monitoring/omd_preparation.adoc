@@ -9,6 +9,8 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 This chapter describes all necessary steps to prepare a OMD site with a *Nagios* compatible monitoring system to receive Sakuli test results with one of the forwarders <<omd-gearman,gearman>>, <<omd-sql-database,database>>, <<check_mk>> or <<icinga2-integration,icinga2-api>>. For some parts of this documentation, OMD with Thruk as web frontend will be presupposed, but any other Nagios based system will do also (the configuration steps may vary then).
 
+[[omd-docker]]
+===== OMD Docker image
 NOTE: If you want to run OMD-Labs in a container then check out the https://github.com/ConSol/omd-labs-docker[OMD-Labs on Docker project].
 
 ===== Requirements
@@ -17,7 +19,7 @@ NOTE: If you want to run OMD-Labs in a container then check out the https://gith
 * a running *OMD site*
 
 ===== Nagios configuration
-Use the Makefile located in `$OMD_ROOT/share/sakuli/` to
+Use the Makefile located in `$OMD_ROOT/share/sakuli/omd` to
 
 * install predefined Nagios/Naemon service templates
 * install the Sakuli logo
@@ -25,16 +27,7 @@ Use the Makefile located in `$OMD_ROOT/share/sakuli/` to
 
 [source]
 ----
-OMD[demo]:~/share/sakuli/setup$ make config
-cp ./omd/local/lib/nagios/plugins/sakuli_screenshot_eventhandler.sh /omd/sites/demo/local/lib/nagios/plugins/
-cp ./omd/etc/nagios/conf.d/sakuli_screenshot_eventhandler.cfg /omd/sites/demo/etc/core/conf.d/
-mkdir -p /omd/sites/demo/local/share/nagios/htdocs/images/logos/
-cp ./omd/local/share/nagios/htdocs/images/logos/sakuli.png /omd/sites/demo/local/share/nagios/htdocs/images/logos/
-cp ./omd/etc/nagios/conf.d/sakuli_nagios_templates.cfg /omd/sites/demo/etc/core/conf.d/
-[ -w /omd/sites/demo/etc/core/cgi.cfg ] && sed -i 's|\(escape_html_tags=\)1|\10|' /omd/sites/demo/etc/core/cgi.cfg || true
-sed -i 's|\(escape_html_tags=\)1|\10|' /omd/sites/demo/etc/thruk/cgi.cfg
-omd reload core || true
-Reloading naemon configuration (PID: 9114)... OK
+OMD[demo]:~/share/sakuli/setup/omd$ make config
 ----
 
 Now choose one of the <<forwarders>>.

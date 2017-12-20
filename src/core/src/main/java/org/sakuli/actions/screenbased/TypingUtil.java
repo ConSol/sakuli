@@ -43,7 +43,7 @@ public class TypingUtil<A extends Action> {
     /**
      * pastes the text at the current position of the focus/carret
      * <br>
-     * using the clipboard and strg/ctrl/cmd-v (paste keyboard shortcut)
+     * using the clipboard and ctrl/cmd-v (paste keyboard shortcut)
      *
      * @param text a string, which might contain unicode characters
      * @return this {@link A} or NULL on errors.
@@ -131,7 +131,7 @@ public class TypingUtil<A extends Action> {
 
     /**
      * Decrypt and enters the given text one character/key after another using keyDown/keyUp.
-     * The entered text will be masked at the logging. For the deatails of the decryption see {@link #decryptSecret(String)}.
+     * The entered text will be masked at the logging. For the details of the decryption see {@link #decryptSecret(String)}.
      * <p>
      * About the usable Key constants see documentation of {@link org.sikuli.script.Key}.
      * The function could also type UTF-8 unicode characters, if the OS supports it.

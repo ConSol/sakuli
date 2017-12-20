@@ -19,5 +19,5 @@ else
 	# - run the suite defined by $SAKULI_TEST_SUITE, if set
 	# or
 	# - run the example_xfce case (fallback)
-	main run ${SAKULI_TEST_SUITE:-$SAKULI_ROOT/example_test_suites/example_xfce}
+	main run ${SAKULI_TEST_SUITE:-$SAKULI_ROOT/example_test_suites/$SAKULI_EXAMPLE_TEST_SUITE}
 fi

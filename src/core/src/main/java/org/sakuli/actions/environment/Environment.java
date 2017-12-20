@@ -31,6 +31,7 @@ import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sakuli.utils.CommandLineUtil;
 import org.sakuli.utils.CommandLineUtil.CommandLineResult;
+import org.sakuli.utils.SakuliPropertyPlaceholderConfigurer;
 import org.sikuli.script.App;
 import org.sikuli.script.IRobot;
 import org.sikuli.script.Key;
@@ -39,6 +40,9 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.event.KeyEvent;
 import java.nio.file.Path;
+import java.util.Properties;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * This is a Singeton because the Function should be stateless
@@ -90,7 +94,7 @@ public class Environment implements Action {
     }
 
     /**
-     * set a new default similarity of the screen capturing methods. To reset the similarty call {@link
+     * set a new default similarity of the screen capturing methods. To reset the similarity call {@link
      * #resetSimilarity()}.
      *
      * @param similarity double value between 0 and 1, default = {@link ActionProperties#defaultRegionSimilarity}
@@ -108,7 +112,7 @@ public class Environment implements Action {
     }
 
     /**
-     * Resets the current similarty of the screen capturing methods to the original default value of
+     * Resets the current similarity of the screen capturing methods to the original default value of
      * {@link ActionProperties#defaultRegionSimilarity}.
      *
      * @return this {@link Environment} or NULL on errors.
@@ -133,12 +137,16 @@ public class Environment implements Action {
     }
 
     /**
-     * TODO TS update javascript and API docu
      * Takes a screenshot of the current screen and saves it to the assigned path. If there ist just a file name, the
      * screenshot will be saved in your current testcase folder.
      * Supported formats: `jpg` and `png`
+     * Example:
+     * ```
+     * environment.takeScreenshot("test.png");
+     * ```
      *
-     * @param filename "pathname/filename.format" or just "filename.format"<br> for example "test.png".
+     * @param filename {@code "pathname/filename.format"} or just {@code "filename.format"}.
+     * @return {@link Path} to the created screenshot OR null on errors
      */
     @LogToResult(logClassInstance = false)
     public Path takeScreenshot(final String filename) {
@@ -146,8 +154,6 @@ public class Environment implements Action {
     }
 
     /**
-     * TODO TS update javascript and API docu && test on js
-     * <p>
      * Takes a screenshot of the current screen and add the current timestamp in the file name like e.g.:
      * ```
      * env.takeScreenshotWithTimestamp("my-screenshot");
@@ -156,9 +162,10 @@ public class Environment implements Action {
      *
      * @param filenamePostfix postfix for the final filename
      * @param optFolderPath   optional FolderPath, where to save the screenshot.
-     *                        If null or empty: testscase folder will be used
+     *                        If null or empty: testcase folder will be used
      * @param optFormat       optional format, for the screenshot (currently supported: jpg and png)
      *                        If null or empty use property `sakuli.screenshot.format`
+     * @return {@link Path} to the created screenshot OR null on errors
      */
     @LogToResult(logClassInstance = false)
     public Path takeScreenshotWithTimestamp(final String filenamePostfix, final String optFolderPath, final String optFormat) {
@@ -207,7 +214,7 @@ public class Environment implements Action {
     }
 
     /**
-     * sets the String paramter to the system clipboard
+     * sets the String parameter to the system clipboard
      *
      * @param text as {@link String}
      * @return this {@link Environment}.
@@ -229,7 +236,7 @@ public class Environment implements Action {
     }
 
     /**
-     * pastes the current clipboard content into the focused area. Will do the same as "STRG + C".
+     * pastes the current clipboard content into the focused area. Will do the same as "CTRL + C".
      *
      * @return this {@link Environment}.
      */
@@ -246,7 +253,7 @@ public class Environment implements Action {
     }
 
     /**
-     * copy the current selected item or text to the clipboard. Will do the same as "STRG + V".
+     * copy the current selected item or text to the clipboard. Will do the same as "CTRL + V".
      *
      * @return this {@link Environment}.
      */
@@ -430,6 +437,28 @@ public class Environment implements Action {
         return OSUtils.identifyOS();
     }
 
+    /**
+     * Reads out the environment variable with the assigned key
+     *
+     * @return {@link String} value or null
+     */
+    @LogToResult(logClassInstance = false)
+    public String getEnv(String key) {
+        String result = System.getenv(key);
+        return isBlank(result) ? null : result;
+    }
+
+    /**
+     * Reads out the property value with the assigned key
+     *
+     * @return {@link String} value or null
+     */
+    @LogToResult(logClassInstance = false)
+    public String getProperty(String key) {
+        final Properties propsRef = BeanLoader.loadBean(SakuliPropertyPlaceholderConfigurer.class).getPropsRef();
+        String result = (propsRef != null) ? propsRef.getProperty(key) : null;
+        return isBlank(result) ? null : result;
+    }
 
     @Override
     public boolean getResumeOnException() {

@@ -20,9 +20,9 @@
 /* global navigator, window, java, Packages,saveResult,step, $output, _set, _stopOnError, _logExceptionAsFailure,_resolvePath,_include, $sahi_userdata, $guid, $capture, initialize */
 
 /**
- * Key - representing some Key constants which can be used in type functions as input text and as modifier keys.
+ * All non-character keys are represented by *Key* constants which can be used in type functions.
  *
- * The following __Key__ values are possible:
+ * The following {@link Key} values are available:
  *
  * `SPACE`, `ENTER`, `BACKSPACE`, `TAB`, `ESC`, `UP`, `RIGHT`, `DOWN`, `LEFT`, `PAGE_UP`, `PAGE_DOWN`, `DELETE`, `END`,
  * `HOME`, `INSERT`, `F1`, `F2`, `F3`, `F4`, `F5`, `F6`, `F7`, `F8`, `F9`, `F10`, `F11`, `F12`, `F13`, `F14`, `F15`,
@@ -30,14 +30,31 @@
  * `NUM1`, `NUM2`, `NUM3`, `NUM4`, `NUM5`, `NUM6`, `NUM7`, `NUM8`, `NUM9`, `SEPARATOR`, `NUM_LOCK`, `ADD`, `MINUS`,
  * `MULTIPLY`, `DIVIDE`, `DECIMAL`, `CONTEXT`
  *
+ * @example Press `F1`:
+ *
+ *      env.type(Key.F1);
+ *
+ * Close a window by typing the shortcut `ALT + F4`
+ *
+ *      // the second parameter is the held (="modifier") key
+ *      env.type(Key.F4, Key.ALT);
+ *
+ * Open the file manager on Windows with shortcut `WIN + e`:
+ *
+ *      env.type("e", Key.META)
+ *
+ * Do something application specific with shortcut `CTRL + ALT + b` (CTRL + ALT = ALTGR):
+ *
+ *      env.type("b", Key.ALTGR)
+ *
+ * Closing an window over typing the short cut `ALT + F4`:
+ *
+ *      env.type(Key.F4, Key.ALT);
+ *
  * __Using `Key.ALTGR` on Unix:__
- * To enable the key command `ALTGR` for unix systems please bind it to `CTRL + ALT`, for more information
+ * TIP: To enable the key command `ALTGR` on unix systems please bind it to `CTRL + ALT`. For more information
  * see [stackexchange.com - how-to-bind-altgr-to-ctrl-alt](http://unix.stackexchange.com/questions/157834/how-to-bind-altgr-to-ctrl-alt).
  *
- * @example Closing an window over typing the short cut `ALT + F4`:
- * ```
- * env.type(Key.F4, Key.ALT);
- * ```
  * @namespace Key
  */
 Key = {

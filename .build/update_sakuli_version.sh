@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# usage: `update_sakuli_version --old-version v0.x-SNAPSHOT --new-version v0.x`
+# usage: `update_sakuli_version --new-version v0.x`
 # the script will update the new version
 
 set -e
