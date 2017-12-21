@@ -62,5 +62,5 @@ The complete versions of our documentation you can find under:
 
 = Sakuli Short Overview Presentation
 
-[link=./docs/files/Sakuli_Short_Overview.pdf]
+[link={sakuli-doc-url}/files/Sakuli_Short_Overview.pdf]
 image::./docs/images/Sakuli_Short_Overview.png[Sakuli Short Overview Presentation]
