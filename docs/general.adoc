@@ -13,12 +13,15 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 '''
 
-*Documentation for version: `${sakuli.version}`* (also available as a *link:${pdf.path}[PDF document^]*)
+.Documentation for version: `${sakuli.version}`
 
 The documentation of all former Sakuli versions can be found on http://consol.github.io/sakuli[consol.github.io/sakuli]
 
-** *_Stable/Latest version:_* latest tagged `vX.X.X` documentation
-** *_Dev version:_* latest `vX.X.X-SNAPSHOT` version
+** *PDF:* link:${pdf.path}[sakuli_documentation_${sakuli.version}.pdf]
+** *Stable/Latest version:* http://consol.github.io/sakuli/latest[consol.github.io/sakuli/latest]
+** *Dev version:* latest `vX.X.X-SNAPSHOT` version
+
+include::./short-overview.adoc[]
 
 [[contributors]]
 == Contributors

@@ -58,3 +58,9 @@ The complete versions of our documentation you can find under:
 *{sakuli-doc-url}/#changelog[Change Log]*
 
 *{sakuli-doc-url}/#support[Support]*
+
+
+= Sakuli Short Overview Presentation
+
+[link=./docs/files/Sakuli_Short_Overview.pdf]
+image::./docs/images/Sakuli_Short_Overview.png[Sakuli Short Overview Presentation]
