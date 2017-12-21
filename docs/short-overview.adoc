@@ -1,0 +1,9 @@
+
+:imagesdir: images
+
+[[short-overview]]
+.Sakuli Short Overview Presentation
+
+last updated: 12.2017
+[caption="" ,link=files/Sakuli_Short_Overview.pdf, target="_blank"]
+image::Sakuli_Short_Overview.png[Sakuli Short Overview Presentation]
