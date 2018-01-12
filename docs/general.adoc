@@ -9,7 +9,10 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 * *Project Homepage: http://www.sakuli.org/[www.sakuli.org]*
 * *Blog Entries: https://labs.consol.de/tags/sakuli/[labs.consol.de/sakuli]*
-* *Tutorials & Examples: https://github.com/ConSol/sakuli-examples[github.com/ConSol/sakuli-examples]*
+* *image:twitter_bird_logo_.png[twitter logo] Twitter: https://twitter.com/sakuli_e2e[@sakuli_e2e]*
+* *image:github-logo-inline.png[github logo] Sourcecode: https://github.com/ConSol/sakuli[github.com/ConSol/sakuli]*
+* *image:github-logo-inline.png[github logo] Tutorials & Examples: https://github.com/ConSol/sakuli-examples[github.com/ConSol/sakuli-examples]*
+
 
 '''
 
@@ -49,3 +52,6 @@ Very special thanks to all customers which always nourish this project with new 
 * LIDL Stiftung &amp; Co. KG
 * Deutsche Pfandbriefbank AG
 * Siemens AG, Global Services Information Technology
+* Federal Ministry for Economic Affairs and Energy
+
+image:bmi_logo_eng.png[Supported by Federal Ministry for Economic Affairs and Energy]
