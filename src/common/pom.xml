@@ -41,7 +41,6 @@
                 <filtering>false</filtering>
                 <excludes>
                     <exclude>**/version.txt</exclude>
-                    <exclude>**/sakuli-default.properties</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -49,7 +48,6 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>**/version.txt</include>
-                    <include>**/sakuli-default.properties</include>
                 </includes>
             </resource>
         </resources>
