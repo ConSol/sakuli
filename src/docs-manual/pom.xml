@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -259,11 +260,61 @@
                         </executions>
                     </plugin>
 
+                    <!--add the modified files to gh-pages branch-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-scm-plugin</artifactId>
+                        <configuration>
+                            <scmVersion>gh-pages</scmVersion>
+                            <scmVersionType>branch</scmVersionType>
+                            <workingDirectory>${gh-pages.working.dir}</workingDirectory>
+                        </configuration>
+                        <executions>
+                            <!-- checkout the current documentation state -->
+                            <execution>
+                                <id>gh-pages-clone</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>checkout</goal>
+                                </goals>
+                            </execution>
+
+                            <!-- adds the modified and new files -->
+                            <execution>
+                                <id>gh-pages-scm-commit</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <!-- add will be done by exec plugin calling git_add.sh< -->
+                                    <goal>checkin</goal>
+                                </goals>
+                                <configuration>
+                                    <!--<includes>*.*</includes>-->
+                                    <!--<includes>**/*</includes>-->
+                                    <message>Add new/updated sakuli documentation for ${sakuli.version}</message>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
                     <!--create the index.adoc page for the available versions: folder `v*`-->
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
                         <executions>
+                            <execution>
+                                <id>clean-up-old-snapshots</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${project.build.scriptSourceDirectory}/remove_snapshot_docs.sh
+                                    </executable>
+                                    <arguments>
+                                        <argument>${gh-pages.working.dir}</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
                             <execution>
                                 <id>create-index.adoc page</id>
                                 <phase>pre-integration-test</phase>
@@ -314,41 +365,6 @@
                         </executions>
                     </plugin>
 
-                    <!--add the modified files to gh-pages branch-->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-scm-plugin</artifactId>
-                        <configuration>
-                            <scmVersion>gh-pages</scmVersion>
-                            <scmVersionType>branch</scmVersionType>
-                            <workingDirectory>${gh-pages.working.dir}</workingDirectory>
-                        </configuration>
-                        <executions>
-                            <!-- checkout the current documentation state -->
-                            <execution>
-                                <id>gh-pages-clone</id>
-                                <phase>prepare-package</phase>
-                                <goals>
-                                    <goal>checkout</goal>
-                                </goals>
-                            </execution>
-
-                            <!-- adds the modified and new files -->
-                            <execution>
-                                <id>gh-pages-scm-commit</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <!-- add will be done by exec plugin calling git_add.sh< -->
-                                    <goal>checkin</goal>
-                                </goals>
-                                <configuration>
-                                    <!--<includes>*.*</includes>-->
-                                    <!--<includes>**/*</includes>-->
-                                    <message>Add new/updated sakuli documentation for ${sakuli.version}</message>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
                 </plugins>
             </build>
         </profile>

@@ -8,6 +8,8 @@
 :page-path: docs/media.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
+include::short-overview.adoc[]
+
 .Monitoring Minutes
 
 Episode 9 of the *_ConSol Monitoring Minutes_* shows the main features of Sakuli in 15 minutes. The machine used in this video is an instance of our demo appliance.

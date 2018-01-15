@@ -45,9 +45,13 @@ The complete versions of our documentation you can find under:
 
 = Quick links
 
+*http://www.sakuli.org/[Project Homepage - www.sakuli.org]*
+
 *{sakuli-doc-url}/#download[Download]*
 
 *{sakuli-doc-url}/#examples[Sakuli Examples]*
+
+*https://labs.consol.de/tags/sakuli/[Blog Entries]*
 
 *{sakuli-doc-url}/#publications[Publications]*
 
@@ -58,3 +62,14 @@ The complete versions of our documentation you can find under:
 *{sakuli-doc-url}/#changelog[Change Log]*
 
 *{sakuli-doc-url}/#support[Support]*
+
+*image:./docs/images/twitter_bird_logo_.png[twitter logo] https://twitter.com/sakuli_e2e[@sakuli_e2e]*
+
+= Sakuli Short Overview Presentation
+
+[link={sakuli-doc-url}/files/Sakuli_Short_Overview.pdf]
+image::./docs/images/Sakuli_Short_Overview.png[Sakuli Short Overview Presentation]
+
+- - -
+
+image::./docs/images/bmi_logo_eng.png[Supported by Federal Ministry for Economic Affairs and Energy]
