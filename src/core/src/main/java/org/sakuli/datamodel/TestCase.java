@@ -221,7 +221,11 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
         return testActions;
     }
 
-    //reset the list of actions, since those actions have already been added to the current test step.
+    /**
+     * reset the list of actions, since those actions have already been added to the current test step.
+     *
+     * @return {@link List} of {@link TestAction}
+     */
     public List<TestAction> getAndResetTestActions() {
         List<TestAction> actionsToBeReturned = new ArrayList<>(testActions);
         testActions.clear();
