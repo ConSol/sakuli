@@ -95,6 +95,12 @@ public class ScreenshotActions {
      */
     static Path createPictureFromBufferedImage(Path pictureFile, String screenshotFormat, BufferedImage bufferedImage) throws IOException {
         Path absPath = pictureFile.normalize().toAbsolutePath();
+
+        //checked allowed format
+        if (!allowedScreenshotFormats.contains(screenshotFormat)) {
+            throw new IOException("Format '" + screenshotFormat + "' is not supported! Use " + allowedScreenshotFormats.toString());
+        }
+
         //check Folder
         if (!Files.exists(absPath.getParent())) {
             Files.createDirectory(absPath.getParent());
@@ -102,19 +108,14 @@ public class ScreenshotActions {
 
         if (Files.exists(absPath)) {
             LOGGER.info("overwrite screenshot '{}'", absPath);
-            Files.delete(absPath);
+        } else {
+            absPath = Files.createFile(absPath);
         }
-
-        Files.createFile(pictureFile);
-        OutputStream outputStream = Files.newOutputStream(pictureFile);
-
-        if (!allowedScreenshotFormats.contains(screenshotFormat)) {
-            throw new IOException("Format '" + screenshotFormat + "' is not supported! Use " + allowedScreenshotFormats.toString());
-        }
+        OutputStream outputStream = Files.newOutputStream(absPath);
         //write image
         ImageIO.write(bufferedImage, screenshotFormat, outputStream);
-        LOGGER.info("screen shot saved to file \"" + pictureFile.toFile().getAbsolutePath() + "\"");
-        return pictureFile;
+        LOGGER.info("screen shot saved to file \"" + absPath + "\"");
+        return absPath;
     }
 
     private static String replaceSpecialCharacters(String string) {
