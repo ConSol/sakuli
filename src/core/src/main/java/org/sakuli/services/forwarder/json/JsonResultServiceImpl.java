@@ -42,6 +42,7 @@ import java.util.Date;
 public class JsonResultServiceImpl extends AbstractResultService {
 
     private static final Logger logger = LoggerFactory.getLogger(JsonResultServiceImpl.class);
+    public static final SimpleDateFormat JSON_FILE_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd-HH-mm-ss-SSS");
 
     @Autowired
     private GsonOutputBuilder outputBuilder;
@@ -73,7 +74,7 @@ public class JsonResultServiceImpl extends AbstractResultService {
         String fileName = new StringBuilder()
                 .append(testSuite.getId())
                 .append("_")
-                .append(new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss.SSS").format(new Date()))
+                .append(JSON_FILE_DATE_FORMAT.format(new Date()))
                 .append(".json")
                 .toString();
         return Paths.get(outputDirAsString + File.separator + fileName);

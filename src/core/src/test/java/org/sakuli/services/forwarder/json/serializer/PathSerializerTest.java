@@ -36,14 +36,16 @@ public class PathSerializerTest {
     @DataProvider
     public Object[][] serializeDP() {
         return new Object[][]{
-                {null, "\"\""},
-                {Paths.get("testPath"), "\"" + Paths.get("testPath").toAbsolutePath().normalize().toString() + "\""},
+                {null, ""},
+                {Paths.get("testPath"), Paths.get("testPath").toAbsolutePath().normalize().toString()},
+                {Paths.get("testPath/sub"), Paths.get("testPath").resolve("sub").toAbsolutePath().normalize().toString()},
+                {Paths.get("testPath\\sub"), Paths.get("testPath").resolve("sub").toAbsolutePath().normalize().toString()},
         };
     }
 
     @Test(dataProvider = "serializeDP")
     public void serialize(Path path, String expectedPathAsJson) {
-        assertEquals(testling.serialize(path, Path.class, null).toString(), expectedPathAsJson);
+        assertEquals(testling.serialize(path, Path.class, null).getAsString(), expectedPathAsJson);
     }
 
 }

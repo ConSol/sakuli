@@ -16,3 +16,4 @@ key3.db
 .gearman-cache
 .sakuli-steps-cache
 Dockerfile.local
+**/test-output/
