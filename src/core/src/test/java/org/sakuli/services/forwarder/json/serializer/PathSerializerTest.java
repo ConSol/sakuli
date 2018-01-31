@@ -21,6 +21,7 @@ package org.sakuli.services.forwarder.json.serializer;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -39,7 +40,7 @@ public class PathSerializerTest {
                 {null, ""},
                 {Paths.get("testPath"), Paths.get("testPath").toAbsolutePath().normalize().toString()},
                 {Paths.get("testPath/sub"), Paths.get("testPath").resolve("sub").toAbsolutePath().normalize().toString()},
-                {Paths.get("testPath\\sub"), Paths.get("testPath").resolve("sub").toAbsolutePath().normalize().toString()},
+                {Paths.get("testPath" + File.separator + "sub"), Paths.get("testPath").resolve("sub").toAbsolutePath().normalize().toString()},
         };
     }
 
