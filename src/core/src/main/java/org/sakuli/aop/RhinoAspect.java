@@ -239,7 +239,7 @@ public class RhinoAspect extends BaseSakuliAspect {
             else if (logResult.getDebugInfo() == null
                     || !logResult.getDebugInfo().startsWith("org.sakuli.actions.")) {
                 logger.info(logResult.getMessage());
-                addActionsToCurrentTestCase(TestAction.createSahiTestAction(logResult.getMessage(), BeanLoader.loadBaseActionLoader().getSakuliProperties().getSahiDocUrl()));
+                addActionsToCurrentTestCase(TestAction.createSahiTestAction(logResult.getMessage(), BeanLoader.loadBaseActionLoader().getSakuliProperties().getSahiDocBaseUrl()));
             }
         }
 

@@ -18,11 +18,15 @@
 
 package org.sakuli.datamodel;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.apache.commons.lang3.StringUtils.removeEnd;
+import static org.apache.commons.lang3.StringUtils.substringBetween;
 
 /**
  * Created by georgi on 21/09/17.
@@ -37,7 +41,7 @@ public class TestAction {
     private TestAction(String object, String method, List<String> args, String message, String documentationURL) {
         this.object = object;
         this.method = method;
-        this.args = args;
+        this.args = args == null ? Collections.EMPTY_LIST : args;
         this.message = message;
         this.documentationURL = documentationURL;
     }
@@ -55,7 +59,7 @@ public class TestAction {
     }
 
     public static TestAction createSahiTestAction(String method, String documentationURL) {
-        return new TestAction(method, method, null, null, documentationURL);
+        return new TestAction(null, removeEnd(method, ";"), null, "Sahi Action", documentationURL + "_" + substringBetween(method, "_", "("));
     }
 
     private static String createDocumentationURL(String baseUrl, String clazz, String method) {

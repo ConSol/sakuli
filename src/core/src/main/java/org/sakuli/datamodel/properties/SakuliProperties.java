@@ -48,7 +48,7 @@ public class SakuliProperties extends AbstractProperties {
     public static final String LOG_LEVEL_SPRING = "log.level.spring";
     public static final String LOG_LEVEL_ROOT = "log.level.root";
     public static final String FORWARDER_TEMPLATE_FOLDER = "sakuli.forwarder.template.folder";
-    public static final String SAHI_DOC_URL = "sahi.doc.url";
+    public static final String SAHI_DOC_BASE_URL = "sahi.doc.base.url";
     public static final String SAKULI_DOC_BASE_URL = "sakuli.doc.base.url";
     public static final String CONFIG_FOLDER_APPEDER = File.separator + "config";
     public static final String LIBS_FOLDER_APPEDER = File.separator + "libs";
@@ -86,8 +86,8 @@ public class SakuliProperties extends AbstractProperties {
     private String logLevelRoot;
     @Value("${" + FORWARDER_TEMPLATE_FOLDER + ":}")
     private String forwarderTemplateFolder;
-    @Value("${" + SAHI_DOC_URL + "}")
-    private String sahiDocumentationUrl;
+    @Value("${" + SAHI_DOC_BASE_URL + "}")
+    private String sahiDocumentationBaseUrl;
     @Value("${" + SAKULI_DOC_BASE_URL + "}")
     private String sakuliDocumentationBaseUrl;
 
@@ -248,8 +248,8 @@ public class SakuliProperties extends AbstractProperties {
         return forwarderTemplateFolder;
     }
 
-    public String getSahiDocUrl() {
-        return sahiDocumentationUrl;
+    public String getSahiDocBaseUrl() {
+        return sahiDocumentationBaseUrl;
     }
 
     public String getSakuliDocBaseUrl() {

@@ -35,7 +35,7 @@ import static org.testng.Assert.assertNotNull;
 
 /**
  * @author tschneck
- *         Date: 19.07.13
+ * Date: 19.07.13
  */
 public class TestCaseTest {
     private TestCase testling;
@@ -127,4 +127,14 @@ public class TestCaseTest {
         assertEquals(testling.getTestActions().size(), 0);
     }
 
+    @Test
+    public void testCreateSahiTestAction() throws Exception {
+        String url = "http://sahipro.com/docs/all-topics.html?q=";
+        final TestAction ta = TestAction.createSahiTestAction("_highlight(_link(\"Sample Application\"));", url);
+        assertEquals(ta.getArgs().size(), 0);
+        assertEquals(ta.getMessage(), "Sahi Action");
+        assertEquals(ta.getMethod(), "_highlight(_link(\"Sample Application\"))");
+        assertEquals(ta.getObject(), null);
+        assertEquals(ta.getDocumentationURL(), url + "_highlight");
+    }
 }
