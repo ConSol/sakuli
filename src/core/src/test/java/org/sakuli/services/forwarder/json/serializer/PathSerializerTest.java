@@ -32,15 +32,15 @@ import static org.testng.Assert.assertEquals;
  */
 public class PathSerializerTest {
 
-    PathSerializer testling = new PathSerializer();
+    PathSerializer testling = new PathSerializer(Paths.get(".").resolve("baseFolder"));
 
     @DataProvider
     public Object[][] serializeDP() {
         return new Object[][]{
                 {null, ""},
-                {Paths.get("testPath"), Paths.get("testPath").toAbsolutePath().normalize().toString()},
-                {Paths.get("testPath/sub"), Paths.get("testPath").resolve("sub").toAbsolutePath().normalize().toString()},
-                {Paths.get("testPath" + File.separator + "sub"), Paths.get("testPath").resolve("sub").toAbsolutePath().normalize().toString()},
+                {Paths.get("./testPath"), ".." + File.separator + "testPath"},
+                {Paths.get("./testPath/sub"), ".." + File.separator + "testPath" + File.separator + "sub"},
+                {Paths.get("." + File.separator + "testPath" + File.separator + "sub"), ".." + File.separator + "testPath" + File.separator + "sub"},
         };
     }
 

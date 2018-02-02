@@ -21,6 +21,9 @@ package org.sakuli.services.forwarder.json;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * Created by georgi on 27/09/17.
  */
@@ -32,8 +35,8 @@ public class JsonProperties {
     @Value("${" + OUTPUT_DIR + "}")
     private String outputJsonDir;
 
-    public String getOutputJsonDir() {
-        return outputJsonDir;
+    public Path getOutputJsonDir() {
+        return Paths.get(outputJsonDir);
     }
 
 }

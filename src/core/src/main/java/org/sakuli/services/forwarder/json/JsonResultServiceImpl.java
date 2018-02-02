@@ -25,11 +25,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -69,25 +67,22 @@ public class JsonResultServiceImpl extends AbstractResultService {
     }
 
     protected Path createJsonFilePath() throws SakuliForwarderException {
-        String outputDirAsString = jsonProperties.getOutputJsonDir();
-        createDirectoryIfNotExists(outputDirAsString);
-        String fileName = new StringBuilder()
-                .append(testSuite.getId())
-                .append("_")
-                .append(JSON_FILE_DATE_FORMAT.format(new Date()))
-                .append(".json")
-                .toString();
-        return Paths.get(outputDirAsString + File.separator + fileName);
+        Path outputDir = jsonProperties.getOutputJsonDir();
+        createDirectoryIfNotExists(outputDir);
+        String fileName = testSuite.getId() +
+                "_" +
+                JSON_FILE_DATE_FORMAT.format(new Date()) +
+                ".json";
+        return outputDir.resolve(fileName);
     }
 
-    protected void createDirectoryIfNotExists(String outputDirAsString) throws SakuliForwarderException {
-        Path outputDir = Paths.get(outputDirAsString);
+    protected void createDirectoryIfNotExists(Path outputDir) throws SakuliForwarderException {
         if (!Files.exists(outputDir)) {
             try {
                 Files.createDirectories(outputDir);
             } catch (IOException e) {
                 throw new SakuliForwarderException(e,
-                        String.format("Unexpected error during creating the json output directory '%s'", outputDirAsString));
+                        String.format("Unexpected error during creating the json output directory '%s'", outputDir.toString()));
             }
         }
     }

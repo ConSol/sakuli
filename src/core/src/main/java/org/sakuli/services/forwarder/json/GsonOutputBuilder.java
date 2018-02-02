@@ -27,6 +27,7 @@ import org.sakuli.services.forwarder.json.serializer.DateSerializer;
 import org.sakuli.services.forwarder.json.serializer.DateTimeSerializer;
 import org.sakuli.services.forwarder.json.serializer.PathSerializer;
 import org.sakuli.services.forwarder.json.serializer.ThrowableSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.nio.file.Path;
@@ -39,6 +40,9 @@ import java.util.Date;
 @Component
 public class GsonOutputBuilder extends AbstractOutputBuilder {
 
+    @Autowired
+    private JsonProperties jsonProperties;
+
     /**
      * Converts the current test suite object to a json string.
      *
@@ -50,7 +54,7 @@ public class GsonOutputBuilder extends AbstractOutputBuilder {
                     .setExclusionStrategies(new GsonExclusionStrategy())
                     .registerTypeAdapter(Date.class, new DateSerializer())
                     .registerTypeAdapter(DateTime.class, new DateTimeSerializer())
-                    .registerTypeAdapter(Path.class, new PathSerializer())
+                    .registerTypeAdapter(Path.class, new PathSerializer(jsonProperties.getOutputJsonDir()))
                     .registerTypeHierarchyAdapter(Throwable.class, new ThrowableSerializer())
                     .serializeNulls()
                     .create();

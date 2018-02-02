@@ -23,6 +23,8 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.nio.file.Path;
@@ -31,8 +33,22 @@ import java.nio.file.Path;
  * Created by georgi on 27/09/17.
  */
 public final class PathSerializer implements JsonSerializer<Path> {
+    private final static Logger LOGGER = LoggerFactory.getLogger(PathSerializer.class);
+    private final Path basePath;
+
+    public PathSerializer(Path basePath) {
+        this.basePath = basePath.toAbsolutePath().normalize();
+        LOGGER.debug("PathSerializer base path: {}", this.basePath);
+    }
+
     @Override
     public JsonElement serialize(final Path src, final Type typeOfSrc, final JsonSerializationContext context) {
-        return new JsonPrimitive(src == null ? StringUtils.EMPTY : src.toAbsolutePath().normalize().toString());
+        if (src == null) {
+            return new JsonPrimitive(StringUtils.EMPTY);
+        }
+        final Path normalized = src.toAbsolutePath().normalize();
+        Path relativePath = basePath.relativize(normalized);
+        LOGGER.debug("Relativized Path: '{}' => '{}'", normalized, relativePath);
+        return new JsonPrimitive(relativePath.toString());
     }
 }
