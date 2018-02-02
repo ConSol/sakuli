@@ -19,9 +19,11 @@
 package org.sakuli.datamodel;
 
 import org.apache.commons.lang.StringUtils;
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.SakuliException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * test case step based Exceptions and critical times will be currently not supported in {@link
@@ -30,6 +32,8 @@ import org.sakuli.exceptions.SakuliException;
  * @author tschneck Date: 18.06.13
  */
 public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCaseStepState> {
+
+    private List<TestAction> testActions = new ArrayList<>();
 
     /**
      * {@inheritDoc}
@@ -85,4 +89,13 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
     public void setId(String id) {
         this.setName(id);
     }
+
+    public void addActions(List<TestAction> testActions) {
+        this.testActions.addAll(testActions);
+    }
+
+    public List<TestAction> getTestActions() {
+        return testActions;
+    }
+
 }

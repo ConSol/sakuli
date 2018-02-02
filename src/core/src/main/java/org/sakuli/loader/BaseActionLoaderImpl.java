@@ -202,8 +202,8 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
 
     @Override
     public TestCaseStep getCurrentTestCaseStep() {
-        if (currentTestCase != null) {
-            SortedSet<TestCaseStep> steps = currentTestCase.getStepsAsSortedSet();
+        if (getCurrentTestCase() != null) {
+            SortedSet<TestCaseStep> steps = getCurrentTestCase().getStepsAsSortedSet();
             if (!steps.isEmpty()) {
                 for (TestCaseStep step : steps) {
                     step.refreshState();

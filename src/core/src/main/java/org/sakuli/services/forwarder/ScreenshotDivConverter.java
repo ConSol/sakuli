@@ -26,6 +26,7 @@ import org.sakuli.services.forwarder.checkmk.ProfileCheckMK;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
 import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
 import org.sakuli.services.forwarder.icinga2.ProfileIcinga2;
+import org.sakuli.services.forwarder.json.ProfileJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Encoder;
@@ -41,6 +42,7 @@ import java.util.Arrays;
 @ProfileGearman
 @ProfileIcinga2
 @ProfileCheckMK
+@ProfileJson
 @Component
 public class ScreenshotDivConverter {
 

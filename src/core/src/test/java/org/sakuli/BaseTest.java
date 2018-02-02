@@ -21,6 +21,7 @@ package org.sakuli;
 import net.sf.sahi.report.Report;
 import org.apache.commons.lang3.StringUtils;
 import org.mockito.internal.util.MockUtil;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.BaseActionLoaderImpl;
 import org.sakuli.loader.BeanLoader;
@@ -87,6 +88,7 @@ public abstract class BaseTest extends AbstractLogAwareTest {
         if (new MockUtil().isMock(loaderMock)) {
             reset(loaderMock);
             when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
+            when(loaderMock.getSakuliProperties()).thenReturn(mock(SakuliProperties.class));
         }
     }
 

@@ -27,11 +27,15 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 /**
  * @author tschneck
- *         Date: 19.07.13
+ * Date: 19.07.13
  */
 public class TestCaseTest {
     private TestCase testling;
@@ -52,12 +56,12 @@ public class TestCaseTest {
     @Test
     public void testRefreshState() throws Exception {
         testling.refreshState();
-        Assert.assertEquals(TestCaseState.OK, testling.getState());
+        assertEquals(testling.getState(), TestCaseState.OK);
 
         stepTestling.setState(TestCaseStepState.OK);
         testling.addStep(stepTestling);
         testling.refreshState();
-        Assert.assertEquals(TestCaseState.OK, testling.getState());
+        assertEquals(testling.getState(), TestCaseState.OK);
 
         Date currentDate = new Date();
         testling.setStartDate(new Date(currentDate.getTime() - TimeUnit.SECONDS.toMillis(5)));
@@ -65,40 +69,40 @@ public class TestCaseTest {
         testling.setWarningTime(6);
         testling.setCriticalTime(6);
         testling.refreshState();
-        Assert.assertEquals(TestCaseState.OK, testling.getState());
+        assertEquals(testling.getState(), TestCaseState.OK);
 
         stepTestling.setState(TestCaseStepState.WARNING);
         stepTestling.setStartDate(currentDate);
         stepTestling.setStopDate(DateUtils.addSeconds(currentDate, 5));
         stepTestling.setWarningTime(4);
         testling.refreshState();
-        Assert.assertEquals(TestCaseState.WARNING_IN_STEP, testling.getState());
+        assertEquals(testling.getState(), TestCaseState.WARNING_IN_STEP);
 
         testling.setWarningTime(4);
         testling.refreshState();
-        Assert.assertEquals(TestCaseState.WARNING, testling.getState());
+        assertEquals(testling.getState(), TestCaseState.WARNING);
 
         testling.setCriticalTime(4);
         testling.refreshState();
-        Assert.assertEquals(TestCaseState.CRITICAL, testling.getState());
+        assertEquals(testling.getState(), TestCaseState.CRITICAL);
 
         testling.setCriticalTime(5);
         testling.setCriticalTime(5);
         testling.refreshState();
         //should be still critical, because only higher values will be set
-        Assert.assertEquals(TestCaseState.CRITICAL, testling.getState());
+        assertEquals(testling.getState(), TestCaseState.CRITICAL);
 
     }
 
     @Test
     public void testRefreshStateWithZeroWarningTime() throws Exception {
         testling.refreshState();
-        Assert.assertEquals(TestCaseState.OK, testling.getState());
+        assertEquals(testling.getState(), TestCaseState.OK);
 
         stepTestling.setState(TestCaseStepState.OK);
         testling.addStep(stepTestling);
         testling.refreshState();
-        Assert.assertEquals(TestCaseState.OK, testling.getState());
+        assertEquals(testling.getState(), TestCaseState.OK);
 
         Date currentDate = new Date();
         testling.setStartDate(new Date(currentDate.getTime() - TimeUnit.SECONDS.toMillis(5)));
@@ -106,6 +110,31 @@ public class TestCaseTest {
         testling.setWarningTime(0);
         testling.setCriticalTime(0);
         testling.refreshState();
-        Assert.assertEquals(TestCaseState.OK, testling.getState());
+        assertEquals(testling.getState(), TestCaseState.OK);
+    }
+
+
+    @Test
+    public void testGetAndResetTestActions() throws Exception {
+        testling.addAction(TestAction.createSakuliTestAction("TestCaseAction", "getIdFromPath", null, "convert the path of the test case file to a valid test case ID", "docu"));
+        testling.addAction(TestAction.createSahiTestAction("_highlight(_link(\\\"SSL Manager\\\"));", "docu"));
+        List<TestAction> testActions = testling.getTestActions();
+        assertNotNull(testActions);
+        assertEquals(testActions.size(), 2);
+        testActions = testling.getAndResetTestActions();
+        assertNotNull(testActions);
+        assertEquals(testActions.size(), 2);
+        assertEquals(testling.getTestActions().size(), 0);
+    }
+
+    @Test
+    public void testCreateSahiTestAction() throws Exception {
+        String url = "http://sahipro.com/docs/all-topics.html?q=";
+        final TestAction ta = TestAction.createSahiTestAction("_highlight(_link(\"Sample Application\"));", url);
+        assertEquals(ta.getArgs().size(), 0);
+        assertEquals(ta.getMessage(), "Sahi Action");
+        assertEquals(ta.getMethod(), "_highlight(_link(\"Sample Application\"))");
+        assertEquals(ta.getObject(), null);
+        assertEquals(ta.getDocumentationURL(), url + "_highlight");
     }
 }

@@ -67,6 +67,7 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String SAHI_JS_INJECT_TARGET_FILE_APPENDER = SAHI_JS_INJECT_TARGET_FOLDER_APPENDER + File.separator + SAHI_JS_INJECT_CODE_FILENAME;
 
     public static final String SAHI_LOG_DIR = "logs.dir";
+    public static final String SAHI_FF_MAX_PROFILES = "ff.profiles.max_number";
     public static final String HTTP_PROXY_ENABLED = "ext.http.proxy.enable";
     public static final String HTTP_PROXY_HOST = "ext.http.proxy.host";
     public static final String HTTP_PROXY_PORT = "ext.http.proxy.port";
@@ -83,7 +84,7 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String SSL_CLIENT_KEYSTORE = "ssl.client.keystore.type";
     public static final String SSL_CLIENT_CERT_PATH = "ssl.client.cert.path";
     public static final String SSL_CLIENT_CERT_PASSWORD = "ssl.client.cert.password";
-    public static final List<String> userdataPropertyNames = Arrays.asList(SAHI_LOG_DIR,
+    public static final List<String> userdataPropertyNames = Arrays.asList(SAHI_LOG_DIR, SAHI_FF_MAX_PROFILES,
             HTTP_PROXY_ENABLED, HTTP_PROXY_HOST, HTTP_PROXY_PORT, HTTP_PROXY_AUTH_ENABLED,
             HTTP_PROXY_AUTH_NAME, HTTP_PROXY_AUTH_PASSWORD,
             HTTPS_PROXY_ENABLED, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT, HTTPS_PROXY_AUTH_ENABLED,

@@ -40,7 +40,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
 
     public final static DateFormat GUID_DATE_FORMATE = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_SS");
     public final static DateFormat PRINT_DATE_FORMATE = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected transient final Logger logger = LoggerFactory.getLogger(this.getClass());
     protected Date startDate;
     protected Date stopDate;
     protected E exception;
