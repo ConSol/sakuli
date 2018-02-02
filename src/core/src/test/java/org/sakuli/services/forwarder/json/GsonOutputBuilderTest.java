@@ -40,12 +40,16 @@ import static org.testng.Assert.assertNotNull;
 public class GsonOutputBuilderTest {
     private GsonOutputBuilder testling;
     private TestSuite testSuite;
+    private JsonProperties jsonProperties;
 
     @BeforeMethod
     public void setUp() throws Exception {
         testling = new GsonOutputBuilder();
         testSuite = new TestSuiteExampleBuilder().buildExample();
+        jsonProperties = new JsonProperties();
+        jsonProperties.setOutputJsonDir(".");
         ReflectionTestUtils.setField(testling, "testSuite", testSuite);
+        ReflectionTestUtils.setField(testling, "jsonProperties", jsonProperties);
     }
 
     @Test

@@ -39,4 +39,7 @@ public class JsonProperties {
         return Paths.get(outputJsonDir);
     }
 
+    public void setOutputJsonDir(String outputJsonDir) {
+        this.outputJsonDir = outputJsonDir;
+    }
 }
