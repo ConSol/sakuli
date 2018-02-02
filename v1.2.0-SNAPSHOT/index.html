@@ -608,7 +608,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">The Sakuli Team</span><br>
 <span id="email" class="email"><a href="mailto:sakuli@consol.de">sakuli@consol.de</a></span><br>
 <span id="revnumber">version v1.2.0-SNAPSHOT,</span>
-<span id="revdate">30.01.2018 @ 17:09:28 CET</span>
+<span id="revdate">02.02.2018 @ 19:06:39 CET</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Sakuli E2E</div>
@@ -853,6 +853,13 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#sql-database-enable-forwarder">Enable database forwarder</a></li>
 <li><a href="#_integration_in_other_tools">Integration in other tools</a></li>
 <li><a href="#sql-database-optional-cleanup">Database cleanup (optional)</a></li>
+</ul>
+</li>
+<li><a href="#json-forwarder">1.4.4. JSON Forwarder</a>
+<ul class="sectlevel5">
+<li><a href="#json-forwarder-configuraiton">Configuration of JSON forwarder</a></li>
+<li><a href="#json-forwarder-output">Output of JSON forwarder</a></li>
+<li><a href="#json-forwarder-usage">Usage of JSON forwarder output</a></li>
 </ul>
 </li>
 </ul>
@@ -1259,6 +1266,12 @@ table.CodeRay td.code>pre{padding:0}
 - Command line output</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">- <a href="#continuous_integration">Continuous Integration</a> server<br>
 - Locale test runs</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#json-forwarder">json</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- Output files in JSON format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- Sakuli GUI<br>
+- Interface to 3rd party systems</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#sql-database">database</a></p></td>
@@ -6759,6 +6772,16 @@ sakuli.forwarder.check_mk.spoolfile_prefix=sakuli_suite_
 # optional service description forwarded to the output check result, when not set, testsuite.id is used
 sakuli.forwarder.check_mk.service_description=${testsuite.id}
 
+
+##### JSON - FORWARDER
+# Save results into a json file. The JSON forwarder is enabled per default.
+
+# DEFAULT: true
+sakuli.forwarder.json.enabled=true
+## folder where to save the json file on the test execution host
+sakuli.forwarder.json.dir=${sakuli.log.folder}/_json
+
+
 ###############################
 # LOGGING &amp; ERROR-SCREENSHOT PROPERTIES
 # Common logging settings for Sakuli.
@@ -6820,7 +6843,9 @@ sakuli.screenshot.dir=${sakuli.log.folder}/_screenshots
 
 # screenshot file format (Possible values: jpg, png)
 sakuli.screenshot.format=png
-
+### URLs for documentation links
+sahi.doc.base.url=http://sahipro.com/docs/all-topics.html?q=
+sakuli.doc.base.url=http://consol.github.io/sakuli/latest/index.html#
 
 #######################################################################################
 # SAHI-SCRIPT-RUNNER-PROPERTIES
@@ -6840,6 +6865,8 @@ sahi.proxy.configurationPath=${sahi.proxy.homePath}/userdata
 sahi.proxy.maxConnectTries=25
 # wait time in seconds between retry attempts
 sahi.proxy.reconnectSeconds=1
+# amount of firefox profiles
+ff.profiles.max_number=1
 
 
 # Sahi delays on Sikuli input (put on helmet!)
@@ -6881,9 +6908,7 @@ ext.https.proxy.auth.name=user
 ext.https.proxy.auth.password=password
 # There is only one bypass list for both secure and insecure.
 ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.verisign.com
-
-
-### SSL-Certficate settings (experimental)
+### SSL-Certificate settings (experimental)
 # Uncomment the following lines to use a client certificate.
 # If there is no password, do not uncomment the password line.
 # keystore type can be JKS, PKCS12 etc.
@@ -6892,9 +6917,8 @@ ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.ve
 #ssl.client.keystore.type=JKS
 #ssl.client.cert.path=${sakuli.testsuite.folder}/sakuli_keystore
 #ssl.client.cert.password=sakuli
-
-#
-# log folder for sahi hmtl report
+### more logging options for Sahi:
+# log folder for sahi HTML report
 logs.dir=${sakuli.log.folder}
 # handlers to create in the root logger
 # (all loggers are children of the root logger)
@@ -8129,6 +8153,12 @@ This setting is not needed if Sikuli does keyboard actions on <strong>GUIs not c
 - Command line output</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">- <a href="#continuous_integration">Continuous Integration</a> server<br>
 - Locale test runs</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#json-forwarder">json</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- Output files in JSON format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- Sakuli GUI<br>
+- Interface to 3rd party systems</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#sql-database">database</a></p></td>
@@ -9761,6 +9791,52 @@ sakuli.forwarder.database.password=__DB_PW__</code></pre>
 </div>
 <div class="paragraph">
 <p>After that, the crontab should be active.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="json-forwarder"><a class="anchor" href="#json-forwarder"></a>1.4.4. JSON Forwarder</h4>
+<div id="git-edit-section" class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/json-forwarder.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/json-forwarder.adoc" target="_blank">edit</a></p>
+</div>
+<div class="paragraph">
+<p>This page describes how the test suite results of Sakuli can be serialized to a JSON file, which can be read by other 3rd party systems.</p>
+</div>
+<div class="sect5">
+<h6 id="json-forwarder-configuraiton"><a class="anchor" href="#json-forwarder-configuraiton"></a>Configuration of JSON forwarder</h6>
+<div class="paragraph">
+<p>The JSON forwarder provides two properties to customise its behaviour. Using those properties it is possible to enable resp. disable the forwarder and to change the folder, to which the json output is written. The JSON forwarder is enabled by default. Both properties can be edited in <code>testsuite.properties</code> in the folder containing the test suite. To read more about, how to overloading of properties work, see <a href="#property loading mechanism">properties</a>.  (you can copy the lines from <a href="#sakuli-default-properties">Property Reference</a>):</p>
+</div>
+<div class="listingblock">
+<div class="title"><code>testsuite.properties</code></div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties"># DEFAULT: true
+sakuli.forwarder.json.enabled
+
+#DEFAULT: ${sakuli.log.folder}/_json
+sakuli.forwarder.json.dir</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="json-forwarder-output"><a class="anchor" href="#json-forwarder-output"></a>Output of JSON forwarder</h6>
+<div class="paragraph">
+<p>After executing the example test suite, the json output can be found under <code>_logs/_json</code> folder of the test suite. The name of the output file is based on the following pattern:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>`&lt;test_suite_id&gt;_&lt;timestamp&gt;.json`</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For every test suite run, a new json output is generated as soon as the forwarder is enabled.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="json-forwarder-usage"><a class="anchor" href="#json-forwarder-usage"></a>Usage of JSON forwarder output</h6>
+<div class="paragraph">
+<p>Currently the output, generated by the JSON forwarder, is used as an input for the <a href="https://github.com/ConSol/sakuli-ui">Sakuli UI</a>. The Sakuli UI is displaying the result of the test suite executed by Sakuli. It is possible to navigate through all the test cases, test steps and test actions for a certain test suite.
+Furthermore the JSON output can be used as an input for third party systems, e.g. some monitoring system.</p>
 </div>
 </div>
 </div>
@@ -12101,7 +12177,7 @@ Website: <a href="http://www.consol.de">www.consol.de</a></p>
 <div id="footer">
 <div id="footer-text">
 Version v1.2.0-SNAPSHOT<br>
-Last updated 2018-01-30 17:09:28 CET
+Last updated 2018-02-02 19:06:41 CET
 </div>
 </div>
 <!--
