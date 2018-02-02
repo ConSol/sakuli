@@ -51,6 +51,7 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String RECONNECT_SECONDS = "sahi.proxy.reconnectSeconds";
     public static final String REQUEST_DELAY_MS = "sahi.proxy.onSikuliInput.delayPerKey";
     public static final String REQUEST_DELAY_REFRESH_MS = "sahi.proxy.onSikuliInput.delayBeforeInput";
+    public static final String REMOVE_AUTHORIZATION_HEADER = "sahi.proxy.removeAuthorizationHeader.enabled";
     public static final String DEFAULT_PROXY_PORT = "9999";
     public static final String DEFAULT_RECONNECT_SECONDS = "1";
     public static final String DEFAULT_MAX_CONNECT_TRIES = "25";
@@ -124,6 +125,11 @@ public class SahiProxyProperties extends AbstractProperties {
     private Integer requestDelayMs;
     @Value("${" + REQUEST_DELAY_REFRESH_MS + ":500}")
     private Integer requestDelayRefreshMs;
+    /**
+     * Default behaviour of Sahi OS
+     */
+    @Value("${" + REMOVE_AUTHORIZATION_HEADER + ":true}")
+    private Boolean removeAuthorizationHeader;
     @Autowired
     private SakuliProperties sakuliProperties;
     @Autowired
@@ -255,5 +261,13 @@ public class SahiProxyProperties extends AbstractProperties {
 
     public void setRequestDelayRefreshMs(Integer requestDelayRefreshMs) {
         this.requestDelayRefreshMs = requestDelayRefreshMs;
+    }
+
+    public Boolean getRemoveAuthorizationHeader() {
+        return removeAuthorizationHeader;
+    }
+
+    public void setRemoveAuthorizationHeader(Boolean removeAuthorizationHeader) {
+        this.removeAuthorizationHeader = removeAuthorizationHeader;
     }
 }
