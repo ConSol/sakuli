@@ -608,7 +608,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">The Sakuli Team</span><br>
 <span id="email" class="email"><a href="mailto:sakuli@consol.de">sakuli@consol.de</a></span><br>
 <span id="revnumber">version v1.2.0-SNAPSHOT,</span>
-<span id="revdate">02.02.2018 @ 19:06:39 CET</span>
+<span id="revdate">06.02.2018 @ 20:32:26 CET</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Sakuli E2E</div>
@@ -752,10 +752,15 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#sahi-browser-configuration">Browser configuration</a></li>
 <li><a href="#sahi_behind_a_proxy">Sahi behind a proxy</a></li>
 <li><a href="#sahi-https">HTTPS support in Sahi</a></li>
-<li><a href="#sahi-webpack-dev-server">Sahi and webpack-dev-server</a></li>
 </ul>
 </li>
-<li><a href="#_sikuli_settings">1.3.2.10. Sikuli settings</a>
+<li><a href="#_sahi_known_issues">1.3.2.10. Sahi known issues</a>
+<ul class="sectlevel5">
+<li><a href="#sahi-webpack-dev-server">Sahi and webpack-dev-server</a></li>
+<li><a href="#sahi-authorization-headers">Sahi removes authorization headers</a></li>
+</ul>
+</li>
+<li><a href="#_sikuli_settings">1.3.2.11. Sikuli settings</a>
 <ul class="sectlevel5">
 <li><a href="#_highlighting_regions">Highlighting Regions</a></li>
 </ul>
@@ -6867,8 +6872,8 @@ sahi.proxy.maxConnectTries=25
 sahi.proxy.reconnectSeconds=1
 # amount of firefox profiles
 ff.profiles.max_number=1
-
-
+#### Sahi customisations done by Sakuli only
+#
 # Sahi delays on Sikuli input (put on helmet!)
 #
 # Sikuli keyboard events (type/paste) on a Sahi-controlled browser instance can get lost if
@@ -6889,6 +6894,12 @@ ff.profiles.max_number=1
 # (gets only enabled if delayPerKey is set)
 sahi.proxy.onSikuliInput.delayBeforeInput=500
 sahi.proxy.onSikuliInput.delayPerKey=
+#
+# Dis/Enable if Sahi should remove the authorization header.
+# See: http://consol.github.io/sakuli/latest/index.html#sahi-authorization-headers
+# (Default by Sahi OS: true)
+sahi.proxy.removeAuthorizationHeader.enabled=true
+
 
 ### HTTP/HTTPS proxy Settings
 ### Set a company proxy Sahi should use
@@ -7932,6 +7943,9 @@ cert_override.txt --&gt;  __SAKULI_ROOT__/sahi/config/ff_profile_template/</pre>
 </div>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_sahi_known_issues"><a class="anchor" href="#_sahi_known_issues"></a>1.3.2.10. Sahi known issues</h5>
 <div class="sect5">
 <h6 id="sahi-webpack-dev-server"><a class="anchor" href="#sahi-webpack-dev-server"></a>Sahi and webpack-dev-server</h6>
 <div id="git-edit-section" class="paragraph">
@@ -7977,9 +7991,32 @@ CASE &quot;tests&quot;: _sahi.setServerVar('lastURL', window.document.location.h
 <p>For more the issue <a href="https://github.com/ConSol/sakuli/issues/295">#295</a>.</p>
 </div>
 </div>
+<div class="sect5">
+<h6 id="sahi-authorization-headers"><a class="anchor" href="#sahi-authorization-headers"></a>Sahi removes authorization headers</h6>
+<div id="git-edit-section" class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sahi-authorization-header.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sahi-authorization-header.adoc" target="_blank">edit</a></p>
+</div>
+<div class="paragraph">
+<p>Due to issue <a href="https://github.com/ConSol/sakuli/issues/306">Disable Sahi proxy method which remove the authorization header (e.g. Bearer Token) #306</a> Sahi OS have currently some problems with handling authorization tokens like Bearer Token correctly. This has been also discussed at <a href="https://community.sahipro.com/forums/discussion/3941/authorization-header-getting-stripped-out">Sahi Community - Authorization header getting stripped out</a> and is a Problem of Sahi OS.</p>
+</div>
+<div class="paragraph">
+<p>This behavior is not wanted, so the Sakuli team developed a solution which manipulates Sahi by some <a href="https://docs.spring.io/spring/docs/4.3.x/spring-framework-reference/html/aop.html">Spring AOP Advice</a>, for some details take look at <a href="https://github.com/ConSol/sakuli/blob/feature/%23306-sahi-header/src/core/src/main/java/org/sakuli/aop/SahiHeaderAspect.java#L59">Sahi Header Aspect</a></p>
+</div>
+<div class="paragraph">
+<p>By default nothing have been changed to avoid unexpected impact to other parts of Sahi OS.  To skip the execution of the Sahi action which removes the authorization header , see <a href="https://github.com/kevlened/Sahi/blob/744f77462badeb3deddce93ddf6374773f70833f/sahi/src/net/sf/sahi/request/HttpRequest.java#L272"><code>HttpRequest.removeHeader("Authorization")</code></a>, set the following <a href="#property loading mechanism">property</a> to <code>false</code>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sahi.proxy.removeAuthorizationHeader.enabled=false</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For more details see issue <a href="https://github.com/ConSol/sakuli/issues/306">#306</a>.</p>
+</div>
+</div>
 </div>
 <div class="sect4">
-<h5 id="_sikuli_settings"><a class="anchor" href="#_sikuli_settings"></a>1.3.2.10. Sikuli settings</h5>
+<h5 id="_sikuli_settings"><a class="anchor" href="#_sikuli_settings"></a>1.3.2.11. Sikuli settings</h5>
 <div class="sect5">
 <h6 id="_highlighting_regions"><a class="anchor" href="#_highlighting_regions"></a>Highlighting Regions</h6>
 <div id="git-edit-section" class="paragraph">
@@ -12177,7 +12214,7 @@ Website: <a href="http://www.consol.de">www.consol.de</a></p>
 <div id="footer">
 <div id="footer-text">
 Version v1.2.0-SNAPSHOT<br>
-Last updated 2018-02-02 19:06:41 CET
+Last updated 2018-02-06 20:32:28 CET
 </div>
 </div>
 <!--
