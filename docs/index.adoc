@@ -115,7 +115,10 @@ include::manual/testdefinition/advanced-topics/sahi-settings-browser-selection.a
 include::manual/testdefinition/advanced-topics/sahi-settings-browser-config.adoc[]
 include::manual/testdefinition/advanced-topics/sahi-settings-proxy.adoc[]
 include::manual/testdefinition/advanced-topics/sahi-https.adoc[]
+
+==== Sahi known issues
 include::manual/testdefinition/advanced-topics/sahi-webpack.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-authorization-header.adoc[]
 
 ==== Sikuli settings
 include::manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc[]
