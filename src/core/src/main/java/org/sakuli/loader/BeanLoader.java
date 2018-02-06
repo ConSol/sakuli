@@ -91,7 +91,7 @@ public class BeanLoader {
      */
     public static <T> T loadBean(Class<T> classDef) {
         try {
-            logger.debug("load bean '{}' from application context", classDef.getSimpleName());
+            logger.trace("load bean '{}' from application context", classDef.getSimpleName());
             return getBeanFactory().getBean(classDef);
         } catch (Throwable e) {
             logger.error("error in BeanLoader", e);
