@@ -57,7 +57,7 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>unpack</id>
+                        <id>unpack-sakuli-binary</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>unpack</goal>
@@ -74,6 +74,26 @@
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.outputDirectory}/org/sakuli/common/bin</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unpack-sakuli-ui-jar</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.sweetest.sakuli</groupId>
+                                    <artifactId>sakuli-ui-web</artifactId>
+                                    <version>${dependencies.sakuli-ui-web.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <excludes>META-INF/</excludes>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.outputDirectory}/org/sakuli/common/libs/ui/java</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
