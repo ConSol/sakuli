@@ -8,11 +8,11 @@
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 :hardbreaks:
-June 5, 2018: Meetup of https://www.meetup.com/de-DE/jugthde[Java User Group Thüringen]
+June 5, 2018: Meetup of https://www.meetup.com/de-DE/jugthde[Java User Group Thüringen] (Tobias Schneck)
 *-> Talk:* https://www.meetup.com/de-DE/jugthde/events/245643418/[OpenShift-Build-Pipelines: Build -> Test -> Run!]
 
 April 24 - 26, 2018: https://apex.doag.org/de/home[APEX Connect 2018] (Tobias Schneck)
-*-> Talk:* UI-Testing - Selenium? Rich-Clients? Containers?
+*-> Talk:* https://programm.doag.org/apex/2018/#/scheduledEvent/553310[UI-Testing - Selenium? Rich-Clients? Containers?]
 
 '''
 
