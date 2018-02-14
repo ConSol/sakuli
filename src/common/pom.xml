@@ -57,7 +57,7 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>unpack-sakuli-binary</id>
+                        <id>unpack-sakuli-cli-binary</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>unpack</goal>
@@ -67,7 +67,7 @@
                                 <artifactItem>
                                     <groupId>org.sakuli</groupId>
                                     <artifactId>sakuli-go-wrapper</artifactId>
-                                    <version>${dependencies.sakuli-go-wrapper.version}</version>
+                                    <version>${sakuli-go-wrapper.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
                                     <excludes>META-INF/</excludes>
@@ -87,13 +87,14 @@
                                 <artifactItem>
                                     <groupId>org.sweetest.sakuli</groupId>
                                     <artifactId>sakuli-ui-web</artifactId>
-                                    <version>${dependencies.sakuli-ui-web.version}</version>
+                                    <version>${sakuli.ui.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
                                     <excludes>META-INF/</excludes>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>${project.build.outputDirectory}/org/sakuli/common/libs/ui/java</outputDirectory>
+                            <stripVersion>true</stripVersion>
                         </configuration>
                     </execution>
                 </executions>
