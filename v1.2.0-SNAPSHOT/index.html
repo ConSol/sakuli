@@ -608,7 +608,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">The Sakuli Team</span><br>
 <span id="email" class="email"><a href="mailto:sakuli@consol.de">sakuli@consol.de</a></span><br>
 <span id="revnumber">version v1.2.0-SNAPSHOT,</span>
-<span id="revdate">19.02.2018 @ 18:35:59 CET</span>
+<span id="revdate">19.02.2018 @ 19:51:03 CET</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Sakuli E2E</div>
@@ -1382,12 +1382,14 @@ For more information see <a href="#integration_in_other_tools">Integration in ot
 If you want to <strong>update</strong> Sakuli, see the <a href="#upgrade_process">Upgrade process</a> documentation.</p>
 </div>
 <div class="paragraph">
-<p>The default installation path of a particular Sakuli version is referenced as <code>%SAKULI_HOME%</code> (also called the "<em>version</em>" folder) which is inside of the folder "sakuli":</p>
+<p>The default installation path of Sakuli is <code>%SAKULI_ROOT%</code>. The particular Sakuli version is referenced as <code>%SAKULI_HOME%</code> (also called the "<em>version</em>" folder) which is inside of the folder <code>%SAKULI_ROOT%</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>&gt; echo %SAKULI_HOME%
-  C:\Program Files (x86)\sakuli\sakuli-v1.1.0-SNAPSHOT</code></pre>
+<pre class="CodeRay highlight"><code>&gt; echo %SAKULI_ROOT%
+  C:\Program Files (x86)\sakuli
+&gt; echo %SAKULI_HOME%
+  C:\Program Files (x86)\sakuli\sakuli-v1.1.0</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1426,7 +1428,7 @@ If you want to <strong>update</strong> Sakuli, see the <a href="#upgrade_process
 <div class="ulist">
 <ul>
 <li>
-<p>Set the desktop background to a homogenous color.</p>
+<p>Set the desktop background to a homogeneous color.</p>
 </li>
 <li>
 <p>disable any screen locking mechanisms</p>
@@ -1516,7 +1518,16 @@ If you want to <strong>update</strong> Sakuli, see the <a href="#upgrade_process
 <p>Now test if Sahi can start a Sahi-controlled browser.</p>
 </div>
 <div class="paragraph">
-<p>Execute <code>%SAKULI_HOME%\sahi\userdata\bin\start_dashboard.bat</code> to open the <strong>Sahi Dashboard</strong>. It should now list all available browsers on this system.</p>
+<p>Open the <strong>Sahi Dashboard</strong>, execute in <code>cmd.exe</code>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd "%SAKULI_ROOT%\sahi\userdata\bin"
+start_dashboard.bat`</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It should now list all available browsers on this system.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="images/inst_dashboard.png" alt="dashboards"></span></p>
@@ -1539,10 +1550,10 @@ If you want to <strong>update</strong> Sakuli, see the <a href="#upgrade_process
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Windows 7</strong>: <code>sakuli run <em>INST_DIR</em>\example_test_suites\example_windows7\</code></p>
+<p><strong>Windows 7</strong>: <code>sakuli run "%SAKULI_ROOT%\example_test_suites\example_windows7\"</code></p>
 </li>
 <li>
-<p><strong>Windows 8</strong>: <code>sakuli run <em>INST_DIR</em>\example_test_suites\example_windows8\</code></p>
+<p><strong>Windows 8</strong>: <code>sakuli run "%SAKULI_ROOT%\example_test_suites\example_windows8\"</code></p>
 </li>
 </ul>
 </div>
@@ -1569,7 +1580,7 @@ If you want to <strong>update</strong> Sakuli, see the <a href="#upgrade_process
 <div class="ulist">
 <ul>
 <li>
-<p>If you are sitting behing a company proxy, refer to <a href="#sahi_behind_a_proxy">Sahi behind a proxy</a>.</p>
+<p>If you are sitting behind a company proxy, refer to <a href="#sahi_behind_a_proxy">Sahi behind a proxy</a>.</p>
 </li>
 <li>
 <p>Refer to <a href="#sahi-browser-configuration">Browser configuration</a> for instructions how to register other browsers.</p>
@@ -1614,13 +1625,13 @@ If you want to <strong>update</strong> Sakuli, see the <a href="#upgrade_process
 </ul>
 </div>
 <div class="paragraph">
-<p>Always make sure that screenshots are saved without compression. Sikuli uses a default similarity of 0.99, which internally means that "more than 99%" =&gt; 100% pixels must conincide. Decreasing similarity should only be neccessary if the pattern images are of poor quality or the region compared to always slightly differs from the pattern image.</p>
+<p>Always make sure that screenshots are saved without compression. Sikuli uses a default similarity of 0.99, which internally means that "more than 99%" =&gt; 100% pixels must coincide. Decreasing similarity should only be neccessary if the pattern images are of poor quality or the region compared to always slightly differs from the pattern image.</p>
 </div>
 </div>
 <div class="sect6">
 <h7 id="_editor"><a class="anchor" href="#_editor"></a>Editor</h7>
 <div class="paragraph">
-<p>It is recommended to use an Editor with JavaScript support, e. g. <a href="http://notepad-plus-plus.org/">Notepad++</a></p>
+<p>It is recommended to use an Editor with JavaScript support, e. g. <a href="http://notepad-plus-plus.org/">Notepad++</a>,  <a href="https://atom.io">Atom</a>, <a href="https://www.sublimetext.com">Sublime</a> or <a href="https://code.visualstudio.com/">Visual Studio Code</a></p>
 </div>
 <div class="paragraph">
 <p>It also possible to use professional programming IDEs like <a href="https://www.jetbrains.com/idea/">IntelliJ</a>, <a href="https://netbeans.org/">Netbeans</a> or <a href="https://eclipse.org">Eclipse</a>.</p>
@@ -1811,12 +1822,14 @@ If you want to <strong>update</strong> Sakuli, see the <a href="#upgrade_process
 For other distributions (CentOS, OpenSuSE, &#8230;&#8203;) they be mostly identical. If you want to <strong>update</strong> Sakuli, see the <a href="#upgrade_process">Upgrade process</a> documentation.</p>
 </div>
 <div class="paragraph">
-<p>The default installation path of a particular Sakuli version is referenced as <code>$SAKULI_HOME</code> (also called the "<em>version</em>" folder) which is inside of the folder "sakuli":</p>
+<p>The default installation path of Sakuli is <code>$SAKULI_ROOT</code>. The particular Sakuli version is referenced as <code>$SAKULI_HOME</code> (also called the "<em>version</em>" folder) which is inside of the folder <code>$SAKULI_ROOT</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>&gt; echo $SAKULI_HOME
-  /opt/sakuli/sakuli-v1.1.0-SNAPSHOT</code></pre>
+<pre class="CodeRay highlight"><code>&gt; echo $SAKULI_ROOT
+  /home/user/sakuli/
+&gt; echo $SAKULI_HOME
+  /home/user/sakuli/sakuli-v1.1.0</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1855,7 +1868,7 @@ For other distributions (CentOS, OpenSuSE, &#8230;&#8203;) they be mostly identi
 <div class="ulist">
 <ul>
 <li>
-<p>Set the desktop background to a homogenous color.</p>
+<p>Set the desktop background to a homogeneous color.</p>
 </li>
 <li>
 <p>disable any screen locking mechanisms</p>
@@ -1942,7 +1955,16 @@ For other distributions (CentOS, OpenSuSE, &#8230;&#8203;) they be mostly identi
 <p>Now test if Sahi can start a Sahi-controlled browser.</p>
 </div>
 <div class="paragraph">
-<p>Execute <code>$SAKULI_HOME/sahi/userdata/bin/start_dashboard.sh</code> to open the <strong>Sahi Dashboard</strong>. It should now list all available browsers on this system.</p>
+<p>Open the <strong>Sahi Dashboard</strong>, execute:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $SAKULI_ROOT/sahi/userdata/bin
+./start_dashboard.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It should now list all available browsers on this system.</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="images/inst_dashboard_linux.png" alt="dashboards"></span></p>
@@ -1981,7 +2003,7 @@ On Linux deskops the ALT key is often predefined to drag windows. In this case, 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">sakuli run __INST_DIR__/example_test_suites/example_ubuntu/</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">sakuli run $SAKULI_ROOT/example_test_suites/example_ubuntu</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -2007,7 +2029,7 @@ On Linux deskops the ALT key is often predefined to drag windows. In this case, 
 <div class="ulist">
 <ul>
 <li>
-<p>If you are sitting behing a company proxy, refer to <a href="#sahi_behind_a_proxy">Sahi behind a proxy</a>.</p>
+<p>If you are sitting behind a company proxy, refer to <a href="#sahi_behind_a_proxy">Sahi behind a proxy</a>.</p>
 </li>
 <li>
 <p>Refer to <a href="#sahi-browser-configuration">Browser configuration</a> for instructions how to register other browsers.</p>
@@ -2055,13 +2077,13 @@ On Linux deskops the ALT key is often predefined to drag windows. In this case, 
 </ul>
 </div>
 <div class="paragraph">
-<p>Always make sure that screenshots are saved without compression. Sikuli uses a default similarity of 0.99, which internally means that "more than 99%" =&gt; 100% pixels must conincide. Decreasing similarity should only be neccessary if the pattern images are of poor quality or the region compared to always slightly differs from the pattern image.</p>
+<p>Always make sure that screenshots are saved without compression. Sikuli uses a default similarity of 0.99, which internally means that "more than 99%" =&gt; 100% pixels must coincide. Decreasing similarity should only be neccessary if the pattern images are of poor quality or the region compared to always slightly differs from the pattern image.</p>
 </div>
 </div>
 <div class="sect6">
 <h7 id="_editor_2"><a class="anchor" href="#_editor_2"></a>Editor</h7>
 <div class="paragraph">
-<p>It is recommended to use an Editor with JavaScript support, e.g. <a href="https://atom.io">Atom</a></p>
+<p>It is recommended to use an Editor with JavaScript support, e.g. <a href="https://atom.io">Atom</a>, <a href="https://www.sublimetext.com">Sublime</a>  or <a href="https://code.visualstudio.com/">Visual Studio Code</a></p>
 </div>
 <div class="paragraph">
 <p>It also possible to use professional programming IDEs like <a href="https://www.jetbrains.com/idea/">IntelliJ</a>, <a href="https://netbeans.org/">Netbeans</a> or <a href="https://eclipse.org">Eclipse</a>.</p>
@@ -12214,7 +12236,7 @@ Website: <a href="http://www.consol.de">www.consol.de</a></p>
 <div id="footer">
 <div id="footer-text">
 Version v1.2.0-SNAPSHOT<br>
-Last updated 2018-02-19 18:36:00 CET
+Last updated 2018-02-19 19:51:04 CET
 </div>
 </div>
 <!--
