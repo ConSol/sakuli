@@ -12,12 +12,14 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 This page describes the steps to *install and test* Sakuli on *Ubuntu Linux 16.04 LTS*.
 For other distributions (CentOS, OpenSuSE, ...) they be mostly identical. If you want to *update* Sakuli, see the <<upgrade_process>> documentation.
 
-The default installation path of a particular Sakuli version is referenced as `$SAKULI_HOME` (also called the "_version_" folder) which is inside of the folder "sakuli":
+The default installation path of Sakuli is `$SAKULI_ROOT`. The particular Sakuli version is referenced as `$SAKULI_HOME` (also called the "_version_" folder) which is inside of the folder `$SAKULI_ROOT`:
 
 [source]
 ----
+> echo $SAKULI_ROOT
+  /home/user/sakuli/
 > echo $SAKULI_HOME
-  /opt/sakuli/sakuli-v1.1.0-SNAPSHOT
+  /home/user/sakuli/sakuli-v1.1.0
 ----
 
 Values surrounded by double underscores are have to be filled individually by you (e.g. `__IP_ADDRESS__`).
@@ -36,7 +38,7 @@ You can run Sakuli on physical as well as on virtual Linux machines.
 
 ====== Recommendations
 
-* Set the desktop background to a homogenous color.
+* Set the desktop background to a homogeneous color.
 * disable any screen locking mechanisms
 * Run Sakuli with a dedicated user
 * Sakuli needs a reliable and predictable desktop environment: make sure that there are no pop-up windows of services or applications
@@ -76,7 +78,12 @@ java -jar sakuli-vX.X.X-installer.jar auto-config.xml
 
 Now test if Sahi can start a Sahi-controlled browser.
 
-Execute `$SAKULI_HOME/sahi/userdata/bin/start_dashboard.sh` to open the *Sahi Dashboard*. It should now list all available browsers on this system.
+Open the *Sahi Dashboard*, execute:
+
+    cd $SAKULI_ROOT/sahi/userdata/bin
+    ./start_dashboard.sh
+
+It should now list all available browsers on this system.
 
 image:inst_dashboard_linux.png[dashboards]
 
@@ -99,7 +106,7 @@ You are now ready to run the *first minimal Sakuli test* to see if Sakuli and it
 
 [source,bash]
 ----
-sakuli run __INST_DIR__/example_test_suites/example_ubuntu/
+sakuli run $SAKULI_ROOT/example_test_suites/example_ubuntu
 ----
 
 Sakuli should now
@@ -112,7 +119,7 @@ Sakuli should now
 
 ===== Additional documentation
 
-* If you are sitting behing a company proxy, refer to <<sahi_behind_a_proxy>>.
+* If you are sitting behind a company proxy, refer to <<sahi_behind_a_proxy>>.
 * Refer to <<sahi-browser-configuration>> for instructions how to register other browsers.
 
 ===== Optional software
@@ -136,11 +143,11 @@ A good choice is
 * http://shutter-project.org/[Shutter] on *Linux*.
 * https://wiki.ubuntuusers.de/Scrot/[Scrot] on *Linux* (lightweight, cli-based).
 
-Always make sure that screenshots are saved without compression. Sikuli uses a default similarity of 0.99, which internally means that "more than 99%" =&gt; 100% pixels must conincide. Decreasing similarity should only be neccessary if the pattern images are of poor quality or the region compared to always slightly differs from the pattern image.
+Always make sure that screenshots are saved without compression. Sikuli uses a default similarity of 0.99, which internally means that "more than 99%" =&gt; 100% pixels must coincide. Decreasing similarity should only be neccessary if the pattern images are of poor quality or the region compared to always slightly differs from the pattern image.
 
 ====== Editor
 
-It is recommended to use an Editor with JavaScript support, e.g. https://atom.io[Atom]
+It is recommended to use an Editor with JavaScript support, e.g. https://atom.io[Atom], https://www.sublimetext.com[Sublime]  or https://code.visualstudio.com/[Visual Studio Code]
 
 It also possible to use professional programming IDEs like https://www.jetbrains.com/idea/[IntelliJ], https://netbeans.org/[Netbeans] or https://eclipse.org[Eclipse].
 
