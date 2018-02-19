@@ -1,0 +1,82 @@
+:imagesdir: ../../images
+
+
+[[sakuli-ui]]
+== Sakuli UI
+
+[#git-edit-section]
+:page-path: docs/manual/ui/sakuli-ui-intro.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+*since:* <<version-1.2.0>>
+
+The *Sakuli UI* is an easy to use web application to manage, develop and execute your Sakuli test suites. It's already included in <<download,Sakuli Installer>> and can be started in different ways:
+
+[[sakuli-ui-local]]
+=== Local execution
+//TODO #312 add macos
+If you have chosen the option "Sakuli UI" in the <<windows,Windows>>/<<linux,Linux>> installation process you can use Sakuli CLI to start the UI in a specific `<root-context-path>`, which specifies the root search point for Sakuli test suites in the filesystem. For example your `SAKULI_ROOT` folder:
+
+. Start the UI: `sakuli ui <root-context-path>`
+
+    sakuli ui $SAKULI_ROOT
+
+. Then open the URL: http://localhost:8080
+. Login: default user `admin`, default password `sakuli` image:ui/ui-login.png[sakuli login mask]
+. Open your test project, e.g. `example_test_suites` image:ui/ui-project-select.png[select sakuli project]
+. Select your test suite e.g. `sakuki_xfce`, configure the <<docker-images,Docker image>> e.g. `consol/sakuli-ubuntu-xfce:dev` and press _Run sakuli container_ image:ui/ui-project-run.png[run project in docker container]
+. During the test execution the UI will show a web vnc view where you can watch running the test image:ui/ui-project-run-vnc.png[web vnc view of the sakuli container]
+. After test has been executed a summarizing report will show up image:ui/ui-project-report.png[sakuli test report]
+
+[[sakuli-ui-configuration]]
+=== Sakuli UI Configuration
+To configure the Sakuli UI for your custom needs you can set following properties through the CLI
+
+    sakuli ui <root-context-path> -D property-key=property-value
+
+.Sakuli UI Properties
+|===
+|Property | Description
+
+|`app.authentication.enabled=true`
+|en/disable sakuli UI basic authentication
+
+|`security.default-username=admin`
+|set username for web login
+
+|`security.default-password=sakuli`
+|set password for web login
+
+|`app.execution.local.enabled=true`
+|en/disable Sakuli <<native-execution>> mode (use local `sakuli ...` command)
+
+|`app.execution.dockercontainer.enabled=true`
+|en/disable Sakuli execution mode for default <<docker-images>>
+
+|`app.execution.dockerfile.enabled=true`
+|en/disable Sakuli execution mode for <<docker-extend-a-image,custom Dockerfiles>>
+
+|`app.execution.dockercompose.enabled=true`
+|en/disable Sakuli execution mode for <<docker-compose>>
+
+|`docker.userid=1000`
+|set linux user id which will be used to start the Sakuli container. Use your user system id (`$ id -u`)
+
+|`logging.level.org.sweetest=INFO`
+`logging.level.org.apache=INFO`
+`logging.level.org.eclipse=INFO`
+`logging.level.jndi=INFO`
+`logging.level.org.thymeleaf=WARN`
+`logging.level.org.springframework=INFO`
+| Change default log levels of Sakuli UI libraries
+
+|===
+
+//[[sakuli-ui-remote]]
+//=== Remote execution
+// TODO write how to use and run in a remote host
+//
+//[[sakuli-ui-containerized]]
+//=== Containerized execution
+//TODO write how to mount docker into container and how to use
+
