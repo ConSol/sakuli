@@ -1,0 +1,19 @@
+{% spaceless %}
+{% import 'error_message_creator.twig' as errorMessageCreator %}
+type={{ gearman.serviceType }}$newline$
+host_name=
+    {% if (not empty(gearman.nagiosHost)) %}
+        {{ gearman.nagiosHost }}
+    {% else %}
+        {{ testsuite.host }}
+    {% endif %}$newline$
+start_time={{ convertToUnixTimestamp(testsuite.startDate) }}$newline$
+finish_time={{ convertToUnixTimestamp(testsuite.stopDate) }}$newline$
+return_code={{ testsuite.state.nagiosErrorCode }}$newline$
+service_description={{ gearman.nagiosServiceDescription }}$newline$
+output=
+    {% include 'short_summary.twig' %}\\n
+    {% include 'detailed_summary.twig' %}
+    {% include 'performance_data.twig' %}
+$whitespace$[{{ gearman.nagiosCheckCommand }}]
+{% endspaceless %}
