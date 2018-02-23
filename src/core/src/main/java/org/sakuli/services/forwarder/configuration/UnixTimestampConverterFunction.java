@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2016 the original author or authors.
+ * Copyright 2013 - 2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,38 +18,42 @@
 
 package org.sakuli.services.forwarder.configuration;
 
-import org.sakuli.datamodel.state.SakuliState;
-import org.sakuli.services.forwarder.OutputState;
-
+import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
- * Custom JtwigFunction for retrieving the OutputState for a provided SakuliState.
+ * Custom JtwigFunction for converting a date object into an unix timestamp.
  *
  * @author Georgi Todorov
  */
-public class GetOutputStateFunction extends AbstractFunction {
+public class UnixTimestampConverterFunction extends AbstractFunction {
 
     @Override
     public String name() {
-        return "getOutputState";
+        return "convertToUnixTimestamp";
     }
 
     @Override
-    protected int getExpectedNumberOfArguments() {
+    public int getExpectedNumberOfArguments() {
         return 1;
     }
 
     @Override
-    protected List<Class> getExpectedArgumentTypes() {
-        return Arrays.asList(SakuliState.class);
+    public List<Class> getExpectedArgumentTypes() {
+        return Arrays.asList(Date.class);
     }
 
     @Override
     protected Object execute(List<Object> arguments) {
-        SakuliState sakuliState = (SakuliState) arguments.get(0);
-        return OutputState.lookupSakuliState(sakuliState);
+        Date date = (Date) arguments.get(0);
+
+        if (date == null) {
+            return "-1";
+        } else {
+            return String.format("%.3f", new BigDecimal(date.getTime()).divide(new BigDecimal(1000)));
+        }
     }
 
 }

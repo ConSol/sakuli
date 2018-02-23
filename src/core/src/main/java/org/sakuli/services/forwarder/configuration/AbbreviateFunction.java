@@ -1,13 +1,13 @@
 package org.sakuli.services.forwarder.configuration;
 
 import org.apache.commons.lang.StringUtils;
-import org.jtwig.functions.FunctionRequest;
 
 import java.math.BigDecimal;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- * Custom JtwigFunction for abbreviating a provided string to a certain length.
+ * Custom JtwigFunction for abbreviating a specified string to a certain length.
  * The function is using the StringUtils.abbreviate method from the Apache commons library,
  * which is working in the following way:
  *
@@ -41,12 +41,21 @@ public class AbbreviateFunction extends AbstractFunction {
     }
 
     @Override
-    public Object execute(FunctionRequest request) {
-        verifyFunctionArguments(request, 3, String.class, BigDecimal.class, Boolean.class);
-        String toAbbreviate = (String) request.getArguments().get(0);
-        BigDecimal summaryMaxLength = (BigDecimal) request.getArguments().get(1);
-        boolean removeWhitespaces = (boolean) request.getArguments().get(2);
-        toAbbreviate = removeWhitespaces ? toAbbreviate.replaceAll("(?m)^[\\s\\t]+|\\n", "") : toAbbreviate;
+    protected int getExpectedNumberOfArguments() {
+        return 3;
+    }
+
+    @Override
+    protected List<Class> getExpectedArgumentTypes() {
+        return Arrays.asList(String.class, BigDecimal.class, Boolean.class);
+    }
+
+    @Override
+    protected Object execute(List<Object> arguments) {
+        String toAbbreviate = (String) arguments.get(0);
+        BigDecimal summaryMaxLength = (BigDecimal) arguments.get(1);
+        boolean removeLeadingWhitespaces = (boolean) arguments.get(2);
+        toAbbreviate = removeLeadingWhitespaces && toAbbreviate != null ? toAbbreviate.replaceAll("(?m)^[\\s\\t]+|\\n", "") : toAbbreviate;
         return StringUtils.abbreviate(toAbbreviate, summaryMaxLength.intValue());
     }
 

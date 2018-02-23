@@ -21,6 +21,8 @@ package org.sakuli.services.forwarder.configuration;
 import org.jtwig.functions.FunctionRequest;
 import org.jtwig.functions.SimpleJtwigFunction;
 
+import java.util.List;
+
 /**
  * This class defines an abstract jtwig function, which has to be used as base for all other custom funcitons.
  *
@@ -28,13 +30,23 @@ import org.jtwig.functions.SimpleJtwigFunction;
  */
 public abstract class AbstractFunction extends SimpleJtwigFunction {
 
+    protected abstract int getExpectedNumberOfArguments();
+    protected abstract List<Class> getExpectedArgumentTypes();
+    protected abstract Object execute(List<Object> arguments);
+
+    @Override
+    public final Object execute(FunctionRequest request) {
+        verifyFunctionArguments(request, getExpectedNumberOfArguments(), getExpectedArgumentTypes());
+        return execute(request.getArguments());
+    }
+
     /**
      * Verifies the number and the types of the function arguments.
      * @param request
      * @param expectedNumberOfArguments
      * @param expectedArgumentTypes
      */
-    protected void verifyFunctionArguments(FunctionRequest request, int expectedNumberOfArguments, Class... expectedArgumentTypes) {
+    protected void verifyFunctionArguments(FunctionRequest request, int expectedNumberOfArguments, List<Class> expectedArgumentTypes) {
         if (request.getNumberOfArguments() != expectedNumberOfArguments) {
             throw new IllegalArgumentException(
                     String.format("Wrong number of arguments for function '%s' provided. Expected: '%s', actual: '%s'.",
@@ -43,7 +55,7 @@ public abstract class AbstractFunction extends SimpleJtwigFunction {
         }
         for (int i = 0; i < request.getNumberOfArguments(); i++) {
             Object argument = request.getArguments().get(i);
-            Class expectedArgumentType = expectedArgumentTypes[i];
+            Class expectedArgumentType = expectedArgumentTypes.get(i);
             if (!expectedArgumentType.isAssignableFrom(argument.getClass())) {
                 throw new IllegalArgumentException(
                         String.format("Wrong argument type for function '%s' provided. Expected: '%s', actual: '%s'.",

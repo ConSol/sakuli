@@ -18,9 +18,10 @@
 
 package org.sakuli.services.forwarder.configuration;
 
-import org.jtwig.functions.FunctionRequest;
 import org.sakuli.datamodel.AbstractTestDataEntity;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -40,9 +41,18 @@ public class GetOutputDurationFunction extends AbstractFunction {
     }
 
     @Override
-    public Object execute(FunctionRequest request) {
-        verifyFunctionArguments(request, 1, AbstractTestDataEntity.class);
-        AbstractTestDataEntity testDataEntity = (AbstractTestDataEntity) request.getArguments().get(0);
+    protected int getExpectedNumberOfArguments() {
+        return 1;
+    }
+
+    @Override
+    protected List<Class> getExpectedArgumentTypes() {
+        return Arrays.asList(AbstractTestDataEntity.class);
+    }
+
+    @Override
+    protected Object execute(List<Object> arguments) {
+        AbstractTestDataEntity testDataEntity = (AbstractTestDataEntity) arguments.get(0);
         if (testDataEntity.getState().isError() || testDataEntity.getDuration() < 0) {
             return UNKNOWN_DURATION;
         }
