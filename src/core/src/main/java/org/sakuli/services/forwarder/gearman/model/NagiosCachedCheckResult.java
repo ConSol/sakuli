@@ -23,15 +23,7 @@ package org.sakuli.services.forwarder.gearman.model;
  */
 public class NagiosCachedCheckResult extends NagiosCheckResult {
 
-    private String cachedResult;
-
     public NagiosCachedCheckResult(String queueName, String uuid, String cachedResult) {
-        super(queueName, uuid);
-        this.cachedResult = cachedResult;
-    }
-
-    @Override
-    public String getPayloadString() {
-        return cachedResult;
+        super(queueName, uuid, cachedResult);
     }
 }

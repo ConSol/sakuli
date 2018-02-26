@@ -69,16 +69,16 @@ public class GearmanResultServiceImpl extends AbstractResultService {
         GearmanJobServerConnection connection = getGearmanConnection(properties.getServerHost(), properties.getServerPort());
 
         List<NagiosCheckResult> results = new ArrayList<>();
-        results.add(nagiosCheckResultBuilder.build());
-
-        if (properties.isCacheEnabled()) {
-            results.addAll(cacheService.getCachedResults());
-            if (results.size() > 1) {
-                logger.info(String.format("Processing %s cached results first", results.size() - 1));
-            }
-        }
-
         try {
+            results.add(nagiosCheckResultBuilder.build());
+
+            if (properties.isCacheEnabled()) {
+                results.addAll(cacheService.getCachedResults());
+                if (results.size() > 1) {
+                    logger.info(String.format("Processing %s cached results first", results.size() - 1));
+                }
+            }
+
             if (!gearmanClient.addJobServer(connection)) {
                 exceptionHandler.handleException(new SakuliForwarderException(
                         String.format("Failed to connect to Gearman server '%s:%s'", properties.getServerHost(), properties.getServerPort())), true);

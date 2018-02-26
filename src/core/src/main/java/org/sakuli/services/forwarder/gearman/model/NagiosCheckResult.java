@@ -18,25 +18,20 @@
 
 package org.sakuli.services.forwarder.gearman.model;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 /**
  * @author tschneck
  *         Date: 10.07.14
  */
-public class NagiosCheckResult implements NagiosPayloadString {
+public class NagiosCheckResult {
 
     private final String uuid;
     private final String queueName;
-    private SortedMap<PayLoadFields, String> payload;
+    private String payload;
 
-    public NagiosCheckResult(String queueName, String uuid) {
+    public NagiosCheckResult(String queueName, String uuid, String payload) {
         this.queueName = queueName;
         this.uuid = uuid;
-        payload = new TreeMap<>();
+        this.payload = payload;
     }
 
     public String getUuid() {
@@ -47,27 +42,8 @@ public class NagiosCheckResult implements NagiosPayloadString {
         return queueName;
     }
 
-    public SortedMap<PayLoadFields, String> getPayload() {
+    public String getPayloadString() {
         return payload;
     }
 
-    public void setPayload(SortedMap<PayLoadFields, String> payload) {
-        this.payload = payload;
-    }
-
-    @Override
-    public String getPayloadString() {
-        StringBuilder sb = new StringBuilder();
-        Iterator<Map.Entry<PayLoadFields, String>> entryIterator = payload.entrySet().iterator();
-        while (entryIterator.hasNext()) {
-            Map.Entry<PayLoadFields, String> entry = entryIterator.next();
-            sb.append(entry.getKey().getFieldName())
-                    .append("=")
-                    .append(entry.getValue());
-            if (entryIterator.hasNext()) {
-                sb.append("\n");
-            }
-        }
-        return sb.toString();
-    }
 }
