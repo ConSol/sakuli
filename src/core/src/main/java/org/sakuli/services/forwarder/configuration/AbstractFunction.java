@@ -56,7 +56,7 @@ public abstract class AbstractFunction extends SimpleJtwigFunction {
         for (int i = 0; i < request.getNumberOfArguments(); i++) {
             Object argument = request.getArguments().get(i);
             Class expectedArgumentType = expectedArgumentTypes.get(i);
-            if (!expectedArgumentType.isAssignableFrom(argument.getClass())) {
+            if (argument != null && !expectedArgumentType.isAssignableFrom(argument.getClass())) {
                 throw new IllegalArgumentException(
                         String.format("Wrong argument type for function '%s' provided. Expected: '%s', actual: '%s'.",
                                 name(), expectedArgumentType, argument.getClass())

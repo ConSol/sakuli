@@ -59,7 +59,7 @@ public class NagiosCheckResultTest {
         when(outputBuilder.createOutput()).thenReturn(gearmanPayload);
 
         NagiosCheckResult checkResult = testling.build();
-        Assert.assertEquals(checkResult.getPayloadString(), gearmanPayload);
+        Assert.assertEquals(checkResult.getPayload(), gearmanPayload);
         Assert.assertNotNull(checkResult.getQueueName());
         Assert.assertEquals(checkResult.getQueueName(), gearmanProperties.getServerQueue());
         Assert.assertNotNull(checkResult.getUuid());

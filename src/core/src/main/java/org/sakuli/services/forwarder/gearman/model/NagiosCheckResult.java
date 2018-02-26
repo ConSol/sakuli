@@ -42,7 +42,7 @@ public class NagiosCheckResult {
         return queueName;
     }
 
-    public String getPayloadString() {
+    public String getPayload() {
         return payload;
     }
 

@@ -110,7 +110,7 @@ public class GearmanResultServiceImpl extends AbstractResultService {
             logger.debug(String.format("Sending result to Gearman server %s:%s", checkResult.getQueueName(), checkResult.getUuid()));
         }
 
-        logGearmanMessage(checkResult.getPayloadString());
+        logGearmanMessage(checkResult.getPayload());
         GearmanJob job = creatJob(checkResult);
 
         //send results to gearman
@@ -165,9 +165,9 @@ public class GearmanResultServiceImpl extends AbstractResultService {
     protected GearmanJob creatJob(NagiosCheckResult checkResult) {
         byte[] bytesBase64;
         if (properties.isEncryption()) {
-            bytesBase64 = Aes.encrypt(checkResult.getPayloadString(), properties.getSecretKey());
+            bytesBase64 = Aes.encrypt(checkResult.getPayload(), properties.getSecretKey());
         } else {
-            bytesBase64 = Base64.encodeBase64(checkResult.getPayloadString().getBytes());
+            bytesBase64 = Base64.encodeBase64(checkResult.getPayload().getBytes());
         }
 
         return GearmanJobImpl.createBackgroundJob(checkResult.getQueueName(), bytesBase64, checkResult.getUuid());
