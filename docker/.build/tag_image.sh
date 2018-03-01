@@ -22,6 +22,7 @@ IMAGES=(
     "consol/sakuli-centos-xfce-java"
     "consol/sakuli-centos-icewm"
     "consol/sakuli-centos-icewm-java"
+    "consol/sakuli-ui"
 )
 
 #Loop

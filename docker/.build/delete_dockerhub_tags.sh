@@ -11,6 +11,7 @@ IMAGES=(
     "consol/sakuli-centos-xfce-java"
     "consol/sakuli-centos-icewm"
     "consol/sakuli-centos-icewm-java"
+    "consol/sakuli-ui"
     "consol/omd-labs-ubuntu-sakuli"
     "consol/omd-labs-centos-sakuli"
     "consol/omd-labs-debian-sakuli"
