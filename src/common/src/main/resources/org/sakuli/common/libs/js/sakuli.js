@@ -102,19 +102,25 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      *                 the execution time will never exceed, so the state will be always OK!
      * @param {number} optCriticalTime (optional) threshold in seconds, default = 0. If the threshold is set to 0,
      *                 the execution time will never exceed, so the state will be always OK!
+     * @param {boolean} forward (optional) indicate whether the result of the test case shall be immediately
+     *                  processed by the enabled forwarders. This means before the test suite has been executed to
+     *                  the end. If not specified in another way, this option is disabled!
      * @memberOf TestCase
      * @method endOfStep
      */
-    that.endOfStep = function (stepName, optWarningTime, optCriticalTime) {
+    that.endOfStep = function (stepName, optWarningTime, optCriticalTime, forward) {
         if (undefined == optWarningTime) {
             optWarningTime = 0;
         }
         if (undefined == optCriticalTime) {
             optCriticalTime = 0;
         }
+        if (undefined == forward) {
+            forward = false;
+        }
         var currentTime = (new Date()).getTime();
         //call the backend
-        that.javaObject.addTestCaseStep(stepName, that.stepStartTime, currentTime, optWarningTime, optCriticalTime);
+        that.javaObject.addTestCaseStep(stepName, that.stepStartTime, currentTime, optWarningTime, optCriticalTime, forward);
         //set stepstart for the next step
         that.stepStartTime = currentTime;
     };
@@ -173,8 +179,12 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      * @memberOf TestCase
      * @method saveResult
      */
-    that.saveResult = function () {
+    that.saveResult = function (forward) {
+        if (undefined == forward) {
+            forward = false;
+        }
         Logger.logInfo("=========== SAVE Test Case '" + that.tcID + "' ==================");
+        Logger.logInfo("Forward of test case results enabled:  '" + forward + "'");
         //create the values
         var stopTime, lastURL = "", browser = "";
         stopTime = (new Date()).getTime();
@@ -183,7 +193,7 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
         // Agent description can contain semicolon, replace globally
         browser = browser.replace(/;/g, ',');
         //call the backend
-        that.javaObject.saveResult(that.tcID, that.startTime, stopTime, lastURL, browser);
+        that.javaObject.saveResult(that.tcID, that.startTime, stopTime, lastURL, browser, forward);
     };
 
     /**

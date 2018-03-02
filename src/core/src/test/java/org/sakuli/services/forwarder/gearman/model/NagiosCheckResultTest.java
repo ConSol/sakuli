@@ -56,9 +56,9 @@ public class NagiosCheckResultTest {
     @Test
     public void testGetPayload() throws Exception {
         String gearmanPayload="test_payload";
-        when(outputBuilder.createOutput()).thenReturn(gearmanPayload);
+        when(outputBuilder.createOutput(testSuite)).thenReturn(gearmanPayload);
 
-        NagiosCheckResult checkResult = testling.build();
+        NagiosCheckResult checkResult = testling.build(testSuite);
         Assert.assertEquals(checkResult.getPayload(), gearmanPayload);
         Assert.assertNotNull(checkResult.getQueueName());
         Assert.assertEquals(checkResult.getQueueName(), gearmanProperties.getServerQueue());

@@ -20,6 +20,7 @@ package org.sakuli.actions;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.actions.logging.LogToResult;
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
@@ -34,6 +35,7 @@ import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliValidationException;
 import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.BaseActionLoaderImpl;
+import org.sakuli.services.TeardownServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +56,7 @@ public class TestCaseAction {
 
     /**
      * Represents the current running TestCase. The object will be set at {@link #init(String, int, int, String...)} and
-     * releases at {@link #saveResult(String, String, String, String, String)}
+     * releases at {@link #saveResult(String, String, String, String, String, boolean)}
      */
     @Autowired
     @Qualifier(BaseActionLoaderImpl.QUALIFIER)
@@ -153,7 +155,7 @@ public class TestCaseAction {
      * @throws SakuliException
      */
     @LogToResult(message = "save the result of the current test case")
-    public void saveResult(String testCaseId, String startTime, String stopTime, String lastURL, String browserInfo) throws SakuliException {
+    public void saveResult(String testCaseId, String startTime, String stopTime, String lastURL, String browserInfo, boolean forward) throws SakuliException {
         if (!loader.getCurrentTestCase().getId().equals(testCaseId)) {
             handleException("testcaseID '" + testCaseId + "' to save the test case Result ist is not valid!");
         }
@@ -179,27 +181,32 @@ public class TestCaseAction {
 
         //release current test case -> indicates that this case is finished
         loader.setCurrentTestCase(null);
+        if (forward) {
+            forwardTestDataEntity(tc);
+        }
     }
 
     /**
-     * Wrapper for {@link #addTestCaseStep(String, String, String, int, int)} with warningTime '0'.
+     * Wrapper for {@link #addTestCaseStep(String, String, String, int, int, boolean)} with warningTime '0'.
      */
     public void addTestCaseStep(String stepName, String startTime, String stopTime) throws SakuliException {
-        addTestCaseStep(stepName, startTime, stopTime, 0, 0);
+        addTestCaseStep(stepName, startTime, stopTime, 0, 0, false);
     }
 
     /**
-     * Save a new step to a existing test case. Must be called before {@link #saveResult(String, String, String, String, String)}
+     * Save a new step to a existing test case. Must be called before {@link #saveResult(String, String, String, String, String, boolean
+     * )}
      *
      * @param stepName    name of this step
      * @param startTime   start time in milliseconds
      * @param stopTime    end time in milliseconds
      * @param warningTime warning threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
      * @param criticalTime critical threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
+     * @param forward boolean flag indicating whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled!
      * @throws SakuliException
      */
     @LogToResult(message = "add a step to the current test case")
-    public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime, int criticalTime) throws SakuliException {
+    public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime, int criticalTime, boolean forward) throws SakuliException {
         if (stepName == null || stepName.isEmpty() || stepName.equals("undefined")) {
             handleException("Please set a Name - all values of the test case step need to be set!");
         }
@@ -228,6 +235,13 @@ public class TestCaseAction {
                 + "\" saved to test case \""
                 + loader.getCurrentTestCase().getId()
                 + "\"");
+        if (forward) {
+            forwardTestDataEntity(step);
+        }
+    }
+
+    private void forwardTestDataEntity(AbstractTestDataEntity abstractTestDataEntity) {
+        new Thread(() -> TeardownServiceHelper.invokeTeardownServices(abstractTestDataEntity)).start();
     }
 
     protected TestCaseStep findStep(String stepName) {

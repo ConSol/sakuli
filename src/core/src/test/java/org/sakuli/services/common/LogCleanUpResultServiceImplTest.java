@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.sakuli.BaseTest;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -82,7 +83,7 @@ public class LogCleanUpResultServiceImplTest {
     @Test
     public void testNoLogFolder() throws Exception {
         when(sakuliProperties.getLogFolder()).thenReturn(Paths.get("NOT_EXIST"));
-        testling.triggerAction();
+        testling.triggerAction(new TestSuite());
         verify(testling, never()).cleanUpDirectory(any());
     }
 
@@ -99,7 +100,7 @@ public class LogCleanUpResultServiceImplTest {
         Path notToOld2 = createFileWithDate(tempLog.resolve("today-13.log"), todayMinus13);
 
         when(sakuliProperties.getLogFolder()).thenReturn(tempLog);
-        testling.triggerAction();
+        testling.triggerAction(new TestSuite());
         verify(testling, times(2)).cleanUpDirectory(any());
         assertTrue(Files.exists(folder1));
         assertTrue(Files.exists(today));

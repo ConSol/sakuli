@@ -18,10 +18,13 @@
 
 package org.sakuli.services.forwarder.checkmk;
 
-import org.jtwig.JtwigModel;
 import org.sakuli.services.forwarder.AbstractTemplateOutputBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Georgi Todorov
@@ -39,9 +42,12 @@ public class CheckMKTemplateOutputBuilder extends AbstractTemplateOutputBuilder 
     }
 
     @Override
-    public JtwigModel createModel() {
-        return super.createModel()
-                .with("checkmk", checkMKProperties);
+    public Map<String, Object> getSpecificModelEntities() {
+        return Collections.unmodifiableMap(new HashMap<String, Object>() {
+            {
+                put("checkmk", checkMKProperties);
+            }
+        });
     }
 
 }

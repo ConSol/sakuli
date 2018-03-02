@@ -18,8 +18,10 @@
 
 package org.sakuli.services.common;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.helper.TestCaseStepHelper;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliRuntimeException;
@@ -27,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,14 +52,18 @@ public class CacheHandlingResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults() {
-        if (testSuite.getState() != null && testSuite.getState().isFinishedWithoutErrors()) {
-            removeCachedInitSteps();
-            writeCachedStepDefinitions();
+    public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
+        if (abstractTestDataEntity != null &&
+                TestSuite.class.isAssignableFrom(abstractTestDataEntity.getClass())) {
+            TestSuite testSuite = (TestSuite)abstractTestDataEntity;
+            if (testSuite.getState() != null && testSuite.getState().isFinishedWithoutErrors()) {
+                removeCachedInitSteps(testSuite);
+                writeCachedStepDefinitions(testSuite);
+            }
         }
     }
 
-    protected void removeCachedInitSteps() {
+    protected void removeCachedInitSteps(TestSuite testSuite) {
         for (TestCase tc : testSuite.getTestCases().values()) {
             List<TestCaseStep> filteredSteps = new ArrayList<>();
             for (TestCaseStep step : tc.getSteps()) {
@@ -70,7 +77,7 @@ public class CacheHandlingResultServiceImpl extends AbstractResultService {
         }
     }
 
-    protected void writeCachedStepDefinitions() {
+    protected void writeCachedStepDefinitions(TestSuite testSuite) {
         try {
             TestCaseStepHelper.writeCachedStepDefinitions(testSuite);
         } catch (IOException e) {

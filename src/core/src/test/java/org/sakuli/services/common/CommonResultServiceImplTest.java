@@ -73,14 +73,14 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 .withId("LOG_TEST_SUITE").withState(testSuiteState)
                 .withException(testSuiteState.isError() ? new SakuliException("TEST") : null)
                 .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
-                                .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
+                                .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder()
+                                        .withState(stepState).buildExample()))
                                 .withState(testCaseState)
                                 .buildExample()
                 ))
                 .buildExample();
-        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
         Path logfile = Paths.get(properties.getLogFile());
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
         String lastLineOfLogFile = getLastLineOfLogFile(logfile, testSuiteState.isError() ? 42 : 39);
         List<String> regExes = getValidationExpressions(testSuiteState, testCaseState, stepState, stateOutputRegex, "TEST");
 
@@ -102,7 +102,6 @@ public class CommonResultServiceImplTest extends LoggerTest {
 
     private List<String> getValidationExpressions(TestSuiteState testSuiteState, TestCaseState testCaseState, TestCaseStepState testCaseStepState, String stateOutputRegex, String errorMessage) {
         return Arrays.asList(
-                "INFO.*",
                 "=========== RESULT of SAKULI Testsuite \"LOG_TEST_SUITE\" - " + testSuiteState + " =================",
                 "test suite id: LOG_TEST_SUITE",
                 "guid: LOG_TEST_SUITE.*",
@@ -138,6 +137,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 "\t\tdb primary key: -1*",
                 "\t\tduration: 3.0 sec.",
                 "\t\twarning time: 4 sec.",
+                "\t\tcritical time: 8 sec.",
                 "\t\tstart time: .*",
                 "\t\tend time: .*",
                 "===========  SAKULI Testsuite \"LOG_TEST_SUITE\" execution FINISHED - " + testSuiteState + " ======================",

@@ -114,7 +114,8 @@ public class TestCaseActionTest extends BaseTest {
                 "" + startDate.getTime(),
                 "" + stopDate.getTime(),
                 url,
-                browser
+                browser,
+                false
         );
 
         assertEquals(startDate, testSuiteMock.getTestCases().get(sample.getId()).getStartDate());
@@ -135,7 +136,8 @@ public class TestCaseActionTest extends BaseTest {
                 "" + (now - 3000),
                 "" + now,
                 2,
-                5
+                5,
+                false
         );
         TestCaseStep step = testSuiteMock.getTestCases().get(sample.getId()).getSteps().get(0);
         assertNotNull(step);
@@ -149,7 +151,8 @@ public class TestCaseActionTest extends BaseTest {
                 "" + (now + 300),
                 "" + (now + 4300),
                 5,
-                6
+                5,
+                false
         );
         TestCaseStep step2 = testSuiteMock.getTestCases().get(sample.getId()).getSteps().get(1);
         assertNotNull(step2);
@@ -180,7 +183,8 @@ public class TestCaseActionTest extends BaseTest {
                 "" + (currentTime - 10000),
                 "" + currentTime,
                 9,
-                10
+                10,
+                false
         );
 
         List<TestCaseStep> testCaseSteps = sample.getSteps();

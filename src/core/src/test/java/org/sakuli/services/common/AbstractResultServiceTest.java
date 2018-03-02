@@ -21,6 +21,7 @@ package org.sakuli.services.common;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -39,19 +40,13 @@ public class AbstractResultServiceTest {
         }
 
         @Override
-        public void saveAllResults() {
+        public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
         }
     };
 
     @BeforeMethod
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-    }
-
-    @Test
-    public void testRefreshStates() throws Exception {
-        testling.refreshStates();
-        verify(testSuite).refreshState();
     }
 
 }

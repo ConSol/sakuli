@@ -18,7 +18,10 @@
 
 package org.sakuli.services.forwarder.checkmk;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.common.AbstractResultService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,19 +58,19 @@ public class CheckMKResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults() {
+    public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
         try {
             logger.info("======= WRITE FILE FOR CHECK_MK ======");
-            String output = outputBuilder.createOutput();
+            String output = outputBuilder.createOutput(abstractTestDataEntity);
             logger.debug(String.format("Output for check_mk:\n%s", output));
-            writeToFile(createSpoolFilePath(), output);
+            writeToFile(createSpoolFilePath(abstractTestDataEntity), output);
             logger.info("======= FINISHED: WRITE FILE FOR CHECK_MK ======");
         } catch (SakuliForwarderException e) {
             exceptionHandler.handleException(e, false);
         }
     }
 
-    protected Path createSpoolFilePath() {
+    protected Path createSpoolFilePath(AbstractTestDataEntity abstractTestDataEntity) {
         String spoolDir = checkMKProperties.getSpoolDir();
         String fileName = new StringBuilder()
                 .append(checkMKProperties.getFreshness())
@@ -76,7 +79,7 @@ public class CheckMKResultServiceImpl extends AbstractResultService {
                                 : "_" + checkMKProperties.getSpoolFilePrefix()
                 )
                 .append("_")
-                .append(testSuite.getId())
+                .append(abstractTestDataEntity.getId())
                 .toString();
         return Paths.get(spoolDir + File.separator + fileName);
     }

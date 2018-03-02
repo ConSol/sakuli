@@ -63,7 +63,7 @@ public class CheckMKResultServiceImplTest extends BaseTest {
         doReturn(spoolDir).when(checkMKProperties).getSpoolDir();
         doReturn(freshness).when(checkMKProperties).getFreshness();
         doReturn(spoolFileNamePrefix).when(checkMKProperties).getSpoolFilePrefix();
-        assertEquals(testling.createSpoolFilePath().toString(), expectedFilePath);
+        assertEquals(testling.createSpoolFilePath(testSuite).toString(), expectedFilePath);
     }
 
 }

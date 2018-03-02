@@ -72,7 +72,7 @@ public class AbstractTemplateOutputBuilderTest extends BaseTest {
 
     @Test
     public void createModel() {
-        JtwigModel model = testling.createModel();
+        JtwigModel model = testling.createModel(testSuite);
         assertEquals(model.get("testsuite").get().getValue(), testSuite);
         assertEquals(model.get("sakuli").get().getValue(), sakuliProperties);
         assertEquals(model.get("checkmk").get().getValue(), checkMKProperties);

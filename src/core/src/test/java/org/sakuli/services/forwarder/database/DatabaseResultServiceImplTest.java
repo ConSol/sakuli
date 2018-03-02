@@ -63,9 +63,9 @@ public class DatabaseResultServiceImplTest {
     }
 
     @Test
-    public void testSaveResultsInDatabase() throws Exception {
+    public void testSaveResultsInDatabase() {
         when(testSuite.getTestCases()).thenReturn(null);
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
         verify(daoTestSuite).saveTestSuiteResult();
         verify(daoTestSuite).saveTestSuiteToSahiJobs();
         verify(daoTestCase, never()).saveTestCaseResult(any(TestCase.class));
@@ -73,14 +73,14 @@ public class DatabaseResultServiceImplTest {
     }
 
     @Test
-    public void testSaveResultsInDatabaseHandleException() throws Exception {
+    public void testSaveResultsInDatabaseHandleException() {
         doThrow(DataAccessException.class).when(daoTestSuite).saveTestSuiteResult();
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
         verify(exceptionHandler).handleException(any(SakuliForwarderException.class), anyBoolean());
     }
 
     @Test
-    public void testSaveResultsInDatabaseWithTestcases() throws Exception {
+    public void testSaveResultsInDatabaseWithTestcases() {
 
         Integer tcPrimaryKey = 22;
         TestCase tc1 = mock(TestCase.class);
@@ -98,9 +98,8 @@ public class DatabaseResultServiceImplTest {
 
         testSuite = new TestSuite();
         testSuite.setTestCases(testCaseMap);
-        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
 
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
 
         verify(daoTestSuite).saveTestSuiteResult();
         verify(daoTestSuite).saveTestSuiteToSahiJobs();

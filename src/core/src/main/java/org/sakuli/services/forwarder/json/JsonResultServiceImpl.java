@@ -18,7 +18,10 @@
 
 package org.sakuli.services.forwarder.json;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.common.AbstractResultService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,22 +57,25 @@ public class JsonResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults() {
-        try {
-            logger.info("======= WRITE TEST OUTPUT AS JSON FILE ======");
-            String output = outputBuilder.createOutput();
-            logger.debug(String.format("JSON Output:\n%s", output));
-            writeToFile(createJsonFilePath(), output);
-            logger.info("======= FINISHED: WRITE TEST OUTPUT AS JSON FILE ======");
-        } catch (SakuliForwarderException e) {
-            exceptionHandler.handleException(e, false);
+    public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
+        if (abstractTestDataEntity != null &&
+                TestSuite.class.isAssignableFrom(abstractTestDataEntity.getClass())) {
+            try {
+                logger.info("======= WRITE TEST OUTPUT AS JSON FILE ======");
+                String output = outputBuilder.createOutput();
+                logger.debug(String.format("JSON Output:\n%s", output));
+                writeToFile(createJsonFilePath(abstractTestDataEntity), output);
+                logger.info("======= FINISHED: WRITE TEST OUTPUT AS JSON FILE ======");
+            } catch (SakuliForwarderException e) {
+                exceptionHandler.handleException(e, false);
+            }
         }
     }
 
-    protected Path createJsonFilePath() throws SakuliForwarderException {
+    protected Path createJsonFilePath(AbstractTestDataEntity abstractTestDataEntity) throws SakuliForwarderException {
         Path outputDir = jsonProperties.getOutputJsonDir();
         createDirectoryIfNotExists(outputDir);
-        String fileName = testSuite.getId() +
+        String fileName = abstractTestDataEntity.getId() +
                 "_" +
                 JSON_FILE_DATE_FORMAT.format(new Date()) +
                 ".json";

@@ -18,6 +18,8 @@
 
 package org.sakuli.services.common;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.services.TeardownService;
 import org.slf4j.Logger;
@@ -49,9 +51,12 @@ public class LogCleanUpResultServiceImpl implements TeardownService {
     }
 
     @Override
-    public void triggerAction() {
-        if (Files.exists(sakuliProperties.getLogFolder())) {
-            cleanUpDirectory(sakuliProperties.getLogFolder());
+    public void triggerAction(AbstractTestDataEntity abstractTestDataEntity) {
+        if (abstractTestDataEntity != null &&
+                TestSuite.class.isAssignableFrom(abstractTestDataEntity.getClass())) {
+            if (Files.exists(sakuliProperties.getLogFolder())) {
+                cleanUpDirectory(sakuliProperties.getLogFolder());
+            }
         }
     }
 

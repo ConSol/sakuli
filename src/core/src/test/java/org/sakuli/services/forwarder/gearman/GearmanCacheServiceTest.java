@@ -28,7 +28,6 @@ import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.services.forwarder.MonitoringPropertiesTestHelper;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -51,19 +50,17 @@ public class GearmanCacheServiceTest extends BaseTest {
     private GearmanProperties gearmanProperties;
     @Mock
     private TestSuiteProperties testSuiteProperties;
-
-    @Mock
-    private TestSuite testSuite;
     @Mock
     private GearmanTemplateOutputBuilder outputBuilder;
     @InjectMocks
     private NagiosCheckResultBuilder checkResultBuilder;
+    private TestSuite testSuite;
 
     @BeforeMethod
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        ReflectionTestUtils.setField(checkResultBuilder, "testSuite", new TestSuiteExampleBuilder().buildExample());
-        when(outputBuilder.createOutput()).thenReturn("test_payload");
+        testSuite = new TestSuiteExampleBuilder().buildExample();
+        when(outputBuilder.createOutput(testSuite)).thenReturn("test_payload");
         MonitoringPropertiesTestHelper.initMock(gearmanProperties);
     }
 
@@ -76,7 +73,7 @@ public class GearmanCacheServiceTest extends BaseTest {
         testling.cacheResults(results);
         Assert.assertEquals(testling.getCachedResults().size(), 0L);
 
-        NagiosCheckResult newResult = checkResultBuilder.build();
+        NagiosCheckResult newResult = checkResultBuilder.build(testSuite);
         results.add(newResult);
 
         testling.cacheResults(results);
@@ -86,7 +83,7 @@ public class GearmanCacheServiceTest extends BaseTest {
         Assert.assertEquals(results.get(0).getUuid(), newResult.getUuid());
         Assert.assertEquals(results.get(0).getPayload().trim(), newResult.getPayload().trim());
 
-        NagiosCheckResult newResult2 = checkResultBuilder.build();
+        NagiosCheckResult newResult2 = checkResultBuilder.build(testSuite);
         results.add(newResult2);
 
         testling.cacheResults(results);
@@ -125,7 +122,7 @@ public class GearmanCacheServiceTest extends BaseTest {
             Assert.assertEquals(results.get(1).getUuid(), "example_xfce__2016_03_23_15_00_00_000");
             Assert.assertTrue(results.get(1).getPayload().contains("[OK] case \"case2\""));
 
-            NagiosCheckResult newResult = checkResultBuilder.build();
+            NagiosCheckResult newResult = checkResultBuilder.build(testSuite);
             results.add(0, newResult);
 
             testling.cacheResults(results);

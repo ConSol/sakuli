@@ -5,7 +5,6 @@ import org.joda.time.DateTime;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.sakuli.BaseTest;
 import org.sakuli.builder.TestCaseExampleBuilder;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
@@ -48,7 +47,6 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
     private SakuliExceptionHandler exceptionHandler;
     @Mock
     private GearmanProperties gearmanProperties;
-    @Spy
     private TestSuite testSuite = new TestSuite();
     @Mock
     private SakuliProperties sakuliProperties;
@@ -155,7 +153,7 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
                             )
                             .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestCaseState.OK.name()));
     }
 
@@ -235,7 +233,7 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
                         )
                         .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_STEP.name()));
     }
 
@@ -316,7 +314,7 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
                         )
                         .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_CASE.name()));
     }
 
@@ -397,7 +395,7 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
                         )
                         .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         String expected = loadExpectedOutput(TestSuiteState.CRITICAL_IN_CASE.name());
         Assert.assertEquals(output, expected);
         Assert.assertEquals(output.getBytes(), expected.getBytes());
@@ -480,7 +478,7 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
                         )
                         .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_SUITE.name()));
     }
 
@@ -561,7 +559,7 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
                         )
                         .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.CRITICAL_IN_SUITE.name()));
     }
 
@@ -648,7 +646,7 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
         screenshotDiv.setFormat("jpg");
         screenshotDiv.setBase64screenshot("/9j/4AAQSkZJRgABAgAAAQABAAD9k=");
         doReturn(screenshotDiv).when(screenshotDivConverter).convert(notNull(Throwable.class));
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.ERRORS.name()));
     }
 }

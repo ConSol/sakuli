@@ -18,6 +18,7 @@
 
 package org.sakuli.services.common;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.services.ResultService;
@@ -30,17 +31,10 @@ public abstract class AbstractResultService implements ResultService {
 
     @Autowired
     protected SakuliExceptionHandler exceptionHandler;
-    @Autowired
-    protected TestSuite testSuite;
 
     @Override
-    public void refreshStates() {
-        testSuite.refreshState();
-    }
-
-    @Override
-    public void triggerAction() {
-        this.refreshStates();
-        this.saveAllResults();
+    public void triggerAction(AbstractTestDataEntity abstractTestDataEntity) {
+        abstractTestDataEntity.refreshState();
+        this.saveAllResults(abstractTestDataEntity);
     }
 }

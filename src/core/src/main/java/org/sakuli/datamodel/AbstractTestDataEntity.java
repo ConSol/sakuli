@@ -256,6 +256,14 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return stout;
     }
 
+    /**
+     * @return a unique identifier for each execution of the test data entity
+     */
+    public String getGuid() {
+        Date guidDate = startDate != null ? startDate : new Date();
+        return id + "__" + GUID_DATE_FORMATE.format(guidDate);
+    }
+
     public S getState() {
         return state;
     }

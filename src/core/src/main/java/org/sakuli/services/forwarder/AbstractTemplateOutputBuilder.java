@@ -24,6 +24,7 @@ import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.jtwig.spaceless.SpacelessExtension;
 import org.jtwig.spaceless.configuration.SpacelessConfiguration;
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliForwarderException;
@@ -37,6 +38,7 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 
 /**
  * @author Georgi Todorov
@@ -59,13 +61,20 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
     public abstract String getConverterName();
 
     /**
+     * Returns a map of specific model objects based on the concrete template output builder.
+     *
+     * @return map with additional model objects
+     */
+    public abstract Map<String, Object> getSpecificModelEntities();
+
+    /**
      * Converts the current test suite to a string based on the template for the concrete converter.
      *
      * @return
      */
-    public String createOutput() throws SakuliForwarderException {
+    public String createOutput(AbstractTestDataEntity abstractTestDataEntity) throws SakuliForwarderException {
         try {
-            JtwigModel model = createModel();
+            JtwigModel model = createModel(abstractTestDataEntity);
             EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration()
                     .extensions()
                     .add(new SpacelessExtension(new SpacelessConfiguration(new LeadingWhitespaceRemover())))
@@ -93,10 +102,16 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
      *
      * @return
      */
-    protected JtwigModel createModel() {
-        return JtwigModel.newModel()
-                .with("testsuite", testSuite)
+    protected JtwigModel createModel(AbstractTestDataEntity abstractTestDataEntity) {
+        JtwigModel model = JtwigModel.newModel()
+                .with("testsuite", abstractTestDataEntity)
                 .with("sakuli", sakuliProperties);
+        if (getSpecificModelEntities() != null) {
+            getSpecificModelEntities().forEach((name,object)->{
+                model.with(name, object);
+            });
+        }
+        return model;
     }
 
     protected Path getTemplatePath() throws FileNotFoundException {
