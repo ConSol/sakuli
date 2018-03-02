@@ -63,7 +63,7 @@ public class TestCaseActionTest extends BaseTest {
     private Map<String, TestCase> testCases;
 
     @BeforeMethod
-    public void initMocks() throws Exception {
+    public void initMocks() {
         MockitoAnnotations.initMocks(this);
         sample = new TestCase("testling", "1234_");
         testCases = new HashMap<>();
@@ -134,7 +134,8 @@ public class TestCaseActionTest extends BaseTest {
                 "step for JUnit",
                 "" + (now - 3000),
                 "" + now,
-                2 //warning
+                2,
+                5
         );
         TestCaseStep step = testSuiteMock.getTestCases().get(sample.getId()).getSteps().get(0);
         assertNotNull(step);
@@ -147,7 +148,8 @@ public class TestCaseActionTest extends BaseTest {
                 "step2 for JUnit",
                 "" + (now + 300),
                 "" + (now + 4300),
-                5 //no warning
+                5,
+                6
         );
         TestCaseStep step2 = testSuiteMock.getTestCases().get(sample.getId()).getSteps().get(1);
         assertNotNull(step2);
@@ -177,7 +179,8 @@ public class TestCaseActionTest extends BaseTest {
                 "step for JUnit",
                 "" + (currentTime - 10000),
                 "" + currentTime,
-                9 //warning
+                9,
+                10
         );
 
         List<TestCaseStep> testCaseSteps = sample.getSteps();

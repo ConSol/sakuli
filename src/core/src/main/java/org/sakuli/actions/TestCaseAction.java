@@ -182,28 +182,28 @@ public class TestCaseAction {
     }
 
     /**
-     * Wrapper for {@link #addTestCaseStep(String, String, String, int)} with warningTime '0'.
+     * Wrapper for {@link #addTestCaseStep(String, String, String, int, int)} with warningTime '0'.
      */
     public void addTestCaseStep(String stepName, String startTime, String stopTime) throws SakuliException {
-        addTestCaseStep(stepName, startTime, stopTime, 0);
+        addTestCaseStep(stepName, startTime, stopTime, 0, 0);
     }
 
     /**
-     * Save a new step to a existing test case. Must be called before {@link #saveResult(String, String, String, String,
-     * String)}
+     * Save a new step to a existing test case. Must be called before {@link #saveResult(String, String, String, String, String)}
      *
      * @param stepName    name of this step
      * @param startTime   start time in milliseconds
      * @param stopTime    end time in milliseconds
      * @param warningTime warning threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
+     * @param criticalTime critical threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
      * @throws SakuliException
      */
     @LogToResult(message = "add a step to the current test case")
-    public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime) throws SakuliException {
+    public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime, int criticalTime) throws SakuliException {
         if (stepName == null || stepName.isEmpty() || stepName.equals("undefined")) {
             handleException("Please set a Name - all values of the test case step need to be set!");
         }
-        String errormsg = TestCaseStepHelper.checkWarningTime(warningTime, stepName);
+        String errormsg = TestDataEntityHelper.checkWarningAndCriticalTime(warningTime, criticalTime, String.format("TestCaseStep [name = %s]", stepName));
         if (errormsg != null) {
             handleException(errormsg);
         }
@@ -213,6 +213,7 @@ public class TestCaseAction {
             step.setStartDate(new Date(Long.parseLong(startTime)));
             step.setStopDate(new Date(Long.parseLong(stopTime)));
             step.setWarningTime(warningTime);
+            step.setCriticalTime(criticalTime);
 
             step.addActions(loader.getCurrentTestCase().getAndResetTestActions());
         } catch (NullPointerException | NumberFormatException e) {

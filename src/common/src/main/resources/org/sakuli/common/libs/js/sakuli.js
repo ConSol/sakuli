@@ -100,19 +100,21 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      * @param {String} stepName
      * @param {number} optWarningTime (optional) threshold in seconds, default = 0. If the threshold is set to 0,
      *                 the execution time will never exceed, so the state will be always OK!
+     * @param {number} optCriticalTime (optional) threshold in seconds, default = 0. If the threshold is set to 0,
+     *                 the execution time will never exceed, so the state will be always OK!
      * @memberOf TestCase
      * @method endOfStep
      */
-    that.endOfStep = function (stepName, optWarningTime) {
+    that.endOfStep = function (stepName, optWarningTime, optCriticalTime) {
         if (undefined == optWarningTime) {
             optWarningTime = 0;
         }
-        if (undefined == warningTime) {
-            warningTime = 0;
+        if (undefined == optCriticalTime) {
+            optCriticalTime = 0;
         }
         var currentTime = (new Date()).getTime();
         //call the backend
-        that.javaObject.addTestCaseStep(stepName, that.stepStartTime, currentTime, optWarningTime);
+        that.javaObject.addTestCaseStep(stepName, that.stepStartTime, currentTime, optWarningTime, optCriticalTime);
         //set stepstart for the next step
         that.stepStartTime = currentTime;
     };

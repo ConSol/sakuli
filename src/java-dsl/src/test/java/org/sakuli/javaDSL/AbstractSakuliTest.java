@@ -177,6 +177,7 @@ public abstract class AbstractSakuliTest {
         testCaseAction.addTestCaseStep("step " + counter,
                 String.valueOf(startTime.getMillis()),
                 String.valueOf(DateTime.now().getMillis()),
+                0,
                 0
         );
     }
@@ -249,4 +250,5 @@ public abstract class AbstractSakuliTest {
             ProcessHelper.killAll(browserProcessName);
         }
     }
+
 }
