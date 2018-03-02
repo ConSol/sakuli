@@ -3,7 +3,7 @@
 FROM openjdk:8-jre
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2018-03-01
+ENV REFRESHED_AT 2018-03-02
 
 #### currently not supported
 #LABEL io.k8s.description="Sakuli UI container for managing Sakuli tests" \
@@ -38,7 +38,7 @@ RUN $INST_SCRIPTS/sakuli_ui.sh
 
 #### configure startup
 ADD ./sakuli-ui/src/common/scripts/ $STARTUPDIR
-RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME $SAKULI_UI_INST_DIR
+RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
 
 ## Connection ports for Web Application:
 EXPOSE $HTTP_PORT

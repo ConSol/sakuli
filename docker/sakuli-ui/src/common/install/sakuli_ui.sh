@@ -15,4 +15,8 @@ mkdir -p "$dest"
 echo "DOWNLOAD URL: $LABS_URL"
 wget $LABS_URL
 unzip -j *.zip  '*/sakuli-ui-web.jar' -d "$dest/"
+
+echo "set correct permissions"
+$INST_SCRIPTS/set_user_permission.sh $dest
+
 rm -rf $tmpdir
