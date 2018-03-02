@@ -25,14 +25,15 @@ ENV HTTP_PORT=8080 \
     SAKULI_UI_DOCKER_USER_ID=1000 \
     SAKULI_ROOT_DIR=/opt/sakuli-ui-root
 
-# $INST_SCRIPTS is already set in FROM image
 ADD ./sakuli-ui/src/common/install/ $INST_SCRIPTS/
 RUN find $INST_SCRIPTS -name '*.sh' -exec chmod a+x {} +
 
+### Intsall basics for jvm & docker
+RUN $INST_SCRIPTS/add_jvm_options.sh
 RUN $INST_SCRIPTS/docker.sh
-#TODO TS add docker-compose
-#TODO TS add JAVA HEAP options
+RUN $INST_SCRIPTS/docker-compose.sh
 
+### Install Sakuli UI
 ARG SAKULI_VERSION=1.2.0-SNAPSHOT-308-sakuli-ui
 RUN $INST_SCRIPTS/sakuli_ui.sh
 
@@ -40,7 +41,7 @@ RUN $INST_SCRIPTS/sakuli_ui.sh
 ADD ./sakuli-ui/src/common/scripts/ $STARTUPDIR
 RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
 
-## Connection ports for Web Application:
+## Connection port for Web Application:
 EXPOSE $HTTP_PORT
 USER $SAKULI_UI_USER_ID
 
