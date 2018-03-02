@@ -40,6 +40,11 @@ public enum TestCaseState implements SakuliState {
     WARNING_IN_STEP(1, "warning in step"),
 
     /**
+     * value = 5
+     */
+    CRITICAL_IN_STEP(5, "critical in step"),
+
+    /**
      * value = 2
      */
     WARNING(2, "warning"),
@@ -74,11 +79,11 @@ public enum TestCaseState implements SakuliState {
 
     @Override
     public int getNagiosErrorCode() {
-        if (getOkCodes().contains(this)) {
+        if (isOk()) {
             return 0;
-        } else if (getWarningCodes().contains(this)) {
+        } else if (isWarning()) {
             return 1;
-        } else if (getCriticalCodes().contains(this)) {
+        } else if (isCritical()) {
             return 2;
         }
         return 3;
@@ -127,6 +132,6 @@ public enum TestCaseState implements SakuliState {
     }
 
     public List<TestCaseState> getCriticalCodes() {
-        return Arrays.asList(CRITICAL, ERRORS);
+        return Arrays.asList(CRITICAL, CRITICAL_IN_STEP, ERRORS);
     }
 }
