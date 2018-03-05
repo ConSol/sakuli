@@ -24,4 +24,4 @@ echo "export MAVEN_OPTS=-Dsakuli.version=$SAKULI_VERSION" >> $HOME/.bashrc
 echo 'echo MAVEN_OPTS=$MAVEN_OPTS' >> $HOME/.bashrc
 
 echo "set correct permissions"
-$INST_SCRIPTS/set_user_permission.sh $SAKULI_TEST_SUITE
+$INST_SCRIPTS/set_user_permission.sh $HOME $SAKULI_TEST_SUITE
