@@ -43,6 +43,6 @@ RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME
 
 ## Connection port for Web Application:
 EXPOSE $HTTP_PORT
-USER $SAKULI_UI_USER_ID
+USER $SAKULI_UI_DOCKER_USER_ID
 
 ENTRYPOINT ["/dockerstartup/startup.sh"]
