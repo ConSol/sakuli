@@ -28,11 +28,114 @@ If you have chosen the option "Sakuli UI" in the <<windows,Windows>>/<<linux,Lin
 . During the test execution the UI will show a web vnc view where you can watch running the test image:ui/ui-project-run-vnc.png[web vnc view of the sakuli container]
 . After test has been executed a summarizing report will show up image:ui/ui-project-report.png[sakuli test report]
 
+TIP: If you want to change e.g. the default password see <<sakuli-ui-configuration>>.
+
+//[[sakuli-ui-remote]]
+//=== Remote execution
+// TODO write how to use and run in a remote host
+
+
+[[sakuli-ui-containerized]]
+=== Containerized execution
+
+**Docker Image:** https://hub.docker.com/r/consol/sakuli-ui[`consol/sakuli-ui`]
+
+It's also possible to start the Sakuli UI completely container-based without installing anything before. Therefore the http://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci[docker-in-docker] approach will be used and you have to specify the following volume mappings:
+
+* *Docker socket:*  Socket of the Docker daemon, which is needed to enable the Sakuli UI container to start new containers by itself. Under linux normally: `/var/run/docker.sock`
+
+    --volume /var/run/docker.sock:/var/run/docker.sock
+
+* *Root context path of the host:* Specifies the root search point for all Sakuli test suites in the mounted filesystem. For example folder: `$HOME/sakuli-tests`
+
+    --volume $HOME/sakuli-tests:/opt/sakuli-ui-root
+
+IMPORTANT: Ensure that the container can *read and write* into the mounted volume! Maybe <<sakuli-ui-containerized-uid, use a different container user id>>.
+
+To start the Sakuli UI container just execute this `docker run` command:
+[source, bash]
+----
+ docker run -it -p 8080:8080 \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume $HOME/sakuli-tests:/opt/sakuli-ui-root \
+    consol/sakuli-ui
+----
+
+If you wan't to use your current folder as `<root-context-path>`, use `$(pwd)`:
+[source, bash]
+----
+docker run -it -p 8080:8080 \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume $(pwd):/opt/sakuli-ui-root \
+    consol/sakuli-ui
+----
+
+After the container startup  you can login via the URL: http://localhost:8080, default user `admin`, default password `sakuli` image:ui/ui-login.png[sakuli login mask]
+
+NOTE: If you are running the Docker daemon on remote machine or boot-to-docker replace `localhost` with `hostname` of the Docker daemon!
+
+[[sakuli-ui-containerized-configuration]]
+.Change Sakuli UI configuration
+If you wan't change the UI configuration through the <<sakuli-ui-configuration, Sakuli UI Properties>>, just add it to the `docker run` command as argument `-Dproperty-key=property-value`. For e.g. to change the password execute:
+
+
+[source, bash]
+----
+docker run -it -p 8080:8080 \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume $(pwd):/opt/sakuli-ui-root \
+    consol/sakuli-ui \
+    -Dsecurity.default-password=my-new-password
+----
+
+[[sakuli-ui-containerized-uid]]
+.Use different container user
+
+By default the container run with user id `1000`. If the local user of the host system is a different one (execute: `id -u`) you may have to change the user id:
+[source, bash]
+----
+docker run -it -p 8080:8080 \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume $(pwd):/opt/sakuli-ui-root \
+    --user $(id -u) \
+    consol/sakuli-ui
+----
+
+.Usage of docker-compose for test execution
+
+If you use the docker-compose option in the Sakuli UI to execute your test suite, you can't mount the volumes like in an normal docker environment. Through the http://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci[docker-in-docker] approach just mount the volumes from the Sakuli UI container it-self and they will be mounted at same path in sub-containers:
+
+.docker-compose.yaml (of test suite)
+[source, yml]
+----
+# Run test in Ubuntu/Firefox and mounted volumes by docker-in-docker
+sakuli_test_ubuntu_firefox:
+  image: consol/sakuli-ubuntu-xfce
+# REMOVE for docker-in-docker
+#   volumes:
+#   - .:/opt/test
+#
+# USE this for docker-in-docker!
+  volumes_from: <1>
+    - $HOSTNAME <2>
+  ports:
+  - 5911:5901
+  - 6911:6901
+  user: '1000'
+  command: run /opt/sakuli-ui-root/example_xfce <1>
+----
+
+<1> Through `volumes_from` the `<root-context-path>` will be mounted to same path in sub-containers
+<2> `$HOSTNAME` is equal to the docker-container-id (`docker ps -q`) in the inside of a container
+
+
 [[sakuli-ui-configuration]]
 === Sakuli UI Configuration
 To configure the Sakuli UI for your custom needs you can set following properties through the CLI
 
     sakuli ui <root-context-path> -D property-key=property-value
+
+IMPORTANT: For containerized execution see <<sakuli-ui-containerized-configuration, containerized UI configuration>>.
 
 .Sakuli UI Properties
 |===
@@ -71,12 +174,3 @@ To configure the Sakuli UI for your custom needs you can set following propertie
 | Change default log levels of Sakuli UI libraries
 
 |===
-
-//[[sakuli-ui-remote]]
-//=== Remote execution
-// TODO write how to use and run in a remote host
-//
-//[[sakuli-ui-containerized]]
-//=== Containerized execution
-//TODO write how to mount docker into container and how to use
-
