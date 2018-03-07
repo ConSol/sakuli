@@ -5,9 +5,9 @@
             EXCEPTION: {{ errorMessageCreator.exceptionMessageTestCase(testCase) }}
         {% else %}
             {% if (testCase.state.critical) %}
-                over runtime ( {{ format("%.2fs", testCase.duration) }}/crit at {{ testCase.criticalTime }}s)
+                over runtime ( {{ testCase.duration | number_format(2, '.') }}s/crit at {{ testCase.criticalTime }}s)
             {% else %}
-                over runtime ( {{ format("%.2fs", testCase.duration) }}/warn at {{ testCase.warningTime }}s)
+                over runtime ( {{ testCase.duration | number_format(2, '.') }}s/warn at {{ testCase.warningTime }}s)
             {% endif %}
         {% endif %}
     {% endif %}

@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Custom JtwigFunction for converting a date object into an unix timestamp.
@@ -52,7 +53,7 @@ public class UnixTimestampConverterFunction extends AbstractFunction {
         if (date == null) {
             return "-1";
         } else {
-            return String.format("%.3f", new BigDecimal(date.getTime()).divide(new BigDecimal(1000)));
+            return String.format(Locale.ENGLISH, "%.3f", new BigDecimal(date.getTime()).divide(new BigDecimal(1000)));
         }
     }
 

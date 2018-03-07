@@ -4,6 +4,6 @@
         EXCEPTION: {{ errorMessageCreator.exceptionMessage(testStep) }}
     {% elseif (testStep.state.warning) %}
         , step "{{ testStep.name }}"$whitespace$
-        over runtime ({{ format("%.2fs", testStep.duration) }}/warn at {{ testStep.warningTime }}s)
+        over runtime ({{ testStep.duration | number_format(2, '.') }}s/warn at {{ testStep.warningTime }}s)
     {% endif %}
 {% endfor %}

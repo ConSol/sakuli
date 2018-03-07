@@ -21,7 +21,7 @@ package org.sakuli.services.forwarder.configuration;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 
 import static org.testng.Assert.assertEquals;
@@ -33,18 +33,18 @@ public class UnixTimestampConverterFunctionTest {
 
     @DataProvider
     public Object[][] convertToUnixTimestampDP() {
-        return new Object[][] {
-                { new Date(1519377570), "1519377.570"},
-                { new Date(1519377000), "1519377.000"},
-                { new Date(1519000000), "1519000.000"},
-                { new Date(1519377999), "1519377.999"},
+        return new Object[][]{
+                {new Date(1519377570), "1519377.570"},
+                {new Date(1519377000), "1519377.000"},
+                {new Date(1519000000), "1519000.000"},
+                {new Date(1519377999), "1519377.999"},
         };
     }
 
     @Test(dataProvider = "convertToUnixTimestampDP")
     public void convertToUnixTimestamp(Date date, String expectedUnixTimestamp) {
         UnixTimestampConverterFunction utcf = new UnixTimestampConverterFunction();
-        assertEquals(utcf.execute(Arrays.asList(date)), expectedUnixTimestamp);
+        assertEquals(utcf.execute(Collections.singletonList(date)), expectedUnixTimestamp);
     }
 
 }
