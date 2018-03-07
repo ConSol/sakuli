@@ -48,8 +48,7 @@ public class GetOutputStateFunction extends AbstractFunction {
 
     @Override
     protected Object execute(List<Object> arguments) {
-        SakuliState sakuliState = (SakuliState) arguments.get(0);
-        return OutputState.lookupSakuliState(sakuliState);
+        return OutputState.lookupSakuliState((SakuliState) arguments.get(0));
     }
 
 }

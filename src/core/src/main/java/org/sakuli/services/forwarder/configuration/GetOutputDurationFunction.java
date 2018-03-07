@@ -53,7 +53,7 @@ public class GetOutputDurationFunction extends AbstractFunction {
     @Override
     protected Object execute(List<Object> arguments) {
         AbstractTestDataEntity testDataEntity = (AbstractTestDataEntity) arguments.get(0);
-        if (testDataEntity.getState().isError() || testDataEntity.getDuration() < 0) {
+        if (testDataEntity == null || testDataEntity.getState().isError() || testDataEntity.getDuration() < 0) {
             return UNKNOWN_DURATION;
         }
         return String.format(Locale.ENGLISH, "%.2fs", testDataEntity.getDuration());

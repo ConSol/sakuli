@@ -19,10 +19,7 @@
 package org.sakuli.services.forwarder.configuration;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * Custom JtwigFunction for converting a date object into an unix timestamp.
@@ -48,13 +45,9 @@ public class UnixTimestampConverterFunction extends AbstractFunction {
 
     @Override
     protected Object execute(List<Object> arguments) {
-        Date date = (Date) arguments.get(0);
-
-        if (date == null) {
-            return "-1";
-        } else {
-            return String.format(Locale.ENGLISH, "%.3f", new BigDecimal(date.getTime()).divide(new BigDecimal(1000)));
-        }
+        return Optional.ofNullable((Date) arguments.get(0))
+                .map(date -> String.format(Locale.ENGLISH, "%.3f", new BigDecimal(date.getTime()).divide(new BigDecimal(1000))))
+                .orElse("-1");
     }
 
 }

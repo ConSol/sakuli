@@ -31,7 +31,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author tschneck
- *         Date: 10.07.14
+ * Date: 10.07.14
  */
 @ProfileGearman
 @Component
@@ -47,12 +47,10 @@ public class NagiosCheckResultBuilder {
     private GearmanTemplateOutputBuilder outputBuilder;
 
     public NagiosCheckResult build() throws SakuliForwarderException {
-        String queueName = gearmanProperties.getServerQueue();
-        String uuid = testSuite.getGuid();
         logger.info("======= CREATING OUTPUT FOR GEARMAN ======");
         String payload = outputBuilder.createOutput();
         logger.info("======= FINISHED: CREATING OUTPUT FOR GEARMAN ======");
-        return new NagiosCheckResult(queueName, uuid, payload);
+        return new NagiosCheckResult(gearmanProperties.getServerQueue(), testSuite.getGuid(), payload);
     }
 
 }

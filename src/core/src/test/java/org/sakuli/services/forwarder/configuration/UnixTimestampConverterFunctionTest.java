@@ -38,6 +38,7 @@ public class UnixTimestampConverterFunctionTest {
                 {new Date(1519377000), "1519377.000"},
                 {new Date(1519000000), "1519000.000"},
                 {new Date(1519377999), "1519377.999"},
+                {null, "-1"},
         };
     }
 

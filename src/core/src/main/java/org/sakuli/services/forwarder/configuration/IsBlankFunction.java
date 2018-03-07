@@ -47,8 +47,7 @@ public class IsBlankFunction extends AbstractFunction {
 
     @Override
     protected Object execute(List<Object> arguments) {
-        String toCheck = (String) arguments.get(0);
-        return StringUtils.isBlank(toCheck);
+        return StringUtils.isBlank((String) arguments.get(0));
     }
 
 }

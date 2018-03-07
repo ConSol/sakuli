@@ -26,7 +26,7 @@ public class NagiosCheckResult {
 
     private final String uuid;
     private final String queueName;
-    private String payload;
+    private final String payload;
 
     public NagiosCheckResult(String queueName, String uuid, String payload) {
         this.queueName = queueName;

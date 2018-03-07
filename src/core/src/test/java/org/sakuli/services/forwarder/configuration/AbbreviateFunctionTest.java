@@ -46,6 +46,8 @@ public class AbbreviateFunctionTest {
                 { "       abc ", 4, true, "abc "},
                 { "\t\t\t\n\nabc ", 4, true, "abc "},
                 { "   abc  ", 4, true, "a..."},
+                {"   abc  ", 7, false, "   a..."},
+                {"   abc  ", 7, null, "   a..."},
         };
     }
 

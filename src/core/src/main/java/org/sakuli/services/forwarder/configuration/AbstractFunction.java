@@ -22,6 +22,7 @@ import org.jtwig.functions.FunctionRequest;
 import org.jtwig.functions.SimpleJtwigFunction;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This class defines an abstract jtwig function, which has to be used as base for all other custom funcitons.
@@ -31,7 +32,9 @@ import java.util.List;
 public abstract class AbstractFunction extends SimpleJtwigFunction {
 
     protected abstract int getExpectedNumberOfArguments();
+
     protected abstract List<Class> getExpectedArgumentTypes();
+
     protected abstract Object execute(List<Object> arguments);
 
     @Override
@@ -42,6 +45,7 @@ public abstract class AbstractFunction extends SimpleJtwigFunction {
 
     /**
      * Verifies the number and the types of the function arguments.
+     *
      * @param request
      * @param expectedNumberOfArguments
      * @param expectedArgumentTypes
@@ -54,16 +58,19 @@ public abstract class AbstractFunction extends SimpleJtwigFunction {
             );
         }
         for (int i = 0; i < request.getNumberOfArguments(); i++) {
-            Object argument = request.getArguments().get(i);
-            Class expectedArgumentType = expectedArgumentTypes.get(i);
-            if (argument != null && !expectedArgumentType.isAssignableFrom(argument.getClass())) {
-                throw new IllegalArgumentException(
-                        String.format("Wrong argument type for function '%s' provided. Expected: '%s', actual: '%s'.",
-                                name(), expectedArgumentType, argument.getClass())
-                );
-            }
+            final int argPos = i;
+            final Class expectedClassDef = expectedArgumentTypes.get(argPos);
 
+            Optional.ofNullable(request.getArguments().get(argPos))
+                    .map(Object::getClass)
+                    .filter(c -> !expectedClassDef.isAssignableFrom(c))
+                    .ifPresent(c -> {
+                        throw new IllegalArgumentException(
+                                String.format("Wrong %s. argument type for function '%s' provided. Expected: '%s', actual: '%s'.",
+                                        (argPos + 1), name(), expectedClassDef, c));
+                    });
         }
     }
-
 }
+
+
