@@ -1,9 +1,7 @@
-{% for testStep in testCase.stepsAsSortedSet %}
-    {% if (testStep.state.error) %}
-        , step "{{ testStep.name }}"$whitespace$
-        EXCEPTION: {{ errorMessageCreator.exceptionMessage(testStep) }}
-    {% elseif (testStep.state.warning) %}
-        , step "{{ testStep.name }}"$whitespace$
-        over runtime ({{ format("%.2fs", testStep.duration) }}/warn at {{ testStep.warningTime }}s)
-    {% endif %}
-{% endfor %}
+{% if (testStep.state.error) %}
+    , step "{{ testStep.id }}"$whitespace$
+    EXCEPTION: {{ errorMessageCreator.exceptionMessage(testStep) }}
+{% elseif (testStep.state.warning) %}
+    , step "{{ testStep.id }}"$whitespace$
+    over runtime ({{ format("%.2fs", testStep.duration) }}/warn at {{ testStep.warningTime }}s)
+{% endif %}

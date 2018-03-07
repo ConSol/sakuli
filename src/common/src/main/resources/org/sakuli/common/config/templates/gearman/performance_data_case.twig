@@ -1,0 +1,10 @@
+{# This template renders the performance data for a specific test case. #}
+c_{{ testCaseIndex }}__state={{getOutputState(testCase.state).errorCode}};;;;
+$whitespace$c_{{ testCaseIndex }}__warning={{ testCase.warningTime }}s;;;;
+$whitespace$c_{{ testCaseIndex }}__critical={{ testCase.criticalTime }}s;;;;
+$whitespace$c_{{ testCaseIndex }}_{{ testCase.id }}={{getOutputDuration(testCase)}};{{ testCase.warningTime }};{{ testCase.criticalTime }};;
+{% for testStep in testCase.steps %}
+    {% set testStepIndex = format("%03d", loop.index) %}
+    $whitespace$
+    {% include 'performance_data_step.twig' with { testCaseIndex: testCaseIndex, testStepIndex: testStepIndex, testStep: testStep } %}
+{% endfor %}

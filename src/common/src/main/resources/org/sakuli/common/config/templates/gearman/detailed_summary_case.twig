@@ -1,0 +1,65 @@
+{# This template renders the detailed summary for the current test case. #}
+{% include 'detailed_summary_css_styles.twig' %}
+<table style="border-collapse: collapse;">
+    <tr valign="top">
+        <td class="service{{ getOutputState(testDataEntity.state) }}">
+            {{ getOutputState(testDataEntity.state).shortState }} Sakuli suite "{{ testDataEntity.id }}"$whitespace$
+            {% if (testDataEntity.state.error) %}
+            {% else %}
+                {{ testDataEntity.state.nagiosStateDescription }}$whitespace$
+            {% endif %}
+            {% if (testDataEntity.state.ok) %}
+                ({{ format("%.2fs", testDataEntity.duration) }})$whitespace$
+            {% elseif (testDataEntity.state.name == 'WARNING') %}
+                ({{ format("%.2fs", testDataEntity.duration) }}/warn at {{ testDataEntity.warningTime }}s)$whitespace$
+            {% elseif (testDataEntity.state.name == 'CRITICAL') %}
+                ({{ format("%.2fs", testDataEntity.duration) }}/crit at {{ testDataEntity.criticalTime }}s)$whitespace$
+            {% elseif (testDataEntity.state.name == 'WARNING_IN_STEP') %}
+                {% for testStep in testDataEntity.steps %}
+                    {% if (testStep.state.warning) %}
+                        , step "{{testStep.id}}" over runtime ({{ format("%.2fs", testStep.duration) }}/warn at {{ testStep.warningTime }}s)
+                    {% endif %}
+                {% endfor %}
+            {% elseif (testDataEntity.state.name == 'CRITICAL_IN_STEP') %}
+                {% for testStep in testDataEntity.steps %}
+                    {% if (testStep.state.warning) %}
+                        , step "{{testStep.id}}" over runtime ({{ format("%.2fs", testStep.duration) }}/crit at {{ testStep.criticalTime }}s)
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% if (testDataEntity.state.error) %}
+                ({{ format("%.2fs", testDataEntity.duration) }})$whitespace$
+                {{ testDataEntity.state.nagiosStateDescription }}:$whitespace$
+                {{ errorMessageCreator.exceptionMessagetestDataEntity(testDataEntity) }}.$whitespace$
+            {% endif %}
+            . (Last suite run:$whitespace$
+            {% if (empty(testDataEntity.stopDate)) %}
+            xx
+            {% else %}
+                {{ testDataEntity.stopDate|date("dd.MM.YY HH:mm:ss") }}
+            {% endif %})
+            {% include 'exception_screenshot.twig' with { testDataEntity: testDataEntity } %}
+        </td>
+    </tr>
+    {% for testStep in testDataEntity.stepsAsSortedSet %}
+        <tr valign="top">
+            <td class="service{{ getOutputState(testStep.state) }}">
+                {{ getOutputState(testStep.state).shortState }} case "{{ testStep.id }}"$whitespace$
+                {% if (testStep.state.ok) %}
+                    ran in {{ format("%.2fs", testStep.duration) }} - {{ testStep.state.nagiosStateDescription }}
+                {% elseif (testStep.state.warning) %}
+                    over runtime ({{ format("%.2fs", testStep.duration) }}/warn at {{ testStep.warningTime }}s)
+                    $whitespace$
+                {% elseif (testStep.state.critical) %}
+                    {% set errorMessage = errorMessageCreator.exceptionMessageTestCase(testStep) %}
+                    {% if (empty(errorMessage)) %}
+                        over runtime ({{ format("%.2fs", testStep.duration) }}/crit at {{ testStep.criticalTime }}s)
+                    {% else %}
+                        EXCEPTION: {{ errorMessageCreator.exceptionMessageTestCase(testStep) }}
+                        {% include 'exception_screenshot.twig' with { testDataEntity: testStep } %}
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>

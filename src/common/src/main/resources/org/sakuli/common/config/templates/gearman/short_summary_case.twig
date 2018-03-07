@@ -1,0 +1,22 @@
+{# This template renders the short summary for the specified test case. #}
+{{ getOutputState(testCase.state).shortState }} Sakuli suite "{{testCase.id}}"$whitespace$
+{% if (testCase.state.error) %}
+    {% set exceptionMessages = errorMessageCreator.exceptionMessageTestCase(testCase) %}
+    ({{ format("%.2fs", testCase.duration) }}) {{testCase.state.nagiosStateDescription}}: {{abbreviate(exceptionMessages, 200, true)}}
+{% else %}
+    {{testCase.state.nagiosStateDescription}}
+    {% if (testCase.state.ok) %}
+        $whitespace$({{ format("%.2fs", testCase.duration) }})
+    {% elseif (testCase.state.name == 'WARNING') %}
+        $whitespace$ case "{{testCase.id}}" over runtime ({{ format("%.2fs", testCase.duration) }}/warn at {{ testCase.warningTime }}s)
+    {% elseif (testCase.state.name == 'CRITICAL') %}
+        $whitespace$ case "{{testCase.id}}" over runtime ({{ format("%.2fs", testCase.duration) }}/crit at {{ testCase.criticalTime }}s)
+    {% elseif (testCase.state.name == 'WARNING_IN_STEP') %}
+        {% for testStep in testCase.steps %}
+            {% if (testStep.state.warning) %}
+                , step "{{testStep.id}}" over runtime ({{ format("%.2fs", testStep.duration) }}/warn at {{ testStep.warningTime }}s)
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    .$whitespace$(Last suite run: {% if (empty(testCase.stopDate)) %}xx{% else %}{{ testCase.stopDate|date("dd.MM.YY HH:mm:ss") }}{% endif %})
+{% endif %}

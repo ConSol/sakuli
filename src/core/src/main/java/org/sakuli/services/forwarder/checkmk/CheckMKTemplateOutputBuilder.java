@@ -19,6 +19,7 @@
 package org.sakuli.services.forwarder.checkmk;
 
 import org.sakuli.services.forwarder.AbstractTemplateOutputBuilder;
+import org.sakuli.services.forwarder.configuration.TemplateModelEntityName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,10 +43,10 @@ public class CheckMKTemplateOutputBuilder extends AbstractTemplateOutputBuilder 
     }
 
     @Override
-    public Map<String, Object> getSpecificModelEntities() {
-        return Collections.unmodifiableMap(new HashMap<String, Object>() {
+    public Map<TemplateModelEntityName, Object> getSpecificModelEntities() {
+        return Collections.unmodifiableMap(new HashMap<TemplateModelEntityName, Object>() {
             {
-                put("checkmk", checkMKProperties);
+                put(TemplateModelEntityName.CHECK_MK_PROPERTIES, checkMKProperties);
             }
         });
     }

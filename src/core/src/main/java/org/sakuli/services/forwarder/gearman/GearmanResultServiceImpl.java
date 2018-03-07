@@ -23,9 +23,7 @@ import org.gearman.client.*;
 import org.gearman.common.GearmanJobServerConnection;
 import org.gearman.common.GearmanNIOJobServerConnection;
 import org.sakuli.datamodel.AbstractTestDataEntity;
-import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliForwarderException;
-import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.common.AbstractResultService;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
 import org.sakuli.services.forwarder.gearman.crypt.Aes;
@@ -178,7 +176,6 @@ public class GearmanResultServiceImpl extends AbstractResultService {
     protected GearmanJobServerConnection getGearmanConnection(String hostname, int port) {
         return new GearmanNIOJobServerConnection(hostname, port);
     }
-
 
     protected GearmanClient getGearmanClient() {
         return new GearmanClientImpl();

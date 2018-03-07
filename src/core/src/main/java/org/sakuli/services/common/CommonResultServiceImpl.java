@@ -21,7 +21,6 @@ package org.sakuli.services.common;
 import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.utils.CleanUpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -18,11 +18,15 @@
 
 package org.sakuli.services.forwarder.gearman;
 
+import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestSuite;
+import org.sakuli.loader.BaseActionLoader;
+import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.forwarder.AbstractTemplateOutputBuilder;
+import org.sakuli.services.forwarder.configuration.TemplateModelEntityName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,12 +46,28 @@ public class GearmanTemplateOutputBuilder extends AbstractTemplateOutputBuilder 
     }
 
     @Override
-    public Map<String, Object> getSpecificModelEntities() {
-        return Collections.unmodifiableMap(new HashMap<String, Object>() {
-            {
-                put("gearman", gearmanProperties);
-            }
-        });
+    public Map<TemplateModelEntityName, Object> getSpecificModelEntities() {
+        Map modelEntitiesMap = new HashMap<TemplateModelEntityName, Object>();
+        modelEntitiesMap.put(TemplateModelEntityName.GEARMAN_PROPERTIES, gearmanProperties);
+        TestSuite testSuite = getCurrentTestSuite();
+        if (testSuite != null) {
+            modelEntitiesMap.put(TemplateModelEntityName.TEST_SUITE_ID, testSuite.getId());
+        }
+        TestCase currentTestCase = getCurrentTestCase();
+        if (currentTestCase != null) {
+            modelEntitiesMap.put(TemplateModelEntityName.TEST_CASE_ID, currentTestCase.getId());
+        }
+        return modelEntitiesMap;
+    }
+
+    protected TestSuite getCurrentTestSuite() {
+        BaseActionLoader baseActionLoader = BeanLoader.loadBaseActionLoader();
+        return baseActionLoader.getTestSuite();
+    }
+
+    protected TestCase getCurrentTestCase() {
+        BaseActionLoader baseActionLoader = BeanLoader.loadBaseActionLoader();
+        return baseActionLoader.getCurrentTestCase();
     }
 
 }

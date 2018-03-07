@@ -41,6 +41,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.mockito.Mockito.doReturn;
+import static org.sakuli.services.forwarder.configuration.TemplateModelEntityName.*;
 import static org.testng.Assert.assertEquals;
 
 /**
@@ -73,9 +74,9 @@ public class AbstractTemplateOutputBuilderTest extends BaseTest {
     @Test
     public void createModel() {
         JtwigModel model = testling.createModel(testSuite);
-        assertEquals(model.get("testsuite").get().getValue(), testSuite);
-        assertEquals(model.get("sakuli").get().getValue(), sakuliProperties);
-        assertEquals(model.get("checkmk").get().getValue(), checkMKProperties);
+        assertEquals(model.get(TEST_DATA_ENTITY.getName()).get().getValue(), testSuite);
+        assertEquals(model.get(SAKULI_PROPERTIES.getName()).get().getValue(), sakuliProperties);
+        assertEquals(model.get(CHECK_MK_PROPERTIES.getName()).get().getValue(), checkMKProperties);
     }
 
     @DataProvider

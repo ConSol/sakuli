@@ -52,7 +52,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
      */
     protected int dbPrimaryKey = -1;
     /**
-     * needed to be set to -1, so the function {@link org.sakuli.actions.TestCaseAction#addTestCaseStep(String, String, String, int)}
+     * needed to be set to -1, so the function {@link org.sakuli.actions.TestCaseAction#addTestCaseStep(String, String, String, int, int, boolean)}
      * can check if the method {@link org.sakuli.actions.TestCaseAction#initWarningAndCritical(int, int)}
      * have been called at the beginning of this test case.
      */

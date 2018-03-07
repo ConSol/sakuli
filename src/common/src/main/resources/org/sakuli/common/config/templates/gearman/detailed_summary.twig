@@ -1,78 +1,8 @@
-{# This template renders the detailed summary for the current test suite. #}
-{% include 'detailed_summary_css_styles.twig' %}
-<table style="border-collapse: collapse;">
-    <tr valign="top">
-        <td class="service{{ getOutputState(testsuite.state) }}">
-            {{ getOutputState(testsuite.state).shortState }} Sakuli suite "{{ testsuite.id }}"$whitespace$
-            {% if (testsuite.state.error) %}
-            {% else %}
-                {{ testsuite.state.nagiosStateDescription }}$whitespace$
-            {% endif %}
-            {% if (testsuite.state.ok) %}
-                ({{ format("%.2fs", testsuite.duration) }})$whitespace$
-            {% elseif (testsuite.state.name == 'WARNING_IN_SUITE') %}
-                ({{ format("%.2fs", testsuite.duration) }}/warn at {{ testsuite.warningTime }}s)$whitespace$
-            {% elseif (testsuite.state.name == 'CRITICAL_IN_SUITE') %}
-                ({{ format("%.2fs", testsuite.duration) }}/crit at {{ testsuite.criticalTime }}s)$whitespace$
-            {% elseif (testsuite.state.name == 'WARNING_IN_STEP') %}
-                {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
-                    {% if (testCase.state.warningInStep) %}
-                        {% for testStep in testCase.steps %}
-                            {% if (testStep.state.warning) %}
-                                , step "{{testStep.id}}" over runtime ({{ format("%.2fs", testStep.duration) }}/warn at {{ testStep.warningTime }}s)
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            {% elseif (testsuite.state.name == 'WARNING_IN_CASE') %}
-                {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
-                    {% if (testCase.state.warning) %}
-                        , case "{{testCase.id}}" over runtime ({{ format("%.2fs", testCase.duration) }}/warn at {{ testCase.warningTime }}s)
-                    {% endif %}
-                {% endfor %}
-            {% elseif (testsuite.state.name == 'CRITICAL_IN_CASE') %}
-                {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
-                    {% if (testCase.state.critical) %}
-                        , case "{{testCase.id}}" over runtime ({{ format("%.2fs", testCase.duration) }}/crit at {{ testCase.criticalTime }}s)
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-            {% if (testsuite.state.error) %}
-                ({{ format("%.2fs", testsuite.duration) }})$whitespace$
-                {{ testsuite.state.nagiosStateDescription }}:$whitespace$
-                {{ errorMessageCreator.exceptionMessageTestSuite(testsuite) }}.$whitespace$
-            {% endif %}
-            . (Last suite run:$whitespace$
-            {% if (empty(testsuite.stopDate)) %}
-            xx
-            {% else %}
-                {{ testsuite.stopDate|date("dd.MM.YY HH:mm:ss") }}
-            {% endif %})
-            {% include 'exception_screenshot.twig' with { testDataEntity: testsuite } %}
-        </td>
-    </tr>
-    {% for testCase in testsuite.testCasesAsSortedSet %}
-        <tr valign="top">
-            <td class="service{{ getOutputState(testCase.state) }}">
-                {{ getOutputState(testCase.state).shortState }} case "{{ testCase.id }}"$whitespace$
-                {% if (testCase.state.ok) %}
-                    ran in {{ format("%.2fs", testCase.duration) }} - {{ testCase.state.nagiosStateDescription }}
-                {% elseif (testCase.state.warning) %}
-                    over runtime ({{ format("%.2fs", testCase.duration) }}/warn at {{ testCase.warningTime }}s)
-                    {% include 'step_information.twig' with { testCase: testCase } %}$whitespace$
-                {% elseif (testCase.state.critical) %}
-                    {% set errorMessage = errorMessageCreator.exceptionMessageTestCase(testCase) %}
-                    {% if (empty(errorMessage)) %}
-                        over runtime ({{ format("%.2fs", testCase.duration) }}/crit at {{ testCase.criticalTime }}s)
-                    {% else %}
-                        EXCEPTION: {{ errorMessageCreator.exceptionMessageTestCase(testCase) }}
-                        {% include 'exception_screenshot.twig' with { testDataEntity: testCase } %}
-                        {% for testStep in testCase.stepsAsSortedSet %}
-                            {% include 'exception_screenshot.twig' with { testDataEntity: testStep } %}
-                        {% endfor %}
-                    {% endif %}
-                {% endif %}
-            </td>
-        </tr>
-    {% endfor %}
-</table>
+{% set testDataEntityType = getTestDataEntityType(testDataEntity) %}
+{% if ('TestSuite' == testDataEntityType) %}
+    {% include 'detailed_summary_suite.twig' with { testsuite: testDataEntity} %}
+{% elseif ('TestCase' == testDataEntityType) %}
+    {% include 'detailed_summary_case.twig' with { testCase: testDataEntity } %}
+{% elseif ('TestCaseStep' == testDataEntityType) %}
+    {% include 'detailed_summary_step.twig' with { testStep: testDataEntity } %}
+{% endif %}

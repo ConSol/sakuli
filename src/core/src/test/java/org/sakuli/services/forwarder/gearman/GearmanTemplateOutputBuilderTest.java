@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.sakuli.BaseTest;
 import org.sakuli.builder.TestCaseExampleBuilder;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
@@ -34,12 +35,13 @@ import static org.mockito.Mockito.doReturn;
  */
 public class GearmanTemplateOutputBuilderTest extends BaseTest {
 
-    private static final String DEFAULT_SERVICE_DESCRIPTION = "service_description";
+    private static final String TESTSUITE_ID = "example_xfce";
     private static final String DEFAULT_SERVICE_TYPE = "passive";
     private static final String DEFAULT_NAGIOS_HOST = "my.nagios.host";
     private static final String DEFAULT_NAGIOS_CHECK_COMMMAND = "check_sakuli";
 
     @InjectMocks
+    @Spy
     private GearmanTemplateOutputBuilder testling;
     @Mock
     private ScreenshotDivConverter screenshotDivConverter;
@@ -55,13 +57,15 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         doReturn(getTemplatePath()).when(sakuliProperties).getForwarderTemplateFolder();
-        doReturn(DEFAULT_SERVICE_DESCRIPTION).when(gearmanProperties).getNagiosServiceDescription();
+        doReturn(TESTSUITE_ID).when(gearmanProperties).getNagiosServiceDescription();
         doReturn(DEFAULT_SERVICE_TYPE).when(gearmanProperties).getServiceType();
         doReturn(DEFAULT_NAGIOS_HOST).when(gearmanProperties).getNagiosHost();
         doReturn(DEFAULT_NAGIOS_CHECK_COMMMAND).when(gearmanProperties).getNagiosCheckCommand();
 
-        testSuite.setId("example_xfce");
+        testSuite.setId(TESTSUITE_ID);
         testSuite.setTestCases(null);
+        doReturn(testSuite).when(testling).getCurrentTestSuite();
+        doReturn(null).when(testling).getCurrentTestCase();
     }
 
     private String getTemplatePath() {
@@ -74,7 +78,7 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
     }
 
     private String loadExpectedOutput(String testCaseName) throws IOException {
-        return FileUtils.readFileToString(Paths.get(getOutputPath() + File.separator + "TestCase_" + testCaseName + ".txt").toFile());
+        return FileUtils.readFileToString(Paths.get(getOutputPath() + File.separator + "TestSuite_" + testCaseName + ".txt").toFile());
     }
 
     @Test

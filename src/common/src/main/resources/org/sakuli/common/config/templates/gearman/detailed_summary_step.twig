@@ -1,0 +1,32 @@
+{# This template renders the detailed summary for the current test step. #}
+{% include 'detailed_summary_css_styles.twig' %}
+<table style="border-collapse: collapse;">
+    <tr valign="top">
+        <td class="service{{ getOutputState(testDataEntity.state) }}">
+            {{ getOutputState(testDataEntity.state).shortState }} Sakuli suite "{{ testDataEntity.id }}"$whitespace$
+            {% if (testDataEntity.state.error) %}
+            {% else %}
+                {{ testDataEntity.state.nagiosStateDescription }}$whitespace$
+            {% endif %}
+            {% if (testDataEntity.state.ok) %}
+                ({{ format("%.2fs", testDataEntity.duration) }})$whitespace$
+            {% elseif (testDataEntity.state.name == 'WARNING') %}
+                ({{ format("%.2fs", testDataEntity.duration) }}/warn at {{ testDataEntity.warningTime }}s)$whitespace$
+            {% elseif (testDataEntity.state.name == 'CRITICAL') %}
+                ({{ format("%.2fs", testDataEntity.duration) }}/crit at {{ testDataEntity.criticalTime }}s)$whitespace$
+            {% endif %}
+            {% if (testDataEntity.state.error) %}
+                ({{ format("%.2fs", testDataEntity.duration) }})$whitespace$
+                {{ testDataEntity.state.nagiosStateDescription }}:$whitespace$
+                {{ errorMessageCreator.exceptionMessagetestDataEntity(testDataEntity) }}.$whitespace$
+            {% endif %}
+            . (Last suite run:$whitespace$
+            {% if (empty(testDataEntity.stopDate)) %}
+            xx
+            {% else %}
+                {{ testDataEntity.stopDate|date("dd.MM.YY HH:mm:ss") }}
+            {% endif %})
+            {% include 'exception_screenshot.twig' with { testDataEntity: testDataEntity } %}
+        </td>
+    </tr>
+</table>

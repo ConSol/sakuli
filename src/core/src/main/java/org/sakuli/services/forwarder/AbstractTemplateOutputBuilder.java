@@ -40,6 +40,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
+import static org.sakuli.services.forwarder.configuration.TemplateModelEntityName.SAKULI_PROPERTIES;
+import static org.sakuli.services.forwarder.configuration.TemplateModelEntityName.TEST_DATA_ENTITY;
+
 /**
  * @author Georgi Todorov
  */
@@ -65,12 +68,13 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
      *
      * @return map with additional model objects
      */
-    public abstract Map<String, Object> getSpecificModelEntities();
+    public abstract Map<TemplateModelEntityName, Object> getSpecificModelEntities();
 
     /**
-     * Converts the current test suite to a string based on the template for the concrete converter.
+     * Converts the current test data entity to a string based on the template for the concrete converter.
      *
-     * @return
+     * @param abstractTestDataEntity Test data entity, which has to be converted
+     * @return A string representation of the provided test data entity
      */
     public String createOutput(AbstractTestDataEntity abstractTestDataEntity) throws SakuliForwarderException {
         try {
@@ -86,6 +90,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                     .add(new ExtractScreenshotFunction(screenshotDivConverter))
                     .add(new AbbreviateFunction())
                     .add(new UnixTimestampConverterFunction())
+                    .add(new GetTestDataEntityTypeFunction())
                     .and()
                     .build();
             JtwigTemplate template = JtwigTemplate.fileTemplate(getTemplatePath().toFile(), configuration);
@@ -104,11 +109,11 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
      */
     protected JtwigModel createModel(AbstractTestDataEntity abstractTestDataEntity) {
         JtwigModel model = JtwigModel.newModel()
-                .with("testsuite", abstractTestDataEntity)
-                .with("sakuli", sakuliProperties);
+                .with(TEST_DATA_ENTITY.getName(), abstractTestDataEntity)
+                .with(SAKULI_PROPERTIES.getName(), sakuliProperties);
         if (getSpecificModelEntities() != null) {
-            getSpecificModelEntities().forEach((name,object)->{
-                model.with(name, object);
+            getSpecificModelEntities().forEach((templateModelEntityName, object)->{
+                model.with(templateModelEntityName.getName(), object);
             });
         }
         return model;
