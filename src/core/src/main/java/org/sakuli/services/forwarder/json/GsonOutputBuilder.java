@@ -21,6 +21,7 @@ package org.sakuli.services.forwarder.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.joda.time.DateTime;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.AbstractOutputBuilder;
 import org.sakuli.services.forwarder.json.serializer.DateSerializer;
@@ -42,6 +43,8 @@ public class GsonOutputBuilder extends AbstractOutputBuilder {
 
     @Autowired
     private JsonProperties jsonProperties;
+    @Autowired
+    protected TestSuite testSuite;
 
     /**
      * Converts the current test suite object to a json string.

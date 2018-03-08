@@ -18,8 +18,10 @@
 
 package org.sakuli.services.forwarder.database;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.common.AbstractResultService;
 import org.sakuli.services.forwarder.database.dao.DaoTestCase;
@@ -55,34 +57,40 @@ public class DatabaseResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults() {
-        LOGGER.info("======= SAVE RESULTS TO DATABASE ======");
-        ;
-        try {
-            daoTestSuite.saveTestSuiteResult();
-            daoTestSuite.saveTestSuiteToSahiJobs();
+    public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
+        //TODO #304 refactor to function with callback like `forTestSuite( testsuite -> ...)
 
-            if (!CollectionUtils.isEmpty(testSuite.getTestCases())) {
-                for (TestCase tc : testSuite.getTestCasesAsSortedSet()) {
-                    //write testcase and steps to DB
-                    daoTestCase.saveTestCaseResult(tc);
+        if (abstractTestDataEntity != null &&
+                TestSuite.class.isAssignableFrom(abstractTestDataEntity.getClass())) {
+            LOGGER.info("======= SAVE RESULTS TO DATABASE ======");
+            TestSuite testSuite = (TestSuite)abstractTestDataEntity;
+            try {
+                daoTestSuite.saveTestSuiteResult();
+                daoTestSuite.saveTestSuiteToSahiJobs();
 
-                    LOGGER.info("... try to save all STEPS for test case '" + tc.getId() + "'!");
-                    SortedSet<TestCaseStep> steps = tc.getStepsAsSortedSet();
-                    if (!steps.isEmpty()) {
-                        daoTestCaseStep.saveTestCaseSteps(steps, tc.getDbPrimaryKey());
-                        LOGGER.info("all STEPS for '" + tc.getId() + "' saved!");
-                    } else {
-                        LOGGER.info("no STEPS for '\" + tc.getId() +\"'found => no STEPS saved in DB!");
+                if (!CollectionUtils.isEmpty(testSuite.getTestCases())) {
+                    for (TestCase tc : testSuite.getTestCasesAsSortedSet()) {
+                        //write testcase and steps to DB
+                        daoTestCase.saveTestCaseResult(tc);
+
+                        LOGGER.info("... try to save all STEPS for test case '" + tc.getId() + "'!");
+                        SortedSet<TestCaseStep> steps = tc.getStepsAsSortedSet();
+                        if (!steps.isEmpty()) {
+                            daoTestCaseStep.saveTestCaseSteps(steps, tc.getDbPrimaryKey());
+                            LOGGER.info("all STEPS for '" + tc.getId() + "' saved!");
+                        } else {
+                            LOGGER.info("no STEPS for '\" + tc.getId() +\"'found => no STEPS saved in DB!");
+                        }
                     }
                 }
+                LOGGER.info("======= FINISHED: SAVE RESULTS TO DATABASE ======");
+            } catch (Throwable e) {
+                exceptionHandler.handleException(
+                        new SakuliForwarderException(e,
+                                String.format("error by saving the results to the database [%s]", testSuite.toString())),
+                        true);
             }
-            LOGGER.info("======= FINISHED: SAVE RESULTS TO DATABASE ======");
-        } catch (Throwable e) {
-            exceptionHandler.handleException(
-                    new SakuliForwarderException(e,
-                            String.format("error by saving the results to the database [%s]", testSuite.toString())),
-                    true);
         }
     }
+
 }

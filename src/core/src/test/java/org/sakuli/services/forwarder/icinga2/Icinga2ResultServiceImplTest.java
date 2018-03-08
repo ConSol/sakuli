@@ -21,6 +21,7 @@ package org.sakuli.services.forwarder.icinga2;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Request;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Result;
@@ -79,7 +80,7 @@ public class Icinga2ResultServiceImplTest {
         result.setResults(Collections.singletonList(map));
         mockAndReturn(result);
         when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
-        testling.saveAllResults();
+        testling.saveAllResults(new TestSuite());
         verify(exceptionHandler, never()).handleException(any(Exception.class));
         verify(icinga2CheckResultBuilder).build();
     }
@@ -93,7 +94,7 @@ public class Icinga2ResultServiceImplTest {
         result.setResults(Collections.singletonList(map));
         mockAndReturn(result);
         when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
-        testling.saveAllResults();
+        testling.saveAllResults(new TestSuite());
         verify(exceptionHandler).handleException(any(Exception.class));
         verify(icinga2CheckResultBuilder).build();
     }
@@ -107,7 +108,7 @@ public class Icinga2ResultServiceImplTest {
         result.setResults(Collections.singletonList(map));
         when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
         mockAndReturn(result);
-        testling.saveAllResults();
+        testling.saveAllResults(new TestSuite());
         verify(exceptionHandler).handleException(any(Exception.class));
         verify(icinga2CheckResultBuilder).build();
     }

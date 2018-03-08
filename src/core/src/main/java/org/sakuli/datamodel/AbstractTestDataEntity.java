@@ -52,7 +52,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
      */
     protected int dbPrimaryKey = -1;
     /**
-     * needed to be set to -1, so the function {@link org.sakuli.actions.TestCaseAction#addTestCaseStep(String, String, String, int)}
+     * needed to be set to -1, so the function {@link org.sakuli.actions.TestCaseAction#addTestCaseStep(String, String, String, int, int, boolean)}
      * can check if the method {@link org.sakuli.actions.TestCaseAction#initWarningAndCritical(int, int)}
      * have been called at the beginning of this test case.
      */
@@ -254,6 +254,14 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
             stout += "\nend time: " + PRINT_DATE_FORMATE.format(this.getStopDate());
         }
         return stout;
+    }
+
+    /**
+     * @return a unique identifier for each execution of the test data entity
+     */
+    public String getGuid() {
+        Date guidDate = startDate != null ? startDate : new Date();
+        return id + "__" + GUID_DATE_FORMATE.format(guidDate);
     }
 
     public S getState() {

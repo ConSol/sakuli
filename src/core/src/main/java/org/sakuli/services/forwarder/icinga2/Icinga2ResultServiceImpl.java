@@ -20,6 +20,8 @@ package org.sakuli.services.forwarder.icinga2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.sakuli.datamodel.AbstractTestDataEntity;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.common.AbstractResultService;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Request;
@@ -62,29 +64,33 @@ public class Icinga2ResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults() {
-        LOGGER.info("======= SEND RESULTS TO ICINGA SERVER ======");
-        LOGGER.info("POST Sakuli results to '{}'", icinga2RestCient.getTargetCheckResult().getUri().toString());
+    public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
+        //TODO #304 refactor to function with callback like `forTestSuite( testsuite -> ...)
 
-        Entity<Icinga2Request> payload = Entity.json(icinga2CheckResultBuilder.build());
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("ICINGA Payload: {}", convertToJSON(payload));
+        if (abstractTestDataEntity != null &&
+                TestSuite.class.isAssignableFrom(abstractTestDataEntity.getClass())) {
+            LOGGER.info("======= SEND RESULTS TO ICINGA SERVER ======");
+            LOGGER.info("POST Sakuli results to '{}'", icinga2RestCient.getTargetCheckResult().getUri().toString());
+
+            Entity<Icinga2Request> payload = Entity.json(icinga2CheckResultBuilder.build());
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("ICINGA Payload: {}", convertToJSON(payload));
+            }
+            Response response = icinga2RestCient.getTargetCheckResult()
+                    .request(MediaType.APPLICATION_JSON_TYPE)
+                    .post(payload);
+
+            Icinga2Result result = response.readEntity(Icinga2Result.class);
+            if (result.isSuccess()) {
+                LOGGER.info("ICINGA Response: {}", result.getFirstElementAsString());
+                LOGGER.info("======= FINISHED: SEND RESULTS TO ICINGA SERVER ======");
+            } else {
+                exceptionHandler.handleException(new SakuliForwarderException(String.format(
+                        "Unexpected result of REST-POST to Incinga monitoring server (%s): %s",
+                        icinga2RestCient.getTargetCheckResult().getUri(),
+                        result.getFirstElementAsString())));
+            }
         }
-        Response response = icinga2RestCient.getTargetCheckResult()
-                .request(MediaType.APPLICATION_JSON_TYPE)
-                .post(payload);
-
-        Icinga2Result result = response.readEntity(Icinga2Result.class);
-        if (result.isSuccess()) {
-            LOGGER.info("ICINGA Response: {}", result.getFirstElementAsString());
-            LOGGER.info("======= FINISHED: SEND RESULTS TO ICINGA SERVER ======");
-        } else {
-            exceptionHandler.handleException(new SakuliForwarderException(String.format(
-                    "Unexpected result of REST-POST to Incinga monitoring server (%s): %s",
-                    icinga2RestCient.getTargetCheckResult().getUri(),
-                    result.getFirstElementAsString())));
-        }
-
     }
 
 }

@@ -35,6 +35,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
     private TestCaseStepState state;
     private String name;
     private int warningTime;
+    private int criticalTime;
     private Date stopDate;
     private Date startDate;
     private SakuliException exception;
@@ -44,6 +45,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
         this.state = TestCaseStepState.OK;
         this.name = "step for unit test";
         this.warningTime = 4;
+        this.criticalTime = 8;
         this.startDate = new Date();
         this.stopDate = DateUtils.addSeconds(startDate, 3);
         this.creationDate = new DateTime();
@@ -55,6 +57,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
         step.setStartDate(startDate);
         step.setStopDate(stopDate);
         step.setWarningTime(warningTime);
+        step.setCriticalTime(criticalTime);
         step.setName(name);
         step.setState(state);
         step.addException(exception);
@@ -79,6 +82,11 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
 
     public TestCaseStepExampleBuilder withWarningTime(int warningTime) {
         this.warningTime = warningTime;
+        return this;
+    }
+
+    public TestCaseStepExampleBuilder withCriticalTime(int criticalTime) {
+        this.criticalTime = criticalTime;
         return this;
     }
 

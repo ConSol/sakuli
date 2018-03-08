@@ -19,7 +19,6 @@
 package org.sakuli.datamodel.helper;
 
 import org.apache.commons.io.FileUtils;
-import org.sakuli.BaseTest;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
@@ -56,14 +55,6 @@ public class TestCaseStepHelperTest {
         if (this.getClass().getResource(CACHEFILE_NAME) != null) {
             Files.deleteIfExists(getResource(CACHEFILE_NAME));
         }
-    }
-
-    @Test
-    public void testCheckWarningTime() throws Exception {
-        assertNull(TestCaseStepHelper.checkWarningTime(0, "test"));
-        assertNull(TestCaseStepHelper.checkWarningTime(1, "test"));
-        String regex = "TestCaseStep \\[name = test\\] - the warning threshold.*";
-        BaseTest.assertRegExMatch(TestCaseStepHelper.checkWarningTime(-1, "test"), regex);
     }
 
     @Test

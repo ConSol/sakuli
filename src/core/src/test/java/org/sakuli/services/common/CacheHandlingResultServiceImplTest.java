@@ -60,7 +60,6 @@ public class CacheHandlingResultServiceImplTest {
                 .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS).withException(new SakuliException("TEST")).buildExample();
 
         exceptionHandler = Mockito.mock(SakuliExceptionHandler.class);
-        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
         ReflectionTestUtils.setField(testling, "exceptionHandler", exceptionHandler);
     }
 
@@ -83,12 +82,12 @@ public class CacheHandlingResultServiceImplTest {
         testSuite.setTestCases(Collections.singletonMap("1", tc));
 
         //on error no cache file should be written
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
         assertNull(getResource(cacheFilePath, false));
 
         //on != error cache file should be written
         testSuite.setState(TestSuiteState.CRITICAL_IN_SUITE);
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
         Path cacheFile = getResource(cacheFilePath, true);
         assertTrue(Files.exists(cacheFile));
         assertEquals(FileUtils.readFileToString(cacheFile.toFile(), Charset.forName("UTF-8")),

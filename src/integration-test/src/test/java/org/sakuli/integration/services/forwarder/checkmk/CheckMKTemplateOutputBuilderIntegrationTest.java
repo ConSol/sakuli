@@ -170,7 +170,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestCaseState.OK.name()));
     }
 
@@ -252,7 +252,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_STEP.name()));
     }
 
@@ -334,7 +334,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_CASE.name()));
     }
 
@@ -416,7 +416,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         String expected = loadExpectedOutput(TestSuiteState.CRITICAL_IN_CASE.name());
         Assert.assertEquals(output.getBytes(), expected.getBytes());
         Assert.assertEquals(output, expected);
@@ -500,7 +500,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_SUITE.name()));
     }
 
@@ -582,7 +582,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.CRITICAL_IN_SUITE.name()));
     }
 
@@ -672,7 +672,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
         screenshotDiv.setFormat("jpg");
         screenshotDiv.setBase64screenshot("/9j/4AAQSkZJRgABAgAAAQABAAD9k=");
         doReturn(screenshotDiv).when(screenshotDivConverter).convert(notNull(Throwable.class));
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.ERRORS.name()));
     }
 

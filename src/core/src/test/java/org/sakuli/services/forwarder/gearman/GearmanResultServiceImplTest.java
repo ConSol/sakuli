@@ -97,7 +97,6 @@ public class GearmanResultServiceImplTest extends BaseTest {
 
     @Test
     public void testSaveAllResults() throws Exception {
-        when(checkResultBuilder.build()).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
         GearmanJob job = mock(GearmanJob.class);
         doReturn(job).when(testling).creatJob(any(NagiosCheckResult.class));
@@ -118,10 +117,9 @@ public class GearmanResultServiceImplTest extends BaseTest {
                 .withStopDate(stopDate)
                 .withStartDate(DateUtils.addSeconds(stopDate, -60))
                 .buildExample();
+        when(checkResultBuilder.build(eq(testSuite))).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
-        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
-
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
 
         //checks
         verify(gearmanCacheService, never()).cacheResults(anyList());
@@ -161,9 +159,11 @@ public class GearmanResultServiceImplTest extends BaseTest {
     public void testSaveAllResultsConnectionFailed() throws Exception {
         when(gearmanClient.addJobServer(connection)).thenReturn(false);
 
-        when(checkResultBuilder.build()).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .buildExample();
+        when(checkResultBuilder.build(testSuite)).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
 
         //checks
         verify(gearmanCacheService, never()).cacheResults(anyList());
@@ -179,7 +179,9 @@ public class GearmanResultServiceImplTest extends BaseTest {
     public void testSaveAllResultsConnectionFailedCacheResults() throws Exception {
         when(properties.isCacheEnabled()).thenReturn(true);
 
-        when(checkResultBuilder.build()).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .buildExample();
+        when(checkResultBuilder.build(testSuite)).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
         when(gearmanClient.addJobServer(connection)).thenReturn(false);
 
@@ -190,7 +192,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
             return null;
         }).when(gearmanCacheService).cacheResults(anyList());
 
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
 
         //checks
         verify(gearmanCacheService).cacheResults(anyList());
@@ -215,7 +217,9 @@ public class GearmanResultServiceImplTest extends BaseTest {
         when(gearmanCacheService.getCachedResults()).thenReturn(Arrays.asList(mockedResult1, mockedResult2));
 
         NagiosCheckResult newResult = new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult);
-        when(checkResultBuilder.build()).thenReturn(newResult);
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .buildExample();
+        when(checkResultBuilder.build(testSuite)).thenReturn(newResult);
 
         doAnswer(invocationOnMock -> {
             List<NagiosCheckResult> results = ((List) invocationOnMock.getArguments()[0]);
@@ -235,7 +239,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
 
         }).when(testling).sendResult(any(), any());
 
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
 
         //checks
         assertEquals(sendOrder.toString(), "" + mockedResult2.hashCode() + mockedResult1.hashCode() + newResult.hashCode());
@@ -260,7 +264,9 @@ public class GearmanResultServiceImplTest extends BaseTest {
         when(gearmanCacheService.getCachedResults()).thenReturn(Collections.singletonList(mockedResult1));
 
         NagiosCheckResult newResult = new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult);
-        when(checkResultBuilder.build()).thenReturn(newResult);
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .buildExample();
+        when(checkResultBuilder.build(testSuite)).thenReturn(newResult);
 
         doAnswer(invocationOnMock -> {
             List<NagiosCheckResult> results = ((List) invocationOnMock.getArguments()[0]);
@@ -271,7 +277,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
             return null;
         }).when(gearmanCacheService).cacheResults(anyList());
 
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
 
         //checks
         verify(gearmanCacheService).cacheResults(anyList());
@@ -289,7 +295,9 @@ public class GearmanResultServiceImplTest extends BaseTest {
         when(properties.getServerHost()).thenReturn(host);
         when(properties.isCacheEnabled()).thenReturn(true);
 
-        when(checkResultBuilder.build()).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .buildExample();
+        when(checkResultBuilder.build(testSuite)).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
         doReturn(connection).when(testling).getGearmanConnection(host, port);
         when(gearmanClient.addJobServer(connection)).thenThrow(new UnresolvedAddressException());
@@ -309,7 +317,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
             return null;
         }).when(exceptionHandler).handleException(any(Throwable.class), anyBoolean());
 
-        testling.saveAllResults();
+        testling.saveAllResults(testSuite);
 
         //checks
         verify(gearmanCacheService).cacheResults(anyList());

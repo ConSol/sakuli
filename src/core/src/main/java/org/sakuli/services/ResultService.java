@@ -18,6 +18,7 @@
 
 package org.sakuli.services;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.properties.SakuliProperties;
 
 /**
@@ -26,13 +27,8 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 public interface ResultService extends TeardownService {
 
     /**
-     * refresh all states in the Sakuli test suite
-     */
-    void refreshStates();
-
-    /**
      * Triggers that all current results will be saved, in consideration of the {@link SakuliProperties}.
      */
-    void saveAllResults();
+    void saveAllResults(AbstractTestDataEntity abstractTestDataEntity);
 
 }

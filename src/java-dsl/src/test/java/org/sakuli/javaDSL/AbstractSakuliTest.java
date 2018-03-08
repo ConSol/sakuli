@@ -177,7 +177,9 @@ public abstract class AbstractSakuliTest {
         testCaseAction.addTestCaseStep("step " + counter,
                 String.valueOf(startTime.getMillis()),
                 String.valueOf(DateTime.now().getMillis()),
-                0
+                0,
+                0,
+                false
         );
     }
 
@@ -192,7 +194,8 @@ public abstract class AbstractSakuliTest {
                 String.valueOf(startTimeCase.getMillis()),
                 String.valueOf(DateTime.now().getMillis()),
                 null,
-                null
+                null,
+                false
         );
         if (browser != null) {
             browser.close();
@@ -238,7 +241,7 @@ public abstract class AbstractSakuliTest {
         if (testSuite != null) {
             LOGGER.info("========== TEAR-DOWN SAKULI TEST SUITE '{}' ==========", testSuite.getId());
             testSuite.setStopDate(DateTime.now().toDate());
-            TeardownServiceHelper.invokeTeardownServices();
+            TeardownServiceHelper.invokeTeardownServices(testSuite);
         }
         if (executorService != null) {
             executorService.shutdownNow();
@@ -249,4 +252,5 @@ public abstract class AbstractSakuliTest {
             ProcessHelper.killAll(browserProcessName);
         }
     }
+
 }

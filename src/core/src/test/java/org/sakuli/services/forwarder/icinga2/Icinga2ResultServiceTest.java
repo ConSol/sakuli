@@ -18,6 +18,7 @@
 
 package org.sakuli.services.forwarder.icinga2;
 
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.loader.BeanLoader;
 import org.testng.annotations.Test;
 
@@ -33,6 +34,6 @@ public class Icinga2ResultServiceTest extends AbstractIcinga2ForwarderBaseTest {
             expectedExceptionsMessageRegExp = "java.net.UnknownHostException: my-icinga-host")
     public void testServerNotExist() throws Exception {
         Icinga2ResultServiceImpl testling = BeanLoader.loadBean(Icinga2ResultServiceImpl.class);
-        testling.saveAllResults();
+        testling.saveAllResults(new TestSuite());
     }
 }

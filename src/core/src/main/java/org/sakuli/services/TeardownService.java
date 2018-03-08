@@ -18,6 +18,8 @@
 
 package org.sakuli.services;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
+
 /**
  * @author tschneck
  *         Date: 2/12/16
@@ -27,6 +29,6 @@ public interface TeardownService extends PrioritizedService {
     /**
      * Triggers the different implementations of the {@link TeardownService}.
      */
-    void triggerAction();
+    void triggerAction(AbstractTestDataEntity abstractTestDataEntity);
 
 }

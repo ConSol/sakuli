@@ -18,7 +18,9 @@
 
 package org.sakuli.services.common;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.utils.CleanUpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,29 +44,34 @@ public class CommonResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults() {
-        cleanUp();
-        LOGGER.info(testSuite.getResultString()
-                + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
-                + testSuite.getState() + " ======================\n");
-        switch (testSuite.getState()) {
-            case WARNING_IN_CASE:
-                logTestCaseStateDetailInfo(tc -> tc.getState().isWarning());
-                break;
-            case WARNING_IN_STEP:
-                logTestCaseStateDetailInfo(tc -> tc.getState().isWarningInStep());
-                break;
-            case CRITICAL_IN_CASE:
-                logTestCaseStateDetailInfo(tc -> tc.getState().isCritical());
-                break;
-            case ERRORS:
-                String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages(false);
-                LOGGER.error(errorMsg + "\n");
-                break;
+    public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
+        //TODO #304 refactor to function with callback like `forTestSuite( testsuite -> ...)
+        if (abstractTestDataEntity != null &&
+                TestSuite.class.isAssignableFrom(abstractTestDataEntity.getClass())) {
+            cleanUp();
+            TestSuite testSuite = (TestSuite)abstractTestDataEntity;
+            LOGGER.info(testSuite.getResultString()
+                    + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
+                    + testSuite.getState() + " ======================\n");
+            switch (testSuite.getState()) {
+                case WARNING_IN_CASE:
+                    logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isWarning());
+                    break;
+                case WARNING_IN_STEP:
+                    logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isWarningInStep());
+                    break;
+                case CRITICAL_IN_CASE:
+                    logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isCritical());
+                    break;
+                case ERRORS:
+                    String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages(false);
+                    LOGGER.error(errorMsg + "\n");
+                    break;
+            }
         }
     }
 
-    private void logTestCaseStateDetailInfo(Predicate<TestCase> predicate) {
+    private void logTestCaseStateDetailInfo(TestSuite testSuite, Predicate<TestCase> predicate) {
         testSuite.getTestCases().values().stream()
                 .filter(predicate)
                 .forEach(tc -> {

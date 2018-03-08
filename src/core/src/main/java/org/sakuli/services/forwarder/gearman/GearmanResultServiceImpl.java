@@ -22,6 +22,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.gearman.client.*;
 import org.gearman.common.GearmanJobServerConnection;
 import org.gearman.common.GearmanNIOJobServerConnection;
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.common.AbstractResultService;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
@@ -63,14 +64,14 @@ public class GearmanResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults() {
+    public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
         logger.info("======= SEND RESULTS TO GEARMAN SERVER ======");
         GearmanClient gearmanClient = getGearmanClient();
         GearmanJobServerConnection connection = getGearmanConnection(properties.getServerHost(), properties.getServerPort());
 
         List<NagiosCheckResult> results = new ArrayList<>();
         try {
-            results.add(nagiosCheckResultBuilder.build());
+            results.add(nagiosCheckResultBuilder.build(abstractTestDataEntity));
 
             if (properties.isCacheEnabled()) {
                 results.addAll(cacheService.getCachedResults());
@@ -144,7 +145,6 @@ public class GearmanResultServiceImpl extends AbstractResultService {
         return false;
     }
 
-
     /**
      * Logs the assigned Gearman message as follow:
      * <ul>
@@ -176,7 +176,6 @@ public class GearmanResultServiceImpl extends AbstractResultService {
     protected GearmanJobServerConnection getGearmanConnection(String hostname, int port) {
         return new GearmanNIOJobServerConnection(hostname, port);
     }
-
 
     protected GearmanClient getGearmanClient() {
         return new GearmanClientImpl();

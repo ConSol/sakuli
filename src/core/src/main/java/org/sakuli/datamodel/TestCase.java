@@ -39,7 +39,7 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
     private String startUrl;
     /**
      * will be set with the method {@link org.sakuli.actions.TestCaseAction#saveResult(String, String, String,
-     * String, String)}
+     * String, String, boolean)}
      */
     private String lastURL;
     private List<TestCaseStep> steps;

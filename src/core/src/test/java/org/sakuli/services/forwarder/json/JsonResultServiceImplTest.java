@@ -64,7 +64,7 @@ public class JsonResultServiceImplTest {
     public void createJsonFilePath(String outputJsonDir, String testSuiteId, String expectedFilePathRegEx) throws SakuliForwarderException {
         doReturn(testSuiteId).when(testSuite).getId();
         doReturn(Paths.get(outputJsonDir)).when(jsonProperties).getOutputJsonDir();
-        assertTrue(testling.createJsonFilePath().toString().matches(expectedFilePathRegEx));
+        assertTrue(testling.createJsonFilePath(testSuite).toString().matches(expectedFilePathRegEx));
     }
 
 }

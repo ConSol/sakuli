@@ -18,7 +18,11 @@
 
 package org.sakuli.services;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.loader.BeanLoader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tobias Schneck
@@ -27,9 +31,15 @@ public class TeardownServiceHelper {
     /**
      * Invokes all {@link TeardownService}s, for example to save results.
      */
-    public static void invokeTeardownServices() {
-        BeanLoader.loadMultipleBeans(TeardownService.class).values().stream()
-                .sorted(new PrioritizedServiceComparator<>())
-                .forEach(TeardownService::triggerAction);
+    public static void invokeTeardownServices(AbstractTestDataEntity abstractTestDataEntity) {
+        //TODO #304 why changed?
+        List<TeardownService> toSort = new ArrayList<>();
+        for (TeardownService teardownService : BeanLoader.loadMultipleBeans(TeardownService.class).values()) {
+            toSort.add(teardownService);
+        }
+        toSort.sort(new PrioritizedServiceComparator<>());
+        for (TeardownService teardownService : toSort) {
+            teardownService.triggerAction(abstractTestDataEntity);
+        }
     }
 }

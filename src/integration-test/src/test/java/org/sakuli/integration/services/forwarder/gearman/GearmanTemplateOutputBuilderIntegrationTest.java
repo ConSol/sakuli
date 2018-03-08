@@ -56,19 +56,19 @@ import static org.mockito.Mockito.doReturn;
 @Test(groups = IntegrationTest.GROUP)
 public class GearmanTemplateOutputBuilderIntegrationTest extends BaseTest {
 
-    private static final String DEFAULT_SERVICE_DESCRIPTION = "service_description";
+    private static final String TESTSUITE_ID = "example_xfce";
     private static final String DEFAULT_SERVICE_TYPE = "passive";
     private static final String DEFAULT_NAGIOS_HOST = "my.nagios.host";
     private static final String DEFAULT_NAGIOS_CHECK_COMMMAND = "check_sakuli";
 
     @InjectMocks
+    @Spy
     private GearmanTemplateOutputBuilder testling;
     @Mock
     private ScreenshotDivConverter screenshotDivConverter;
     @Mock
     private GearmanProperties gearmanProperties;
-    @Spy
-    private TestSuite testSuite = new TestSuite();
+    private TestSuite testSuite;
     @Mock
     private SakuliProperties sakuliProperties;
 
@@ -76,13 +76,15 @@ public class GearmanTemplateOutputBuilderIntegrationTest extends BaseTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         doReturn(getTemplatePath()).when(sakuliProperties).getForwarderTemplateFolder();
-        doReturn(DEFAULT_SERVICE_DESCRIPTION).when(gearmanProperties).getNagiosServiceDescription();
+        doReturn(TESTSUITE_ID).when(gearmanProperties).getNagiosServiceDescription();
         doReturn(DEFAULT_SERVICE_TYPE).when(gearmanProperties).getServiceType();
         doReturn(DEFAULT_NAGIOS_HOST).when(gearmanProperties).getNagiosHost();
         doReturn(DEFAULT_NAGIOS_CHECK_COMMMAND).when(gearmanProperties).getNagiosCheckCommand();
-
-        testSuite.setId("example_xfce");
+        testSuite = new TestSuite();
+        testSuite.setId(TESTSUITE_ID);
         testSuite.setTestCases(null);
+        doReturn(testSuite).when(testling).getCurrentTestSuite();
+        doReturn(null).when(testling).getCurrentTestCase();
     }
 
     private String getTemplatePath() {
@@ -95,7 +97,7 @@ public class GearmanTemplateOutputBuilderIntegrationTest extends BaseTest {
     }
 
     private String loadExpectedOutput(String testCaseName) throws IOException {
-        return FileUtils.readFileToString(Paths.get(getOutputPath() + File.separator + "TestCase_" + testCaseName + ".txt").toFile());
+        return FileUtils.readFileToString(Paths.get(getOutputPath() + File.separator + "TestSuite_" + testCaseName + ".txt").toFile());
     }
 
     @Test
@@ -174,7 +176,7 @@ public class GearmanTemplateOutputBuilderIntegrationTest extends BaseTest {
                         )
                         .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestCaseState.OK.name()));
     }
 
@@ -254,7 +256,7 @@ public class GearmanTemplateOutputBuilderIntegrationTest extends BaseTest {
                 )
                 .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_STEP.name()));
     }
 
@@ -335,7 +337,7 @@ public class GearmanTemplateOutputBuilderIntegrationTest extends BaseTest {
                         )
                         .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_CASE.name()));
     }
 
@@ -416,7 +418,7 @@ public class GearmanTemplateOutputBuilderIntegrationTest extends BaseTest {
                         )
                         .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         String expected = loadExpectedOutput(TestSuiteState.CRITICAL_IN_CASE.name());
         Assert.assertEquals(output, expected);
         Assert.assertEquals(output.getBytes(), expected.getBytes());
@@ -499,7 +501,7 @@ public class GearmanTemplateOutputBuilderIntegrationTest extends BaseTest {
                         )
                         .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_SUITE.name()));
     }
 
@@ -580,7 +582,7 @@ public class GearmanTemplateOutputBuilderIntegrationTest extends BaseTest {
                         )
                         .buildExample()
         );
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.CRITICAL_IN_SUITE.name()));
     }
 
@@ -667,7 +669,7 @@ public class GearmanTemplateOutputBuilderIntegrationTest extends BaseTest {
         screenshotDiv.setFormat("jpg");
         screenshotDiv.setBase64screenshot("/9j/4AAQSkZJRgABAgAAAQABAAD9k=");
         doReturn(screenshotDiv).when(screenshotDivConverter).convert(notNull(Throwable.class));
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.ERRORS.name()));
     }
 }

@@ -47,7 +47,9 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
         }
         //if a step exceed the runtime set WARNING
         TestCaseStepState newState;
-        if (warningTime > 0 && getDuration() > warningTime) {
+        if (criticalTime > 0 && getDuration() > criticalTime) {
+            newState = TestCaseStepState.CRITICAL;
+        } else if (warningTime > 0 && getDuration() > warningTime) {
             newState = TestCaseStepState.WARNING;
         } else if (startDate != null && stopDate != null) {
             newState = TestCaseStepState.OK;
