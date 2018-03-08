@@ -103,28 +103,22 @@
             </plugin>
 
             <plugin>
-                <groupId>external.atlassian.jgitflow</groupId>
-                <artifactId>jgitflow-maven-plugin</artifactId>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
                 <configuration>
-                    <flowInitContext>
+                    <gitFlowConfig>
                         <!-- default git flow prefixes -->
-                        <masterBranchName>master</masterBranchName>
-                        <developBranchName>dev</developBranchName>
+                        <productionBranch>master</productionBranch>
+                        <developmentBranch>dev</developmentBranch>
                         <featureBranchPrefix>feature/</featureBranchPrefix>
                         <releaseBranchPrefix>release/</releaseBranchPrefix>
                         <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
                         <!-- non default 'v' prefix -->
                         <versionTagPrefix>v</versionTagPrefix>
-                    </flowInitContext>
-                    <!--<defaultOriginUrl-->
-                    <pushFeatures>true</pushFeatures>
-                    <pushHotfixes>true</pushHotfixes>
-                    <pushReleases>true</pushReleases>
-                    <updateDependencies>true</updateDependencies>
-                    <scmCommentPrefix>mvn-jgitflow:</scmCommentPrefix>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <enableSshAgent>true</enableSshAgent>
-                    <useReleaseProfile>true</useReleaseProfile>
+                    </gitFlowConfig>
+                    <keepBranch>false</keepBranch>
+                    <fetchRemote>true</fetchRemote>
+                    <pushRemote>true</pushRemote>
                     <!-- needs profile activation via:
                         <profile>
                         ...
@@ -230,9 +224,9 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>external.atlassian.jgitflow</groupId>
-                    <artifactId>jgitflow-maven-plugin</artifactId>
-                    <version>1.0-m5.1</version>
+                    <groupId>com.amashchenko.maven.plugin</groupId>
+                    <artifactId>gitflow-maven-plugin</artifactId>
+                    <version>1.9.0</version>
                 </plugin>
 
                 <plugin>
