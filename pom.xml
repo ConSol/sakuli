@@ -120,6 +120,16 @@
                         <!-- non default 'v' prefix -->
                         <versionTagPrefix>v</versionTagPrefix>
                     </gitFlowConfig>
+                    <commitMessages>
+                        <featureStartMessage>create branch @{featureName}</featureStartMessage>
+                        <featureFinishMessage>merge branch @{featureName}</featureFinishMessage>
+
+                        <hotfixStartMessage>update version for hotfix to v@{version}</hotfixStartMessage>
+                        <hotfixFinishMessage>update for next development version to v@{version}</hotfixFinishMessage>
+
+                        <releaseStartMessage>update version for release to v@{version}</releaseStartMessage>
+                        <releaseFinishMessage>update for next development version to v@{version}</releaseFinishMessage>
+                    </commitMessages>
                     <!-- needs profile activation via:
                         <profile>
                         ...
