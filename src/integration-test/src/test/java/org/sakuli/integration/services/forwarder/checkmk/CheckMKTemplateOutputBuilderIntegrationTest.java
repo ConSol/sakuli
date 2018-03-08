@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.forwarder.checkmk;
+package org.sakuli.integration.services.forwarder.checkmk;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -33,8 +33,10 @@ import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliException;
-import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.integration.IntegrationTest;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
+import org.sakuli.services.forwarder.checkmk.CheckMKProperties;
+import org.sakuli.services.forwarder.checkmk.CheckMKTemplateOutputBuilder;
 import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -55,7 +57,8 @@ import static org.mockito.Mockito.when;
 /**
  * @author Georgi Todorov
  */
-public class CheckMKTemplateOutputBuilderTest extends BaseTest {
+@Test(groups = IntegrationTest.GROUP)
+public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
 
     private static final String DEFAULT_SERVICE_DESCRIPTION = "service_description";
 
@@ -63,8 +66,6 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
     private CheckMKTemplateOutputBuilder testling;
     @Mock
     private ScreenshotDivConverter screenshotDivConverter;
-    @Mock
-    private SakuliExceptionHandler exceptionHandler;
     @Mock
     private CheckMKProperties checkMKProperties;
     @Mock
@@ -80,7 +81,7 @@ public class CheckMKTemplateOutputBuilderTest extends BaseTest {
     }
 
     private String getTemplatePath() {
-        // If not available execute test via `mvn test-compile` to extract the file dependencies
+        // If not available execute test via `mvn prepare-package` to extract the file dependencies
         return getResource("common/config/templates");
     }
 
