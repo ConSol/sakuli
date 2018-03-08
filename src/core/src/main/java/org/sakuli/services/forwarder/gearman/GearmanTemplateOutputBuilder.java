@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2015 the original author or authors.
+ * Copyright 2013 - 2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,33 +16,32 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.forwarder.gearman.model.builder;
+package org.sakuli.services.forwarder.gearman;
 
-import org.sakuli.datamodel.Builder;
-import org.sakuli.services.forwarder.AbstractPerformanceDataBuilder;
-import org.sakuli.services.forwarder.gearman.GearmanProperties;
-import org.sakuli.services.forwarder.gearman.ProfileGearman;
+import org.jtwig.JtwigModel;
+import org.sakuli.services.forwarder.AbstractTemplateOutputBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @author tschneck
- *         Date: 8/26/15
+ * @author Georgi Todorov
  */
 @ProfileGearman
 @Component
-public class NagiosPerformanceDataBuilder extends AbstractPerformanceDataBuilder implements Builder<String> {
+public class GearmanTemplateOutputBuilder extends AbstractTemplateOutputBuilder {
 
     @Autowired
     private GearmanProperties gearmanProperties;
 
-    /**
-     * Generates the performance data for the nagios server as an {@link String}.
-     *
-     * @return formatted payload string
-     */
     @Override
-    public String build() {
-        return getTestSuitePerformanceData(testSuite) + " [" + gearmanProperties.getNagiosCheckCommand() + "]";
+    public String getConverterName() {
+        return "Gearman";
     }
+
+    @Override
+    public JtwigModel createModel() {
+        return super.createModel()
+                .with("gearman", gearmanProperties);
+    }
+
 }

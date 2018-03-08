@@ -16,17 +16,17 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.forwarder.gearman.model.builder;
+package org.sakuli.services.forwarder;
 
 import java.util.Locale;
 
 /**
- * Representing a set of formatting methods in the Nagios context.
+ * Representing a set of formatting methods.
  *
  * @author tschneck
  *         Date: 8/26/15
  */
-public class NagiosFormatter {
+public class TimeFormatter {
 
 
     public static String formatToSec(float duration) {
