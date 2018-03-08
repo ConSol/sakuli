@@ -1,4 +1,22 @@
-package org.sakuli.services.forwarder.gearman;
+/*
+ * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+ *
+ * Copyright 2013 - 2018 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.sakuli.integration.services.forwarder.gearman;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -15,9 +33,11 @@ import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliException;
-import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.services.forwarder.ScreenshotDivConverter;
+import org.sakuli.integration.IntegrationTest;
 import org.sakuli.services.forwarder.ScreenshotDiv;
+import org.sakuli.services.forwarder.ScreenshotDivConverter;
+import org.sakuli.services.forwarder.gearman.GearmanProperties;
+import org.sakuli.services.forwarder.gearman.GearmanTemplateOutputBuilder;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -33,7 +53,8 @@ import static org.mockito.Mockito.doReturn;
 /**
  * @author Georgi Todorov
  */
-public class GearmanTemplateOutputBuilderTest extends BaseTest {
+@Test(groups = IntegrationTest.GROUP)
+public class GearmanTemplateOutputBuilderIntegrationTest extends BaseTest {
 
     private static final String DEFAULT_SERVICE_DESCRIPTION = "service_description";
     private static final String DEFAULT_SERVICE_TYPE = "passive";
@@ -44,8 +65,6 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
     private GearmanTemplateOutputBuilder testling;
     @Mock
     private ScreenshotDivConverter screenshotDivConverter;
-    @Mock
-    private SakuliExceptionHandler exceptionHandler;
     @Mock
     private GearmanProperties gearmanProperties;
     @Spy
@@ -87,73 +106,73 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
         testSuite.setStartDate(new DateTime(1970, 1, 1, 10, 30, 0, 0).toDate());
         testSuite.setStopDate(new DateTime(1970, 1, 1, 10, 30, 44, 990).toDate());
         testSuite.addTestCase(
-                    new TestCaseExampleBuilder()
-                            .withState(TestCaseState.OK)
-                            .withWarningTime(20)
-                            .withCriticalTime(30)
-                            .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0).toDate())
-                            .withStopDate(new DateTime(1970, 1, 1, 10, 30, 14, 20).toDate())
-                            .withId("case1")
-                            .withTestCaseSteps(
-                                    Arrays.asList(
-                                            new TestCaseStepExampleBuilder()
-                                                    .withState(TestCaseStepState.OK)
-                                                    .withName("Test_Sahi_landing_page")
-                                                    .withWarningTime(5)
-                                                    .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0).toDate())
-                                                    .withStopDate(new DateTime(1970, 1, 1, 10, 30, 1, 160).toDate())
-                                                    .buildExample(),
-                                            new TestCaseStepExampleBuilder()
-                                                    .withState(TestCaseStepState.OK)
-                                                    .withName("Calculation")
-                                                    .withWarningTime(10)
-                                                    .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0, 10).toDate())
-                                                    .withStopDate(new DateTime(1970, 1, 1, 10, 30, 7, 290).toDate())
-                                                    .buildExample(),
-                                            new TestCaseStepExampleBuilder()
-                                                    .withState(TestCaseStepState.OK)
-                                                    .withName("Editor")
-                                                    .withWarningTime(10)
-                                                    .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0, 20).toDate())
-                                                    .withStopDate(new DateTime(1970, 1, 1, 10, 30, 1, 500).toDate())
-                                                    .buildExample()
-                                    )
-                            )
-                            .buildExample()
+                new TestCaseExampleBuilder()
+                        .withState(TestCaseState.OK)
+                        .withWarningTime(20)
+                        .withCriticalTime(30)
+                        .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0).toDate())
+                        .withStopDate(new DateTime(1970, 1, 1, 10, 30, 14, 20).toDate())
+                        .withId("case1")
+                        .withTestCaseSteps(
+                                Arrays.asList(
+                                        new TestCaseStepExampleBuilder()
+                                                .withState(TestCaseStepState.OK)
+                                                .withName("Test_Sahi_landing_page")
+                                                .withWarningTime(5)
+                                                .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0).toDate())
+                                                .withStopDate(new DateTime(1970, 1, 1, 10, 30, 1, 160).toDate())
+                                                .buildExample(),
+                                        new TestCaseStepExampleBuilder()
+                                                .withState(TestCaseStepState.OK)
+                                                .withName("Calculation")
+                                                .withWarningTime(10)
+                                                .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0, 10).toDate())
+                                                .withStopDate(new DateTime(1970, 1, 1, 10, 30, 7, 290).toDate())
+                                                .buildExample(),
+                                        new TestCaseStepExampleBuilder()
+                                                .withState(TestCaseStepState.OK)
+                                                .withName("Editor")
+                                                .withWarningTime(10)
+                                                .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0, 20).toDate())
+                                                .withStopDate(new DateTime(1970, 1, 1, 10, 30, 1, 500).toDate())
+                                                .buildExample()
+                                )
+                        )
+                        .buildExample()
         );
         testSuite.addTestCase(
                 new TestCaseExampleBuilder()
-                            .withState(TestCaseState.OK)
-                            .withWarningTime(20)
-                            .withCriticalTime(30)
-                            .withStartDate(new DateTime(1970, 1, 1, 10, 30, 10).toDate())
-                            .withStopDate(new DateTime(1970, 1, 1, 10, 30, 23, 580).toDate())
-                            .withId("case2")
-                            .withTestCaseSteps(
-                                    Arrays.asList(
-                                            new TestCaseStepExampleBuilder()
-                                                    .withState(TestCaseStepState.OK)
-                                                    .withName("Test_Sahi_landing_page_(case2)")
-                                                    .withWarningTime(5)
-                                                    .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0).toDate())
-                                                    .withStopDate(new DateTime(1970, 1, 1, 10, 30, 1, 30).toDate())
-                                                    .buildExample(),
-                                            new TestCaseStepExampleBuilder()
-                                                    .withState(TestCaseStepState.OK)
-                                                    .withName("Calculation_(case2)")
-                                                    .withWarningTime(10)
-                                                    .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0, 10).toDate())
-                                                    .withStopDate(new DateTime(1970, 1, 1, 10, 30, 7, 80).toDate())
-                                                    .buildExample(),
-                                            new TestCaseStepExampleBuilder()
-                                                    .withName("Editor_(case2)")
-                                                    .withWarningTime(10)
-                                                    .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0, 20).toDate())
-                                                    .withStopDate(new DateTime(1970, 1, 1, 10, 30, 1, 390).toDate())
-                                                    .buildExample()
-                                    )
-                            )
-                            .buildExample()
+                        .withState(TestCaseState.OK)
+                        .withWarningTime(20)
+                        .withCriticalTime(30)
+                        .withStartDate(new DateTime(1970, 1, 1, 10, 30, 10).toDate())
+                        .withStopDate(new DateTime(1970, 1, 1, 10, 30, 23, 580).toDate())
+                        .withId("case2")
+                        .withTestCaseSteps(
+                                Arrays.asList(
+                                        new TestCaseStepExampleBuilder()
+                                                .withState(TestCaseStepState.OK)
+                                                .withName("Test_Sahi_landing_page_(case2)")
+                                                .withWarningTime(5)
+                                                .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0).toDate())
+                                                .withStopDate(new DateTime(1970, 1, 1, 10, 30, 1, 30).toDate())
+                                                .buildExample(),
+                                        new TestCaseStepExampleBuilder()
+                                                .withState(TestCaseStepState.OK)
+                                                .withName("Calculation_(case2)")
+                                                .withWarningTime(10)
+                                                .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0, 10).toDate())
+                                                .withStopDate(new DateTime(1970, 1, 1, 10, 30, 7, 80).toDate())
+                                                .buildExample(),
+                                        new TestCaseStepExampleBuilder()
+                                                .withName("Editor_(case2)")
+                                                .withWarningTime(10)
+                                                .withStartDate(new DateTime(1970, 1, 1, 10, 30, 0, 20).toDate())
+                                                .withStopDate(new DateTime(1970, 1, 1, 10, 30, 1, 390).toDate())
+                                                .buildExample()
+                                )
+                        )
+                        .buildExample()
         );
         String output = testling.createOutput();
         Assert.assertEquals(output, loadExpectedOutput(TestCaseState.OK.name()));
@@ -202,38 +221,38 @@ public class GearmanTemplateOutputBuilderTest extends BaseTest {
                         .buildExample()
         );
         testSuite.addTestCase(new TestCaseExampleBuilder()
-                        .withState(TestCaseState.WARNING_IN_STEP)
-                        .withWarningTime(20)
-                        .withCriticalTime(30)
-                        .withStartDate(new DateTime(1970, 1, 1, 10, 31, 20).toDate())
-                        .withStopDate(new DateTime(1970, 1, 1, 10, 31, 33, 430).toDate())
-                        .withId("case2")
-                        .withTestCaseSteps(
-                                Arrays.asList(
-                                        new TestCaseStepExampleBuilder()
-                                                .withState(TestCaseStepState.OK)
-                                                .withName("Test_Sahi_landing_page_(case2)")
-                                                .withWarningTime(5)
-                                                .withStartDate(new DateTime(1970, 1, 1, 10, 31, 0, 10).toDate())
-                                                .withStopDate(new DateTime(1970, 1, 1, 10, 31, 0, 930).toDate())
-                                                .buildExample(),
-                                        new TestCaseStepExampleBuilder()
-                                                .withState(TestCaseStepState.WARNING)
-                                                .withName("Calculation_(case2)")
-                                                .withWarningTime(1)
-                                                .withStartDate(new DateTime(1970, 1, 1, 10, 31, 0, 20).toDate())
-                                                .withStopDate(new DateTime(1970, 1, 1, 10, 31, 7, 20).toDate())
-                                                .buildExample(),
-                                        new TestCaseStepExampleBuilder()
-                                                .withState(TestCaseStepState.OK)
-                                                .withName("Editor_(case2)")
-                                                .withWarningTime(10)
-                                                .withStartDate(new DateTime(1970, 1, 1, 10, 31, 0, 30).toDate())
-                                                .withStopDate(new DateTime(1970, 1, 1, 10, 31, 1, 420).toDate())
-                                                .buildExample()
-                                )
+                .withState(TestCaseState.WARNING_IN_STEP)
+                .withWarningTime(20)
+                .withCriticalTime(30)
+                .withStartDate(new DateTime(1970, 1, 1, 10, 31, 20).toDate())
+                .withStopDate(new DateTime(1970, 1, 1, 10, 31, 33, 430).toDate())
+                .withId("case2")
+                .withTestCaseSteps(
+                        Arrays.asList(
+                                new TestCaseStepExampleBuilder()
+                                        .withState(TestCaseStepState.OK)
+                                        .withName("Test_Sahi_landing_page_(case2)")
+                                        .withWarningTime(5)
+                                        .withStartDate(new DateTime(1970, 1, 1, 10, 31, 0, 10).toDate())
+                                        .withStopDate(new DateTime(1970, 1, 1, 10, 31, 0, 930).toDate())
+                                        .buildExample(),
+                                new TestCaseStepExampleBuilder()
+                                        .withState(TestCaseStepState.WARNING)
+                                        .withName("Calculation_(case2)")
+                                        .withWarningTime(1)
+                                        .withStartDate(new DateTime(1970, 1, 1, 10, 31, 0, 20).toDate())
+                                        .withStopDate(new DateTime(1970, 1, 1, 10, 31, 7, 20).toDate())
+                                        .buildExample(),
+                                new TestCaseStepExampleBuilder()
+                                        .withState(TestCaseStepState.OK)
+                                        .withName("Editor_(case2)")
+                                        .withWarningTime(10)
+                                        .withStartDate(new DateTime(1970, 1, 1, 10, 31, 0, 30).toDate())
+                                        .withStopDate(new DateTime(1970, 1, 1, 10, 31, 1, 420).toDate())
+                                        .buildExample()
                         )
-                        .buildExample()
+                )
+                .buildExample()
         );
         String output = testling.createOutput();
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_STEP.name()));
