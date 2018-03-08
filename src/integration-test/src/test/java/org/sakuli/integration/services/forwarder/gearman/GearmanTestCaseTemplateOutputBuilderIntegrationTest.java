@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.forwarder.gearman;
+package org.sakuli.integration.services.forwarder.gearman;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -33,8 +33,11 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.SakuliException;
+import org.sakuli.integration.IntegrationTest;
 import org.sakuli.services.forwarder.ScreenshotDiv;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
+import org.sakuli.services.forwarder.gearman.GearmanProperties;
+import org.sakuli.services.forwarder.gearman.GearmanTemplateOutputBuilder;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -50,7 +53,8 @@ import static org.mockito.Mockito.doReturn;
 /**
  * @author Georgi Todorov
  */
-public class GearmanTestCaseTemplateOutputBuilderTest extends BaseTest {
+@Test(groups = IntegrationTest.GROUP)
+public class GearmanTestCaseTemplateOutputBuilderIntegrationTest extends BaseTest {
 
     private static final String TESTSUITE_ID = "example_xfce";
     private static final String DEFAULT_SERVICE_TYPE = "passive";
