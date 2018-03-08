@@ -121,8 +121,10 @@
                         <versionTagPrefix>v</versionTagPrefix>
                     </gitFlowConfig>
                     <commitMessages>
-                        <featureStartMessage>create branch @{featureName}</featureStartMessage>
-                        <featureFinishMessage>merge branch @{featureName}</featureFinishMessage>
+                        <!--suppress MavenModelInspection -->
+                        <featureStartMessage>create feature-branch '@{featureName}' - update version to v@{version}</featureStartMessage>
+                        <!--suppress MavenModelInspection -->
+                        <featureFinishMessage>merge feature-branch '@{featureName}' - update version to v@{version}</featureFinishMessage>
 
                         <hotfixStartMessage>update version for hotfix to v@{version}</hotfixStartMessage>
                         <hotfixFinishMessage>update for next development version to v@{version}</hotfixFinishMessage>
