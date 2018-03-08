@@ -15,7 +15,7 @@ IMAGES=(
     "consol/omd-labs-centos-sakuli"
     "consol/omd-labs-debian-sakuli"
 )
-PATTERN="-SNAPSHOT"
+PATTERN="SNAPSHOT"
 #PATTERN="v1.1.0-SNAPSHOT"
 
 logfile="docker.delete.images.log"
