@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>1.2.0-317-feature-ci-build-test-SNAPSHOT</version>
+        <version>1.2.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>common</artifactId>
-    <version>1.2.0-317-feature-ci-build-test-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
     <name>common</name>
     <description>maven module for common used resources</description>
 
