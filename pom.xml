@@ -107,6 +107,9 @@
                 <artifactId>gitflow-maven-plugin</artifactId>
                 <configuration>
                     <verbose>true</verbose>
+                    <keepBranch>false</keepBranch>
+                    <fetchRemote>true</fetchRemote>
+                    <pushRemote>true</pushRemote>
                     <gitFlowConfig>
                         <!-- default git flow prefixes -->
                         <productionBranch>master</productionBranch>
@@ -117,9 +120,6 @@
                         <!-- non default 'v' prefix -->
                         <versionTagPrefix>v</versionTagPrefix>
                     </gitFlowConfig>
-                    <keepBranch>false</keepBranch>
-                    <fetchRemote>true</fetchRemote>
-                    <pushRemote>true</pushRemote>
                     <!-- needs profile activation via:
                         <profile>
                         ...
