@@ -22,13 +22,10 @@ import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.forwarder.gearman.TextPlaceholder;
-import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
-import org.sakuli.services.forwarder.gearman.model.builder.NagiosFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,9 +76,9 @@ public abstract class AbstractOutputBuilder {
                         sb.append("EXCEPTION: ").append(step.getExceptionMessages(true));
                     } else {
                         sb.append("over runtime (")
-                                .append(NagiosFormatter.formatToSec(step.getDuration()))
+                                .append(TimeFormatter.formatToSec(step.getDuration()))
                                 .append("/warn at ")
-                                .append(NagiosFormatter.formatToSec(step.getWarningTime()))
+                                .append(TimeFormatter.formatToSec(step.getWarningTime()))
                                 .append(")");
                     }
                 });
@@ -96,11 +93,11 @@ public abstract class AbstractOutputBuilder {
                     if (c.getState().isError()) {
                         sb.append("EXCEPTION: ").append(c.getExceptionMessages(true));
                     } else {
-                        sb.append("over runtime (").append(NagiosFormatter.formatToSec(c.getDuration()));
+                        sb.append("over runtime (").append(TimeFormatter.formatToSec(c.getDuration()));
                         if (c.getState().isCritical()) {
-                            sb.append("/crit at ").append(NagiosFormatter.formatToSec(c.getCriticalTime()));
+                            sb.append("/crit at ").append(TimeFormatter.formatToSec(c.getCriticalTime()));
                         } else {
-                            sb.append("/warn at ").append(NagiosFormatter.formatToSec(c.getWarningTime()));
+                            sb.append("/warn at ").append(TimeFormatter.formatToSec(c.getWarningTime()));
                         }
                         sb.append(")");
                     }

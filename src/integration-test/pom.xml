@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -41,6 +42,35 @@
 
     <build>
         <plugins>
+            <!-- prepare integration-test env-var-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <!--Unpacks the config resources from the common module, e.g. for the twig templates,
+                    to be able to load it via java.nio.Path method in integration tests-->
+                    <execution>
+                        <id>unpack-test-common-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
+                            <includes>**/common/config/**</includes>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.sakuli</groupId>
+                                    <artifactId>common</artifactId>
+                                    <version>${project.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Config for the integration tests unit test are skipped -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -97,7 +127,7 @@
                         <artifactId>maven-dependency-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>unpack</id>
+                                <id>unpack-java-dsl</id>
                                 <phase>prepare-package</phase>
                                 <goals>
                                     <goal>unpack</goal>
@@ -124,6 +154,13 @@
     </profiles>
 
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.parent.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>java-dsl</artifactId>

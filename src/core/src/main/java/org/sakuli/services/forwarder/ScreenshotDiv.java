@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.forwarder.gearman.model;
+package org.sakuli.services.forwarder;
 
 /**
  * Represents the screenshot div TAG in nagios output.
@@ -24,7 +24,7 @@ package org.sakuli.services.forwarder.gearman.model;
  * @author tschneck
  *         Date: 05.09.14
  */
-public class ScreenshotDiv implements NagiosPayloadString {
+public class ScreenshotDiv {
     public static final String DEFAULT_SAKULI_SCREENSHOT_DIV_ID = "sakuli_screenshot";
 
     public static final String STYLE_TEMPLATE = "<style>" +
@@ -82,7 +82,6 @@ public class ScreenshotDiv implements NagiosPayloadString {
         this.format = format;
     }
 
-    @Override
     public String getPayloadString() {
         return String.format(TEMPLATE, id, id, id, format, base64screenshot);
     }

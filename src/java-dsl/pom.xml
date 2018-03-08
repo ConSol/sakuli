@@ -106,8 +106,8 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>unpack</id>
-                        <phase>generate-resources</phase>
+                        <id>unpack-common-and-sahi</id>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>unpack</goal>
                         </goals>

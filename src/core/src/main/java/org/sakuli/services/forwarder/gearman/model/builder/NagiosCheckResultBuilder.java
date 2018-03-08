@@ -18,82 +18,39 @@
 
 package org.sakuli.services.forwarder.gearman.model.builder;
 
-import org.sakuli.datamodel.Builder;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
+import org.sakuli.services.forwarder.gearman.GearmanTemplateOutputBuilder;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
-import org.sakuli.services.forwarder.gearman.model.NagiosOutput;
-import org.sakuli.services.forwarder.gearman.model.PayLoadFields;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import static org.sakuli.services.forwarder.gearman.model.PayLoadFields.*;
-
 /**
  * @author tschneck
- *         Date: 10.07.14
+ * Date: 10.07.14
  */
 @ProfileGearman
 @Component
-public class NagiosCheckResultBuilder implements Builder<NagiosCheckResult> {
+public class NagiosCheckResultBuilder {
 
-    private String queueName;
-    private String type;
-    private String uuid;
-    private String startTime;
-    private String finishTime;
-    private String returnCode;
-    private String serviceDesc;
-    private NagiosOutput output;
-    private String hostSuite;
-    private String hostProperties;
+    private static final Logger logger = LoggerFactory.getLogger(NagiosCheckResultBuilder.class);
+
     @Autowired
     private TestSuite testSuite;
     @Autowired
     private GearmanProperties gearmanProperties;
     @Autowired
-    private NagiosOutputBuilder nagiosOutputBuilder;
+    private GearmanTemplateOutputBuilder outputBuilder;
 
-
-    @Override
-    public NagiosCheckResult build() {
-        extractData(testSuite, gearmanProperties);
-        NagiosCheckResult result = new NagiosCheckResult(queueName, uuid);
-        SortedMap<PayLoadFields, String> payload = new TreeMap<>();
-        payload.put(TYPE, type);
-        //host name from properties file can overwrites the determined of the suite
-        if (hostProperties != null) {
-            payload.put(HOST, hostProperties);
-        } else {
-            payload.put(HOST, hostSuite);
-        }
-        payload.put(START_TIME, startTime);
-        payload.put(FINISH_TIME, finishTime);
-        payload.put(RETURN_CODE, returnCode);
-        payload.put(SERVICE_DESC, serviceDesc);
-        payload.put(OUTPUT, output.getOutputString());
-        result.setPayload(payload);
-        return result;
+    public NagiosCheckResult build() throws SakuliForwarderException {
+        logger.info("======= CREATING OUTPUT FOR GEARMAN ======");
+        String payload = outputBuilder.createOutput();
+        logger.info("======= FINISHED: CREATING OUTPUT FOR GEARMAN ======");
+        return new NagiosCheckResult(gearmanProperties.getServerQueue(), testSuite.getGuid(), payload);
     }
-
-    protected void extractData(TestSuite testSuite, GearmanProperties gearmanProperties) {
-        //fields form properties file
-        queueName = gearmanProperties.getServerQueue();
-        type = gearmanProperties.getServiceType();
-        hostProperties = gearmanProperties.getNagiosHost();
-
-        hostSuite = testSuite.getHost();
-        uuid = testSuite.getGuid();
-        startTime = testSuite.getStartDateAsUnixTimestamp();
-        finishTime = testSuite.getStopDateAsUnixTimestamp();
-        returnCode = String.valueOf(testSuite.getState().getNagiosErrorCode());
-        serviceDesc = gearmanProperties.getNagiosServiceDescription();
-        output = nagiosOutputBuilder.build();
-    }
-
 
 }

@@ -18,9 +18,12 @@
 
 package org.sakuli.services.forwarder.configuration;
 
-import org.jtwig.functions.FunctionRequest;
 import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Custom JtwigFunction for extracting the screenshot from a test data entity, which has an exception.
@@ -42,10 +45,20 @@ public class ExtractScreenshotFunction extends AbstractFunction {
     }
 
     @Override
-    public Object execute(FunctionRequest request) {
-        verifyFunctionArguments(request, 1, AbstractTestDataEntity.class);
-        AbstractTestDataEntity testDataEntity = (AbstractTestDataEntity) request.getArguments().get(0);
-        return screenshotDivConverter.convert(testDataEntity.getException());
+    protected int getExpectedNumberOfArguments() {
+        return 1;
+    }
+
+    @Override
+    protected List<Class> getExpectedArgumentTypes() {
+        return Collections.singletonList(AbstractTestDataEntity.class);
+    }
+
+    @Override
+    protected Object execute(List<Object> arguments) {
+        return Optional.ofNullable((AbstractTestDataEntity) arguments.get(0))
+                .map(entity -> screenshotDivConverter.convert(entity.getException()))
+                .orElse(null);
     }
 
 }

@@ -22,8 +22,6 @@ import org.mockito.*;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
 import org.sakuli.exceptions.SakuliForwarderException;
-import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
-import org.sakuli.services.forwarder.gearman.model.builder.NagiosOutputBuilder;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -38,7 +36,6 @@ import static org.testng.Assert.*;
 
 public class ScreenshotDivConverterTest {
 
-    private static final String SCREENSHOT_DIV_WIDTH_DEFAULT = "640px";
     private final String base64String = "iVBORw0KGgoAAAANSUhEUgAAAE4AAAAQCAIAAAA3TN7NAAAAA3NCSVQICAjb4U/gAAAAGXRFWHRT" +
             "b2Z0d2FyZQBnbm9tZS1zY3JlZW5zaG907wO/PgAABPdJREFUSInllX9MU1cUx89997YIVGgV2bIh" +
             "AwXJWBSxAwRECuPHQAGVkMkQM4W5AYpMxR/RwRSjcYrBwVRANjEiDAY4lOAQg4zfY7gtGDPZ1HT8" +
@@ -84,7 +81,7 @@ public class ScreenshotDivConverterTest {
 
     @Test
     public void testWithException() throws Exception {
-        Path screenshotPath = Paths.get(NagiosOutputBuilder.class.getResource("computer.png").toURI());
+        Path screenshotPath = Paths.get(ScreenshotDivConverter.class.getResource("computer.png").toURI());
         assertTrue(Files.exists(screenshotPath));
 
         ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath));
