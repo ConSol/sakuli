@@ -25,11 +25,12 @@
     </com.izforge.izpack.panels.target.TargetPanel>
     <com.izforge.izpack.panels.packs.PacksPanel id="PacksPanel_3">
         <pack index="0" selected="true"/>
-        <pack index="1" selected="true"/>
+        <pack index="1" selected="false"/>
         <pack index="2" selected="true"/>
         <pack index="3" selected="true"/>
         <pack index="4" selected="true"/>
-        <pack index="5" selected="false"/>
+        <pack index="5" selected="true"/>
+        <pack index="6" selected="false"/>
     </com.izforge.izpack.panels.packs.PacksPanel>
     <com.izforge.izpack.panels.summary.SummaryPanel id="SummaryPanel_4"/>
     <com.izforge.izpack.panels.install.InstallPanel id="InstallPanel_5"/>

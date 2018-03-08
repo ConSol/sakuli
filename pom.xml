@@ -51,7 +51,6 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- needed for no errors on javadoc generation (maven-javadoc-plugin) -->
         <additionalparam>-Xdoclint:none</additionalparam>
-        <dependencies.sakuli-go-wrapper.version>1.1.0</dependencies.sakuli-go-wrapper.version>
         <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
@@ -60,6 +59,9 @@
         <test.group.unit>unit</test.group.unit>
         <test.group.ui>ui</test.group.ui>
         <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
+        <!-- sakuli components versions:-->
+        <sakuli-go-wrapper.version>1.2.0</sakuli-go-wrapper.version>
+        <sakuli.ui.version>0.10.0-SNAPSHOT</sakuli.ui.version>
         <!-- special sakuli-version 99x - change this later to latest stable version-->
         <sikulixapi.version>1.1.1000</sikulixapi.version>
         <sahi.version>5.1</sahi.version>

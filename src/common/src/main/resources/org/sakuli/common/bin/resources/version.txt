@@ -3,5 +3,6 @@ Built time:         ${git.build.time}
 GIT commit ID:      ${git.commit.id}
 
 --- Libraries ---
+Sakuli UI version:  ${sakuli.ui.version}
 Sahi OS version:    ${sahi.version}
 SikuliX version:    ${sikulixapi.version}
