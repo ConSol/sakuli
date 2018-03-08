@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2017 the original author or authors.
+ * Copyright 2013 - 2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,36 +18,31 @@
 
 package org.sakuli.services.forwarder.configuration;
 
-import org.apache.commons.lang.StringUtils;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 import java.util.Arrays;
-import java.util.List;
+
+import static org.testng.Assert.assertEquals;
 
 /**
- * Custom JtwigFunction for checking whether the provided string is blank.
- *
- * @author Georgi Todorov
+ * Created by georgi on 23/02/18.
  */
-public class IsBlankFunction extends AbstractFunction {
+public class IsBlankFunctionTest {
 
-    @Override
-    public String name() {
-        return "isBlank";
+    @DataProvider
+    public Object[][] isBlankDP() {
+        return new Object[][] {
+                { "", true},
+                { "    ", true},
+                { "1", false},
+        };
     }
 
-    @Override
-    protected int getExpectedNumberOfArguments() {
-        return 1;
-    }
-
-    @Override
-    protected List<Class> getExpectedArgumentTypes() {
-        return Arrays.asList(String.class);
-    }
-
-    @Override
-    protected Object execute(List<Object> arguments) {
-        return StringUtils.isBlank((String) arguments.get(0));
+    @Test(dataProvider = "isBlankDP")
+    public void isBlank(String input, boolean isBlank) {
+        IsBlankFunction isBlankFunction = new IsBlankFunction();
+        assertEquals(isBlankFunction.execute(Arrays.asList(input)), isBlank);
     }
 
 }

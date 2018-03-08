@@ -76,6 +76,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                     .add(new GetOutputDurationFunction())
                     .add(new ExtractScreenshotFunction(screenshotDivConverter))
                     .add(new AbbreviateFunction())
+                    .add(new UnixTimestampConverterFunction())
                     .and()
                     .build();
             JtwigTemplate template = JtwigTemplate.fileTemplate(getTemplatePath().toFile(), configuration);

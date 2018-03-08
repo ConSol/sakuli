@@ -69,16 +69,16 @@ public class GearmanResultServiceImpl extends AbstractResultService {
         GearmanJobServerConnection connection = getGearmanConnection(properties.getServerHost(), properties.getServerPort());
 
         List<NagiosCheckResult> results = new ArrayList<>();
-        results.add(nagiosCheckResultBuilder.build());
-
-        if (properties.isCacheEnabled()) {
-            results.addAll(cacheService.getCachedResults());
-            if (results.size() > 1) {
-                logger.info(String.format("Processing %s cached results first", results.size() - 1));
-            }
-        }
-
         try {
+            results.add(nagiosCheckResultBuilder.build());
+
+            if (properties.isCacheEnabled()) {
+                results.addAll(cacheService.getCachedResults());
+                if (results.size() > 1) {
+                    logger.info(String.format("Processing %s cached results first", results.size() - 1));
+                }
+            }
+
             if (!gearmanClient.addJobServer(connection)) {
                 exceptionHandler.handleException(new SakuliForwarderException(
                         String.format("Failed to connect to Gearman server '%s:%s'", properties.getServerHost(), properties.getServerPort())), true);
@@ -110,7 +110,7 @@ public class GearmanResultServiceImpl extends AbstractResultService {
             logger.debug(String.format("Sending result to Gearman server %s:%s", checkResult.getQueueName(), checkResult.getUuid()));
         }
 
-        logGearmanMessage(checkResult.getPayloadString());
+        logGearmanMessage(checkResult.getPayload());
         GearmanJob job = creatJob(checkResult);
 
         //send results to gearman
@@ -165,9 +165,9 @@ public class GearmanResultServiceImpl extends AbstractResultService {
     protected GearmanJob creatJob(NagiosCheckResult checkResult) {
         byte[] bytesBase64;
         if (properties.isEncryption()) {
-            bytesBase64 = Aes.encrypt(checkResult.getPayloadString(), properties.getSecretKey());
+            bytesBase64 = Aes.encrypt(checkResult.getPayload(), properties.getSecretKey());
         } else {
-            bytesBase64 = Base64.encodeBase64(checkResult.getPayloadString().getBytes());
+            bytesBase64 = Base64.encodeBase64(checkResult.getPayload().getBytes());
         }
 
         return GearmanJobImpl.createBackgroundJob(checkResult.getQueueName(), bytesBase64, checkResult.getUuid());

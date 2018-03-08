@@ -1,0 +1,42 @@
+{# macro for creating the exception message of a test data entity. If there are any suppressed exception, they will be also listed. #}
+{% macro exceptionMessage (testDataEntity) %}
+    {% if (testDataEntity.exception is not null) %}
+        {{ testDataEntity.exception.message }}
+        {# add suppressed exceptions #}
+        {% for suppressedException in testDataEntity.exception.suppressed %}
+            $whitespace$-- Suppressed EXCEPTION: {{ suppressedException.message }}
+        {% endfor %}
+    {% endif %}
+{% endmacro %}
+
+{# macro for creating the exception message of a test case and all of its test steps. #}
+{% macro exceptionMessageTestCase (testCase) %}
+    {% import 'error_message_creator.twig' as errorMessageCreator %}
+    {% set testCaseErrorMessage = errorMessageCreator.exceptionMessage(testCase) %}
+    {{ testCaseErrorMessage }}
+    {% for testStep in testCase.stepsAsSortedSet %}
+        {% set stepErrorMessage = errorMessageCreator.exceptionMessage(testStep) %}
+        {% if (not isBlank(stepErrorMessage)) %}
+            {% if (not isBlank(testCaseErrorMessage)) %}
+                $whitespace$-$whitespace$
+            {% endif %}
+            STEP "{{ testStep.id }}": {{ stepErrorMessage }}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{# macro for creating the exception message of a test suite and all of its test cases. #}
+{% macro exceptionMessageTestSuite (testSuite) %}
+    {% import 'error_message_creator.twig' as errorMessageCreator %}
+    {% set parentEntityErrorMessage = errorMessageCreator.exceptionMessage(testSuite) %}
+    {{ parentEntityErrorMessage }}
+    {% for testCase in testSuite.testCasesAsSortedSet %}
+        {% set caseErrorMessage = errorMessageCreator.exceptionMessageTestCase(testCase) %}
+        {% if (not isBlank(caseErrorMessage)) %}
+            {% if (not isBlank(parentEntityErrorMessage)) %}
+                $whitespace$--$whitespace$
+            {% endif %}
+            CASE "{{ testCase.id }}": {{ caseErrorMessage }}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

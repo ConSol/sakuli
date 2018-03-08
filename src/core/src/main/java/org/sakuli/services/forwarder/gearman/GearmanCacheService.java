@@ -23,12 +23,13 @@ import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliForwarderException;
-import org.sakuli.services.forwarder.gearman.model.NagiosCachedCheckResult;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -68,7 +69,7 @@ public class GearmanCacheService {
                 String uuid = "";
                 for (String line : lines) {
                     if (line.trim().equals(CACHE_SEPARATOR)) {
-                        results.add(new NagiosCachedCheckResult(queueName, uuid, resultBuilder.toString()));
+                        results.add(new NagiosCheckResult(queueName, uuid, resultBuilder.toString()));
                     } else if (line.startsWith(CACHE_SEPARATOR)) {
                         resultBuilder = new StringBuilder();
                         queueName = line.substring(CACHE_SEPARATOR.length() + 1, line.indexOf(":"));
@@ -99,7 +100,7 @@ public class GearmanCacheService {
         try (FileOutputStream fos = new FileOutputStream(output)) {
             for (NagiosCheckResult result : results) {
                 fos.write((CACHE_SEPARATOR + " " + result.getQueueName() + ":" + result.getUuid() + LINE_SEPARATOR).getBytes(CHARSET_NAME));
-                fos.write((result.getPayloadString().trim() + LINE_SEPARATOR).getBytes(CHARSET_NAME));
+                fos.write((result.getPayload().trim() + LINE_SEPARATOR).getBytes(CHARSET_NAME));
                 fos.write((CACHE_SEPARATOR + LINE_SEPARATOR).getBytes(CHARSET_NAME));
             }
 

@@ -26,13 +26,11 @@ import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.services.forwarder.MonitoringPropertiesTestHelper;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
+import org.sakuli.services.forwarder.gearman.GearmanTemplateOutputBuilder;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
-import org.sakuli.services.forwarder.gearman.model.builder.NagiosOutputBuilder;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.util.SortedMap;
 
 import static org.mockito.Mockito.when;
 
@@ -43,40 +41,29 @@ public class NagiosCheckResultTest {
     @Mock
     private GearmanProperties gearmanProperties;
     @Mock
-    private NagiosOutputBuilder nagiosOutputBuilder;
+    private GearmanTemplateOutputBuilder outputBuilder;
     @InjectMocks
     private NagiosCheckResultBuilder testling;
 
     @BeforeMethod
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        when(nagiosOutputBuilder.build()).thenReturn(new NagiosOutput());
         MonitoringPropertiesTestHelper.initMock(gearmanProperties);
         //represents the property replace mechanism of the `.properties` file
-        when(gearmanProperties.getNagiosServiceDescription()).then(a -> testSuite.getId());
+        when(gearmanProperties.getServerQueue()).then(a -> testSuite.getId());
     }
 
     @Test
     public void testGetPayload() throws Exception {
+        String gearmanPayload="test_payload";
+        when(outputBuilder.createOutput()).thenReturn(gearmanPayload);
 
         NagiosCheckResult checkResult = testling.build();
-
-        SortedMap<PayLoadFields, String> map = checkResult.getPayload();
-        Assert.assertEquals(map.firstKey(), PayLoadFields.TYPE);
-        Assert.assertEquals(map.lastKey(), PayLoadFields.OUTPUT);
+        Assert.assertEquals(checkResult.getPayload(), gearmanPayload);
+        Assert.assertNotNull(checkResult.getQueueName());
+        Assert.assertEquals(checkResult.getQueueName(), gearmanProperties.getServerQueue());
+        Assert.assertNotNull(checkResult.getUuid());
+        Assert.assertEquals(checkResult.getUuid(), testSuite.getGuid());
     }
 
-    @Test
-    public void testGetPayloadString() throws Exception {
-        NagiosCheckResult checkResult = testling.build();
-
-        String regex = "type=passive\n" +
-                "host_name=localhost\n" +
-                "start_time=.*\n" +
-                "finish_time=.*\n" +
-                "return_code=\\d\n" +
-                "service_description=UnitTest_.*\n" +
-                "output=.*";
-        Assert.assertTrue(checkResult.getPayloadString().matches(regex), checkResult.getPayloadString() + "\nwon't match to:\n" + regex);
-    }
 }

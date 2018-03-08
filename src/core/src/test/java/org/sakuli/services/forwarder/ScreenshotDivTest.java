@@ -16,8 +16,9 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.forwarder.gearman.model;
+package org.sakuli.services.forwarder;
 
+import org.sakuli.services.forwarder.ScreenshotDiv;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
