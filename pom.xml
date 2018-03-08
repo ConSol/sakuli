@@ -106,6 +106,7 @@
                 <groupId>com.amashchenko.maven.plugin</groupId>
                 <artifactId>gitflow-maven-plugin</artifactId>
                 <configuration>
+                    <verbose>true</verbose>
                     <gitFlowConfig>
                         <!-- default git flow prefixes -->
                         <productionBranch>master</productionBranch>
