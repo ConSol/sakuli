@@ -59,7 +59,7 @@
         <test.group.unit>unit</test.group.unit>
         <test.group.ui>ui</test.group.ui>
         <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
-        <!-- sakuli components versions:-->
+        <!-- sakuli components versions: -->
         <sakuli-go-wrapper.version>1.2.0</sakuli-go-wrapper.version>
         <sakuli.ui.version>0.10.0-SNAPSHOT</sakuli.ui.version>
         <!-- special sakuli-version 99x - change this later to latest stable version-->
