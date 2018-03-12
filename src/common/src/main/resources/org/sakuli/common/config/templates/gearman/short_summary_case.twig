@@ -1,5 +1,5 @@
 {# This template renders the short summary for the specified test case. #}
-{{ getOutputState(testCase.state).shortState }} Sakuli suite "{{testCase.id}}"$whitespace$
+{{ getOutputState(testCase.state).shortState }} Case "{{testCase.id}}" of Sakuli suite "{{testSuiteId}}"$whitespace$
 {% if (testCase.state.error) %}
     {% set exceptionMessages = errorMessageCreator.exceptionMessageTestCase(testCase) %}
     ({{ testCase.duration | number_format(2, '.') }}s) {{testCase.state.nagiosStateDescription}}: {{abbreviate(exceptionMessages, 200, true)}}
