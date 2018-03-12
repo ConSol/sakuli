@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -47,7 +48,8 @@
         <sakuli.install.target.installerScripts>${sakuli.install.target.core}/bin/installer_scripts
         </sakuli.install.target.installerScripts>
         <package.name.set.default.win>Set v${sakuli.version} as default version</package.name.set.default.win>
-        <package.name.set.default.linux>Set v${sakuli.version} as default version in .bashrc</package.name.set.default.linux>
+        <package.name.set.default.linux>Set v${sakuli.version} as default version in .bashrc
+        </package.name.set.default.linux>
         <package.name.set.testing.vars.win>Windows environment modifications</package.name.set.testing.vars.win>
         <package.name.set.testing.vars.linux>.bashrc modifications</package.name.set.testing.vars.linux>
         <package.name.firefox.version>42</package.name.firefox.version>
@@ -192,7 +194,7 @@
                             <dependency>
                                 <groupId>org.codehaus.izpack</groupId>
                                 <artifactId>izpack-panel</artifactId>
-                                <version>${izpack.version}</version>
+                                <version>${dependencies.izpack.version}</version>
                             </dependency>
                         </dependencies>
                     </plugin>
