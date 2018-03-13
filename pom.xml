@@ -52,7 +52,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <!--properties for release process with gitflow-maven-plugin-->
-        <maven.settings.file>${settings.localRepository}</maven.settings.file>
+        <maven.settings.hook/>
         <performRelease>false</performRelease>
         <!-- needed for no errors on javadoc generation (maven-javadoc-plugin) -->
         <additionalparam>-Xdoclint:none</additionalparam>
@@ -124,7 +124,7 @@
                     <postReleaseGoals>deploy</postReleaseGoals>
                     <postHotfixGoals>deploy</postHotfixGoals>
                     <!--load maven settings.xml for sub-processes of maven-->
-                    <argLine>-DperformRelease=${performRelease} -s ${maven.settings.file}</argLine>
+                    <argLine>-DperformRelease=${performRelease} ${maven.settings.hook}</argLine>
                     <!-- to activate some profiles for release builds use:
                         <profile>
                         ...
@@ -356,7 +356,7 @@
             <id>jenkins</id>
             <properties>
                 <!--property needed for gitflow-maven-plugin-->
-                <maven.settings.file>${user.home}/mvn_settings/sakuli-settings.xml</maven.settings.file>
+                <maven.settings.hook>-s ${user.home}/mvn_settings/sakuli-settings.xml</maven.settings.hook>
                 <performRelease>true</performRelease>
             </properties>
         </profile>
