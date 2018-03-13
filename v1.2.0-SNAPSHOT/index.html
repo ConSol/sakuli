@@ -608,7 +608,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">The Sakuli Team</span><br>
 <span id="email" class="email"><a href="mailto:sakuli@consol.de">sakuli@consol.de</a></span><br>
 <span id="revnumber">version v1.2.0-SNAPSHOT,</span>
-<span id="revdate">13.03.2018 @ 17:49:45 CET</span>
+<span id="revdate">13.03.2018 @ 19:57:18 CET</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Sakuli E2E</div>
@@ -879,9 +879,9 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_developer_documentation">1.6. Developer Documentation</a>
 <ul class="sectlevel3">
 <li><a href="#dev-installation">1.6.1. Installation guide for Sakuli-Developers</a></li>
-<li><a href="#dev-new-release">1.6.2. How to create a new release</a></li>
-<li><a href="#dev-maven-aspects">1.6.3. Maven aspects</a></li>
-<li><a href="#dev-ascii-doc">1.6.4. AsciiDoc documentation aspects</a></li>
+<li><a href="#dev-maven-aspects">1.6.2. Maven aspects</a></li>
+<li><a href="#dev-ascii-doc">1.6.3. AsciiDoc documentation aspects</a></li>
+<li><a href="#dev-new-release">1.6.4. How to create a new release</a></li>
 <li><a href="#dev-sikuli-supplemental-pack">1.6.5. sikulix-supplemental package</a></li>
 </ul>
 </li>
@@ -10511,174 +10511,7 @@ limitations under the License.</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="dev-new-release"><a class="anchor" href="#dev-new-release"></a>1.6.2. How to create a new release</h4>
-<div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/development/how-to-release.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/development/how-to-release.adoc" target="_blank">edit</a></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Check if all features are merged in dev</p>
-</li>
-<li>
-<p>Check if <code>changelog.adoc</code> is correct</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">(Jenkins CI) Perform a new official release</div>
-<ol class="arabic">
-<li>
-<p>Go to <a href="http://labs-build.consol.de/job/Sakuli_perform_release/">Jenkins - Sakuli_perform_release</a> and execute the job and set the parameters <code>REL_VERSION</code> and <code>DEV_VERSION</code></p>
-</li>
-<li>
-<p>Check if maven artifacts have been deployed at <a href="https://labs.consol.de/maven/repository/org/sakuli/">https://labs.consol.de/maven/repository/org/sakuli/</a></p>
-</li>
-<li>
-<p>Check the new taged verison on <a href="https://hub.docker.com/">DockerHub</a> with same <code>REL_VERSION</code> for the following images:
-<a href="https://hub.docker.com/search/?isAutomated=0&amp;isOfficial=0&amp;page=1&amp;pullCount=0&amp;q=sakuli&amp;starCount=0">DockerHub - Sakuli</a></p>
-</li>
-<li>
-<p>Test the new docker images as long the <a href="https://github.com/ConSol/sakuli-examples">sakuli-exampels</a> are not in the automated build</p>
-</li>
-<li>
-<p>Check te latest documentation is updated at <a href="http://consol.github.io/sakuli/" class="bare">http://consol.github.io/sakuli/</a>.</p>
-</li>
-<li>
-<p>Make a new <a href="https://github.com/ConSol/sakuli/releases">GitHub Release</a>:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Add <code>sakuli-vXXX-installer.jar</code> and <code>sakuli-vXXX.zip</code> from <a href="https://labs.consol.de/sakuli/install/">https://labs.consol.de/sakuli/install/</a> to a new release XXX</p>
-</li>
-<li>
-<p>Copy the latest changelog to the new release page</p>
-</li>
-<li>
-<p>Check and publish new release</p>
-</li>
-</ul>
-</div>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<div class="title">(local) Process a new release with maven</div>
-<p><strong>1. Dry-run (if needed)</strong></p>
-</div>
-<div class="paragraph">
-<p>Generate a new relase over <strong>jgitflow-maven-plugin</strong> (branch: <code>release/xxx</code>):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    mvn jgitflow:release-start -DnoDeploy=true -DpushReleases=false -DlocalOnly=true</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Do a dry-run <em>without</em> deploying and pushing any new files:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    mvn jgitflow:release-finish -DnoDeploy=true -DpushReleases=false -DlocalOnly=true</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Delete all local git changes and branches</p>
-</div>
-<div class="paragraph">
-<p><strong>2. Release</strong></p>
-</div>
-<div class="paragraph">
-<p>Generate a new relase over <strong>jgitflow-maven-plugin</strong> (branch: <code>release/xxx</code>):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    mvn jgitflow:release-start</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Execute the following commands, to update the Dockerfiles to the new release version at the branch <code>release/xxx</code> .</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    docker/update_sakuli_version.sh --new-version $REL_VERSION
-    git commit -am "update Dockerfiles to REL-Version v$REL_VERS"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Start the release deploying and pushing any new branches and tags if needed:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    mvn jgitflow:release-finish</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Go to the <code>dev</code> branch and adjust the version of the Dockerfiles:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    docker/update_sakuli_version.sh --new-version $DEV_VERS
-    git commit -am "update Dockerfiles to DEV-Version v$DEV_VERS"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Push your changes:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>git push --all</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Finally delete the no longer needed remote feature branch and do the manual release steps from above (after Jenkins job):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>git branch -d &lt;branchName&gt;
-git push origin --delete &lt;branchName&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<div class="title">Troubleshooting</div>
-<p><strong>Re-use a tag</strong></p>
-</div>
-<div class="paragraph">
-<p>To re-use an already set tag, remove it from git (local and remote):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code># delete the tag locally:
-git tag -d sakuli-X.X.X`
-# push to remote:
-git push --delete origin sakuli-X.X.X`</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>General</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Check your maven settings in <code>~/.m2/settings.xml</code>:</p>
-</li>
-<li>
-<p>Ensure that your private key has access rights for user <code>sakuli@labs.consol.de</code></p>
-</li>
-<li>
-<p>Ensure that your private key is added to ssh-agent: <code>ssh-add &lt;path-to-key&gt;</code></p>
-</li>
-<li>
-<p>Check proxy settings - the server <code>labs.consol.de</code> must be reachable</p>
-</li>
-<li>
-<p>Ensure that the ConSol-Labs server is configured correctly, see <a href="#sql-database">SQL Database</a></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="dev-maven-aspects"><a class="anchor" href="#dev-maven-aspects"></a>1.6.3. Maven aspects</h4>
+<h4 id="dev-maven-aspects"><a class="anchor" href="#dev-maven-aspects"></a>1.6.2. Maven aspects</h4>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/development/maven-aspects.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/development/maven-aspects.adoc" target="_blank">edit</a></p>
 </div>
@@ -10719,6 +10552,29 @@ git push --delete origin sakuli-X.X.X`</code></pre>
 <div class="paragraph">
 <div class="title">Install locally <code>mvn install</code></div>
 <p>Runs all steps until step <strong>6</strong></p>
+</div>
+<div id="feature-branches" class="paragraph">
+<div class="title">Working with feature branches:</div>
+<p>For handling releases and feature branches, Sakuli uses the <a href="https://github.com/aleksandr-m/gitflow-maven-plugin">gitflow-maven-plugin</a>. For more information take a look at there <a href="https://github.com/aleksandr-m/gitflow-maven-plugin/blob/master/README.md">README</a>.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start a new feature: <code>mvn gitflow:feature-start</code></p>
+</li>
+<li>
+<p>Use as feature name the pattern <code>&lt;github-issue-no&gt;-&lt;feature-description&gt;</code></p>
+</li>
+<li>
+<p>Commit your work and do <code>git push</code>. Changes will be available at the remote feature branch <code>feature/&lt;github-issue-no&gt;-&lt;feature-description&gt;</code></p>
+</li>
+<li>
+<p>The build <a href="http://labs-build.consol.de/view/Sakuli/job/Sakuli_CI_feature_branch">Sakuli_CI_feature_branch</a> will automatic triggered and a new version will deployed with version <code>v1.X.X-&lt;github-issue-no&gt;-&lt;feature-description&gt;-SNAPSHOT</code>. This feature version is available as <a href="#download">Download</a> and as <a href="#docker-images">Sakuli Docker Images</a></p>
+</li>
+<li>
+<p>To finish the developed feature execute: <code>mvn gitflow:feature-finish</code></p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <div class="title">Build a new release</div>
@@ -10851,7 +10707,7 @@ mvn install:install-file -DgroupId=net.sf.sahi -DartifactId=sahi-install -Dversi
 </div>
 </div>
 <div class="sect3">
-<h4 id="dev-ascii-doc"><a class="anchor" href="#dev-ascii-doc"></a>1.6.4. AsciiDoc documentation aspects</h4>
+<h4 id="dev-ascii-doc"><a class="anchor" href="#dev-ascii-doc"></a>1.6.3. AsciiDoc documentation aspects</h4>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/development/ascii-doc-aspects.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/development/ascii-doc-aspects.adoc" target="_blank">edit</a></p>
 </div>
@@ -10990,6 +10846,164 @@ docs/manual/testdefinition/sakuli-api-testcase.adoc</code></pre>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="regex">https://github.com/ConSol/sakuli/issues/$1[#$1]</code></pre>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="dev-new-release"><a class="anchor" href="#dev-new-release"></a>1.6.4. How to create a new release</h4>
+<div id="git-edit-section" class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/development/how-to-release.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/development/how-to-release.adoc" target="_blank">edit</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Check if all features are merged in dev</p>
+</li>
+<li>
+<p>Check if <code>changelog.adoc</code> is correct</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">(Jenkins CI) Perform a new official release</div>
+<ol class="arabic">
+<li>
+<p>Go to <a href="http://labs-build.consol.de/job/Sakuli_perform_release/">Jenkins - Sakuli_perform_release</a> and execute the job and set the parameters <code>REL_VERSION</code> and <code>DEV_VERSION</code></p>
+</li>
+<li>
+<p>Check if maven artifacts have been deployed at <a href="https://labs.consol.de/maven/repository/org/sakuli/">https://labs.consol.de/maven/repository/org/sakuli/</a></p>
+</li>
+<li>
+<p>Check the new taged version on <a href="https://hub.docker.com/">DockerHub</a> with same <code>REL_VERSION</code> for the following images:
+<a href="https://hub.docker.com/search/?isAutomated=0&amp;isOfficial=0&amp;page=1&amp;pullCount=0&amp;q=sakuli&amp;starCount=0">DockerHub - Sakuli</a></p>
+</li>
+<li>
+<p>Test the new docker images as long the <a href="https://github.com/ConSol/sakuli-examples">sakuli-examples</a> are not in the automated build</p>
+</li>
+<li>
+<p>Check te latest documentation is updated at <a href="http://consol.github.io/sakuli/" class="bare">http://consol.github.io/sakuli/</a>.</p>
+</li>
+<li>
+<p>Make a new <a href="https://github.com/ConSol/sakuli/releases">GitHub Release</a>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add <code>sakuli-vXXX-installer.jar</code> and <code>sakuli-vXXX.zip</code> from <a href="https://labs.consol.de/sakuli/install/">https://labs.consol.de/sakuli/install/</a> to a new release XXX</p>
+</li>
+<li>
+<p>Copy the latest changelog to the new release page</p>
+</li>
+<li>
+<p>Check and publish new release</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">(local) Process a new release with maven</div>
+<p><strong>1. Dry-run (if needed)</strong></p>
+</div>
+<div class="paragraph">
+<p>Generate a new release over <strong>gitflow-maven-plugin</strong> (branch: <code>release/xxx</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    mvn gitflow:release-start</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Do a dry-run <em>without</em> deploying and pushing any new files:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    mvn clean install -DperformRelease=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Delete all local git changes and branches</p>
+</div>
+<div class="paragraph">
+<p><strong>2. Release</strong></p>
+</div>
+<div class="paragraph">
+<p>Generate a new release (if not done in step 1) over <strong>gitflow-maven-plugin</strong> (branch: <code>release/xxx</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    mvn gitflow:release-start</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Execute the following commands, to update the Dockerfiles to the new release version at the branch <code>release/xxx</code> .</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    docker/update_sakuli_version.sh --new-version $REL_VERSION
+    git commit -am "update Dockerfiles to REL-Version v$REL_VERS"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Start the release deploying and pushing any new branches and tags if needed:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    mvn gitflow:release-finish</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Go to the <code>dev</code> branch and adjust the version of the Dockerfiles:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    docker/update_sakuli_version.sh --new-version $DEV_VERS
+    git commit -am "update Dockerfiles to DEV-Version v$DEV_VERS"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Push your changes in <code>dev</code> branch:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>git push --all</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Troubleshooting</div>
+<p><strong>Re-use a tag</strong></p>
+</div>
+<div class="paragraph">
+<p>To re-use an already set tag, remove it from git (local and remote):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code># delete the tag locally:
+git tag -d sakuli-X.X.X`
+# push to remote:
+git push --delete origin sakuli-X.X.X`</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>General</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Check your maven settings in <code>~/.m2/settings.xml</code>:</p>
+</li>
+<li>
+<p>Ensure that your private key has access rights for user <code>sakuli@labs.consol.de</code></p>
+</li>
+<li>
+<p>Ensure that your private key is added to ssh-agent: <code>ssh-add &lt;path-to-key&gt;</code></p>
+</li>
+<li>
+<p>Check proxy settings - the server <code>labs.consol.de</code> must be reachable</p>
+</li>
+<li>
+<p>Ensure that the ConSol-Labs server is configured correctly, see <a href="#sql-database">SQL Database</a></p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -12536,7 +12550,7 @@ Website: <a href="http://www.consol.de">www.consol.de</a></p>
 <div id="footer">
 <div id="footer-text">
 Version v1.2.0-SNAPSHOT<br>
-Last updated 2018-03-13 17:49:46 CET
+Last updated 2018-03-13 19:57:20 CET
 </div>
 </div>
 <!--
