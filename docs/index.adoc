@@ -153,9 +153,9 @@ include::manual/integration/json-forwarder.adoc[]
 //== Developer Documentation
 include::manual/development/README.adoc[]
 include::manual/development/installation-developers.adoc[]
-include::manual/development/how-to-release.adoc[]
 include::manual/development/maven-aspects.adoc[]
 include::manual/development/ascii-doc-aspects.adoc[]
+include::manual/development/how-to-release.adoc[]
 include::manual/development/linux-native-libs/linux-sikuli-supplemental-pack.adoc[]
 
 include::example-projects.adoc[]
