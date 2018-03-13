@@ -17,7 +17,8 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.sakuli</groupId>
@@ -49,23 +50,32 @@
         <downloadJavadocs>true</downloadJavadocs>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
+        <!--properties for release process with gitflow-maven-plugin-->
+        <maven.settings.file>${settings.localRepository}</maven.settings.file>
+        <performRelease>false</performRelease>
         <!-- needed for no errors on javadoc generation (maven-javadoc-plugin) -->
         <additionalparam>-Xdoclint:none</additionalparam>
+
+        <!-- sakuli components versions: -->
+        <dependencies.sakuli-go-wrapper.version>1.1.0</dependencies.sakuli-go-wrapper.version>
+        <dependencies.sakuli.ui.version>0.10.0-SNAPSHOT</dependencies.sakuli.ui.version>
+        <!-- special sakuli-version > 990, see our fork https://github.com/toschneck/SikuliX-2014 -->
+        <dependencies.sikulixapi.version>1.1.1000</dependencies.sikulixapi.version>
+        <dependencies.sahi.version>5.1</dependencies.sahi.version>
+
+        <!--other java dependencies-->
         <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
-        <dependencies.testng.version>6.8.8</dependencies.testng.version>
         <dependencies.jersey-client.version>2.22.2</dependencies.jersey-client.version>
+        <dependencies.izpack.version>5.0.6</dependencies.izpack.version>
+
+        <!--testing related properties-->
+        <dependencies.testng.version>6.8.8</dependencies.testng.version>
         <test.group.integration>integration</test.group.integration>
         <test.group.unit>unit</test.group.unit>
         <test.group.ui>ui</test.group.ui>
         <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
-        <!-- sakuli components versions: -->
-        <sakuli-go-wrapper.version>1.2.0</sakuli-go-wrapper.version>
-        <sakuli.ui.version>0.10.0-SNAPSHOT</sakuli.ui.version>
-        <!-- special sakuli-version 99x - change this later to latest stable version-->
-        <sikulixapi.version>1.1.1000</sikulixapi.version>
-        <sahi.version>5.1</sahi.version>
-        <izpack.version>5.0.6</izpack.version>
     </properties>
 
     <!-- Plugin CONFIG -->
@@ -99,7 +109,7 @@
                         <exclude>**/integration/**/*</exclude>
                     </excludes>
                     <environmentVariables>
-                        <SAKULI_HOME />
+                        <SAKULI_HOME/>
                     </environmentVariables>
                 </configuration>
             </plugin>
@@ -112,6 +122,21 @@
                     <keepBranch>false</keepBranch>
                     <fetchRemote>true</fetchRemote>
                     <pushRemote>true</pushRemote>
+                    <postReleaseGoals>deploy</postReleaseGoals>
+                    <postHotfixGoals>deploy</postHotfixGoals>
+                    <!--load maven settings.xml for sub-processes of maven-->
+                    <argLine>-DperformRelease=${performRelease} -s ${maven.settings.file}</argLine>
+                    <!-- to activate some profiles for release builds use:
+                        <profile>
+                        ...
+                            <activation>
+                                <property>
+                                    <name>performRelease</name>
+                                    <value>true</value>
+                                </property>
+                            </activation>
+                        </profile>
+                    -->
                     <gitFlowConfig>
                         <!-- default git flow prefixes -->
                         <productionBranch>master</productionBranch>
@@ -124,9 +149,11 @@
                     </gitFlowConfig>
                     <commitMessages>
                         <!--suppress MavenModelInspection -->
-                        <featureStartMessage>create feature-branch '@{featureName}' - update version to v@{version}</featureStartMessage>
+                        <featureStartMessage>create feature-branch '@{featureName}' - update version to v@{version}
+                        </featureStartMessage>
                         <!--suppress MavenModelInspection -->
-                        <featureFinishMessage>merge feature-branch '@{featureName}' - update version to v@{version}</featureFinishMessage>
+                        <featureFinishMessage>merge feature-branch '@{featureName}' - update version to v@{version}
+                        </featureFinishMessage>
 
                         <hotfixStartMessage>update version for hotfix to v@{version}</hotfixStartMessage>
                         <hotfixFinishMessage>update for next development version to v@{version}</hotfixFinishMessage>
@@ -134,17 +161,7 @@
                         <releaseStartMessage>update version for release to v@{version}</releaseStartMessage>
                         <releaseFinishMessage>update for next development version to v@{version}</releaseFinishMessage>
                     </commitMessages>
-                    <!-- needs profile activation via:
-                        <profile>
-                        ...
-                            <activation>
-                                <property>
-                                    <name>performRelease</name>
-                                    <value>true</value>
-                                </property>
-                            </activation>
-                        </profile>
-                    -->
+
                 </configuration>
             </plugin>
 
@@ -225,7 +242,7 @@
                 <plugin>
                     <groupId>org.codehaus.izpack</groupId>
                     <artifactId>izpack-maven-plugin</artifactId>
-                    <version>${izpack.version}</version>
+                    <version>${dependencies.izpack.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>com.googlecode.maven-download-plugin</groupId>
@@ -336,7 +353,16 @@
 
 
     <profiles>
-        <!-- profile overrideds the `upload-config` for releases-->
+        <profile>
+            <id>jenkins</id>
+            <properties>
+                <!--property needed for gitflow-maven-plugin-->
+                <maven.settings.file>${user.home}/mvn_settings/sakuli-settings.xml</maven.settings.file>
+                <performRelease>true</performRelease>
+            </properties>
+        </profile>
+
+        <!-- profile overwrites the `upload-config` for releases-->
         <profile>
             <id>upload-release</id>
             <activation>
@@ -518,13 +544,13 @@
             <dependency>
                 <groupId>net.sf.sahi</groupId>
                 <artifactId>sahi</artifactId>
-                <version>${sahi.version}</version>
+                <version>${dependencies.sahi.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>net.sf.sahi</groupId>
                 <artifactId>ant-sahi</artifactId>
-                <version>${sahi.version}</version>
+                <version>${dependencies.sahi.version}</version>
             </dependency>
 
             <!-- Sahi API Dependencies-->
@@ -539,22 +565,22 @@
             <dependency>
                 <groupId>com.sikulix</groupId>
                 <artifactId>sikulixapi</artifactId>
-                <version>${sikulixapi.version}</version>
+                <version>${dependencies.sikulixapi.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sikulix</groupId>
                 <artifactId>sikulixlibslux</artifactId>
-                <version>${sikulixapi.version}</version>
+                <version>${dependencies.sikulixapi.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sikulix</groupId>
                 <artifactId>sikulixlibsmac</artifactId>
-                <version>${sikulixapi.version}</version>
+                <version>${dependencies.sikulixapi.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sikulix</groupId>
                 <artifactId>sikulixlibswin</artifactId>
-                <version>${sikulixapi.version}</version>
+                <version>${dependencies.sikulixapi.version}</version>
             </dependency>
 
             <dependency>

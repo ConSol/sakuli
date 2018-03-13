@@ -87,7 +87,7 @@
                                 <artifactItem>
                                     <groupId>org.sweetest.sakuli</groupId>
                                     <artifactId>sakuli-ui-web</artifactId>
-                                    <version>${sakuli.ui.version}</version>
+                                    <version>${dependencies.sakuli.ui.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
                                     <excludes>META-INF/</excludes>
