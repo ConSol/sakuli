@@ -91,11 +91,14 @@
         <res id="reboot-logo.png" src="pic/reboot-logo.png"/>
     </resources>
 
-    <!-- ATTENTION: Using ProcessPanel.Spec.xml for executing scripts, as long as ${izpack.version} call each script twice! -->
+    <!-- ATTENTION: Using ProcessPanel.Spec.xml for executing scripts, as long as ${dependencies.izpack.version} call each script twice! -->
     <packs>
         <pack id="sakuli.core" name="Sakuli v${sakuli.version}" required="yes">
-            <description>Sakuli v${sakuli.version}</description>
-            <fileset dir="${sakuli.install.src.core}" targetdir="${INSTALL_PATH}/${sakuli.install.target.core}"/>
+            <description>Sakuli v${sakuli.version} core modules (without UI)</description>
+            <fileset dir="${sakuli.install.src.core}" targetdir="${INSTALL_PATH}/${sakuli.install.target.core}">
+                <exclude name="**/sakuli-ui-web.jar"/>
+            </fileset>
+            />
             <!--overwrite sakuli binary on macs -->
             <singlefile src="${sakuli.install.src.core}/bin/sakuli.darwin" override="true"
                         target="${INSTALL_PATH}/${sakuli.install.target.core}/bin/sakuli">
@@ -132,8 +135,18 @@
                 <os family="mac"/>
             </executable>
         </pack>
-        <pack id="sahi" name="Sahi OS v${sahi.version}" required="yes">
-            <description>Sahi OS v${sahi.version}, for more information see http://sahipro.com/sahi-open-source/
+        <pack id="sakuli.ui" name="Sakuli UI" required="false" preselected="true">
+            <description>(optional) Sakuli UI to run, edit and manage Sakuli test suites. Run via commandline "sakuli ui
+                root-context-path".
+            </description>
+            <fileset dir="${sakuli.install.src.core}" targetdir="${INSTALL_PATH}/${sakuli.install.target.core}">
+                <include name="**/sakuli-ui-web.jar"/>
+            </fileset>
+            />
+        </pack>
+        <pack id="sahi" name="Sahi OS v${dependencies.sahi.version}" required="yes">
+            <description>Sahi OS v${dependencies.sahi.version}, for more information see
+                http://sahipro.com/sahi-open-source/
             </description>
             <fileset dir="${sakuli.install.src.sahi}" targetdir="${INSTALL_PATH}/${sakuli.install.target.sahi}"/>
             <!-- mark files as executable -->

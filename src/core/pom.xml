@@ -118,7 +118,7 @@
                                 <artifactItem>
                                     <groupId>net.sf.sahi</groupId>
                                     <artifactId>sahi-install</artifactId>
-                                    <version>${sahi.version}</version>
+                                    <version>${dependencies.sahi.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
                                 <artifactItem>

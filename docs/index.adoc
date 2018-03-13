@@ -82,6 +82,9 @@ include::manual/execution/containerized/docker-compose.adoc[]
 include::manual/execution/containerized/kubernetes.adoc[]
 include::manual/execution/containerized/openshift.adoc[]
 
+//Sakuli UI
+include::manual/ui/sakuli-ui.adoc[]
+
 //Testdefinition
 include::manual/testdefinition/testdefinition.adoc[]
 include::manual/testdefinition/test-in-javascript.adoc[]
@@ -150,9 +153,9 @@ include::manual/integration/json-forwarder.adoc[]
 //== Developer Documentation
 include::manual/development/README.adoc[]
 include::manual/development/installation-developers.adoc[]
-include::manual/development/how-to-release.adoc[]
 include::manual/development/maven-aspects.adoc[]
 include::manual/development/ascii-doc-aspects.adoc[]
+include::manual/development/how-to-release.adoc[]
 include::manual/development/linux-native-libs/linux-sikuli-supplemental-pack.adoc[]
 
 include::example-projects.adoc[]

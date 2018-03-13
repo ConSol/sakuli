@@ -9,3 +9,6 @@ wget http://www-eu.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-
 
 echo '$MAVEN_HOME/bin/mvn $MAVEN_OPTS "$@"' > /usr/bin/mvn
 chmod +x /usr/bin/mvn
+
+echo "set correct permissions"
+$INST_SCRIPTS/set_user_permission.sh $MAVEN_HOME

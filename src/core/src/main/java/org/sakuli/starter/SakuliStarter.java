@@ -61,14 +61,14 @@ public class SakuliStarter {
             .hasArg()
             .withDescription("(optional) SAKULI_HOME folder, \ndefault: environment variable 'SAKULI_HOME'")
             .isRequired(false)
-            .withLongOpt("sakuli_home")
+            .withLongOpt("sakuliHome")
             .create();
     private final static Option sahiHome = OptionBuilder
             .withArgName("sahi-folder")
             .hasArg()
             .withDescription("(optional) Sahi installation folder, \ndefault: property 'sahi.proxy.homePath'")
             .isRequired(false)
-            .withLongOpt("sahi_home")
+            .withLongOpt("sahiHome")
             .create();
     private final static Option encrypt = OptionBuilder
             .withArgName("secret")
