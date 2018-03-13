@@ -58,7 +58,7 @@ RUN $INST_SCRIPTS/sakuli.sh
 ### configure startup
 ADD ./sakuli-client/src/common/scripts/ $STARTUPDIR
 ADD ./sakuli-client/src_java/common/scripts/ $STARTUPDIR
-RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR $HOME $SAKULI_TEST_SUITE
+RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR
 # use headless user for startup
 USER 1984
 

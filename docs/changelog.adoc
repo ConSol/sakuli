@@ -8,6 +8,10 @@
 :page-path: docs/changelog.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
+[[version-1.2.0]]
+.http://consol.github.io/sakuli/v1.2.0/index.html[*Version 1.2.0*]
+* Sakuli UI for managing and developing Sakuli tests (https://github.com/ConSol/sakuli/issues/308https://github.com/ConSol/sakuli/issues/308[#308], https://github.com/ConSol/sakuli-ui[github.com/ConSol/sakuli-ui])
+
 [[version-1.1.0]]
 .http://consol.github.io/sakuli/v1.1.0/index.html[*Version 1.1.0*]
 * Merge PR <<openshift-s2i, Sakuli OpenShift Source-2-Image (S2I) Build>> from http://github.com/FMAOuroboros[Sven Hettwer] (https://github.com/ConSol/sakuli/issues/296[#296])

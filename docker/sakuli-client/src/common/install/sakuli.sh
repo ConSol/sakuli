@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 ### every exit != 0 fails the script
 set -e
+set -u
 
 ### Install Sakuli in the $SAKULI_VERSION and create the example testsuite
 ### under $SAKULI_TEST_SUITE
@@ -27,6 +28,9 @@ echo "add to $HOME/.bashrc: use correct UMASK '${SAKULI_UMASK:-0000}'"
 # Important for folder permissions to ensure that volume-mounted log
 # files can be deleted afterwards
 echo 'umask ${SAKULI_UMASK:-0000} && echo umask set to $(umask)' >> $HOME/.bashrc
+
+echo "set correct permissions"
+$INST_SCRIPTS/set_user_permission.sh $SAKULI_ROOT
 
 echo -e "\n\nInstalled Sakuli:"
 $SAKULI_HOME/bin/sakuli -version
