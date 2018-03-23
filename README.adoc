@@ -2,7 +2,7 @@ image:./docs/images/sakuli_logo_small.png[sakuli-logo]
 
 :sakuli-latest-version: v1.1.0
 :sakuli-doc-base-url: http://consol.github.io/sakuli
-:sakuli-doc-url: {sakuli-doc-base-url}/{sakuli-latest-version}
+:sakuli-doc-url: {sakuli-doc-base-url}/latest
 
 _An end-to-end testing tool for web sites and common UIs with multiple monitoring integrations_
 
