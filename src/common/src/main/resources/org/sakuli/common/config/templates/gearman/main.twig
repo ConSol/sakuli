@@ -19,7 +19,7 @@ return_code={{ testDataEntity.state.nagiosErrorCode }}$newline$
     service_description={{ testSuiteId }}_{{ testCaseId }}_{{ testDataEntity.id }}$newline$
 {% endif %}
 output=
-    {% include 'short_summary.twig' %}\\n
+    {% include 'short_summary.twig' %}\n
     {% include 'detailed_summary.twig' %}
     {% include 'performance_data.twig' %}
 $whitespace$[{{ gearman.nagiosCheckCommand }}]

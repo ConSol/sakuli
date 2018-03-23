@@ -3,7 +3,7 @@
 <table style="border-collapse: collapse;">
     <tr valign="top">
         <td class="service{{ getOutputState(testDataEntity.state) }}">
-            {{ getOutputState(testDataEntity.state).shortState }} Sakuli suite "{{ testDataEntity.id }}"$whitespace$
+            {{ getOutputState(testDataEntity.state).shortState }} Case "{{testDataEntity.id}}" of Sakuli suite "{{testSuiteId}}"$whitespace$
             {% if (testDataEntity.state.error) %}
             {% else %}
                 {{ testDataEntity.state.nagiosStateDescription }}$whitespace$
