@@ -18,7 +18,7 @@ public class SakuliExceptionListener extends TestListenerAdapter {
     @Override
     public void onTestFailure(ITestResult tr) {
         SakuliExceptionHandler exceptionHandler = BeanLoader.loadBaseActionLoader().getExceptionHandler();
-        if (!exceptionHandler.isAlreadyProcessed(tr.getThrowable())) {
+        if (exceptionHandler != null && !exceptionHandler.isAlreadyProcessed(tr.getThrowable())) {
             exceptionHandler.handleException(tr.getThrowable());
         }
         super.onTestFailure(tr);
