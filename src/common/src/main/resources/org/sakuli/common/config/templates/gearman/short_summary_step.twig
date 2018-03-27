@@ -1,5 +1,5 @@
 {# This template renders the short summary for the specified test step. #}
-{{ getOutputState(testStep.state).shortState }} Step "{{testStep.id}}" in case "{{testCaseId}}"$whitespace$
+{{ getOutputState(testStep.state).shortState }} Step "{{testStep.id}}" in case "{{testCaseId}}" of Sakuli suite "{{testSuiteId}}"$whitespace$
 {% if (testStep.state.error) %}
     {% set exceptionMessages = errorMessageCreator.exceptionMessage(testStep) %}
     ({{ testStep.duration | number_format(2, '.') }}s) {{testStep.state.nagiosStateDescription}}: {{abbreviate(exceptionMessages, 200, true)}}

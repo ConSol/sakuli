@@ -1,4 +1,8 @@
 {# This template renders the performance data for a specific test case. #}
+{# only include metadata (suite_id, graph_type) if this is not a suite result #}
+{% if not testsuite %}
+    {% include 'performance_data_meta.twig' with { graph_type: "case" } %}$whitespace$
+{% endif %}
 c_{{ testCaseIndex }}__state={{getOutputState(testCase.state).errorCode}};;;;
 $whitespace$c_{{ testCaseIndex }}__warning={{ testCase.warningTime }}s;;;;
 $whitespace$c_{{ testCaseIndex }}__critical={{ testCase.criticalTime }}s;;;;

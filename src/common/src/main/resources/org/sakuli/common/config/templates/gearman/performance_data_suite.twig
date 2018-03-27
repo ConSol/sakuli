@@ -1,8 +1,9 @@
 {# This template renders the performance data for the current test suite. #}
-suite__state={{getOutputState(testsuite.state).errorCode}};;;;
+suite_{{ testsuite.id }}={{getOutputDuration(testsuite)}};{{ testsuite.warningTime }};{{ testsuite.criticalTime }};;
+$whitespace$graph_type_suite=0;;;;
+$whitespace$suite__state={{getOutputState(testsuite.state).errorCode}};;;;
 $whitespace$suite__warning={{ testsuite.warningTime }}s;;;;
 $whitespace$suite__critical={{ testsuite.criticalTime }}s;;;;
-$whitespace$suite_{{ testsuite.id }}={{getOutputDuration(testsuite)}};{{ testsuite.warningTime }};{{ testsuite.criticalTime }};;
 {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
     {% set testCaseIndex = format("%03d", loop.index) %}
     $whitespace$
