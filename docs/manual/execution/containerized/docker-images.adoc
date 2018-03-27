@@ -208,8 +208,7 @@ Since `1.1.0` the Sakuli image run as non-root user per default, so that mean, i
 ## Custom Dockerfile
 FROM consol/sakuli-centos-xfce:v1.1.0
 
-MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-03-17
+ENV REFRESHED_AT 2018-03-27
 ENV TZ=Europe/Berlin
 
 ## Install a PDF viewer
@@ -217,12 +216,12 @@ USER 0
 RUN yum install -y libsane-hpaio http://get.code-industry.net/public/master-pdf-editor-4.0.30_qt5.x86_64.rpm \
     && yum clean all
 ## switch back to default user
-USER 1984
+USER 1000
 ----
 
 ===== Change User of running Sakuli Container
 
-Per default, since version `1.1.0` all container processes will executed with user id `1984`. You can chnage the user id like follow:
+Per default, since version `1.2.0` all container processes will executed with user id `1000`. You can chnage the user id like follow:
 
 .Using root (user id `0`)
 

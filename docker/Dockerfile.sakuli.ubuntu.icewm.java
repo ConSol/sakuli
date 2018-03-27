@@ -1,6 +1,6 @@
 # This Dockerfile is used to build a sakuli image based on Ubuntu
 
-FROM consol/ubuntu-icewm-vnc:1.2.3
+FROM consol/ubuntu-icewm-vnc:1.3.0
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
 ENV REFRESHED_AT 2017-12-18
@@ -60,7 +60,7 @@ ADD ./sakuli-client/src/common/scripts/ $STARTUPDIR
 ADD ./sakuli-client/src_java/common/scripts/ $STARTUPDIR
 RUN $INST_SCRIPTS/set_user_permission.sh $STARTUPDIR
 # use headless user for startup
-USER 1984
+USER 1000
 
 ### Sakuli startup script
 # no parameters:
