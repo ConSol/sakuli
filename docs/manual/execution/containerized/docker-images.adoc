@@ -55,7 +55,8 @@ Since version `1.1.0` all containers run as non-root user.
 The running containers are accessible with VNC (default password: `sakuli`) by:
 
 * *VNC viewer*: `DOCKER_HOST:5901`
-* *noVNC HTML5 client*: link: http://localhost:6901/vnc_auto.html?password=sakuli[]
+* *noVNC HTML5 full client*: link: http://localhost:6901/vnc.html[]
+* *noVNC HTML5 lite client*: link: http://localhost:6901/?password=sakuli[]
 
 [[docker-images-get-images]]
 ===== Get Sakuli Docker Images
@@ -221,7 +222,7 @@ USER 1000
 
 ===== Change User of running Sakuli Container
 
-Per default, since version `1.2.0` all container processes will executed with user id `1000`. You can chnage the user id like follow:
+Per default, since version `1.2.0` all container processes will executed with user id `1000`. You can change the user id like follow:
 
 .Using root (user id `0`)
 
@@ -285,7 +286,7 @@ After the test suite run, you can copy out the created screenshot from docker co
 -----
 
 ====== Use `scrot` tool
-Before using *https://wiki.ubuntuusers.de/Scrot/[Scrot]* prepare your container UI like you will needed for the screenshot via VNC `http://<dockerhost>:<mapped-port>/vnc_auto.html?password=sakuli`. If you wan't to stop the sakuli test execution on a particular point, just use the <<Environment.sleep>> method:
+Before using *https://wiki.ubuntuusers.de/Scrot/[Scrot]* prepare your container UI like you will needed for the screenshot via VNC `http://<dockerhost>:<mapped-port>/?password=sakuli`. If you wan't to stop the sakuli test execution on a particular point, just use the <<Environment.sleep>> method:
 
 [[source,javascript]]
 -----
@@ -293,7 +294,7 @@ Before using *https://wiki.ubuntuusers.de/Scrot/[Scrot]* prepare your container 
     env.sleep(Number.MAX_VALUE);
 -----
 
-The test case will stop at the above defined position. Then you can login to the container via `docker exec` and create a new screenshot with the `scrot <filename>` command. If you use the `scrot -s` flag you can select a rectangle, over the VNC control page `http://<docker-host>:<mapped-port>/vnc_auto.html?password=sakuli`.
+The test case will stop at the above defined position. Then you can login to the container via `docker exec` and create a new screenshot with the `scrot <filename>` command. If you use the `scrot -s` flag you can select a rectangle, over the VNC control page `http://<docker-host>:<mapped-port>/?password=sakuli`.
 
 [[source,bash]]
 -----
@@ -322,7 +323,7 @@ To prevent unwanted control over the VNC connection, it's possible to set enviro
 ===== Writing HTTPS Sahi web tests
 Depending on the Sahi proxy, Sakuli will break the HTTPS connections between the website and test engine. Due to that case it is necessary to import the URL specific self-signed certificates like described at <<sahi-https>>. In a containerized environment we need to prepare the browser before the tests starts with the expected certificates like described at <<sahi-https-automatic-certificate-usage>>. For example if you use the Firefox browser you can do the following steps:
 
-. Start your preferred Sakuli docker image with `docker run -it -p 6901:6901 consol/sakuli-ubuntu-xfce bash` to enter the container and connect into it by VNC http://localhost:6901/vnc_auto.html?password=sakuli
+. Start your preferred Sakuli docker image with `docker run -it -p 6901:6901 consol/sakuli-ubuntu-xfce bash` to enter the container and connect into it by VNC http://localhost:6901/?password=sakuli
 
 . Start Sahi dashboard:
 

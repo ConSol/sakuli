@@ -20,7 +20,7 @@ ENV VNC_PORT=5901 \
 
 ## Connection ports for controlling the UI:
 # VNC port:5901
-# noVNC webport, connect via http://IP:6901/vnc_auto.html?password=vncpassword
+# noVNC webport, connect via http://IP:6901/?password=sakuli
 EXPOSE $VNC_PORT $NO_VNC_PORT
 
 # use root user for installation

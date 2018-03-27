@@ -29,8 +29,13 @@ IMAGES=(
 for IMAGE in "${IMAGES[@]}"; do
 	echo "IMAGE: $IMAGE:$SRC_TAG"
 	docker pull $IMAGE:$SRC_TAG
-	docker run -it -e TESTSUITE_BROWSER=firefox $IMAGE:$SRC_TAG
-	docker run -it -e TESTSUITE_BROWSER=chrome $IMAGE:$SRC_TAG
+
+    # skip test of sakuli UI image
+	if [[ $IMAGE != "consol/sakuli-ui" ]]; then
+    	docker run -it -e TESTSUITE_BROWSER=firefox $IMAGE:$SRC_TAG
+	    docker run -it -e TESTSUITE_BROWSER=chrome $IMAGE:$SRC_TAG
+    fi
+
 	docker tag $IMAGE:$SRC_TAG $IMAGE:$TARGET_TAG
 	if [[ "$SAVEMODE" != "--save" ]] ; then
 	    docker push $IMAGE:$TARGET_TAG
