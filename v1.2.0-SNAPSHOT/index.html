@@ -608,7 +608,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">The Sakuli Team</span><br>
 <span id="email" class="email"><a href="mailto:sakuli@consol.de">sakuli@consol.de</a></span><br>
 <span id="revnumber">version v1.2.0-SNAPSHOT,</span>
-<span id="revdate">23.03.2018 @ 14:54:46 CET</span>
+<span id="revdate">06.04.2018 @ 13:58:42 CEST</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Sakuli E2E</div>
@@ -2828,7 +2828,10 @@ The running containers are accessible with VNC (default password: <code>sakuli</
 <p><strong>VNC viewer</strong>: <code>DOCKER_HOST:5901</code></p>
 </li>
 <li>
-<p><strong>noVNC HTML5 client</strong>: link: <a href="http://localhost:6901/vnc_auto.html?password=sakuli" class="bare">http://localhost:6901/vnc_auto.html?password=sakuli</a></p>
+<p><strong>noVNC HTML5 full client</strong>: link: <a href="http://localhost:6901/vnc.html" class="bare">http://localhost:6901/vnc.html</a></p>
+</li>
+<li>
+<p><strong>noVNC HTML5 lite client</strong>: link: <a href="http://localhost:6901/?password=sakuli" class="bare">http://localhost:6901/?password=sakuli</a></p>
 </li>
 </ul>
 </div>
@@ -3026,8 +3029,7 @@ ENTRYPOINT [&quot;/root/scripts/start_hook.sh&quot;]</code></pre>
 <pre class="CodeRay highlight"><code data-lang="bash">## Custom Dockerfile
 FROM consol/sakuli-centos-xfce:v1.1.0
 
-MAINTAINER Tobias Schneck &quot;tobias.schneck@consol.de&quot;
-ENV REFRESHED_AT 2017-03-17
+ENV REFRESHED_AT 2018-03-27
 ENV TZ=Europe/Berlin
 
 ## Install a PDF viewer
@@ -3035,14 +3037,14 @@ USER 0
 RUN yum install -y libsane-hpaio http://get.code-industry.net/public/master-pdf-editor-4.0.30_qt5.x86_64.rpm \
     &amp;&amp; yum clean all
 ## switch back to default user
-USER 1984</code></pre>
+USER 1000</code></pre>
 </div>
 </div>
 </div>
 <div class="sect5">
 <h6 id="_change_user_of_running_sakuli_container"><a class="anchor" href="#_change_user_of_running_sakuli_container"></a>Change User of running Sakuli Container</h6>
 <div class="paragraph">
-<p>Per default, since version <code>1.1.0</code> all container processes will executed with user id <code>1984</code>. You can chnage the user id like follow:</p>
+<p>Per default, since version <code>1.2.0</code> all container processes will executed with user id <code>1000</code>. You can change the user id like follow:</p>
 </div>
 <div class="paragraph">
 <div class="title">Using root (user id <code>0</code>)</div>
@@ -3126,7 +3128,7 @@ new Region().find("calculator-logo.png").grow(200,200).takeScreenshot("/tmp/my-s
 <div class="sect6">
 <h7 id="_use_code_scrot_code_tool"><a class="anchor" href="#_use_code_scrot_code_tool"></a>Use <code>scrot</code> tool</h7>
 <div class="paragraph">
-<p>Before using <strong><a href="https://wiki.ubuntuusers.de/Scrot/">Scrot</a></strong> prepare your container UI like you will needed for the screenshot via VNC <code><a href="http://&lt;dockerhost&gt;:&lt;mapped-port&gt;/vnc_auto.html?password=sakuli" class="bare">http://&lt;dockerhost&gt;:&lt;mapped-port&gt;/vnc_auto.html?password=sakuli</a></code>. If you wan&#8217;t to stop the sakuli test execution on a particular point, just use the <a href="#Environment.sleep">Environment.sleep(seconds)</a> method:</p>
+<p>Before using <strong><a href="https://wiki.ubuntuusers.de/Scrot/">Scrot</a></strong> prepare your container UI like you will needed for the screenshot via VNC <code><a href="http://&lt;dockerhost&gt;:&lt;mapped-port&gt;/?password=sakuli" class="bare">http://&lt;dockerhost&gt;:&lt;mapped-port&gt;/?password=sakuli</a></code>. If you wan&#8217;t to stop the sakuli test execution on a particular point, just use the <a href="#Environment.sleep">Environment.sleep(seconds)</a> method:</p>
 </div>
 <div id="source" class="listingblock">
 <div class="content">
@@ -3135,7 +3137,7 @@ new Region().find("calculator-logo.png").grow(200,200).takeScreenshot("/tmp/my-s
 </div>
 </div>
 <div class="paragraph">
-<p>The test case will stop at the above defined position. Then you can login to the container via <code>docker exec</code> and create a new screenshot with the <code>scrot &lt;filename&gt;</code> command. If you use the <code>scrot -s</code> flag you can select a rectangle, over the VNC control page <code><a href="http://&lt;docker-host&gt;:&lt;mapped-port&gt;/vnc_auto.html?password=sakuli" class="bare">http://&lt;docker-host&gt;:&lt;mapped-port&gt;/vnc_auto.html?password=sakuli</a></code>.</p>
+<p>The test case will stop at the above defined position. Then you can login to the container via <code>docker exec</code> and create a new screenshot with the <code>scrot &lt;filename&gt;</code> command. If you use the <code>scrot -s</code> flag you can select a rectangle, over the VNC control page <code><a href="http://&lt;docker-host&gt;:&lt;mapped-port&gt;/?password=sakuli" class="bare">http://&lt;docker-host&gt;:&lt;mapped-port&gt;/?password=sakuli</a></code>.</p>
 </div>
 <div id="source" class="listingblock">
 <div class="content">
@@ -3174,7 +3176,7 @@ new Region().find("calculator-logo.png").grow(200,200).takeScreenshot("/tmp/my-s
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Start your preferred Sakuli docker image with <code>docker run -it -p 6901:6901 consol/sakuli-ubuntu-xfce bash</code> to enter the container and connect into it by VNC <a href="http://localhost:6901/vnc_auto.html?password=sakuli" class="bare">http://localhost:6901/vnc_auto.html?password=sakuli</a></p>
+<p>Start your preferred Sakuli docker image with <code>docker run -it -p 6901:6901 consol/sakuli-ubuntu-xfce bash</code> to enter the container and connect into it by VNC <a href="http://localhost:6901/?password=sakuli" class="bare">http://localhost:6901/?password=sakuli</a></p>
 </li>
 <li>
 <p>Start Sahi dashboard:</p>
@@ -3589,7 +3591,7 @@ Intentionally, <code>docker-compose</code> is made to bring up environments with
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>http://&lt;kubernetes-cluster-ip&gt;:32001/vnc_auto.html?password=sakuli&amp;view_only=true</code></pre>
+<pre class="CodeRay highlight"><code>http://&lt;kubernetes-cluster-ip&gt;:32001/?password=sakuli&amp;view_only=true</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -12565,7 +12567,7 @@ Website: <a href="http://www.consol.de">www.consol.de</a></p>
 <div id="footer">
 <div id="footer-text">
 Version v1.2.0-SNAPSHOT<br>
-Last updated 2018-03-23 14:54:47 CET
+Last updated 2018-04-06 13:58:43 CEST
 </div>
 </div>
 <!--
