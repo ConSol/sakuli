@@ -43,14 +43,15 @@ You can run Sakuli on physical as well as on virtual Linux machines.
 * Run Sakuli with a dedicated user
 * Sakuli needs a reliable and predictable desktop environment: make sure that there are no pop-up windows of services or applications
 * If Sakuli is running within a VM, change the desktop resolution to a fixed value (e.g. 1024x768) and disable any auto-resizing mechanisms of the guest display. This ensures that the guest's resolution does not change in case that you resize its window.
-* Other optional steps see <<gnome-session-fallback>>.
-* the client should *not* have more than one physical screen
+* Ensure that now 3D effects or shadowing break your test. For Ubuntu e.g. it's recommended to use <<gnome-session-flashback,`gnome-session-flashback`>> theme.
+* Ensure that the client should have only *ONE* physical screen.
+* Other optional steps see <<linux-troubleshooting>>.
 
 ====== Sakuli installation
 
 * Download the *Sakuli Installer* from http://labs.consol.de/sakuli/install[http://labs.consol.de/sakuli/install]
-* current *development* snapshot = `sakuli-vX.X.X-SNAPSHOT-installer.jar`
-* current *stable* version = `sakuli-vX.X.X-installer.jar` (recommended)
+** current *development* snapshot = `sakuli-vX.X.X-SNAPSHOT-installer.jar`
+** current *stable* version = `sakuli-vX.X.X-installer.jar` (recommended)
 
 Execute `java -jar sakuli-vX.X.X-installer.jar` to start the installer:
 

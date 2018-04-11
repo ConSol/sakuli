@@ -1,6 +1,7 @@
 
 :imagesdir: ../../../images
 
+[[linux-troubleshooting]]
 ===== Troubleshooting
 [#git-edit-section]
 :page-path: docs/manual/execution/native/linux-troubleshooting.adoc
@@ -8,14 +9,23 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 If you have some errors with your Linux installation, you can check the following points:
 
-[[gnome-session-fallback]]
-====== Install GNOME session fallback theme
+[[gnome-session-flashback]]
+====== Install GNOME session flashback theme
 
-Sakuli can test on Unity, of course - but https://apps.ubuntu.com/cat/applications/gnome-session-fallback/[gnome-session-fallback] is more than sufficient…
+NOTE: Before Ubuntu 16.04 the package name was `gnome-session-fallback`
 
-`sudo apt-get install gnome-session-fallback`
+Sakuli can test on Unity, of course - but https://wiki.ubuntuusers.de/GNOME_Flashback[gnome-session-flashback] is more than sufficient and has the advantage that 3D effects and shadowing won't break your test.
 
-After the installation, relogin and select the desktop environment *GNOME Flashback (Metacity)*:
+Install and set `gnome-seesion-flashback` as default:
+[source,bash]
+----
+    apt-get update
+    apt-get install -y gnome-session-flashback
+    echo "[SeatDefaults]" >> /etc/lightdm/lightdm.conf
+    echo "user-session=gnome-flashback-metacity" >> /etc/lightdm/lightdm.conf
+----
+
+After the installation, relogin/restart and ensure that the desktop environment *GNOME Flashback (Metacity)* is selected:
 
 image:u_theme_select.jpg[fallback]
 
