@@ -608,7 +608,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">The Sakuli Team</span><br>
 <span id="email" class="email"><a href="mailto:sakuli@consol.de">sakuli@consol.de</a></span><br>
 <span id="revnumber">version v1.1.0,</span>
-<span id="revdate">23.03.2018 @ 14:22:57 CET</span>
+<span id="revdate">11.04.2018 @ 16:02:18 CEST</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Sakuli E2E</div>
@@ -638,7 +638,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_optional_software">Optional software</a></li>
 <li><a href="#_next_steps">Next steps</a></li>
 <li><a href="#rdp-peculiarities">RDP peculiarities</a></li>
-<li><a href="#_troubleshooting">Troubleshooting</a></li>
+<li><a href="#windows-troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
 <li><a href="#linux">1.2.1.2. Linux Client</a>
@@ -648,7 +648,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_optional_software_2">Optional software</a></li>
 <li><a href="#_next_steps_2">Next steps</a></li>
 <li><a href="#_headless_checks">Headless checks</a></li>
-<li><a href="#_troubleshooting_2">Troubleshooting</a></li>
+<li><a href="#linux-troubleshooting">Troubleshooting</a></li>
 </ul>
 </li>
 <li><a href="#upgrade_process">1.2.1.3. Upgrade process</a></li>
@@ -658,9 +658,9 @@ table.CodeRay td.code>pre{padding:0}
 <ul class="sectlevel4">
 <li><a href="#sakuli-java-dsl">1.2.2.1. Sakuli Java DSL</a>
 <ul class="sectlevel5">
+<li><a href="#_installation_3">Installation</a></li>
 <li><a href="#_usage">Usage</a></li>
 <li><a href="#_sakuli_java_example">Sakuli Java Example</a></li>
-<li><a href="#_installation_3">Installation</a></li>
 <li><a href="#java-dsl-https">HTTPS-Sites</a></li>
 </ul>
 </li>
@@ -762,7 +762,7 @@ table.CodeRay td.code>pre{padding:0}
 </li>
 </ul>
 </li>
-<li><a href="#_troubleshooting_3">1.3.3. Troubleshooting</a>
+<li><a href="#_troubleshooting">1.3.3. Troubleshooting</a>
 <ul class="sectlevel4">
 <li><a href="#_growing_firefox_profile_folder">1.3.3.1. Growing Firefox profile folder</a></li>
 <li><a href="#_hanging_applications">1.3.3.2. Hanging applications</a></li>
@@ -796,7 +796,7 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_omd_configuration_2">OMD Configuration</a></li>
 <li><a href="#_sakuli_client_configuration">Sakuli Client Configuration</a></li>
 <li><a href="#_database_cleanup_optional">Database cleanup (optional)</a></li>
-<li><a href="#_troubleshooting_4">Troubleshooting</a></li>
+<li><a href="#_troubleshooting_2">Troubleshooting</a></li>
 </ul>
 </li>
 <li><a href="#icinga2-integration">1.4.1.4. Icinga2 forwarder</a>
@@ -1428,7 +1428,13 @@ If you want to <strong>update</strong> Sakuli, see the <a href="#upgrade_process
 <p>If Sakuli is running within a VM, change the desktop resolution to a fixed value (e.g. 1024x768) and disable any auto-resizing mechanisms of the guest display. This ensures that the guest&#8217;s resolution does not change in case that you resize its window.</p>
 </li>
 <li>
-<p>the client should <strong>not</strong> have more than one physical screen</p>
+<p>Ensure that now 3D effects or shadowing break your test. For Window 7 e.g. it&#8217;s recommended to use <a href="#windows-classic-theme">Windos Classic theme</a>.</p>
+</li>
+<li>
+<p>Ensure that the client should have only <strong>ONE</strong> physical screen.</p>
+</li>
+<li>
+<p>Other optional steps see <a href="#windows-troubleshooting">Troubleshooting</a>.</p>
 </li>
 </ul>
 </div>
@@ -1439,12 +1445,16 @@ If you want to <strong>update</strong> Sakuli, see the <a href="#upgrade_process
 <ul>
 <li>
 <p>Download the <strong>Sakuli Installer</strong> from <a href="http://labs.consol.de/sakuli/install">http://labs.consol.de/sakuli/install</a></p>
-</li>
+<div class="ulist">
+<ul>
 <li>
 <p>current <strong>development</strong> snapshot = <code>sakuli-vX.X.X-SNAPSHOT-installer.jar</code></p>
 </li>
 <li>
 <p>current <strong>stable</strong> version = <code>sakuli-vX.X.X-installer.jar</code> (recommended)</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -1724,7 +1734,7 @@ start_dashboard.bat`</pre>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>Troubleshooting</h6>
+<h6 id="windows-troubleshooting"><a class="anchor" href="#windows-troubleshooting"></a>Troubleshooting</h6>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/native/windows-troubleshooting.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/native/windows-troubleshooting.adoc" target="_blank">edit</a></p>
 </div>
@@ -1732,7 +1742,7 @@ start_dashboard.bat`</pre>
 <p>If you have some errors with your Windows installation, you can check the following points:</p>
 </div>
 <div class="sect6">
-<h7 id="_change_windows_theme_and_title_bar_colors"><a class="anchor" href="#_change_windows_theme_and_title_bar_colors"></a>Change Windows theme and title bar colors</h7>
+<h7 id="windows-classic-theme"><a class="anchor" href="#windows-classic-theme"></a>Change Windows theme and title bar colors</h7>
 <div class="paragraph">
 <p>Windows 7 comes by default with an "aero" theme, which is quite awkward for Sikuli, because there are many transparency effects which cause window elements to change their appearance dependend on the elements below. For that, change the theme to "Windows Classic".</p>
 </div>
@@ -1868,10 +1878,13 @@ For other distributions (CentOS, OpenSuSE, &#8230;&#8203;) they be mostly identi
 <p>If Sakuli is running within a VM, change the desktop resolution to a fixed value (e.g. 1024x768) and disable any auto-resizing mechanisms of the guest display. This ensures that the guest&#8217;s resolution does not change in case that you resize its window.</p>
 </li>
 <li>
-<p>Other optional steps see <a href="#gnome-session-fallback">Install GNOME session fallback theme</a>.</p>
+<p>Ensure that now 3D effects or shadowing break your test. For Ubuntu e.g. it&#8217;s recommended to use <a href="#gnome-session-flashback"><code>gnome-session-flashback</code></a> theme.</p>
 </li>
 <li>
-<p>the client should <strong>not</strong> have more than one physical screen</p>
+<p>Ensure that the client should have only <strong>ONE</strong> physical screen.</p>
+</li>
+<li>
+<p>Other optional steps see <a href="#linux-troubleshooting">Troubleshooting</a>.</p>
 </li>
 </ul>
 </div>
@@ -1882,12 +1895,16 @@ For other distributions (CentOS, OpenSuSE, &#8230;&#8203;) they be mostly identi
 <ul>
 <li>
 <p>Download the <strong>Sakuli Installer</strong> from <a href="http://labs.consol.de/sakuli/install">http://labs.consol.de/sakuli/install</a></p>
-</li>
+<div class="ulist">
+<ul>
 <li>
 <p>current <strong>development</strong> snapshot = <code>sakuli-vX.X.X-SNAPSHOT-installer.jar</code></p>
 </li>
 <li>
 <p>current <strong>stable</strong> version = <code>sakuli-vX.X.X-installer.jar</code> (recommended)</p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
@@ -2157,7 +2174,7 @@ Log file is __HOME__/.vnc/sakulidemo:1.log</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><code>.vnc/xstartup</code> controls what to start within a xvnc session. Do not touch this file on OpenSUSE; on <strong>Ubuntu</strong> you have to replace its content with the following lines (because you are using <strong>gnome-session-fallback</strong>, aren&#8217;t you…?):</p>
+<p><code>.vnc/xstartup</code> controls what to start within a xvnc session. Do not touch this file on OpenSUSE; on <strong>Ubuntu</strong> you have to replace its content with the following lines (because you are using <a href="#gnome-session-flashback">Install GNOME session flashback theme</a>, aren&#8217;t you…?):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -2255,7 +2272,7 @@ DISPLAY=:1
 </div>
 </div>
 <div class="sect5">
-<h6 id="_troubleshooting_2"><a class="anchor" href="#_troubleshooting_2"></a>Troubleshooting</h6>
+<h6 id="linux-troubleshooting"><a class="anchor" href="#linux-troubleshooting"></a>Troubleshooting</h6>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/native/linux-troubleshooting.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/native/linux-troubleshooting.adoc" target="_blank">edit</a></p>
 </div>
@@ -2263,15 +2280,35 @@ DISPLAY=:1
 <p>If you have some errors with your Linux installation, you can check the following points:</p>
 </div>
 <div class="sect6">
-<h7 id="gnome-session-fallback"><a class="anchor" href="#gnome-session-fallback"></a>Install GNOME session fallback theme</h7>
-<div class="paragraph">
-<p>Sakuli can test on Unity, of course - but <a href="https://apps.ubuntu.com/cat/applications/gnome-session-fallback/">gnome-session-fallback</a> is more than sufficient…</p>
+<h7 id="gnome-session-flashback"><a class="anchor" href="#gnome-session-flashback"></a>Install GNOME session flashback theme</h7>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Before Ubuntu 16.04 the package name was <code>gnome-session-fallback</code>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p><code>sudo apt-get install gnome-session-fallback</code></p>
+<p>Sakuli can test on Unity, of course - but <a href="https://wiki.ubuntuusers.de/GNOME_Flashback">gnome-session-flashback</a> is more than sufficient and has the advantage that 3D effects and shadowing won&#8217;t break your test.</p>
 </div>
 <div class="paragraph">
-<p>After the installation, relogin and select the desktop environment <strong>GNOME Flashback (Metacity)</strong>:</p>
+<p>Install and set <code>gnome-seesion-flashback</code> as default:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">    apt-get update
+    apt-get install -y gnome-session-flashback
+    echo &quot;[SeatDefaults]&quot; &gt;&gt; /etc/lightdm/lightdm.conf
+    echo &quot;user-session=gnome-flashback-metacity&quot; &gt;&gt; /etc/lightdm/lightdm.conf</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After the installation, relogin/restart and ensure that the desktop environment <strong>GNOME Flashback (Metacity)</strong> is selected:</p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="images/u_theme_select.jpg" alt="fallback"></span></p>
@@ -2338,6 +2375,76 @@ gsettings set org.gnome.desktop.wm.keybindings panel-main-menu "['&lt;Alt&gt;F1'
 </div>
 <div class="paragraph">
 <p>Sakuli provides a Java DSL for writing test cases in pure Java. The DSL is designed as fluent API and provides the exact same capabilities as the Javascript API. The Sakuli Java API enables users to write Sakuli tests in pure Java unit tests using JUnit or TestNG. The good news about that is that you are able to access any native application UI with screen related actions as easy as in JavaScript API.</p>
+</div>
+<div class="sect5">
+<h6 id="_installation_3"><a class="anchor" href="#_installation_3"></a>Installation</h6>
+<div class="sect6">
+<h7 id="_preparation"><a class="anchor" href="#_preparation"></a>Preparation</h7>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ensure that all installation packages for target OS are installed:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#linux">Linux Client</a></p>
+</li>
+<li>
+<p><a href="#windows">Windows Client</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Install Java Development Kit version 8.</p>
+</li>
+<li>
+<p>Install Maven (Version 3.2.5 or higher).</p>
+</li>
+<li>
+<p>Download <code>java-example</code> directory from <a href="https://github.com/ConSol/sakuli-examples/tree/master/java-example">github.com/ConSol/sakuli-examples</a>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect6">
+<h7 id="_project_setup_and_compilation"><a class="anchor" href="#_project_setup_and_compilation"></a>Project setup and compilation</h7>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Import <code>java-example</code> to IDE (IntelliJ or Eclipse…) as Maven project:
+<strong>Example for IntelliJ:</strong></p>
+</li>
+<li>
+<p>Choose <code>Project from Existing Sources&#8230;&#8203;</code> in File menu.</p>
+</li>
+<li>
+<p>Choose <code>pom.xml</code> and click <code>next</code> button till the project is imported.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Try to <strong>compile</strong> the new Sakuli Maven project. If an <strong>ERROR</strong> is reported please check your <code>pom.xml</code> first. The following section has to be present in your Maven POM:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;repository&gt;</span>
+    <span class="tag">&lt;id&gt;</span>labs-consol-snapshots<span class="tag">&lt;/id&gt;</span>
+    <span class="tag">&lt;name&gt;</span>ConSol* Labs Repository<span class="tag">&lt;/name&gt;</span>
+    <span class="tag">&lt;url&gt;</span>http://labs.consol.de/maven/snapshots-repository<span class="tag">&lt;/url&gt;</span>
+    <span class="tag">&lt;snapshots&gt;</span>
+        <span class="tag">&lt;enabled&gt;</span>true<span class="tag">&lt;/enabled&gt;</span>
+    <span class="tag">&lt;/snapshots&gt;</span>
+    <span class="tag">&lt;releases&gt;</span>
+        <span class="tag">&lt;enabled&gt;</span>false<span class="tag">&lt;/enabled&gt;</span>
+    <span class="tag">&lt;/releases&gt;</span>
+<span class="tag">&lt;/repository&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The ConSol labs Maven repository should be placed to the <strong>repositories</strong> section in your POM.</p>
+</div>
+</div>
 </div>
 <div class="sect5">
 <h6 id="_usage"><a class="anchor" href="#_usage"></a>Usage</h6>
@@ -2496,62 +2603,8 @@ sample test case. So at the end of this chapter you should be able to start writ
 <p>An example how to use Java DSL and setup Maven you will find at:
 <strong><a href="https://github.com/ConSol/sakuli-examples/tree/master/java-example">github.com/ConSol/sakuli-examples</a></strong></p>
 </div>
-</div>
-<div class="sect5">
-<h6 id="_installation_3"><a class="anchor" href="#_installation_3"></a>Installation</h6>
-<div class="sect6">
-<h7 id="_preparation"><a class="anchor" href="#_preparation"></a>Preparation</h7>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Install Java Development Kit version 8.</p>
-</li>
-<li>
-<p>Install Maven (Version 3.2.5 or higher).</p>
-</li>
-<li>
-<p>Download <code>java-example</code> directory from <a href="https://github.com/ConSol/sakuli-examples/tree/master/java-example">github.com/ConSol/sakuli-examples</a>.</p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect6">
-<h7 id="_project_setup_and_compilation"><a class="anchor" href="#_project_setup_and_compilation"></a>Project setup and compilation</h7>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Import <code>java-example</code> to IDE (IntelliJ or Eclipse…) as Maven project:
-<strong>Example for IntelliJ:</strong></p>
-</li>
-<li>
-<p>Choose <code>Project from Existing Sources&#8230;&#8203;</code> in File menu.</p>
-</li>
-<li>
-<p>Choose <code>pom.xml</code> and click <code>next</code> button till the project is imported.</p>
-</li>
-</ol>
-</div>
 <div class="paragraph">
-<p>Try to <strong>compile</strong> the new Sakuli Maven project. If an <strong>ERROR</strong> is reported please check your <code>pom.xml</code> first. The following section has to be present in your Maven POM:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;repository&gt;</span>
-    <span class="tag">&lt;id&gt;</span>labs-consol-snapshots<span class="tag">&lt;/id&gt;</span>
-    <span class="tag">&lt;name&gt;</span>ConSol* Labs Repository<span class="tag">&lt;/name&gt;</span>
-    <span class="tag">&lt;url&gt;</span>http://labs.consol.de/maven/snapshots-repository<span class="tag">&lt;/url&gt;</span>
-    <span class="tag">&lt;snapshots&gt;</span>
-        <span class="tag">&lt;enabled&gt;</span>true<span class="tag">&lt;/enabled&gt;</span>
-    <span class="tag">&lt;/snapshots&gt;</span>
-    <span class="tag">&lt;releases&gt;</span>
-        <span class="tag">&lt;enabled&gt;</span>false<span class="tag">&lt;/enabled&gt;</span>
-    <span class="tag">&lt;/releases&gt;</span>
-<span class="tag">&lt;/repository&gt;</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The ConSol labs Maven repository should be placed to the <strong>repositories</strong> section in your POM. After this is done please execute the Maven <strong>compile</strong> phase.</p>
-</div>
+<p>After this is done please execute the Maven <strong>compile</strong> phase.</p>
 </div>
 <div class="sect6">
 <h7 id="_test_execute"><a class="anchor" href="#_test_execute"></a>Test execute</h7>
@@ -2644,7 +2697,7 @@ If needed change the &lt;path&gt; for your own locations of each browser!
 <div class="sect5">
 <h6 id="java-dsl-https"><a class="anchor" href="#java-dsl-https"></a>HTTPS-Sites</h6>
 <div class="paragraph">
-<p>As workaround for issue <a href="https://github.com/ConSol/sakuli/issues/131">#131</a> you can follow the intructions of <a href="#sahi-https">HTTPS support in Sahi</a> and copy afterwards the files from <code>java-example/target/classes/sahi/userdata/certs</code> to <code>java-example/src/main/resources/sahi/userdata/certs</code>. This will copy the trusted certificates when building the project and allows a clean run. Also see <a href="#sahi-https-automatic-certificate-usage">Automatic HTTPS Certificate Usage</a> which files have to been copied for running the tests on different host.</p>
+<p>As workaround for issue <a href="https://github.com/ConSol/sakuli/issues/131">#131</a> you can follow the instructions of <a href="#sahi-https">HTTPS support in Sahi</a> and copy afterwards the files from <code>java-example/target/classes/sahi/userdata/certs</code> to <code>java-example/src/main/resources/sahi/userdata/certs</code>. This will copy the trusted certificates when building the project and allows a clean run. Also see <a href="#sahi-https-automatic-certificate-usage">Automatic HTTPS Certificate Usage</a> which files have to been copied for running the tests on different host.</p>
 </div>
 </div>
 </div>
@@ -8012,7 +8065,7 @@ CASE &quot;tests&quot;: _sahi.setServerVar('lastURL', window.document.location.h
 </div>
 </div>
 <div class="sect3">
-<h4 id="_troubleshooting_3"><a class="anchor" href="#_troubleshooting_3"></a>1.3.3. Troubleshooting</h4>
+<h4 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>1.3.3. Troubleshooting</h4>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/troubleshooting.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/troubleshooting.adoc" target="_blank">edit</a></p>
 </div>
@@ -8778,7 +8831,7 @@ Initializing Crontab...OK</code></pre>
 </div>
 </div>
 <div class="sect5">
-<h6 id="_troubleshooting_4"><a class="anchor" href="#_troubleshooting_4"></a>Troubleshooting</h6>
+<h6 id="_troubleshooting_2"><a class="anchor" href="#_troubleshooting_2"></a>Troubleshooting</h6>
 <div class="sect6">
 <h7 id="_apparmor_prevention_on_mysql"><a class="anchor" href="#_apparmor_prevention_on_mysql"></a>Apparmor prevention on MySQL</h7>
 <div class="paragraph">
@@ -12138,7 +12191,7 @@ Website: <a href="http://www.consol.de">www.consol.de</a></p>
 <div id="footer">
 <div id="footer-text">
 Version v1.1.0<br>
-Last updated 2018-03-23 14:22:58 CET
+Last updated 2018-04-11 16:02:19 CEST
 </div>
 </div>
 <!--
