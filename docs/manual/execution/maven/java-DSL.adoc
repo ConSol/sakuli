@@ -9,6 +9,47 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 Sakuli provides a Java DSL for writing test cases in pure Java. The DSL is designed as fluent API and provides the exact same capabilities as the Javascript API. The Sakuli Java API enables users to write Sakuli tests in pure Java unit tests using JUnit or TestNG. The good news about that is that you are able to access any native application UI with screen related actions as easy as in JavaScript API.
 
+
+===== Installation
+
+
+====== Preparation
+. Ensure that all installation packages for target OS are installed:
+
+* <<linux>>
+* <<windows>>
+
+. Install Java Development Kit version 8.
+. Install Maven (Version 3.2.5 or higher).
+. Download `java-example` directory from https://github.com/ConSol/sakuli-examples/tree/master/java-example[github.com/ConSol/sakuli-examples].
+
+====== Project setup and compilation
+
+. Import `java-example` to IDE (IntelliJ or Eclipse…) as Maven project:
+ *Example for IntelliJ:*
+. Choose `Project from Existing Sources...` in File menu.
+. Choose `pom.xml` and click `next` button till the project is imported.
+
+
+Try to *compile* the new Sakuli Maven project. If an *ERROR* is reported please check your `pom.xml` first. The following section has to be present in your Maven POM:
+
+[source,xml]
+----
+<repository>
+    <id>labs-consol-snapshots</id>
+    <name>ConSol* Labs Repository</name>
+    <url>http://labs.consol.de/maven/snapshots-repository</url>
+    <snapshots>
+        <enabled>true</enabled>
+    </snapshots>
+    <releases>
+        <enabled>false</enabled>
+    </releases>
+</repository>
+----
+
+The ConSol labs Maven repository should be placed to the *repositories* section in your POM.
+
 ===== Usage
 
 The Sakuli Java DSL comes to you as Maven module JAR file. You can add the module to your Sakuli project as Maven dependency. Currently the Java tests have to be written with the http://testng.org[TestNG] unit framework, so also provide the http://testng.org[TestNG] Maven dependency in your project POM:
@@ -153,40 +194,7 @@ sample test case. So at the end of this chapter you should be able to start writ
 An example how to use Java DSL and setup Maven you will find at:
 *https://github.com/ConSol/sakuli-examples/tree/master/java-example[github.com/ConSol/sakuli-examples]*
 
-===== Installation
-
-====== Preparation
-
-. Install Java Development Kit version 8.
-. Install Maven (Version 3.2.5 or higher).
-. Download `java-example` directory from https://github.com/ConSol/sakuli-examples/tree/master/java-example[github.com/ConSol/sakuli-examples].
-
-====== Project setup and compilation
-
-. Import `java-example` to IDE (IntelliJ or Eclipse…) as Maven project:
- *Example for IntelliJ:*
-. Choose `Project from Existing Sources...` in File menu.
-. Choose `pom.xml` and click `next` button till the project is imported.
-
-
-Try to *compile* the new Sakuli Maven project. If an *ERROR* is reported please check your `pom.xml` first. The following section has to be present in your Maven POM:
-
-[source,xml]
-----
-<repository>
-    <id>labs-consol-snapshots</id>
-    <name>ConSol* Labs Repository</name>
-    <url>http://labs.consol.de/maven/snapshots-repository</url>
-    <snapshots>
-        <enabled>true</enabled>
-    </snapshots>
-    <releases>
-        <enabled>false</enabled>
-    </releases>
-</repository>
-----
-
-The ConSol labs Maven repository should be placed to the *repositories* section in your POM. After this is done please execute the Maven *compile* phase.
+After this is done please execute the Maven *compile* phase.
 
 ====== Test execute
 
@@ -263,5 +271,5 @@ Now you can execute *test* phase and enjoy the successful execution of the test.
 [[java-dsl-https]]
 ===== HTTPS-Sites
 
-As workaround for issue https://github.com/ConSol/sakuli/issues/131[#131] you can follow the intructions of <<sahi-https>> and copy afterwards the files from `java-example/target/classes/sahi/userdata/certs` to `java-example/src/main/resources/sahi/userdata/certs`. This will copy the trusted certificates when building the project and allows a clean run. Also see <<sahi-https-automatic-certificate-usage>> which files have to been copied for running the tests on different host.
+As workaround for issue https://github.com/ConSol/sakuli/issues/131[#131] you can follow the instructions of <<sahi-https>> and copy afterwards the files from `java-example/target/classes/sahi/userdata/certs` to `java-example/src/main/resources/sahi/userdata/certs`. This will copy the trusted certificates when building the project and allows a clean run. Also see <<sahi-https-automatic-certificate-usage>> which files have to been copied for running the tests on different host.
 
