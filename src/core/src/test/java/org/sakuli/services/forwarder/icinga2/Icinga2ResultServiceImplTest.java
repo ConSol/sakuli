@@ -46,7 +46,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * @author tschneck
- *         Date: 2/23/16
+ * Date: 2/23/16
  */
 public class Icinga2ResultServiceImplTest {
     @Mock
@@ -80,7 +80,7 @@ public class Icinga2ResultServiceImplTest {
         result.setResults(Collections.singletonList(map));
         mockAndReturn(result);
         when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
-        testling.saveAllResults(new TestSuite());
+        testling.teardownTestSuite(new TestSuite());
         verify(exceptionHandler, never()).handleException(any(Exception.class));
         verify(icinga2CheckResultBuilder).build();
     }
@@ -94,7 +94,7 @@ public class Icinga2ResultServiceImplTest {
         result.setResults(Collections.singletonList(map));
         mockAndReturn(result);
         when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
-        testling.saveAllResults(new TestSuite());
+        testling.teardownTestSuite(new TestSuite());
         verify(exceptionHandler).handleException(any(Exception.class));
         verify(icinga2CheckResultBuilder).build();
     }
@@ -108,7 +108,7 @@ public class Icinga2ResultServiceImplTest {
         result.setResults(Collections.singletonList(map));
         when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
         mockAndReturn(result);
-        testling.saveAllResults(new TestSuite());
+        testling.teardownTestSuite(new TestSuite());
         verify(exceptionHandler).handleException(any(Exception.class));
         verify(icinga2CheckResultBuilder).build();
     }

@@ -46,14 +46,14 @@ import static org.testng.Assert.assertTrue;
  * @author tschneck
  * Date: 2/12/16
  */
-public class LogCleanUpResultServiceImplTest {
+public class LogCleanUpServiceImplTest {
 
     @Mock
     private SakuliProperties sakuliProperties;
 
     @InjectMocks
     @Spy
-    private LogCleanUpResultServiceImpl testling;
+    private LogCleanUpServiceImpl testling;
     private Path tempLog;
 
     @BeforeMethod
@@ -83,7 +83,7 @@ public class LogCleanUpResultServiceImplTest {
     @Test
     public void testNoLogFolder() throws Exception {
         when(sakuliProperties.getLogFolder()).thenReturn(Paths.get("NOT_EXIST"));
-        testling.triggerAction(new TestSuite());
+        testling.teardownTestSuite(new TestSuite());
         verify(testling, never()).cleanUpDirectory(any());
     }
 
@@ -100,7 +100,7 @@ public class LogCleanUpResultServiceImplTest {
         Path notToOld2 = createFileWithDate(tempLog.resolve("today-13.log"), todayMinus13);
 
         when(sakuliProperties.getLogFolder()).thenReturn(tempLog);
-        testling.triggerAction(new TestSuite());
+        testling.teardownTestSuite(new TestSuite());
         verify(testling, times(2)).cleanUpDirectory(any());
         assertTrue(Files.exists(folder1));
         assertTrue(Files.exists(today));

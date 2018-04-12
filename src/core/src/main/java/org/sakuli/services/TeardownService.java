@@ -18,17 +18,53 @@
 
 package org.sakuli.services;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.datamodel.AbstractTestDataEntity;
+import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.TestSuite;
+import org.sakuli.exceptions.SakuliRuntimeException;
+
+import java.util.Optional;
 
 /**
+ * Service Interface which will be called on different teardown phases of the {@link AbstractTestDataEntity} objects
+ *
  * @author tschneck
- *         Date: 2/12/16
+ * Date: 2/12/16
  */
 public interface TeardownService extends PrioritizedService {
 
+    default void tearDown(Optional<AbstractTestDataEntity> dataEntity) {
+        dataEntity.filter(TestSuite.class::isInstance).map(TestSuite.class::cast)
+                .ifPresent(this::teardownTestSuite);
+
+        dataEntity.filter(TestCase.class::isInstance).map(TestCase.class::cast)
+                .ifPresent(this::teardownTestCase);
+
+        dataEntity.filter(TestCaseStep.class::isInstance).map(TestCaseStep.class::cast)
+                .ifPresent(this::teardownTestCaseStep);
+    }
+
     /**
-     * Triggers the different implementations of the {@link TeardownService}.
+     * Triggers the different implementations of the {@link TeardownService} for the {@link TestSuite} object.
      */
-    void triggerAction(AbstractTestDataEntity abstractTestDataEntity);
+    default void teardownTestSuite(@NonNull TestSuite testSuite) {
+        throw new SakuliRuntimeException("Method 'teardownTestSuite' is not implemented for forwarder class " + getClass().getSimpleName());
+    }
+
+    /**
+     * Triggers the different implementations of the {@link TeardownService} for the {@link TestCase} object.
+     */
+    default void teardownTestCase(@NonNull TestCase testCase) {
+        throw new SakuliRuntimeException("Method 'teardownTestCase' is not implemented for forwarder class " + getClass().getSimpleName());
+    }
+
+    /**
+     * Triggers the different implementations of the {@link TeardownService} for the {@link TestCaseStep} object.
+     */
+    default void teardownTestCaseStep(@NonNull TestCaseStep testCaseStep) {
+        throw new SakuliRuntimeException("Method 'teardownTestCaseStep' is not implemented for forwarder class " + getClass().getSimpleName());
+    }
 
 }

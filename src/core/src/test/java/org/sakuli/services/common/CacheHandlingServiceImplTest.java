@@ -19,7 +19,9 @@
 package org.sakuli.services.common;
 
 import org.apache.commons.io.FileUtils;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
@@ -29,7 +31,6 @@ import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -41,26 +42,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Optional;
 
-import static org.mockito.Mockito.spy;
 import static org.testng.Assert.*;
 
 /**
  * @author tschneck
- *         Date: 8/25/15
+ * Date: 8/25/15
  */
-public class CacheHandlingResultServiceImplTest {
-    private CacheHandlingResultServiceImpl testling = spy(new CacheHandlingResultServiceImpl());
+public class CacheHandlingServiceImplTest {
     private TestSuite testSuite;
+    @Mock
     private SakuliExceptionHandler exceptionHandler;
+    @InjectMocks
+    private CacheHandlingServiceImpl testling;
 
     @BeforeMethod
     public void init() {
         testSuite = new TestSuiteExampleBuilder()
                 .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS).withException(new SakuliException("TEST")).buildExample();
-
-        exceptionHandler = Mockito.mock(SakuliExceptionHandler.class);
-        ReflectionTestUtils.setField(testling, "exceptionHandler", exceptionHandler);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
@@ -82,12 +83,12 @@ public class CacheHandlingResultServiceImplTest {
         testSuite.setTestCases(Collections.singletonMap("1", tc));
 
         //on error no cache file should be written
-        testling.saveAllResults(testSuite);
+        testling.tearDown(Optional.of(testSuite));
         assertNull(getResource(cacheFilePath, false));
 
         //on != error cache file should be written
         testSuite.setState(TestSuiteState.CRITICAL_IN_SUITE);
-        testling.saveAllResults(testSuite);
+        testling.tearDown(Optional.of(testSuite));
         Path cacheFile = getResource(cacheFilePath, true);
         assertTrue(Files.exists(cacheFile));
         assertEquals(FileUtils.readFileToString(cacheFile.toFile(), Charset.forName("UTF-8")),

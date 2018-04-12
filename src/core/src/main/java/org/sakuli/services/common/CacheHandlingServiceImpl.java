@@ -18,15 +18,18 @@
 
 package org.sakuli.services.common;
 
-import org.sakuli.datamodel.AbstractTestDataEntity;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.helper.TestCaseStepHelper;
 import org.sakuli.datamodel.state.TestSuiteState;
+import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliRuntimeException;
+import org.sakuli.services.TeardownService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -42,8 +45,11 @@ import java.util.List;
  * @author tschneck
  */
 @Component
-public class CacheHandlingResultServiceImpl extends AbstractResultService {
-    private static Logger logger = LoggerFactory.getLogger(CacheHandlingResultServiceImpl.class);
+public class CacheHandlingServiceImpl implements TeardownService {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(CacheHandlingServiceImpl.class);
+    @Autowired
+    protected SakuliExceptionHandler exceptionHandler;
 
     @Override
     public int getServicePriority() {
@@ -51,16 +57,21 @@ public class CacheHandlingResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
-        //TODO #304 refactor to function with callback like `forTestSuite( testsuite -> ...)
-        if (abstractTestDataEntity != null &&
-                TestSuite.class.isAssignableFrom(abstractTestDataEntity.getClass())) {
-            TestSuite testSuite = (TestSuite)abstractTestDataEntity;
-            if (testSuite.getState() != null && testSuite.getState().isFinishedWithoutErrors()) {
-                removeCachedInitSteps(testSuite);
-                writeCachedStepDefinitions(testSuite);
-            }
+    public void teardownTestSuite(@NonNull TestSuite testSuite) {
+        if (testSuite.getState() != null && testSuite.getState().isFinishedWithoutErrors()) {
+            removeCachedInitSteps(testSuite);
+            writeCachedStepDefinitions(testSuite);
         }
+    }
+
+    @Override
+    public void teardownTestCase(@NonNull TestCase testCase) {
+        //Not needed
+    }
+
+    @Override
+    public void teardownTestCaseStep(@NonNull TestCaseStep testCaseStep) {
+        //Not needed
     }
 
     protected void removeCachedInitSteps(TestSuite testSuite) {
@@ -70,7 +81,7 @@ public class CacheHandlingResultServiceImpl extends AbstractResultService {
                 if (step.getState() != null && step.getState().isFinishedWithoutErrors()) {
                     filteredSteps.add(step);
                 } else {
-                    logger.debug("remove cached and not called step '{}'", step.getId());
+                    LOGGER.debug("remove cached and not called step '{}'", step.getId());
                 }
             }
             tc.setSteps(filteredSteps);

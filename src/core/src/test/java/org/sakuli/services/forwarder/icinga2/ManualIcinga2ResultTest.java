@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * @author tschneck
- *         Date: 2/22/16
+ * Date: 2/22/16
  */
 public class ManualIcinga2ResultTest {
 
@@ -58,7 +58,7 @@ public class ManualIcinga2ResultTest {
         when(properties.getApiPassword()).thenReturn("rootroot");
         when(properties.getApiURL()).thenReturn("https://localhost:5665/v1/actions/process-check-result?service=sakuliclient01!sakuli_demo");
         ReflectionTestUtils.setField(testling, "icinga2RestCient", icinga2RestCient);
-        testling.saveAllResults(new TestSuite());
+        testling.teardownTestSuite(new TestSuite());
     }
 
     protected Icinga2Request getRequestExample() {

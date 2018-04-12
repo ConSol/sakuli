@@ -1,26 +1,26 @@
 {% spaceless %}
-{% import 'error_message_creator.twig' as errorMessageCreator %}
+    {% import 'error_message_creator.twig' as errorMessageCreator %}
     type={{ gearman.serviceType }}$newline$
-host_name=
+    host_name=
     {% if (not empty(gearman.nagiosHost)) %}
         {{ gearman.nagiosHost }}
     {% else %}
         {{ testsuite.host }}
     {% endif %}$newline$
-start_time={{ convertToUnixTimestamp(testDataEntity.startDate) }}$newline$
-finish_time={{ convertToUnixTimestamp(testDataEntity.stopDate) }}$newline$
-return_code={{ testDataEntity.state.nagiosErrorCode }}$newline$
-{% set testDataEntityType = getTestDataEntityType(testDataEntity) %}
-{% if ('TestSuite' == testDataEntityType) %}
-    service_description={{ gearman.nagiosServiceDescription }}$newline$
-{% elseif ('TestCase' == testDataEntityType) %}
-    service_description={{ testSuiteId }}_{{ testDataEntity.id }}$newline$
-{% elseif ('TestCaseStep' == testDataEntityType) %}
-    service_description={{ testSuiteId }}_{{ testCaseId }}_{{ testDataEntity.id }}$newline$
-{% endif %}
-output=
+    start_time={{ convertToUnixTimestamp(testDataEntity.startDate) }}$newline$
+    finish_time={{ convertToUnixTimestamp(testDataEntity.stopDate) }}$newline$
+    return_code={{ testDataEntity.state.nagiosErrorCode }}$newline$
+    {% set testDataEntityType = getTestDataEntityType(testDataEntity) %}
+    {% if ('TestSuite' == testDataEntityType) %}
+        service_description={{ gearman.nagiosServiceDescription }}$newline$
+    {% elseif ('TestCase' == testDataEntityType) %}
+        service_description={{ testSuiteId }}_{{ testDataEntity.id }}$newline$
+    {% elseif ('TestCaseStep' == testDataEntityType) %}
+        service_description={{ testSuiteId }}_{{ testCaseId }}_{{ testDataEntity.id }}$newline$
+    {% endif %}
+    output=
     {% include 'short_summary.twig' %}\n
     {% include 'detailed_summary.twig' %}
     {% include 'performance_data.twig' %}
-$whitespace$[{{ gearman.nagiosCheckCommand }}]
+    $whitespace$[{{ gearman.nagiosCheckCommand }}]
 {% endspaceless %}

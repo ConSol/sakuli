@@ -39,6 +39,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.awt.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -200,7 +201,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         SakuliActionException sakuliActionException = new SakuliActionException("ACTION_EXCEPTION");
 
         testling.handleException(sakuliActionException, mock(RegionImpl.class), true);
-        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), any(Path.class), anyString(), any());
+        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), nullable(Path.class), nullable(String.class), nullable(Rectangle.class));
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);
@@ -216,7 +217,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         SakuliActionException sakuliActionException = new SakuliActionException("ACTION_EXCEPTION");
 
         testling.handleException(sakuliActionException, mock(RegionImpl.class), true);
-        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), any(Path.class), anyString(), any());
+        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), nullable(Path.class), nullable(String.class), nullable(Rectangle.class));
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);

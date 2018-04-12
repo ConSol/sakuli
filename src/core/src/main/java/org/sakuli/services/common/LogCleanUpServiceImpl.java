@@ -18,7 +18,9 @@
 
 package org.sakuli.services.common;
 
-import org.sakuli.datamodel.AbstractTestDataEntity;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.services.TeardownService;
@@ -35,12 +37,12 @@ import java.time.temporal.ChronoUnit;
 
 /**
  * @author tschneck
- *         Date: 2/12/16
+ * Date: 2/12/16
  */
 @Component
-public class LogCleanUpResultServiceImpl implements TeardownService {
+public class LogCleanUpServiceImpl implements TeardownService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogCleanUpResultServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCleanUpServiceImpl.class);
 
     @Autowired
     private SakuliProperties sakuliProperties;
@@ -51,14 +53,20 @@ public class LogCleanUpResultServiceImpl implements TeardownService {
     }
 
     @Override
-    public void triggerAction(AbstractTestDataEntity abstractTestDataEntity) {
-        //TODO #304 refactor to function with callback like `forTestSuite( testsuite -> ...)
-        if (abstractTestDataEntity != null &&
-                TestSuite.class.isAssignableFrom(abstractTestDataEntity.getClass())) {
-            if (Files.exists(sakuliProperties.getLogFolder())) {
-                cleanUpDirectory(sakuliProperties.getLogFolder());
-            }
+    public void teardownTestSuite(@NonNull TestSuite testSuite) {
+        if (Files.exists(sakuliProperties.getLogFolder())) {
+            cleanUpDirectory(sakuliProperties.getLogFolder());
         }
+    }
+
+    @Override
+    public void teardownTestCase(@NonNull TestCase testCase) {
+        //Not needed
+    }
+
+    @Override
+    public void teardownTestCaseStep(@NonNull TestCaseStep testCaseStep) {
+        //Not needed
     }
 
     /**
@@ -80,12 +88,12 @@ public class LogCleanUpResultServiceImpl implements TeardownService {
                             Files.deleteIfExists(e);
                         }
                     } catch (IOException e1) {
-                        LOGGER.error("can`t delete file", e1);
+                        LOGGER.error("can't delete file", e1);
                     }
                 }
             });
         } catch (IOException e) {
-            LOGGER.error("couldn`t access log file directory '" + path + "'", e);
+            LOGGER.error("couldn't access log file directory '" + path + "'", e);
         }
     }
 }

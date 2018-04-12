@@ -26,7 +26,7 @@ import javax.ws.rs.ProcessingException;
 
 /**
  * @author tschneck
- *         Date: 2/23/16
+ * Date: 2/23/16
  */
 public class Icinga2ResultServiceTest extends AbstractIcinga2ForwarderBaseTest {
 
@@ -34,6 +34,6 @@ public class Icinga2ResultServiceTest extends AbstractIcinga2ForwarderBaseTest {
             expectedExceptionsMessageRegExp = "java.net.UnknownHostException: my-icinga-host")
     public void testServerNotExist() throws Exception {
         Icinga2ResultServiceImpl testling = BeanLoader.loadBean(Icinga2ResultServiceImpl.class);
-        testling.saveAllResults(new TestSuite());
+        testling.teardownTestSuite(new TestSuite());
     }
 }

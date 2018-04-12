@@ -18,10 +18,10 @@
 
 package org.sakuli.services.common;
 
-import org.sakuli.datamodel.AbstractTestDataEntity;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.utils.CleanUpHelper;
+import org.sakuli.services.ResultService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -35,7 +35,7 @@ import java.util.function.Predicate;
  * @author tschneck
  */
 @Component
-public class CommonResultServiceImpl extends AbstractResultService {
+public class CommonResultServiceImpl implements ResultService {
     private static Logger LOGGER = LoggerFactory.getLogger(CommonResultServiceImpl.class);
 
     @Override
@@ -44,30 +44,24 @@ public class CommonResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
-        //TODO #304 refactor to function with callback like `forTestSuite( testsuite -> ...)
-        if (abstractTestDataEntity != null &&
-                TestSuite.class.isAssignableFrom(abstractTestDataEntity.getClass())) {
-            cleanUp();
-            TestSuite testSuite = (TestSuite)abstractTestDataEntity;
-            LOGGER.info(testSuite.getResultString()
-                    + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
-                    + testSuite.getState() + " ======================\n");
-            switch (testSuite.getState()) {
-                case WARNING_IN_CASE:
-                    logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isWarning());
-                    break;
-                case WARNING_IN_STEP:
-                    logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isWarningInStep());
-                    break;
-                case CRITICAL_IN_CASE:
-                    logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isCritical());
-                    break;
-                case ERRORS:
-                    String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages(false);
-                    LOGGER.error(errorMsg + "\n");
-                    break;
-            }
+    public void teardownTestSuite(@NonNull TestSuite testSuite) {
+        LOGGER.info(testSuite.getResultString()
+                + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
+                + testSuite.getState() + " ======================\n");
+        switch (testSuite.getState()) {
+            case WARNING_IN_CASE:
+                logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isWarning());
+                break;
+            case WARNING_IN_STEP:
+                logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isWarningInStep());
+                break;
+            case CRITICAL_IN_CASE:
+                logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isCritical());
+                break;
+            case ERRORS:
+                String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages(false);
+                LOGGER.error(errorMsg + "\n");
+                break;
         }
     }
 
@@ -83,14 +77,5 @@ public class CommonResultServiceImpl extends AbstractResultService {
                         LOGGER.warn("{}: {}", testSuite.getState(), tc.getName());
                     }
                 });
-    }
-
-    public void cleanUp() {
-        try {
-            CleanUpHelper.cleanClipboard();
-            CleanUpHelper.releaseAllModifiers();
-        } catch (Throwable e) {
-            LOGGER.warn("Some unexpected errors during the clean up procedure:", e);
-        }
     }
 }

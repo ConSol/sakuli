@@ -18,10 +18,12 @@
 
 package org.sakuli.services.forwarder.json;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliForwarderException;
-import org.sakuli.services.common.AbstractResultService;
+import org.sakuli.services.ResultService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +41,12 @@ import java.util.Date;
  */
 @ProfileJson
 @Component
-public class JsonResultServiceImpl extends AbstractResultService {
+public class JsonResultServiceImpl implements ResultService {
 
-    private static final Logger logger = LoggerFactory.getLogger(JsonResultServiceImpl.class);
     public static final SimpleDateFormat JSON_FILE_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd-HH-mm-ss-SSS");
+    private static final Logger logger = LoggerFactory.getLogger(JsonResultServiceImpl.class);
+    @Autowired
+    private SakuliExceptionHandler exceptionHandler;
 
     @Autowired
     private GsonOutputBuilder outputBuilder;
@@ -56,20 +60,15 @@ public class JsonResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
-        //TODO #304 refactor to function with callback like `forTestSuite( testsuite -> ...)
-
-        if (abstractTestDataEntity != null &&
-                TestSuite.class.isAssignableFrom(abstractTestDataEntity.getClass())) {
-            try {
-                logger.info("======= WRITE TEST OUTPUT AS JSON FILE ======");
-                String output = outputBuilder.createOutput();
-                logger.debug(String.format("JSON Output:\n%s", output));
-                writeToFile(createJsonFilePath(abstractTestDataEntity), output);
-                logger.info("======= FINISHED: WRITE TEST OUTPUT AS JSON FILE ======");
-            } catch (SakuliForwarderException e) {
-                exceptionHandler.handleException(e, false);
-            }
+    public void teardownTestSuite(@NonNull TestSuite testSuite) {
+        try {
+            logger.info("======= WRITE TEST OUTPUT AS JSON FILE ======");
+            String output = outputBuilder.createOutput();
+            logger.debug(String.format("JSON Output:\n%s", output));
+            writeToFile(createJsonFilePath(testSuite), output);
+            logger.info("======= FINISHED: WRITE TEST OUTPUT AS JSON FILE ======");
+        } catch (SakuliForwarderException e) {
+            exceptionHandler.handleException(e, false);
         }
     }
 

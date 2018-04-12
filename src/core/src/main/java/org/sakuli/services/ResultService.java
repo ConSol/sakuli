@@ -18,17 +18,12 @@
 
 package org.sakuli.services;
 
-import org.sakuli.datamodel.AbstractTestDataEntity;
-import org.sakuli.datamodel.properties.SakuliProperties;
-
 /**
+ * Marker interface which indicates all {@link TeardownService} which really save or forward a result.
+ *
  * @author tschneck Date: 23.05.14
  */
 public interface ResultService extends TeardownService {
 
-    /**
-     * Triggers that all current results will be saved, in consideration of the {@link SakuliProperties}.
-     */
-    void saveAllResults(AbstractTestDataEntity abstractTestDataEntity);
 
 }

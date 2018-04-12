@@ -32,7 +32,6 @@ import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.forwarder.gearman.crypt.Aes;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -48,6 +47,9 @@ import static org.testng.Assert.assertEquals;
 
 public class GearmanResultServiceImplTest extends BaseTest {
 
+    private final String host = "99.99.99.20";
+    private final int port = 4730;
+    private final String queueName = "check_results";
     @Spy
     @InjectMocks
     private GearmanResultServiceImpl testling;
@@ -61,10 +63,6 @@ public class GearmanResultServiceImplTest extends BaseTest {
     private NagiosCheckResultBuilder checkResultBuilder;
     private GearmanClient gearmanClient;
     private GearmanJobServerConnection connection;
-
-    private final String host = "99.99.99.20";
-    private final int port = 4730;
-    private final String queueName = "check_results";
     private String testResult = "blub";
 
     @BeforeMethod
@@ -119,7 +117,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
                 .buildExample();
         when(checkResultBuilder.build(eq(testSuite))).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
-        testling.saveAllResults(testSuite);
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         verify(gearmanCacheService, never()).cacheResults(anyList());
@@ -163,7 +161,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
                 .buildExample();
         when(checkResultBuilder.build(testSuite)).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
-        testling.saveAllResults(testSuite);
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         verify(gearmanCacheService, never()).cacheResults(anyList());
@@ -192,7 +190,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
             return null;
         }).when(gearmanCacheService).cacheResults(anyList());
 
-        testling.saveAllResults(testSuite);
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         verify(gearmanCacheService).cacheResults(anyList());
@@ -239,7 +237,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
 
         }).when(testling).sendResult(any(), any());
 
-        testling.saveAllResults(testSuite);
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         assertEquals(sendOrder.toString(), "" + mockedResult2.hashCode() + mockedResult1.hashCode() + newResult.hashCode());
@@ -277,7 +275,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
             return null;
         }).when(gearmanCacheService).cacheResults(anyList());
 
-        testling.saveAllResults(testSuite);
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         verify(gearmanCacheService).cacheResults(anyList());
@@ -317,7 +315,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
             return null;
         }).when(exceptionHandler).handleException(any(Throwable.class), anyBoolean());
 
-        testling.saveAllResults(testSuite);
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         verify(gearmanCacheService).cacheResults(anyList());

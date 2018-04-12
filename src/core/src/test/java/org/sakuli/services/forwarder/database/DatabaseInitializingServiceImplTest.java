@@ -25,7 +25,7 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.database.dao.DaoTestSuite;
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -60,7 +60,7 @@ public class DatabaseInitializingServiceImplTest {
 
     @Test
     public void testSaveResultsInDatabaseHandleException() throws Exception {
-        doThrow(DataAccessException.class).when(daoTestSuite).insertInitialTestSuiteData();
+        doThrow(DataAccessResourceFailureException.class).when(daoTestSuite).insertInitialTestSuiteData();
         testling.initTestSuite();
         verify(exceptionHandler).handleException(any(SakuliForwarderException.class), anyBoolean());
     }

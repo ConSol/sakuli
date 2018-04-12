@@ -21,25 +21,22 @@ package org.sakuli.services;
 import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.loader.BeanLoader;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Tobias Schneck
  */
 public class TeardownServiceHelper {
     /**
-     * Invokes all {@link TeardownService}s, for example to save results.
+     * Invokes all {@link TeardownService} callbacks, for example to save results.
      */
     public static void invokeTeardownServices(AbstractTestDataEntity abstractTestDataEntity) {
-        //TODO #304 why changed?
-        List<TeardownService> toSort = new ArrayList<>();
-        for (TeardownService teardownService : BeanLoader.loadMultipleBeans(TeardownService.class).values()) {
-            toSort.add(teardownService);
-        }
-        toSort.sort(new PrioritizedServiceComparator<>());
-        for (TeardownService teardownService : toSort) {
-            teardownService.triggerAction(abstractTestDataEntity);
+        if (abstractTestDataEntity != null) {
+            abstractTestDataEntity.refreshState();
+            BeanLoader.loadMultipleBeans(TeardownService.class).values().stream()
+                    .sorted(new PrioritizedServiceComparator<>())
+                    .forEachOrdered(s -> s.tearDown(Optional.of(abstractTestDataEntity)));
         }
     }
+
 }

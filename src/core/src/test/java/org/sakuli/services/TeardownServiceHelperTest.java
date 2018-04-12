@@ -18,15 +18,16 @@
 
 package org.sakuli.services;
 
-import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.loader.BeanLoader;
-import org.sakuli.services.common.CacheHandlingResultServiceImpl;
-import org.sakuli.services.common.LogCleanUpResultServiceImpl;
+import org.sakuli.services.common.CacheHandlingServiceImpl;
+import org.sakuli.services.common.LogCleanUpServiceImpl;
 import org.sakuli.services.forwarder.database.DatabaseResultServiceImpl;
 import org.sakuli.services.forwarder.gearman.GearmanResultServiceImpl;
 import org.testng.annotations.Test;
+
+import java.util.Optional;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -37,7 +38,7 @@ import static org.testng.Assert.assertTrue;
 
 /**
  * @author tschneck
- *         Date: 09.04.15
+ * Date: 09.04.15
  */
 public class TeardownServiceHelperTest extends AbstractServiceBaseTest {
 
@@ -46,41 +47,41 @@ public class TeardownServiceHelperTest extends AbstractServiceBaseTest {
         assertEquals(BeanLoader.loadMultipleBeans(TeardownService.class).size(), 5);
         DatabaseResultServiceImpl databaseResultService = mockDatabaseResultService();
         GearmanResultServiceImpl gearmanResultService = mockGearmanResultService();
-        CacheHandlingResultServiceImpl cacheHandlingResultService = mockCacheHandlingResultService();
-        LogCleanUpResultServiceImpl logCleanUpResultService = mockLogCleanUpResultService();
+        CacheHandlingServiceImpl cacheHandlingResultService = mockCacheHandlingResultService();
+        LogCleanUpServiceImpl logCleanUpResultService = mockLogCleanUpResultService();
         TestSuite testSuite = BeanLoader.loadBean(TestSuite.class);
         testSuite.setState(TestSuiteState.RUNNING);
 
         TeardownServiceHelper.invokeTeardownServices(testSuite);
         assertEquals(testSuite.getState(), TestSuiteState.OK);
         assertTrue(testSuite.getStopDate().after(testSuite.getStartDate()));
-        verify(databaseResultService).saveAllResults(eq(testSuite));
-        verify(gearmanResultService).saveAllResults(eq(testSuite));
-        verify(cacheHandlingResultService).saveAllResults(eq(testSuite));
-        verify(logCleanUpResultService).triggerAction(eq(testSuite));
+        verify(databaseResultService).teardownTestSuite(eq(testSuite));
+        verify(gearmanResultService).tearDown(eq(Optional.of(testSuite)));
+        verify(cacheHandlingResultService).teardownTestSuite(eq(testSuite));
+        verify(logCleanUpResultService).teardownTestSuite(eq(testSuite));
     }
 
-    private LogCleanUpResultServiceImpl mockLogCleanUpResultService() {
-        LogCleanUpResultServiceImpl logCleanUpResultService = BeanLoader.loadBean(LogCleanUpResultServiceImpl.class);
-        doNothing().when(logCleanUpResultService).triggerAction(any(AbstractTestDataEntity.class));
+    private LogCleanUpServiceImpl mockLogCleanUpResultService() {
+        LogCleanUpServiceImpl logCleanUpResultService = BeanLoader.loadBean(LogCleanUpServiceImpl.class);
+        doNothing().when(logCleanUpResultService).teardownTestSuite(any());
         return logCleanUpResultService;
     }
 
     private GearmanResultServiceImpl mockGearmanResultService() {
         GearmanResultServiceImpl gearmanResultService = BeanLoader.loadBean(GearmanResultServiceImpl.class);
-        doNothing().when(gearmanResultService).saveAllResults(any(AbstractTestDataEntity.class));
+        doNothing().when(gearmanResultService).tearDown(any());
         return gearmanResultService;
     }
 
     private DatabaseResultServiceImpl mockDatabaseResultService() {
         DatabaseResultServiceImpl databaseResultService = BeanLoader.loadBean(DatabaseResultServiceImpl.class);
-        doNothing().when(databaseResultService).saveAllResults(any(AbstractTestDataEntity.class));
+        doNothing().when(databaseResultService).teardownTestSuite(any());
         return databaseResultService;
     }
 
-    private CacheHandlingResultServiceImpl mockCacheHandlingResultService() {
-        CacheHandlingResultServiceImpl cacheHandlingResultService = BeanLoader.loadBean(CacheHandlingResultServiceImpl.class);
-        doNothing().when(cacheHandlingResultService).saveAllResults(any(AbstractTestDataEntity.class));
+    private CacheHandlingServiceImpl mockCacheHandlingResultService() {
+        CacheHandlingServiceImpl cacheHandlingResultService = BeanLoader.loadBean(CacheHandlingServiceImpl.class);
+        doNothing().when(cacheHandlingResultService).teardownTestSuite(any());
         return cacheHandlingResultService;
     }
 }

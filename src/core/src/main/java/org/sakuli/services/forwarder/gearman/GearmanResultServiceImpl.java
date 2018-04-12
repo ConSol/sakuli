@@ -23,8 +23,9 @@ import org.gearman.client.*;
 import org.gearman.common.GearmanJobServerConnection;
 import org.gearman.common.GearmanNIOJobServerConnection;
 import org.sakuli.datamodel.AbstractTestDataEntity;
+import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliForwarderException;
-import org.sakuli.services.common.AbstractResultService;
+import org.sakuli.services.ResultService;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
 import org.sakuli.services.forwarder.gearman.crypt.Aes;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
@@ -45,12 +47,14 @@ import static org.sakuli.utils.SystemHelper.sleep;
 
 /**
  * @author tschneck
- *         Date: 23.05.14
+ * Date: 23.05.14
  */
 @ProfileGearman
 @Component
-public class GearmanResultServiceImpl extends AbstractResultService {
+public class GearmanResultServiceImpl implements ResultService {
     private static final Logger logger = LoggerFactory.getLogger(GearmanResultServiceImpl.class);
+    @Autowired
+    private SakuliExceptionHandler exceptionHandler;
     @Autowired
     private GearmanProperties properties;
     @Autowired
@@ -64,47 +68,50 @@ public class GearmanResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults(AbstractTestDataEntity abstractTestDataEntity) {
-        logger.info("======= SEND RESULTS TO GEARMAN SERVER ======");
-        GearmanClient gearmanClient = getGearmanClient();
-        GearmanJobServerConnection connection = getGearmanConnection(properties.getServerHost(), properties.getServerPort());
+    public void tearDown(Optional<AbstractTestDataEntity> dataEntity) {
+        dataEntity.ifPresent(data -> {
+            logger.info("======= SEND RESULTS TO GEARMAN SERVER ======");
+            GearmanClient gearmanClient = getGearmanClient();
+            GearmanJobServerConnection connection = getGearmanConnection(properties.getServerHost(), properties.getServerPort());
 
-        List<NagiosCheckResult> results = new ArrayList<>();
-        try {
-            results.add(nagiosCheckResultBuilder.build(abstractTestDataEntity));
+            List<NagiosCheckResult> results = new ArrayList<>();
+            try {
+                results.add(nagiosCheckResultBuilder.build(data));
 
-            if (properties.isCacheEnabled()) {
-                results.addAll(cacheService.getCachedResults());
-                if (results.size() > 1) {
-                    logger.info(String.format("Processing %s cached results first", results.size() - 1));
+                if (properties.isCacheEnabled()) {
+                    results.addAll(cacheService.getCachedResults());
+                    if (results.size() > 1) {
+                        logger.info(String.format("Processing %s cached results first", results.size() - 1));
+                    }
                 }
+
+                if (!gearmanClient.addJobServer(connection)) {
+                    exceptionHandler.handleException(new SakuliForwarderException(
+                            String.format("Failed to connect to Gearman server '%s:%s'", properties.getServerHost(), properties.getServerPort())), true);
+                } else {
+                    //sending in reverse original happened order
+                    Collections.reverse(results);
+                    results = results.stream()
+                            //filter all unsuccessful results
+                            .filter(checkResult -> !sendResult(gearmanClient, checkResult))
+                            .collect(Collectors.toList());
+                    Collections.reverse(results);
+                }
+            } catch (Exception e) {
+                exceptionHandler.handleException(new SakuliForwarderException(e,
+                        String.format("Could not transfer Sakuli results to the Gearman server '%s:%s'", properties.getServerHost(), properties.getServerPort())), true);
             }
 
-            if (!gearmanClient.addJobServer(connection)) {
-                exceptionHandler.handleException(new SakuliForwarderException(
-                        String.format("Failed to connect to Gearman server '%s:%s'", properties.getServerHost(), properties.getServerPort())), true);
-            } else {
-                //sending in reverse original happened order
-                Collections.reverse(results);
-                results = results.stream()
-                        //filter all unsuccessful results
-                        .filter(checkResult -> !sendResult(gearmanClient, checkResult))
-                        .collect(Collectors.toList());
-                Collections.reverse(results);
+            //save all not send results
+            if (properties.isCacheEnabled()) {
+                cacheService.cacheResults(results);
             }
-        } catch (Exception e) {
-            exceptionHandler.handleException(new SakuliForwarderException(e,
-                    String.format("Could not transfer Sakuli results to the Gearman server '%s:%s'", properties.getServerHost(), properties.getServerPort())), true);
-        }
 
-        //save all not send results
-        if (properties.isCacheEnabled()) {
-            cacheService.cacheResults(results);
-        }
-
-        gearmanClient.shutdown();
-        logger.info("======= FINISHED: SEND RESULTS TO GEARMAN SERVER ======");
+            gearmanClient.shutdown();
+            logger.info("======= FINISHED: SEND RESULTS TO GEARMAN SERVER ======");
+        });
     }
+
 
     protected boolean sendResult(GearmanClient gearmanClient, NagiosCheckResult checkResult) {
         if (logger.isDebugEnabled()) {

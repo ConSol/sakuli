@@ -30,8 +30,7 @@ import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.database.dao.DaoTestCase;
 import org.sakuli.services.forwarder.database.dao.DaoTestCaseStep;
 import org.sakuli.services.forwarder.database.dao.DaoTestSuite;
-import org.springframework.dao.DataAccessException;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -64,8 +63,8 @@ public class DatabaseResultServiceImplTest {
 
     @Test
     public void testSaveResultsInDatabase() {
-        when(testSuite.getTestCases()).thenReturn(null);
-        testling.saveAllResults(testSuite);
+        when(testSuite.getTestCases()).thenAnswer(a -> null);
+        testling.teardownTestSuite(testSuite);
         verify(daoTestSuite).saveTestSuiteResult();
         verify(daoTestSuite).saveTestSuiteToSahiJobs();
         verify(daoTestCase, never()).saveTestCaseResult(any(TestCase.class));
@@ -74,8 +73,8 @@ public class DatabaseResultServiceImplTest {
 
     @Test
     public void testSaveResultsInDatabaseHandleException() {
-        doThrow(DataAccessException.class).when(daoTestSuite).saveTestSuiteResult();
-        testling.saveAllResults(testSuite);
+        doThrow(DataAccessResourceFailureException.class).when(daoTestSuite).saveTestSuiteResult();
+        testling.teardownTestSuite(testSuite);
         verify(exceptionHandler).handleException(any(SakuliForwarderException.class), anyBoolean());
     }
 
@@ -99,7 +98,7 @@ public class DatabaseResultServiceImplTest {
         testSuite = new TestSuite();
         testSuite.setTestCases(testCaseMap);
 
-        testling.saveAllResults(testSuite);
+        testling.teardownTestSuite(testSuite);
 
         verify(daoTestSuite).saveTestSuiteResult();
         verify(daoTestSuite).saveTestSuiteToSahiJobs();
