@@ -44,7 +44,7 @@
     {% for testStep in testDataEntity.stepsAsSortedSet %}
         <tr valign="top">
             <td class="service{{ getOutputState(testStep.state) }}">
-                {{ getOutputState(testStep.state).shortState }} case "{{ testStep.id }}"$whitespace$
+                {{ getOutputState(testStep.state).shortState }} step "{{ testStep.id }}"$whitespace$
                 {% if (testStep.state.ok) %}
                     ran in {{ testStep.duration | number_format(2, '.') }}s - {{ testStep.state.nagiosStateDescription }}
                 {% elseif (testStep.state.warning) %}
