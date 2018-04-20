@@ -22,9 +22,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderRuntimeException;
 import org.sakuli.services.ResultService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Request;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Result;
 import org.sakuli.services.forwarder.icinga2.model.builder.Icinga2CheckResultBuilder;
@@ -43,11 +43,10 @@ import javax.ws.rs.core.Response;
  */
 @ProfileIcinga2
 @Component
-public class Icinga2ResultServiceImpl implements ResultService {
+public class Icinga2ResultServiceImpl extends AbstractTeardownService implements ResultService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Icinga2ResultServiceImpl.class);
-    @Autowired
-    private SakuliExceptionHandler exceptionHandler;
+
     @Autowired
     private Icinga2RestCient icinga2RestCient;
     @Autowired
@@ -67,7 +66,7 @@ public class Icinga2ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void teardownTestSuite(@NonNull TestSuite testSuite) {
+    public void teardownTestSuite(@NonNull TestSuite testSuite) throws RuntimeException {
         LOGGER.info("======= SEND RESULTS TO ICINGA SERVER ======");
         LOGGER.info("POST Sakuli results to '{}'", icinga2RestCient.getTargetCheckResult().getUri().toString());
 
@@ -84,10 +83,10 @@ public class Icinga2ResultServiceImpl implements ResultService {
             LOGGER.info("ICINGA Response: {}", result.getFirstElementAsString());
             LOGGER.info("======= FINISHED: SEND RESULTS TO ICINGA SERVER ======");
         } else {
-            exceptionHandler.handleException(new SakuliForwarderException(String.format(
+            throw new SakuliForwarderRuntimeException(String.format(
                     "Unexpected result of REST-POST to Incinga monitoring server (%s): %s",
                     icinga2RestCient.getTargetCheckResult().getUri(),
-                    result.getFirstElementAsString())));
+                    result.getFirstElementAsString()));
         }
     }
 

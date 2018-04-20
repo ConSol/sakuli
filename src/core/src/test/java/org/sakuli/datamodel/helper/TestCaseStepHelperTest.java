@@ -44,7 +44,7 @@ import static org.testng.Assert.*;
 
 /**
  * @author tschneck
- *         Date: 02.07.15
+ * Date: 02.07.15
  */
 public class TestCaseStepHelperTest {
 
@@ -58,7 +58,7 @@ public class TestCaseStepHelperTest {
     }
 
     @Test
-    public void testParseSteps() throws Throwable {
+    public void testParseSteps() throws Exception {
         Path tcFile = getResource("stephelper/tc.js");
         FileUtils.writeStringToFile(
                 tcFile.getParent().resolve(TestCaseStepHelper.STEPS_CACHE_FILE).toFile(),
@@ -82,14 +82,14 @@ public class TestCaseStepHelperTest {
     }
 
     @Test
-    public void testNoCacheFileFound() throws Throwable {
+    public void testNoCacheFileFound() throws Exception {
         assertNull(this.getClass().getResource(CACHEFILE_NAME));
         List<TestCaseStep> steps = TestCaseStepHelper.readCachedStepDefinitions(getResource("stephelper/tc.js"));
         assertEquals(steps.size(), 0);
     }
 
     @Test
-    public void testWriteCachedStepsError() throws Throwable {
+    public void testWriteCachedStepsError() throws Exception {
         Path tcFile = getResource("stephelper/tc.js");
         TestSuite testSuite = mock(TestSuite.class);
         TestCase tc = mock(TestCase.class);

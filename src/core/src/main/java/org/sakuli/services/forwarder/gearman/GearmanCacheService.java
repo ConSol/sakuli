@@ -21,8 +21,7 @@ package org.sakuli.services.forwarder.gearman;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
-import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -47,17 +46,16 @@ public class GearmanCacheService {
     private static final String CACHE_SEPARATOR = "=======";
     private static final String CHARSET_NAME = "UTF-8";
     private static final String LINE_SEPARATOR = "\n";
-    @Autowired
-    private SakuliExceptionHandler exceptionHandler;
 
     @Autowired
     private TestSuiteProperties testSuiteProperties;
 
     /**
      * Reads cached results from Gearman cache file.
+     *
      * @return
      */
-    public List<NagiosCheckResult> getCachedResults() {
+    public List<NagiosCheckResult> getCachedResults() throws SakuliForwarderCheckedException {
         List<NagiosCheckResult> results = new ArrayList<>();
 
         Path cacheFile = testSuiteProperties.getTestSuiteFolder().resolve(CACHE_FILE);
@@ -79,7 +77,7 @@ public class GearmanCacheService {
                     }
                 }
             } catch (IOException e) {
-                exceptionHandler.handleException(new SakuliForwarderException(e, String.format("Failed to read Gearman cache file '%s'", cacheFile)), true);
+                throw new SakuliForwarderCheckedException(e, String.format("Failed to read Gearman cache file '%s'", cacheFile));
             }
         }
 
@@ -88,9 +86,10 @@ public class GearmanCacheService {
 
     /**
      * Writes results to Gearman cache file.
+     *
      * @param results
      */
-    public void cacheResults(List<NagiosCheckResult> results) {
+    public void cacheResults(List<NagiosCheckResult> results) throws SakuliForwarderCheckedException {
         Path cacheFile = testSuiteProperties.getTestSuiteFolder().resolve(CACHE_FILE);
         File output = new File(cacheFile.toUri());
         if (!output.getParentFile().exists()) {
@@ -110,7 +109,7 @@ public class GearmanCacheService {
 
             fos.flush();
         } catch (IOException e) {
-            exceptionHandler.handleException(new SakuliForwarderException(e, "Failed to write Gearman cache file"), true);
+            throw new SakuliForwarderCheckedException(e, "Failed to write Gearman cache file");
         }
     }
 }

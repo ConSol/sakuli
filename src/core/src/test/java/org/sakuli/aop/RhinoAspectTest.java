@@ -39,7 +39,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;

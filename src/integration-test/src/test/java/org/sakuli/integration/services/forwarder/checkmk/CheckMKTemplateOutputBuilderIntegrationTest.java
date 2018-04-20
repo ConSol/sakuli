@@ -49,8 +49,8 @@ import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.notNull;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -671,7 +671,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
         screenshotDiv.setId("sakuli_screenshot243575009");
         screenshotDiv.setFormat("jpg");
         screenshotDiv.setBase64screenshot("/9j/4AAQSkZJRgABAgAAAQABAAD9k=");
-        doReturn(screenshotDiv).when(screenshotDivConverter).convert(notNull(Throwable.class));
+        doReturn(screenshotDiv).when(screenshotDivConverter).convert(notNull(Exception.class));
         String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.ERRORS.name()));
     }

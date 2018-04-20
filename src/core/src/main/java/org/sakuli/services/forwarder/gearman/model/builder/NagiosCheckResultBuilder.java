@@ -19,7 +19,7 @@
 package org.sakuli.services.forwarder.gearman.model.builder;
 
 import org.sakuli.datamodel.AbstractTestDataEntity;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.sakuli.services.forwarder.gearman.GearmanTemplateOutputBuilder;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
@@ -44,11 +44,11 @@ public class NagiosCheckResultBuilder {
     @Autowired
     private GearmanTemplateOutputBuilder outputBuilder;
 
-    public NagiosCheckResult build(AbstractTestDataEntity abstractTestDataEntity) throws SakuliForwarderException {
+    public NagiosCheckResult build(AbstractTestDataEntity abstractTestDataEntity) throws SakuliForwarderCheckedException {
         logger.info("======= CREATING OUTPUT FOR GEARMAN ======");
         String payload = outputBuilder.createOutput(abstractTestDataEntity);
         logger.info("======= FINISHED: CREATING OUTPUT FOR GEARMAN ======");
-        return new NagiosCheckResult(gearmanProperties.getServerQueue(),  abstractTestDataEntity.getGuid(), payload);
+        return new NagiosCheckResult(gearmanProperties.getServerQueue(), abstractTestDataEntity.getGuid(), payload);
     }
 
 }

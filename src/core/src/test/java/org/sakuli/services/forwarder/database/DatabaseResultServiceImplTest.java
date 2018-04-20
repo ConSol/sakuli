@@ -36,8 +36,8 @@ import org.testng.annotations.Test;
 
 import java.util.*;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 public class DatabaseResultServiceImplTest {
@@ -71,11 +71,11 @@ public class DatabaseResultServiceImplTest {
         verify(daoTestCaseStep, never()).saveTestCaseSteps(any(SortedSet.class), anyInt());
     }
 
-    @Test
+    @Test(expectedExceptions = SakuliForwarderException.class,
+            expectedExceptionsMessageRegExp = "error by saving the results to the database.*")
     public void testSaveResultsInDatabaseHandleException() {
         doThrow(DataAccessResourceFailureException.class).when(daoTestSuite).saveTestSuiteResult();
         testling.teardownTestSuite(testSuite);
-        verify(exceptionHandler).handleException(any(SakuliForwarderException.class), anyBoolean());
     }
 
     @Test

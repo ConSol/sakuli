@@ -27,11 +27,11 @@ public class SakuliValidationException extends SakuliCheckedException implements
         super(message);
     }
 
-    public SakuliValidationException(Throwable e) {
+    public SakuliValidationException(Exception e) {
         super(e);
     }
 
-    public SakuliValidationException(Throwable suppressedException, String message) {
+    public SakuliValidationException(Exception suppressedException, String message) {
         super(suppressedException, message);
     }
 }

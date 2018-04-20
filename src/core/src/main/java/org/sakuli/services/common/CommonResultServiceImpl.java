@@ -22,6 +22,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.services.ResultService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,7 @@ import java.util.function.Predicate;
  * @author tschneck
  */
 @Component
-public class CommonResultServiceImpl implements ResultService {
+public class CommonResultServiceImpl extends AbstractTeardownService implements ResultService {
     private static Logger LOGGER = LoggerFactory.getLogger(CommonResultServiceImpl.class);
 
     @Override
@@ -44,7 +45,7 @@ public class CommonResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void teardownTestSuite(@NonNull TestSuite testSuite) {
+    public void teardownTestSuite(@NonNull TestSuite testSuite) throws RuntimeException {
         LOGGER.info(testSuite.getResultString()
                 + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
                 + testSuite.getState() + " ======================\n");

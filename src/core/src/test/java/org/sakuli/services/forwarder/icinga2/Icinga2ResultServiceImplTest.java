@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Request;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Result;
 import org.sakuli.services.forwarder.icinga2.model.builder.Icinga2CheckResultBuilder;
@@ -41,7 +42,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
@@ -85,7 +86,8 @@ public class Icinga2ResultServiceImplTest {
         verify(icinga2CheckResultBuilder).build();
     }
 
-    @Test
+    @Test(expectedExceptions = SakuliForwarderException.class,
+            expectedExceptionsMessageRegExp = "Unexpected result of REST-POST.*")
     public void testSaveAllResultsWrongCode() throws Exception {
         Icinga2Result result = new Icinga2Result();
         Map<String, String> map = new HashMap<>();
@@ -95,11 +97,10 @@ public class Icinga2ResultServiceImplTest {
         mockAndReturn(result);
         when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
         testling.teardownTestSuite(new TestSuite());
-        verify(exceptionHandler).handleException(any(Exception.class));
-        verify(icinga2CheckResultBuilder).build();
     }
 
-    @Test
+    @Test(expectedExceptions = SakuliForwarderException.class,
+            expectedExceptionsMessageRegExp = "Unexpected result of REST-POST.*")
     public void testSaveAllResultsWrongStatus() throws Exception {
         Icinga2Result result = new Icinga2Result();
         Map<String, String> map = new HashMap<>();
@@ -109,8 +110,6 @@ public class Icinga2ResultServiceImplTest {
         when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
         mockAndReturn(result);
         testling.teardownTestSuite(new TestSuite());
-        verify(exceptionHandler).handleException(any(Exception.class));
-        verify(icinga2CheckResultBuilder).build();
     }
 
     @Test

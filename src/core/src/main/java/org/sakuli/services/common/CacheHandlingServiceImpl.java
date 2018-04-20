@@ -24,12 +24,11 @@ import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.helper.TestCaseStepHelper;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.TeardownService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -45,11 +44,9 @@ import java.util.List;
  * @author tschneck
  */
 @Component
-public class CacheHandlingServiceImpl implements TeardownService {
+public class CacheHandlingServiceImpl extends AbstractTeardownService implements TeardownService {
 
     private static Logger LOGGER = LoggerFactory.getLogger(CacheHandlingServiceImpl.class);
-    @Autowired
-    protected SakuliExceptionHandler exceptionHandler;
 
     @Override
     public int getServicePriority() {
@@ -57,7 +54,7 @@ public class CacheHandlingServiceImpl implements TeardownService {
     }
 
     @Override
-    public void teardownTestSuite(@NonNull TestSuite testSuite) {
+    public void teardownTestSuite(@NonNull TestSuite testSuite) throws RuntimeException {
         if (testSuite.getState() != null && testSuite.getState().isFinishedWithoutErrors()) {
             removeCachedInitSteps(testSuite);
             writeCachedStepDefinitions(testSuite);
@@ -65,12 +62,12 @@ public class CacheHandlingServiceImpl implements TeardownService {
     }
 
     @Override
-    public void teardownTestCase(@NonNull TestCase testCase) {
+    public void teardownTestCase(@NonNull TestCase testCase) throws RuntimeException {
         //Not needed
     }
 
     @Override
-    public void teardownTestCaseStep(@NonNull TestCaseStep testCaseStep) {
+    public void teardownTestCaseStep(@NonNull TestCaseStep testCaseStep) throws RuntimeException {
         //Not needed
     }
 
@@ -92,8 +89,7 @@ public class CacheHandlingServiceImpl implements TeardownService {
         try {
             TestCaseStepHelper.writeCachedStepDefinitions(testSuite);
         } catch (IOException e) {
-            exceptionHandler.handleException(
-                    new SakuliRuntimeException("Can't create cache file(s) for test case steps!", e), true);
+            throw new SakuliRuntimeException("Can't create cache file(s) for test case steps!", e);
         }
     }
 }

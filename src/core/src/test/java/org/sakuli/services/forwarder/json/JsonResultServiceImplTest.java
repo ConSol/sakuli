@@ -23,7 +23,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -61,10 +61,10 @@ public class JsonResultServiceImplTest {
     }
 
     @Test(dataProvider = "createJsonFilePathDP")
-    public void createJsonFilePath(String outputJsonDir, String testSuiteId, String expectedFilePathRegEx) throws SakuliForwarderException {
+    public void createJsonFilePath(String outputJsonDir, String testSuiteId, String expectedFilePathRegEx) throws SakuliForwarderCheckedException {
         doReturn(testSuiteId).when(testSuite).getId();
         doReturn(Paths.get(outputJsonDir)).when(jsonProperties).getOutputJsonDir();
-        assertTrue(testling.createJsonFilePath(testSuite).toString().matches(expectedFilePathRegEx));
+        assertTrue(testling.createJsonFilePath(testSuite.getId()).toString().matches(expectedFilePathRegEx));
     }
 
 }

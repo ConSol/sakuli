@@ -27,7 +27,7 @@ import org.jtwig.spaceless.configuration.SpacelessConfiguration;
 import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
 import org.sakuli.services.forwarder.configuration.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +76,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
      * @param abstractTestDataEntity Test data entity, which has to be converted
      * @return A string representation of the provided test data entity
      */
-    public String createOutput(AbstractTestDataEntity abstractTestDataEntity) throws SakuliForwarderException {
+    public String createOutput(AbstractTestDataEntity abstractTestDataEntity) throws SakuliForwarderCheckedException {
         try {
             JtwigModel model = createModel(abstractTestDataEntity);
             EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration()
@@ -96,8 +96,8 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
             JtwigTemplate template = JtwigTemplate.fileTemplate(getTemplatePath().toFile(), configuration);
             logger.debug(String.format("Render model into JTwig template. Model: '%s'", model));
             return template.render(model);
-        } catch (Throwable thr) {
-            throw new SakuliForwarderException(thr, "Exception during rendering of Twig template occurred!");
+        } catch (Exception e) {
+            throw new SakuliForwarderCheckedException(e, "Exception during rendering of Twig template occurred!");
         }
     }
 
@@ -112,7 +112,7 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                 .with(TEST_DATA_ENTITY.getName(), abstractTestDataEntity)
                 .with(SAKULI_PROPERTIES.getName(), sakuliProperties);
         if (getSpecificModelEntities() != null) {
-            getSpecificModelEntities().forEach((templateModelEntityName, object)->{
+            getSpecificModelEntities().forEach((templateModelEntityName, object) -> {
                 model.with(templateModelEntityName.getName(), object);
             });
         }

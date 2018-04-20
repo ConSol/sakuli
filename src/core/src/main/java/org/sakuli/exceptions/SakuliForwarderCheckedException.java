@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2018 the original author or authors.
+ * Copyright 2013 - 2015 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,18 @@
 package org.sakuli.exceptions;
 
 /**
- * Marker for a {@link SakuliException} thrown by the sakuli {@link org.sakuli.services.forwarder} services.
- * For this kind of exception, no error screenshot will created.
+ * Checked Exception for {@link SakuliForwarderException}
  */
-public interface SakuliForwarderException extends NonScreenshotException, SakuliException {
+public class SakuliForwarderCheckedException extends SakuliCheckedException implements SakuliForwarderException {
+    public SakuliForwarderCheckedException(String message) {
+        super(message);
+    }
+
+    public SakuliForwarderCheckedException(Exception e) {
+        super(e);
+    }
+
+    public SakuliForwarderCheckedException(Exception suppressedException, String message) {
+        super(suppressedException, message);
+    }
 }

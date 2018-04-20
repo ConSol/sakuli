@@ -41,9 +41,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.sakuli.integration.IntegrationTest.GROUP;
 
@@ -95,13 +95,13 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
 
     protected void initExceptionHandlerMock(SakuliExceptionHandler sakuliExceptionHandlerMock) {
         doAnswer(invocation -> {
-            throw (Throwable) invocation.getArguments()[0];
-        }).when(sakuliExceptionHandlerMock).handleException(any(Throwable.class));
-        doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(Throwable.class), anyBoolean());
+            throw (Exception) invocation.getArguments()[0];
+        }).when(sakuliExceptionHandlerMock).handleException(any(Exception.class));
+        doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(Exception.class), anyBoolean());
         doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(LogResult.class));
         doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(anyString(), anyBoolean());
         doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(anyString(), any(RegionImpl.class), anyBoolean());
-        doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(Throwable.class), any(RegionImpl.class), anyBoolean());
+        doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(Exception.class), any(RegionImpl.class), anyBoolean());
     }
 
     protected void initDeafultTestSuiteMock() {

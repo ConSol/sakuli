@@ -147,7 +147,7 @@ public class Application extends App {
         int retValue = -1;
         try {
             retValue = super.close();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOGGER.error("ERROR in closing Application", e);
         }
         if (!silent && retValue != 0) {

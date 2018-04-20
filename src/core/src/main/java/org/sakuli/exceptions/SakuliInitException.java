@@ -26,11 +26,11 @@ public class SakuliInitException extends SakuliCheckedException implements NonSc
         super(message);
     }
 
-    public SakuliInitException(Throwable e) {
+    public SakuliInitException(Exception e) {
         super(e);
     }
 
-    public SakuliInitException(Throwable e, String message) {
+    public SakuliInitException(Exception e, String message) {
         super(e, message);
     }
 }

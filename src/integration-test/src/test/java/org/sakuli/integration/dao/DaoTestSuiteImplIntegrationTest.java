@@ -32,7 +32,7 @@ import static org.sakuli.integration.IntegrationTest.GROUP;
 
 /**
  * @author tschneck
- *         Date: 25.07.13
+ * Date: 25.07.13
  */
 @Test(groups = GROUP)
 public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestSuiteImpl> {
@@ -61,7 +61,7 @@ public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestS
     }
 
     @Test
-    public void testSaveTestSuiteToSahiJobs() throws Throwable {
+    public void testSaveTestSuiteToSahiJobs() throws Exception {
         String guid = "JUNIT_123" + TestSuite.GUID_DATE_FORMATE.format(new Date());
         when(testSuiteMock.getGuid()).thenReturn(guid);
         Assert.assertTrue(testSuiteMock.getGuid().contains("JUNIT_123"));
@@ -72,8 +72,8 @@ public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestS
     }
 
     @Test
-    public void testGetCountOfSahiJobs() throws Throwable {
-        Assert.assertNotNull(testling.getCountOfSahiJobs());
+    public void testGetCountOfSahiJobs() throws Exception {
+        Assert.assertTrue(testling.getCountOfSahiJobs() > 0);
 
     }
 }

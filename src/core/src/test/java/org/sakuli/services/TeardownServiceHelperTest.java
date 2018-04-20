@@ -29,8 +29,7 @@ import org.testng.annotations.Test;
 
 import java.util.Optional;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
@@ -52,11 +51,11 @@ public class TeardownServiceHelperTest extends AbstractServiceBaseTest {
         TestSuite testSuite = BeanLoader.loadBean(TestSuite.class);
         testSuite.setState(TestSuiteState.RUNNING);
 
-        TeardownServiceHelper.invokeTeardownServices(testSuite);
+        TeardownServiceHelper.invokeTeardownServices(testSuite, false);
         assertEquals(testSuite.getState(), TestSuiteState.OK);
         assertTrue(testSuite.getStopDate().after(testSuite.getStartDate()));
         verify(databaseResultService).teardownTestSuite(eq(testSuite));
-        verify(gearmanResultService).tearDown(eq(Optional.of(testSuite)));
+        verify(gearmanResultService).tearDown(eq(Optional.of(testSuite)), anyBoolean());
         verify(cacheHandlingResultService).teardownTestSuite(eq(testSuite));
         verify(logCleanUpResultService).teardownTestSuite(eq(testSuite));
     }
@@ -69,7 +68,7 @@ public class TeardownServiceHelperTest extends AbstractServiceBaseTest {
 
     private GearmanResultServiceImpl mockGearmanResultService() {
         GearmanResultServiceImpl gearmanResultService = BeanLoader.loadBean(GearmanResultServiceImpl.class);
-        doNothing().when(gearmanResultService).tearDown(any());
+        doNothing().when(gearmanResultService).tearDown(any(), anyBoolean());
         return gearmanResultService;
     }
 

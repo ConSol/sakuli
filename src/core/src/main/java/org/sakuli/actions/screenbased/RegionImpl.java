@@ -210,7 +210,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     public RegionImpl mouseDown(MouseButton mouseButton) {
         try {
             this.mouseDown(mouseButton.getValue());
-        } catch (Throwable e) {
+        } catch (Exception e) {
             loader.getExceptionHandler().handleException("Could execute mouseDown action for " + this, this, resumeOnException);
         }
         return this;
@@ -222,7 +222,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     public RegionImpl mouseUp(MouseButton mouseButton) {
         try {
             this.mouseUp(mouseButton.getValue());
-        } catch (Throwable e) {
+        } catch (Exception e) {
             loader.getExceptionHandler().handleException("Could execute mouseUp action for " + this, this, resumeOnException);
         }
         return this;

@@ -20,7 +20,7 @@ package org.sakuli.services.forwarder.database;
 
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
 import org.sakuli.services.InitializingService;
 import org.sakuli.services.common.CommonInitializingServiceImpl;
 import org.sakuli.services.forwarder.database.dao.DaoTestSuite;
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Component;
  * The {@link CommonInitializingServiceImpl#initTestSuite()} will be also called.
  *
  * @author tschneck
- *         Date: 09.07.14
+ * Date: 09.07.14
  */
 @ProfileJdbcDb
 @Component
@@ -53,8 +53,8 @@ public class DatabaseInitializingServiceImpl implements InitializingService {
     public void initTestSuite() {
         try {
             testSuite.setDbPrimaryKey(daoTestSuite.insertInitialTestSuiteData());
-        } catch (Throwable e) {
-            exceptionHandler.handleException(new SakuliForwarderException(e, "error at database initialization!"), true);
+        } catch (Exception e) {
+            exceptionHandler.handleException(new SakuliForwarderCheckedException(e, "error at database initialization!"), true);
         }
     }
 }

@@ -43,7 +43,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 
@@ -83,7 +83,7 @@ public class TestCaseActionTest extends BaseTest {
 
     @DataProvider
     public Object[][] testGetTestCaseIdDP() {
-        return new Object[][] {
+        return new Object[][]{
                 {"testSuiteFolder"
                         + File.separator
                         + "1234_"
@@ -100,7 +100,7 @@ public class TestCaseActionTest extends BaseTest {
     }
 
     @Test
-    public void testSaveTestCaseResult() throws Throwable {
+    public void testSaveTestCaseResult() throws Exception {
         ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
 
         Date startDate = new Date(new Date().getTime() - 8000);
@@ -126,7 +126,7 @@ public class TestCaseActionTest extends BaseTest {
     }
 
     @Test
-    public void testAddTestCaseStep() throws Throwable {
+    public void testAddTestCaseStep() throws Exception {
         sample.setWarningTime(0);
         sample.setCriticalTime(0);
 
@@ -163,7 +163,7 @@ public class TestCaseActionTest extends BaseTest {
     }
 
     @Test
-    public void testAddTestCaseStepWithAlreadyInitializedStep() throws Throwable {
+    public void testAddTestCaseStepWithAlreadyInitializedStep() throws Exception {
         sample.setWarningTime(0);
         sample.setCriticalTime(0);
         TestCaseStep predefinedStep = new TestCaseStep();
@@ -210,14 +210,15 @@ public class TestCaseActionTest extends BaseTest {
 
     @DataProvider
     public Object[][] testInitTestCaseExceptionHandlingDP() {
-        return new Object[][] {
-                { -4, -5, true }, //negativ times
-                { 5, 4, true },   //warning time bigger than critical time
-                { 0, 0, false },   //zero times
-                { 4, 5, false },   //zero times
-                { 0, -8, true },  //negativ critical time
+        return new Object[][]{
+                {-4, -5, true}, //negativ times
+                {5, 4, true},   //warning time bigger than critical time
+                {0, 0, false},   //zero times
+                {4, 5, false},   //zero times
+                {0, -8, true},  //negativ critical time
         };
     }
+
     @Test(dataProvider = "testInitTestCaseExceptionHandlingDP")
     public void testInitTestCaseExceptionHandling(int warningTime, int criticalTime, boolean expectedExceptionHandling) throws Exception {
         String tcID = sample.getId();
@@ -256,7 +257,7 @@ public class TestCaseActionTest extends BaseTest {
     public void testThrowExceptionNoScreenshot() throws Exception {
         String exMessage = "TEST";
         testling.throwException(exMessage, false);
-        ArgumentCaptor<Throwable> ac = ArgumentCaptor.forClass(Throwable.class);
+        ArgumentCaptor<Exception> ac = ArgumentCaptor.forClass(Exception.class);
         verify(exceptionHandlerMock).handleException(ac.capture());
         assertEquals(ac.getValue().getMessage(), exMessage);
         assertTrue(ac.getValue() instanceof SakuliValidationException);
@@ -270,7 +271,7 @@ public class TestCaseActionTest extends BaseTest {
     public void testThrowExceptionWithScreenshot() throws Exception {
         String exMessage = "TEST";
         testling.throwException(exMessage, true);
-        ArgumentCaptor<Throwable> ac = ArgumentCaptor.forClass(Throwable.class);
+        ArgumentCaptor<Exception> ac = ArgumentCaptor.forClass(Exception.class);
         verify(exceptionHandlerMock).handleException(ac.capture());
         assertEquals(ac.getValue().getMessage(), exMessage);
         assertFalse(ac.getValue() instanceof SakuliValidationException);

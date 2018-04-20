@@ -173,7 +173,7 @@ public abstract class AbstractSakuliTest {
     }
 
     @AfterMethod(alwaysRun = true)
-    public void saveTcStep() throws Throwable {
+    public void saveTcStep() throws Exception {
         testCaseAction.addTestCaseStep("step " + counter,
                 String.valueOf(startTime.getMillis()),
                 String.valueOf(DateTime.now().getMillis()),

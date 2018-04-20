@@ -28,7 +28,7 @@ import static org.sakuli.integration.IntegrationTest.GROUP;
 
 /**
  * @author tschneck
- *         Date: 25.07.13
+ * Date: 25.07.13
  */
 @Test(groups = GROUP)
 public class DaoTestCaseImplIntegrationTest extends DaoIntegrationTest<DaoTestCaseImpl> {
@@ -40,7 +40,7 @@ public class DaoTestCaseImplIntegrationTest extends DaoIntegrationTest<DaoTestCa
     }
 
     @Test
-    public void testGetCountOfSahiCases() throws Throwable {
+    public void testGetCountOfSahiCases() throws Exception {
         int countOfSahiCases = testling.getCountOfSahiCases();
         Assert.assertTrue(countOfSahiCases >= 0);
 

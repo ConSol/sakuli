@@ -23,15 +23,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
 import org.sakuli.services.forwarder.database.dao.DaoTestSuite;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class DatabaseInitializingServiceImplTest {
@@ -62,6 +62,6 @@ public class DatabaseInitializingServiceImplTest {
     public void testSaveResultsInDatabaseHandleException() throws Exception {
         doThrow(DataAccessResourceFailureException.class).when(daoTestSuite).insertInitialTestSuiteData();
         testling.initTestSuite();
-        verify(exceptionHandler).handleException(any(SakuliForwarderException.class), anyBoolean());
+        verify(exceptionHandler).handleException(any(SakuliForwarderCheckedException.class), anyBoolean());
     }
 }

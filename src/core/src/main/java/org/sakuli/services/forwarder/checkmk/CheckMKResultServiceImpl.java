@@ -19,9 +19,9 @@
 package org.sakuli.services.forwarder.checkmk;
 
 import org.sakuli.datamodel.AbstractTestDataEntity;
-import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
 import org.sakuli.services.ResultService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +42,10 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
  */
 @ProfileCheckMK
 @Component
-public class CheckMKResultServiceImpl implements ResultService {
+public class CheckMKResultServiceImpl extends AbstractTeardownService implements ResultService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CheckMKResultServiceImpl.class);
 
-    @Autowired
-    private SakuliExceptionHandler exceptionHandler;
     @Autowired
     private CheckMKProperties checkMKProperties;
     @Autowired
@@ -59,22 +57,21 @@ public class CheckMKResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void tearDown(Optional<AbstractTestDataEntity> dataEntity) {
+    public void tearDown(Optional<AbstractTestDataEntity> dataEntity, boolean asyncCall) {
         dataEntity.ifPresent(data -> {
             try {
                 LOGGER.info("======= WRITE FILE FOR CHECK_MK ======");
                 String output = outputBuilder.createOutput(data);
                 LOGGER.debug(String.format("Output for check_mk:\n%s", output));
-                writeToFile(createSpoolFilePath(data), output);
+                writeToFile(createSpoolFilePath(data.getId()), output);
                 LOGGER.info("======= FINISHED: WRITE FILE FOR CHECK_MK ======");
-            } catch (SakuliForwarderException e) {
-                exceptionHandler.handleException(e, false);
+            } catch (Exception e) {
+                handleTeardownException(e, asyncCall, data);
             }
         });
     }
 
-    //TODO #304: just use ID as parameter
-    protected Path createSpoolFilePath(AbstractTestDataEntity abstractTestDataEntity) {
+    protected Path createSpoolFilePath(String dataId) {
         String spoolDir = checkMKProperties.getSpoolDir();
         String fileName = new StringBuilder()
                 .append(checkMKProperties.getFreshness())
@@ -83,17 +80,17 @@ public class CheckMKResultServiceImpl implements ResultService {
                         : "_" + checkMKProperties.getSpoolFilePrefix()
                 )
                 .append("_")
-                .append(abstractTestDataEntity.getId())
+                .append(dataId)
                 .toString();
         return Paths.get(spoolDir + File.separator + fileName);
     }
 
-    private void writeToFile(Path file, String output) throws SakuliForwarderException {
+    private void writeToFile(Path file, String output) throws SakuliForwarderCheckedException {
         try {
             LOGGER.info(String.format("Write file to '%s'", file));
             Files.write(file, output.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            throw new SakuliForwarderException(e,
+            throw new SakuliForwarderCheckedException(e,
                     String.format("Unexpected error by writing the output for check_mk to the following file '%s'", file));
         }
     }

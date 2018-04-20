@@ -16,11 +16,22 @@
  * limitations under the License.
  */
 
-package org.sakuli.exceptions;
+package org.sakuli.utils;
 
-/**
- * Marker for a {@link SakuliException} thrown by the sakuli {@link org.sakuli.services.forwarder} services.
- * For this kind of exception, no error screenshot will created.
- */
-public interface SakuliForwarderException extends NonScreenshotException, SakuliException {
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+@Configuration
+public class ConfigBean {
+    /**
+     * @return ExecutorService
+     */
+    @Bean
+    public ExecutorService createdExecutorService() {
+        return Executors.newCachedThreadPool();
+    }
+
 }

@@ -37,7 +37,7 @@ import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;

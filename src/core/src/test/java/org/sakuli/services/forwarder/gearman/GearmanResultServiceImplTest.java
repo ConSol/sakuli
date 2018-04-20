@@ -27,7 +27,7 @@ import org.sakuli.BaseTest;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderRuntimeException;
 import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.forwarder.gearman.crypt.Aes;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
@@ -122,8 +122,8 @@ public class GearmanResultServiceImplTest extends BaseTest {
         //checks
         verify(gearmanCacheService, never()).cacheResults(anyList());
         verify(gearmanCacheService, never()).getCachedResults();
-        verify(exceptionHandler, never()).handleException(any(Throwable.class));
-        verify(exceptionHandler, never()).handleException(any(Throwable.class), anyBoolean());
+        verify(exceptionHandler, never()).handleException(any(Exception.class));
+        verify(exceptionHandler, never()).handleException(any(Exception.class), anyBoolean());
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
@@ -166,7 +166,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
         //checks
         verify(gearmanCacheService, never()).cacheResults(anyList());
         verify(gearmanCacheService, never()).getCachedResults();
-        verify(exceptionHandler).handleException(any(Throwable.class), eq(true));
+        verify(exceptionHandler).handleException(any(Exception.class));
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
@@ -195,7 +195,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
         //checks
         verify(gearmanCacheService).cacheResults(anyList());
         verify(gearmanCacheService).getCachedResults();
-        verify(exceptionHandler).handleException(any(Throwable.class), eq(true));
+        verify(exceptionHandler).handleException(any(Exception.class));
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
@@ -235,7 +235,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
             sendOrder.append(result.hashCode());
             return invocationOnMock.callRealMethod();
 
-        }).when(testling).sendResult(any(), any());
+        }).when(testling).sendResult(any(), any(), anyBoolean(), any());
 
         testling.tearDown(Optional.of(testSuite));
 
@@ -243,7 +243,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
         assertEquals(sendOrder.toString(), "" + mockedResult2.hashCode() + mockedResult1.hashCode() + newResult.hashCode());
         verify(gearmanCacheService).cacheResults(anyList());
         verify(gearmanCacheService).getCachedResults();
-        verify(exceptionHandler, times(3)).handleException(any(Throwable.class), eq(true));
+        verify(exceptionHandler, times(3)).handleException(any(Exception.class));
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
@@ -280,7 +280,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
         //checks
         verify(gearmanCacheService).cacheResults(anyList());
         verify(gearmanCacheService).getCachedResults();
-        verify(exceptionHandler).handleException(any(Throwable.class), eq(true));
+        verify(exceptionHandler).handleException(any(Exception.class));
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
@@ -313,14 +313,14 @@ public class GearmanResultServiceImplTest extends BaseTest {
                     "Could not transfer Sakuli results to the Gearman server.*");
             assertEquals(exception.getSuppressed()[0].getClass(), UnresolvedAddressException.class);
             return null;
-        }).when(exceptionHandler).handleException(any(Throwable.class), anyBoolean());
+        }).when(exceptionHandler).handleException(any(Exception.class), anyBoolean());
 
         testling.tearDown(Optional.of(testSuite));
 
         //checks
         verify(gearmanCacheService).cacheResults(anyList());
         verify(gearmanCacheService).getCachedResults();
-        verify(exceptionHandler).handleException(any(SakuliForwarderException.class), anyBoolean());
+        verify(exceptionHandler).handleException(any(SakuliForwarderRuntimeException.class));
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);

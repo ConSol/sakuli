@@ -19,11 +19,11 @@
 package org.sakuli.services.forwarder.json;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
+import org.sakuli.exceptions.SakuliForwarderRuntimeException;
 import org.sakuli.services.ResultService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +41,10 @@ import java.util.Date;
  */
 @ProfileJson
 @Component
-public class JsonResultServiceImpl implements ResultService {
+public class JsonResultServiceImpl extends AbstractTeardownService implements ResultService {
 
     public static final SimpleDateFormat JSON_FILE_DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd-HH-mm-ss-SSS");
     private static final Logger logger = LoggerFactory.getLogger(JsonResultServiceImpl.class);
-    @Autowired
-    private SakuliExceptionHandler exceptionHandler;
 
     @Autowired
     private GsonOutputBuilder outputBuilder;
@@ -60,46 +58,45 @@ public class JsonResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void teardownTestSuite(@NonNull TestSuite testSuite) {
+    public void teardownTestSuite(@NonNull TestSuite testSuite) throws RuntimeException {
         try {
             logger.info("======= WRITE TEST OUTPUT AS JSON FILE ======");
             String output = outputBuilder.createOutput();
             logger.debug(String.format("JSON Output:\n%s", output));
-            writeToFile(createJsonFilePath(testSuite), output);
+            writeToFile(createJsonFilePath(testSuite.getId()), output);
             logger.info("======= FINISHED: WRITE TEST OUTPUT AS JSON FILE ======");
-        } catch (SakuliForwarderException e) {
-            exceptionHandler.handleException(e, false);
+        } catch (Exception e) {
+            throw new SakuliForwarderRuntimeException("Couldn't create the JSON result file for: " + testSuite);
         }
     }
 
-    //TODO #304 just use ID
-    protected Path createJsonFilePath(AbstractTestDataEntity abstractTestDataEntity) throws SakuliForwarderException {
+    protected Path createJsonFilePath(String dataId) throws SakuliForwarderCheckedException {
         Path outputDir = jsonProperties.getOutputJsonDir();
         createDirectoryIfNotExists(outputDir);
-        String fileName = abstractTestDataEntity.getId() +
+        String fileName = dataId +
                 "_" +
                 JSON_FILE_DATE_FORMAT.format(new Date()) +
                 ".json";
         return outputDir.resolve(fileName);
     }
 
-    protected void createDirectoryIfNotExists(Path outputDir) throws SakuliForwarderException {
+    protected void createDirectoryIfNotExists(Path outputDir) throws SakuliForwarderCheckedException {
         if (!Files.exists(outputDir)) {
             try {
                 Files.createDirectories(outputDir);
             } catch (IOException e) {
-                throw new SakuliForwarderException(e,
+                throw new SakuliForwarderCheckedException(e,
                         String.format("Unexpected error during creating the json output directory '%s'", outputDir.toString()));
             }
         }
     }
 
-    private void writeToFile(Path file, String output) throws SakuliForwarderException {
+    private void writeToFile(Path file, String output) throws SakuliForwarderCheckedException {
         try {
             logger.info(String.format("Write file to '%s'", file));
             Files.write(file, output.getBytes(), StandardOpenOption.CREATE);
         } catch (IOException e) {
-            throw new SakuliForwarderException(e,
+            throw new SakuliForwarderCheckedException(e,
                     String.format("Unexpected error by writing the json output to the following file '%s'", file));
         }
     }

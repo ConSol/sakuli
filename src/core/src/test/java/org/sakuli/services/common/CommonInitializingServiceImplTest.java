@@ -38,7 +38,7 @@ import static org.testng.Assert.*;
 
 /**
  * @author tschneck
- *         Date: 22.05.14
+ * Date: 22.05.14
  */
 public class CommonInitializingServiceImplTest {
 
@@ -52,7 +52,7 @@ public class CommonInitializingServiceImplTest {
     private CommonInitializingServiceImpl testling;
 
     @Test
-    public void testInit() throws Throwable {
+    public void testInit() throws Exception {
         testSuiteProperties = spy(TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "valid", "suite_id"));
         ts = spy(new TestSuite(testSuiteProperties));
         MockitoAnnotations.initMocks(this);
@@ -68,7 +68,7 @@ public class CommonInitializingServiceImplTest {
     }
 
     @Test
-    public void testInitWithOutTestCases() throws Throwable {
+    public void testInitWithOutTestCases() throws Exception {
         TestSuiteProperties props = new TestSuiteProperties();
         props.setTestSuiteId("suite_id");
         props.setLoadTestCasesAutomatic(false);
@@ -88,7 +88,7 @@ public class CommonInitializingServiceImplTest {
 
 
     @Test(expectedExceptions = SakuliInitException.class, expectedExceptionsMessageRegExp = "Cannot read testsuite.suite.*")
-    public void testInitExceptionForTestCase() throws Throwable {
+    public void testInitExceptionForTestCase() throws Exception {
         testSuiteProperties = spy(TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "unvalid", ""));
         testSuiteProperties.setTestSuiteId("testid");
         ts = spy(new TestSuite(testSuiteProperties));

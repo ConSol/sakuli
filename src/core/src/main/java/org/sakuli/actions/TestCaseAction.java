@@ -44,6 +44,7 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author tschneck Date: 19.06.13
@@ -52,6 +53,8 @@ import java.util.Date;
 public class TestCaseAction {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private ExecutorService executorService;
 
     /**
      * Represents the current running TestCase. The object will be set at {@link #init(String, int, int, String...)} and
@@ -193,15 +196,14 @@ public class TestCaseAction {
     }
 
     /**
-     * Save a new step to a existing test case. Must be called before {@link #saveResult(String, String, String, String, String, boolean
-     * )}
+     * Save a new step to a existing test case. Must be called before {@link #saveResult(String, String, String, String, String, boolean)}
      *
-     * @param stepName    name of this step
-     * @param startTime   start time in milliseconds
-     * @param stopTime    end time in milliseconds
-     * @param warningTime warning threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
+     * @param stepName     name of this step
+     * @param startTime    start time in milliseconds
+     * @param stopTime     end time in milliseconds
+     * @param warningTime  warning threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
      * @param criticalTime critical threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
-     * @param forward boolean flag indicating whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled!
+     * @param forward      boolean flag indicating whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled!
      * @throws SakuliCheckedException
      */
     @LogToResult(message = "add a step to the current test case")
@@ -240,8 +242,10 @@ public class TestCaseAction {
     }
 
     private void forwardTestDataEntity(AbstractTestDataEntity abstractTestDataEntity) {
-        //TODO #304: use Thread
-        new Thread(() -> TeardownServiceHelper.invokeTeardownServices(abstractTestDataEntity)).start();
+        executorService.submit(() -> {
+            logger.info("======= TRIGGER ASYNC teardown of: {} =======", abstractTestDataEntity.toStringShort());
+            TeardownServiceHelper.invokeTeardownServices(abstractTestDataEntity, true);
+        });
     }
 
     protected TestCaseStep findStep(String stepName) {
@@ -268,11 +272,11 @@ public class TestCaseAction {
     }
 
     /**
-     * calls the method {@link SakuliExceptionHandler#handleException(Throwable)}
+     * calls the method {@link SakuliExceptionHandler#handleException(Exception)}
      *
      * @param e the original exception
      */
-    public void handleException(Throwable e) {
+    public void handleException(Exception e) {
         loader.getExceptionHandler().handleException(e, false);
     }
 

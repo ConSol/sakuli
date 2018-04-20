@@ -61,7 +61,7 @@ public class LoggerInitializerTest extends BaseTest {
     }
 
     @AfterClass
-    public void cleanUp() throws Throwable {
+    public void cleanUp() throws Exception {
         //revert to default config
         BeanLoader.loadBean(LoggerInitializer.class).initLoggerContext();
         deleteFile(Paths.get(logFolder + File.separator + "_sakuli.log"));
@@ -69,7 +69,7 @@ public class LoggerInitializerTest extends BaseTest {
     }
 
     @Test
-    public void testInitLoggerContextFromIncludeFolder() throws Throwable {
+    public void testInitLoggerContextFromIncludeFolder() throws Exception {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         Logger root = context.getLogger("root");
         Logger sakuliLogger = context.getLogger("org.sakuli");
@@ -100,7 +100,7 @@ public class LoggerInitializerTest extends BaseTest {
     }
 
     @Test(expectedExceptions = LogConfigurationException.class)
-    public void testInitLoggerContextException() throws Throwable {
+    public void testInitLoggerContextException() throws Exception {
         doReturn(null).when(testling).getConfigFileFromClasspath();
         doReturn(null).when(testling).getConfigFile();
 
@@ -114,7 +114,7 @@ public class LoggerInitializerTest extends BaseTest {
     }
 
     @Test
-    public void testGetConfigFileFromIncludeFolder() throws Throwable {
+    public void testGetConfigFileFromIncludeFolder() throws Exception {
         when(sakuliProperties.getConfigFolder()).thenReturn(Paths.get(BaseTest.SAKULI_HOME_FOLDER_PATH + SakuliProperties.CONFIG_FOLDER_APPEDER));
         String configFileFromConfigFolder = testling.getConfigFile();
         Assert.assertNotNull(configFileFromConfigFolder);

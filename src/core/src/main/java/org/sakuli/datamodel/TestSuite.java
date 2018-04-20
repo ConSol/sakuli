@@ -38,7 +38,7 @@ import static org.apache.commons.lang.StringUtils.*;
  * @author tschneck Date: 10.06.13
  */
 @Component
-public class TestSuite extends AbstractTestDataEntity<SakuliCheckedException, TestSuiteState> {
+public class TestSuite extends AbstractTestDataEntity<TestSuiteState> {
 
     //browser name where to start the test execution
     private String browserName;

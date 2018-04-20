@@ -24,6 +24,7 @@ import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.services.TeardownService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ import java.time.temporal.ChronoUnit;
  * Date: 2/12/16
  */
 @Component
-public class LogCleanUpServiceImpl implements TeardownService {
+public class LogCleanUpServiceImpl extends AbstractTeardownService implements TeardownService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCleanUpServiceImpl.class);
 
@@ -53,19 +54,19 @@ public class LogCleanUpServiceImpl implements TeardownService {
     }
 
     @Override
-    public void teardownTestSuite(@NonNull TestSuite testSuite) {
+    public void teardownTestSuite(@NonNull TestSuite testSuite) throws RuntimeException {
         if (Files.exists(sakuliProperties.getLogFolder())) {
             cleanUpDirectory(sakuliProperties.getLogFolder());
         }
     }
 
     @Override
-    public void teardownTestCase(@NonNull TestCase testCase) {
+    public void teardownTestCase(@NonNull TestCase testCase) throws RuntimeException {
         //Not needed
     }
 
     @Override
-    public void teardownTestCaseStep(@NonNull TestCaseStep testCaseStep) {
+    public void teardownTestCaseStep(@NonNull TestCaseStep testCaseStep) throws RuntimeException {
         //Not needed
     }
 

@@ -18,8 +18,32 @@
 
 package org.sakuli.exceptions;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
+
+import java.util.Optional;
+
 /**
  * Marker interface for all SakuliExceptions
  */
 public interface SakuliException {
+
+    /**
+     * Provides the meta information on which execution step this exception is thrown, like e.g. {@link org.sakuli.services.TeardownService#handleTeardownException(Exception, boolean, AbstractTestDataEntity)} will use it.
+     *
+     * @return a reference on the {@link AbstractTestDataEntity} which was executed at the point of the exception is thrown.
+     */
+    Optional<? extends AbstractTestDataEntity> getAsyncTestDataRef();
+
+    /**
+     * Set additional meta information to provide on which execution step in async code like the {@link org.sakuli.services.TeardownService#handleTeardownException(Exception, boolean, AbstractTestDataEntity)} will use it.
+     *
+     * @param testDataRef extends {@link AbstractTestDataEntity}
+     */
+    <T extends AbstractTestDataEntity> void setAsyncTestDataRef(T testDataRef);
+
+    String getMessage();
+
+    default Exception castTo() {
+        return SakuliExceptionHandler.castTo(this);
+    }
 }

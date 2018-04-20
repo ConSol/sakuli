@@ -47,7 +47,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import static org.mockito.Matchers.notNull;
+import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.doReturn;
 
 /**
@@ -339,7 +339,7 @@ public class GearmanTestCaseTemplateOutputBuilderIntegrationTest extends BaseTes
         screenshotDiv.setId("sakuli_screenshot243575009");
         screenshotDiv.setFormat("jpg");
         screenshotDiv.setBase64screenshot("/9j/4AAQSkZJRgABAgAAAQABAAD9k=");
-        doReturn(screenshotDiv).when(screenshotDivConverter).convert(notNull(Throwable.class));
+        doReturn(screenshotDiv).when(screenshotDivConverter).convert(notNull(Exception.class));
         String output = testling.createOutput(testCase);
         Assert.assertEquals(output, loadExpectedOutput(TestCaseState.ERRORS.name()));
     }

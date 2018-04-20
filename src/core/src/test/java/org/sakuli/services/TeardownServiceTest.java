@@ -18,6 +18,7 @@
 
 package org.sakuli.services;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
@@ -29,7 +30,17 @@ import java.util.Optional;
 
 public class TeardownServiceTest {
 
-    private TeardownService testling = () -> 0;
+    private TeardownService testling = new TeardownService() {
+        @Override
+        public void handleTeardownException(@NonNull Exception e, boolean async, @NonNull AbstractTestDataEntity testDataRef) {
+            throw e instanceof RuntimeException ? (RuntimeException) e : new RuntimeException(e);
+        }
+
+        @Override
+        public int getServicePriority() {
+            return 0;
+        }
+    };
 
     @Test
     public void testTearDownNoCalls() {

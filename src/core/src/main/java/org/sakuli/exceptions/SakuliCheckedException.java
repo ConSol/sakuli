@@ -18,14 +18,21 @@
 
 package org.sakuli.exceptions;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
+
+import java.util.Optional;
+
 /**
  * @author tschneck
  * Date: 20.06.13
  */
 public class SakuliCheckedException extends Exception implements SakuliException {
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    private Optional<? extends AbstractTestDataEntity> asyncTestDataRef = Optional.empty();
+
     /**
-     * creates a new {@link SakuliCheckedException} from type {@link Throwable}
+     * creates a new {@link SakuliException} from type {@link Exception}
      *
      * @param message message of the exception
      */
@@ -34,22 +41,22 @@ public class SakuliCheckedException extends Exception implements SakuliException
     }
 
     /**
-     * wraps a {@link Throwable} to a {@link SakuliCheckedException}
+     * wraps a {@link Exception} to a {@link SakuliException}
      *
      * @param e
      */
-    public SakuliCheckedException(Throwable e) {
+    public SakuliCheckedException(Exception e) {
         //use this constructor to avoid to get the classname as prefix in the exception message
         super(e.getLocalizedMessage(), e);
     }
 
     /**
-     * wraps a {@link Throwable} to a {@link SakuliCheckedException}
+     * wraps a {@link Exception} to a {@link SakuliException}
      *
      * @param suppressedException
      * @param message
      */
-    public SakuliCheckedException(Throwable suppressedException, String message) {
+    public SakuliCheckedException(Exception suppressedException, String message) {
         super(message);
         this.addSuppressed(suppressedException);
     }
@@ -59,4 +66,22 @@ public class SakuliCheckedException extends Exception implements SakuliException
         return getLocalizedMessage();
     }
 
+    /**
+     * Provides the meta information on which execution step this exception is thrown, like e.g. {@link org.sakuli.services.TeardownService#handleTeardownException(Exception, boolean, AbstractTestDataEntity)} will use it.
+     *
+     * @return a reference on the {@link AbstractTestDataEntity} which was executed at the point of the exception is thrown.
+     */
+    public Optional<? extends AbstractTestDataEntity> getAsyncTestDataRef() {
+        return asyncTestDataRef;
+    }
+
+    /**
+     * Set additional meta information to provide on which execution step in async code like the {@link org.sakuli.services.TeardownService#handleTeardownException(Exception, boolean, AbstractTestDataEntity)} will use it.
+     *
+     * @param testDataRef extends {@link AbstractTestDataEntity}
+     */
+    @Override
+    public <T extends AbstractTestDataEntity> void setAsyncTestDataRef(T testDataRef) {
+        this.asyncTestDataRef = Optional.ofNullable(testDataRef);
+    }
 }

@@ -22,7 +22,7 @@ import java.nio.file.Path;
 
 /**
  * @author tschneck
- *         Date: 20.06.13
+ * Date: 20.06.13
  */
 public class SakuliExceptionWithScreenshot extends SakuliCheckedException {
 
@@ -41,12 +41,12 @@ public class SakuliExceptionWithScreenshot extends SakuliCheckedException {
 
 
     /**
-     * creates a {@link SakuliCheckedException} from a {@link Throwable} and stores the Path to screenshot
+     * creates a {@link SakuliCheckedException} from a {@link Exception} and stores the Path to screenshot
      *
      * @param e
      * @param screenshot
      */
-    public SakuliExceptionWithScreenshot(Throwable e, Path screenshot) {
+    public SakuliExceptionWithScreenshot(Exception e, Path screenshot) {
         super(e);
         this.screenshot = screenshot;
     }

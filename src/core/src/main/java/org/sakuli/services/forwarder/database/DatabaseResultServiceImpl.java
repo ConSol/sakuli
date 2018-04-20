@@ -23,8 +23,9 @@ import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderRuntimeException;
 import org.sakuli.services.ResultService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.sakuli.services.forwarder.database.dao.DaoTestCase;
 import org.sakuli.services.forwarder.database.dao.DaoTestCaseStep;
 import org.sakuli.services.forwarder.database.dao.DaoTestSuite;
@@ -42,7 +43,7 @@ import java.util.SortedSet;
  */
 @ProfileJdbcDb
 @Component
-public class DatabaseResultServiceImpl implements ResultService {
+public class DatabaseResultServiceImpl extends AbstractTeardownService implements ResultService {
     private static Logger LOGGER = LoggerFactory.getLogger(DatabaseResultServiceImpl.class);
 
     @Autowired
@@ -60,7 +61,7 @@ public class DatabaseResultServiceImpl implements ResultService {
     }
 
     @Override
-    public void teardownTestSuite(@NonNull TestSuite testSuite) {
+    public void teardownTestSuite(@NonNull TestSuite testSuite) throws RuntimeException {
         LOGGER.info("======= SAVE RESULTS TO DATABASE ======");
         try {
             daoTestSuite.saveTestSuiteResult();
@@ -82,11 +83,9 @@ public class DatabaseResultServiceImpl implements ResultService {
                 }
             }
             LOGGER.info("======= FINISHED: SAVE RESULTS TO DATABASE ======");
-        } catch (Throwable e) {
-            exceptionHandler.handleException(
-                    new SakuliForwarderException(e,
-                            String.format("error by saving the results to the database [%s]", testSuite.toString())),
-                    true);
+        } catch (Exception e) {
+            throw new SakuliForwarderRuntimeException(
+                    "error by saving the results to the database for: " + testSuite.toString(), e);
         }
     }
 

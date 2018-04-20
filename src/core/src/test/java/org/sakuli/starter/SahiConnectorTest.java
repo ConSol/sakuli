@@ -44,7 +44,7 @@ import java.nio.file.Paths;
 import java.util.Date;
 import java.util.stream.Stream;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 
@@ -82,7 +82,7 @@ public class SahiConnectorTest extends BaseTest {
     }
 
     @Test
-    public void testStartSahiTestSuiteFAILURE() throws Throwable {
+    public void testStartSahiTestSuiteFAILURE() throws Exception {
         TestRunner testRunnerMock = mock(TestRunner.class);
         doReturn(testRunnerMock).when(testling).getTestRunner();
         doReturn(SAKULI_HOME_FOLDER_PATH).when(testling).getIncludeFolderJsPath();
@@ -98,7 +98,7 @@ public class SahiConnectorTest extends BaseTest {
     }
 
     @Test
-    public void testStartSahiTestSuiteOK() throws Throwable {
+    public void testStartSahiTestSuiteOK() throws Exception {
         TestRunner testRunnerMock = mock(TestRunner.class);
         doReturn(testRunnerMock).when(testling).getTestRunner();
         doReturn(SAKULI_HOME_FOLDER_PATH).when(testling).getIncludeFolderJsPath();
@@ -114,7 +114,7 @@ public class SahiConnectorTest extends BaseTest {
     }
 
     @Test
-    public void testStartSahiTestSuiteReconnect() throws Throwable {
+    public void testStartSahiTestSuiteReconnect() throws Exception {
         TestRunner testRunnerMock = mock(TestRunner.class);
         doReturn(testRunnerMock).when(testling).getTestRunner();
         when(testRunnerMock.execute()).thenThrow(new ConnectException("TEST"));
@@ -147,7 +147,7 @@ public class SahiConnectorTest extends BaseTest {
     }
 
     @Test
-    public void testReconnectOK() throws Throwable {
+    public void testReconnectOK() throws Exception {
         Path pathMock = mock(Path.class);
         when(sakuliProperties.getJsLibFolder()).thenReturn(pathMock);
         when(pathMock.toAbsolutePath()).thenReturn(pathMock);
@@ -160,7 +160,7 @@ public class SahiConnectorTest extends BaseTest {
     }
 
     @Test(expectedExceptions = InterruptedException.class)
-    public void testReconnectFAILURE() throws Throwable {
+    public void testReconnectFAILURE() throws Exception {
         Path pathMock = mock(Path.class);
         when(sakuliProperties.getJsLibFolder()).thenReturn(pathMock);
         when(pathMock.toAbsolutePath()).thenReturn(pathMock);
@@ -185,7 +185,7 @@ public class SahiConnectorTest extends BaseTest {
                 Pair.of("some other error message", false)).forEach(p -> {
 
             String sahiError = p.getLeft();
-            Throwable testException = new SakuliExceptionWithScreenshot(new SahiActionException
+            Exception testException = new SakuliExceptionWithScreenshot(new SahiActionException
                     (new LogResult("error", ResultType.FAILURE, "debug info", sahiError)), null);
 
             Stream.of(testException, testException.getCause(), new SakuliCheckedException(sahiError))

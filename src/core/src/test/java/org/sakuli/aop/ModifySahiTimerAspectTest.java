@@ -38,7 +38,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 
@@ -96,13 +96,13 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         //test modifcation of timer to 1000ms
         testling.modifySahiTimer(mock(JoinPoint.class), true);
         verify(session).setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_TIME_VAR, "1000");
-        verify(baseActionLoader.getExceptionHandler(), never()).handleException(any(Throwable.class));
+        verify(baseActionLoader.getExceptionHandler(), never()).handleException(any(Exception.class));
         assertLastLine(logFile, "sahi-proxy-timer", LogLevel.INFO, "sahi-proxy-timer modified to 1000 ms");
 
         //test reset timer
         testling.modifySahiTimer(mock(JoinPoint.class), false);
         verify(session).setVariable(SahiProxyProperties.SAHI_REQUEST_DELAY_TIME_VAR, null);
-        verify(baseActionLoader.getExceptionHandler(), never()).handleException(any(Throwable.class));
+        verify(baseActionLoader.getExceptionHandler(), never()).handleException(any(Exception.class));
         assertLastLine(logFile, "sahi-proxy-timer", LogLevel.INFO, "reset sahi-proxy-timer");
     }
 
@@ -122,7 +122,7 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         testling.modifySahiTimer(mock(JoinPoint.class), true);
         testling.modifySahiTimer(mock(JoinPoint.class), false);
         verify(session, never()).setVariable(anyString(), anyString());
-        verify(baseActionLoader.getExceptionHandler(), never()).handleException(any(Throwable.class));
+        verify(baseActionLoader.getExceptionHandler(), never()).handleException(any(Exception.class));
 
         //test no session available
         when(baseActionLoader.getSahiProxyProperties().isRequestDelayActive()).thenReturn(true);
@@ -130,7 +130,7 @@ public class ModifySahiTimerAspectTest extends AopBaseTest {
         testling.modifySahiTimer(mock(JoinPoint.class), true);
         testling.modifySahiTimer(mock(JoinPoint.class), false);
         verify(session, never()).setVariable(anyString(), anyString());
-        verify(baseActionLoader.getExceptionHandler(), never()).handleException(any(Throwable.class));
+        verify(baseActionLoader.getExceptionHandler(), never()).handleException(any(Exception.class));
     }
 
 

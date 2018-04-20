@@ -31,7 +31,7 @@ import javax.sql.DataSource;
 
 /**
  * @author tschneck
- *         Date: 22.07.13
+ * Date: 22.07.13
  */
 
 public class DaoTest {
@@ -47,7 +47,7 @@ public class DaoTest {
     }
 
     @Test
-    public void testCreateSqlSetStringForNamedParameter() throws Throwable {
+    public void testCreateSqlSetStringForNamedParameter() throws Exception {
         testling = new Dao(dataSource) {
         };
         MapSqlParameterSource source = new MapSqlParameterSource().addValue("testling2", "value").addValue("testling", "value");

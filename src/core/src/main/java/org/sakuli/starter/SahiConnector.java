@@ -125,7 +125,7 @@ public class SahiConnector {
                 //Reconnect - wait for Thread "sahiRunner"
                 this.reconnect(e);
             }
-        } catch (Throwable e) {
+        } catch (Exception e) {
             sakuliExceptionHandler.handleException(e);
         } finally {
             logger.info("test suite finished");

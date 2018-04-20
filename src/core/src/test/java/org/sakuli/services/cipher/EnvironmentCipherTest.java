@@ -33,7 +33,7 @@ import static org.sakuli.BaseTest.assertContains;
 
 /**
  * @author tschneck
- *         Date: 6/28/17
+ * Date: 6/28/17
  */
 public class EnvironmentCipherTest {
     private EnvironmentCipher testling;
@@ -41,7 +41,7 @@ public class EnvironmentCipherTest {
     private CipherProperties props;
 
     @BeforeMethod
-    public void setUp() throws Throwable {
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         testling = new EnvironmentCipher(props);
         when(props.getEncryptionKey()).thenReturn(AesKeyHelper.createRandomBase64Key());
@@ -75,7 +75,7 @@ public class EnvironmentCipherTest {
     }
 
     @Test(expectedExceptions = SakuliCipherException.class)
-    public void testNotEncryptedException() throws Throwable {
+    public void testNotEncryptedException() throws Exception {
         try {
             testling.decrypt("nonEncrypted");
         } catch (SakuliCipherException e) {
@@ -87,7 +87,7 @@ public class EnvironmentCipherTest {
     }
 
     @Test(expectedExceptions = SakuliCipherException.class)
-    public void testEmptyTestException() throws Throwable {
+    public void testEmptyTestException() throws Exception {
         try {
             testling.decrypt("");
         } catch (SakuliCipherException e) {
@@ -99,7 +99,7 @@ public class EnvironmentCipherTest {
     }
 
     @Test(expectedExceptions = SakuliCipherException.class)
-    public void testNullKey() throws Throwable {
+    public void testNullKey() throws Exception {
         when(props.getEncryptionKey()).thenReturn(null);
         try {
             testling.decrypt("irrelevant");
@@ -112,7 +112,7 @@ public class EnvironmentCipherTest {
     }
 
     @Test(expectedExceptions = SakuliCipherException.class)
-    public void testEmptyKey() throws Throwable {
+    public void testEmptyKey() throws Exception {
         when(props.getEncryptionKey()).thenReturn("");
         try {
             testling.decrypt("irrelevant");
