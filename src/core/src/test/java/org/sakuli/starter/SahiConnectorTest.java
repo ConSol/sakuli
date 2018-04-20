@@ -188,7 +188,7 @@ public class SahiConnectorTest extends BaseTest {
             Throwable testException = new SakuliExceptionWithScreenshot(new SahiActionException
                     (new LogResult("error", ResultType.FAILURE, "debug info", sahiError)), null);
 
-            Stream.of(testException, testException.getCause(), new SakuliException(sahiError))
+            Stream.of(testException, testException.getCause(), new SakuliCheckedException(sahiError))
                     .forEach(e -> Assert.assertEquals(SahiConnector.isSahiScriptTimout(e), (boolean) p.getRight()));
 
 

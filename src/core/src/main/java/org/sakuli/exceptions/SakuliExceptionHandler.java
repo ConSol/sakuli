@@ -120,14 +120,14 @@ public class SakuliExceptionHandler {
 
     /**
      * handleException methode for Eception, where no testcase could be identified; The default value for non {@link
-     * SakuliException} is there that the Execution of the tescase will stop!
+     * SakuliCheckedException} is there that the Execution of the tescase will stop!
      *
      * @param e any Throwable
      */
     public void handleException(Throwable e) {
         //avoid nullpointer for missing messages
         if (e.getMessage() == null) {
-            e = new SakuliException(e, e.getClass().getSimpleName());
+            e = new SakuliCheckedException(e, e.getClass().getSimpleName());
         }
 
         //e.g. Proxy Exception should only be handled if no other exceptions have been added
@@ -149,7 +149,7 @@ public class SakuliExceptionHandler {
      * @param e any {@link Throwable}
      */
     protected void processException(Throwable e) {
-        SakuliException transformedException = transformException(e);
+        SakuliCheckedException transformedException = transformException(e);
 
         //Do different exception handling for different use cases:
         if (!resumeToTestExcecution(e)) {
@@ -201,9 +201,9 @@ public class SakuliExceptionHandler {
      * save the exception to the current testcase. If the current testcase is not reachale, then the exception will be
      * saved to the test suite.
      *
-     * @param e any {@link SakuliException}
+     * @param e any {@link SakuliCheckedException}
      */
-    void saveException(SakuliException e) {
+    void saveException(SakuliCheckedException e) {
         if (loader.getCurrentTestCase() != null) {
             if (loader.getCurrentTestCaseStep() != null) {
                 loader.getCurrentTestCaseStep().addException(e);
@@ -220,9 +220,9 @@ public class SakuliExceptionHandler {
     /**
      * save the exception to the current sahi report (HTML Report in the log folder).
      *
-     * @param e any {@link SakuliException}
+     * @param e any {@link SakuliCheckedException}
      */
-    private void addExceptionToSahiReport(SakuliException e) {
+    private void addExceptionToSahiReport(SakuliCheckedException e) {
         if (loader.getSahiReport() != null) {
             loader.getSahiReport().addResult(
                     e.getMessage(),
@@ -236,9 +236,9 @@ public class SakuliExceptionHandler {
      * stops the execution of the current test case and add the exception to the sahi report (HTML Report in the log
      * folder).
      *
-     * @param e any {@link SakuliException}
+     * @param e any {@link SakuliCheckedException}
      */
-    private void stopExecutionAndAddExceptionToSahiReport(SakuliException e) {
+    private void stopExecutionAndAddExceptionToSahiReport(SakuliCheckedException e) {
         if (loader.getRhinoScriptRunner() != null) {
             loader.getRhinoScriptRunner().setStopOnError(true);
             loader.getRhinoScriptRunner().setHasError();
@@ -247,13 +247,13 @@ public class SakuliExceptionHandler {
     }
 
     /**
-     * transforms any {@link Throwable} to SakuliException. If the property 'sakuli.screenshot.onError=true' is set, the
+     * transforms any {@link Throwable} to SakuliCheckedException. If the property 'sakuli.screenshot.onError=true' is set, the
      * methods add a Screenshot.
      *
      * @param e a {@link Throwable}
-     * @return <EX>  {@link SakuliException} or any child.
+     * @return <EX>  {@link SakuliCheckedException} or any child.
      */
-    private SakuliException transformException(Throwable e) {
+    private SakuliCheckedException transformException(Throwable e) {
         if (loader.getActionProperties().isTakeScreenshots() &&
                 !(e instanceof NonScreenshotException)) {
             //try to get a screenshot
@@ -269,7 +269,7 @@ public class SakuliExceptionHandler {
                 e.addSuppressed(e2);
             }
         }
-        return addResumeOnException((e instanceof SakuliException) ? (SakuliException) e : new SakuliException(e), resumeToTestExcecution(e));
+        return addResumeOnException((e instanceof SakuliCheckedException) ? (SakuliCheckedException) e : new SakuliCheckedException(e), resumeToTestExcecution(e));
     }
 
 
@@ -278,7 +278,7 @@ public class SakuliExceptionHandler {
     }
 
     public void handleException(String exceptionMessage, boolean resumeOnException) {
-        handleException(new SakuliException(exceptionMessage), resumeOnException);
+        handleException(new SakuliCheckedException(exceptionMessage), resumeOnException);
     }
 
     public void handleException(String exceptionMessage, RegionImpl lastRegion, boolean resumeOnException) {

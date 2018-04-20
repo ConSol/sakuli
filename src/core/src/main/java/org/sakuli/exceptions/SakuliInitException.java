@@ -19,9 +19,9 @@
 package org.sakuli.exceptions;
 
 /**
- * Wrapper for a {@link SakuliException} thrown when something went wrong during the initialisation.
+ * Wrapper for a {@link SakuliCheckedException} thrown when something went wrong during the initialisation.
  */
-public class SakuliInitException extends SakuliException implements NonScreenshotException {
+public class SakuliInitException extends SakuliCheckedException implements NonScreenshotException {
     public SakuliInitException(String message) {
         super(message);
     }

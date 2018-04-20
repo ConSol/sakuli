@@ -23,7 +23,7 @@ package org.sakuli.exceptions;
  *
  * @author Tobias Schneck
  */
-public class SakuliRuntimeException extends RuntimeException {
+public class SakuliRuntimeException extends RuntimeException implements SakuliException {
 
     public SakuliRuntimeException(String reason, Exception e) {
         super(reason, e);

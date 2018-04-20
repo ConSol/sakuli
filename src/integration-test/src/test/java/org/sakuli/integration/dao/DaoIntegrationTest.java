@@ -25,7 +25,7 @@ import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.LogResult;
 import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.integration.IntegrationTest;
 import org.sakuli.integration.builder.TestSuiteBuilder;
@@ -65,7 +65,7 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
     @Mock
     private SakuliProperties sakuliProperties;
 
-    protected abstract D createTestling() throws SakuliException;
+    protected abstract D createTestling() throws SakuliCheckedException;
 
     @BeforeClass
     public void initTestFolder() {
@@ -86,7 +86,7 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
     }
 
     @BeforeMethod
-    public void init() throws SakuliException {
+    public void init() throws SakuliCheckedException {
         testling = createTestling();
         MockitoAnnotations.initMocks(this);
         testling.setDataSource(dataSource);

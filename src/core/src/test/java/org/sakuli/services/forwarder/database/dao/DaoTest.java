@@ -20,7 +20,7 @@ package org.sakuli.services.forwarder.database.dao;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.services.forwarder.database.dao.impl.Dao;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.testng.Assert;
@@ -41,7 +41,7 @@ public class DaoTest {
     private DataSource dataSource;
 
     @BeforeMethod
-    public void init() throws SakuliException {
+    public void init() throws SakuliCheckedException {
         MockitoAnnotations.initMocks(this);
 
     }

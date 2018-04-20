@@ -27,7 +27,7 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
@@ -58,7 +58,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
         TestCaseStepState stepState = TestCaseStepState.WARNING;
         TestSuite testSuite = new TestSuiteExampleBuilder()
                 .withId("LOG_TEST_SUITE").withState(testSuiteState)
-                .withException(testSuiteState.isError() ? new SakuliException("TEST") : null)
+                .withException(testSuiteState.isError() ? new SakuliCheckedException("TEST") : null)
                 .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
                         .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder()
                                 .withState(stepState).buildExample()))

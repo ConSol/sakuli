@@ -27,10 +27,9 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.datamodel.helper.TestCaseHelper;
-import org.sakuli.datamodel.helper.TestCaseStepHelper;
 import org.sakuli.datamodel.helper.TestDataEntityHelper;
 import org.sakuli.exceptions.SakuliActionException;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliValidationException;
 import org.sakuli.loader.BaseActionLoader;
@@ -103,9 +102,9 @@ public class TestCaseAction {
      * If a relative path is assigned, the current testcase folder will be used as current directory.
      *
      * @param imagePaths one or more paths as {@link String} elements
-     * @throws SakuliException if an IO error occurs
+     * @throws SakuliCheckedException if an IO error occurs
      */
-    public void addImagePathsAsString(String... imagePaths) throws SakuliException {
+    public void addImagePathsAsString(String... imagePaths) throws SakuliCheckedException {
         for (String path : imagePaths) {
             //check if absolute path
             if (!path.matches("(\\/\\S*|\\w:\\\\\\S*)")) {
@@ -120,10 +119,10 @@ public class TestCaseAction {
      * Adds the additional paths to the current {@link ImageLib} object.
      *
      * @param imagePaths one or more {@link Path} elements
-     * @throws SakuliException if an IO error occurs
+     * @throws SakuliCheckedException if an IO error occurs
      */
     @LogToResult
-    public void addImagePaths(Path... imagePaths) throws SakuliException {
+    public void addImagePaths(Path... imagePaths) throws SakuliCheckedException {
         loader.addImagePaths(imagePaths);
     }
 
@@ -152,10 +151,10 @@ public class TestCaseAction {
      * @param stopTime    end time in milliseconds
      * @param lastURL     URL to the last visited page during this test case
      * @param browserInfo detail information about the used browser
-     * @throws SakuliException
+     * @throws SakuliCheckedException
      */
     @LogToResult(message = "save the result of the current test case")
-    public void saveResult(String testCaseId, String startTime, String stopTime, String lastURL, String browserInfo, boolean forward) throws SakuliException {
+    public void saveResult(String testCaseId, String startTime, String stopTime, String lastURL, String browserInfo, boolean forward) throws SakuliCheckedException {
         if (!loader.getCurrentTestCase().getId().equals(testCaseId)) {
             handleException("testcaseID '" + testCaseId + "' to save the test case Result ist is not valid!");
         }
@@ -189,7 +188,7 @@ public class TestCaseAction {
     /**
      * Wrapper for {@link #addTestCaseStep(String, String, String, int, int, boolean)} with warningTime '0'.
      */
-    public void addTestCaseStep(String stepName, String startTime, String stopTime) throws SakuliException {
+    public void addTestCaseStep(String stepName, String startTime, String stopTime) throws SakuliCheckedException {
         addTestCaseStep(stepName, startTime, stopTime, 0, 0, false);
     }
 
@@ -203,10 +202,10 @@ public class TestCaseAction {
      * @param warningTime warning threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
      * @param criticalTime critical threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
      * @param forward boolean flag indicating whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled!
-     * @throws SakuliException
+     * @throws SakuliCheckedException
      */
     @LogToResult(message = "add a step to the current test case")
-    public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime, int criticalTime, boolean forward) throws SakuliException {
+    public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime, int criticalTime, boolean forward) throws SakuliCheckedException {
         if (stepName == null || stepName.isEmpty() || stepName.equals("undefined")) {
             handleException("Please set a Name - all values of the test case step need to be set!");
         }
@@ -339,7 +338,7 @@ public class TestCaseAction {
         try {
             return loader.getCurrentTestCase().getTcFile().getParent().toAbsolutePath().toString();
         } catch (Exception e) {
-            handleException(new SakuliException(e,
+            handleException(new SakuliCheckedException(e,
                     String.format("cannot resolve the folder path of the current testcase '%s'",
                             loader.getCurrentTestCase())));
             return null;
@@ -354,7 +353,7 @@ public class TestCaseAction {
         try {
             return loader.getTestSuite().getTestSuiteFolder().toAbsolutePath().toString();
         } catch (Exception e) {
-            handleException(new SakuliException(e,
+            handleException(new SakuliCheckedException(e,
                     String.format("cannot resolve the folder path of the current testsuite '%s'",
                             loader.getTestSuite())));
             return null;

@@ -22,7 +22,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.sakuli.aop.BaseSakuliAspect;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.loader.BeanLoader;
 import org.springframework.stereotype.Component;
@@ -46,7 +46,7 @@ public class ExceptionHandlerAspect extends BaseSakuliAspect {
         if (args != null && args.length == 1) {
             Object e = args[0];
             SakuliExceptionHandler exceptionHandler = BeanLoader.loadBaseActionLoader().getExceptionHandler();
-            if (e instanceof SakuliException && exceptionHandler.resumeToTestExcecution((SakuliException) e)) {
+            if (e instanceof SakuliCheckedException && exceptionHandler.resumeToTestExcecution((SakuliCheckedException) e)) {
                 return;
             }
             throw (Throwable) e;

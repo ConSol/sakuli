@@ -22,7 +22,7 @@ package org.sakuli.exceptions;
  * @author tschneck
  *         Date: 06.08.13
  */
-public class SakuliCipherException extends SakuliException {
+public class SakuliCipherException extends SakuliCheckedException {
 
     public String cipherLog;
 

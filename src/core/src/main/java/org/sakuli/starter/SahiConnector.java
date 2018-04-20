@@ -24,7 +24,7 @@ import net.sf.sahi.util.Utils;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliInitException;
 import org.sakuli.services.InitializingServiceHelper;
@@ -113,7 +113,7 @@ public class SahiConnector {
                 if (output.equals("FAILURE")) {
                     if (isSahiScriptTimout(testSuite.getException())) {
                         logger.warn("Sahi-Script-Runner timeout detected, start retry!");
-                        SakuliException causingError = new SakuliException(testSuite.getException());
+                        SakuliCheckedException causingError = new SakuliCheckedException(testSuite.getException());
                         //reset all values
                         InitializingServiceHelper.invokeInitializingServcies();
                         this.reconnect(causingError);
@@ -198,7 +198,7 @@ public class SahiConnector {
      * @param e the thrown ConnectException or IllegalMonitorStateException
      * @throws InterruptedException
      */
-    protected void reconnect(Exception e) throws InterruptedException, SakuliException {
+    protected void reconnect(Exception e) throws InterruptedException, SakuliCheckedException {
         logger.warn("Cannot connect to sahi proxy - start Proxy.main()");
         if (countConnections <= sahiProxyProperties.getMaxConnectTries()) {
             logger.info(

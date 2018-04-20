@@ -22,7 +22,7 @@ package org.sakuli.exceptions;
  * Implementation for a {@link Exception}s which should be thrown if an validation during the testcase went wrong
  * and a screenshot should NOT be created.
  */
-public class SakuliValidationException extends SakuliException implements NonScreenshotException {
+public class SakuliValidationException extends SakuliCheckedException implements NonScreenshotException {
     public SakuliValidationException(String message) {
         super(message);
     }

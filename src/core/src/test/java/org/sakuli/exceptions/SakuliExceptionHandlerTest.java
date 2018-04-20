@@ -102,7 +102,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new Exception(testExcMessage));
-        assertTrue(testSuite.getException() instanceof SakuliException);
+        assertTrue(testSuite.getException() instanceof SakuliCheckedException);
         assertEquals(testSuite.getException().getMessage(), testExcMessage);
         assertEquals(testSuite.getScreenShotPath(), expectedScreenshotPath);
 
@@ -119,7 +119,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new SakuliActionException(testExcMessage));
-        assertTrue(testSuite.getException() instanceof SakuliException);
+        assertTrue(testSuite.getException() instanceof SakuliCheckedException);
         assertEquals(testSuite.getException().getMessage(), testExcMessage);
         assertEquals(testSuite.getScreenShotPath(), expectedScreenshotPath);
     }
@@ -260,13 +260,13 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     @Test
     public void testGetAllExceptions() throws Exception {
         TestSuite ts = new TestSuite();
-        ts.addException(new SakuliException("bla"));
+        ts.addException(new SakuliCheckedException("bla"));
         TestCase tc = new TestCase(null, null);
-        tc.addException(new SakuliException("bla2"));
+        tc.addException(new SakuliCheckedException("bla2"));
         ts.addTestCase(tc);
 
         TestCaseStep step = new TestCaseStep();
-        step.addException(new SakuliException("bla3"));
+        step.addException(new SakuliCheckedException("bla3"));
         tc.addStep(step);
         List<Throwable> allExceptions = SakuliExceptionHandler.getAllExceptions(ts);
         assertEquals(allExceptions.size(), 3);
@@ -278,7 +278,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         TestCase tc = new TestCase(null, null);
         ts.addTestCase(tc);
         TestCaseStep step = new TestCaseStep();
-        step.addException(new SakuliException("bla3"));
+        step.addException(new SakuliCheckedException("bla3"));
         tc.addStep(step);
         assertTrue(SakuliExceptionHandler.containsException(ts));
     }
@@ -287,7 +287,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     public void testContainsExceptionsCase() throws Exception {
         TestSuite ts = new TestSuite();
         TestCase tc = new TestCase(null, null);
-        tc.addException(new SakuliException("bla2"));
+        tc.addException(new SakuliCheckedException("bla2"));
         ts.addTestCase(tc);
 
         TestCaseStep step = new TestCaseStep();
@@ -298,7 +298,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     @Test
     public void testContainsExceptionsSuite() throws Exception {
         TestSuite ts = new TestSuite();
-        ts.addException(new SakuliException("bla"));
+        ts.addException(new SakuliCheckedException("bla"));
         TestCase tc = new TestCase(null, null);
         ts.addTestCase(tc);
         TestCaseStep step = new TestCaseStep();
@@ -310,7 +310,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     public void testSaveExceptionsInSuite() throws Exception {
         TestSuite ts = new TestSuite();
         when(loader.getTestSuite()).thenReturn(ts);
-        testling.saveException(new SakuliException("test"));
+        testling.saveException(new SakuliCheckedException("test"));
         assertEquals(ts.getException().getMessage(), "test");
     }
 
@@ -320,7 +320,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(loader.getTestSuite()).thenReturn(ts);
         TestCase tc = new TestCase(null, null);
         when(loader.getCurrentTestCase()).thenReturn(tc);
-        testling.saveException(new SakuliException("test"));
+        testling.saveException(new SakuliCheckedException("test"));
         assertNull(ts.getException());
         assertEquals(tc.getException().getMessage(), "test");
     }
@@ -333,7 +333,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(loader.getCurrentTestCase()).thenReturn(tc);
         TestCaseStep step = new TestCaseStep();
         when(loader.getCurrentTestCaseStep()).thenReturn(step);
-        testling.saveException(new SakuliException("test"));
+        testling.saveException(new SakuliCheckedException("test"));
         assertNull(ts.getException());
         assertNull(tc.getException());
         assertEquals(step.getException().getMessage(), "test");

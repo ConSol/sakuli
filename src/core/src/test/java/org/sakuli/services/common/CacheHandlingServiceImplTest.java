@@ -29,7 +29,7 @@ import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.helper.TestCaseStepHelper;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -60,7 +60,7 @@ public class CacheHandlingServiceImplTest {
     @BeforeMethod
     public void init() {
         testSuite = new TestSuiteExampleBuilder()
-                .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS).withException(new SakuliException("TEST")).buildExample();
+                .withId("LOG_TEST_SUITE").withState(TestSuiteState.ERRORS).withException(new SakuliCheckedException("TEST")).buildExample();
         MockitoAnnotations.initMocks(this);
     }
 

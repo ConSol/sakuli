@@ -19,7 +19,7 @@
 package org.sakuli.services.forwarder.database.dao.impl;
 
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +44,7 @@ public abstract class Dao extends NamedParameterJdbcDaoSupport {
     @Autowired
     protected LobHandler lobHandler;
 
-    public Dao(DataSource dataSource) throws SakuliException {
+    public Dao(DataSource dataSource) throws SakuliCheckedException {
 
         try {
             if (dataSource == null) {

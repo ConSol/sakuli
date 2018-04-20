@@ -26,7 +26,7 @@ import org.sakuli.actions.screenbased.RegionImpl;
  * @author tschneck
  *         Date: 01.09.13
  */
-public class SakuliActionException extends SakuliException {
+public class SakuliActionException extends SakuliCheckedException {
 
     protected RegionImpl lastRegion;
 

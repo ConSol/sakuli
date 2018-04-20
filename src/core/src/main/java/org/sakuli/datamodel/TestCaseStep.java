@@ -20,7 +20,7 @@ package org.sakuli.datamodel;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.state.TestCaseStepState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ import java.util.List;
  *
  * @author tschneck Date: 18.06.13
  */
-public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCaseStepState> {
+public class TestCaseStep extends AbstractTestDataEntity<SakuliCheckedException, TestCaseStepState> {
 
     private List<TestAction> testActions = new ArrayList<>();
 

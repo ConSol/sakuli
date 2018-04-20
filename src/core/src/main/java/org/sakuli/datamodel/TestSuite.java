@@ -21,7 +21,7 @@ package org.sakuli.datamodel;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -38,7 +38,7 @@ import static org.apache.commons.lang.StringUtils.*;
  * @author tschneck Date: 10.06.13
  */
 @Component
-public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuiteState> {
+public class TestSuite extends AbstractTestDataEntity<SakuliCheckedException, TestSuiteState> {
 
     //browser name where to start the test execution
     private String browserName;
@@ -84,7 +84,7 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
 
                 //if errors are found suite state is always error!
                 if (tc.getState() == null) {
-                    tc.addException(new SakuliException("ERROR: NO RESULT STATE SET"));
+                    tc.addException(new SakuliCheckedException("ERROR: NO RESULT STATE SET"));
                     state = TestSuiteState.ERRORS;
                 } else if (tc.getState().equals(TestCaseState.ERRORS)) {
                     state = TestSuiteState.ERRORS;

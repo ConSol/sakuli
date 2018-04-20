@@ -19,7 +19,7 @@
 package org.sakuli.integration.dao;
 
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.integration.builder.TestSuiteBuilder;
 import org.sakuli.services.forwarder.database.dao.impl.DaoTestSuiteImpl;
 import org.testng.Assert;
@@ -38,7 +38,7 @@ import static org.sakuli.integration.IntegrationTest.GROUP;
 public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestSuiteImpl> {
 
     @Override
-    protected DaoTestSuiteImpl createTestling() throws SakuliException {
+    protected DaoTestSuiteImpl createTestling() throws SakuliCheckedException {
         return new DaoTestSuiteImpl(dataSource);
     }
 

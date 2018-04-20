@@ -25,7 +25,7 @@ import org.joda.time.DateTime;
 import org.sakuli.actions.TestCaseAction;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.builder.TestCaseBuilder;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.javaDSL.service.SahiInitializingService;
 import org.sakuli.javaDSL.utils.SakuliJavaPropertyPlaceholderConfigurer;
@@ -126,7 +126,7 @@ public abstract class AbstractSakuliTest {
         String testCaseName = this.getClass().getSimpleName();
         initParameter = getTestCaseInitParameter();
         if (initParameter == null) {
-            throw new SakuliException("init parameter have to be set!");
+            throw new SakuliCheckedException("init parameter have to be set!");
         }
         testSuite = BeanLoader.loadBean(TestSuite.class);
 

@@ -24,12 +24,12 @@ import java.nio.file.Path;
  * @author tschneck
  *         Date: 20.06.13
  */
-public class SakuliExceptionWithScreenshot extends SakuliException {
+public class SakuliExceptionWithScreenshot extends SakuliCheckedException {
 
     private Path screenshot;
 
     /**
-     * creates a {@link SakuliException} from a {@link String} and stores the Path to screenshot
+     * creates a {@link SakuliCheckedException} from a {@link String} and stores the Path to screenshot
      *
      * @param message
      * @param screenshot
@@ -41,7 +41,7 @@ public class SakuliExceptionWithScreenshot extends SakuliException {
 
 
     /**
-     * creates a {@link SakuliException} from a {@link Throwable} and stores the Path to screenshot
+     * creates a {@link SakuliCheckedException} from a {@link Throwable} and stores the Path to screenshot
      *
      * @param e
      * @param screenshot

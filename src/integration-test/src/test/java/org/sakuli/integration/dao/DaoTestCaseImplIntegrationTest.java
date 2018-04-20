@@ -18,7 +18,7 @@
 
 package org.sakuli.integration.dao;
 
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.integration.builder.TestCaseBuilder;
 import org.sakuli.services.forwarder.database.dao.impl.DaoTestCaseImpl;
 import org.testng.Assert;
@@ -35,7 +35,7 @@ public class DaoTestCaseImplIntegrationTest extends DaoIntegrationTest<DaoTestCa
 
 
     @Override
-    protected DaoTestCaseImpl createTestling() throws SakuliException {
+    protected DaoTestCaseImpl createTestling() throws SakuliCheckedException {
         return new DaoTestCaseImpl(dataSource);
     }
 
