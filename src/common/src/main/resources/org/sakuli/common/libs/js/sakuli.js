@@ -44,12 +44,17 @@ _include("sakuli_Logger.js");
  * TestCase - initializes the Sakuli object and sets the warning and critical time for this test case.
  * @example
  * ```
- * var testCase = new TestCase(20,30, "path-to/image-folder-name");
- * ```
+ * //new syntex since v1.2.0
+ * var testCase = new TestCase(["own-case-id", 20, 30, "path-to/image-folder-name"]);
  *
- * @param {number} warningTime threshold in seconds. If the threshold is set to 0,
+ * //old syntax < v1.2.0
+ * var testCase = new TestCase(20, 30, ["path-to/image-folder-name"]);
+ * ```
+ * @param {String} optCaseId optional ID to set the testcase ID to some specifc value. Default is the folder name.
+ *
+ * @param {number} optWarningTime threshold in seconds. If the threshold is not set or is set to 0,
  *                 the execution time will never exceed, so the state will be always OK!
- * @param {number} criticalTime threshold in seconds. If the threshold is set to 0,
+ * @param {number} optCriticalTime threshold in seconds. If the threshold is not set or is set to 0,
  *                 the execution time will never exceed, so the state will be always OK!
  * @param {String[]} optImagePathArray (optional) Path or Array of Paths to the folder containing the image patterns
  *                                     for these test cases.
@@ -57,14 +62,29 @@ _include("sakuli_Logger.js");
  * @returns an initialized Sakuli object.
  * @namespace TestCase
  */
-function TestCase(warningTime, criticalTime, optImagePathArray) {
+function TestCase(optCaseId, optWarningTime, optCriticalTime, optImagePathArray) {
     var that = {};
-    var env;
-
     that.javaObject = null;
-    that.tcID = null;
-    env = null;
+    var env = null;
+    var tcID = null;
+    //for legacy code check if first paramet is paramter
+    if (parseInt(optCaseId) > 0) {
+        optImagePathArray = optCriticalTime;
+        optCriticalTime = optWarningTime;
+        optWarningTime = optCaseId;
+        optCaseId = null;
+    }
 
+    if (optCaseId.length > 0) {
+        tcID = optCaseId;
+    }
+
+    if (undefined == optWarningTime) {
+        optWarningTime = 0;
+    }
+    if (undefined == optCriticalTime) {
+        optCriticalTime = 0;
+    }
     if (undefined == optImagePathArray) {
         optImagePathArray = new Array(resolveDefaultImagePath());
     }
@@ -84,7 +104,7 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      * @method   addImagePaths
      */
     that.addImagePaths = function (imagePaths) {
-        if (imagePaths instanceof  String) {
+        if (imagePaths instanceof String) {
             that.javaObject.addImagePathsAsString(new Array(imagePaths));
         } else {
             that.javaObject.addImagePathsAsString(imagePaths);
@@ -95,32 +115,32 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      * A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
      * particular runtime. When a case starts, Sakuli starts a "step" timer. It gets read out, stored with the
      * step name, and the timer will set to `0` each time endOfStep() is called.
-     * If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state 
+     * If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state
      * "WARNING" (there is no CRITICAL state).
      * @param {String} stepName
      * @param {number} optWarningTime (optional) threshold in seconds, default = 0. If the threshold is set to 0,
      *                 the execution time will never exceed, so the state will be always OK!
      * @param {number} optCriticalTime (optional) threshold in seconds, default = 0. If the threshold is set to 0,
      *                 the execution time will never exceed, so the state will be always OK!
-     * @param {boolean} forward (optional) indicate whether the result of the test case shall be immediately
+     * @param {boolean} optForward (optional) indicate whether the result of the test case shall be immediately
      *                  processed by the enabled forwarders. This means before the test suite has been executed to
      *                  the end. If not specified in another way, this option is disabled!
      * @memberOf TestCase
      * @method endOfStep
      */
-    that.endOfStep = function (stepName, optWarningTime, optCriticalTime, forward) {
+    that.endOfStep = function (stepName, optWarningTime, optCriticalTime, optForward) {
         if (undefined == optWarningTime) {
             optWarningTime = 0;
         }
         if (undefined == optCriticalTime) {
             optCriticalTime = 0;
         }
-        if (undefined == forward) {
-            forward = false;
+        if (undefined == optForward) {
+            optForward = false;
         }
         var currentTime = (new Date()).getTime();
         //call the backend
-        that.javaObject.addTestCaseStep(stepName, that.stepStartTime, currentTime, optWarningTime, optCriticalTime, forward);
+        that.javaObject.addTestCaseStep(stepName, that.stepStartTime, currentTime, optWarningTime, optCriticalTime, optForward);
         //set stepstart for the next step
         that.stepStartTime = currentTime;
     };
@@ -183,7 +203,7 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
         if (undefined == forward) {
             forward = false;
         }
-        Logger.logInfo("=========== SAVE Test Case '" + that.tcID + "' ==================");
+        Logger.logInfo("=========== SAVE Test Case '" + tcID + "' ==================");
         Logger.logInfo("Forward of test case results enabled:  '" + forward + "'");
         //create the values
         var stopTime, lastURL = "", browser = "";
@@ -193,7 +213,7 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
         // Agent description can contain semicolon, replace globally
         browser = browser.replace(/;/g, ',');
         //call the backend
-        that.javaObject.saveResult(that.tcID, that.startTime, stopTime, lastURL, browser, forward);
+        that.javaObject.saveResult(tcID, that.startTime, stopTime, lastURL, browser, forward);
     };
 
     /**
@@ -203,7 +223,7 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
      * @method getID
      */
     that.getID = function () {
-        return that.tcID;
+        return tcID;
     };
 
     /**
@@ -286,7 +306,6 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
         Logger.logDebug("get Backend - step 1 (load backend)");
         that.javaObject = Packages.org.sakuli.loader.BeanLoader.loadTestCaseAction();
         Logger.logDebug("get Backend - step 2 (get the test case id)");
-        that.tcID = that.javaObject.getIdFromPath(_resolvePath());
 
         /**
          * - set the start time for this cass and for the first step
@@ -294,8 +313,16 @@ function TestCase(warningTime, criticalTime, optImagePathArray) {
          */
         that.startTime = (new Date()).getTime();
         that.stepStartTime = (new Date()).getTime();
-        that.javaObject.init(that.tcID, warningTime, criticalTime, optImagePathArray);
-        Logger.logInfo("Now start to execute the test case '" + that.tcID + "' ! \n ....\n ...\n....");
+
+        //determine correct ID for testcase
+        var idFromPath = that.javaObject.getIdFromPath(_resolvePath());
+        if (undefined == tcID) {
+            tcID = idFromPath;
+            that.javaObject.init(tcID, optWarningTime, optCriticalTime, optImagePathArray);
+        } else {
+            that.javaObject.initWithCaseID(idFromPath, tcID, optWarningTime, optCriticalTime, optImagePathArray);
+        }
+        Logger.logInfo("Now start to execute the test case '" + tcID + "' ! \n ....\n ...\n....");
     }
 
     init();

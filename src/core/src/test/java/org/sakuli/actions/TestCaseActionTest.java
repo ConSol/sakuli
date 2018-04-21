@@ -33,7 +33,6 @@ import org.sakuli.exceptions.NonScreenshotException;
 import org.sakuli.exceptions.SakuliActionException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliValidationException;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -95,7 +94,7 @@ public class TestCaseActionTest extends BaseTest {
 
     @Test(dataProvider = "testGetTestCaseIdDP")
     public void testGetTestCaseId(String pathToTestCaseFile, String expectedTestCaseId) throws Exception {
-        Assert.assertEquals(testling.getIdFromPath(pathToTestCaseFile), expectedTestCaseId);
+        assertEquals(testling.getIdFromPath(pathToTestCaseFile), expectedTestCaseId);
         verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "getIdFromPath"}});
     }
 
@@ -203,9 +202,23 @@ public class TestCaseActionTest extends BaseTest {
         testling.init(tcID, 4, 5, ".");
 
         verify(loaderMock).init(anyString(), anyString());
-        Assert.assertEquals(testSuiteMock.getTestCase(tcID).getWarningTime(), 4);
-        Assert.assertEquals(testSuiteMock.getTestCase(tcID).getCriticalTime(), 5);
+        assertEquals(testSuiteMock.getTestCase(tcID).getWarningTime(), 4);
+        assertEquals(testSuiteMock.getTestCase(tcID).getCriticalTime(), 5);
         verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "init"}});
+    }
+
+    @Test
+    public void testInitTestCaseWithCustomID() throws Exception {
+
+        String tcID = sample.getId();
+        String newId = "new-id";
+        testling.initWithCaseID(tcID, newId, 4, 5, ".");
+
+        verify(loaderMock).init(eq(tcID), anyString());
+        assertEquals(sample.getId(), newId);
+        assertEquals(sample.getWarningTime(), 4);
+        assertEquals(sample.getCriticalTime(), 5);
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "initWithCaseID"}});
     }
 
     @DataProvider

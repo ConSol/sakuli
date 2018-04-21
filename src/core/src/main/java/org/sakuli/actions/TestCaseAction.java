@@ -78,9 +78,16 @@ public class TestCaseAction {
      *                     the execution time will never exceed, so the state will be always OK!
      * @param imagePaths   multiple paths to images
      */
-    @LogToResult(message = "init a new test case")
+    @LogToResult(message = "init a new test case", logClassInstance = false)
     public void init(String testCaseID, int warningTime, int criticalTime, String... imagePaths) {
         loader.init(testCaseID, imagePaths);
+        initWarningAndCritical(warningTime, criticalTime);
+    }
+
+    @LogToResult(message = "init a new test case with caseID", logClassInstance = false)
+    public void initWithCaseID(String testCaseID, String newTestCaseID, int warningTime, int criticalTime, String... imagePaths) {
+        loader.init(testCaseID, imagePaths);
+        loader.getCurrentTestCase().setId(newTestCaseID);
         initWarningAndCritical(warningTime, criticalTime);
     }
 
@@ -94,7 +101,7 @@ public class TestCaseAction {
      *                     the execution time will never exceed, so the state will be always OK!
      * @param imagePaths   multiple paths to images
      */
-    @LogToResult(message = "init a new test case")
+    @LogToResult(message = "init a new test case", logClassInstance = false)
     public void initWithPaths(String testCaseID, int warningTime, int criticalTime, Path... imagePaths) {
         loader.init(testCaseID, imagePaths);
         initWarningAndCritical(warningTime, criticalTime);
@@ -156,7 +163,7 @@ public class TestCaseAction {
      * @param browserInfo detail information about the used browser
      * @throws SakuliCheckedException
      */
-    @LogToResult(message = "save the result of the current test case")
+    @LogToResult
     public void saveResult(String testCaseId, String startTime, String stopTime, String lastURL, String browserInfo, boolean forward) throws SakuliCheckedException {
         if (!loader.getCurrentTestCase().getId().equals(testCaseId)) {
             handleException("testcaseID '" + testCaseId + "' to save the test case Result ist is not valid!");
@@ -206,7 +213,7 @@ public class TestCaseAction {
      * @param forward      boolean flag indicating whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled!
      * @throws SakuliCheckedException
      */
-    @LogToResult(message = "add a step to the current test case")
+    @LogToResult(message = "TestCase.endOfStep()", logClassInstance = false)
     public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime, int criticalTime, boolean forward) throws SakuliCheckedException {
         if (stepName == null || stepName.isEmpty() || stepName.equals("undefined")) {
             handleException("Please set a Name - all values of the test case step need to be set!");
@@ -302,16 +309,16 @@ public class TestCaseAction {
      * @param pathToTestCaseFile path to the test case file "_tc.js"
      * @return returns test the currentTestCase Name
      */
-    @LogToResult(message = "convert the path of the test case file to a valid test case ID")
+    @LogToResult(message = "determine a valid test case ID from the test case file path", logClassInstance = false)
     public String getIdFromPath(String pathToTestCaseFile) {
-        logger.info("Return a test-case-id for \"" + pathToTestCaseFile + "\"");
+        logger.debug("determine a ID for testcase for file path '{}'", pathToTestCaseFile);
         String id = TestCaseHelper.convertTestCaseFileToID(pathToTestCaseFile);
         //check id
         if (loader.getTestSuite().checkTestCaseID(id)) {
-            logger.info("test-case-id = " + id);
+            logger.debug("determined testcase id: {}", id);
             return id;
         } else {
-            handleException("cannot identify testcase for pathToTestCaseFile=" + pathToTestCaseFile);
+            handleException("cannot determine testcase id for path of testcase file '" + pathToTestCaseFile + "'");
             return null;
         }
     }
@@ -319,7 +326,7 @@ public class TestCaseAction {
     /**
      * @return String value of the last URL
      */
-    @LogToResult(message = "return 'lastURL'")
+    @LogToResult
     public String getLastURL() {
         return loader.getCurrentTestCase().getLastURL();
     }
@@ -329,7 +336,7 @@ public class TestCaseAction {
      *
      * @param lastURL String value of the last URL
      */
-    @LogToResult(message = "set 'lastURL' to new value")
+    @LogToResult
     public void setLastURL(String lastURL) {
         loader.getCurrentTestCase().setLastURL(lastURL);
     }
