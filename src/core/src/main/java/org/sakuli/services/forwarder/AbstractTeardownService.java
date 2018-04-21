@@ -44,7 +44,7 @@ public abstract class AbstractTeardownService implements TeardownService {
         }
     }
 
-    private Exception addTestRef(@NonNull Exception e, @NonNull AbstractTestDataEntity testDataRef) {
+    Exception addTestRef(@NonNull Exception e, @NonNull AbstractTestDataEntity testDataRef) {
         if (!(e instanceof SakuliException)) {
             e = new SakuliCheckedException(e);
         }

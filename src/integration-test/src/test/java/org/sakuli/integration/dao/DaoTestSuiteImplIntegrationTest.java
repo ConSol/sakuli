@@ -73,7 +73,7 @@ public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestS
 
     @Test
     public void testGetCountOfSahiJobs() throws Exception {
-        Assert.assertTrue(testling.getCountOfSahiJobs() > 0);
+        Assert.assertTrue(testling.getCountOfSahiJobs() == 0);
 
     }
 }

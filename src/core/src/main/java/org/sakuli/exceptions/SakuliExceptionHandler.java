@@ -267,7 +267,7 @@ public class SakuliExceptionHandler {
      * @param e a {@link Exception}
      * @return {@link SakuliException} or any child.
      */
-    private SakuliException transformException(Exception e) {
+    SakuliException transformException(Exception e) {
         if (!(e instanceof NonScreenshotException)
                 && loader.getActionProperties().isTakeScreenshots()) {
             //try to get a screenshot
@@ -288,6 +288,10 @@ public class SakuliExceptionHandler {
         }
         if (e instanceof SakuliRuntimeException) {
             return addResumeOnException(((SakuliRuntimeException) e), resumeToTestExecution(e));
+        }
+        //not kind of SakuliException -> wrap it
+        if (e instanceof RuntimeException) {
+            return addResumeOnException(new SakuliRuntimeException(e), resumeToTestExecution(e));
         }
         return addResumeOnException(new SakuliCheckedException(e), resumeToTestExecution(e));
     }
