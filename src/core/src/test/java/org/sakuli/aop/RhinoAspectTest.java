@@ -232,7 +232,7 @@ public class RhinoAspectTest extends AopBaseTest {
         testAction.init("testID", 3, 4, "imagefolder1", "imagefolder2");
 
         assertLastLine(logFile, testAction.getClass().getSimpleName(), LogLevel.INFO,
-                "\"test case [" + sampleTc.getActionValueString() + "]\" TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
+                "TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
     }
 
     @Test
