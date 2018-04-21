@@ -19,8 +19,6 @@
 package org.sakuli.services.common;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.sakuli.datamodel.TestCase;
-import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.services.TeardownService;
@@ -58,16 +56,6 @@ public class LogCleanUpServiceImpl extends AbstractTeardownService implements Te
         if (Files.exists(sakuliProperties.getLogFolder())) {
             cleanUpDirectory(sakuliProperties.getLogFolder());
         }
-    }
-
-    @Override
-    public void teardownTestCase(@NonNull TestCase testCase) throws RuntimeException {
-        //Not needed
-    }
-
-    @Override
-    public void teardownTestCaseStep(@NonNull TestCaseStep testCaseStep) throws RuntimeException {
-        //Not needed
     }
 
     /**

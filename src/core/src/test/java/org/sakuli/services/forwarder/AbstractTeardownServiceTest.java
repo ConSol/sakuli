@@ -23,7 +23,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.sakuli.BaseTest;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
@@ -32,7 +31,6 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.*;
 import org.sakuli.loader.ScreenActionLoader;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -41,6 +39,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.sakuli.BaseTest.assertRegExMatch;
 import static org.testng.Assert.*;
 
 @SuppressWarnings({"unchecked", "ThrowableNotThrown"})
@@ -52,6 +51,11 @@ public class AbstractTeardownServiceTest {
         @Override
         public int getServicePriority() {
             return 0;
+        }
+
+        @Override
+        public void teardownTestCase(@NonNull TestCase testCase) throws RuntimeException {
+            throw new SakuliRuntimeException("teardown test case");
         }
     };
     private SakuliExceptionHandler exceptionHandler;
@@ -86,8 +90,8 @@ public class AbstractTeardownServiceTest {
         //ensures that no stop execution action wil be triggered
         assertTrue(resumeExceptions.stream().noneMatch(e -> e.getClass().isAssignableFrom(SakuliRuntimeException.class)));
 
-        Assert.assertEquals(testsuite.getException().getClass(), SakuliRuntimeException.class);
-        BaseTest.assertRegExMatch(testsuite.getException().toString(), "org.sakuli.exceptions.SakuliRuntimeException: Method 'teardownTestSuite' is not implemented for forwarder class.*");
+        assertEquals(testsuite.getException().getClass(), SakuliRuntimeException.class);
+        assertRegExMatch(testsuite.getException().toString(), "Method 'teardownTestSuite' is not implemented for forwarder class.*");
     }
 
     @Test
@@ -102,8 +106,8 @@ public class AbstractTeardownServiceTest {
         assertTrue(resumeExceptions.stream().allMatch(e -> e.getClass().isAssignableFrom(SakuliRuntimeException.class)));
 
         assertNull(testsuite.getException());
-        Assert.assertEquals(testCase.getException().getClass(), SakuliRuntimeException.class);
-        BaseTest.assertRegExMatch(testCase.getException().toString(), "org.sakuli.exceptions.SakuliRuntimeException: Method 'teardownTestCase' is not implemented for forwarder class.*");
+        assertEquals(testCase.getException().getClass(), SakuliRuntimeException.class);
+        assertEquals(testCase.getException().toString(), "teardown test case");
     }
 
     @Test

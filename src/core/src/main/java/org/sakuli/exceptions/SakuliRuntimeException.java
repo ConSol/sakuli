@@ -61,4 +61,9 @@ public class SakuliRuntimeException extends RuntimeException implements SakuliEx
     public <T extends AbstractTestDataEntity> void setAsyncTestDataRef(T testDataRef) {
         this.asyncTestDataRef = Optional.ofNullable(testDataRef);
     }
+
+    @Override
+    public String toString() {
+        return getLocalizedMessage();
+    }
 }

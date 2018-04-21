@@ -20,18 +20,23 @@ package org.sakuli.services.forwarder;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.datamodel.AbstractTestDataEntity;
+import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.services.TeardownService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Abstract root class for {@link org.sakuli.services.TeardownService}s
- * Contains impelementations with states.
+ * Contains implementations with states.
  */
 public abstract class AbstractTeardownService implements TeardownService {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private SakuliExceptionHandler exceptionHandler;
 
@@ -50,5 +55,19 @@ public abstract class AbstractTeardownService implements TeardownService {
         }
         ((SakuliException) e).setAsyncTestDataRef(testDataRef);
         return e;
+    }
+
+    @Override
+    public void teardownTestCase(@NonNull TestCase testCase) throws RuntimeException {
+        logTeardownNotNeeded(testCase);
+    }
+
+    @Override
+    public void teardownTestCaseStep(@NonNull TestCaseStep testCaseStep) throws RuntimeException {
+        logTeardownNotNeeded(testCaseStep);
+    }
+
+    private void logTeardownNotNeeded(AbstractTestDataEntity data) {
+        logger.debug("teardown of {} [{}] not needed.", this.getClass().getSimpleName(), data.toString());
     }
 }

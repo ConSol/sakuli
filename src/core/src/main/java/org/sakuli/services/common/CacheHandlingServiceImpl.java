@@ -61,16 +61,6 @@ public class CacheHandlingServiceImpl extends AbstractTeardownService implements
         }
     }
 
-    @Override
-    public void teardownTestCase(@NonNull TestCase testCase) throws RuntimeException {
-        //Not needed
-    }
-
-    @Override
-    public void teardownTestCaseStep(@NonNull TestCaseStep testCaseStep) throws RuntimeException {
-        //Not needed
-    }
-
     protected void removeCachedInitSteps(TestSuite testSuite) {
         for (TestCase tc : testSuite.getTestCases().values()) {
             List<TestCaseStep> filteredSteps = new ArrayList<>();
