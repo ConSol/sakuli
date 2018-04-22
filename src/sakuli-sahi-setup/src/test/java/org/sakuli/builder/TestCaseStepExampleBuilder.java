@@ -23,13 +23,13 @@ import org.joda.time.DateTime;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.state.TestCaseStepState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 
 import java.util.Date;
 
 /**
  * @author tschneck
- *         Date: 14.07.14
+ * Date: 14.07.14
  */
 public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> {
     private TestCaseStepState state;
@@ -37,7 +37,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
     private int warningTime;
     private Date stopDate;
     private Date startDate;
-    private SakuliException exception;
+    private SakuliCheckedException exception;
     private DateTime creationDate;
 
     public TestCaseStepExampleBuilder() {
@@ -87,7 +87,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
         return this;
     }
 
-    public TestCaseStepExampleBuilder withException(SakuliException e) {
+    public TestCaseStepExampleBuilder withException(SakuliCheckedException e) {
         this.exception = e;
         return this;
     }

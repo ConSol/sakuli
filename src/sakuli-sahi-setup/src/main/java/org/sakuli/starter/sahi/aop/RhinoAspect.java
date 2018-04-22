@@ -27,6 +27,7 @@ import org.aspectj.lang.annotation.Before;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.aop.BaseSakuliAspect;
 import org.sakuli.aop.LogActionExecutedAspect;
+import org.sakuli.datamodel.TestAction;
 import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.BaseActionLoaderImpl;
 import org.sakuli.loader.BeanLoader;
@@ -104,6 +105,7 @@ public class RhinoAspect extends BaseSakuliAspect {
             else if (logResult.getDebugInfo() == null
                     || !logResult.getDebugInfo().startsWith("org.sakuli.actions.")) {
                 logger.info(logResult.getMessage());
+                addActionsToCurrentTestCase(TestAction.createSahiTestAction(logResult.getMessage(), BeanLoader.loadBaseActionLoader().getSakuliProperties().getSahiDocBaseUrl()));
             }
         }
 

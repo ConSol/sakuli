@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sakuli.builder;
+package org.sakuli.integration.builder;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.sakuli.datamodel.TestCase;
@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * @author tschneck
- *         Date: 08.05.2014
+ * Date: 08.05.2014
  */
 public class TestSuiteExampleBuilder implements ExampleBuilder<TestSuite> {
 

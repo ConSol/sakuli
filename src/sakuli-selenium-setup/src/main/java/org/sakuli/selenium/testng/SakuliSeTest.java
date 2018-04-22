@@ -53,7 +53,7 @@ import java.util.stream.Stream;
  * TODO TS cleanup and docu
  *
  * @author tschneck
- *         Date: 4/13/17
+ * Date: 4/13/17
  */
 public class SakuliSeTest implements ITestListener, IInvokedMethodListener2 {
     private static final Logger LOGGER = LoggerFactory.getLogger(SakuliSeTest.class);
@@ -94,9 +94,13 @@ public class SakuliSeTest implements ITestListener, IInvokedMethodListener2 {
 
     @Override
     public void onTestFailure(ITestResult result) {
-        if (result.getThrowable() != null) {
+        final Throwable throwable = result.getThrowable();
+        if (throwable != null) {
             SakuliExceptionHandler exceptionHandler = BeanLoader.loadBaseActionLoader().getExceptionHandler();
-            exceptionHandler.handleException(result.getThrowable(), true);
+            exceptionHandler.handleException(
+                    throwable instanceof Exception
+                            ? (Exception) throwable
+                            : new Exception(throwable), true);
         }
     }
 
@@ -282,7 +286,7 @@ public class SakuliSeTest implements ITestListener, IInvokedMethodListener2 {
         if (testSuite != null) {
             LOGGER.info("========== TEAR-DOWN SAKULI TEST SUITE '{}' ==========", testSuite.getId());
             testSuite.setStopDate(context.getEndDate() == null ? DateTime.now().toDate() : context.getEndDate());
-            TeardownServiceHelper.invokeTeardownServices();
+            TeardownServiceHelper.invokeTeardownServices(testSuite);
         }
     }
 

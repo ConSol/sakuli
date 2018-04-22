@@ -19,8 +19,8 @@
 package org.sakuli;
 
 import org.mockito.internal.util.MockUtil;
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.actions.LogLevel;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.BaseActionLoaderImpl;
 import org.sakuli.loader.BeanLoader;
@@ -31,7 +31,7 @@ import org.testng.annotations.BeforeClass;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.*;
 
 /**
  * @author tschneck Date: 25.07.13
@@ -53,7 +53,6 @@ public abstract class BaseTest extends AbstractBaseTest {
         loaderMock = BeanLoader.loadBean(BaseActionLoaderImpl.class);
         if (MockUtil.isMock(loaderMock)) {
             reset(loaderMock);
-            when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
             when(loaderMock.getSakuliProperties()).thenReturn(mock(SakuliProperties.class));
         }
     }

@@ -16,14 +16,15 @@
  * limitations under the License.
  */
 
-package org.sakuli.aop;
+package org.sakuli.starter.sahi.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.sakuli.datamodel.properties.SahiProxyProperties;
+import org.sakuli.aop.BaseSakuliAspect;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.starter.sahi.datamodel.properties.SahiProxyProperties;
+import org.sakuli.starter.sahi.loader.SahiActionLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -44,7 +45,7 @@ public class SahiHeaderAspect extends BaseSakuliAspect {
 
     public static boolean getRemoveAuthorizationHeader() {
         if (removeAuthorizationHeader == null) {
-            removeAuthorizationHeader = BeanLoader.loadBaseActionLoader().getSahiProxyProperties().getRemoveAuthorizationHeader();
+            removeAuthorizationHeader = BeanLoader.loadBean(SahiActionLoader.class).getSahiProxyProperties().getRemoveAuthorizationHeader();
             if (FALSE.equals(removeAuthorizationHeader))
                 LOGGER.info("{}={}: SAHI remove Header 'Authorization' is DISABLED! ", SahiProxyProperties.REMOVE_AUTHORIZATION_HEADER, removeAuthorizationHeader);
         }

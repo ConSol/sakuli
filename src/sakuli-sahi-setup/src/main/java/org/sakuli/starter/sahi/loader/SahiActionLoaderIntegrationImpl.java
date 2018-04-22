@@ -41,7 +41,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author tschneck
- *         Date: 4/19/17
+ * Date: 4/19/17
  */
 @Component
 public class SahiActionLoaderIntegrationImpl implements ActionLoaderCallback, SahiActionLoader {
@@ -107,7 +107,7 @@ public class SahiActionLoaderIntegrationImpl implements ActionLoaderCallback, Sa
             getSahiReport().addResult(
                     e.getMessage(),
                     ResultType.ERROR,
-                    e.getStackTrace().toString(),
+                    e.castTo().getStackTrace().toString(),
                     e.getMessage() + BaseSakuliAspect.ALREADY_PROCESSED);
         }
     }

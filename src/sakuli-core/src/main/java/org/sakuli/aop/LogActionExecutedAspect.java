@@ -23,20 +23,22 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.logging.LogToResultCallback;
+import org.sakuli.actions.logging.LogToResultClassName;
 import org.sakuli.actions.testcase.AbstractTestCaseActionImpl;
-import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
 import org.sakuli.loader.BeanLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Aspect for all Actions under {@link org.sakuli.actions}
  *
  * @author tschneck Date: 17.10.13
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Aspect
 @Component
 public class LogActionExecutedAspect extends BaseSakuliAspect {
@@ -44,23 +46,14 @@ public class LogActionExecutedAspect extends BaseSakuliAspect {
     protected final static Logger logger = LoggerFactory.getLogger(LogActionExecutedAspect.class);
 
     /**
-     * Pointcut for the {@link JavaScriptTestCaseActionImpl} class to do an {@link
+     * Pointcut for the {@link AbstractTestCaseActionImpl} class with annotated {@link LogToResultClassName} to do an {@link
      * #addActionLog(org.aspectj.lang.JoinPoint, org.sakuli.actions.logging.LogToResult)}
      */
-    @Before("execution(* org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl.*(..)) &&" +
-            "@annotation(logToResult)")
-    public void doJavaScriptTestCaseActionLog(JoinPoint joinPoint, LogToResult logToResult) {
-        addActionLog(joinPoint, logToResult);
-    }
-
-    /**
-     * Pointcut for the {@link AbstractTestCaseActionImpl} class to do an {@link
-     * #addActionLog(org.aspectj.lang.JoinPoint, org.sakuli.actions.logging.LogToResult)}
-     */
-    @Before("execution(* org.sakuli.actions.testcase.AbstractTestCaseActionImpl.*(..)) &&" +
-            "@annotation(logToResult)")
-    public void doTestCaseActionLog(JoinPoint joinPoint, LogToResult logToResult) {
-        addActionLog(joinPoint, logToResult);
+    @Before("execution(* org.sakuli.actions.testcase.*.*(..)) &&" +
+            "@annotation(logToResult) &&" +
+            "@target(logToResultClassName)")
+    public void doTestCaseActionLog(JoinPoint joinPoint, LogToResult logToResult, LogToResultClassName logToResultClassName) {
+        addActionLog(joinPoint, logToResult, Optional.ofNullable(logToResultClassName));
     }
 
     /**
@@ -94,16 +87,26 @@ public class LogActionExecutedAspect extends BaseSakuliAspect {
     }
 
     /**
+     * See {@link #addActionLog(JoinPoint, LogToResult, Optional)}.
+     */
+    protected void addActionLog(JoinPoint joinPoint, LogToResult logToResult) {
+        addActionLog(joinPoint, logToResult, Optional.empty());
+    }
+
+    /**
      * Method to do all Logs for the action classes annotated with {@link org.sakuli.actions.logging.LogToResult}. A log
      * entry will created at the sakuli log files and at the sahi HTML over the callback {@link LogToResultCallback}.
      *
-     * @param joinPoint   {@link JoinPoint} object of the calling aspect
-     * @param logToResult {@link LogToResult} Annotation
+     * @param joinPoint            {@link JoinPoint} object of the calling aspect
+     * @param logToResult          {@link LogToResult} Annotation
+     * @param logToResultClassName option value for overwriting the logging classname
      */
-    protected void addActionLog(JoinPoint joinPoint, LogToResult logToResult) {
+    protected void addActionLog(JoinPoint joinPoint, LogToResult logToResult, Optional<LogToResultClassName> logToResultClassName) {
         Logger logger = getLogger(joinPoint);
         if (logToResult != null) {
-            StringBuilder message = createLoggingString(joinPoint, logToResult);
+            StringBuilder message = createLoggingString(joinPoint, logToResult, logToResultClassName);
+
+            addActionsToCurrentTestCase(extractTestAction(joinPoint, logToResult, logToResultClassName));
 
             //log the action to log file and print
             switch (logToResult.level()) {
@@ -118,20 +121,22 @@ public class LogActionExecutedAspect extends BaseSakuliAspect {
                     break;
                 case WARNING:
                     logger.warn(message.toString());
+                    message.insert(0, "WARNING: ");
                     break;
             }
         }
-        callLoggingCallbacks(joinPoint, logToResult);
+        callLoggingCallbacks(joinPoint, logToResult, logToResultClassName);
     }
+
 
     /**
      * Calls all defined implementations of {@link } as Callback.
      * NOTE: Because a class can only compiled/weaved by aspectj once, this behaviour is needed to be modular.
      */
-    protected void callLoggingCallbacks(JoinPoint joinPoint, LogToResult logToResult) {
+    protected void callLoggingCallbacks(JoinPoint joinPoint, LogToResult logToResult, Optional<LogToResultClassName> logToResultClassName) {
         BeanLoader.loadMultipleBeans(LogToResultCallback.class).values().stream()
                 .filter(Objects::nonNull)
-                .forEach(cb -> cb.doActionLog(joinPoint, logToResult));
+                .forEach(cb -> cb.doActionLog(joinPoint, logToResult, logToResultClassName));
     }
 
 }

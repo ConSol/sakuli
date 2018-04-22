@@ -19,6 +19,7 @@
 package org.sakuli.actions.testcase;
 
 import org.sakuli.actions.logging.LogToResult;
+import org.sakuli.actions.logging.LogToResultClassName;
 import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
@@ -26,15 +27,13 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.datamodel.helper.TestCaseHelper;
 import org.sakuli.datamodel.helper.TestDataEntityHelper;
-import org.sakuli.datamodel.helper.TestCaseStepHelper;
 import org.sakuli.exceptions.SakuliActionException;
 import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliValidationException;
-import org.sakuli.loader.BaseActionLoader;
-import org.sakuli.loader.BaseActionLoaderImpl;
 import org.sakuli.services.TeardownServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Paths;
 import java.util.Date;
@@ -43,61 +42,13 @@ import java.util.concurrent.ExecutorService;
 /**
  * @author tschneck Date: 19.06.13
  */
-//TODO move to package `sahi-setup`
-//@Component
+//TODO TS move to package `sahi-setup`
+@LogToResultClassName("TestCaseAction")
 public class JavaScriptTestCaseActionImpl extends AbstractTestCaseActionImpl {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private ExecutorService executorService;
-
-    //TODO TS MERGE: check where method is moved
-    /****************
-     * Init functions for the java script engine.
-     *********************/
-
-    /**
-     * Set the warning and critical Time to the specific test case.
-     *
-     * @param testCaseID   current ID of the test case
-     * @param warningTime  warning threshold in seconds. If the threshold is set to 0,
-     *                     the execution time will never exceed, so the state will be always OK!
-     * @param criticalTime critical threshold in seconds. If the threshold is set to 0,
-     *                     the execution time will never exceed, so the state will be always OK!
-     * @param imagePaths   multiple paths to images
-     */
-    @LogToResult(message = "init a new test case", logClassInstance = false)
-    public void init(String testCaseID, int warningTime, int criticalTime, String... imagePaths) {
-        loader.init(testCaseID, imagePaths);
-        initWarningAndCritical(warningTime, criticalTime);
-    }
-
-    @LogToResult(message = "init a new test case with caseID", logClassInstance = false)
-    public void initWithCaseID(String testCaseID, String newTestCaseID, int warningTime, int criticalTime, String... imagePaths) {
-        loader.init(testCaseID, imagePaths);
-        loader.getCurrentTestCase().setId(newTestCaseID);
-        initWarningAndCritical(warningTime, criticalTime);
-    }
-
-    /**
-     * Set the warning and critical Time to the specific test case.
-     *
-     * @param testCaseID   current ID of the test case
-     * @param warningTime  warning threshold in seconds. If the threshold is set to 0,
-     *                     the execution time will never exceed, so the state will be always OK!
-     * @param criticalTime critical threshold in seconds. If the threshold is set to 0,
-     *                     the execution time will never exceed, so the state will be always OK!
-     * @param imagePaths   multiple paths to images
-     */
-    @LogToResult(message = "init a new test case", logClassInstance = false)
-    public void initWithPaths(String testCaseID, int warningTime, int criticalTime, Path... imagePaths) {
-        loader.init(testCaseID, imagePaths);
-        initWarningAndCritical(warningTime, criticalTime);
-    }
-
-    /****************
-     * TEST CASE HANDLING
-     *********************/
 
     /**
      * save the Result of a test Case
@@ -194,6 +145,7 @@ public class JavaScriptTestCaseActionImpl extends AbstractTestCaseActionImpl {
         }
     }
 
+    //TODO TS maybe this also for JavaDSL needed
     private void forwardTestDataEntity(AbstractTestDataEntity abstractTestDataEntity) {
         executorService.submit(() -> {
             logger.info("======= TRIGGER ASYNC teardown of: {} =======", abstractTestDataEntity.toStringShort());
@@ -254,7 +206,7 @@ public class JavaScriptTestCaseActionImpl extends AbstractTestCaseActionImpl {
 
 
     @Override
-    public void addImagePathsAsString(String... imagePaths) throws SakuliException {
+    public void addImagePathsAsString(String... imagePaths) throws SakuliCheckedException {
         for (String path : imagePaths) {
             //check if absolute path
             if (!path.matches("(\\/\\S*|\\w:\\\\\\S*)")) {

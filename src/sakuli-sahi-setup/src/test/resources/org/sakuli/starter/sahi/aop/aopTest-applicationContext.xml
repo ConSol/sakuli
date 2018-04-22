@@ -30,6 +30,7 @@
     <context:annotation-config/>
     <context:component-scan base-package="org.sakuli.aop"/>
     <context:component-scan base-package="org.sakuli.utils"/>
+    <context:component-scan base-package="org.sakuli.starter.sahi.aop"/>
     <context:component-scan base-package="org.sakuli.starter.sahi.loader"/>
     <context:component-scan base-package="org.sakuli.starter.sahi.datamodel.properties"/>
     <context:component-scan base-package="org.sakuli.starter.sahi.action.logging"/>

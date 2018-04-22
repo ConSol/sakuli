@@ -57,7 +57,7 @@ public abstract class BaseTest extends AbstractBaseTest {
 
     protected void initBaseActionLoader() {
         loaderMock = BeanLoader.loadBean(SahiActionLoader.class);
-        if (new MockUtil().isMock(loaderMock)) {
+        if (MockUtil.isMock(loaderMock)) {
             reset(loaderMock);
             when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
         } else {

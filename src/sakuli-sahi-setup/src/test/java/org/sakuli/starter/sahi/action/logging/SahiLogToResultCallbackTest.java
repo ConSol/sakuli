@@ -168,7 +168,7 @@ public class SahiLogToResultCallbackTest extends AopBaseTest {
         testAction.init("testID", 3, 4, "imagefolder1", "imagefolder2");
 
         verifySahiReportLogEntry(ResultType.INFO,
-                "\"test case [" + sampleTc.getActionValueString() + "]\" AbstractTestCaseActionImpl.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
+                "TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
     }
 
     private void verifySahiReport(ResultType resultTyp, int initialListSize) {

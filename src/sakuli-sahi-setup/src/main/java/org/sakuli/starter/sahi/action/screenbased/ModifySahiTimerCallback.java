@@ -30,11 +30,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 /**
  * Callback handler for the {@link UserInterfaceInputActionCallback} interface.
  *
  * @author tschneck
- *         Date: 17.10.13
+ * Date: 17.10.13
  */
 @Component
 public class ModifySahiTimerCallback implements UserInterfaceInputActionCallback {
@@ -106,6 +108,6 @@ public class ModifySahiTimerCallback implements UserInterfaceInputActionCallback
     }
 
     String getClassAndMethodAsString(JoinPoint joinPoint) {
-        return BaseSakuliAspect.getClassAndMethodAsString(joinPoint);
+        return BaseSakuliAspect.getClassAndMethodAsString(joinPoint, Optional.empty());
     }
 }

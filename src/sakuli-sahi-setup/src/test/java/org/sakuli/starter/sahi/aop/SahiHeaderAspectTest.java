@@ -16,12 +16,11 @@
  * limitations under the License.
  */
 
-package org.sakuli.aop;
+package org.sakuli.starter.sahi.aop;
 
 import net.sf.sahi.request.HttpRequest;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.loader.BeanLoader;
-import org.sakuli.starter.sahi.aop.SahiHeaderAspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.util.ReflectionTestUtils;

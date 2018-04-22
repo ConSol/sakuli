@@ -93,21 +93,21 @@ public class SahiStarterExceptionHandlerTest extends BaseTest {
 
     @Test
     public void testSakuliForwarderException() throws Exception {
-        SakuliForwarderException forwarderException = new SakuliForwarderException("FORWARDER_EXCEPTION");
+        SakuliForwarderException forwarderException = new SakuliForwarderCheckedException("FORWARDER_EXCEPTION");
 
-        testling.handleException(forwarderException, true);
+        testling.handleException(forwarderException.castTo(), true);
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertEquals(testSuite.getException(), forwarderException);
-        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.resumeToTestExecution(testSuite.getException()));
         assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
     @Test
     public void testSakuliForwarderException2() throws Exception {
         when(screenActionLoader.getCurrentTestCase()).thenReturn(null);
-        SakuliForwarderException forwarderException = new SakuliForwarderException("FORWARDER_EXCEPTION");
+        SakuliForwarderException forwarderException = new SakuliForwarderCheckedException("FORWARDER_EXCEPTION");
 
-        testling.handleException(forwarderException);
+        testling.handleException(forwarderException.castTo());
         verify(screenshotActionsMock, never()).takeScreenshotWithTimestampThrowIOException(anyString(), any(Path.class), anyString(), any());
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertEquals(testSuite.getException(), forwarderException);
@@ -120,11 +120,11 @@ public class SahiStarterExceptionHandlerTest extends BaseTest {
         SakuliActionException sakuliActionException = new SakuliActionException("ACTION_EXCEPTION");
 
         testling.handleException(sakuliActionException, mock(RegionImpl.class), true);
-        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), any(Path.class), anyString(), any());
+        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), isNull(), isNull(), isNull());
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);
-        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.resumeToTestExecution(testSuite.getException()));
         assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
@@ -135,11 +135,11 @@ public class SahiStarterExceptionHandlerTest extends BaseTest {
         SakuliActionException sakuliActionException = new SakuliActionException("ACTION_EXCEPTION");
 
         testling.handleException(sakuliActionException, mock(RegionImpl.class), true);
-        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), any(Path.class), anyString(), any());
+        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), isNull(), isNull(), isNull());
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);
-        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.resumeToTestExecution(testSuite.getException()));
         assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 

@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.sakuli.builder;
+package org.sakuli.integration.builder;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.joda.time.DateTime;
@@ -29,7 +29,7 @@ import java.util.Date;
 
 /**
  * @author tschneck
- *         Date: 14.07.14
+ * Date: 14.07.14
  */
 public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> {
     private TestCaseStepState state;

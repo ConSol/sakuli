@@ -25,6 +25,7 @@ import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.sakuli.utils.CleanUpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -36,6 +37,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommonCleanUpServiceImpl extends AbstractTeardownService implements ResultService {
     private static Logger LOGGER = LoggerFactory.getLogger(CommonCleanUpServiceImpl.class);
+    @Autowired
+    private CleanUpHelper cleanUpHelper;
 
     @Override
     public int getServicePriority() {
@@ -45,8 +48,8 @@ public class CommonCleanUpServiceImpl extends AbstractTeardownService implements
     @Override
     public void teardownTestSuite(@NonNull TestSuite testSuite) throws RuntimeException {
         try {
-            CleanUpHelper.cleanClipboard();
-            CleanUpHelper.releaseAllModifiers();
+            cleanUpHelper.cleanClipboard();
+            cleanUpHelper.releaseAllModifiers();
         } catch (Exception e) {
             LOGGER.warn("Some unexpected errors during the clean up procedure:", e);
         }

@@ -27,7 +27,6 @@ import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.state.TestCaseStepState;
-import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.utils.CleanUpHelper;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -66,7 +65,7 @@ public class BaseActionLoaderTest {
         String testCaseId = "xyz";
         when(testSuite.getTestCase(testCaseId)).thenReturn(null);
         testling.init(testCaseId, ".");
-        verify(exceptionHandler, times(1)).handleException(any(SakuliException.class));
+        verify(exceptionHandler, times(1)).handleException(any(Exception.class));
         verify(testling, never()).callInitTestCaseCallback();
         verify(cleanUpHelper, never()).releaseAllModifiers();
     }

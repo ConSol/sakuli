@@ -28,7 +28,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
 import org.sakuli.exceptions.SakuliInitException;

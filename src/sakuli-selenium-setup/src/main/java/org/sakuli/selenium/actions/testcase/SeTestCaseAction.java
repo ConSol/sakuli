@@ -18,9 +18,10 @@
 
 package org.sakuli.selenium.actions.testcase;
 
+import org.sakuli.actions.logging.LogToResultClassName;
 import org.sakuli.actions.testcase.AbstractTestCaseActionImpl;
 import org.sakuli.actions.testcase.TestCaseAction;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -30,11 +31,12 @@ import java.util.Arrays;
  * Will be called from the testcases to execute {@link TestCaseAction}
  *
  * @author tschneck
- *         Date: 4/25/17
+ * Date: 4/25/17
  */
+@LogToResultClassName
 public class SeTestCaseAction extends AbstractTestCaseActionImpl implements TestCaseAction {
     @Override
-    public void addImagePathsAsString(String... imagePaths) throws SakuliException {
+    public void addImagePathsAsString(String... imagePaths) throws SakuliCheckedException {
         this.addImagePaths(Arrays.stream(imagePaths).map(s -> Paths.get(s)).toArray(Path[]::new));
     }
 

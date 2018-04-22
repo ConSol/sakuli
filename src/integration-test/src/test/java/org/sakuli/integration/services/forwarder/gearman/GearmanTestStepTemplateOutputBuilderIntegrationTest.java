@@ -24,15 +24,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.sakuli.BaseTest;
-import org.sakuli.builder.TestCaseExampleBuilder;
-import org.sakuli.builder.TestCaseStepExampleBuilder;
+import org.sakuli.AbstractBaseTest;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.integration.IntegrationTest;
+import org.sakuli.integration.builder.TestCaseExampleBuilder;
+import org.sakuli.integration.builder.TestCaseStepExampleBuilder;
 import org.sakuli.services.forwarder.ScreenshotDiv;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
@@ -52,7 +52,7 @@ import static org.mockito.Mockito.doReturn;
  * @author Georgi Todorov
  */
 @Test(groups = IntegrationTest.GROUP)
-public class GearmanTestStepTemplateOutputBuilderIntegrationTest extends BaseTest {
+public class GearmanTestStepTemplateOutputBuilderIntegrationTest extends AbstractBaseTest {
 
     private static final String TESTSUITE_ID = "example_xfce";
     private static final String DEFAULT_SERVICE_TYPE = "passive";

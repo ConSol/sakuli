@@ -33,7 +33,7 @@ import static org.testng.Assert.assertEquals;
 
 /**
  * @author tschneck
- *         Date: 4/24/17
+ * Date: 4/24/17
  */
 public class UserInterfaceInputActionExecutedAspectTest extends AopBaseTest {
 
@@ -44,7 +44,7 @@ public class UserInterfaceInputActionExecutedAspectTest extends AopBaseTest {
         ReflectionTestUtils.setField(testAction, "typingUtil", typingUtil);
         testAction.type("nothing");
 
-        verify(typingUtil).type(anyString(), anyString());
+        verify(typingUtil).type(eq("nothing"), isNull());
         assertLastLine(logFile, testAction.getClass().getSimpleName(), LogLevel.INFO,
                 "Environment.type() - type over system keyboard with arg(s) [nothing]");
         final Collection<UserInterfaceInputActionCallback> callbacks = BeanLoader.loadMultipleBeans(UserInterfaceInputActionCallback.class).values();

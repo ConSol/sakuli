@@ -16,13 +16,13 @@
  * limitations under the License.
  */
 
-package org.sakuli.builder;
+package org.sakuli.integration.builder;
 
 /**
  * Marker interface for all builders for testing reasons
  *
  * @author tschneck
- *         Date: 11.07.14
+ * Date: 11.07.14
  */
 public interface ExampleBuilder<T> {
 

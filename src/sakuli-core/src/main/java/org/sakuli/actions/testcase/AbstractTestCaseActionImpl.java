@@ -23,7 +23,7 @@ import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.helper.TestDataEntityHelper;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.BeanLoader;
 
@@ -31,7 +31,7 @@ import java.nio.file.Path;
 
 /**
  * @author tschneck
- *         Date: 4/25/17
+ * Date: 4/25/17
  */
 public abstract class AbstractTestCaseActionImpl implements TestCaseAction {
     /**
@@ -46,12 +46,19 @@ public abstract class AbstractTestCaseActionImpl implements TestCaseAction {
     }
 
     @Override
-    @LogToResult(message = "init a new test case")
+    @LogToResult(message = "init a new test case", logClassInstance = false)
     public void init(String testCaseID, int warningTime, int criticalTime, String... imagePaths) {
         loader.init(testCaseID, imagePaths);
         initWarningAndCritical(warningTime, criticalTime);
     }
 
+
+    @LogToResult(message = "init a new test case with caseID", logClassInstance = false)
+    public void initWithCaseID(String testCaseID, String newTestCaseID, int warningTime, int criticalTime, String... imagePaths) {
+        loader.init(testCaseID, imagePaths);
+        loader.getCurrentTestCase().setId(newTestCaseID);
+        initWarningAndCritical(warningTime, criticalTime);
+    }
 
     @Override
     @LogToResult(message = "init a new test case")
@@ -63,7 +70,7 @@ public abstract class AbstractTestCaseActionImpl implements TestCaseAction {
 
     @Override
     @LogToResult
-    public void addImagePaths(Path... imagePaths) throws SakuliException {
+    public void addImagePaths(Path... imagePaths) throws SakuliCheckedException {
         loader.addImagePaths(imagePaths);
     }
 
@@ -91,7 +98,7 @@ public abstract class AbstractTestCaseActionImpl implements TestCaseAction {
     }
 
     @Override
-    public void handleException(Throwable e) {
+    public void handleException(Exception e) {
         loader.getExceptionHandler().handleException(e, false);
     }
 
@@ -115,7 +122,7 @@ public abstract class AbstractTestCaseActionImpl implements TestCaseAction {
         try {
             return loader.getCurrentTestCase().getTcFolder().toAbsolutePath().toString();
         } catch (Exception e) {
-            handleException(new SakuliException(e,
+            handleException(new SakuliCheckedException(e,
                     String.format("cannot resolve the folder path of the current testcase '%s'",
                             loader.getCurrentTestCase())));
             return null;
@@ -128,7 +135,7 @@ public abstract class AbstractTestCaseActionImpl implements TestCaseAction {
         try {
             return loader.getTestSuite().getTestSuiteFolder().toAbsolutePath().toString();
         } catch (Exception e) {
-            handleException(new SakuliException(e,
+            handleException(new SakuliCheckedException(e,
                     String.format("cannot resolve the folder path of the current testsuite '%s'",
                             loader.getTestSuite())));
             return null;

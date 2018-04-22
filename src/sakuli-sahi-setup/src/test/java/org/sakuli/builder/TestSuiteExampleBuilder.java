@@ -22,7 +22,7 @@ import org.apache.commons.lang.time.DateUtils;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 
 import java.nio.file.Path;
 import java.util.Collections;
@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * @author tschneck
- *         Date: 08.05.2014
+ * Date: 08.05.2014
  */
 public class TestSuiteExampleBuilder implements ExampleBuilder<TestSuite> {
 
@@ -41,7 +41,7 @@ public class TestSuiteExampleBuilder implements ExampleBuilder<TestSuite> {
     private String id;
     private Date stopDate;
     private Date startDate;
-    private SakuliException exception;
+    private SakuliCheckedException exception;
     private List<TestCase> testCases;
     private int warningTime;
     private int criticalTime;
@@ -107,7 +107,7 @@ public class TestSuiteExampleBuilder implements ExampleBuilder<TestSuite> {
         return this;
     }
 
-    public TestSuiteExampleBuilder withException(SakuliException exception) {
+    public TestSuiteExampleBuilder withException(SakuliCheckedException exception) {
         this.exception = exception;
         return this;
     }

@@ -65,7 +65,7 @@ public class ModifySahiTimerCallbackTest extends AopBaseTest {
         ReflectionTestUtils.setField(testAction, "typingUtil", typingUtil);
         testAction.type("nothing");
 
-        verify(typingUtil).type(anyString(), anyString());
+        verify(typingUtil).type(anyString(), isNull());
         assertLastLine(logFile, testAction.getClass().getSimpleName(), LogLevel.INFO,
                 "Environment.type() - type over system keyboard with arg(s) [nothing]");
         final UserInterfaceInputActionCallback cb = callbacks.stream().findFirst().get();

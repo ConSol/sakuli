@@ -41,12 +41,12 @@ public class TestNGActionCallback implements ActionLoaderCallback {
     }
 
     /**
-     * Throw the handled Exception as {@link AssertionError} after {@link SakuliExceptionHandler#processException(Throwable)} to stop the current
+     * Throw the handled Exception as {@link AssertionError} after {@link SakuliExceptionHandler#processException(Exception)} to stop the current
      * test case execution of an JAVA test.
      */
     @Override
     public void handleException(SakuliException transformedException) {
-        if (transformedException == null || exceptionHandler.resumeToTestExcecution(transformedException)) {
+        if (transformedException == null || exceptionHandler.resumeToTestExecution(transformedException.castTo())) {
             return;
         }
         throw new AssertionError(transformedException);

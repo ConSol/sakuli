@@ -20,17 +20,20 @@ package org.sakuli.actions.logging;
 
 import org.aspectj.lang.JoinPoint;
 
+import java.util.Optional;
+
 /**
  * Will be triggered everytime an annotated method with @{@link LogToResult} will be called.
  * The trigger will be executed from {@link org.sakuli.aop.LogActionExecutedAspect}.
  *
  * @author tschneck
- *         Date: 4/24/17
+ * Date: 4/24/17
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public interface LogToResultCallback {
 
     /**
      * will be triggered if an action event should be logged.
      */
-    void doActionLog(JoinPoint joinPoint, LogToResult logToResult);
+    void doActionLog(JoinPoint joinPoint, LogToResult logToResult, Optional<LogToResultClassName> logToResultClassName);
 }

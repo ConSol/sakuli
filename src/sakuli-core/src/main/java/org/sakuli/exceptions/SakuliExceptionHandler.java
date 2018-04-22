@@ -154,16 +154,16 @@ public class SakuliExceptionHandler {
         SakuliException transformedException = transformException(e);
 
         processedExceptions.add(e);
-        processedExceptions.add(transformedException);
+        processedExceptions.add(transformedException.castTo());
         //Do different exception handling for different use cases:
-        if (resumeToTestExcecution(e)
+        if (resumeToTestExecution(e)
                 && loader.getSakuliProperties().isSuppressResumedExceptions()) {
             //if suppressResumedExceptions == true and is a resume to test exception
             logger.debug(transformedException.getMessage(), transformedException);
         } else {
             //normal handling
             logger.error(transformedException.getMessage(), transformedException);
-            saveException(transformedException);
+            saveException(transformedException.castTo());
             triggerCallbacks(transformedException);
         }
     }
@@ -186,8 +186,9 @@ public class SakuliExceptionHandler {
 
         //check also caused exception to don't process wrapped exceptions twice
         //noinspection SimplifiableIfStatement
-        if (!processed && e.getCause() != null) {
-            return isAlreadyProcessed(e.getCause());
+        final Throwable cause = e.getCause();
+        if (!processed && cause != null) {
+            return isAlreadyProcessed(cause instanceof Exception ? (Exception) cause : new SakuliCheckedException(e));
         }
         return processed;
     }
@@ -296,18 +297,5 @@ public class SakuliExceptionHandler {
             resumeExceptions.add(e);
         }
         return e;
-    }
-
-    /**
-     * Throws a new {@link SakuliRuntimeException} for all collected resumed exceptions. A resumed exception have been
-     * created by{@link #handleException(Throwable, boolean)}  with resumeOnException==true.
-     */
-    // TODO TS MERGE: check if needed!
-    public void throwCollectedResumedExceptions() {
-        if (resumeExceptions.size() > 0) {
-            SakuliRuntimeException e = new SakuliRuntimeException("test contains some suppressed resumed exceptions!");
-            resumeExceptions.forEach(e::addSuppressed);
-            throw e;
-        }
     }
 }

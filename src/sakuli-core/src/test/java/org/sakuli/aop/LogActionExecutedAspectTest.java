@@ -23,9 +23,11 @@ import org.aspectj.lang.Signature;
 import org.sakuli.actions.environment.Environment;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.logging.LogToResultCallback;
+import org.sakuli.actions.logging.LogToResultClassName;
 import org.sakuli.actions.logging.Logger;
 import org.sakuli.actions.screenbased.RegionTestImpl;
 import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
+import org.sakuli.actions.testcase.TestCaseAction;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.loader.BaseActionLoader;
@@ -36,6 +38,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -93,7 +96,7 @@ public class LogActionExecutedAspectTest extends AopBaseTest {
         final Collection<LogToResultCallback> callbacks = BeanLoader.loadMultipleBeans(LogToResultCallback.class).values();
         assertEquals(callbacks.size(), 1);
         final LogToResultCallback cb = callbacks.stream().findFirst().get();
-        verify(cb).doActionLog(any(), eq(logToResult));
+        verify(cb).doActionLog(any(), eq(logToResult), any());
 
         //hide args
         when(logToResult.logArgs()).thenReturn(false);
@@ -102,7 +105,7 @@ public class LogActionExecutedAspectTest extends AopBaseTest {
                 "\"" + classContent + "\" " + className + "." + methodName + "() - " + sampleMessage +
                         " with arg(s) [****, ****]"
         );
-        verify(cb, times(2)).doActionLog(any(), eq(logToResult));
+        verify(cb, times(2)).doActionLog(any(), eq(logToResult), any());
 
 
         //without class values
@@ -112,14 +115,14 @@ public class LogActionExecutedAspectTest extends AopBaseTest {
                 className + "." + methodName + "() - " + sampleMessage +
                         " with arg(s) [****, ****]"
         );
-        verify(cb, times(3)).doActionLog(any(), eq(logToResult));
+        verify(cb, times(3)).doActionLog(any(), eq(logToResult), any());
 
         //without args
         when(jp.getArgs()).thenReturn(null);
         testling.addActionLog(jp, logToResult);
         assertLastLine(logFile, className, logLevel,
                 className + "." + methodName + "() - " + sampleMessage);
-        verify(cb, times(4)).doActionLog(any(), eq(logToResult));
+        verify(cb, times(4)).doActionLog(any(), eq(logToResult), any());
 
 
         //without message
@@ -127,7 +130,7 @@ public class LogActionExecutedAspectTest extends AopBaseTest {
         testling.addActionLog(jp, logToResult);
         assertLastLine(logFile, className, logLevel,
                 className + "." + methodName + "()");
-        verify(cb, times(5)).doActionLog(any(), eq(logToResult));
+        verify(cb, times(5)).doActionLog(any(), eq(logToResult), any());
     }
 
     @Test
@@ -166,8 +169,8 @@ public class LogActionExecutedAspectTest extends AopBaseTest {
         ReflectionTestUtils.setField(testAction, "loader", loader, BaseActionLoader.class);
         testAction.init("testID", 3, 4, "imagefolder1", "imagefolder2");
 
-        assertLastLine(logFile, "AbstractTestCaseActionImpl", LogLevel.INFO,
-                "\"test case [" + sampleTc.getActionValueString() + "]\" AbstractTestCaseActionImpl.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
+        assertLastLine(logFile, TestCaseAction.class.getSimpleName(), LogLevel.INFO,
+                "TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
     }
 
     @Test
@@ -181,8 +184,8 @@ public class LogActionExecutedAspectTest extends AopBaseTest {
         ReflectionTestUtils.setField(testAction, "loader", loader, BaseActionLoader.class);
         assertEquals(testAction.getLastURL(), "last-url");
 
-        assertLastLine(logFile, testAction.getClass().getSimpleName(), LogLevel.INFO,
-                "\"test case [" + sampleTc.getActionValueString() + "]\" JavaScriptTestCaseActionImpl.getLastURL() - return 'lastURL'");
+        assertLastLine(logFile, TestCaseAction.class.getSimpleName(), LogLevel.INFO,
+                "\"test case [" + sampleTc.getActionValueString() + "]\" TestCaseAction.getLastURL()");
     }
 
     @Test
@@ -192,7 +195,27 @@ public class LogActionExecutedAspectTest extends AopBaseTest {
         LogToResult annotation = mock(LogToResult.class);
         when(annotation.logArgsOnly()).thenReturn(true);
         when(annotation.logArgs()).thenReturn(true);
-        StringBuilder result = BaseSakuliAspect.createLoggingString(jp, annotation);
+        StringBuilder result = BaseSakuliAspect.createLoggingString(jp, annotation, Optional.empty());
         assertEquals(result.toString(), "TEST, arguments");
+    }
+
+    @Test
+    public void testCreateLoggingStringWithOtherClass() throws Exception {
+        JoinPoint jp = mock(JoinPoint.class);
+        Signature signatur = mock(Signature.class);
+        when(signatur.getDeclaringType()).thenReturn(this.getClass());
+        when(signatur.getName()).thenReturn("myMethod");
+        when(jp.getSignature()).thenReturn(signatur);
+        when(jp.getArgs()).thenReturn(new Object[]{"TEST", "arguments"});
+        LogToResult annotation = mock(LogToResult.class);
+        when(annotation.logArgsOnly()).thenReturn(false);
+        when(annotation.logArgs()).thenReturn(true);
+        LogToResultClassName classAnnotation = mock(LogToResultClassName.class);
+        when(classAnnotation.value()).thenReturn("MyClassName");
+
+        StringBuilder result = BaseSakuliAspect.createLoggingString(jp, annotation, Optional.empty());
+        assertEquals(result.toString(), this.getClass().getSimpleName() + ".myMethod() with arg(s) [TEST, arguments]");
+        StringBuilder result2 = BaseSakuliAspect.createLoggingString(jp, annotation, Optional.of(classAnnotation));
+        assertEquals(result2.toString(), "MyClassName.myMethod() with arg(s) [TEST, arguments]");
     }
 }

@@ -23,9 +23,7 @@ import org.joda.time.DateTime;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.sakuli.BaseTest;
-import org.sakuli.builder.TestCaseExampleBuilder;
-import org.sakuli.builder.TestCaseStepExampleBuilder;
+import org.sakuli.AbstractBaseTest;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
@@ -34,6 +32,8 @@ import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.integration.IntegrationTest;
+import org.sakuli.integration.builder.TestCaseExampleBuilder;
+import org.sakuli.integration.builder.TestCaseStepExampleBuilder;
 import org.sakuli.services.forwarder.ScreenshotDiv;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
 import org.sakuli.services.forwarder.checkmk.CheckMKProperties;
@@ -58,7 +58,7 @@ import static org.mockito.Mockito.when;
  * @author Georgi Todorov
  */
 @Test(groups = IntegrationTest.GROUP)
-public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
+public class CheckMKTemplateOutputBuilderIntegrationTest extends AbstractBaseTest {
 
     private static final String DEFAULT_SERVICE_DESCRIPTION = "service_description";
 

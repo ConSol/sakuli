@@ -23,10 +23,13 @@ import net.sf.sahi.report.ResultType;
 import org.aspectj.lang.JoinPoint;
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.logging.LogToResultCallback;
+import org.sakuli.actions.logging.LogToResultClassName;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.starter.sahi.datamodel.actions.LogResult;
 import org.sakuli.starter.sahi.loader.SahiActionLoader;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 import static org.sakuli.aop.BaseSakuliAspect.createLoggingString;
 import static org.sakuli.datamodel.actions.LogLevel.WARNING;
@@ -36,11 +39,10 @@ import static org.sakuli.datamodel.actions.LogLevel.WARNING;
  * Based on the Callback interface {@link LogToResultCallback}
  *
  * @author tschneck
- *         Date: 4/24/17
+ * Date: 4/24/17
  */
 @Component
 public class SahiLogToResultCallback implements LogToResultCallback {
-
 
     /**
      * Method to do all Log Actions for the Sahi Report for the action classes annotated with {@link LogToResult}. A log
@@ -50,9 +52,9 @@ public class SahiLogToResultCallback implements LogToResultCallback {
      * @param logToResult {@link LogToResult} Annotation
      */
     @Override
-    public void doActionLog(JoinPoint joinPoint, LogToResult logToResult) {
+    public void doActionLog(JoinPoint joinPoint, LogToResult logToResult, Optional<LogToResultClassName> logToResultClassName) {
         if (logToResult != null) {
-            StringBuilder message = createLoggingString(joinPoint, logToResult);
+            StringBuilder message = createLoggingString(joinPoint, logToResult, logToResultClassName);
 
             //log the action to log file and print
             if (WARNING.equals(logToResult.level())) {

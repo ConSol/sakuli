@@ -18,16 +18,14 @@
 
 package org.sakuli.actions.testcase;
 
-import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.datamodel.actions.ImageLib;
-import org.sakuli.exceptions.SakuliException;
-import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.exceptions.SakuliCheckedException;
 
 import java.nio.file.Path;
 
 /**
  * @author tschneck
- *         Date: 4/25/17
+ * Date: 4/25/17
  */
 public interface TestCaseAction {
     /**
@@ -40,8 +38,9 @@ public interface TestCaseAction {
      *                     the execution time will never exceed, so the state will be always OK!
      * @param imagePaths   multiple paths to images
      */
-    @LogToResult(message = "init a new test case")
     void init(String testCaseID, int warningTime, int criticalTime, String... imagePaths);
+
+    void initWithCaseID(String testCaseID, String newTestCaseID, int warningTime, int criticalTime, String... imagePaths);
 
     /**
      * Set the warning and critical Time to the specific test case.
@@ -53,7 +52,6 @@ public interface TestCaseAction {
      *                     the execution time will never exceed, so the state will be always OK!
      * @param imagePaths   multiple paths to images
      */
-    @LogToResult(message = "init a new test case")
     void initWithPaths(String testCaseID, int warningTime, int criticalTime, Path... imagePaths);
 
     /**
@@ -61,26 +59,25 @@ public interface TestCaseAction {
      * If a relative path is assigned, the current testcase folder will be used as current directory.
      *
      * @param imagePaths one or more paths as {@link String} elements
-     * @throws SakuliException if an IO error occurs
+     * @throws SakuliCheckedException if an IO error occurs
      */
-    void addImagePathsAsString(String... imagePaths) throws SakuliException;
+    void addImagePathsAsString(String... imagePaths) throws SakuliCheckedException;
 
     /**
      * Adds the additional paths to the current {@link ImageLib} object.
      *
      * @param imagePaths one or more {@link Path} elements
-     * @throws SakuliException if an IO error occurs
+     * @throws SakuliCheckedException if an IO error occurs
      */
-    @LogToResult
-    void addImagePaths(Path... imagePaths) throws SakuliException;
+    void addImagePaths(Path... imagePaths) throws SakuliCheckedException;
 
 
     /**
-     * calls the method {@link SakuliExceptionHandler#handleException(Throwable)}
+     * calls the method {@link org.sakuli.exceptions.SakuliExceptionHandler#handleException(Exception)}
      *
      * @param e the original exception
      */
-    void handleException(Throwable e);
+    void handleException(Exception e);
 
     /**
      * @param exceptionMessage String message
@@ -93,12 +90,10 @@ public interface TestCaseAction {
     /**
      * @return the folder path of the current testcase as {@link String}.
      */
-    @LogToResult
     String getTestCaseFolderPath();
 
     /**
      * @return the folder path of the current testsuite as {@link String}.
      */
-    @LogToResult
     String getTestSuiteFolderPath();
 }

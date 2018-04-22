@@ -19,13 +19,20 @@
 package org.sakuli.aop;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.actions.logging.LogToResult;
+import org.sakuli.actions.logging.LogToResultClassName;
+import org.sakuli.datamodel.TestAction;
+import org.sakuli.datamodel.TestCase;
+import org.sakuli.loader.BeanLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Optional;
 
 import static org.apache.commons.lang.StringUtils.isNotEmpty;
 import static org.apache.commons.lang.StringUtils.removeEnd;
@@ -33,8 +40,9 @@ import static org.apache.commons.lang3.StringUtils.removeStart;
 
 /**
  * @author tschneck
- *         Date: 23.09.14
+ * Date: 23.09.14
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 public abstract class BaseSakuliAspect {
     public static final String ALREADY_PROCESSED = "{{SAKULI_EX}}";
 
@@ -45,9 +53,9 @@ public abstract class BaseSakuliAspect {
         return LoggerFactory.getLogger(joinPoint.getSignature().getDeclaringType());
     }
 
-    public static String getClassAndMethodAsString(JoinPoint joinPoint) {
+    public static String getClassAndMethodAsString(JoinPoint joinPoint, Optional<LogToResultClassName> logToResultClassName) {
         return String.format("%s.%s()",
-                joinPoint.getSignature().getDeclaringType().getSimpleName(),
+                resolveObjectName(joinPoint.getSignature().getDeclaringType(), logToResultClassName),
                 joinPoint.getSignature().getName());
     }
 
@@ -92,7 +100,7 @@ public abstract class BaseSakuliAspect {
     /**
      * @return based on the different arguments of the {@link LogToResult} annotation an different output {@link String}
      */
-    public static StringBuilder createLoggingString(JoinPoint joinPoint, LogToResult logToResult) {
+    public static StringBuilder createLoggingString(JoinPoint joinPoint, LogToResult logToResult, Optional<LogToResultClassName> logToResultClassName) {
         if (logToResult.logArgsOnly()) {
             return new StringBuilder(removeEnd(removeStart(printArgs(joinPoint, logToResult.logArgs()), "["), "]"));
         }
@@ -102,7 +110,7 @@ public abstract class BaseSakuliAspect {
         if (logToResult.logClassInstance() && joinPoint.getTarget() != null) {
             message.append("\"").append(joinPoint.getTarget().toString()).append("\" ");
         }
-        message.append(getClassAndMethodAsString(joinPoint));
+        message.append(getClassAndMethodAsString(joinPoint, logToResultClassName));
 
         //add message if needed
         if (isNotEmpty(logToResult.message())) {
@@ -113,5 +121,32 @@ public abstract class BaseSakuliAspect {
             message.append(" with arg(s) ").append(printArgs(joinPoint, logToResult.logArgs()));
         }
         return message;
+    }
+
+    private static String resolveObjectName(Class declaringType, @NonNull Optional<LogToResultClassName> logToResultClassName) {
+        return logToResultClassName
+                .map(LogToResultClassName::value)
+                .filter(StringUtils::isNotEmpty)
+                .orElseGet(declaringType::getSimpleName);
+    }
+
+    protected void addActionsToCurrentTestCase(TestAction currentTestAction) {
+        TestCase currentTestCase = BeanLoader.loadBaseActionLoader().getCurrentTestCase();
+        if (currentTestAction != null && currentTestCase != null) {
+            currentTestCase.addAction(currentTestAction);
+        }
+    }
+
+    protected TestAction extractTestAction(JoinPoint joinPoint, LogToResult logToResult, Optional<LogToResultClassName> logToResultClassName) {
+        if (logToResult.logArgsOnly()) {
+            return null;
+        }
+        return TestAction.createSakuliTestAction(
+                resolveObjectName(joinPoint.getSignature().getDeclaringType(), logToResultClassName),
+                joinPoint.getSignature().getName(),
+                joinPoint.getArgs(),
+                logToResult.message(),
+                BeanLoader.loadBaseActionLoader().getSakuliProperties().getSakuliDocBaseUrl()
+        );
     }
 }

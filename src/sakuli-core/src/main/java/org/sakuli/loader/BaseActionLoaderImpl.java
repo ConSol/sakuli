@@ -99,7 +99,7 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
             addImagePaths(imagePaths);
             callInitTestCaseCallback();
             cleanUpHelper.releaseAllModifiers();
-        } catch (SakuliException e) {
+        } catch (Exception e) {
             exceptionHandler.handleException(e);
         }
     }

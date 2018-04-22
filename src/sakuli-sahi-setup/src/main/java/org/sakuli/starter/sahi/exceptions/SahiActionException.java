@@ -18,7 +18,7 @@
 
 package org.sakuli.starter.sahi.exceptions;
 
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.starter.sahi.datamodel.actions.LogResult;
 
 /**
