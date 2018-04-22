@@ -74,6 +74,8 @@
         <dependencies.jersey-client.version>2.22.2</dependencies.jersey-client.version>
         <dependencies.slf4j.version>1.7.7</dependencies.slf4j.version>
         <dependencies.izpack.version>5.0.6</dependencies.izpack.version>
+        <dependencies.checker.version>2.5.0</dependencies.checker.version>
+        <depedencies.jtwig.version>5.86.1.RELEASE</depedencies.jtwig.version>
 
         <!--testing related properties-->
         <dependencies.testng.version>6.8.8</dependencies.testng.version>
@@ -81,7 +83,6 @@
         <test.group.unit>unit</test.group.unit>
         <test.group.ui>ui</test.group.ui>
         <test.group.sakuliDSL>sakuli-test</test.group.sakuliDSL>
-        <dependencies.checker.version>2.5.0</dependencies.checker.version>
     </properties>
 
     <!-- Plugin CONFIG -->
@@ -658,12 +659,12 @@
             <dependency>
                 <groupId>org.jtwig</groupId>
                 <artifactId>jtwig-core</artifactId>
-                <version>5.64</version>
+                <version>${depedencies.jtwig.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jtwig</groupId>
                 <artifactId>jtwig-spaceless-extension</artifactId>
-                <version>1.44</version>
+                <version>${depedencies.jtwig.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.code.gson</groupId>
@@ -707,18 +708,6 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-        <!-- jtwig dependency-->
-        <repository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </releases>
-        </repository>
+
     </repositories>
 </project>
