@@ -18,7 +18,7 @@
 
 package org.sakuli.services.forwarder.database.dao.impl;
 
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.services.forwarder.database.ProfileJdbcDb;
 import org.sakuli.services.forwarder.database.dao.DaoTestSuite;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ import java.sql.Types;
 public class DaoTestSuiteImpl extends Dao implements DaoTestSuite {
 
     @Autowired
-    public DaoTestSuiteImpl(DataSource dataSource) throws SakuliException {
+    public DaoTestSuiteImpl(DataSource dataSource) throws SakuliCheckedException {
         super(dataSource);
     }
 

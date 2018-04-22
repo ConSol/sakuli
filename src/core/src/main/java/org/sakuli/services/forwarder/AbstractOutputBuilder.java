@@ -47,8 +47,6 @@ public abstract class AbstractOutputBuilder {
 
     @Autowired
     protected ScreenshotDivConverter screenshotDivConverter;
-    @Autowired
-    protected TestSuite testSuite;
 
     public static String replacePlaceHolder(String message, PlaceholderMap placeholderStringMap) {
         if (StringUtils.isBlank(message)) {

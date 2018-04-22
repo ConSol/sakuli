@@ -31,7 +31,7 @@ import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.services.cipher.CipherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +116,7 @@ public class ScreenActionLoaderImpl implements ScreenActionLoader {
     }
 
     @Override
-    public void addImagePaths(Path... imagePaths) throws SakuliException {
+    public void addImagePaths(Path... imagePaths) throws SakuliCheckedException {
         baseLoader.addImagePaths(imagePaths);
     }
 

@@ -21,7 +21,7 @@ package org.sakuli.services.forwarder;
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
 import org.sakuli.services.forwarder.checkmk.ProfileCheckMK;
 import org.sakuli.services.forwarder.gearman.ProfileGearman;
 import org.sakuli.services.forwarder.icinga2.ProfileIcinga2;
@@ -57,7 +57,7 @@ public class ScreenshotDivConverter {
         return string;
     }
 
-    public ScreenshotDiv convert(Throwable e) {
+    public ScreenshotDiv convert(Exception e) {
         if (e != null) {
             String base64String = extractScreenshotAsBase64(e);
             String format = extractScreenshotFormat(e);
@@ -72,7 +72,7 @@ public class ScreenshotDivConverter {
         return null;
     }
 
-    protected String extractScreenshotAsBase64(Throwable exception) {
+    protected String extractScreenshotAsBase64(Exception exception) {
         if (exception instanceof SakuliExceptionWithScreenshot) {
             Path screenshotPath = ((SakuliExceptionWithScreenshot) exception).getScreenshot();
             if (screenshotPath != null) {
@@ -84,7 +84,7 @@ public class ScreenshotDivConverter {
                     }
                     return base64String;
                 } catch (IOException e) {
-                    exceptionHandler.handleException(new SakuliForwarderException(e,
+                    exceptionHandler.handleException(new SakuliForwarderCheckedException(e,
                             String.format("error during the BASE64 encoding of the screenshot '%s'", screenshotPath.toString())));
                 }
             }
@@ -92,7 +92,7 @@ public class ScreenshotDivConverter {
         return null;
     }
 
-    protected String extractScreenshotFormat(Throwable exception) {
+    protected String extractScreenshotFormat(Exception exception) {
         if (exception instanceof SakuliExceptionWithScreenshot) {
             Path screenshotPath = ((SakuliExceptionWithScreenshot) exception).getScreenshot();
             if (screenshotPath != null) {

@@ -82,6 +82,7 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
+                            <encoding>${project.build.sourceEncoding}</encoding>
                             <skip>false</skip>
                             <includes>
                                 <include>**/*.class</include>

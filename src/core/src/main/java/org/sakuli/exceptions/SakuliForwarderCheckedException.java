@@ -16,31 +16,21 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.common;
-
-import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.services.ResultService;
-import org.springframework.beans.factory.annotation.Autowired;
+package org.sakuli.exceptions;
 
 /**
- * @author tschneck
+ * Checked Exception for {@link SakuliForwarderException}
  */
-public abstract class AbstractResultService implements ResultService {
-
-    @Autowired
-    protected SakuliExceptionHandler exceptionHandler;
-    @Autowired
-    protected TestSuite testSuite;
-
-    @Override
-    public void refreshStates() {
-        testSuite.refreshState();
+public class SakuliForwarderCheckedException extends SakuliCheckedException implements SakuliForwarderException {
+    public SakuliForwarderCheckedException(String message) {
+        super(message);
     }
 
-    @Override
-    public void triggerAction() {
-        this.refreshStates();
-        this.saveAllResults();
+    public SakuliForwarderCheckedException(Exception e) {
+        super(e);
+    }
+
+    public SakuliForwarderCheckedException(Exception suppressedException, String message) {
+        super(suppressedException, message);
     }
 }

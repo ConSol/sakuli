@@ -32,12 +32,12 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.integration.IntegrationTest;
+import org.sakuli.services.forwarder.ScreenshotDiv;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
 import org.sakuli.services.forwarder.checkmk.CheckMKProperties;
 import org.sakuli.services.forwarder.checkmk.CheckMKTemplateOutputBuilder;
-import org.sakuli.services.forwarder.ScreenshotDiv;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -49,8 +49,8 @@ import java.util.Arrays;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.notNull;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -170,7 +170,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestCaseState.OK.name()));
     }
 
@@ -252,7 +252,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_STEP.name()));
     }
 
@@ -334,7 +334,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_CASE.name()));
     }
 
@@ -416,7 +416,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         String expected = loadExpectedOutput(TestSuiteState.CRITICAL_IN_CASE.name());
         Assert.assertEquals(output.getBytes(), expected.getBytes());
         Assert.assertEquals(output, expected);
@@ -500,7 +500,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.WARNING_IN_SUITE.name()));
     }
 
@@ -582,7 +582,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                         .buildExample()
         ));
         doReturn(testCaseAsSortedSet).when(testSuite).getTestCasesAsSortedSet();
-        String output = testling.createOutput();
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.CRITICAL_IN_SUITE.name()));
     }
 
@@ -646,7 +646,7 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
                                                 .withWarningTime(5)
                                                 .withStartDate(new DateTime(1970, 1, 1, 10, 36, 0).toDate())
                                                 .withStopDate(new DateTime(1970, 1, 1, 10, 36, 1, 50).toDate())
-                                                .withException(new SakuliException("_highlight(_link(\"xSL Manager\")); TypeError: el is undefined Sahi.prototype._highlight@http://sahi.example.com/_s_/spr/concat.js:1210:9 @http://sahi.example.com/_s_/spr/concat.js line 3607 > eval:1:1 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/concat.js:3607:9 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/sakuli/inject.js:46:12 @http://sahi.example.com/_s_/spr/concat.js:3373:5  <a href='/_s_/dyn/Log_getBrowserScript?href=/root/sakuli/example_test_suites/example_xfce/case2/sakuli_demo.js&n=1210'><b>Click for browser script</b></a>"))
+                                                .withException(new SakuliCheckedException("_highlight(_link(\"xSL Manager\")); TypeError: el is undefined Sahi.prototype._highlight@http://sahi.example.com/_s_/spr/concat.js:1210:9 @http://sahi.example.com/_s_/spr/concat.js line 3607 > eval:1:1 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/concat.js:3607:9 Sahi.prototype.ex@http://sahi.example.com/_s_/spr/sakuli/inject.js:46:12 @http://sahi.example.com/_s_/spr/concat.js:3373:5  <a href='/_s_/dyn/Log_getBrowserScript?href=/root/sakuli/example_test_suites/example_xfce/case2/sakuli_demo.js&n=1210'><b>Click for browser script</b></a>"))
                                                 .buildExample(),
                                         new TestCaseStepExampleBuilder()
                                                 .withState(TestCaseStepState.OK)
@@ -671,8 +671,8 @@ public class CheckMKTemplateOutputBuilderIntegrationTest extends BaseTest {
         screenshotDiv.setId("sakuli_screenshot243575009");
         screenshotDiv.setFormat("jpg");
         screenshotDiv.setBase64screenshot("/9j/4AAQSkZJRgABAgAAAQABAAD9k=");
-        doReturn(screenshotDiv).when(screenshotDivConverter).convert(notNull(Throwable.class));
-        String output = testling.createOutput();
+        doReturn(screenshotDiv).when(screenshotDivConverter).convert(notNull(Exception.class));
+        String output = testling.createOutput(testSuite);
         Assert.assertEquals(output, loadExpectedOutput(TestSuiteState.ERRORS.name()));
     }
 

@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.sakuli.BaseTest;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -36,23 +37,23 @@ import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
  * @author tschneck
- *         Date: 2/12/16
+ * Date: 2/12/16
  */
-public class LogCleanUpResultServiceImplTest {
+public class LogCleanUpServiceImplTest {
 
     @Mock
     private SakuliProperties sakuliProperties;
 
     @InjectMocks
     @Spy
-    private LogCleanUpResultServiceImpl testling;
+    private LogCleanUpServiceImpl testling;
     private Path tempLog;
 
     @BeforeMethod
@@ -82,7 +83,7 @@ public class LogCleanUpResultServiceImplTest {
     @Test
     public void testNoLogFolder() throws Exception {
         when(sakuliProperties.getLogFolder()).thenReturn(Paths.get("NOT_EXIST"));
-        testling.triggerAction();
+        testling.teardownTestSuite(new TestSuite());
         verify(testling, never()).cleanUpDirectory(any());
     }
 
@@ -99,7 +100,7 @@ public class LogCleanUpResultServiceImplTest {
         Path notToOld2 = createFileWithDate(tempLog.resolve("today-13.log"), todayMinus13);
 
         when(sakuliProperties.getLogFolder()).thenReturn(tempLog);
-        testling.triggerAction();
+        testling.teardownTestSuite(new TestSuite());
         verify(testling, times(2)).cleanUpDirectory(any());
         assertTrue(Files.exists(folder1));
         assertTrue(Files.exists(today));

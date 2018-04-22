@@ -19,7 +19,6 @@
 package org.sakuli.datamodel;
 
 import org.sakuli.datamodel.state.TestCaseState;
-import org.sakuli.exceptions.SakuliException;
 import org.springframework.util.CollectionUtils;
 
 import java.nio.file.Path;
@@ -31,7 +30,7 @@ import static org.apache.commons.lang.StringUtils.trimToEmpty;
 /**
  * @author tschneck Date: 17.06.13
  */
-public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseState> {
+public class TestCase extends AbstractTestDataEntity<TestCaseState> {
 
     /**
      * {@link #id} and {@link # startUrl} will be set with the method {@link org.sakuli.starter.SahiConnector#init()}
@@ -39,7 +38,7 @@ public class TestCase extends AbstractTestDataEntity<SakuliException, TestCaseSt
     private String startUrl;
     /**
      * will be set with the method {@link org.sakuli.actions.TestCaseAction#saveResult(String, String, String,
-     * String, String)}
+     * String, String, boolean)}
      */
     private String lastURL;
     private List<TestCaseStep> steps;

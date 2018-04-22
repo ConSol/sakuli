@@ -1,38 +1,8 @@
-{# This template renders the short summary for the current test suite. #}
-{{ getOutputState(testsuite.state).shortState }} Sakuli suite "{{testsuite.id}}"$whitespace$
-{% if (testsuite.state.error) %}
-    {% set exceptionMessages = errorMessageCreator.exceptionMessageTestSuite(testsuite) %}
-    ({{ testsuite.duration | number_format(2, '.') }}s) {{ testsuite.state.nagiosStateDescription }}: {{ abbreviate(exceptionMessages, 200, true) }}
-{% else %}
-    {{testsuite.state.nagiosStateDescription}}
-    {% if (testsuite.state.ok) %}
-        $whitespace$({{ testsuite.duration | number_format(2, '.') }}s)
-    {% elseif (testsuite.state.name == 'WARNING_IN_SUITE') %}
-        $whitespace$({{ testsuite.duration | number_format(2, '.') }}s/warn at {{ testsuite.warningTime }}s)
-    {% elseif (testsuite.state.name == 'CRITICAL_IN_SUITE') %}
-        $whitespace$({{ testsuite.duration | number_format(2, '.') }}s/crit at {{ testsuite.criticalTime }}s)
-    {% elseif (testsuite.state.name == 'WARNING_IN_STEP') %}
-        {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
-            {% if (testCase.state.warningInStep) %}
-                {% for testStep in testCase.steps %}
-                    {% if (testStep.state.warning) %}
-                        , step "{{ testStep.id }}" over runtime ({{ testStep.duration | number_format(2, '.') }}s/warn at {{ testStep.warningTime }}s)
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        {% endfor %}
-    {% elseif (testsuite.state.name == 'WARNING_IN_CASE') %}
-        {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
-            {% if (testCase.state.warning) %}
-                , case "{{ testCase.id }}" over runtime ({{ testCase.duration | number_format(2, '.') }}s/warn at {{ testCase.warningTime }}s)
-            {% endif %}
-        {% endfor %}
-    {% elseif (testsuite.state.name == 'CRITICAL_IN_CASE') %}
-        {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
-            {% if (testCase.state.critical) %}
-                , case "{{ testCase.id }}" over runtime ({{ testCase.duration | number_format(2, '.') }}s/crit at {{ testCase.criticalTime }}s)
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-    .$whitespace$(Last suite run: {% if (empty(testsuite.stopDate)) %}xx{% else %}{{ testsuite.stopDate|date("dd.MM.YY HH:mm:ss") }}{% endif %})
+{% set testDataEntityType = getTestDataEntityType(testDataEntity) %}
+{% if ('TestSuite' == testDataEntityType) %}
+    {% include 'short_summary_suite.twig' with { testsuite: testDataEntity} %}
+{% elseif ('TestCase' == testDataEntityType) %}
+    {% include 'short_summary_case.twig' with { testCase: testDataEntity } %}
+{% elseif ('TestCaseStep' == testDataEntityType) %}
+    {% include 'short_summary_step.twig' with { testStep: testDataEntity } %}
 {% endif %}

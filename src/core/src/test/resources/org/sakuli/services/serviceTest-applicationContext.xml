@@ -40,9 +40,7 @@
     </bean>
 
     <bean id="org.sakuli.datamodel.TestSuite" class="org.sakuli.builder.TestSuiteExampleFactory"/>
-    <bean id="org.sakuli.services.common.CommonResultServiceImpl"
-          class="org.sakuli.services.common.CommonResultServiceMockImpl">
-    </bean>
+    <bean class="org.sakuli.services.common.CommonResultServiceImpl"/>
     <bean class="org.sakuli.services.common.CommonInitializingServiceImpl"/>
 
     <!-- spyed Beans -->
@@ -62,10 +60,10 @@
         <constructor-arg value="org.sakuli.services.forwarder.gearman.GearmanResultServiceImpl"/>
     </bean>
     <bean id="org.sakuli.services.common.CacheHandlingResultServiceImpl" class="org.sakuli.MockitoSpyFactoryBean">
-        <constructor-arg value="org.sakuli.services.common.CacheHandlingResultServiceImpl"/>
+        <constructor-arg value="org.sakuli.services.common.CacheHandlingServiceImpl"/>
     </bean>
     <bean id="org.sakuli.services.common.LogCleanUpResultServiceImpl" class="org.sakuli.MockitoSpyFactoryBean">
-        <constructor-arg value="org.sakuli.services.common.LogCleanUpResultServiceImpl"/>
+        <constructor-arg value="org.sakuli.services.common.LogCleanUpServiceImpl"/>
     </bean>
     <!-- Mocked Beans -->
     <bean id="org.sakuli.dao.DaoTestSuite " class="org.sakuli.MockitoFactoryBean">

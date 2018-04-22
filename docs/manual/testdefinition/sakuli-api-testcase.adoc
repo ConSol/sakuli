@@ -12,9 +12,10 @@ TestCase - initializes the Sakuli object and sets the warning and critical time 
 
 *Params*
 
-* warningTime `number` - threshold in seconds. If the threshold is set to 0,
+* optCaseId `String` - optional ID to set the testcase ID to some specifc value. Default is the folder name.
+* optWarningTime `number` - threshold in seconds. If the threshold is not set or is set to 0,
  the execution time will never exceed, so the state will be always OK!
-* criticalTime `number` - threshold in seconds. If the threshold is set to 0,
+* optCriticalTime `number` - threshold in seconds. If the threshold is not set or is set to 0,
  the execution time will never exceed, so the state will be always OK!
 * optImagePathArray `Array.&lt;String&gt;` - (optional) Path or Array of Paths to the folder containing the image patterns
  for these test cases.
@@ -23,16 +24,20 @@ TestCase - initializes the Sakuli object and sets the warning and critical time 
 *Example*
 [source,js]
 ----
-var testCase = new TestCase(20,30, "path-to/image-folder-name");
+//new syntex since v1.2.0
+var testCase = new TestCase(["own-case-id", 20, 30, "path-to/image-folder-name"]);
+
+//old syntax &lt; v1.2.0
+var testCase = new TestCase(20, 30, ["path-to/image-folder-name"]);
 ----
 
 *Members*
 
 * link:#TestCase[TestCase]
 * link:#TestCase.addImagePaths[TestCase.addImagePaths(imagePaths)]
-* link:#TestCase.endOfStep[TestCase.endOfStep(stepName, optWarningTime)]
+* link:#TestCase.endOfStep[TestCase.endOfStep(stepName, optWarningTime, optCriticalTime, optForward)]
 * link:#TestCase.handleException[TestCase.handleException(e)]
-* link:#TestCase.saveResult[TestCase.saveResult()]
+* link:#TestCase.saveResult[TestCase.saveResult(optForward)]
 * link:#TestCase.getID[TestCase.getID()]
 * link:#TestCase.getLastURL[TestCase.getLastURL()]
 * link:#TestCase.getTestCaseFolderPath[TestCase.getTestCaseFolderPath()]
@@ -52,7 +57,7 @@ If a relative path is assigned, the current testcase folder will be used as curr
 
 
 [[TestCase.endOfStep]]
-.TestCase.endOfStep(stepName, optWarningTime)
+.TestCase.endOfStep(stepName, optWarningTime, optCriticalTime, optForward)
 
 A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
 particular runtime. When a case starts, Sakuli starts a "step" timer. It gets read out, stored with the
@@ -65,6 +70,11 @@ If the step runtime exceeds the step threshold (second parameter, optional), the
 * stepName `String`
 * optWarningTime `number` - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
  the execution time will never exceed, so the state will be always OK!
+* optCriticalTime `number` - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
+ the execution time will never exceed, so the state will be always OK!
+* optForward `boolean` - (optional) indicate whether the result of the test step shall be immediately
+ processed by the enabled forwarders. This means before the test suite has been executed to
+ the end. If not specified in another way, this option is disabled! Default: `false`
 
 
 [[TestCase.handleException]]
@@ -96,6 +106,10 @@ try {
 Saves the results of the current test case for further processing.
 
 Should be called in finally-block of the test case:
+
+*Params*
+
+* optForward `boolean` - indicate whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled! Default: `false`
 
 *Example*
 [source,js]

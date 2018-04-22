@@ -18,8 +18,10 @@
 
 package org.sakuli.services.forwarder.checkmk;
 
-import org.sakuli.exceptions.SakuliForwarderException;
-import org.sakuli.services.common.AbstractResultService;
+import org.sakuli.datamodel.AbstractTestDataEntity;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
+import org.sakuli.services.ResultService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Optional;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
@@ -39,13 +42,12 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
  */
 @ProfileCheckMK
 @Component
-public class CheckMKResultServiceImpl extends AbstractResultService {
+public class CheckMKResultServiceImpl extends AbstractTeardownService implements ResultService {
 
-    private static final Logger logger = LoggerFactory.getLogger(CheckMKResultServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CheckMKResultServiceImpl.class);
 
     @Autowired
     private CheckMKProperties checkMKProperties;
-
     @Autowired
     private CheckMKTemplateOutputBuilder outputBuilder;
 
@@ -55,38 +57,40 @@ public class CheckMKResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults() {
-        try {
-            logger.info("======= WRITE FILE FOR CHECK_MK ======");
-            String output = outputBuilder.createOutput();
-            logger.debug(String.format("Output for check_mk:\n%s", output));
-            writeToFile(createSpoolFilePath(), output);
-            logger.info("======= FINISHED: WRITE FILE FOR CHECK_MK ======");
-        } catch (SakuliForwarderException e) {
-            exceptionHandler.handleException(e, false);
-        }
+    public void tearDown(Optional<AbstractTestDataEntity> dataEntity, boolean asyncCall) {
+        dataEntity.ifPresent(data -> {
+            try {
+                LOGGER.info("======= WRITE FILE FOR CHECK_MK ======");
+                String output = outputBuilder.createOutput(data);
+                LOGGER.debug(String.format("Output for check_mk:\n%s", output));
+                writeToFile(createSpoolFilePath(data.getId()), output);
+                LOGGER.info("======= FINISHED: WRITE FILE FOR CHECK_MK ======");
+            } catch (Exception e) {
+                handleTeardownException(e, asyncCall, data);
+            }
+        });
     }
 
-    protected Path createSpoolFilePath() {
+    protected Path createSpoolFilePath(String dataId) {
         String spoolDir = checkMKProperties.getSpoolDir();
         String fileName = new StringBuilder()
                 .append(checkMKProperties.getFreshness())
                 .append(isEmpty(checkMKProperties.getSpoolFilePrefix())
-                                ? ""
-                                : "_" + checkMKProperties.getSpoolFilePrefix()
+                        ? ""
+                        : "_" + checkMKProperties.getSpoolFilePrefix()
                 )
                 .append("_")
-                .append(testSuite.getId())
+                .append(dataId)
                 .toString();
         return Paths.get(spoolDir + File.separator + fileName);
     }
 
-    private void writeToFile(Path file, String output) throws SakuliForwarderException {
+    private void writeToFile(Path file, String output) throws SakuliForwarderCheckedException {
         try {
-            logger.info(String.format("Write file to '%s'", file));
+            LOGGER.info(String.format("Write file to '%s'", file));
             Files.write(file, output.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            throw new SakuliForwarderException(e,
+            throw new SakuliForwarderCheckedException(e,
                     String.format("Unexpected error by writing the output for check_mk to the following file '%s'", file));
         }
     }

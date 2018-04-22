@@ -23,7 +23,7 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.actions.environment.Environment;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 
 import java.io.ByteArrayOutputStream;
 
@@ -35,7 +35,7 @@ import java.io.ByteArrayOutputStream;
  */
 public class CommandLineUtil {
 
-    static public CommandLineResult runCommand(String command, boolean throwException) throws SakuliException {
+    static public CommandLineResult runCommand(String command, boolean throwException) throws SakuliCheckedException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ByteArrayOutputStream error = new ByteArrayOutputStream();
         CommandLineResult result = new CommandLineResult();
@@ -47,7 +47,7 @@ public class CommandLineUtil {
             result.setOutput(error.toString() + outputStream.toString());
         } catch (Exception e) {
             if (throwException) {
-                throw new SakuliException(e, String.format("Error during execution of command '%s': %s", command, error.toString()));
+                throw new SakuliCheckedException(e, String.format("Error during execution of command '%s': %s", command, error.toString()));
             }
             result.setExitCode(resolveExitCode(e.getMessage()));
             result.setOutput(e.getMessage());

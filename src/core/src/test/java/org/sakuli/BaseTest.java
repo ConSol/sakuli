@@ -85,7 +85,7 @@ public abstract class BaseTest extends AbstractLogAwareTest {
 
     protected void initBaseActionLoader() {
         loaderMock = BeanLoader.loadBean(BaseActionLoaderImpl.class);
-        if (new MockUtil().isMock(loaderMock)) {
+        if (MockUtil.isMock(loaderMock)) {
             reset(loaderMock);
             when(loaderMock.getSahiReport()).thenReturn(mock(Report.class));
             when(loaderMock.getSakuliProperties()).thenReturn(mock(SakuliProperties.class));

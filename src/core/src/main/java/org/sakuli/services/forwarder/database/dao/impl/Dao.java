@@ -19,7 +19,6 @@
 package org.sakuli.services.forwarder.database.dao.impl;
 
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ import java.util.Map;
 
 /**
  * @author tschneck
- *         Date: 12.07.13
+ * Date: 12.07.13
  */
 
 public abstract class Dao extends NamedParameterJdbcDaoSupport {
@@ -44,14 +43,14 @@ public abstract class Dao extends NamedParameterJdbcDaoSupport {
     @Autowired
     protected LobHandler lobHandler;
 
-    public Dao(DataSource dataSource) throws SakuliException {
+    public Dao(DataSource dataSource) {
 
         try {
             if (dataSource == null) {
                 throw new ConnectException("Cannot get a connection to the Database!");
             }
             setDataSource(dataSource);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOGGER.debug("Suppressed Exception for missing DB connection: ", e);
             throw new RuntimeException("Database is not reachable, please check your 'db.properties' !!!");
         }

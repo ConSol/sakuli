@@ -20,7 +20,7 @@ package org.sakuli.actions.screenbased;
 
 import org.sakuli.actions.Action;
 import org.sakuli.datamodel.actions.ImageLibObject;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sikuli.basics.Settings;
 import org.sikuli.script.FindFailed;
@@ -210,7 +210,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     public RegionImpl mouseDown(MouseButton mouseButton) {
         try {
             this.mouseDown(mouseButton.getValue());
-        } catch (Throwable e) {
+        } catch (Exception e) {
             loader.getExceptionHandler().handleException("Could execute mouseDown action for " + this, this, resumeOnException);
         }
         return this;
@@ -222,7 +222,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     public RegionImpl mouseUp(MouseButton mouseButton) {
         try {
             this.mouseUp(mouseButton.getValue());
-        } catch (Throwable e) {
+        } catch (Exception e) {
             loader.getExceptionHandler().handleException("Could execute mouseUp action for " + this, this, resumeOnException);
         }
         return this;
@@ -322,7 +322,7 @@ public class RegionImpl extends org.sikuli.script.Region implements Action {
     protected ImageLibObject loadImage(String imageName) {
         try {
             return loader.getImageLib().getImage(imageName);
-        } catch (SakuliException e) {
+        } catch (SakuliCheckedException e) {
             loader.getExceptionHandler().handleException(e, resumeOnException);
         }
         return null;

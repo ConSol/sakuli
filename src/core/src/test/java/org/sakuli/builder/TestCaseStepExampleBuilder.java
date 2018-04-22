@@ -23,7 +23,7 @@ import org.joda.time.DateTime;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.state.TestCaseStepState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 
 import java.util.Date;
 
@@ -35,15 +35,17 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
     private TestCaseStepState state;
     private String name;
     private int warningTime;
+    private int criticalTime;
     private Date stopDate;
     private Date startDate;
-    private SakuliException exception;
+    private SakuliCheckedException exception;
     private DateTime creationDate;
 
     public TestCaseStepExampleBuilder() {
         this.state = TestCaseStepState.OK;
         this.name = "step for unit test";
         this.warningTime = 4;
+        this.criticalTime = 8;
         this.startDate = new Date();
         this.stopDate = DateUtils.addSeconds(startDate, 3);
         this.creationDate = new DateTime();
@@ -55,6 +57,7 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
         step.setStartDate(startDate);
         step.setStopDate(stopDate);
         step.setWarningTime(warningTime);
+        step.setCriticalTime(criticalTime);
         step.setName(name);
         step.setState(state);
         step.addException(exception);
@@ -82,12 +85,17 @@ public class TestCaseStepExampleBuilder implements ExampleBuilder<TestCaseStep> 
         return this;
     }
 
+    public TestCaseStepExampleBuilder withCriticalTime(int criticalTime) {
+        this.criticalTime = criticalTime;
+        return this;
+    }
+
     public TestCaseStepExampleBuilder withName(String name) {
         this.name = name;
         return this;
     }
 
-    public TestCaseStepExampleBuilder withException(SakuliException e) {
+    public TestCaseStepExampleBuilder withException(SakuliCheckedException e) {
         this.exception = e;
         return this;
     }

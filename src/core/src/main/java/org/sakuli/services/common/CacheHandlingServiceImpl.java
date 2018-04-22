@@ -18,11 +18,15 @@
 
 package org.sakuli.services.common;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.helper.TestCaseStepHelper;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliRuntimeException;
+import org.sakuli.services.TeardownService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -40,8 +44,9 @@ import java.util.List;
  * @author tschneck
  */
 @Component
-public class CacheHandlingResultServiceImpl extends AbstractResultService {
-    private static Logger logger = LoggerFactory.getLogger(CacheHandlingResultServiceImpl.class);
+public class CacheHandlingServiceImpl extends AbstractTeardownService implements TeardownService {
+
+    private static Logger LOGGER = LoggerFactory.getLogger(CacheHandlingServiceImpl.class);
 
     @Override
     public int getServicePriority() {
@@ -49,33 +54,32 @@ public class CacheHandlingResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults() {
+    public void teardownTestSuite(@NonNull TestSuite testSuite) throws RuntimeException {
         if (testSuite.getState() != null && testSuite.getState().isFinishedWithoutErrors()) {
-            removeCachedInitSteps();
-            writeCachedStepDefinitions();
+            removeCachedInitSteps(testSuite);
+            writeCachedStepDefinitions(testSuite);
         }
     }
 
-    protected void removeCachedInitSteps() {
+    protected void removeCachedInitSteps(TestSuite testSuite) {
         for (TestCase tc : testSuite.getTestCases().values()) {
             List<TestCaseStep> filteredSteps = new ArrayList<>();
             for (TestCaseStep step : tc.getSteps()) {
                 if (step.getState() != null && step.getState().isFinishedWithoutErrors()) {
                     filteredSteps.add(step);
                 } else {
-                    logger.debug("remove cached and not called step '{}'", step.getId());
+                    LOGGER.debug("remove cached and not called step '{}'", step.getId());
                 }
             }
             tc.setSteps(filteredSteps);
         }
     }
 
-    protected void writeCachedStepDefinitions() {
+    protected void writeCachedStepDefinitions(TestSuite testSuite) {
         try {
             TestCaseStepHelper.writeCachedStepDefinitions(testSuite);
         } catch (IOException e) {
-            exceptionHandler.handleException(
-                    new SakuliRuntimeException("Can't create cache file(s) for test case steps!", e), true);
+            throw new SakuliRuntimeException("Can't create cache file(s) for test case steps!", e);
         }
     }
 }

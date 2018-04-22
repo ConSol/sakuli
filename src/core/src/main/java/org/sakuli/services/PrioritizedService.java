@@ -24,7 +24,7 @@ package org.sakuli.services;
 public interface PrioritizedService {
 
     /**
-     * @return the Priority of the current {@link ResultService} implementation. Lower int value means lower priority.
+     * @return the Priority of the current {@link TeardownService} implementation. Lower int value means lower priority.
      * E.g. 100 is higher prioritized than 10.
      */
     int getServicePriority();
