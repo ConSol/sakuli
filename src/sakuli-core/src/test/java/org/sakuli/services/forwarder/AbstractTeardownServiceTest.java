@@ -78,6 +78,7 @@ public class AbstractTeardownServiceTest {
         when(loader.getActionProperties()).thenReturn(props);
         when(loader.getSakuliProperties()).thenReturn(sakuliProps);
         when(loader.getTestSuite()).thenReturn(testsuite);
+        doNothing().when(exceptionHandler).triggerCallbacks(any());
     }
 
     @Test

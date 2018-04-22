@@ -171,7 +171,7 @@ public class SakuliExceptionHandler {
     /**
      * Triggers some {@link ActionLoaderCallback#handleException(SakuliException)} implementations.
      */
-    void triggerCallbacks(SakuliException transformedException) {
+    public void triggerCallbacks(SakuliException transformedException) {
         BeanLoader.loadMultipleBeans(ActionLoaderCallback.class).values().stream().filter(Objects::nonNull)
                 .forEach(cb -> cb.handleException(transformedException));
     }
