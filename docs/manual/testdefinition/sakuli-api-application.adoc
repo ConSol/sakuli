@@ -12,7 +12,7 @@ Application Class - Represents an application.
 
 *Params*
 
-* applicationNameOrPath `String` - Path to the application file. *Example:* `C:\Windows\system32\notepad.exe`
+* applicationNameOrPath `String` - Path to the application file. Example: `C:\Windows\system32\notepad.exe`
 * optResumeOnException `Boolean` - Determines whether to ignore exceptions from this class. If this parameter is
 undefined, it will be false.
 

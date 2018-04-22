@@ -5,9 +5,9 @@
 * [Sahi-API](#Sahi-API)
 * [TestCase](#TestCase)
   * [TestCase.addImagePaths(imagePaths)](#TestCase.addImagePaths)
-  * [TestCase.endOfStep(stepName, optWarningTime)](#TestCase.endOfStep)
+  * [TestCase.endOfStep(stepName, optWarningTime, optCriticalTime, optForward)](#TestCase.endOfStep)
   * [TestCase.handleException(e)](#TestCase.handleException)
-  * [TestCase.saveResult()](#TestCase.saveResult)
+  * [TestCase.saveResult(optForward)](#TestCase.saveResult)
   * [TestCase.getID()](#TestCase.getID)
   * [TestCase.getLastURL()](#TestCase.getLastURL)
   * [TestCase.getTestCaseFolderPath()](#TestCase.getTestCaseFolderPath)
@@ -123,9 +123,10 @@ TestCase - initializes the Sakuli object and sets the warning and critical time 
 
 **Params**
 
-- warningTime `number` - threshold in seconds. If the threshold is set to 0,
+- optCaseId `String` - optional ID to set the testcase ID to some specifc value. Default is the folder name.  
+- optWarningTime `number` - threshold in seconds. If the threshold is not set or is set to 0,
                 the execution time will never exceed, so the state will be always OK!  
-- criticalTime `number` - threshold in seconds. If the threshold is set to 0,
+- optCriticalTime `number` - threshold in seconds. If the threshold is not set or is set to 0,
                 the execution time will never exceed, so the state will be always OK!  
 - optImagePathArray `Array.<String>` - (optional) Path or Array of Paths to the folder containing the image patterns
                                     for these test cases.  
@@ -133,16 +134,20 @@ TestCase - initializes the Sakuli object and sets the warning and critical time 
 **Returns**:  - an initialized Sakuli object.  
 **Example**  
 ```
-var testCase = new TestCase(20,30, "path-to/image-folder-name");
+//new syntex since v1.2.0
+var testCase = new TestCase(["own-case-id", 20, 30, "path-to/image-folder-name"]);
+
+//old syntax < v1.2.0
+var testCase = new TestCase(20, 30, ["path-to/image-folder-name"]);
 ```
 
 **Members**
 
 * [TestCase](#TestCase)
   * [TestCase.addImagePaths(imagePaths)](#TestCase.addImagePaths)
-  * [TestCase.endOfStep(stepName, optWarningTime)](#TestCase.endOfStep)
+  * [TestCase.endOfStep(stepName, optWarningTime, optCriticalTime, optForward)](#TestCase.endOfStep)
   * [TestCase.handleException(e)](#TestCase.handleException)
-  * [TestCase.saveResult()](#TestCase.saveResult)
+  * [TestCase.saveResult(optForward)](#TestCase.saveResult)
   * [TestCase.getID()](#TestCase.getID)
   * [TestCase.getLastURL()](#TestCase.getLastURL)
   * [TestCase.getTestCaseFolderPath()](#TestCase.getTestCaseFolderPath)
@@ -159,11 +164,11 @@ If a relative path is assigned, the current testcase folder will be used as curr
 - imagePaths `string` - one or more path strings  
 
 <a name="TestCase.endOfStep"></a>
-##TestCase.endOfStep(stepName, optWarningTime)
+##TestCase.endOfStep(stepName, optWarningTime, optCriticalTime, optForward)
 A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
 particular runtime. When a case starts, Sakuli starts a "step" timer. It gets read out, stored with the
 step name, and the timer will set to `0` each time endOfStep() is called.
-If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state 
+If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state
 "WARNING" (there is no CRITICAL state).
 
 **Params**
@@ -171,6 +176,11 @@ If the step runtime exceeds the step threshold (second parameter, optional), the
 - stepName `String`  
 - optWarningTime `number` - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
                 the execution time will never exceed, so the state will be always OK!  
+- optCriticalTime `number` - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
+                the execution time will never exceed, so the state will be always OK!  
+- optForward `boolean` - (optional) indicate whether the result of the test step shall be immediately
+                 processed by the enabled forwarders. This means before the test suite has been executed to
+                 the end. If not specified in another way, this option is disabled! Default: `false`  
 
 <a name="TestCase.handleException"></a>
 ##TestCase.handleException(e)
@@ -193,10 +203,14 @@ try {
 ```
 
 <a name="TestCase.saveResult"></a>
-##TestCase.saveResult()
+##TestCase.saveResult(optForward)
 Saves the results of the current test case for further processing.
 
 Should be called in finally-block of the test case:
+
+**Params**
+
+- optForward `boolean` - indicate whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled! Default: `false`  
 
 **Example**  
 ```

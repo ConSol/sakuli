@@ -107,7 +107,7 @@ Takes a screenshot of the current screen and add the current timestamp in the fi
 * optFormat `string` - optional format, for the screenshot (currently supported: jpg and png)
  If null or empty use property `sakuli.screenshot.format`
 
-*Returns*: `String` - file path to the created screenshot OR null on errors
+*Returns*: `Path` - to the created screenshot OR null on errors
 *Example*
 [source,js]
 ----

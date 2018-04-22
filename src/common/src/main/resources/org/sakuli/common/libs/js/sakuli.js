@@ -122,9 +122,9 @@ function TestCase(optCaseId, optWarningTime, optCriticalTime, optImagePathArray)
      *                 the execution time will never exceed, so the state will be always OK!
      * @param {number} optCriticalTime (optional) threshold in seconds, default = 0. If the threshold is set to 0,
      *                 the execution time will never exceed, so the state will be always OK!
-     * @param {boolean} optForward (optional) indicate whether the result of the test case shall be immediately
+     * @param {boolean} optForward (optional) indicate whether the result of the test step shall be immediately
      *                  processed by the enabled forwarders. This means before the test suite has been executed to
-     *                  the end. If not specified in another way, this option is disabled!
+     *                  the end. If not specified in another way, this option is disabled! Default: `false`
      * @memberOf TestCase
      * @method endOfStep
      */
@@ -195,16 +195,16 @@ function TestCase(optCaseId, optWarningTime, optCriticalTime, optImagePathArray)
      *      sakuli.saveResult();
      *  }
      *  ```
-     *
+     * @param {boolean} optForward  indicate whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled! Default: `false`
      * @memberOf TestCase
      * @method saveResult
      */
-    that.saveResult = function (forward) {
-        if (undefined == forward) {
-            forward = false;
+    that.saveResult = function (optForward) {
+        if (undefined == optForward) {
+            optForward = false;
         }
         Logger.logInfo("=========== SAVE Test Case '" + tcID + "' ==================");
-        Logger.logInfo("Forward of test case results enabled:  '" + forward + "'");
+        Logger.logInfo("Forward of test case results enabled:  '" + optForward + "'");
         //create the values
         var stopTime, lastURL = "", browser = "";
         stopTime = (new Date()).getTime();
@@ -213,7 +213,7 @@ function TestCase(optCaseId, optWarningTime, optCriticalTime, optImagePathArray)
         // Agent description can contain semicolon, replace globally
         browser = browser.replace(/;/g, ',');
         //call the backend
-        that.javaObject.saveResult(tcID, that.startTime, stopTime, lastURL, browser, forward);
+        that.javaObject.saveResult(tcID, that.startTime, stopTime, lastURL, browser, optForward);
     };
 
     /**
