@@ -76,13 +76,13 @@ Setup a local MySQL database to save the results of test case executions. The da
 * *User:* `sakuli`
 * *Password:* `sakuli`
 * *Database:* `sakuli`
-* *SQL-Script:* git-link:src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database.sql[link-text="create_sakuli_database.sql", mode="view", link-window="_blank"]
+* *SQL-Script:* git-link:src/sakuli-common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database.sql[link-text="create_sakuli_database.sql", mode="view", link-window="_blank"]
 
 If you want to use a Docker-Container, you can build and run it with the following commands:
 
 [source,bash]
 ----
-cd src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database
+cd src/sakuli-common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database
 docker build -t=your-user/mysql-sakuli .
 docker run --name mysql-sakuli -p 3306:3306 your-user/mysql-sakuli
 ----

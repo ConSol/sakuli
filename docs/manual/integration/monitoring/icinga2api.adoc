@@ -101,7 +101,7 @@ sakuli.forwarder.icinga2.api.password=icingasakuli
 sakuli.forwarder.icinga2.hostname=sakuliclient01
 ----
 
-For other *OPTIONAL* gearman parameters you can adjust, see git-link:src/common/src/main/resources/org/sakuli/common/config/sakuli-default.properties[link-text="sakuli-default.properties", mode="view", link-window="_blank"] file.
+For other *OPTIONAL* gearman parameters you can adjust, see git-link:src/sakuli-common/src/main/resources/org/sakuli/common/config/sakuli-default.properties[link-text="sakuli-default.properties", mode="view", link-window="_blank"] file.
 
 .Test result transmission to Icinga2
 

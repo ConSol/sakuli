@@ -23,7 +23,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.actions.LogResult;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
@@ -52,7 +51,7 @@ import static org.sakuli.integration.IntegrationTest.GROUP;
  */
 @Test(groups = GROUP)
 public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTest {
-    public static final String TEST_CONTEXT_PATH = "db-beanRefFactory.xml";
+    public static final String TEST_CONTEXT_PATH = "org/sakuli/integration/dao/db-beanRefFactory.xml";
     @InjectMocks
     protected D testling;
 
@@ -98,7 +97,6 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
             throw (Exception) invocation.getArguments()[0];
         }).when(sakuliExceptionHandlerMock).handleException(any(Exception.class));
         doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(Exception.class), anyBoolean());
-        doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(LogResult.class));
         doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(anyString(), anyBoolean());
         doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(anyString(), any(RegionImpl.class), anyBoolean());
         doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(Exception.class), any(RegionImpl.class), anyBoolean());

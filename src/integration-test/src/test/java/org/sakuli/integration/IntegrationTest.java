@@ -32,6 +32,6 @@ public interface IntegrationTest {
     String GROUP = "integration";
     String GROUP_UI = "ui";
     String SAKULI_MAIN_FOLDER_PATH = StringUtils.replace(
-            "../common/src/main/resources/org/sakuli/common", "/", File.separator);
+            "../sakuli-common/src/main/resources/org/sakuli/common", "/", File.separator);
 
 }

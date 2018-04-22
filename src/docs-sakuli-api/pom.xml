@@ -22,7 +22,7 @@
 
     <parent>
         <groupId>org.sakuli</groupId>
-        <artifactId>root</artifactId>
+        <artifactId>sakuli-root</artifactId>
         <version>1.2.0-247-sakuli-se-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
@@ -38,7 +38,8 @@
         <node.dir>${project.build.directory}/node-mvn</node.dir>
         <node.modules.dir>${node.dir}/node_modules</node.modules.dir>
         <js-src.target>${project.build.directory}/js_src</js-src.target>
-        <js-src.source>${project.parent.basedir}/src/common/src/main/resources/org/sakuli/common/libs/js</js-src.source>
+        <js-src.source>${project.parent.basedir}/src/sakuli-common/src/main/resources/org/sakuli/common/libs/js
+        </js-src.source>
         <markdown.output.directory>${project.parent.basedir}/docs/manual/testdefinition</markdown.output.directory>
     </properties>
 

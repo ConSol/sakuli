@@ -31,7 +31,6 @@
         <property name="loadSakuliProperties" value="true"/>
         <property name="loadSakuliDefaultProperties" value="true"/>
         <property name="loadTestSuiteProperties" value="true"/>
-        <property name="writePropertiesToSahiConfig" value="false"/>
         <property name="locations">
             <list>
                 <!-- overwrite the properties from the test-suite folder and so on-->

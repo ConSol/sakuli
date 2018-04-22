@@ -1,0 +1,214 @@
+/*
+ * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
+ *
+ * Copyright 2013 - 2015 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.sakuli.loader;
+
+import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestCaseStep;
+import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.actions.ImageLib;
+import org.sakuli.datamodel.properties.ActionProperties;
+import org.sakuli.datamodel.properties.SakuliProperties;
+import org.sakuli.datamodel.properties.TestSuiteProperties;
+import org.sakuli.exceptions.SakuliCheckedException;
+import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.services.cipher.CipherService;
+import org.sakuli.utils.CleanUpHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.SortedSet;
+
+/**
+ * @author Tobias Schneck
+ */
+@Qualifier(BaseActionLoaderImpl.QUALIFIER)
+@Component
+public class BaseActionLoaderImpl implements BaseActionLoader {
+
+    public final static String QUALIFIER = "baseLoader";
+    public static final Logger LOGGER = LoggerFactory.getLogger(BaseActionLoader.class);
+
+    @Autowired
+    private SakuliExceptionHandler exceptionHandler;
+    @Autowired
+    private TestSuite testSuite;
+    @Autowired
+    private TestSuiteProperties testSuiteProperties;
+    @Autowired
+    private SakuliProperties sakuliProperties;
+    @Autowired
+    private ActionProperties actionProperties;
+    @Autowired
+    private CleanUpHelper cleanUpHelper;
+    /**
+     * ** Fields which will be filled at runtime ***
+     */
+    private TestCase currentTestCase;
+    private ImageLib imageLib = new ImageLib();
+
+    @Override
+    public void init(String testCaseID, String... imagePaths) {
+        List<Path> pathList = new ArrayList<>();
+        if (imagePaths != null) {
+            for (String imagePath : imagePaths) {
+                pathList.add(Paths.get(imagePath));
+            }
+        }
+        init(testCaseID, pathList.toArray(new Path[pathList.size()]));
+    }
+
+    /**
+     * init function, which should be called on the beginning of every test case.
+     *
+     * @param imagePaths paths to relevant pictures
+     * @param testCaseID id of the corresponding test case
+     */
+    @Override
+    public void init(String testCaseID, Path... imagePaths) {
+        try {
+            //set the current test case
+            this.currentTestCase = testSuite.getTestCase(testCaseID);
+            if (this.currentTestCase == null) {
+                throw new SakuliCheckedException("Can't identify current test case in function init() in class SakuliBasedAction");
+            }
+            addImagePaths(imagePaths);
+            callInitTestCaseCallback();
+            cleanUpHelper.releaseAllModifiers();
+        } catch (SakuliException e) {
+            exceptionHandler.handleException(e);
+        }
+    }
+
+    /**
+     * hook to call additional init actions
+     */
+    protected void callInitTestCaseCallback() {
+        BeanLoader.loadMultipleBeans(ActionLoaderCallback.class).values().stream().filter(Objects::nonNull)
+                .forEach(bean -> bean.initTestCase(currentTestCase));
+    }
+
+    @Override
+    public void addImagePaths(Path... imagePaths) throws SakuliCheckedException {
+        //load the images for the screenbased actions
+        if (imagePaths != null && imagePaths.length > 0) {
+            try {
+                imageLib.addImagesFromFolder(imagePaths);
+            } catch (IOException e) {
+                throw new SakuliCheckedException(e);
+            }
+        } else {
+            LOGGER.warn("No folder have been added to the test case image library!");
+        }
+    }
+
+    @Override
+    public SakuliProperties getSakuliProperties() {
+        return this.sakuliProperties;
+    }
+
+    public void setSakuliProperties(SakuliProperties sakuliProperties) {
+        this.sakuliProperties = sakuliProperties;
+    }
+
+    @Override
+    public ActionProperties getActionProperties() {
+        return this.actionProperties;
+    }
+
+    public void setActionProperties(ActionProperties actionProperties) {
+        this.actionProperties = actionProperties;
+    }
+
+    @Override
+    public TestSuiteProperties getTestSuitePropeties() {
+        return this.testSuiteProperties;
+    }
+
+    public void setTestSuiteProperties(TestSuiteProperties testSuiteProperties) {
+        this.testSuiteProperties = testSuiteProperties;
+    }
+
+    @Override
+    public SakuliExceptionHandler getExceptionHandler() {
+        return exceptionHandler;
+    }
+
+    public void setExceptionHandler(SakuliExceptionHandler exceptionHandler) {
+        this.exceptionHandler = exceptionHandler;
+    }
+
+    @Override
+    public TestSuite getTestSuite() {
+        return testSuite;
+    }
+
+    public void setTestSuite(TestSuite testSuite) {
+        this.testSuite = testSuite;
+    }
+
+    @Override
+    public TestCase getCurrentTestCase() {
+        return currentTestCase;
+    }
+
+    public void setCurrentTestCase(TestCase currentTestCase) {
+        this.currentTestCase = currentTestCase;
+    }
+
+    @Override
+    public TestCaseStep getCurrentTestCaseStep() {
+        if (getCurrentTestCase() != null) {
+            SortedSet<TestCaseStep> steps = getCurrentTestCase().getStepsAsSortedSet();
+            if (!steps.isEmpty()) {
+                for (TestCaseStep step : steps) {
+                    step.refreshState();
+                    //find first step with init state and returns it
+                    if (!step.getState().isFinishedWithoutErrors()) {
+                        return step;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public ImageLib getImageLib() {
+        return imageLib;
+    }
+
+    public void setImageLib(ImageLib imageLib) {
+        this.imageLib = imageLib;
+    }
+
+    @Override
+    public CipherService getCipherService() {
+        //can't be autowired because of SpringProfile implementation
+        return BeanLoader.loadBean(CipherService.class);
+    }
+}

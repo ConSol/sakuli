@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.sakuli</groupId>
-    <artifactId>root</artifactId>
+    <artifactId>sakuli-root</artifactId>
     <version>1.2.0-247-sakuli-se-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -34,13 +34,17 @@
     <url>http://maven.apache.org</url>
 
     <modules>
-        <module>src/common</module>
+        <module>src/ocr-tessdata-extractor</module>
+        <module>src/basic-test-util</module>
+        <module>src/sakuli-common</module>
         <module>src/docs-sakuli-api</module>
         <module>src/docs-manual</module>
-        <module>src/core</module>
+        <module>src/sakuli-core</module>
+        <module>src/sakuli-sahi-setup</module>
+        <module>src/sakuli-installer</module>
+        <module>src/sakuli-java-dsl</module>
+        <module>src/sakuli-selenium-setup</module>
         <module>src/integration-test</module>
-        <module>src/java-dsl</module>
-        <module>src/installer</module>
     </modules>
 
     <properties>
@@ -68,6 +72,7 @@
         <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.jersey-client.version>2.22.2</dependencies.jersey-client.version>
+        <dependencies.slf4j.version>1.7.7</dependencies.slf4j.version>
         <dependencies.izpack.version>5.0.6</dependencies.izpack.version>
 
         <!--testing related properties-->
@@ -501,14 +506,19 @@
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${dependencies.slf4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
-                <version>1.7.7</version>
+                <version>${dependencies.slf4j.version}</version>
                 <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>jul-to-slf4j</artifactId>
-                <version>1.7.7</version>
+                <version>${dependencies.slf4j.version}</version>
             </dependency>
 
             <!-- will rout the system out from sikulX to logging over slf4j -->
@@ -537,7 +547,7 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.4</version>
+                <version>2.5</version>
             </dependency>
             <dependency>
                 <groupId>joda-time</groupId>
@@ -547,7 +557,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.3.2</version>
+                <version>3.5</version>
             </dependency>
 
             <!-- Sahi Library (OpenSource Version)-->
