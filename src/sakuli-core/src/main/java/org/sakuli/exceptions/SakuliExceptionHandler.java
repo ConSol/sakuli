@@ -180,17 +180,23 @@ public class SakuliExceptionHandler {
      * @return true if the exception have been already processed by Sakuli
      */
     public boolean isAlreadyProcessed(Exception e) {
-        String message = e.getMessage() != null ? e.getMessage() : e.toString();
-        boolean processed = message.contains(BaseSakuliAspect.ALREADY_PROCESSED)
-                || message.contains(("Logging exception:")) || processedExceptions.contains(e);
-
-        //check also caused exception to don't process wrapped exceptions twice
-        //noinspection SimplifiableIfStatement
-        final Throwable cause = e.getCause();
-        if (!processed && cause != null) {
-            return isAlreadyProcessed(cause instanceof Exception ? (Exception) cause : new SakuliCheckedException(e));
+        if (!isProcessed(e)) {
+            final Throwable cause = e.getCause();
+            if (cause == null) {
+                return false;
+            }
+            return isProcessed(cause instanceof Exception ? (Exception) cause : new SakuliCheckedException(e));
         }
-        return processed;
+        return true;
+    }
+
+    /**
+     * checks if the Exception has some marker if it have already processed.
+     */
+    boolean isProcessed(Exception e) {
+        String message = e.getMessage() != null ? e.getMessage() : e.toString();
+        return message.contains(BaseSakuliAspect.ALREADY_PROCESSED)
+                || message.contains(("Logging exception:")) || processedExceptions.contains(e);
     }
 
     /**
