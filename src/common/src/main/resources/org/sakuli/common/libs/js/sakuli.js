@@ -73,9 +73,7 @@ function TestCase(optCaseId, optWarningTime, optCriticalTime, optImagePathArray)
         optCriticalTime = optWarningTime;
         optWarningTime = optCaseId;
         optCaseId = null;
-    }
-
-    if (optCaseId.length > 0) {
+    } else if (optCaseId.length > 0) {
         tcID = optCaseId;
     }
 
