@@ -73,9 +73,7 @@ function TestCase(optCaseId, optWarningTime, optCriticalTime, optImagePathArray)
         optCriticalTime = optWarningTime;
         optWarningTime = optCaseId;
         optCaseId = null;
-    }
-
-    if (optCaseId.length > 0) {
+    } else if (optCaseId.length > 0) {
         tcID = optCaseId;
     }
 
@@ -213,7 +211,7 @@ function TestCase(optCaseId, optWarningTime, optCriticalTime, optImagePathArray)
         // Agent description can contain semicolon, replace globally
         browser = browser.replace(/;/g, ',');
         //call the backend
-        that.javaObject.saveResult(tcID, that.startTime, stopTime, lastURL, browser, optForward);
+        that.javaObject.saveResult(that.getID(), that.startTime, stopTime, lastURL, browser, optForward);
     };
 
     /**
