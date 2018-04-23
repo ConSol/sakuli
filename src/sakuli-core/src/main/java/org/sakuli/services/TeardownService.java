@@ -73,7 +73,7 @@ public interface TeardownService extends PrioritizedService {
      * Can't implement in an function context like here.
      *
      * @param e           any {@link Exception}
-     * @param async       defines if the caller is an asynchronous procedure to the main process of {@link org.sakuli.starter.SakuliStarter}
+     * @param async       defines if the caller is an asynchronous procedure to the main process of SakuliStarter class
      * @param testDataRef Provides the meta information on which execution step this exception is thrown. See {@link org.sakuli.exceptions.SakuliException#setAsyncTestDataRef(AbstractTestDataEntity)}
      */
     void handleTeardownException(@NonNull Exception e, boolean async, @NonNull AbstractTestDataEntity testDataRef);

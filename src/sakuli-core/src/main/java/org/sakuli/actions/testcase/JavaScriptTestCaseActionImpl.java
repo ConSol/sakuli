@@ -30,10 +30,10 @@ import org.sakuli.datamodel.helper.TestDataEntityHelper;
 import org.sakuli.exceptions.SakuliActionException;
 import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliValidationException;
+import org.sakuli.loader.BeanLoader;
 import org.sakuli.services.TeardownServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.Paths;
 import java.util.Date;
@@ -47,8 +47,6 @@ import java.util.concurrent.ExecutorService;
 public class JavaScriptTestCaseActionImpl extends AbstractTestCaseActionImpl {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    private ExecutorService executorService;
 
     /**
      * save the Result of a test Case
@@ -147,7 +145,7 @@ public class JavaScriptTestCaseActionImpl extends AbstractTestCaseActionImpl {
 
     //TODO TS maybe this also for JavaDSL needed
     private void forwardTestDataEntity(AbstractTestDataEntity abstractTestDataEntity) {
-        executorService.submit(() -> {
+        BeanLoader.loadBean(ExecutorService.class).submit(() -> {
             logger.info("======= TRIGGER ASYNC teardown of: {} =======", abstractTestDataEntity.toStringShort());
             TeardownServiceHelper.invokeTeardownServices(abstractTestDataEntity, true);
         });
