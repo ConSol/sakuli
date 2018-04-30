@@ -24,7 +24,7 @@ TestCase - initializes the Sakuli object and sets the warning and critical time 
 *Example*
 [source,js]
 ----
-//new syntex since v1.2.0
+//new syntax since v1.2.0
 var testCase = new TestCase(["own-case-id", 20, 30, "path-to/image-folder-name"]);
 
 //old syntax &lt; v1.2.0
@@ -62,8 +62,7 @@ If a relative path is assigned, the current testcase folder will be used as curr
 A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
 particular runtime. When a case starts, Sakuli starts a "step" timer. It gets read out, stored with the
 step name, and the timer will set to `0` each time endOfStep() is called.
-If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state
-"WARNING" (there is no CRITICAL state).
+If the step runtime exceeds the step warning resp. critical threshold (second resp. third parameter, both of them are optional), the step is saved with state "WARNING" resp. "CRITICAL".
 
 *Params*
 
@@ -101,7 +100,7 @@ try {
 
 
 [[TestCase.saveResult]]
-.TestCase.saveResult()
+.TestCase.saveResult(optForward)
 
 Saves the results of the current test case for further processing.
 
