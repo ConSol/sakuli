@@ -9,12 +9,7 @@ echo "branch= $GIT_BRANCH"
 SAKULI_BRANCH=${GIT_BRANCH/origin\/}
 echo "SAKULI_BRANCH=$SAKULI_BRANCH" > $WORKSPACE/myjob.properties
 
-SAKULI_VERSION="$(mvn -q \
-    -Dexec.executable="echo" \
-    -Dexec.args='${project.version}' \
-    --non-recursive \
-    org.codehaus.mojo:exec-maven-plugin:1.3.1:exec)"
-
+SAKULI_VERSION="$(printf 'VER\t${project.version}' | mvn help:evaluate | grep '^VER' | cut -f2)"
 echo "SAKULI_VERSION=$SAKULI_VERSION" >> $WORKSPACE/myjob.properties
 #no difference since https://github.com/ConSol/sakuli/issues/317
 echo "SAKULI_FEATURE_VERSION=$SAKULI_VERSION" >> $WORKSPACE/myjob.properties
