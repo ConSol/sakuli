@@ -32,8 +32,8 @@ for IMAGE in "${IMAGES[@]}"; do
 
     # skip test of sakuli UI image
 	if [[ $IMAGE != "consol/sakuli-ui" ]]; then
-    	docker run -it -e TESTSUITE_BROWSER=firefox $IMAGE:$SRC_TAG
-	    docker run -it -e TESTSUITE_BROWSER=chrome $IMAGE:$SRC_TAG
+    	docker run -it -p 6911:6901 -e TESTSUITE_BROWSER=firefox $IMAGE:$SRC_TAG
+	    docker run -it -p 6911:6901 -e TESTSUITE_BROWSER=chrome $IMAGE:$SRC_TAG
     fi
 
 	docker tag $IMAGE:$SRC_TAG $IMAGE:$TARGET_TAG

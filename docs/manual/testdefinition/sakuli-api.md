@@ -123,7 +123,7 @@ TestCase - initializes the Sakuli object and sets the warning and critical time 
 
 **Params**
 
-- optCaseId `String` - optional ID to set the testcase ID to some specifc value. Default is the folder name.  
+- optCaseId `String` - optional ID to set the testcase ID to some specifc value. Default is the folder name.
 - optWarningTime `number` - threshold in seconds. If the threshold is not set or is set to 0,
                 the execution time will never exceed, so the state will be always OK!  
 - optCriticalTime `number` - threshold in seconds. If the threshold is not set or is set to 0,
@@ -168,19 +168,14 @@ If a relative path is assigned, the current testcase folder will be used as curr
 A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
 particular runtime. When a case starts, Sakuli starts a "step" timer. It gets read out, stored with the
 step name, and the timer will set to `0` each time endOfStep() is called.
-If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state
-"WARNING" (there is no CRITICAL state).
+If the step runtime exceeds the step warning resp. critical threshold (second resp. third parameter, both of them are optional), the step is saved with state "WARNING" resp. "CRITICAL".
 
 **Params**
 
 - stepName `String`  
-- optWarningTime `number` - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
-                the execution time will never exceed, so the state will be always OK!  
-- optCriticalTime `number` - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
-                the execution time will never exceed, so the state will be always OK!  
-- optForward `boolean` - (optional) indicate whether the result of the test step shall be immediately
-                 processed by the enabled forwarders. This means before the test suite has been executed to
-                 the end. If not specified in another way, this option is disabled! Default: `false`  
+- optWarningTime `number` - (optional) threshold in seconds, default = 0. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
+- optCriticalTime `number` - (optional) threshold in seconds, default = 0. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
+- optForward `boolean` - (optional) indicate whether the result of the test step shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled! Default: `false`
 
 <a name="TestCase.handleException"></a>
 ##TestCase.handleException(e)
@@ -210,9 +205,9 @@ Should be called in finally-block of the test case:
 
 **Params**
 
-- optForward `boolean` - indicate whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled! Default: `false`  
+- optForward `boolean` - indicate whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled! Default: `false`
 
-**Example**  
+**Example**
 ```
 try {
     ... do something
