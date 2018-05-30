@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2016 the original author or authors.
+ * Copyright 2013 - 2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,22 @@
  * limitations under the License.
  */
 
-package org.sakuli.services.common;
+package org.sakuli.utils;
 
-import org.sakuli.datamodel.properties.SakuliProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-/**
- * @author tschneck
- *         Date: 09.04.15
- */
-public class CommonResultServiceMockImpl extends CommonResultServiceImpl {
-    @Override
-    public void cleanUp() {
-        // do nothing
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+@Configuration
+public class ConfigBean {
+    /**
+     * @return ExecutorService
+     */
+    @Bean
+    public ExecutorService createdExecutorService() {
+        return Executors.newCachedThreadPool();
     }
+
 }

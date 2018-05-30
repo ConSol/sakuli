@@ -1,13 +1,35 @@
 
-:imagesdir: ../../../../images
+:imagesdir: ../../../images
 
-[[forwarder-template]]
-==== Forwarder Templates
+[[forwarder]]
+==== Forwarder Concept
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/advanced-topics/forwarder-templates.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-With release `1.1` Sakuli introduced the http://jtwig.org/[Jtwig] template engine, which is used for generating the output of the Sakuli test suite for certain forwarders. (Currently only the link:forwarder-checkmk.md[Check_MK forwarder] supports Jtwig templates.)
+After a test execution has been completed Sakuli can process or better *forward* the test results to a certain third party system, e.g. a monitoring system, file output or other third-party systems. The processing is done by a so called Sakuli Forwarder.
+
+Feel free to develop another forwarder or ask us to do this. Currently Sakuli is providing forwarder for following output formats:
+
+include::forwarder-overview.adoc[]
+
+Usually the forwarder is invoked after the whole test suite is completed and the result of the test suite is processed.
+With release `1.2` a new forwarder feature has been introduced, which allows to process the result of not only whole test suites, but also of test cases and test steps, which have been already executed. This behaviour can be controlled by the test developer, who can specify within the test case resp. test step, whether the results shall be immediately processed after the execution of the test case resp. step.
+
+To forward the results of a certain test case, the forward flag in the saveResult shall be set to true, as shown in the example below.
+[source, java]
+----
+    testCase.saveResult(true);
+----
+
+To forward the results of a certain test step, the forward flag in the endOfStep shall be set to true, as shown in the example below.
+[source, java]
+----
+    testCase.endOfStep("Calculation",30, 50, true);
+----
+
+==== Forwarder Templates
+With release `1.1` Sakuli introduced the http://jtwig.org/[Jtwig] template engine, which is used for generating the output of the Sakuli test suite for certain forwarders. With release `1.2` in addition to link:checkmk.adoc[Check_MK Forwarder] also link:omd-gearman.adoc[Gearman Forwarder] supports Jtwig templates.
 
 Using templates for the forwarder output makes it possible to easily modify the output of Sakuli and adapt it without the need to release a new Sakuli version.
 
@@ -43,6 +65,8 @@ http://jtwig.org/[Jtwig] comes with a list of functions like `abs`, `concat` etc
 * `git-link:src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputDurationFunction.java[link-text="getOutputDuration", mode="view", link-window="_blank"]` - The function returns the formatted duration for a specified test entity.
 * `git-link:src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputStateFunction.java[link-text="getOutputState", mode="view", link-window="_blank"]` - The function returns the `git-link:src/core/src/main/java/org/sakuli/datamodel/state/SakuliState.java[link-text="OutputState", mode="view", link-window="_blank"]` for a specified SakuliState.
 * `git-link:src/core/src/main/java/org/sakuli/services/forwarder/configuration/IsBlankFunction.java[link-text="isBlank", mode="view", link-window="_blank"]` - The function checks whether the specified string parameter is blank.
+* `git-link:src/core/src/main/java/org/sakuli/services/forwarder/configuration/UnixTimestampConverterFunction.java[link-text="convertToUnixTimestamp", mode="view", link-window="_blank"]` - The function converts a date object into an unix timestamp.
+* `git-link:src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetTestDataEntityTypeFunction.java[link-text="getTestDataEntityType", mode="view", link-window="_blank"]` - The function retrieves the type of a provided AbstractTestDataEntity, which currently could be one of: TestSuite, TestCase or TestCaseStep.
 
 Please refer to the Sakuli git-link:src/common/src/main/resources/org/sakuli/common/config/templates[link-text="default Jtwig templates", mode="view", link-window="_blank"], to see the custom functions in action.
 
@@ -83,4 +107,5 @@ The following snippet shows the default `main.twig` template provided by Sakuli 
 
 .Supported Forwarder
 
-* Check_MK: see <<check_mk>>
+* <<check_mk>> (since `1.1`)
+* <<omd-gearman>> (since `1.2`)

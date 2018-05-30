@@ -23,7 +23,7 @@ import org.joda.time.DateTime;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.state.TestCaseState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 
 import java.nio.file.Path;
 import java.util.Collections;
@@ -45,7 +45,7 @@ public class TestCaseExampleBuilder implements ExampleBuilder<TestCase> {
     private Date stopDate;
     private int warningTime;
     private int criticalTime;
-    private SakuliException exception;
+    private SakuliCheckedException exception;
     private Path testCaseFile;
     private String lastURL;
     private String startURL;
@@ -125,7 +125,7 @@ public class TestCaseExampleBuilder implements ExampleBuilder<TestCase> {
         return this;
     }
 
-    public TestCaseExampleBuilder withException(SakuliException exception) {
+    public TestCaseExampleBuilder withException(SakuliCheckedException exception) {
         this.exception = exception;
         return this;
     }

@@ -18,8 +18,11 @@
 
 package org.sakuli.services.common;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.datamodel.TestCase;
-import org.sakuli.utils.CleanUpHelper;
+import org.sakuli.datamodel.TestSuite;
+import org.sakuli.services.ResultService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -33,7 +36,7 @@ import java.util.function.Predicate;
  * @author tschneck
  */
 @Component
-public class CommonResultServiceImpl extends AbstractResultService {
+public class CommonResultServiceImpl extends AbstractTeardownService implements ResultService {
     private static Logger LOGGER = LoggerFactory.getLogger(CommonResultServiceImpl.class);
 
     @Override
@@ -42,20 +45,19 @@ public class CommonResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults() {
-        cleanUp();
+    public void teardownTestSuite(@NonNull TestSuite testSuite) throws RuntimeException {
         LOGGER.info(testSuite.getResultString()
                 + "\n===========  SAKULI Testsuite \"" + testSuite.getId() + "\" execution FINISHED - "
                 + testSuite.getState() + " ======================\n");
         switch (testSuite.getState()) {
             case WARNING_IN_CASE:
-                logTestCaseStateDetailInfo(tc -> tc.getState().isWarning());
+                logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isWarning());
                 break;
             case WARNING_IN_STEP:
-                logTestCaseStateDetailInfo(tc -> tc.getState().isWarningInStep());
+                logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isWarningInStep());
                 break;
             case CRITICAL_IN_CASE:
-                logTestCaseStateDetailInfo(tc -> tc.getState().isCritical());
+                logTestCaseStateDetailInfo(testSuite, tc -> tc.getState().isCritical());
                 break;
             case ERRORS:
                 String errorMsg = "ERROR:\n" + testSuite.getExceptionMessages(false);
@@ -64,7 +66,7 @@ public class CommonResultServiceImpl extends AbstractResultService {
         }
     }
 
-    private void logTestCaseStateDetailInfo(Predicate<TestCase> predicate) {
+    private void logTestCaseStateDetailInfo(TestSuite testSuite, Predicate<TestCase> predicate) {
         testSuite.getTestCases().values().stream()
                 .filter(predicate)
                 .forEach(tc -> {
@@ -76,14 +78,5 @@ public class CommonResultServiceImpl extends AbstractResultService {
                         LOGGER.warn("{}: {}", testSuite.getState(), tc.getName());
                     }
                 });
-    }
-
-    public void cleanUp() {
-        try {
-            CleanUpHelper.cleanClipboard();
-            CleanUpHelper.releaseAllModifiers();
-        } catch (Throwable e) {
-            LOGGER.warn("Some unexpected errors during the clean up procedure:", e);
-        }
     }
 }

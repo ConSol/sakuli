@@ -19,7 +19,7 @@
 package org.sakuli.services.forwarder.database.dao.impl;
 
 import org.sakuli.datamodel.TestCaseStep;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.services.forwarder.database.ProfileJdbcDb;
 import org.sakuli.services.forwarder.database.dao.DaoTestCaseStep;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ import java.util.SortedSet;
 public class DaoTestCaseStepImpl extends Dao implements DaoTestCaseStep {
 
     @Autowired
-    public DaoTestCaseStepImpl(DataSource dataSource) throws SakuliException {
+    public DaoTestCaseStepImpl(DataSource dataSource) throws SakuliCheckedException {
         super(dataSource);
     }
 

@@ -20,6 +20,7 @@ package org.sakuli.services.forwarder.icinga2.model.builder;
 
 import org.sakuli.datamodel.Builder;
 import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.services.forwarder.AbstractOutputBuilder;
 import org.sakuli.services.forwarder.icinga2.Icinga2Properties;
 import org.sakuli.services.forwarder.icinga2.ProfileIcinga2;
@@ -37,6 +38,8 @@ public class Icinga2OutputBuilder extends AbstractOutputBuilder implements Build
     public static final String ICINGA_SEPARATOR = "\n";
     @Autowired
     private Icinga2Properties properties;
+    @Autowired
+    protected TestSuite testSuite;
 
     @Override
     protected int getSummaryMaxLength() {

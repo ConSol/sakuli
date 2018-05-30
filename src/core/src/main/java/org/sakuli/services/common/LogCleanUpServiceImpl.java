@@ -18,8 +18,11 @@
 
 package org.sakuli.services.common;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.services.TeardownService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +36,12 @@ import java.time.temporal.ChronoUnit;
 
 /**
  * @author tschneck
- *         Date: 2/12/16
+ * Date: 2/12/16
  */
 @Component
-public class LogCleanUpResultServiceImpl implements TeardownService {
+public class LogCleanUpServiceImpl extends AbstractTeardownService implements TeardownService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogCleanUpResultServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCleanUpServiceImpl.class);
 
     @Autowired
     private SakuliProperties sakuliProperties;
@@ -49,7 +52,7 @@ public class LogCleanUpResultServiceImpl implements TeardownService {
     }
 
     @Override
-    public void triggerAction() {
+    public void teardownTestSuite(@NonNull TestSuite testSuite) throws RuntimeException {
         if (Files.exists(sakuliProperties.getLogFolder())) {
             cleanUpDirectory(sakuliProperties.getLogFolder());
         }
@@ -74,12 +77,12 @@ public class LogCleanUpResultServiceImpl implements TeardownService {
                             Files.deleteIfExists(e);
                         }
                     } catch (IOException e1) {
-                        LOGGER.error("can`t delete file", e1);
+                        LOGGER.error("can't delete file", e1);
                     }
                 }
             });
         } catch (IOException e) {
-            LOGGER.error("couldn`t access log file directory '" + path + "'", e);
+            LOGGER.error("couldn't access log file directory '" + path + "'", e);
         }
     }
 }

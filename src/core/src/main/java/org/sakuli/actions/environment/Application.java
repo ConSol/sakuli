@@ -20,7 +20,7 @@ package org.sakuli.actions.environment;
 
 import org.sakuli.actions.logging.LogToResult;
 import org.sakuli.actions.screenbased.Region;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sikuli.basics.Settings;
@@ -147,7 +147,7 @@ public class Application extends App {
         int retValue = -1;
         try {
             retValue = super.close();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             LOGGER.error("ERROR in closing Application", e);
         }
         if (!silent && retValue != 0) {
@@ -179,7 +179,7 @@ public class Application extends App {
                 return killAppName(getName());
             }
             return killAppPID(getPID());
-        } catch (SakuliException e) {
+        } catch (SakuliCheckedException e) {
             if (!silent) {
                 loader.getExceptionHandler().handleException(e);
                 return null;
@@ -189,26 +189,26 @@ public class Application extends App {
         return this;
     }
 
-    private Application killAppName(String name) throws SakuliException {
+    private Application killAppName(String name) throws SakuliCheckedException {
         try {
             String cmd = String.format(
                     Settings.isWindows() ? "Taskkill /IM \"%s\" /F" : "pkill \"%s\""
                     , name);
             CommandExecutorHelper.execute(cmd, 0);
         } catch (Exception e) {
-            throw new SakuliException(e, String.format("could not kill application with name '%s'.", name));
+            throw new SakuliCheckedException(e, String.format("could not kill application with name '%s'.", name));
         }
         return this;
     }
 
-    private Application killAppPID(Integer pid) throws SakuliException {
+    private Application killAppPID(Integer pid) throws SakuliCheckedException {
         try {
             String cmd = String.format(
                     Settings.isWindows() ? "Taskkill /PID %d /F" : "kill -9 %d"
                     , pid);
             CommandExecutorHelper.execute(cmd, 0);
         } catch (Exception e) {
-            throw new SakuliException(e, String.format("could not kill application with PID '%d'.", pid));
+            throw new SakuliCheckedException(e, String.format("could not kill application with PID '%d'.", pid));
         }
         return this;
     }

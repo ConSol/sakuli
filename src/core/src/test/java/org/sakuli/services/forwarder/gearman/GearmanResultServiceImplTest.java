@@ -27,12 +27,11 @@ import org.sakuli.BaseTest;
 import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderRuntimeException;
 import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.forwarder.gearman.crypt.Aes;
 import org.sakuli.services.forwarder.gearman.model.NagiosCheckResult;
 import org.sakuli.services.forwarder.gearman.model.builder.NagiosCheckResultBuilder;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -48,6 +47,9 @@ import static org.testng.Assert.assertEquals;
 
 public class GearmanResultServiceImplTest extends BaseTest {
 
+    private final String host = "99.99.99.20";
+    private final int port = 4730;
+    private final String queueName = "check_results";
     @Spy
     @InjectMocks
     private GearmanResultServiceImpl testling;
@@ -61,10 +63,6 @@ public class GearmanResultServiceImplTest extends BaseTest {
     private NagiosCheckResultBuilder checkResultBuilder;
     private GearmanClient gearmanClient;
     private GearmanJobServerConnection connection;
-
-    private final String host = "99.99.99.20";
-    private final int port = 4730;
-    private final String queueName = "check_results";
     private String testResult = "blub";
 
     @BeforeMethod
@@ -97,7 +95,6 @@ public class GearmanResultServiceImplTest extends BaseTest {
 
     @Test
     public void testSaveAllResults() throws Exception {
-        when(checkResultBuilder.build()).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
         GearmanJob job = mock(GearmanJob.class);
         doReturn(job).when(testling).creatJob(any(NagiosCheckResult.class));
@@ -118,16 +115,15 @@ public class GearmanResultServiceImplTest extends BaseTest {
                 .withStopDate(stopDate)
                 .withStartDate(DateUtils.addSeconds(stopDate, -60))
                 .buildExample();
+        when(checkResultBuilder.build(eq(testSuite))).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
-        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
-
-        testling.saveAllResults();
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         verify(gearmanCacheService, never()).cacheResults(anyList());
         verify(gearmanCacheService, never()).getCachedResults();
-        verify(exceptionHandler, never()).handleException(any(Throwable.class));
-        verify(exceptionHandler, never()).handleException(any(Throwable.class), anyBoolean());
+        verify(exceptionHandler, never()).handleException(any(Exception.class));
+        verify(exceptionHandler, never()).handleException(any(Exception.class), anyBoolean());
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
@@ -161,14 +157,16 @@ public class GearmanResultServiceImplTest extends BaseTest {
     public void testSaveAllResultsConnectionFailed() throws Exception {
         when(gearmanClient.addJobServer(connection)).thenReturn(false);
 
-        when(checkResultBuilder.build()).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .buildExample();
+        when(checkResultBuilder.build(testSuite)).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
-        testling.saveAllResults();
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         verify(gearmanCacheService, never()).cacheResults(anyList());
         verify(gearmanCacheService, never()).getCachedResults();
-        verify(exceptionHandler).handleException(any(Throwable.class), eq(true));
+        verify(exceptionHandler).handleException(any(Exception.class));
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
@@ -179,7 +177,9 @@ public class GearmanResultServiceImplTest extends BaseTest {
     public void testSaveAllResultsConnectionFailedCacheResults() throws Exception {
         when(properties.isCacheEnabled()).thenReturn(true);
 
-        when(checkResultBuilder.build()).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .buildExample();
+        when(checkResultBuilder.build(testSuite)).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
         when(gearmanClient.addJobServer(connection)).thenReturn(false);
 
@@ -190,12 +190,12 @@ public class GearmanResultServiceImplTest extends BaseTest {
             return null;
         }).when(gearmanCacheService).cacheResults(anyList());
 
-        testling.saveAllResults();
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         verify(gearmanCacheService).cacheResults(anyList());
         verify(gearmanCacheService).getCachedResults();
-        verify(exceptionHandler).handleException(any(Throwable.class), eq(true));
+        verify(exceptionHandler).handleException(any(Exception.class));
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
@@ -215,7 +215,9 @@ public class GearmanResultServiceImplTest extends BaseTest {
         when(gearmanCacheService.getCachedResults()).thenReturn(Arrays.asList(mockedResult1, mockedResult2));
 
         NagiosCheckResult newResult = new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult);
-        when(checkResultBuilder.build()).thenReturn(newResult);
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .buildExample();
+        when(checkResultBuilder.build(testSuite)).thenReturn(newResult);
 
         doAnswer(invocationOnMock -> {
             List<NagiosCheckResult> results = ((List) invocationOnMock.getArguments()[0]);
@@ -233,15 +235,15 @@ public class GearmanResultServiceImplTest extends BaseTest {
             sendOrder.append(result.hashCode());
             return invocationOnMock.callRealMethod();
 
-        }).when(testling).sendResult(any(), any());
+        }).when(testling).sendResult(any(), any(), anyBoolean(), any());
 
-        testling.saveAllResults();
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         assertEquals(sendOrder.toString(), "" + mockedResult2.hashCode() + mockedResult1.hashCode() + newResult.hashCode());
         verify(gearmanCacheService).cacheResults(anyList());
         verify(gearmanCacheService).getCachedResults();
-        verify(exceptionHandler, times(3)).handleException(any(Throwable.class), eq(true));
+        verify(exceptionHandler, times(3)).handleException(any(Exception.class));
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
@@ -260,7 +262,9 @@ public class GearmanResultServiceImplTest extends BaseTest {
         when(gearmanCacheService.getCachedResults()).thenReturn(Collections.singletonList(mockedResult1));
 
         NagiosCheckResult newResult = new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult);
-        when(checkResultBuilder.build()).thenReturn(newResult);
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .buildExample();
+        when(checkResultBuilder.build(testSuite)).thenReturn(newResult);
 
         doAnswer(invocationOnMock -> {
             List<NagiosCheckResult> results = ((List) invocationOnMock.getArguments()[0]);
@@ -271,12 +275,12 @@ public class GearmanResultServiceImplTest extends BaseTest {
             return null;
         }).when(gearmanCacheService).cacheResults(anyList());
 
-        testling.saveAllResults();
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         verify(gearmanCacheService).cacheResults(anyList());
         verify(gearmanCacheService).getCachedResults();
-        verify(exceptionHandler).handleException(any(Throwable.class), eq(true));
+        verify(exceptionHandler).handleException(any(Exception.class));
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);
@@ -289,7 +293,9 @@ public class GearmanResultServiceImplTest extends BaseTest {
         when(properties.getServerHost()).thenReturn(host);
         when(properties.isCacheEnabled()).thenReturn(true);
 
-        when(checkResultBuilder.build()).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        TestSuite testSuite = new TestSuiteExampleBuilder()
+                .buildExample();
+        when(checkResultBuilder.build(testSuite)).thenReturn(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
 
         doReturn(connection).when(testling).getGearmanConnection(host, port);
         when(gearmanClient.addJobServer(connection)).thenThrow(new UnresolvedAddressException());
@@ -307,14 +313,14 @@ public class GearmanResultServiceImplTest extends BaseTest {
                     "Could not transfer Sakuli results to the Gearman server.*");
             assertEquals(exception.getSuppressed()[0].getClass(), UnresolvedAddressException.class);
             return null;
-        }).when(exceptionHandler).handleException(any(Throwable.class), anyBoolean());
+        }).when(exceptionHandler).handleException(any(Exception.class), anyBoolean());
 
-        testling.saveAllResults();
+        testling.tearDown(Optional.of(testSuite));
 
         //checks
         verify(gearmanCacheService).cacheResults(anyList());
         verify(gearmanCacheService).getCachedResults();
-        verify(exceptionHandler).handleException(any(SakuliForwarderException.class), anyBoolean());
+        verify(exceptionHandler).handleException(any(SakuliForwarderRuntimeException.class));
         verify(testling).getGearmanClient();
         verify(testling).getGearmanConnection(host, port);
         verify(gearmanClient).addJobServer(connection);

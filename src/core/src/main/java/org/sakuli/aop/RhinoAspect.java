@@ -74,7 +74,7 @@ public class RhinoAspect extends BaseSakuliAspect {
      * Pointcut for the {@link org.sakuli.actions.TestCaseAction} class to do an {@link
      * #addActionLog(org.aspectj.lang.JoinPoint, org.sakuli.actions.logging.LogToResult)}
      */
-    @Before("execution(* org.sakuli.actions.TestCaseAction.*(..)) &&" +
+    @Before("execution(* org.sakuli.actions.*.*(..)) &&" +
             "@annotation(logToResult)")
     public void doTestCaseActionLog(JoinPoint joinPoint, LogToResult logToResult) {
         addActionLog(joinPoint, logToResult);

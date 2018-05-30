@@ -261,7 +261,7 @@ public class SakuliStarter {
             System.exit(99);
         } finally {
             LOGGER.info("========== TEAR-DOWN SAKULI TEST SUITE '{}' ==========", result.getId());
-            TeardownServiceHelper.invokeTeardownServices();
+            TeardownServiceHelper.invokeTeardownServices(result, false);
 
             //finally shutdown context and return the result
             result = BeanLoader.loadBean(TestSuite.class);

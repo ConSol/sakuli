@@ -1,0 +1,15 @@
+{# This template renders the performance data for a specific test step. #}
+{# only include metadata (suite_id, graph_type) if this is not a suite result #}
+{% if not testCase %}
+    {% include 'performance_data_meta.twig' with { graph_type: "step" } %}$whitespace$
+{% endif %}
+{% if (not empty(testCaseIndex)) %}
+    s_{{ testCaseIndex }}_{{ testStepIndex }}_{{testStep.id}}={{getOutputDuration(testStep)}};
+{% else %}
+    s_{{ testStepIndex }}_{{testStep.id}}={{getOutputDuration(testStep)}};
+{% endif %}
+{% set testStepWarningTime = testStep.warningTime %}
+{% if (testStepWarningTime > 0) %}
+    {{testStepWarningTime}}
+{% else %}
+{% endif %};;;

@@ -29,7 +29,7 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.services.forwarder.MonitoringPropertiesTestHelper;
 import org.sakuli.services.forwarder.ScreenshotDivConverter;
 import org.sakuli.services.forwarder.icinga2.Icinga2Properties;
@@ -84,7 +84,7 @@ public class Icinga2OutputBuilderTest {
                         .withId("TEST-CASE-ID")
                         .withState(TestCaseState.OK)
                         .buildExample()))
-                .withException(new SakuliException("MY-TEST-ERROR-SUITE"))
+                .withException(new SakuliCheckedException("MY-TEST-ERROR-SUITE"))
                 .buildExample();
         ReflectionTestUtils.setField(testling, "testSuite", testSuite);
         Assert.assertEquals(testling.build(),
@@ -100,7 +100,7 @@ public class Icinga2OutputBuilderTest {
                 .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
                         .withId("TEST-CASE-ID")
                         .withState(TestCaseState.ERRORS)
-                        .withException(new SakuliException("MY-TEST-ERROR-CASE"))
+                        .withException(new SakuliCheckedException("MY-TEST-ERROR-CASE"))
                         .buildExample()))
                 .buildExample();
         ReflectionTestUtils.setField(testling, "testSuite", testSuite);
@@ -117,7 +117,7 @@ public class Icinga2OutputBuilderTest {
                 .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
                         .withId("TEST-CASE-ID")
                         .withState(TestCaseState.ERRORS)
-                        .withException(new SakuliException("MY-TEST-ERROR-CASE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" +
+                        .withException(new SakuliCheckedException("MY-TEST-ERROR-CASE xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" +
                                 "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"))
                         .buildExample()))
                 .buildExample();
@@ -140,7 +140,7 @@ public class Icinga2OutputBuilderTest {
                         .withTestCaseSteps(Collections.singletonList(
                                 new TestCaseStepExampleBuilder()
                                         .withState(TestCaseStepState.ERRORS)
-                                        .withException(new SakuliException("MY-TEST-ERROR-IN-STEP"))
+                                        .withException(new SakuliCheckedException("MY-TEST-ERROR-IN-STEP"))
                                         .buildExample()
                         ))
                         .buildExample()))

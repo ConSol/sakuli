@@ -26,7 +26,7 @@ import org.sakuli.actions.screenbased.Region;
 import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.actions.screenbased.TypingUtil;
 import org.sakuli.datamodel.properties.ActionProperties;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.loader.BeanLoader;
 import org.sakuli.loader.ScreenActionLoader;
 import org.sakuli.utils.CommandLineUtil;
@@ -80,16 +80,16 @@ public class Environment implements Action {
      *
      * @param command OS depended command as {@link CommandLineResult}
      * @return the result as {@link String}
-     * @throws SakuliException if the command won't exit with value 0
+     * @throws SakuliCheckedException if the command won't exit with value 0
      */
-    public static CommandLineResult runCommand(String command) throws SakuliException {
+    public static CommandLineResult runCommand(String command) throws SakuliCheckedException {
         return runCommand(command, true);
     }
 
     /**
      * Equal to {@link #runCommand(String)}, but with option to avoid throwing an exception if the exit code != 0
      */
-    public static CommandLineResult runCommand(String command, boolean throwException) throws SakuliException {
+    public static CommandLineResult runCommand(String command, boolean throwException) throws SakuliCheckedException {
         return CommandLineUtil.runCommand(command, throwException);
     }
 

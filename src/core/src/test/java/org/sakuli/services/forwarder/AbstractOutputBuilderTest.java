@@ -30,11 +30,10 @@ import org.sakuli.builder.TestSuiteExampleBuilder;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.services.forwarder.gearman.GearmanProperties;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -44,9 +43,11 @@ import org.testng.annotations.Test;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import static org.mockito.Mockito.when;
 import static org.sakuli.services.forwarder.gearman.TextPlaceholder.*;
 import static org.testng.Assert.assertEquals;
 
@@ -155,7 +156,7 @@ public class AbstractOutputBuilderTest {
                 .withId("sakuli-123")
                 .withState(TestSuiteState.ERRORS)
                 .withStartDate(startDate)
-                .withException(new SakuliException("TEST-ERROR"))
+                .withException(new SakuliCheckedException("TEST-ERROR"))
                 .withStopDate(DateUtils.addSeconds(startDate, 120))
                 .buildExample();
 

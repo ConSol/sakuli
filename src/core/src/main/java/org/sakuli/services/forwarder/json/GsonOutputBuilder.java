@@ -21,7 +21,8 @@ package org.sakuli.services.forwarder.json;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.joda.time.DateTime;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.datamodel.TestSuite;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
 import org.sakuli.services.forwarder.AbstractOutputBuilder;
 import org.sakuli.services.forwarder.json.serializer.DateSerializer;
 import org.sakuli.services.forwarder.json.serializer.DateTimeSerializer;
@@ -41,6 +42,8 @@ import java.util.Date;
 public class GsonOutputBuilder extends AbstractOutputBuilder {
 
     @Autowired
+    protected TestSuite testSuite;
+    @Autowired
     private JsonProperties jsonProperties;
 
     /**
@@ -48,7 +51,7 @@ public class GsonOutputBuilder extends AbstractOutputBuilder {
      *
      * @return
      */
-    public String createOutput() throws SakuliForwarderException {
+    public String createOutput() throws SakuliForwarderCheckedException {
         try {
             Gson gsonBuilder = new GsonBuilder()
                     .setExclusionStrategies(new GsonExclusionStrategy())
@@ -59,8 +62,8 @@ public class GsonOutputBuilder extends AbstractOutputBuilder {
                     .serializeNulls()
                     .create();
             return gsonBuilder.toJson(testSuite);
-        } catch (Throwable thr) {
-            throw new SakuliForwarderException(thr, "Exception during serializing testSuite into JSON!");
+        } catch (Exception e) {
+            throw new SakuliForwarderCheckedException(e, "Exception during serializing testSuite into JSON!");
         }
     }
 

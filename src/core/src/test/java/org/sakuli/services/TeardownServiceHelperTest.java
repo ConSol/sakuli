@@ -21,12 +21,15 @@ package org.sakuli.services;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.loader.BeanLoader;
-import org.sakuli.services.common.CacheHandlingResultServiceImpl;
-import org.sakuli.services.common.LogCleanUpResultServiceImpl;
+import org.sakuli.services.common.CacheHandlingServiceImpl;
+import org.sakuli.services.common.LogCleanUpServiceImpl;
 import org.sakuli.services.forwarder.database.DatabaseResultServiceImpl;
 import org.sakuli.services.forwarder.gearman.GearmanResultServiceImpl;
 import org.testng.annotations.Test;
 
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.testng.Assert.assertEquals;
@@ -34,56 +37,50 @@ import static org.testng.Assert.assertTrue;
 
 /**
  * @author tschneck
- *         Date: 09.04.15
+ * Date: 09.04.15
  */
 public class TeardownServiceHelperTest extends AbstractServiceBaseTest {
 
     @Test
-    public void testInvokeAllTeardwonServices() throws Exception {
+    public void testInvokeAllTeardwonServices() {
         assertEquals(BeanLoader.loadMultipleBeans(TeardownService.class).size(), 5);
         DatabaseResultServiceImpl databaseResultService = mockDatabaseResultService();
         GearmanResultServiceImpl gearmanResultService = mockGearmanResultService();
-        CacheHandlingResultServiceImpl cacheHandlingResultService = mockCacheHandlingResultService();
-        LogCleanUpResultServiceImpl logCleanUpResultService = mockLogCleanUpResultService();
+        CacheHandlingServiceImpl cacheHandlingResultService = mockCacheHandlingResultService();
+        LogCleanUpServiceImpl logCleanUpResultService = mockLogCleanUpResultService();
         TestSuite testSuite = BeanLoader.loadBean(TestSuite.class);
         testSuite.setState(TestSuiteState.RUNNING);
 
-        TeardownServiceHelper.invokeTeardownServices();
+        TeardownServiceHelper.invokeTeardownServices(testSuite, false);
         assertEquals(testSuite.getState(), TestSuiteState.OK);
         assertTrue(testSuite.getStopDate().after(testSuite.getStartDate()));
-        verify(databaseResultService).saveAllResults();
-        verify(databaseResultService).refreshStates();
-        verify(gearmanResultService).saveAllResults();
-        verify(gearmanResultService).refreshStates();
-        verify(cacheHandlingResultService).saveAllResults();
-        verify(cacheHandlingResultService).refreshStates();
-        verify(logCleanUpResultService).triggerAction();
+        verify(databaseResultService).teardownTestSuite(eq(testSuite));
+        verify(gearmanResultService).tearDown(eq(Optional.of(testSuite)), anyBoolean());
+        verify(cacheHandlingResultService).teardownTestSuite(eq(testSuite));
+        verify(logCleanUpResultService).teardownTestSuite(eq(testSuite));
     }
 
-    private LogCleanUpResultServiceImpl mockLogCleanUpResultService() {
-        LogCleanUpResultServiceImpl logCleanUpResultService = BeanLoader.loadBean(LogCleanUpResultServiceImpl.class);
-        doNothing().when(logCleanUpResultService).triggerAction();
+    private LogCleanUpServiceImpl mockLogCleanUpResultService() {
+        LogCleanUpServiceImpl logCleanUpResultService = BeanLoader.loadBean(LogCleanUpServiceImpl.class);
+        doNothing().when(logCleanUpResultService).teardownTestSuite(any());
         return logCleanUpResultService;
     }
 
     private GearmanResultServiceImpl mockGearmanResultService() {
         GearmanResultServiceImpl gearmanResultService = BeanLoader.loadBean(GearmanResultServiceImpl.class);
-        doNothing().when(gearmanResultService).refreshStates();
-        doNothing().when(gearmanResultService).saveAllResults();
+        doNothing().when(gearmanResultService).tearDown(any(), anyBoolean());
         return gearmanResultService;
     }
 
     private DatabaseResultServiceImpl mockDatabaseResultService() {
         DatabaseResultServiceImpl databaseResultService = BeanLoader.loadBean(DatabaseResultServiceImpl.class);
-        doNothing().when(databaseResultService).refreshStates();
-        doNothing().when(databaseResultService).saveAllResults();
+        doNothing().when(databaseResultService).teardownTestSuite(any());
         return databaseResultService;
     }
 
-    private CacheHandlingResultServiceImpl mockCacheHandlingResultService() {
-        CacheHandlingResultServiceImpl cacheHandlingResultService = BeanLoader.loadBean(CacheHandlingResultServiceImpl.class);
-        doNothing().when(cacheHandlingResultService).refreshStates();
-        doNothing().when(cacheHandlingResultService).saveAllResults();
+    private CacheHandlingServiceImpl mockCacheHandlingResultService() {
+        CacheHandlingServiceImpl cacheHandlingResultService = BeanLoader.loadBean(CacheHandlingServiceImpl.class);
+        doNothing().when(cacheHandlingResultService).teardownTestSuite(any());
         return cacheHandlingResultService;
     }
 }

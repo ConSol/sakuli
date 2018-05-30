@@ -39,13 +39,14 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.awt.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 
@@ -70,6 +71,11 @@ public class SakuliExceptionHandlerTest extends BaseTest {
 
     @InjectMocks
     private SakuliExceptionHandler testling;
+
+    @SuppressWarnings("unchecked")
+    private static List<Exception> getResumeExceptions(SakuliExceptionHandler testling) {
+        return (List<Exception>) ReflectionTestUtils.getField(testling, "resumeExceptions");
+    }
 
     @BeforeMethod
     public void init() {
@@ -101,7 +107,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new Exception(testExcMessage));
-        assertTrue(testSuite.getException() instanceof SakuliException);
+        assertTrue(testSuite.getException() instanceof SakuliCheckedException);
         assertEquals(testSuite.getException().getMessage(), testExcMessage);
         assertEquals(testSuite.getScreenShotPath(), expectedScreenshotPath);
 
@@ -118,7 +124,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
         testling.handleException(new SakuliActionException(testExcMessage));
-        assertTrue(testSuite.getException() instanceof SakuliException);
+        assertTrue(testSuite.getException() instanceof SakuliCheckedException);
         assertEquals(testSuite.getException().getMessage(), testExcMessage);
         assertEquals(testSuite.getScreenShotPath(), expectedScreenshotPath);
     }
@@ -147,36 +153,16 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     }
 
     @Test
-    public void testGetSuppressedExceptions() throws Exception {
-        setUp();
-        Exception testExc = new Exception(testExcMessage);
-        testling.handleException(testExc, true);
-        assertTrue(testCase.getException() instanceof SakuliExceptionWithScreenshot);
-        assertEquals(testCase.getException().getMessage(), testExcMessage);
-        assertEquals(testCase.getScreenShotPath(), expectedScreenshotPath);
-
-        SakuliRuntimeException resumedExceptions = null;
-        try {
-            testling.throwCollectedResumedExceptions();
-        } catch (SakuliRuntimeException e) {
-            resumedExceptions = e;
-        }
-        assertNotNull(resumedExceptions, "exception is expected!");
-        assertEquals(resumedExceptions.getMessage(), "test contains some suppressed resumed exceptions!");
-        assertEquals(resumedExceptions.getSuppressed()[0].getMessage(), testExcMessage);
-    }
-
-    @Test
     public void testSakuliForwarderException() throws Exception {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
-        SakuliForwarderException forwarderException = new SakuliForwarderException("FORWARDER_EXCEPTION");
+        SakuliForwarderCheckedException forwarderException = new SakuliForwarderCheckedException("FORWARDER_EXCEPTION");
 
         testling.handleException(forwarderException, true);
         verify(screenshotActionsMock, never()).takeScreenshotWithTimestampThrowIOException(anyString(), any(Path.class), anyString(), any());
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertEquals(testSuite.getException(), forwarderException);
-        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.resumeToTestExecution(testSuite.getException()));
         assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
@@ -184,7 +170,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     public void testSakuliForwarderException2() throws Exception {
         setUp();
         when(loader.getCurrentTestCase()).thenReturn(null);
-        SakuliForwarderException forwarderException = new SakuliForwarderException("FORWARDER_EXCEPTION");
+        SakuliForwarderCheckedException forwarderException = new SakuliForwarderCheckedException("FORWARDER_EXCEPTION");
 
         testling.handleException(forwarderException);
         verify(screenshotActionsMock, never()).takeScreenshotWithTimestampThrowIOException(anyString(), any(Path.class), anyString(), any());
@@ -200,11 +186,11 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         SakuliActionException sakuliActionException = new SakuliActionException("ACTION_EXCEPTION");
 
         testling.handleException(sakuliActionException, mock(RegionImpl.class), true);
-        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), any(Path.class), anyString(), any());
+        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), nullable(Path.class), nullable(String.class), nullable(Rectangle.class));
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);
-        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.resumeToTestExecution(testSuite.getException()));
         assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
@@ -216,11 +202,11 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         SakuliActionException sakuliActionException = new SakuliActionException("ACTION_EXCEPTION");
 
         testling.handleException(sakuliActionException, mock(RegionImpl.class), true);
-        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), any(Path.class), anyString(), any());
+        verify(screenshotActionsMock).takeScreenshotWithTimestampThrowIOException(anyString(), nullable(Path.class), nullable(String.class), nullable(Rectangle.class));
         verify(sahiReport).addResult(anyString(), any(ResultType.class), anyString(), anyString());
         assertTrue(testSuite.getException() instanceof SakuliExceptionWithScreenshot);
         assertEquals(((SakuliExceptionWithScreenshot) testSuite.getException()).getScreenshot(), expectedScreenshotPath);
-        assertTrue(testling.resumeToTestExcecution(testSuite.getException()));
+        assertTrue(testling.resumeToTestExecution(testSuite.getException()));
         assertTrue(testling.isAlreadyProcessed(testSuite.getException()));
     }
 
@@ -259,15 +245,15 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     @Test
     public void testGetAllExceptions() throws Exception {
         TestSuite ts = new TestSuite();
-        ts.addException(new SakuliException("bla"));
+        ts.addException(new SakuliCheckedException("bla"));
         TestCase tc = new TestCase(null, null);
-        tc.addException(new SakuliException("bla2"));
+        tc.addException(new SakuliCheckedException("bla2"));
         ts.addTestCase(tc);
 
         TestCaseStep step = new TestCaseStep();
-        step.addException(new SakuliException("bla3"));
+        step.addException(new SakuliCheckedException("bla3"));
         tc.addStep(step);
-        List<Throwable> allExceptions = SakuliExceptionHandler.getAllExceptions(ts);
+        List<Exception> allExceptions = SakuliExceptionHandler.getAllExceptions(ts);
         assertEquals(allExceptions.size(), 3);
     }
 
@@ -277,7 +263,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         TestCase tc = new TestCase(null, null);
         ts.addTestCase(tc);
         TestCaseStep step = new TestCaseStep();
-        step.addException(new SakuliException("bla3"));
+        step.addException(new SakuliCheckedException("bla3"));
         tc.addStep(step);
         assertTrue(SakuliExceptionHandler.containsException(ts));
     }
@@ -286,7 +272,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     public void testContainsExceptionsCase() throws Exception {
         TestSuite ts = new TestSuite();
         TestCase tc = new TestCase(null, null);
-        tc.addException(new SakuliException("bla2"));
+        tc.addException(new SakuliCheckedException("bla2"));
         ts.addTestCase(tc);
 
         TestCaseStep step = new TestCaseStep();
@@ -297,7 +283,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     @Test
     public void testContainsExceptionsSuite() throws Exception {
         TestSuite ts = new TestSuite();
-        ts.addException(new SakuliException("bla"));
+        ts.addException(new SakuliCheckedException("bla"));
         TestCase tc = new TestCase(null, null);
         ts.addTestCase(tc);
         TestCaseStep step = new TestCaseStep();
@@ -306,10 +292,20 @@ public class SakuliExceptionHandlerTest extends BaseTest {
     }
 
     @Test
+    public void testSaveExceptionToAsyncRef() throws Exception {
+        TestSuite ts = new TestSuite();
+        final SakuliCheckedException e = new SakuliCheckedException("test");
+        e.setAsyncTestDataRef(ts);
+        testling.saveException(e);
+        assertEquals(ts.getException().getMessage(), "test");
+        verify(loader, never()).getTestSuite();
+    }
+
+    @Test
     public void testSaveExceptionsInSuite() throws Exception {
         TestSuite ts = new TestSuite();
         when(loader.getTestSuite()).thenReturn(ts);
-        testling.saveException(new SakuliException("test"));
+        testling.saveException(new SakuliCheckedException("test"));
         assertEquals(ts.getException().getMessage(), "test");
     }
 
@@ -319,7 +315,7 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(loader.getTestSuite()).thenReturn(ts);
         TestCase tc = new TestCase(null, null);
         when(loader.getCurrentTestCase()).thenReturn(tc);
-        testling.saveException(new SakuliException("test"));
+        testling.saveException(new SakuliCheckedException("test"));
         assertNull(ts.getException());
         assertEquals(tc.getException().getMessage(), "test");
     }
@@ -332,9 +328,63 @@ public class SakuliExceptionHandlerTest extends BaseTest {
         when(loader.getCurrentTestCase()).thenReturn(tc);
         TestCaseStep step = new TestCaseStep();
         when(loader.getCurrentTestCaseStep()).thenReturn(step);
-        testling.saveException(new SakuliException("test"));
+        testling.saveException(new SakuliCheckedException("test"));
         assertNull(ts.getException());
         assertNull(tc.getException());
         assertEquals(step.getException().getMessage(), "test");
+    }
+
+    @Test
+    public void testTransformExceptionSakuliCheckedException() {
+        Exception e = new SakuliForwarderCheckedException("test");
+        assertEquals(testling.transformException(e), e);
+        List<Exception> resumeExceptions = getResumeExceptions(testling);
+        assertTrue(resumeExceptions.contains(e));
+    }
+
+    @Test
+    public void testTransformExceptionSakuliRuntimeException() {
+        Exception e = new SakuliForwarderRuntimeException("test");
+        assertEquals(testling.transformException(e), e);
+        List<Exception> resumeExceptions = getResumeExceptions(testling);
+        assertTrue(resumeExceptions.contains(e));
+    }
+
+    @Test
+    public void testTransformExceptionAnyRuntimeException() throws Exception {
+        setUp();
+        when(actionProperties.isTakeScreenshots()).thenReturn(false);
+        Exception e = new RuntimeException("test");
+        final SakuliException result = testling.transformException(e);
+        assertEquals(result.getClass(), SakuliRuntimeException.class);
+        assertEquals(result.castTo().getCause(), e);
+        List<Exception> resumeExceptions = getResumeExceptions(testling);
+        assertFalse(resumeExceptions.contains(e));
+        assertFalse(resumeExceptions.contains(result));
+    }
+
+    @Test
+    public void testTransformExceptionAnyCheckedException() throws Exception {
+        setUp();
+        when(actionProperties.isTakeScreenshots()).thenReturn(false);
+        Exception e = new Exception("test");
+        final SakuliException result = testling.transformException(e);
+        assertEquals(result.getClass(), SakuliCheckedException.class);
+        assertEquals(result.castTo().getCause(), e);
+        List<Exception> resumeExceptions = getResumeExceptions(testling);
+        assertFalse(resumeExceptions.contains(e));
+        assertFalse(resumeExceptions.contains(result));
+    }
+
+    @Test
+    public void testTransformExceptionAsyncException() throws Exception {
+        setUp();
+        SakuliException e = new SakuliRuntimeException("");
+        e.setAsyncTestDataRef(testSuite);
+        when(actionProperties.isTakeScreenshots()).thenReturn(false);
+        final SakuliException result = testling.transformException(e.castTo());
+        assertEquals(result, e);
+        List<Exception> resumeExceptions = getResumeExceptions(testling);
+        assertTrue(resumeExceptions.contains(e));
     }
 }

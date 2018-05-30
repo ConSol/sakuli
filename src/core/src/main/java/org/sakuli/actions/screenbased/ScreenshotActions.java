@@ -23,7 +23,7 @@ import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.Screen;
 import org.sakuli.datamodel.properties.ActionProperties;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.loader.BaseActionLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -173,7 +173,7 @@ public class ScreenshotActions {
             }
             return createPictureFromBufferedImage(picturePath, format, createBufferedImage(rectangle));
         } catch (Exception e) {
-            baseActionLoader.getExceptionHandler().handleException(new SakuliException(e,
+            baseActionLoader.getExceptionHandler().handleException(new SakuliCheckedException(e,
                     "Can't create Screenshot for path '" + picturePath + "'"));
             return null;
         }
@@ -210,7 +210,7 @@ public class ScreenshotActions {
         try {
             return takeScreenshotWithTimestampThrowIOException(message, folderPath, format, rectangle);
         } catch (IOException e) {
-            baseActionLoader.getExceptionHandler().handleException(new SakuliException(e,
+            baseActionLoader.getExceptionHandler().handleException(new SakuliCheckedException(e,
                     "Can't execute 'takeScreenshotWithTimestamp()' for '" + message + ", " + folderPath + ", " + format + "'"));
             return null;
         }

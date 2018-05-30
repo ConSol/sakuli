@@ -24,9 +24,10 @@ import org.jtwig.environment.EnvironmentConfiguration;
 import org.jtwig.environment.EnvironmentConfigurationBuilder;
 import org.jtwig.spaceless.SpacelessExtension;
 import org.jtwig.spaceless.configuration.SpacelessConfiguration;
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliExceptionHandler;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
 import org.sakuli.services.forwarder.configuration.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,10 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
+
+import static org.sakuli.services.forwarder.configuration.TemplateModelEntityName.SAKULI_PROPERTIES;
+import static org.sakuli.services.forwarder.configuration.TemplateModelEntityName.TEST_DATA_ENTITY;
 
 /**
  * @author Georgi Todorov
@@ -59,13 +64,21 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
     public abstract String getConverterName();
 
     /**
-     * Converts the current test suite to a string based on the template for the concrete converter.
+     * Returns a map of specific model objects based on the concrete template output builder.
      *
-     * @return
+     * @return map with additional model objects
      */
-    public String createOutput() throws SakuliForwarderException {
+    public abstract Map<TemplateModelEntityName, Object> getSpecificModelEntities();
+
+    /**
+     * Converts the current test data entity to a string based on the template for the concrete converter.
+     *
+     * @param abstractTestDataEntity Test data entity, which has to be converted
+     * @return A string representation of the provided test data entity
+     */
+    public String createOutput(AbstractTestDataEntity abstractTestDataEntity) throws SakuliForwarderCheckedException {
         try {
-            JtwigModel model = createModel();
+            JtwigModel model = createModel(abstractTestDataEntity);
             EnvironmentConfiguration configuration = EnvironmentConfigurationBuilder.configuration()
                     .extensions()
                     .add(new SpacelessExtension(new SpacelessConfiguration(new LeadingWhitespaceRemover())))
@@ -77,13 +90,14 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
                     .add(new ExtractScreenshotFunction(screenshotDivConverter))
                     .add(new AbbreviateFunction())
                     .add(new UnixTimestampConverterFunction())
+                    .add(new GetTestDataEntityTypeFunction())
                     .and()
                     .build();
             JtwigTemplate template = JtwigTemplate.fileTemplate(getTemplatePath().toFile(), configuration);
             logger.debug(String.format("Render model into JTwig template. Model: '%s'", model));
             return template.render(model);
-        } catch (Throwable thr) {
-            throw new SakuliForwarderException(thr, "Exception during rendering of Twig template occurred!");
+        } catch (Exception e) {
+            throw new SakuliForwarderCheckedException(e, "Exception during rendering of Twig template occurred!");
         }
     }
 
@@ -93,10 +107,16 @@ public abstract class AbstractTemplateOutputBuilder extends AbstractOutputBuilde
      *
      * @return
      */
-    protected JtwigModel createModel() {
-        return JtwigModel.newModel()
-                .with("testsuite", testSuite)
-                .with("sakuli", sakuliProperties);
+    protected JtwigModel createModel(AbstractTestDataEntity abstractTestDataEntity) {
+        JtwigModel model = JtwigModel.newModel()
+                .with(TEST_DATA_ENTITY.getName(), abstractTestDataEntity)
+                .with(SAKULI_PROPERTIES.getName(), sakuliProperties);
+        if (getSpecificModelEntities() != null) {
+            getSpecificModelEntities().forEach((templateModelEntityName, object) -> {
+                model.with(templateModelEntityName.getName(), object);
+            });
+        }
+        return model;
     }
 
     protected Path getTemplatePath() throws FileNotFoundException {

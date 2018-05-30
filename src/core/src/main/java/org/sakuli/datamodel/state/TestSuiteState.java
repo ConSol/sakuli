@@ -50,6 +50,11 @@ public enum TestSuiteState implements SakuliState {
     WARNING_IN_SUITE(3, "warning"),
 
     /**
+     * value = 7
+     */
+    CRITICAL_IN_STEP(7, "critical in step"),
+
+    /**
      * value = 4
      */
     CRITICAL_IN_CASE(4, "critical in case"),
@@ -80,6 +85,7 @@ public enum TestSuiteState implements SakuliState {
         return errorCode;
     }
 
+    @Override
     public int getNagiosErrorCode() {
         if (isOk()) {
             return 0;
@@ -132,7 +138,7 @@ public enum TestSuiteState implements SakuliState {
     }
 
     public List<TestSuiteState> getCriticalCodes() {
-        return Arrays.asList(CRITICAL_IN_SUITE, CRITICAL_IN_CASE, ERRORS);
+        return Arrays.asList(CRITICAL_IN_SUITE, CRITICAL_IN_CASE, CRITICAL_IN_STEP, ERRORS);
     }
 
 }

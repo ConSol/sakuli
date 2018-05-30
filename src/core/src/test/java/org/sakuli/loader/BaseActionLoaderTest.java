@@ -29,7 +29,7 @@ import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.datamodel.state.TestCaseStepState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeMethod;
@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 
@@ -101,7 +101,7 @@ public class BaseActionLoaderTest {
         when(rhinoScriptRunner.getSession()).thenReturn(null);
         when(sakuliProperties.isLoadJavaScriptEngine()).thenReturn(true);
 
-        ArgumentCaptor<SakuliException> ac = ArgumentCaptor.forClass(SakuliException.class);
+        ArgumentCaptor<SakuliCheckedException> ac = ArgumentCaptor.forClass(SakuliCheckedException.class);
         testling.init(testCaseId, ".");
         verify(exceptionHandler).handleException(ac.capture());
         assertEquals(ac.getValue().getMessage(), "cannot init rhino script runner with sakuli custom delay variable 'sakuli-delay-active'");
@@ -113,7 +113,7 @@ public class BaseActionLoaderTest {
         String testCaseId = "xyz";
         when(testSuite.getTestCase(testCaseId)).thenReturn(null);
         testling.init(testCaseId, ".");
-        verify(exceptionHandler, times(1)).handleException(any(SakuliException.class));
+        verify(exceptionHandler, times(1)).handleException(any(SakuliCheckedException.class));
     }
 
     @Test

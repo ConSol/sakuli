@@ -18,17 +18,19 @@
 
 package org.sakuli.datamodel;
 
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import static org.apache.commons.lang.StringUtils.*;
 
@@ -36,7 +38,7 @@ import static org.apache.commons.lang.StringUtils.*;
  * @author tschneck Date: 10.06.13
  */
 @Component
-public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuiteState> {
+public class TestSuite extends AbstractTestDataEntity<TestSuiteState> {
 
     //browser name where to start the test execution
     private String browserName;
@@ -82,7 +84,7 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
 
                 //if errors are found suite state is always error!
                 if (tc.getState() == null) {
-                    tc.addException(new SakuliException("ERROR: NO RESULT STATE SET"));
+                    tc.addException(new SakuliCheckedException("ERROR: NO RESULT STATE SET"));
                     state = TestSuiteState.ERRORS;
                 } else if (tc.getState().equals(TestCaseState.ERRORS)) {
                     state = TestSuiteState.ERRORS;
@@ -204,14 +206,6 @@ public class TestSuite extends AbstractTestDataEntity<SakuliException, TestSuite
 
     public void setBrowserInfo(String browserInfo) {
         this.browserInfo = browserInfo;
-    }
-
-    /**
-     * @return a unique identifier for each execution of the test suite
-     */
-    public String getGuid() {
-        Date guidDate = startDate != null ? startDate : new Date();
-        return id + "__" + GUID_DATE_FORMATE.format(guidDate);
     }
 
     public void addTestCase(String testCaseId, TestCase testCase) {
