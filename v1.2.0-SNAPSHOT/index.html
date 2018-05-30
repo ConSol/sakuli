@@ -608,7 +608,7 @@ table.CodeRay td.code>pre{padding:0}
 <span id="author" class="author">The Sakuli Team</span><br>
 <span id="email" class="email"><a href="mailto:sakuli@consol.de">sakuli@consol.de</a></span><br>
 <span id="revnumber">version v1.2.0-SNAPSHOT,</span>
-<span id="revdate">25.05.2018 @ 14:57:23 CEST</span>
+<span id="revdate">30.05.2018 @ 18:46:21 CEST</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Sakuli E2E</div>
@@ -786,77 +786,12 @@ table.CodeRay td.code>pre{padding:0}
 </ul>
 </li>
 <li><a href="#integration_in_other_tools">1.5. Integration in other Tools</a>
-<ul class="sectlevel3">
-<li><a href="#monitoring-integration">1.5.1. Monitoring integration</a>
 <ul class="sectlevel4">
-<li><a href="#omd-preparation">1.5.1.1. OMD preparation</a>
-<ul class="sectlevel5">
-<li><a href="#omd-docker">OMD Docker image</a></li>
-<li><a href="#_requirements">Requirements</a></li>
-<li><a href="#_nagios_configuration">Nagios configuration</a></li>
-</ul>
-</li>
-<li><a href="#omd-gearman">1.5.1.2. Gearman forwarder</a>
-<ul class="sectlevel5">
-<li><a href="#_omd_configuration">OMD Configuration</a></li>
-<li><a href="#sakuli_gearman_client_config">Sakuli Client Configuration</a></li>
-<li><a href="#gearman_proxy">Gearman proxy (optional)</a></li>
-</ul>
-</li>
-<li><a href="#omd-sql-database">1.5.1.3. Database forwarder</a>
-<ul class="sectlevel5">
-<li><a href="#_omd_configuration_2">OMD Configuration</a></li>
-<li><a href="#_sakuli_client_configuration">Sakuli Client Configuration</a></li>
-<li><a href="#_database_cleanup_optional">Database cleanup (optional)</a></li>
-<li><a href="#_troubleshooting_2">Troubleshooting</a></li>
-</ul>
-</li>
-<li><a href="#icinga2-integration">1.5.1.4. Icinga2 forwarder</a>
-<ul class="sectlevel5">
-<li><a href="#_icinga2_configuration">Icinga2 Configuration</a></li>
-<li><a href="#_sakuli_client_configuration_2">Sakuli Client Configuration</a></li>
-<li><a href="#_graph_settings">Graph settings</a></li>
-</ul>
-</li>
-<li><a href="#check_mk">1.5.1.5. Check_MK</a>
-<ul class="sectlevel5">
-<li><a href="#_sakuli_client_configuration_3">Sakuli Client Configuration</a></li>
-</ul>
-</li>
-<li><a href="#screenshot_history">1.5.1.6. Screenshot history</a>
-<ul class="sectlevel5">
-<li><a href="#_feature_description">Feature description</a></li>
-<li><a href="#_activating_the_feature">Activating the feature</a></li>
-<li><a href="#screenshot_history_eh">Event handler template</a></li>
-<li><a href="#_thruk_action_menu">Thruk action_menu</a></li>
-<li><a href="#_grafana_integration">Grafana integration</a></li>
-</ul>
-</li>
-<li><a href="#grafana_graphs">1.5.1.7. Grafana graphs</a>
-<ul class="sectlevel5">
-<li><a href="#_feature_activation">Feature activation</a></li>
-<li><a href="#screenshot_annotations">Screenshot annotations</a></li>
-</ul>
-</li>
-<li><a href="#_pnp4nagios_graphs">1.5.1.8. PNP4Nagios graphs</a>
-<ul class="sectlevel5">
-<li><a href="#_rrd_storage_type">RRD Storage Type</a></li>
-<li><a href="#pnp4nagios-rrd-heartbeat">RRD heartbeat</a></li>
-<li><a href="#_install_pnp_graph_template">install PNP graph template</a></li>
-<li><a href="#_cpu_memory_metrics">CPU/Memory metrics</a></li>
-</ul>
-</li>
-<li><a href="#forwarder-template">1.5.1.9. Forwarder Templates</a>
+<li><a href="#forwarder">1.5.1. Forwarder Concept</a></li>
+<li><a href="#_forwarder_templates">1.5.2. Forwarder Templates</a>
 <ul class="sectlevel5">
 <li><a href="#_jtwig_template">JTwig template</a></li>
 <li><a href="#_customized_jtwig_functions">Customized Jtwig Functions</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#continuous_integration">1.5.2. Continuous Integration</a>
-<ul class="sectlevel4">
-<li><a href="#jenkins-integration">1.5.2.1. Jenkins</a></li>
 </ul>
 </li>
 <li><a href="#sql-database">1.5.3. SQL Database</a>
@@ -872,6 +807,73 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#json-forwarder-configuraiton">Configuration of JSON forwarder</a></li>
 <li><a href="#json-forwarder-output">Output of JSON forwarder</a></li>
 <li><a href="#json-forwarder-usage">Usage of JSON forwarder output</a></li>
+</ul>
+</li>
+<li><a href="#monitoring-integration">1.5.5. Monitoring integration</a>
+<ul class="sectlevel4">
+<li><a href="#omd-preparation">1.5.5.1. OMD preparation</a>
+<ul class="sectlevel5">
+<li><a href="#omd-docker">OMD Docker image</a></li>
+<li><a href="#_requirements">Requirements</a></li>
+<li><a href="#_nagios_configuration">Nagios configuration</a></li>
+</ul>
+</li>
+<li><a href="#omd-gearman">1.5.5.2. Gearman forwarder</a>
+<ul class="sectlevel5">
+<li><a href="#_omd_configuration">OMD Configuration</a></li>
+<li><a href="#sakuli_gearman_client_config">Sakuli Client Configuration</a></li>
+<li><a href="#_output_format_template">Output format template</a></li>
+<li><a href="#gearman_proxy">Gearman proxy (optional)</a></li>
+</ul>
+</li>
+<li><a href="#omd-sql-database">1.5.5.3. Database forwarder</a>
+<ul class="sectlevel5">
+<li><a href="#_omd_configuration_2">OMD Configuration</a></li>
+<li><a href="#_sakuli_client_configuration">Sakuli Client Configuration</a></li>
+<li><a href="#_database_cleanup_optional">Database cleanup (optional)</a></li>
+<li><a href="#_troubleshooting_2">Troubleshooting</a></li>
+</ul>
+</li>
+<li><a href="#icinga2-integration">1.5.5.4. Icinga2 forwarder</a>
+<ul class="sectlevel5">
+<li><a href="#_icinga2_configuration">Icinga2 Configuration</a></li>
+<li><a href="#_sakuli_client_configuration_2">Sakuli Client Configuration</a></li>
+<li><a href="#_graph_settings">Graph settings</a></li>
+</ul>
+</li>
+<li><a href="#check_mk">1.5.5.5. Check_MK</a>
+<ul class="sectlevel5">
+<li><a href="#_sakuli_client_configuration_3">Sakuli Client Configuration</a></li>
+</ul>
+</li>
+<li><a href="#screenshot_history">1.5.5.6. Screenshot history</a>
+<ul class="sectlevel5">
+<li><a href="#_feature_description">Feature description</a></li>
+<li><a href="#_activating_the_feature">Activating the feature</a></li>
+<li><a href="#screenshot_history_eh">Event handler template</a></li>
+<li><a href="#_thruk_action_menu">Thruk action_menu</a></li>
+<li><a href="#_grafana_integration">Grafana integration</a></li>
+</ul>
+</li>
+<li><a href="#grafana_graphs">1.5.5.7. Grafana graphs</a>
+<ul class="sectlevel5">
+<li><a href="#_feature_activation">Feature activation</a></li>
+<li><a href="#screenshot_annotations">Screenshot annotations</a></li>
+</ul>
+</li>
+<li><a href="#_pnp4nagios_graphs">1.5.5.8. PNP4Nagios graphs</a>
+<ul class="sectlevel5">
+<li><a href="#_rrd_storage_type">RRD Storage Type</a></li>
+<li><a href="#pnp4nagios-rrd-heartbeat">RRD heartbeat</a></li>
+<li><a href="#_install_pnp_graph_template">install PNP graph template</a></li>
+<li><a href="#_cpu_memory_metrics">CPU/Memory metrics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#continuous_integration">1.5.6. Continuous Integration</a>
+<ul class="sectlevel4">
+<li><a href="#jenkins-integration">1.5.6.1. Jenkins</a></li>
 </ul>
 </li>
 </ul>
@@ -4316,13 +4318,13 @@ All classes and methods are implemented identical for Java and JavaScript
 <p><a href="#TestCase.addImagePaths">TestCase.addImagePaths(imagePaths)</a></p>
 </li>
 <li>
-<p><a href="#TestCase.endOfStep">TestCase.endOfStep(stepName, optWarningTime)</a></p>
+<p><a href="#TestCase.endOfStep">TestCase.endOfStep(stepName, optWarningTime, optCriticalTime, optForward)</a></p>
 </li>
 <li>
 <p><a href="#TestCase.handleException">TestCase.handleException(e)</a></p>
 </li>
 <li>
-<p><a href="#TestCase.saveResult">TestCase.saveResult()</a></p>
+<p><a href="#TestCase.saveResult">TestCase.saveResult(optForward)</a></p>
 </li>
 <li>
 <p><a href="#TestCase.getID">TestCase.getID()</a></p>
@@ -4674,11 +4676,14 @@ All classes and methods are implemented identical for Java and JavaScript
 <div class="ulist">
 <ul>
 <li>
-<p>warningTime <code>number</code> - threshold in seconds. If the threshold is set to 0,
+<p>optCaseId <code>String</code> - optional ID to set the testcase ID to some specifc value. Default is the folder name.</p>
+</li>
+<li>
+<p>optWarningTime <code>number</code> - threshold in seconds. If the threshold is not set or is set to 0,
 the execution time will never exceed, so the state will be always OK!</p>
 </li>
 <li>
-<p>criticalTime <code>number</code> - threshold in seconds. If the threshold is set to 0,
+<p>optCriticalTime <code>number</code> - threshold in seconds. If the threshold is not set or is set to 0,
 the execution time will never exceed, so the state will be always OK!</p>
 </li>
 <li>
@@ -4693,7 +4698,11 @@ for these test cases.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="js"><span class="keyword">var</span> testCase = <span class="keyword">new</span> TestCase(<span class="integer">20</span>,<span class="integer">30</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">path-to/image-folder-name</span><span class="delimiter">&quot;</span></span>);</code></pre>
+<pre class="CodeRay highlight"><code data-lang="js"><span class="comment">//new syntax since v1.2.0</span>
+<span class="keyword">var</span> testCase = <span class="keyword">new</span> TestCase([<span class="string"><span class="delimiter">&quot;</span><span class="content">own-case-id</span><span class="delimiter">&quot;</span></span>, <span class="integer">20</span>, <span class="integer">30</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">path-to/image-folder-name</span><span class="delimiter">&quot;</span></span>]);
+
+<span class="comment">//old syntax &amp;lt; v1.2.0</span>
+<span class="keyword">var</span> testCase = <span class="keyword">new</span> TestCase(<span class="integer">20</span>, <span class="integer">30</span>, [<span class="string"><span class="delimiter">&quot;</span><span class="content">path-to/image-folder-name</span><span class="delimiter">&quot;</span></span>]);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4708,13 +4717,13 @@ for these test cases.</p>
 <p><a href="#TestCase.addImagePaths">TestCase.addImagePaths(imagePaths)</a></p>
 </li>
 <li>
-<p><a href="#TestCase.endOfStep">TestCase.endOfStep(stepName, optWarningTime)</a></p>
+<p><a href="#TestCase.endOfStep">TestCase.endOfStep(stepName, optWarningTime, optCriticalTime, optForward)</a></p>
 </li>
 <li>
 <p><a href="#TestCase.handleException">TestCase.handleException(e)</a></p>
 </li>
 <li>
-<p><a href="#TestCase.saveResult">TestCase.saveResult()</a></p>
+<p><a href="#TestCase.saveResult">TestCase.saveResult(optForward)</a></p>
 </li>
 <li>
 <p><a href="#TestCase.getID">TestCase.getID()</a></p>
@@ -4749,12 +4758,11 @@ If a relative path is assigned, the current testcase folder will be used as curr
 </ul>
 </div>
 <div id="TestCase.endOfStep" class="paragraph">
-<div class="title">TestCase.endOfStep(stepName, optWarningTime)</div>
+<div class="title">TestCase.endOfStep(stepName, optWarningTime, optCriticalTime, optForward)</div>
 <p>A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
 particular runtime. When a case starts, Sakuli starts a "step" timer. It gets read out, stored with the
 step name, and the timer will set to <code>0</code> each time endOfStep() is called.
-If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state
-"WARNING" (there is no CRITICAL state).</p>
+If the step runtime exceeds the step warning resp. critical threshold (second resp. third parameter, both of them are optional), the step is saved with state "WARNING" resp. "CRITICAL".</p>
 </div>
 <div class="paragraph">
 <p><strong>Params</strong></p>
@@ -4767,6 +4775,15 @@ If the step runtime exceeds the step threshold (second parameter, optional), the
 <li>
 <p>optWarningTime <code>number</code> - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
 the execution time will never exceed, so the state will be always OK!</p>
+</li>
+<li>
+<p>optCriticalTime <code>number</code> - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
+the execution time will never exceed, so the state will be always OK!</p>
+</li>
+<li>
+<p>optForward <code>boolean</code> - (optional) indicate whether the result of the test step shall be immediately
+processed by the enabled forwarders. This means before the test suite has been executed to
+the end. If not specified in another way, this option is disabled! Default: <code>false</code></p>
 </li>
 </ul>
 </div>
@@ -4801,11 +4818,21 @@ for further processing.</p>
 </div>
 </div>
 <div id="TestCase.saveResult" class="paragraph">
-<div class="title">TestCase.saveResult()</div>
+<div class="title">TestCase.saveResult(optForward)</div>
 <p>Saves the results of the current test case for further processing.</p>
 </div>
 <div class="paragraph">
 <p>Should be called in finally-block of the test case:</p>
+</div>
+<div class="paragraph">
+<p><strong>Params</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>optForward <code>boolean</code> - indicate whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled! Default: <code>false</code></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p><strong>Example</strong></p>
@@ -4876,7 +4903,7 @@ Will be called from sakuli.js or in side of 'org.sakuli.javaDSL.AbstractSakuliTe
 <div class="ulist">
 <ul>
 <li>
-<p>applicationNameOrPath <code>String</code> - Path to the application file. <strong>Example:</strong> <code>C:\Windows\system32\notepad.exe</code></p>
+<p>applicationNameOrPath <code>String</code> - Path to the application file. Example: <code>C:\Windows\system32\notepad.exe</code></p>
 </li>
 <li>
 <p>optResumeOnException <code>Boolean</code> - Determines whether to ignore exceptions from this class. If this parameter is
@@ -5247,7 +5274,7 @@ If null or empty use property <code>sakuli.screenshot.format</code></p>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Returns</strong>: <code>String</code> - file path to the created screenshot OR null on errors
+<p><strong>Returns</strong>: <code>Path</code> - to the created screenshot OR null on errors
 <strong>Example</strong></p>
 </div>
 <div class="listingblock">
@@ -8532,14 +8559,16 @@ This setting is not needed if Sikuli does keyboard actions on <strong>GUIs not c
 </div>
 <div class="sect2">
 <h3 id="integration_in_other_tools"><a class="anchor" href="#integration_in_other_tools"></a>1.5. Integration in other Tools</h3>
+<div class="sect4">
+<h5 id="forwarder"><a class="anchor" href="#forwarder"></a>1.5.1. Forwarder Concept</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/integration.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/integration.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/advanced-topics/forwarder-templates.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/advanced-topics/forwarder-templates.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
-<p>Sakuli can hand over test result to "<strong>Forwarder</strong>", which can be currently feed different tools like Nagios based monitoring systems or continuous integration server. If no forwarder is defined, a result summary is printed out in the end of a suite.</p>
+<p>After a test execution has been completed Sakuli can process or better <strong>forward</strong> the test results to a certain third party system, e.g. a monitoring system, file output or other third-party systems. The processing is done by a so called Sakuli Forwarder.</p>
 </div>
 <div class="paragraph">
-<p>Feel free to develop another forwarder or ask us to do this.</p>
+<p>Feel free to develop another forwarder or ask us to do this. Currently Sakuli is providing forwarder for following output formats:</p>
 </div>
 <table id="forwarders" class="tableblock frame-all grid-all spread">
 <caption class="title">Table 7. Sakuli forwarder modules</caption>
@@ -8596,10 +8625,307 @@ This setting is not needed if Sikuli does keyboard actions on <strong>GUIs not c
 </tr>
 </tbody>
 </table>
-<div class="sect3">
-<h4 id="monitoring-integration"><a class="anchor" href="#monitoring-integration"></a>1.5.1. Monitoring integration</h4>
+<div class="paragraph">
+<p>Usually the forwarder is invoked after the whole test suite is completed and the result of the test suite is processed.
+With release <code>1.2</code> a new forwarder feature has been introduced, which allows to process the result of not only whole test suites, but also of test cases and test steps, which have been already executed. This behaviour can be controlled by the test developer, who can specify within the test case resp. test step, whether the results shall be immediately processed after the execution of the test case resp. step.</p>
+</div>
+<div class="paragraph">
+<p>To forward the results of a certain test case, the forward flag in the saveResult shall be set to true, as shown in the example below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    testCase.saveResult(<span class="predefined-constant">true</span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To forward the results of a certain test step, the forward flag in the endOfStep shall be set to true, as shown in the example below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    testCase.endOfStep(<span class="string"><span class="delimiter">&quot;</span><span class="content">Calculation</span><span class="delimiter">&quot;</span></span>,<span class="integer">30</span>, <span class="integer">50</span>, <span class="predefined-constant">true</span>);</code></pre>
+</div>
+</div>
+</div>
 <div class="sect4">
-<h5 id="omd-preparation"><a class="anchor" href="#omd-preparation"></a>1.5.1.1. OMD preparation</h5>
+<h5 id="_forwarder_templates"><a class="anchor" href="#_forwarder_templates"></a>1.5.2. Forwarder Templates</h5>
+<div class="paragraph">
+<p>With release <code>1.1</code> Sakuli introduced the <a href="http://jtwig.org/">Jtwig</a> template engine, which is used for generating the output of the Sakuli test suite for certain forwarders. With release <code>1.2</code> in addition to <a href="checkmk.adoc">Check_MK Forwarder</a> also <a href="omd-gearman.adoc">Gearman Forwarder</a> supports Jtwig templates.</p>
+</div>
+<div class="paragraph">
+<p>Using templates for the forwarder output makes it possible to easily modify the output of Sakuli and adapt it without the need to release a new Sakuli version.</p>
+</div>
+<div class="paragraph">
+<p>Here we want to describe how Jtwig is working, how to use a customized template and what you have to pay attention to.</p>
+</div>
+<div class="sect5">
+<h6 id="_jtwig_template"><a class="anchor" href="#_jtwig_template"></a>JTwig template</h6>
+<div class="paragraph">
+<p><a href="http://jtwig.org/">Jtwig</a> is a template engine based on Java, which has a simple and understandable syntax und is easy to use. The following snippet shows an example of a Jtwig template used in Sakuli.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml">    {% for testStep in testCase.stepsAsSortedSet %}
+        , step &quot;{{ testStep.name }}&quot;$whitespace$
+        {% if (testStep.state.error) %}
+            EXCEPTION: {{ errorMessageCreator.exceptionMessage(testStep) }}
+        {% else %}
+            over runtime ({{ testStep.duration }}s/warn at {{ testStep.warningTime }}s)
+        {% endif %}
+    {% endfor %}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The input for this template is the <code>testCase</code> object, which has a set ot test steps. The template iterates over all the steps and prints certain step information based on the state of the test step.</p>
+</div>
+<div class="paragraph">
+<p>The whole <a href="http://jtwig.org/">Jtwig</a> feature set is supported and can be used within the Sakuli forwarder.
+For more detailed information about Jtwig templates, please refer to <a href="http://jtwig.org/">Jtwig</a>.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_customized_jtwig_functions"><a class="anchor" href="#_customized_jtwig_functions"></a>Customized Jtwig Functions</h6>
+<div class="paragraph">
+<p><a href="http://jtwig.org/">Jtwig</a> comes with a list of functions like <code>abs</code>, <code>concat</code> etc, which can be used within a template. In addition to the standard functions, Jtwig supports the implementation and injection of custom functions. Sakuli provides following custom functions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/AbbreviateFunction.java" target="_blank">abbreviate</a></code> - The function abbreviates a certain string to a specified length. The implementation is based on the StringUtils.abbreviate method from the Apache commons library.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/ExtractScreenshotFunction.java" target="_blank">extractScreenshot</a></code> - The function extracts the screenshot from a specified test data entity, which contains an exception.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputDurationFunction.java" target="_blank">getOutputDuration</a></code> - The function returns the formatted duration for a specified test entity.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputStateFunction.java" target="_blank">getOutputState</a></code> - The function returns the <code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/datamodel/state/SakuliState.java" target="_blank">OutputState</a></code> for a specified SakuliState.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/IsBlankFunction.java" target="_blank">isBlank</a></code> - The function checks whether the specified string parameter is blank.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/UnixTimestampConverterFunction.java" target="_blank">convertToUnixTimestamp</a></code> - The function converts a date object into an unix timestamp.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetTestDataEntityTypeFunction.java" target="_blank">getTestDataEntityType</a></code> - The function retrieves the type of a provided AbstractTestDataEntity, which currently could be one of: TestSuite, TestCase or TestCaseStep.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Please refer to the Sakuli <a href="https://github.com/ConSol/sakuli/blob/dev/src/common/src/main/resources/org/sakuli/common/config/templates" target="_blank">default Jtwig templates</a>, to see the custom functions in action.</p>
+</div>
+<div class="paragraph">
+<div class="title">Handling of white spaces and new lines</div>
+<p>The forwarder implementation provides a special handling of white spaces and new lines within the templates. For this feature the <code>jtwig-spaceless-extension</code> has been used, which comes with a SpaceRemover interface. This has been implemented by the <code>LeadingWhitespaceRemover</code>. The <code>LeadingWhitespaceRemover</code> is configured in the twig template engine and removes all leading whitespaces for every line and all line endings within the template. It can be activated by adding the text snippet or the whole template within the following tags <code>{% spaceless %}</code> and <code>{% endspaceless %}</code>.
+The <code>LeadingWhitespaceRemover</code> has been introduced, to make the implementation and maintaining of the templates easier.</p>
+</div>
+<div class="paragraph">
+<p>Since the leading white spaces and the new lines are removed, some special placeholder have been introduced, which are replaced by the real characters at the end of the template generation:
+* <code>$whitespace$</code> - the placeholder will be replaced by a real white space.
+* <code>$newline$</code> - the placeholder will be replaced by a new line <code>&#39;\n&#39;</code>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Using a customized templates</div>
+<p>Sakuli provides a default template set, which is placed within the templates directory under <code><em>SAKULI_HOME</em>/config/templates</code> within the Sakuli home folder (e.g. the default Check_MK templates can be found in a subdirectory <code>check_mk</code>).</p>
+</div>
+<div class="paragraph">
+<p>The property <code>sakuli.forwarder.template.folder</code> defines the path to the main.twig template for the respective forwarder. The default value is set to <code>${sakuli.home.folder}/config/templates</code>.</p>
+</div>
+<div class="paragraph">
+<p>Before customizing a default template, it is essential to copy the templates to a new location and configure that location as the template location in Sakuli, otherwise installing a new Sakuli release would overwrite the modified templates within the config directory.</p>
+</div>
+<div class="paragraph">
+<div class="title">Structure of the default main template</div>
+<p>Generally the forwarder is expecting to find a certain template file named <code>main.twig</code> within the configured template directory. The default <code>main.twig</code> template doesn&#8217;t contain the whole output, but includes further templates to make the single templates more readable. Since the templates are fully customizable, the user can decide how the templates are structured, whether to use nested templates or to define everything within a single file.</p>
+</div>
+<div class="paragraph">
+<p>The following snippet shows the default <code>main.twig</code> template provided by Sakuli for the Check_MK forwarder. This template is also showing the use of the spaceless extension and the special character for a new line.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml">    {% spaceless %}
+    {% import 'error_message_creator.twig' as errorMessageCreator %}
+        <span class="error">&lt;</span><span class="error">&lt;</span><span class="tag">&lt;local&gt;</span><span class="error">&gt;</span><span class="error">&gt;</span>$newline$
+        {% include 'performance_data.twig' %}
+        {% include 'short_summary.twig' %}
+        {% include 'detailed_summary.twig' %}
+        $newline$
+    {% endspaceless %}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<div class="title">Supported Forwarder</div>
+<ul>
+<li>
+<p><a href="#check_mk">Check_MK</a> (since <code>1.1</code>)</p>
+</li>
+<li>
+<p><a href="#omd-gearman">Gearman forwarder</a> (since <code>1.2</code>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="sql-database"><a class="anchor" href="#sql-database"></a>1.5.3. SQL Database</h4>
+<div id="git-edit-section" class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/sql-database.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/sql-database.adoc" target="_blank">edit</a></p>
+</div>
+<div class="paragraph">
+<p>This page describes how the results of Sakuli can be stored into a <strong>MySQL database</strong> which can be read by other 3rd party systems.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/sql_schema.png" alt="sakuli-db-schema"></span></p>
+</div>
+<div class="sect5">
+<h6 id="sql-database-create-db"><a class="anchor" href="#sql-database-create-db"></a>Create Sakuli DB</h6>
+<div class="paragraph">
+<p>Create the <strong>Sakuli database</strong> and the DB user:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ mysql &lt; __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/database/create_sakuli_database.sql</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create the <strong>database user</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ mysql
+  grant ALL on sakuli.* to '__DB_USER__'@'%' identified by '__DB_PASSWORD__';
+  flush privileges;
+  quit</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check the connection with your favorit SQL tool:</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="sql-database-enable-forwarder"><a class="anchor" href="#sql-database-enable-forwarder"></a>Enable database forwarder</h6>
+<div class="paragraph">
+<p>On the Sakuli client you must set the <a href="#property-loading-mechanism">properties</a> for the database receiver. For this, edit <code>sakuli.properties</code> in the folder containing the test suites (you can copy the lines from <code><em>SAKULI_HOME</em>/conf/sakuli-default.properties</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties">__INST_DIR__/example_test_suites/sakuli.properties:
+
+# DEFAULT: false
+sakuli.forwarder.database.enabled=true
+
+#DEFAULT: mysql
+sakuli.forwarder.database.jdbc.driverClass=com.mysql.jdbc.Driver
+sakuli.forwarder.database.host=__DB_IP__
+sakuli.forwarder.database.port=__DB_PORT__
+sakuli.forwarder.database=sakuli
+sakuli.forwarder.database.user=__DB_USER__
+sakuli.forwarder.database.password=__DB_PW__</code></pre>
+</div>
+</div>
+<div id="sql-database-test-transmission" class="paragraph">
+<div class="title">Test result transmission</div>
+<p>Execute the example test case:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Ubuntu</strong>: <code>sakuli run <em>INST_DIR</em>/example_test_suites/example_ubuntu/</code></p>
+</li>
+<li>
+<p><strong>openSUSE</strong>: <code>sakuli run <em>INST_DIR</em>/example_test_suites/example_opensuse/</code></p>
+</li>
+<li>
+<p><strong>Windows 7</strong>: <code>sakuli run <em>INST_DIR</em>\example_test_suites\example_windows7\</code></p>
+</li>
+<li>
+<p><strong>Windows 8</strong>: <code>sakuli run <em>INST_DIR</em>\example_test_suites\example_windows8\</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The database should now contain the results.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_integration_in_other_tools"><a class="anchor" href="#_integration_in_other_tools"></a>Integration in other tools</h6>
+<div class="paragraph">
+<p>You can find queries using the Sakuli DB in <code>/setup/nagios/CheckMySQLHealthSakuli.pm</code> in the extracted Sakuli sources folder.</p>
+</div>
+<div class="paragraph">
+<p>We are looking forward to reading your story of how you integrated the DB results in your toolchain.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="sql-database-optional-cleanup"><a class="anchor" href="#sql-database-optional-cleanup"></a>Database cleanup (optional)</h6>
+<div class="paragraph">
+<p>Sakuli&#8217;s database can get very large over time. Use the following database maintenance script to keep only the most recent data.</p>
+</div>
+<div class="paragraph">
+<p>Create a crontab entry for a automatic database cleanup of data older than 90 days:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">~$ crontab -e
+00 12 * * * $SAKULI_HOME/bin/helper/mysql_purge.sh 90 &gt; /dev/null 2&gt;&amp;1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After that, the crontab should be active.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="json-forwarder"><a class="anchor" href="#json-forwarder"></a>1.5.4. JSON Forwarder</h4>
+<div id="git-edit-section" class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/json-forwarder.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/json-forwarder.adoc" target="_blank">edit</a></p>
+</div>
+<div class="paragraph">
+<p>This page describes how the test suite results of Sakuli can be serialized to a JSON file, which can be read by other 3rd party systems.</p>
+</div>
+<div class="sect5">
+<h6 id="json-forwarder-configuraiton"><a class="anchor" href="#json-forwarder-configuraiton"></a>Configuration of JSON forwarder</h6>
+<div class="paragraph">
+<p>The JSON forwarder provides two properties to customise its behaviour. Using those properties it is possible to enable resp. disable the forwarder and to change the folder, to which the json output is written. The JSON forwarder is enabled by default. Both properties can be edited in <code>testsuite.properties</code> in the folder containing the test suite. To read more about, how to overloading of properties work, see <a href="#property loading mechanism">properties</a>.  (you can copy the lines from <a href="#sakuli-default-properties">Property Reference</a>):</p>
+</div>
+<div class="listingblock">
+<div class="title"><code>testsuite.properties</code></div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties"># DEFAULT: true
+sakuli.forwarder.json.enabled
+
+#DEFAULT: ${sakuli.log.folder}/_json
+sakuli.forwarder.json.dir</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="json-forwarder-output"><a class="anchor" href="#json-forwarder-output"></a>Output of JSON forwarder</h6>
+<div class="paragraph">
+<p>After executing the example test suite, the json output can be found under <code>_logs/_json</code> folder of the test suite. The name of the output file is based on the following pattern:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>`&lt;test_suite_id&gt;_&lt;timestamp&gt;.json`</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For every test suite run, a new json output is generated as soon as the forwarder is enabled.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="json-forwarder-usage"><a class="anchor" href="#json-forwarder-usage"></a>Usage of JSON forwarder output</h6>
+<div class="paragraph">
+<p>Currently the output, generated by the JSON forwarder, is used as an input for the <a href="https://github.com/ConSol/sakuli-ui">Sakuli UI</a>. The Sakuli UI is displaying the result of the test suite executed by Sakuli. It is possible to navigate through all the test cases, test steps and test actions for a certain test suite.
+Furthermore the JSON output can be used as an input for third party systems, e.g. some monitoring system.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="monitoring-integration"><a class="anchor" href="#monitoring-integration"></a>1.5.5. Monitoring integration</h4>
+<div class="sect4">
+<h5 id="omd-preparation"><a class="anchor" href="#omd-preparation"></a>1.5.5.1. OMD preparation</h5>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/omd-preparation.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/omd-preparation.adoc" target="_blank">edit</a></p>
 </div>
@@ -8663,7 +8989,7 @@ If you want to run OMD-Labs in a container then check out the <a href="https://g
 </div>
 </div>
 <div class="sect4">
-<h5 id="omd-gearman"><a class="anchor" href="#omd-gearman"></a>1.5.1.2. Gearman forwarder</h5>
+<h5 id="omd-gearman"><a class="anchor" href="#omd-gearman"></a>1.5.5.2. Gearman forwarder</h5>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/omd-gearman.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/omd-gearman.adoc" target="_blank">edit</a></p>
 </div>
@@ -8854,6 +9180,18 @@ need to enable unlimited strength security policies in your Java JRE. This is do
 </div>
 </div>
 <div class="sect5">
+<h6 id="_output_format_template"><a class="anchor" href="#_output_format_template"></a>Output format template</h6>
+<div class="paragraph">
+<p>With release <code>1.2</code> the implementation of the Gearman forwarder was changed to use the templating mechanism based on Jtwig and introduced in Sakuli in some releases ago. The new implementation decouples the output format from the Sakuli binary, which allows format adaptions to fulfill your needs at any time without installing a new version of Sakuli.</p>
+</div>
+<div class="paragraph">
+<p>Sakuli comes with default templates, which are placed in <code>$INSTALL_DIR/config/templates</code>. The <a href="https://github.com/ConSol/sakuli/blob/dev/src/common/src/main/resources/org/sakuli/common/config/templates/gearman" target="_blank">default Gearman templates</a> can be found in a subdirectory <code>gearman</code>.</p>
+</div>
+<div class="paragraph">
+<p>For further information how the default template directory can be changed or how the forwarder templates can be customized please refer to <a href="#forwarder-templates">[forwarder-templates]</a>.</p>
+</div>
+</div>
+<div class="sect5">
 <h6 id="gearman_proxy"><a class="anchor" href="#gearman_proxy"></a>Gearman proxy (optional)</h6>
 <div class="paragraph">
 <p><span class="image"><img src="images/gearman_proxy.png" alt="gearman_proxy" width="780"></span></p>
@@ -8867,7 +9205,7 @@ need to enable unlimited strength security policies in your Java JRE. This is do
 <div class="ulist">
 <ul>
 <li>
-<p>Change parts of the messages Sakuki sends to the monitoring system &#8658; there are some examples contained already</p>
+<p>Change parts of the messages Sakuli sends to the monitoring system &#8658; there are some examples contained already</p>
 </li>
 <li>
 <p>Getting notified when Sakuli sends results to services which do not exists</p>
@@ -8970,7 +9308,7 @@ This change does affect other monitoring checks executed with mod-gearman, becau
 </div>
 </div>
 <div class="sect4">
-<h5 id="omd-sql-database"><a class="anchor" href="#omd-sql-database"></a>1.5.1.3. Database forwarder</h5>
+<h5 id="omd-sql-database"><a class="anchor" href="#omd-sql-database"></a>1.5.5.3. Database forwarder</h5>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/omd-sql-database.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/omd-sql-database.adoc" target="_blank">edit</a></p>
 </div>
@@ -9252,7 +9590,7 @@ Oct 21 17:08:21 omd2 kernel: [116300.215520] type=1400 audit(1413904101.323:27):
 </div>
 </div>
 <div class="sect4">
-<h5 id="icinga2-integration"><a class="anchor" href="#icinga2-integration"></a>1.5.1.4. Icinga2 forwarder</h5>
+<h5 id="icinga2-integration"><a class="anchor" href="#icinga2-integration"></a>1.5.5.4. Icinga2 forwarder</h5>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/icinga2api.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/icinga2api.adoc" target="_blank">edit</a></p>
 </div>
@@ -9437,7 +9775,7 @@ sakuli.forwarder.icinga2.hostname=sakuliclient01</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="check_mk"><a class="anchor" href="#check_mk"></a>1.5.1.5. Check_MK</h5>
+<h5 id="check_mk"><a class="anchor" href="#check_mk"></a>1.5.5.5. Check_MK</h5>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/checkmk.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/checkmk.adoc" target="_blank">edit</a></p>
 </div>
@@ -9499,7 +9837,7 @@ sakuli.forwarder.check_mk.service_description=My_Custom_Service</code></pre>
 </div>
 </div>
 <div class="sect6">
-<h7 id="_output_format_template"><a class="anchor" href="#_output_format_template"></a>Output format template</h7>
+<h7 id="_output_format_template_2"><a class="anchor" href="#_output_format_template_2"></a>Output format template</h7>
 <div class="paragraph">
 <p>With the implementation of the Check_MK forwarder a new <a href="http://jtwig.org/">Jtwig</a> templating mechanism has been introduced in Sakuli, which decouples the output format from the Sakuli binary. This which allows format adaptions to fulfill your needs at any time without installing a new version of Sakuli.</p>
 </div>
@@ -9510,13 +9848,13 @@ sakuli.forwarder.check_mk.service_description=My_Custom_Service</code></pre>
 <p>Sakuli comes with default templates, which are placed in <code>$INSTALL_DIR/config/templates</code>. The <a href="https://github.com/ConSol/sakuli/blob/dev/src/common/src/main/resources/org/sakuli/common/config/templates/check_mk" target="_blank">default Check_MK templates</a> can be found in a subdirectory <code>check_mk</code>.</p>
 </div>
 <div class="paragraph">
-<p>For further information how the default template directory can be changed or how the forwarder templates can be customized please refer to <a href="#forwarder-template">Forwarder Templates</a>.</p>
+<p>For further information how the default template directory can be changed or how the forwarder templates can be customized please refer to <a href="#forwarder-templates">[forwarder-templates]</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="screenshot_history"><a class="anchor" href="#screenshot_history"></a>1.5.1.6. Screenshot history</h5>
+<h5 id="screenshot_history"><a class="anchor" href="#screenshot_history"></a>1.5.5.6. Screenshot history</h5>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/screenshot_history.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/screenshot_history.adoc" target="_blank">edit</a></p>
 </div>
@@ -9627,7 +9965,7 @@ For PNP4Nagios there is no such feature available.
 </div>
 </div>
 <div class="sect4">
-<h5 id="grafana_graphs"><a class="anchor" href="#grafana_graphs"></a>1.5.1.7. Grafana graphs</h5>
+<h5 id="grafana_graphs"><a class="anchor" href="#grafana_graphs"></a>1.5.5.7. Grafana graphs</h5>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/graph_grafana.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/graph_grafana.adoc" target="_blank">edit</a></p>
 </div>
@@ -9692,7 +10030,7 @@ OMD-Labs already contains a graph template <code>check_sakuli</code> for <a href
 </div>
 </div>
 <div class="sect4">
-<h5 id="_pnp4nagios_graphs"><a class="anchor" href="#_pnp4nagios_graphs"></a>1.5.1.8. PNP4Nagios graphs</h5>
+<h5 id="_pnp4nagios_graphs"><a class="anchor" href="#_pnp4nagios_graphs"></a>1.5.5.8. PNP4Nagios graphs</h5>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/graph_pnp4nagios.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/graph_pnp4nagios.adoc" target="_blank">edit</a></p>
 </div>
@@ -9966,286 +10304,16 @@ The Sakui graph should now contain also CPU/Memory values.</p>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="forwarder-template"><a class="anchor" href="#forwarder-template"></a>1.5.1.9. Forwarder Templates</h5>
-<div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/advanced-topics/forwarder-templates.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/advanced-topics/forwarder-templates.adoc" target="_blank">edit</a></p>
-</div>
-<div class="paragraph">
-<p>With release <code>1.1</code> Sakuli introduced the <a href="http://jtwig.org/">Jtwig</a> template engine, which is used for generating the output of the Sakuli test suite for certain forwarders. (Currently only the <a href="forwarder-checkmk.md">Check_MK forwarder</a> supports Jtwig templates.)</p>
-</div>
-<div class="paragraph">
-<p>Using templates for the forwarder output makes it possible to easily modify the output of Sakuli and adapt it without the need to release a new Sakuli version.</p>
-</div>
-<div class="paragraph">
-<p>Here we want to describe how Jtwig is working, how to use a customized template and what you have to pay attention to.</p>
-</div>
-<div class="sect5">
-<h6 id="_jtwig_template"><a class="anchor" href="#_jtwig_template"></a>JTwig template</h6>
-<div class="paragraph">
-<p><a href="http://jtwig.org/">Jtwig</a> is a template engine based on Java, which has a simple and understandable syntax und is easy to use. The following snippet shows an example of a Jtwig template used in Sakuli.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml">    {% for testStep in testCase.stepsAsSortedSet %}
-        , step &quot;{{ testStep.name }}&quot;$whitespace$
-        {% if (testStep.state.error) %}
-            EXCEPTION: {{ errorMessageCreator.exceptionMessage(testStep) }}
-        {% else %}
-            over runtime ({{ testStep.duration }}s/warn at {{ testStep.warningTime }}s)
-        {% endif %}
-    {% endfor %}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The input for this template is the <code>testCase</code> object, which has a set ot test steps. The template iterates over all the steps and prints certain step information based on the state of the test step.</p>
-</div>
-<div class="paragraph">
-<p>The whole <a href="http://jtwig.org/">Jtwig</a> feature set is supported and can be used within the Sakuli forwarder.
-For more detailed information about Jtwig templates, please refer to <a href="http://jtwig.org/">Jtwig</a>.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_customized_jtwig_functions"><a class="anchor" href="#_customized_jtwig_functions"></a>Customized Jtwig Functions</h6>
-<div class="paragraph">
-<p><a href="http://jtwig.org/">Jtwig</a> comes with a list of functions like <code>abs</code>, <code>concat</code> etc, which can be used within a template. In addition to the standard functions, Jtwig supports the implementation and injection of custom functions. Sakuli provides following custom functions:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/AbbreviateFunction.java" target="_blank">abbreviate</a></code> - The function abbreviates a certain string to a specified length. The implementation is based on the StringUtils.abbreviate method from the Apache commons library.</p>
-</li>
-<li>
-<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/ExtractScreenshotFunction.java" target="_blank">extractScreenshot</a></code> - The function extracts the screenshot from a specified test data entity, which contains an exception.</p>
-</li>
-<li>
-<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputDurationFunction.java" target="_blank">getOutputDuration</a></code> - The function returns the formatted duration for a specified test entity.</p>
-</li>
-<li>
-<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputStateFunction.java" target="_blank">getOutputState</a></code> - The function returns the <code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/datamodel/state/SakuliState.java" target="_blank">OutputState</a></code> for a specified SakuliState.</p>
-</li>
-<li>
-<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/IsBlankFunction.java" target="_blank">isBlank</a></code> - The function checks whether the specified string parameter is blank.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Please refer to the Sakuli <a href="https://github.com/ConSol/sakuli/blob/dev/src/common/src/main/resources/org/sakuli/common/config/templates" target="_blank">default Jtwig templates</a>, to see the custom functions in action.</p>
-</div>
-<div class="paragraph">
-<div class="title">Handling of white spaces and new lines</div>
-<p>The forwarder implementation provides a special handling of white spaces and new lines within the templates. For this feature the <code>jtwig-spaceless-extension</code> has been used, which comes with a SpaceRemover interface. This has been implemented by the <code>LeadingWhitespaceRemover</code>. The <code>LeadingWhitespaceRemover</code> is configured in the twig template engine and removes all leading whitespaces for every line and all line endings within the template. It can be activated by adding the text snippet or the whole template within the following tags <code>{% spaceless %}</code> and <code>{% endspaceless %}</code>.
-The <code>LeadingWhitespaceRemover</code> has been introduced, to make the implementation and maintaining of the templates easier.</p>
-</div>
-<div class="paragraph">
-<p>Since the leading white spaces and the new lines are removed, some special placeholder have been introduced, which are replaced by the real characters at the end of the template generation:
-* <code>$whitespace$</code> - the placeholder will be replaced by a real white space.
-* <code>$newline$</code> - the placeholder will be replaced by a new line <code>&#39;\n&#39;</code>.</p>
-</div>
-<div class="paragraph">
-<div class="title">Using a customized templates</div>
-<p>Sakuli provides a default template set, which is placed within the templates directory under <code><em>SAKULI_HOME</em>/config/templates</code> within the Sakuli home folder (e.g. the default Check_MK templates can be found in a subdirectory <code>check_mk</code>).</p>
-</div>
-<div class="paragraph">
-<p>The property <code>sakuli.forwarder.template.folder</code> defines the path to the main.twig template for the respective forwarder. The default value is set to <code>${sakuli.home.folder}/config/templates</code>.</p>
-</div>
-<div class="paragraph">
-<p>Before customizing a default template, it is essential to copy the templates to a new location and configure that location as the template location in Sakuli, otherwise installing a new Sakuli release would overwrite the modified templates within the config directory.</p>
-</div>
-<div class="paragraph">
-<div class="title">Structure of the default main template</div>
-<p>Generally the forwarder is expecting to find a certain template file named <code>main.twig</code> within the configured template directory. The default <code>main.twig</code> template doesn&#8217;t contain the whole output, but includes further templates to make the single templates more readable. Since the templates are fully customizable, the user can decide how the templates are structured, whether to use nested templates or to define everything within a single file.</p>
-</div>
-<div class="paragraph">
-<p>The following snippet shows the default <code>main.twig</code> template provided by Sakuli for the Check_MK forwarder. This template is also showing the use of the spaceless extension and the special character for a new line.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml">    {% spaceless %}
-    {% import 'error_message_creator.twig' as errorMessageCreator %}
-        <span class="error">&lt;</span><span class="error">&lt;</span><span class="tag">&lt;local&gt;</span><span class="error">&gt;</span><span class="error">&gt;</span>$newline$
-        {% include 'performance_data.twig' %}
-        {% include 'short_summary.twig' %}
-        {% include 'detailed_summary.twig' %}
-        $newline$
-    {% endspaceless %}</code></pre>
-</div>
-</div>
-<div class="ulist">
-<div class="title">Supported Forwarder</div>
-<ul>
-<li>
-<p>Check_MK: see <a href="#check_mk">Check_MK</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
 </div>
 <div class="sect3">
-<h4 id="continuous_integration"><a class="anchor" href="#continuous_integration"></a>1.5.2. Continuous Integration</h4>
+<h4 id="continuous_integration"><a class="anchor" href="#continuous_integration"></a>1.5.6. Continuous Integration</h4>
 <div class="sect4">
-<h5 id="jenkins-integration"><a class="anchor" href="#jenkins-integration"></a>1.5.2.1. Jenkins</h5>
+<h5 id="jenkins-integration"><a class="anchor" href="#jenkins-integration"></a>1.5.6.1. Jenkins</h5>
 <div id="git-edit-section" class="paragraph">
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/ci/jenkins.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/ci/jenkins.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Sakuli can also be integrated in <strong>continuous integration</strong> environments like <strong>Jenkins</strong>. Documentation is coming in the next time (…have one?)</p>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="sql-database"><a class="anchor" href="#sql-database"></a>1.5.3. SQL Database</h4>
-<div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/sql-database.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/sql-database.adoc" target="_blank">edit</a></p>
-</div>
-<div class="paragraph">
-<p>This page describes how the results of Sakuli can be stored into a <strong>MySQL database</strong> which can be read by other 3rd party systems.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="images/sql_schema.png" alt="sakuli-db-schema"></span></p>
-</div>
-<div class="sect5">
-<h6 id="sql-database-create-db"><a class="anchor" href="#sql-database-create-db"></a>Create Sakuli DB</h6>
-<div class="paragraph">
-<p>Create the <strong>Sakuli database</strong> and the DB user:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ mysql &lt; __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/database/create_sakuli_database.sql</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Create the <strong>database user</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ mysql
-  grant ALL on sakuli.* to '__DB_USER__'@'%' identified by '__DB_PASSWORD__';
-  flush privileges;
-  quit</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Check the connection with your favorit SQL tool:</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="sql-database-enable-forwarder"><a class="anchor" href="#sql-database-enable-forwarder"></a>Enable database forwarder</h6>
-<div class="paragraph">
-<p>On the Sakuli client you must set the <a href="#property-loading-mechanism">properties</a> for the database receiver. For this, edit <code>sakuli.properties</code> in the folder containing the test suites (you can copy the lines from <code><em>SAKULI_HOME</em>/conf/sakuli-default.properties</code>):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="properties">__INST_DIR__/example_test_suites/sakuli.properties:
-
-# DEFAULT: false
-sakuli.forwarder.database.enabled=true
-
-#DEFAULT: mysql
-sakuli.forwarder.database.jdbc.driverClass=com.mysql.jdbc.Driver
-sakuli.forwarder.database.host=__DB_IP__
-sakuli.forwarder.database.port=__DB_PORT__
-sakuli.forwarder.database=sakuli
-sakuli.forwarder.database.user=__DB_USER__
-sakuli.forwarder.database.password=__DB_PW__</code></pre>
-</div>
-</div>
-<div id="sql-database-test-transmission" class="paragraph">
-<div class="title">Test result transmission</div>
-<p>Execute the example test case:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Ubuntu</strong>: <code>sakuli run <em>INST_DIR</em>/example_test_suites/example_ubuntu/</code></p>
-</li>
-<li>
-<p><strong>openSUSE</strong>: <code>sakuli run <em>INST_DIR</em>/example_test_suites/example_opensuse/</code></p>
-</li>
-<li>
-<p><strong>Windows 7</strong>: <code>sakuli run <em>INST_DIR</em>\example_test_suites\example_windows7\</code></p>
-</li>
-<li>
-<p><strong>Windows 8</strong>: <code>sakuli run <em>INST_DIR</em>\example_test_suites\example_windows8\</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The database should now contain the results.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_integration_in_other_tools"><a class="anchor" href="#_integration_in_other_tools"></a>Integration in other tools</h6>
-<div class="paragraph">
-<p>You can find queries using the Sakuli DB in <code>/setup/nagios/CheckMySQLHealthSakuli.pm</code> in the extracted Sakuli sources folder.</p>
-</div>
-<div class="paragraph">
-<p>We are looking forward to reading your story of how you integrated the DB results in your toolchain.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="sql-database-optional-cleanup"><a class="anchor" href="#sql-database-optional-cleanup"></a>Database cleanup (optional)</h6>
-<div class="paragraph">
-<p>Sakuli&#8217;s database can get very large over time. Use the following database maintenance script to keep only the most recent data.</p>
-</div>
-<div class="paragraph">
-<p>Create a crontab entry for a automatic database cleanup of data older than 90 days:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">~$ crontab -e
-00 12 * * * $SAKULI_HOME/bin/helper/mysql_purge.sh 90 &gt; /dev/null 2&gt;&amp;1</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>After that, the crontab should be active.</p>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="json-forwarder"><a class="anchor" href="#json-forwarder"></a>1.5.4. JSON Forwarder</h4>
-<div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/json-forwarder.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/json-forwarder.adoc" target="_blank">edit</a></p>
-</div>
-<div class="paragraph">
-<p>This page describes how the test suite results of Sakuli can be serialized to a JSON file, which can be read by other 3rd party systems.</p>
-</div>
-<div class="sect5">
-<h6 id="json-forwarder-configuraiton"><a class="anchor" href="#json-forwarder-configuraiton"></a>Configuration of JSON forwarder</h6>
-<div class="paragraph">
-<p>The JSON forwarder provides two properties to customise its behaviour. Using those properties it is possible to enable resp. disable the forwarder and to change the folder, to which the json output is written. The JSON forwarder is enabled by default. Both properties can be edited in <code>testsuite.properties</code> in the folder containing the test suite. To read more about, how to overloading of properties work, see <a href="#property loading mechanism">properties</a>.  (you can copy the lines from <a href="#sakuli-default-properties">Property Reference</a>):</p>
-</div>
-<div class="listingblock">
-<div class="title"><code>testsuite.properties</code></div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="properties"># DEFAULT: true
-sakuli.forwarder.json.enabled
-
-#DEFAULT: ${sakuli.log.folder}/_json
-sakuli.forwarder.json.dir</code></pre>
-</div>
-</div>
-</div>
-<div class="sect5">
-<h6 id="json-forwarder-output"><a class="anchor" href="#json-forwarder-output"></a>Output of JSON forwarder</h6>
-<div class="paragraph">
-<p>After executing the example test suite, the json output can be found under <code>_logs/_json</code> folder of the test suite. The name of the output file is based on the following pattern:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>`&lt;test_suite_id&gt;_&lt;timestamp&gt;.json`</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>For every test suite run, a new json output is generated as soon as the forwarder is enabled.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="json-forwarder-usage"><a class="anchor" href="#json-forwarder-usage"></a>Usage of JSON forwarder output</h6>
-<div class="paragraph">
-<p>Currently the output, generated by the JSON forwarder, is used as an input for the <a href="https://github.com/ConSol/sakuli-ui">Sakuli UI</a>. The Sakuli UI is displaying the result of the test suite executed by Sakuli. It is possible to navigate through all the test cases, test steps and test actions for a certain test suite.
-Furthermore the JSON output can be used as an input for third party systems, e.g. some monitoring system.</p>
 </div>
 </div>
 </div>
@@ -11221,12 +11289,25 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen </a></p>
 <p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/events.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/events.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
-<p>June 5, 2018: Meetup of <a href="https://www.meetup.com/de-DE/jugthde">Java User Group Thüringen</a> (Tobias Schneck)<br>
+<p>September 10, 2018: <a href="http://swanseacon.co.uk/">SwanseaCon 2018</a> (Tobias Schneck)<br>
+<strong>&#8594; Talk:</strong> <a href="http://swanseacon.co.uk/schedule/#session-22">UI-Testing - Selenium? Rich-Clients? Containers?</a></p>
+</div>
+<div class="paragraph">
+<p>July 18, 2018: <a href="https://www.meetup.com/de-DE/Lightweight-Java-User-Group-Munchen">Lightweight Java User Group München</a> (Tobias Schneck)<br>
+<strong>&#8594; Talk:</strong> <a href="https://www.meetup.com/de-DE/Lightweight-Java-User-Group-Munchen/events/248063246/">OpenShift-Build-Pipelines: Build &#8594; Test &#8594; Run!</a></p>
+</div>
+<div class="paragraph">
+<p>July 5, 2018: <a href="https://www.java-forum-stuttgart.de">Java Forum Stuttgart</a> (Tobias Schneck)<br>
+<strong>&#8594; Talk:</strong> <a href="https://www.java-forum-stuttgart.de/de/Slot+4+2018.html#E4/">OpenShift-Build-Pipelines: Build &#8594; Test &#8594; Run!</a></p>
+</div>
+<div class="paragraph">
+<p>June 7, 2018: Meetup of <a href="https://www.meetup.com/de-DE/jugthde">Java User Group Thüringen</a> (Tobias Schneck)<br>
 <strong>&#8594; Talk:</strong> <a href="https://www.meetup.com/de-DE/jugthde/events/245643418/">OpenShift-Build-Pipelines: Build &#8594; Test &#8594; Run!</a></p>
 </div>
 <div class="paragraph">
-<p>April 24 - 26, 2018: <a href="https://apex.doag.org/de/home">APEX Connect 2018</a> (Tobias Schneck)<br>
-<strong>&#8594; Talk:</strong> <a href="https://programm.doag.org/apex/2018/#/scheduledEvent/553310">UI-Testing - Selenium? Rich-Clients? Containers?</a></p>
+<p>April 24, 2018: <a href="https://programm.doag.org/apex/2018/#/scheduledEvent/553310">APEX Connect 2018</a> (Tobias Schneck)<br>
+<strong>&#8594; Slides:</strong> <a href="https://www.slideshare.net/TobiasSchneck/uitesting-selenium-richclients-containers-apex-connect-2018">UI-Testing - Selenium? Rich-Clients? Containers?</a><br>
+<strong>&#8594; Demo Code:</strong> <span class="image"><img src="images/github-logo-inline.png" alt="github-logo"></span> <a href="https://github.com/ConSol/sakuli-examples/tree/master/java-selenium-example">ConSol/sakuli-examples/java-selenium-example</a></p>
 </div>
 <hr>
 <div class="paragraph">
@@ -12620,7 +12701,7 @@ Website: <a href="http://www.consol.de">www.consol.de</a></p>
 <div id="footer">
 <div id="footer-text">
 Version v1.2.0-SNAPSHOT<br>
-Last updated 2018-05-25 14:57:24 CEST
+Last updated 2018-05-30 18:46:22 CEST
 </div>
 </div>
 <!--
