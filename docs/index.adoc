@@ -129,7 +129,11 @@ include::manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc
 include::manual/testdefinition/troubleshooting.adoc[]
 
 //== Integration documentation
-include::manual/integration/integration.adoc[]
+[[integration_in_other_tools]]
+== Integration in other Tools
+include::manual/integration/forwarder-concept.adoc[]
+include::manual/integration/sql-database.adoc[]
+include::manual/integration/json-forwarder.adoc[]
 
 [[monitoring-integration]]
 === Monitoring integration
@@ -141,14 +145,10 @@ include::manual/integration/monitoring/checkmk.adoc[]
 include::manual/integration/monitoring/screenshot_history.adoc[]
 include::manual/integration/monitoring/graph_grafana.adoc[]
 include::manual/integration/monitoring/graph_pnp4nagios.adoc[]
-include::manual/integration/monitoring/forwarder-templates.adoc[]
-
 
 [[continuous_integration]]
 === Continuous Integration
 include::manual/integration/ci/jenkins.adoc[]
-include::manual/integration/sql-database.adoc[]
-include::manual/integration/json-forwarder.adoc[]
 
 //== Developer Documentation
 include::manual/development/README.adoc[]
