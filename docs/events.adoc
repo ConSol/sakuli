@@ -22,6 +22,8 @@ June 7, 2018: Meetup of https://www.meetup.com/de-DE/jugthde[Java User Group ThÃ
 
 April 24, 2018: https://programm.doag.org/apex/2018/#/scheduledEvent/553310[APEX Connect 2018] (Tobias Schneck)
 *-> Slides:* https://www.slideshare.net/TobiasSchneck/uitesting-selenium-richclients-containers-apex-connect-2018[UI-Testing - Selenium? Rich-Clients? Containers?]
+*-> Demo Code:* image:github-logo-inline.png[github-logo] https://github.com/ConSol/sakuli-examples/tree/master/java-selenium-example[ConSol/sakuli-examples/java-selenium-example]
+
 
 '''
 
