@@ -63,7 +63,7 @@
 
         <!-- sakuli components versions: -->
         <dependencies.sakuli-go-wrapper.version>1.2.0</dependencies.sakuli-go-wrapper.version>
-        <dependencies.sakuli.ui.version>0.9.3</dependencies.sakuli.ui.version>
+        <dependencies.sakuli.ui.version>0.10.0-SNAPSHOT</dependencies.sakuli.ui.version>
         <!-- special sakuli-version > 990, see our fork https://github.com/toschneck/SikuliX-2014 -->
         <dependencies.sikulixapi.version>1.1.1000</dependencies.sikulixapi.version>
         <dependencies.sahi.version>5.1</dependencies.sahi.version>
