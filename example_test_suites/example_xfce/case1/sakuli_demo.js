@@ -23,8 +23,16 @@ var screen = new Region();
 var appCalc = new Application("/usr/bin/gnome-calculator");
 var appGedit = new Application("/usr/bin/gedit");
 
-try {
+function checkCentOS() {
+    var dist = env.runCommand('cat /etc/os-release').getOutput();
+    if (dist.match(/NAME=.*CentOS.*/)) {
+        Logger.logInfo('Detected distribution: CentOS  >> overwrite some image patterns');
+        testCase.addImagePaths("centos");
+    }
+}
 
+try {
+    checkCentOS();
     _highlight(_link("SSL Manager"));
     _highlight(_link("Logs"));
     _highlight(_link("Online Documentation"));
@@ -48,7 +56,7 @@ try {
     screen.waitForImage("gedit.png", 10).highlight();
     env.paste("Initial test passed. Sakuli, Sahi and Sikuli seem to work fine. Exiting...");
     testCase.endOfStep("Editor", 10);
-    
+
 } catch (e) {
     testCase.handleException(e);
 } finally {
