@@ -1,18 +1,17 @@
 
-:imagesdir: ../../../../images
+:imagesdir: ../../../images
 
-[[forwarder-template]]
-==== Forwarder in Sakuli
+[[forwarder]]
+==== Forwarder Concept
 [#git-edit-section]
 :page-path: docs/manual/integration/monitoring/advanced-topics/forwarder-templates.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
-After a test execution has been completed Sakuli can process the test results to a certain third party system, e.g. a monitoring system. The processing is done by a so called Sakuli Forwarder. Currently Sakuli is providing forwarder for following output formats:
+After a test execution has been completed Sakuli can process or better *forward* the test results to a certain third party system, e.g. a monitoring system, file output or other third-party systems. The processing is done by a so called Sakuli Forwarder.
 
-* Gearman
-* Icinga
-* CheckMK
-* JSON
+Feel free to develop another forwarder or ask us to do this. Currently Sakuli is providing forwarder for following output formats:
+
+include::forwarder-overview.adoc[]
 
 Usually the forwarder is invoked after the whole test suite is completed and the result of the test suite is processed.
 With release `1.2` a new forwarder feature has been introduced, which allows to process the result of not only whole test suites, but also of test cases and test steps, which have been already executed. This behaviour can be controlled by the test developer, who can specify within the test case resp. test step, whether the results shall be immediately processed after the execution of the test case resp. step.
@@ -108,5 +107,5 @@ The following snippet shows the default `main.twig` template provided by Sakuli 
 
 .Supported Forwarder
 
-* Check_MK: see <<checkmk>>
-* Gearman (since `1.2`): see <<omd-gearman>>
+* <<check_mk>> (since `1.1`)
+* <<omd-gearman>> (since `1.2`)

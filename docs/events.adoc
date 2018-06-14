@@ -8,11 +8,25 @@
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 :hardbreaks:
-June 5, 2018: Meetup of https://www.meetup.com/de-DE/jugthde[Java User Group Thüringen] (Tobias Schneck)
-*-> Talk:* https://www.meetup.com/de-DE/jugthde/events/245643418/[OpenShift-Build-Pipelines: Build -> Test -> Run!]
+September 10, 2018: http://swanseacon.co.uk/[SwanseaCon 2018] (Tobias Schneck)
+*-> Talk:* http://swanseacon.co.uk/schedule/#session-22[UI-Testing - Selenium? Rich-Clients? Containers?]
 
-April 24 - 26, 2018: https://apex.doag.org/de/home[APEX Connect 2018] (Tobias Schneck)
-*-> Talk:* https://programm.doag.org/apex/2018/#/scheduledEvent/553310[UI-Testing - Selenium? Rich-Clients? Containers?]
+July 18, 2018: https://www.meetup.com/de-DE/Lightweight-Java-User-Group-Munchen[Lightweight Java User Group München] (Tobias Schneck)
+*-> Talk:* https://www.meetup.com/de-DE/Lightweight-Java-User-Group-Munchen/events/248063246/[OpenShift-Build-Pipelines: Build -> Test -> Run!]
+
+July 5, 2018: https://www.java-forum-stuttgart.de[Java Forum Stuttgart] (Tobias Schneck)
+*-> Talk:* https://www.java-forum-stuttgart.de/de/Slot+4+2018.html#E4/[OpenShift-Build-Pipelines: Build -> Test -> Run!]
+
+June 7, 2018: Meetup of https://www.meetup.com/de-DE/jugthde/events/245643418/[Java User Group Thüringen] (Tobias Schneck)
+*-> Slides:* https://www.slideshare.net/TobiasSchneck/openshiftbuildpipelines-build-test-run[OpenShift-Build-Pipelines: Build -> Test -> Run!]
+*-> Demo Code:* image:github-logo-inline.png[github-logo] https://github.com/toschneck/openshift-example-bakery-ci-pipeline[toschneck/openshift-example-bakery-ci-pipeline]
+*-> Video:* image:youtube-logo-inline.png[youtube-logo] https://www.youtube.com/watch?v=8Gwem76OxlA
+
+
+April 24, 2018: https://programm.doag.org/apex/2018/#/scheduledEvent/553310[APEX Connect 2018] (Tobias Schneck)
+*-> Slides:* https://www.slideshare.net/TobiasSchneck/uitesting-selenium-richclients-containers-apex-connect-2018[UI-Testing - Selenium? Rich-Clients? Containers?]
+*-> Demo Code:* image:github-logo-inline.png[github-logo] https://github.com/ConSol/sakuli-examples/tree/master/java-selenium-example[ConSol/sakuli-examples/java-selenium-example]
+
 
 '''
 
