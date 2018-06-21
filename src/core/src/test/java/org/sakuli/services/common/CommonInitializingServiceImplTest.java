@@ -18,6 +18,16 @@
 
 package org.sakuli.services.common;
 
+import static org.mockito.Mockito.spy;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -28,13 +38,9 @@ import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.datamodel.state.TestSuiteState;
 import org.sakuli.exceptions.SakuliInitException;
-import org.sakuli.utils.TestSuitePropertiesTestUtils;
+import org.sakuli.utils.TestSuitePropertiesBuilder;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.io.File;
-
-import static org.mockito.Mockito.spy;
-import static org.testng.Assert.*;
 
 /**
  * @author tschneck
@@ -53,7 +59,7 @@ public class CommonInitializingServiceImplTest {
 
     @Test
     public void testInit() throws Exception {
-        testSuiteProperties = spy(TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "valid", "suite_id"));
+        testSuiteProperties = spy(new TestSuitePropertiesBuilder(this.getClass(), "valid", "suite_id").build());
         ts = spy(new TestSuite(testSuiteProperties));
         MockitoAnnotations.initMocks(this);
 
@@ -61,9 +67,34 @@ public class CommonInitializingServiceImplTest {
 
         assertEquals(ts.getState(), TestSuiteState.RUNNING);
         assertNotNull(ts.getStartDate());
-        assertTrue(ts.getAbsolutePathOfTestSuiteFile().endsWith("valid" + File.separator + "testsuite.suite"), "test absolut path");
+        assertTrue(ts.getAbsolutePathOfTestSuiteFile().endsWith("valid" + File.separator + "testsuite.suite"),
+                "test absolut path");
         assertEquals(ts.getDbPrimaryKey(), -1);
         assertEquals(ts.getTestCases().size(), 1);
+        assertEquals(ts.getId(), "suite_id");
+    }
+
+    @DataProvider(name = "filterTestCasesProvider")
+    public static Object[][] filteredTestCaseDataProvider() {
+        return new Object[][] { { Arrays.asList("tc1/_tc.js", "tc2/_tc.js"), 2 }, { Arrays.asList("tc1/_tc.js"), 1 } };
+    }
+
+    @Test(dataProvider = "filterTestCasesProvider")
+    public void testInitWithFilter(List<String> filters, Integer amountOfTestCases) throws Exception {
+        testSuiteProperties =
+                spy(new TestSuitePropertiesBuilder(this.getClass(), "filtered", "suite_id").withFilters(filters)
+                        .build());
+        ts = spy(new TestSuite(testSuiteProperties));
+        MockitoAnnotations.initMocks(this);
+
+        testling.initTestSuite();
+
+        assertEquals(ts.getState(), TestSuiteState.RUNNING);
+        assertNotNull(ts.getStartDate());
+        assertTrue(ts.getAbsolutePathOfTestSuiteFile().endsWith("filtered" + File.separator + "testsuite.suite"),
+                "test absolut path");
+        assertEquals(ts.getDbPrimaryKey(), -1);
+        assertEquals(ts.getTestCases().size(), (int) (amountOfTestCases));
         assertEquals(ts.getId(), "suite_id");
     }
 
@@ -86,10 +117,10 @@ public class CommonInitializingServiceImplTest {
         assertEquals(ts.getId(), "suite_id");
     }
 
-
-    @Test(expectedExceptions = SakuliInitException.class, expectedExceptionsMessageRegExp = "Cannot read testsuite.suite.*")
+    @Test(expectedExceptions = SakuliInitException.class,
+            expectedExceptionsMessageRegExp = "Cannot read testsuite.suite.*")
     public void testInitExceptionForTestCase() throws Exception {
-        testSuiteProperties = spy(TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "unvalid", ""));
+        testSuiteProperties = spy(new TestSuitePropertiesBuilder(this.getClass(), "unvalid", "").build());
         testSuiteProperties.setTestSuiteId("testid");
         ts = spy(new TestSuite(testSuiteProperties));
         MockitoAnnotations.initMocks(this);

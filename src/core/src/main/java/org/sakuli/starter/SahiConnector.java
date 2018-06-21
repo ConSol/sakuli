@@ -18,9 +18,12 @@
 
 package org.sakuli.starter;
 
-import net.sf.sahi.ant.Report;
-import net.sf.sahi.test.TestRunner;
-import net.sf.sahi.util.Utils;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.ConnectException;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
@@ -34,11 +37,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.ConnectException;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import net.sf.sahi.ant.Report;
+import net.sf.sahi.test.TestRunner;
+import net.sf.sahi.util.Utils;
 
 @Component
 public class SahiConnector {

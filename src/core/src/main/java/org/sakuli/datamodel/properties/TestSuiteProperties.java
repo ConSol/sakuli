@@ -18,13 +18,15 @@
 
 package org.sakuli.datamodel.properties;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 /**
  * @author tschneck Date: 09.05.14
@@ -41,6 +43,7 @@ public class TestSuiteProperties {
 
     public static final String SUITE_ID = "testsuite.id";
     public static final String SUITE_NAME = "testsuite.name";
+    public static final String TEST_CASE_NAMES = "testcase.names";
     public static final String WARNING_TIME = "testsuite.warningTime";
     public static final String CRITICAL_TIME = "testsuite.criticalTime";
     public static final String BROWSER_NAME = "testsuite.browser";
@@ -68,6 +71,9 @@ public class TestSuiteProperties {
     private boolean loadTestCasesAutomatic;
     @Value("${" + TEST_SUITE_IS_UI_TEST + ":false}") // default FALSE
     private boolean uiTest = false;
+
+    @Value("#{'${" + TEST_CASE_NAMES + "}'.split(',')}")
+    private List<String> testCaseFilters;
 
     @PostConstruct
     public void initFolders() {
@@ -158,4 +164,13 @@ public class TestSuiteProperties {
     public void setUiTest(boolean uiTest) {
         this.uiTest = uiTest;
     }
+
+    public List<String> getTestCaseFilters() {
+        return testCaseFilters;
+    }
+
+    public void setTestCaseFilters(final List testCaseFilters) {
+        this.testCaseFilters = testCaseFilters;
+    }
+
 }

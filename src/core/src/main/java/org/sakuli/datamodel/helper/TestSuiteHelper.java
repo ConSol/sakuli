@@ -18,14 +18,6 @@
 
 package org.sakuli.datamodel.helper;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.sakuli.datamodel.TestCase;
-import org.sakuli.datamodel.TestSuite;
-import org.sakuli.datamodel.properties.TestSuiteProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,8 +25,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.properties.TestSuiteProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author tschneck Date: 22.05.14
@@ -66,6 +68,8 @@ public class TestSuiteHelper {
                         + "\n --- End of File \"" + testSuiteFile.toAbsolutePath().toString() + "\" ---"
         );
 
+        List<String> testCaseFilters = (properties.getTestCaseFilters() == null) ? new ArrayList<>() : properties.getTestCaseFilters();
+
         //handle each line of the .suite file
         String regExLineSep = System.getProperty("line.separator") + "|\n";
         for (String line : testSuiteString.split(regExLineSep)) {
@@ -76,6 +80,11 @@ public class TestSuiteHelper {
                 //extract tc file name name and generate new test case
                 String tcFileName = line.substring(0, line.lastIndexOf(' '));  // get tc file name
                 Path tcFile = Paths.get(testSuiteFolder.toAbsolutePath().toString() + File.separator + tcFileName.replace("/", File.separator));
+
+                // Only add test cases which were specified via CLI
+                if (!testCaseFilters.isEmpty() && !testCaseFilters.contains(tcFileName)) {
+                    continue;
+                }
                 if (Files.exists(tcFile)) {
                     TestCase tc = new TestCase(
                             TestCaseHelper.convertFolderPathToName(tcFileName),
