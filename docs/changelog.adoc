@@ -10,8 +10,7 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 [[version-1.2.0]]
 .http://consol.github.io/sakuli/v1.2.0/index.html[*Version 1.2.0*]
-//TODO Update link to release of Sakuli-UI
-* Sakuli UI (beta) for managing and developing Sakuli tests (https://github.com/ConSol/sakuli-ui[github.com/ConSol/sakuli-ui])
+* Sakuli UI (beta) for managing and developing Sakuli tests (https://github.com/ConSol/sakuli-ui/releases/tag/v0.10.0[github.com/ConSol/sakuli-ui])
 ** CLI option to start <<sakuli-ui, Sakuli UI>> (https://github.com/ConSol/sakuli/issues/308[#308])
 * Add support to <<forwarder-step-case,forward step and case results>> (https://github.com/ConSol/sakuli/issues/304[#304])
 * Change Gearman forwarder to use <<forwarder-templates,twig-based templates>> (https://github.com/ConSol/sakuli/issues/310[#310])
