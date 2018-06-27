@@ -612,8 +612,8 @@ table.CodeRay td.code>pre{padding:0}
 <div class="details">
 <span id="author" class="author">The Sakuli Team</span><br>
 <span id="email" class="email"><a href="mailto:sakuli@consol.de">sakuli@consol.de</a></span><br>
-<span id="revnumber">version v1.1.0,</span>
-<span id="revdate">14.06.2018 @ 12:04:14 CEST</span>
+<span id="revnumber">version v1.2.0,</span>
+<span id="revdate">27.06.2018 @ 12:09:30 CEST</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Sakuli E2E</div>
@@ -718,85 +718,124 @@ table.CodeRay td.code>pre{padding:0}
 </li>
 </ul>
 </li>
-<li><a href="#sakuli-testdefintion">1.3. Sakuli Testdefinition</a>
+<li><a href="#sakuli-ui">1.3. Sakuli UI</a>
 <ul class="sectlevel3">
-<li><a href="#sakuli-api">1.3.1. Sakuli API</a>
+<li><a href="#sakuli-ui-local">1.3.1. Local execution</a></li>
+<li><a href="#sakuli-ui-containerized">1.3.2. Containerized execution</a></li>
+<li><a href="#sakuli-ui-configuration">1.3.3. Sakuli UI Configuration</a></li>
+</ul>
+</li>
+<li><a href="#sakuli-testdefintion">1.4. Sakuli Testdefinition</a>
+<ul class="sectlevel3">
+<li><a href="#sakuli-api">1.4.1. Sakuli API</a>
 <ul class="sectlevel5">
 <li><a href="#sakuli-api-index">Index</a></li>
-<li><a href="#Sahi-API">1.3.1.2. Sahi-API</a></li>
-<li><a href="#TestCase">1.3.1.3. TestCase</a></li>
-<li><a href="#Application">1.3.1.4. Application</a></li>
-<li><a href="#Environment">1.3.1.5. Environment</a></li>
-<li><a href="#Key">1.3.1.6. Key</a></li>
-<li><a href="#Logger">1.3.1.7. Logger</a></li>
-<li><a href="#MouseButton">1.3.1.8. MouseButton</a></li>
-<li><a href="#Region">1.3.1.9. Region</a>
+<li><a href="#Sahi-API">1.4.1.2. Sahi-API</a></li>
+<li><a href="#TestCase">1.4.1.3. TestCase</a></li>
+<li><a href="#Application">1.4.1.4. Application</a></li>
+<li><a href="#Environment">1.4.1.5. Environment</a></li>
+<li><a href="#Key">1.4.1.6. Key</a></li>
+<li><a href="#Logger">1.4.1.7. Logger</a></li>
+<li><a href="#MouseButton">1.4.1.8. MouseButton</a></li>
+<li><a href="#Region">1.4.1.9. Region</a>
 <ul class="sectlevel5">
 <li><a href="#RegionRectangle">RegionRectangle</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_additional_topics">1.3.2. Additional Topics</a>
+<li><a href="#_additional_topics">1.4.2. Additional Topics</a>
 <ul class="sectlevel4">
-<li><a href="#property-loading-mechanism">1.3.2.1. Property loading mechanism</a>
+<li><a href="#property-loading-mechanism">1.4.2.1. Property loading mechanism</a>
 <ul class="sectlevel5">
 <li><a href="#sakuli-default-properties">Property Reference</a></li>
 </ul>
 </li>
-<li><a href="#_exception_handling">1.3.2.2. Exception handling</a></li>
-<li><a href="#_logging">1.3.2.3. Logging</a></li>
-<li><a href="#encryption">1.3.2.4. Secret De-/Encryption</a></li>
-<li><a href="#_screenshot_settings">1.3.2.5. Screenshot settings</a></li>
-<li><a href="#_gui_only_tests">1.3.2.6. GUI-only tests</a></li>
-<li><a href="#sahi-controller">1.3.2.7. Sahi Controller</a></li>
-<li><a href="#sahi-recorder">1.3.2.8. Sahi Recorder</a></li>
-<li><a href="#_sahi_settings">1.3.2.9. Sahi settings</a>
+<li><a href="#_exception_handling">1.4.2.2. Exception handling</a></li>
+<li><a href="#_logging">1.4.2.3. Logging</a></li>
+<li><a href="#encryption">1.4.2.4. Secret De-/Encryption</a></li>
+<li><a href="#_screenshot_settings">1.4.2.5. Screenshot settings</a></li>
+<li><a href="#_gui_only_tests">1.4.2.6. GUI-only tests</a></li>
+<li><a href="#sahi-controller">1.4.2.7. Sahi Controller</a></li>
+<li><a href="#sahi-recorder">1.4.2.8. Sahi Recorder</a></li>
+<li><a href="#_sahi_settings">1.4.2.9. Sahi settings</a>
 <ul class="sectlevel5">
 <li><a href="#_browser_selection">Browser selection</a></li>
 <li><a href="#sahi-browser-configuration">Browser configuration</a></li>
 <li><a href="#sahi_behind_a_proxy">Sahi behind a proxy</a></li>
 <li><a href="#sahi-https">HTTPS support in Sahi</a></li>
-<li><a href="#sahi-webpack-dev-server">Sahi and webpack-dev-server</a></li>
 </ul>
 </li>
-<li><a href="#_sikuli_settings">1.3.2.10. Sikuli settings</a>
+<li><a href="#_sahi_known_issues">1.4.2.10. Sahi known issues</a>
+<ul class="sectlevel5">
+<li><a href="#sahi-webpack-dev-server">Sahi and webpack-dev-server</a></li>
+<li><a href="#sahi-authorization-headers">Sahi removes authorization headers</a></li>
+</ul>
+</li>
+<li><a href="#_sikuli_settings">1.4.2.11. Sikuli settings</a>
 <ul class="sectlevel5">
 <li><a href="#_highlighting_regions">Highlighting Regions</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_troubleshooting">1.3.3. Troubleshooting</a>
+<li><a href="#_troubleshooting">1.4.3. Troubleshooting</a>
 <ul class="sectlevel4">
-<li><a href="#_growing_firefox_profile_folder">1.3.3.1. Growing Firefox profile folder</a></li>
-<li><a href="#_hanging_applications">1.3.3.2. Hanging applications</a></li>
-<li><a href="#image-recognition-problem">1.3.3.3. Sikuli does not recognize images</a></li>
-<li><a href="#_missing_keystrokes_on_type_or_failing_paste">1.3.3.4. Missing keystrokes on type or failing paste</a></li>
-<li><a href="#_application_getregion_returns_null">1.3.3.5. Application.getRegion() returns NULL</a></li>
+<li><a href="#_growing_firefox_profile_folder">1.4.3.1. Growing Firefox profile folder</a></li>
+<li><a href="#_hanging_applications">1.4.3.2. Hanging applications</a></li>
+<li><a href="#image-recognition-problem">1.4.3.3. Sikuli does not recognize images</a></li>
+<li><a href="#_missing_keystrokes_on_type_or_failing_paste">1.4.3.4. Missing keystrokes on type or failing paste</a></li>
+<li><a href="#_application_getregion_returns_null">1.4.3.5. Application.getRegion() returns NULL</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#integration_in_other_tools">1.4. Integration in other Tools</a>
-<ul class="sectlevel3">
-<li><a href="#monitoring-integration">1.4.1. Monitoring integration</a>
+<li><a href="#integration_in_other_tools">1.5. Integration in other Tools</a>
 <ul class="sectlevel4">
-<li><a href="#omd-preparation">1.4.1.1. OMD preparation</a>
+<li><a href="#forwarder">1.5.1. Forwarder Concept</a>
+<ul class="sectlevel5">
+<li><a href="#forwarder-step-case">Step / Case Forwarders</a></li>
+</ul>
+</li>
+<li><a href="#forwarder-templates">1.5.2. Forwarder Templates</a>
+<ul class="sectlevel5">
+<li><a href="#_jtwig_template">JTwig template</a></li>
+<li><a href="#_customized_jtwig_functions">Customized Jtwig Functions</a></li>
+</ul>
+</li>
+<li><a href="#sql-database">1.5.3. SQL Database</a>
+<ul class="sectlevel5">
+<li><a href="#sql-database-create-db">Create Sakuli DB</a></li>
+<li><a href="#sql-database-enable-forwarder">Enable database forwarder</a></li>
+<li><a href="#_integration_in_other_tools">Integration in other tools</a></li>
+<li><a href="#sql-database-optional-cleanup">Database cleanup (optional)</a></li>
+</ul>
+</li>
+<li><a href="#json-forwarder">1.5.4. JSON Forwarder</a>
+<ul class="sectlevel5">
+<li><a href="#json-forwarder-configuraiton">Configuration of JSON forwarder</a></li>
+<li><a href="#json-forwarder-output">Output of JSON forwarder</a></li>
+<li><a href="#json-forwarder-usage">Usage of JSON forwarder output</a></li>
+</ul>
+</li>
+<li><a href="#monitoring-integration">1.5.5. Monitoring integration</a>
+<ul class="sectlevel4">
+<li><a href="#omd-preparation">1.5.5.1. OMD preparation</a>
 <ul class="sectlevel5">
 <li><a href="#omd-docker">OMD Docker image</a></li>
 <li><a href="#_requirements">Requirements</a></li>
 <li><a href="#_nagios_configuration">Nagios configuration</a></li>
 </ul>
 </li>
-<li><a href="#omd-gearman">1.4.1.2. Gearman forwarder</a>
+<li><a href="#omd-gearman">1.5.5.2. Gearman forwarder</a>
 <ul class="sectlevel5">
 <li><a href="#_omd_configuration">OMD Configuration</a></li>
 <li><a href="#sakuli_gearman_client_config">Sakuli Client Configuration</a></li>
+<li><a href="#_output_format_template">Output format template</a></li>
 <li><a href="#gearman_proxy">Gearman proxy (optional)</a></li>
 </ul>
 </li>
-<li><a href="#omd-sql-database">1.4.1.3. Database forwarder</a>
+<li><a href="#omd-sql-database">1.5.5.3. Database forwarder</a>
 <ul class="sectlevel5">
 <li><a href="#_omd_configuration_2">OMD Configuration</a></li>
 <li><a href="#_sakuli_client_configuration">Sakuli Client Configuration</a></li>
@@ -804,19 +843,19 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_troubleshooting_2">Troubleshooting</a></li>
 </ul>
 </li>
-<li><a href="#icinga2-integration">1.4.1.4. Icinga2 forwarder</a>
+<li><a href="#icinga2-integration">1.5.5.4. Icinga2 forwarder</a>
 <ul class="sectlevel5">
 <li><a href="#_icinga2_configuration">Icinga2 Configuration</a></li>
 <li><a href="#_sakuli_client_configuration_2">Sakuli Client Configuration</a></li>
 <li><a href="#_graph_settings">Graph settings</a></li>
 </ul>
 </li>
-<li><a href="#check_mk">1.4.1.5. Check_MK</a>
+<li><a href="#check_mk">1.5.5.5. Check_MK</a>
 <ul class="sectlevel5">
 <li><a href="#_sakuli_client_configuration_3">Sakuli Client Configuration</a></li>
 </ul>
 </li>
-<li><a href="#screenshot_history">1.4.1.6. Screenshot history</a>
+<li><a href="#screenshot_history">1.5.5.6. Screenshot history</a>
 <ul class="sectlevel5">
 <li><a href="#_feature_description">Feature description</a></li>
 <li><a href="#_activating_the_feature">Activating the feature</a></li>
@@ -825,13 +864,13 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_grafana_integration">Grafana integration</a></li>
 </ul>
 </li>
-<li><a href="#grafana_graphs">1.4.1.7. Grafana graphs</a>
+<li><a href="#grafana_graphs">1.5.5.7. Grafana graphs</a>
 <ul class="sectlevel5">
 <li><a href="#_feature_activation">Feature activation</a></li>
 <li><a href="#screenshot_annotations">Screenshot annotations</a></li>
 </ul>
 </li>
-<li><a href="#_pnp4nagios_graphs">1.4.1.8. PNP4Nagios graphs</a>
+<li><a href="#_pnp4nagios_graphs">1.5.5.8. PNP4Nagios graphs</a>
 <ul class="sectlevel5">
 <li><a href="#_rrd_storage_type">RRD Storage Type</a></li>
 <li><a href="#pnp4nagios-rrd-heartbeat">RRD heartbeat</a></li>
@@ -839,36 +878,22 @@ table.CodeRay td.code>pre{padding:0}
 <li><a href="#_cpu_memory_metrics">CPU/Memory metrics</a></li>
 </ul>
 </li>
-<li><a href="#forwarder-template">1.4.1.9. Forwarder Templates</a>
-<ul class="sectlevel5">
-<li><a href="#_jtwig_template">JTwig template</a></li>
-<li><a href="#_customized_jtwig_functions">Customized Jtwig Functions</a></li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#continuous_integration">1.4.2. Continuous Integration</a>
+<li><a href="#continuous_integration">1.5.6. Continuous Integration</a>
 <ul class="sectlevel4">
-<li><a href="#jenkins-integration">1.4.2.1. Jenkins</a></li>
-</ul>
-</li>
-<li><a href="#sql-database">1.4.3. SQL Database</a>
-<ul class="sectlevel5">
-<li><a href="#sql-database-create-db">Create Sakuli DB</a></li>
-<li><a href="#sql-database-enable-forwarder">Enable database forwarder</a></li>
-<li><a href="#_integration_in_other_tools">Integration in other tools</a></li>
-<li><a href="#sql-database-optional-cleanup">Database cleanup (optional)</a></li>
+<li><a href="#jenkins-integration">1.5.6.1. Jenkins</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_developer_documentation">1.5. Developer Documentation</a>
+<li><a href="#_developer_documentation">1.6. Developer Documentation</a>
 <ul class="sectlevel3">
-<li><a href="#dev-installation">1.5.1. Installation guide for Sakuli-Developers</a></li>
-<li><a href="#dev-new-release">1.5.2. How to create a new release</a></li>
-<li><a href="#dev-maven-aspects">1.5.3. Maven aspects</a></li>
-<li><a href="#dev-ascii-doc">1.5.4. AsciiDoc documentation aspects</a></li>
-<li><a href="#dev-sikuli-supplemental-pack">1.5.5. sikulix-supplemental package</a></li>
+<li><a href="#dev-installation">1.6.1. Installation guide for Sakuli-Developers</a></li>
+<li><a href="#dev-maven-aspects">1.6.2. Maven aspects</a></li>
+<li><a href="#dev-ascii-doc">1.6.3. AsciiDoc documentation aspects</a></li>
+<li><a href="#dev-new-release">1.6.4. How to create a new release</a></li>
+<li><a href="#dev-sikuli-supplemental-pack">1.6.5. sikulix-supplemental package</a></li>
 </ul>
 </li>
 </ul>
@@ -904,7 +929,7 @@ table.CodeRay td.code>pre{padding:0}
 <h2 id="_general"><a class="anchor" href="#_general"></a>General</h2>
 <div class="sectionbody">
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/general.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/general.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/general.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/general.adoc" target="_blank">edit</a></p>
 </div>
 <div class="ulist">
 <ul>
@@ -927,13 +952,13 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <hr>
 <div class="paragraph">
-<div class="title">Documentation for version: <code>v1.1.0</code></div>
+<div class="title">Documentation for version: <code>v1.2.0</code></div>
 <p>The documentation of all former Sakuli versions can be found on <a href="http://consol.github.io/sakuli">consol.github.io/sakuli</a></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>PDF:</strong> <a href="pdf/sakuli_documentation_v1.1.0.pdf">sakuli_documentation_v1.1.0.pdf</a></p>
+<p><strong>PDF:</strong> <a href="pdf/sakuli_documentation_v1.2.0.pdf">sakuli_documentation_v1.2.0.pdf</a></p>
 </li>
 <li>
 <p><strong>Stable/Latest version:</strong> <a href="http://consol.github.io/sakuli/latest">consol.github.io/sakuli/latest</a></p>
@@ -951,6 +976,15 @@ table.CodeRay td.code>pre{padding:0}
 <div class="content">
 <a class="image" href="files/Sakuli_Short_Overview.pdf"><img src="images/Sakuli_Short_Overview.png" alt="Sakuli Short Overview Presentation"></a>
 </div>
+</div>
+<div class="videoblock">
+<div class="title">Sakuli UI Introduction</div>
+<div class="content">
+<iframe src="https://www.youtube.com/embed/5RJY_FD6YvQ?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli-ui" class="bare">https://github.com/ConSol/sakuli-ui</a></p>
 </div>
 <div class="sect2">
 <h3 id="contributors"><a class="anchor" href="#contributors"></a>Contributors</h3>
@@ -1026,11 +1060,11 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sect2">
 <h3 id="download"><a class="anchor" href="#download"></a>Download</h3>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/download.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/download.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/download.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/download.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <div class="title">Installer (recommended)</div>
-<p><strong>Platform independent Java installer: <a href="https://labs.consol.de/sakuli/install/sakuli-v1.1.0-installer.jar" target="_blank">sakuli-v1.1.0-installer.jar</a></strong></p>
+<p><strong>Platform independent Java installer: <a href="https://labs.consol.de/sakuli/install/sakuli-v1.2.0-installer.jar" target="_blank">sakuli-v1.2.0-installer.jar</a></strong></p>
 </div>
 <div class="paragraph">
 <div class="title">Maven Dependencies</div>
@@ -1042,20 +1076,20 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="paragraph">
 <div class="title">Raw ZIP</div>
-<p>Raw Sakuli installation directory, containing Sakuli, Sahi and examples. Useful if you want to build your own installation routines. The installation scripts and the Sakuli binary can be found in <code>sakuli-v1.1.0/bin/</code>:</p>
+<p>Raw Sakuli installation directory, containing Sakuli, Sahi and examples. Useful if you want to build your own installation routines. The installation scripts and the Sakuli binary can be found in <code>sakuli-v1.2.0/bin/</code>:</p>
 </div>
 <div class="paragraph">
-<p><a href="https://labs.consol.de/sakuli/install/sakuli-v1.1.0.zip" target="_blank">sakuli-v1.1.0.zip</a></p>
+<p><a href="https://labs.consol.de/sakuli/install/sakuli-v1.2.0.zip" target="_blank">sakuli-v1.2.0.zip</a></p>
 </div>
 <div class="paragraph">
 <div class="title">PDF manual</div>
-<p>This manual as one PDF document: <a href="pdf/sakuli_documentation_v1.1.0.pdf" target="_blank">Download PDF</a></p>
+<p>This manual as one PDF document: <a href="pdf/sakuli_documentation_v1.2.0.pdf" target="_blank">Download PDF</a></p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_branches_build_status"><a class="anchor" href="#_branches_build_status"></a>Branches &amp; build status</h3>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/build_states.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/build_states.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/build_states.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/build_states.adoc" target="_blank">edit</a></p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -1137,7 +1171,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sect2">
 <h3 id="why-sakuli"><a class="anchor" href="#why-sakuli"></a>Why Sakuli?</h3>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/why-sakuli.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/why-sakuli.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/why-sakuli.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/why-sakuli.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>There are already a variety of free end2end/automation tools on the market (Sahi, Selenium, WebInject, Sikuli, CasperJS, AutoIT , …), but each of them has at least one of the following drawbacks:</p>
@@ -1162,7 +1196,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sect2">
 <h3 id="key-features"><a class="anchor" href="#key-features"></a>Key Features</h3>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/key-features.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/key-features.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/key-features.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/key-features.adoc" target="_blank">edit</a></p>
 </div>
 <div class="ulist">
 <ul>
@@ -1207,7 +1241,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="sect2">
 <h3 id="concept"><a class="anchor" href="#concept"></a>Concept</h3>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/concept.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/concept.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/concept.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/concept.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p><span class="image"><img src="images/sakuli_concept.png" alt="sakuli concept"></span></p>
@@ -1269,6 +1303,12 @@ table.CodeRay td.code>pre{padding:0}
 - Locale test runs</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#json-forwarder">json</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- Output files in JSON format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- Sakuli GUI<br>
+- Interface to 3rd party systems</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#sql-database">database</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">- JDBC-SQL</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">- Integration in <strong>Nagios</strong> based monitoring systems as <strong>active checks</strong> with  <a href="https://labs.consol.de/de/nagios/check_mysql_health/index.html">check_mysql_health</a><br>
@@ -1320,7 +1360,7 @@ For more information see <a href="#integration_in_other_tools">Integration in ot
 <div class="sect2">
 <h3 id="execution-types"><a class="anchor" href="#execution-types"></a>1.2. Execution Types</h3>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/execution-types.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/execution-types.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/execution-types.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/execution-types.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Sakuli supports different execution types. Each of the types have a special purpose:</p>
@@ -1363,7 +1403,7 @@ For more information see <a href="#integration_in_other_tools">Integration in ot
 <div class="sect4">
 <h5 id="windows"><a class="anchor" href="#windows"></a>1.2.1.1. Windows Client</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/native/windows.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/native/windows.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/native/windows.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/native/windows.adoc" target="_blank">edit</a></p>
 </div>
 <div class="sect5">
 <h6 id="_installation"><a class="anchor" href="#_installation"></a>Installation</h6>
@@ -1478,7 +1518,10 @@ If you want to <strong>update</strong> Sakuli, see the <a href="#upgrade_process
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>install Sakuli</p>
+<p>install Sakuli core (command line)</p>
+</li>
+<li>
+<p>install <a href="#sakuli-ui">Sakuli UI</a></p>
 </li>
 <li>
 <p>install Sahi</p>
@@ -1673,7 +1716,7 @@ start_dashboard.bat`</pre>
 <div class="sect5">
 <h6 id="rdp-peculiarities"><a class="anchor" href="#rdp-peculiarities"></a>RDP peculiarities</h6>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/native/windows-rdp-peculiarities.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/native/windows-rdp-peculiarities.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/native/windows-rdp-peculiarities.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/native/windows-rdp-peculiarities.adoc" target="_blank">edit</a></p>
 </div>
 <div class="sect6">
 <h7 id="_things_to_know"><a class="anchor" href="#_things_to_know"></a>Things to know</h7>
@@ -1741,7 +1784,7 @@ start_dashboard.bat`</pre>
 <div class="sect5">
 <h6 id="windows-troubleshooting"><a class="anchor" href="#windows-troubleshooting"></a>Troubleshooting</h6>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/native/windows-troubleshooting.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/native/windows-troubleshooting.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/native/windows-troubleshooting.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/native/windows-troubleshooting.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>If you have some errors with your Windows installation, you can check the following points:</p>
@@ -1813,7 +1856,7 @@ start_dashboard.bat`</pre>
 <div class="sect4">
 <h5 id="linux"><a class="anchor" href="#linux"></a>1.2.1.2. Linux Client</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/native/linux.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/native/linux.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/native/linux.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/native/linux.adoc" target="_blank">edit</a></p>
 </div>
 <div class="sect5">
 <h6 id="_installation_2"><a class="anchor" href="#_installation_2"></a>Installation</h6>
@@ -1928,7 +1971,10 @@ For other distributions (CentOS, OpenSuSE, &#8230;&#8203;) they be mostly identi
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>install Sakuli</p>
+<p>install Sakuli core (command line)</p>
+</li>
+<li>
+<p>install <a href="#sakuli-ui">Sakuli UI</a></p>
 </li>
 <li>
 <p>install Sahi</p>
@@ -2132,7 +2178,7 @@ On Linux deskops the ALT key is often predefined to drag windows. In this case, 
 <div class="sect5">
 <h6 id="_headless_checks"><a class="anchor" href="#_headless_checks"></a>Headless checks</h6>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/native/linux-native-headless.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/native/linux-native-headless.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/native/linux-native-headless.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/native/linux-native-headless.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Running Sakuli on the user desktop is nice, but has the drawback that the session gets highjacked on each Sakuli run. Moving the mouse e.g. can have negative effects on the test execution.</p>
@@ -2279,7 +2325,7 @@ DISPLAY=:1
 <div class="sect5">
 <h6 id="linux-troubleshooting"><a class="anchor" href="#linux-troubleshooting"></a>Troubleshooting</h6>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/native/linux-troubleshooting.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/native/linux-troubleshooting.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/native/linux-troubleshooting.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/native/linux-troubleshooting.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>If you have some errors with your Linux installation, you can check the following points:</p>
@@ -2358,7 +2404,7 @@ gsettings set org.gnome.desktop.wm.keybindings panel-main-menu "['&lt;Alt&gt;F1'
 <div class="sect4">
 <h5 id="upgrade_process"><a class="anchor" href="#upgrade_process"></a>1.2.1.3. Upgrade process</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/native/upgrade-process.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/native/upgrade-process.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/native/upgrade-process.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/native/upgrade-process.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Before you upgrade your current Sakuli installation, please ensure that you have read the <a href="#changelog">Change Log</a>.</p>
@@ -2376,7 +2422,7 @@ gsettings set org.gnome.desktop.wm.keybindings panel-main-menu "['&lt;Alt&gt;F1'
 <div class="sect4">
 <h5 id="sakuli-java-dsl"><a class="anchor" href="#sakuli-java-dsl"></a>1.2.2.1. Sakuli Java DSL</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/maven/java-DSL.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/maven/java-DSL.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/maven/java-DSL.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/maven/java-DSL.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Sakuli provides a Java DSL for writing test cases in pure Java. The DSL is designed as fluent API and provides the exact same capabilities as the Javascript API. The Sakuli Java API enables users to write Sakuli tests in pure Java unit tests using JUnit or TestNG. The good news about that is that you are able to access any native application UI with screen related actions as easy as in JavaScript API.</p>
@@ -2712,7 +2758,7 @@ If needed change the &lt;path&gt; for your own locations of each browser!
 <div class="sect4">
 <h5 id="docker-images"><a class="anchor" href="#docker-images"></a>1.2.3.1. Sakuli Docker Images</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/containerized/docker-images.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/containerized/docker-images.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/containerized/docker-images.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/containerized/docker-images.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Docker allows you to run a Sakuli test in an isolated environment, called "container", which is always started off from the same base image. This ensures that tests always run under equal conditions.</p>
@@ -2846,7 +2892,7 @@ If needed change the &lt;path&gt; for your own locations of each browser!
 </ul>
 </div>
 <div class="paragraph">
-<p>Since version <code>1.1.0</code> all containers run as non-root user.
+<p>Since version <code>1.1.0</code> all containers run as non-root user (UID 1000).
 The running containers are accessible with VNC (default password: <code>sakuli</code>) by:</p>
 </div>
 <div class="ulist">
@@ -2855,7 +2901,10 @@ The running containers are accessible with VNC (default password: <code>sakuli</
 <p><strong>VNC viewer</strong>: <code>DOCKER_HOST:5901</code></p>
 </li>
 <li>
-<p><strong>noVNC HTML5 client</strong>: link: <a href="http://localhost:6901/vnc_auto.html?password=sakuli" class="bare">http://localhost:6901/vnc_auto.html?password=sakuli</a></p>
+<p><strong>noVNC HTML5 full client</strong>: link: <a href="http://localhost:6901/vnc.html" class="bare">http://localhost:6901/vnc.html</a></p>
+</li>
+<li>
+<p><strong>noVNC HTML5 lite client</strong>: link: <a href="http://localhost:6901/?password=sakuli" class="bare">http://localhost:6901/?password=sakuli</a></p>
 </li>
 </ul>
 </div>
@@ -3053,8 +3102,7 @@ ENTRYPOINT [&quot;/root/scripts/start_hook.sh&quot;]</code></pre>
 <pre class="CodeRay highlight"><code data-lang="bash">## Custom Dockerfile
 FROM consol/sakuli-centos-xfce:v1.1.0
 
-MAINTAINER Tobias Schneck &quot;tobias.schneck@consol.de&quot;
-ENV REFRESHED_AT 2017-03-17
+ENV REFRESHED_AT 2018-03-27
 ENV TZ=Europe/Berlin
 
 ## Install a PDF viewer
@@ -3062,14 +3110,14 @@ USER 0
 RUN yum install -y libsane-hpaio http://get.code-industry.net/public/master-pdf-editor-4.0.30_qt5.x86_64.rpm \
     &amp;&amp; yum clean all
 ## switch back to default user
-USER 1984</code></pre>
+USER 1000</code></pre>
 </div>
 </div>
 </div>
 <div class="sect5">
 <h6 id="_change_user_of_running_sakuli_container"><a class="anchor" href="#_change_user_of_running_sakuli_container"></a>Change User of running Sakuli Container</h6>
 <div class="paragraph">
-<p>Per default, since version <code>1.1.0</code> all container processes will executed with user id <code>1984</code>. You can chnage the user id like follow:</p>
+<p>Per default, since version <code>1.2.0</code> all container processes will executed with user id <code>1000</code>. You can change the user id like follow:</p>
 </div>
 <div class="paragraph">
 <div class="title">Using root (user id <code>0</code>)</div>
@@ -3153,7 +3201,7 @@ new Region().find("calculator-logo.png").grow(200,200).takeScreenshot("/tmp/my-s
 <div class="sect6">
 <h7 id="_use_code_scrot_code_tool"><a class="anchor" href="#_use_code_scrot_code_tool"></a>Use <code>scrot</code> tool</h7>
 <div class="paragraph">
-<p>Before using <strong><a href="https://wiki.ubuntuusers.de/Scrot/">Scrot</a></strong> prepare your container UI like you will needed for the screenshot via VNC <code><a href="http://&lt;dockerhost&gt;:&lt;mapped-port&gt;/vnc_auto.html?password=sakuli" class="bare">http://&lt;dockerhost&gt;:&lt;mapped-port&gt;/vnc_auto.html?password=sakuli</a></code>. If you wan&#8217;t to stop the sakuli test execution on a particular point, just use the <a href="#Environment.sleep">Environment.sleep(seconds)</a> method:</p>
+<p>Before using <strong><a href="https://wiki.ubuntuusers.de/Scrot/">Scrot</a></strong> prepare your container UI like you will needed for the screenshot via VNC <code><a href="http://&lt;dockerhost&gt;:&lt;mapped-port&gt;/?password=sakuli" class="bare">http://&lt;dockerhost&gt;:&lt;mapped-port&gt;/?password=sakuli</a></code>. If you wan&#8217;t to stop the sakuli test execution on a particular point, just use the <a href="#Environment.sleep">Environment.sleep(seconds)</a> method:</p>
 </div>
 <div id="source" class="listingblock">
 <div class="content">
@@ -3162,7 +3210,7 @@ new Region().find("calculator-logo.png").grow(200,200).takeScreenshot("/tmp/my-s
 </div>
 </div>
 <div class="paragraph">
-<p>The test case will stop at the above defined position. Then you can login to the container via <code>docker exec</code> and create a new screenshot with the <code>scrot &lt;filename&gt;</code> command. If you use the <code>scrot -s</code> flag you can select a rectangle, over the VNC control page <code><a href="http://&lt;docker-host&gt;:&lt;mapped-port&gt;/vnc_auto.html?password=sakuli" class="bare">http://&lt;docker-host&gt;:&lt;mapped-port&gt;/vnc_auto.html?password=sakuli</a></code>.</p>
+<p>The test case will stop at the above defined position. Then you can login to the container via <code>docker exec</code> and create a new screenshot with the <code>scrot &lt;filename&gt;</code> command. If you use the <code>scrot -s</code> flag you can select a rectangle, over the VNC control page <code><a href="http://&lt;docker-host&gt;:&lt;mapped-port&gt;/?password=sakuli" class="bare">http://&lt;docker-host&gt;:&lt;mapped-port&gt;/?password=sakuli</a></code>.</p>
 </div>
 <div id="source" class="listingblock">
 <div class="content">
@@ -3201,7 +3249,7 @@ new Region().find("calculator-logo.png").grow(200,200).takeScreenshot("/tmp/my-s
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Start your preferred Sakuli docker image with <code>docker run -it -p 6901:6901 consol/sakuli-ubuntu-xfce bash</code> to enter the container and connect into it by VNC <a href="http://localhost:6901/vnc_auto.html?password=sakuli" class="bare">http://localhost:6901/vnc_auto.html?password=sakuli</a></p>
+<p>Start your preferred Sakuli docker image with <code>docker run -it -p 6901:6901 consol/sakuli-ubuntu-xfce bash</code> to enter the container and connect into it by VNC <a href="http://localhost:6901/?password=sakuli" class="bare">http://localhost:6901/?password=sakuli</a></p>
 </li>
 <li>
 <p>Start Sahi dashboard:</p>
@@ -3365,7 +3413,7 @@ COPY ssl_files/sahi_certs $SAKULI_ROOT/sahi/userdata/certs</pre>
 <div class="sect4">
 <h5 id="docker-compose"><a class="anchor" href="#docker-compose"></a>1.2.3.2. Docker Compose</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/containerized/docker-compose.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/containerized/docker-compose.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/containerized/docker-compose.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/containerized/docker-compose.adoc" target="_blank">edit</a></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -3544,7 +3592,7 @@ Intentionally, <code>docker-compose</code> is made to bring up environments with
 <div class="sect4">
 <h5 id="kubernetes"><a class="anchor" href="#kubernetes"></a>1.2.3.3. Kubernetes</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/containerized/kubernetes.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/containerized/kubernetes.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/containerized/kubernetes.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/containerized/kubernetes.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>The following section describes how to use <a href="https://www.openshift.com/">Kubernetes</a> for Sakuli E2E tests and monitoring. First go the folder of the Kubernetes configuration:</p>
@@ -3556,7 +3604,7 @@ Intentionally, <code>docker-compose</code> is made to bring up environments with
 </div>
 <div class="paragraph">
 <p>You will find the kubernetes config example in:
-<code><a href="https://github.com/ConSol/sakuli/blob/master/docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml" target="_blank">docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml</a></code></p>
+<code><a href="https://github.com/ConSol/sakuli/blob/dev/docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml" target="_blank">docker/kubernetes/kubernetes.sakuli.example.pod.run.yaml</a></code></p>
 </div>
 <div class="sect5">
 <h6 id="kubernetes-start-pod"><a class="anchor" href="#kubernetes-start-pod"></a>Start execution pod</h6>
@@ -3616,7 +3664,7 @@ Intentionally, <code>docker-compose</code> is made to bring up environments with
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>http://&lt;kubernetes-cluster-ip&gt;:32001/vnc_auto.html?password=sakuli&amp;view_only=true</code></pre>
+<pre class="CodeRay highlight"><code>http://&lt;kubernetes-cluster-ip&gt;:32001/?password=sakuli&amp;view_only=true</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3674,11 +3722,11 @@ EXIT_CODE: 0</code></pre>
 <div class="sect4">
 <h5 id="openshift"><a class="anchor" href="#openshift"></a>1.2.3.4. OpenShift</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/execution/containerized/openshift.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/execution/containerized/openshift.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/execution/containerized/openshift.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/execution/containerized/openshift.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>The following section describes how to use <a href="https://www.openshift.com/">OpenShift</a> for Sakuli E2E testing and monitoring.
-The following content uses as example the image <code>consol/sakuli-ubuntu-xfce</code> of the Dockerfile <code><a href="https://github.com/ConSol/sakuli/blob/master/docker/Dockerfile.sakuli.ubuntu.xfce" target="_blank">Dockerfile.sakuli.ubuntu.xfce</a></code>.</p>
+The following content uses as example the image <code>consol/sakuli-ubuntu-xfce</code> of the Dockerfile <code><a href="https://github.com/ConSol/sakuli/blob/dev/docker/Dockerfile.sakuli.ubuntu.xfce" target="_blank">Dockerfile.sakuli.ubuntu.xfce</a></code>.</p>
 </div>
 <div class="paragraph">
 <p>First you have to create your OpenShift project on the command line:</p>
@@ -3690,7 +3738,7 @@ oc new-project my-project</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Then you can use the provided templates from <code><a href="https://github.com/ConSol/sakuli/blob/master/docker/openshift" target="_blank">docker/openshift</a></code>.</p>
+<p>Then you can use the provided templates from <code><a href="https://github.com/ConSol/sakuli/blob/dev/docker/openshift" target="_blank">docker/openshift</a></code>.</p>
 </div>
 <div class="sect5">
 <h6 id="openshift-run-image"><a class="anchor" href="#openshift-run-image"></a>Run image from Dockerhub</h6>
@@ -3701,7 +3749,7 @@ oc new-project my-project</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>As soon as you are logged in to OpenShift and have selected your project, you can simply run the image by using the configuration <code><a href="https://github.com/ConSol/sakuli/blob/master/docker/openshift/openshift.sakuli.example.pod.run.yaml" target="_blank">openshift.sakuli.example.pod.run.yaml</a></code>:</p>
+<p>As soon as you are logged in to OpenShift and have selected your project, you can simply run the image by using the configuration <code><a href="https://github.com/ConSol/sakuli/blob/dev/docker/openshift/openshift.sakuli.example.pod.run.yaml" target="_blank">openshift.sakuli.example.pod.run.yaml</a></code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3742,7 +3790,7 @@ oc new-project my-project</code></pre>
 <div class="sect5">
 <h6 id="_build_run_your_own_image"><a class="anchor" href="#_build_run_your_own_image"></a>Build &amp; run your own image</h6>
 <div class="paragraph">
-<p>If you want to build the image in your own infrastructure just use the configuration <code><a href="https://github.com/ConSol/sakuli/blob/master/docker/openshift/openshift.sakuli.example.image.build.yaml" target="_blank">openshift.sakuli.example.image.build.yaml</a></code>:</p>
+<p>If you want to build the image in your own infrastructure just use the configuration <code><a href="https://github.com/ConSol/sakuli/blob/dev/docker/openshift/openshift.sakuli.example.image.build.yaml" target="_blank">openshift.sakuli.example.image.build.yaml</a></code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3848,10 +3896,10 @@ If something went wrong, you maybe have to enable this volume type in the cluste
 <a href="https://docs.openshift.org/latest/architecture/core_concepts/builds_and_image_streams.html#source-build">OpenShift S2I</a>.
 This empowers you to create S2I base images configured as you desire. The only thing you have to do is to add your test
 suite to the runnable sakuli test environment by configuration. Please find an example
-<a href="https://github.com/ConSol/sakuli/blob/master/docker/openshift/openshift.sakuli.s2i.image.build.yaml" target="_blank">S2I build config template openshift.sakuli.s2i.image.build.yaml</a>
+<a href="https://github.com/ConSol/sakuli/blob/dev/docker/openshift/openshift.sakuli.s2i.image.build.yaml" target="_blank">S2I build config template openshift.sakuli.s2i.image.build.yaml</a>
 in our template section. This template will provide you a build config and a image stream containing the Sakuli S2I
 image, so that you can easily build up the Sakuli test container for your suites. In addition, we provide a
-<a href="https://github.com/ConSol/sakuli/blob/master/docker/openshift/openshift.sakuli.s2i.build.yaml" target="_blank">Sakuli test container template openshift.sakuli.s2i.build.yaml</a>
+<a href="https://github.com/ConSol/sakuli/blob/dev/docker/openshift/openshift.sakuli.s2i.build.yaml" target="_blank">Sakuli test container template openshift.sakuli.s2i.build.yaml</a>
 to create ready to run Sakuli container, based on Sakuli S2I, using the previously defined S2I image stream, running the
 configured suite.</p>
 </div>
@@ -3951,14 +3999,293 @@ should be taken from.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="sakuli-testdefintion"><a class="anchor" href="#sakuli-testdefintion"></a>1.3. Sakuli Testdefinition</h3>
+<h3 id="sakuli-ui"><a class="anchor" href="#sakuli-ui"></a>1.3. Sakuli UI</h3>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/testdefinition.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/testdefinition.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/ui/sakuli-ui-intro.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/ui/sakuli-ui-intro.adoc" target="_blank">edit</a></p>
+</div>
+<div class="paragraph">
+<p><strong>since:</strong> <a href="#version-1.2.0"><a href="http://consol.github.io/sakuli/v1.2.0/index.html"><strong>Version 1.2.0</strong></a></a></p>
+</div>
+<div class="paragraph">
+<p>The <strong>Sakuli UI</strong> is an easy to use web application to manage, develop and execute your Sakuli test suites. It&#8217;s already included in <a href="#download">Sakuli Installer</a> and can be started in different ways:</p>
 </div>
 <div class="sect3">
-<h4 id="sakuli-api"><a class="anchor" href="#sakuli-api"></a>1.3.1. Sakuli API</h4>
+<h4 id="sakuli-ui-local"><a class="anchor" href="#sakuli-ui-local"></a>1.3.1. Local execution</h4>
+<div class="paragraph">
+<p>If you have chosen the option "Sakuli UI" in the <a href="#windows">Windows</a>/<a href="#linux">Linux</a> installation process you can use Sakuli CLI to start the UI in a specific <code>&lt;root-context-path&gt;</code>, which specifies the root search point for Sakuli test suites in the filesystem. For example your <code>SAKULI_ROOT</code> folder:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start the UI: <code>sakuli ui &lt;root-context-path&gt;</code></p>
+<div class="literalblock">
+<div class="content">
+<pre>sakuli ui $SAKULI_ROOT</pre>
+</div>
+</div>
+</li>
+<li>
+<p>Then open the URL: <a href="http://localhost:8080" class="bare">http://localhost:8080</a></p>
+</li>
+<li>
+<p>Login: default user <code>admin</code>, default password <code>sakuli</code> <span class="image"><img src="images/ui/ui-login.png" alt="sakuli login mask"></span></p>
+</li>
+<li>
+<p>Open your test project, e.g. <code>example_test_suites</code> <span class="image"><img src="images/ui/ui-project-select.png" alt="select sakuli project"></span></p>
+</li>
+<li>
+<p>Select your test suite e.g. <code>sakuki_xfce</code>, configure the <a href="#docker-images">Docker image</a> e.g. <code>consol/sakuli-ubuntu-xfce:dev</code> and press <em>Run sakuli container</em> <span class="image"><img src="images/ui/ui-project-run.png" alt="run project in docker container"></span></p>
+</li>
+<li>
+<p>During the test execution the UI will show a web vnc view where you can watch running the test <span class="image"><img src="images/ui/ui-project-run-vnc.png" alt="web vnc view of the sakuli container"></span></p>
+</li>
+<li>
+<p>After test has been executed a summarizing report will show up <span class="image"><img src="images/ui/ui-project-report.png" alt="sakuli test report"></span></p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you want to change e.g. the default password see <a href="#sakuli-ui-configuration">Sakuli UI Configuration</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="sakuli-ui-containerized"><a class="anchor" href="#sakuli-ui-containerized"></a>1.3.2. Containerized execution</h4>
+<div class="paragraph">
+<p><strong>Docker Image:</strong> <a href="https://hub.docker.com/r/consol/sakuli-ui"><code>consol/sakuli-ui</code></a></p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s also possible to start the Sakuli UI completely container-based without installing anything before. Therefore the <a href="http://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci">docker-in-docker</a> approach will be used and you have to specify the following volume mappings:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Docker socket:</strong>  Socket of the Docker daemon, which is needed to enable the Sakuli UI container to start new containers by itself. Under linux normally: <code>/var/run/docker.sock</code></p>
+<div class="literalblock">
+<div class="content">
+<pre>--volume /var/run/docker.sock:/var/run/docker.sock</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Root context path of the host:</strong> Specifies the root search point for all Sakuli test suites in the mounted filesystem. For example folder: <code>$HOME/sakuli-tests</code></p>
+<div class="literalblock">
+<div class="content">
+<pre>--volume $HOME/sakuli-tests:/opt/sakuli-ui-root</pre>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Ensure that the container can <strong>read and write</strong> into the mounted volume! Maybe <a href="#sakuli-ui-containerized-uid">use a different container user id</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To start the Sakuli UI container just execute this <code>docker run</code> command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash"> docker run -it -p 8080:8080 \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume $HOME/sakuli-tests:/opt/sakuli-ui-root \
+    consol/sakuli-ui</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you wan&#8217;t to use your current folder as <code>&lt;root-context-path&gt;</code>, use <code>$(pwd)</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">docker run -it -p 8080:8080 \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume $(pwd):/opt/sakuli-ui-root \
+    consol/sakuli-ui</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After the container startup  you can login via the URL: <a href="http://localhost:8080" class="bare">http://localhost:8080</a>, default user <code>admin</code>, default password <code>sakuli</code> <span class="image"><img src="images/ui/ui-login.png" alt="sakuli login mask"></span></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are running the Docker daemon on remote machine or boot-to-docker replace <code>localhost</code> with <code>hostname</code> of the Docker daemon!
+</td>
+</tr>
+</table>
+</div>
+<div id="sakuli-ui-containerized-configuration" class="paragraph">
+<div class="title">Change Sakuli UI configuration</div>
+<p>If you wan&#8217;t change the UI configuration through the <a href="#sakuli-ui-configuration">Sakuli UI Properties</a>, just add it to the <code>docker run</code> command as argument <code>-Dproperty-key=property-value</code>. For e.g. to change the password execute:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">docker run -it -p 8080:8080 \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume $(pwd):/opt/sakuli-ui-root \
+    consol/sakuli-ui \
+    -Dsecurity.default-password=my-new-password</code></pre>
+</div>
+</div>
+<div id="sakuli-ui-containerized-uid" class="paragraph">
+<div class="title">Use different container user</div>
+<p>By default the container run with user id <code>1000</code>. If the local user of the host system is a different one (execute: <code>id -u</code>) you may have to change the user id:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">docker run -it -p 8080:8080 \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    --volume $(pwd):/opt/sakuli-ui-root \
+    --user $(id -u) \
+    consol/sakuli-ui</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Usage of docker-compose for test execution</div>
+<p>If you use the docker-compose option in the Sakuli UI to execute your test suite, you can&#8217;t mount the volumes like in an normal docker environment. Through the <a href="http://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci">docker-in-docker</a> approach just mount the volumes from the Sakuli UI container it-self and they will be mounted at same path in sub-containers:</p>
+</div>
+<div class="listingblock">
+<div class="title">docker-compose.yaml (of test suite)</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="yml"><span class="comment"># Run test in Ubuntu/Firefox and mounted volumes by docker-in-docker</span>
+<span class="key">sakuli_test_ubuntu_firefox</span>:
+  <span class="key">image</span>: <span class="string"><span class="content">consol/sakuli-ubuntu-xfce</span></span>
+<span class="comment"># REMOVE for docker-in-docker</span>
+<span class="comment">#   volumes:</span>
+<span class="comment">#   - .:/opt/test</span>
+<span class="comment">#</span>
+<span class="comment"># USE this for docker-in-docker!</span>
+  <span class="key">volumes_from</span>: <i class="conum" data-value="1"></i><b>(1)</b>
+    - <span class="string"><span class="content">$HOSTNAME </span></span><i class="conum" data-value="2"></i><b>(2)</b>
+  <span class="key">ports</span>:
+  - <span class="string"><span class="content">5911:5901</span></span>
+  - <span class="string"><span class="content">6911:6901</span></span>
+  <span class="key">user</span>: <span class="string"><span class="content">'1000'</span></span>
+  <span class="key">command</span>: <span class="string"><span class="content">run /opt/sakuli-ui-root/example_xfce </span></span> <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Through <code>volumes_from</code> the <code>&lt;root-context-path&gt;</code> will be mounted to same path in sub-containers</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td><code>$HOSTNAME</code> is equal to the docker-container-id (<code>docker ps -q</code>) in the inside of a container</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="sakuli-ui-configuration"><a class="anchor" href="#sakuli-ui-configuration"></a>1.3.3. Sakuli UI Configuration</h4>
+<div class="paragraph">
+<p>To configure the Sakuli UI for your custom needs you can set following properties through the CLI</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sakuli ui &lt;root-context-path&gt; -D property-key=property-value</pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+For containerized execution see <a href="#sakuli-ui-containerized-configuration">containerized UI configuration</a>.
+</td>
+</tr>
+</table>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 3. Sakuli UI Properties</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Property</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>app.authentication.enabled=true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">en/disable sakuli UI basic authentication</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>security.default-username=admin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">set username for web login</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>security.default-password=sakuli</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">set password for web login</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>app.execution.local.enabled=true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">en/disable Sakuli <a href="#native-execution">Native Execution</a> mode (use local <code>sakuli &#8230;&#8203;</code> command)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>app.execution.dockercontainer.enabled=true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">en/disable Sakuli execution mode for default <a href="#docker-images">Sakuli Docker Images</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>app.execution.dockerfile.enabled=true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">en/disable Sakuli execution mode for <a href="#docker-extend-a-image">custom Dockerfiles</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>app.execution.dockercompose.enabled=true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">en/disable Sakuli execution mode for <a href="#docker-compose">Docker Compose</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>docker.userid=1000</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">set linux user id which will be used to start the Sakuli container. Use your user system id (<code>$ id -u</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>logging.level.org.sweetest=INFO</code>
+<code>logging.level.org.apache=INFO</code>
+<code>logging.level.org.eclipse=INFO</code>
+<code>logging.level.jndi=INFO</code>
+<code>logging.level.org.thymeleaf=WARN</code>
+<code>logging.level.org.springframework=INFO</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Change default log levels of Sakuli UI libraries</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sakuli-testdefintion"><a class="anchor" href="#sakuli-testdefintion"></a>1.4. Sakuli Testdefinition</h3>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/sakuli-api.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/sakuli-api.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/testdefinition.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/testdefinition.adoc" target="_blank">edit</a></p>
+</div>
+<div class="sect3">
+<h4 id="sakuli-api"><a class="anchor" href="#sakuli-api"></a>1.4.1. Sakuli API</h4>
+<div id="git-edit-section" class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/sakuli-api.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/sakuli-api.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Sakuli provides methods of three different types:</p>
@@ -4009,13 +4336,13 @@ All classes and methods are implemented identical for Java and JavaScript
 <p><a href="#TestCase.addImagePaths">TestCase.addImagePaths(imagePaths)</a></p>
 </li>
 <li>
-<p><a href="#TestCase.endOfStep">TestCase.endOfStep(stepName, optWarningTime)</a></p>
+<p><a href="#TestCase.endOfStep">TestCase.endOfStep(stepName, optWarningTime, optCriticalTime, optForward)</a></p>
 </li>
 <li>
 <p><a href="#TestCase.handleException">TestCase.handleException(e)</a></p>
 </li>
 <li>
-<p><a href="#TestCase.saveResult">TestCase.saveResult()</a></p>
+<p><a href="#TestCase.saveResult">TestCase.saveResult(optForward)</a></p>
 </li>
 <li>
 <p><a href="#TestCase.getID">TestCase.getID()</a></p>
@@ -4337,7 +4664,7 @@ All classes and methods are implemented identical for Java and JavaScript
 </div>
 </div>
 <div class="sect4">
-<h5 id="Sahi-API"><a class="anchor" href="#Sahi-API"></a>1.3.1.2. Sahi-API</h5>
+<h5 id="Sahi-API"><a class="anchor" href="#Sahi-API"></a>1.4.1.2. Sahi-API</h5>
 <div class="paragraph">
 <p><strong>All Sahi-API</strong> functions are natively usable in Sakuli. For a complete documentation, see
 <a href="http://sahi.co.in/w/all-apis">Sahi-API</a>.</p>
@@ -4354,9 +4681,9 @@ All classes and methods are implemented identical for Java and JavaScript
 </div>
 </div>
 <div class="sect4">
-<h5 id="TestCase"><a class="anchor" href="#TestCase"></a>1.3.1.3. TestCase</h5>
+<h5 id="TestCase"><a class="anchor" href="#TestCase"></a>1.4.1.3. TestCase</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/sakuli-api-testcase.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/sakuli-api-testcase.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/sakuli-api-testcase.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/sakuli-api-testcase.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>TestCase - initializes the Sakuli object and sets the warning and critical time for this test case.</p>
@@ -4367,11 +4694,14 @@ All classes and methods are implemented identical for Java and JavaScript
 <div class="ulist">
 <ul>
 <li>
-<p>warningTime <code>number</code> - threshold in seconds. If the threshold is set to 0,
+<p>optCaseId <code>String</code> - optional ID to set the testcase ID to some specifc value. Default is the folder name.</p>
+</li>
+<li>
+<p>optWarningTime <code>number</code> - threshold in seconds. If the threshold is not set or is set to 0,
 the execution time will never exceed, so the state will be always OK!</p>
 </li>
 <li>
-<p>criticalTime <code>number</code> - threshold in seconds. If the threshold is set to 0,
+<p>optCriticalTime <code>number</code> - threshold in seconds. If the threshold is not set or is set to 0,
 the execution time will never exceed, so the state will be always OK!</p>
 </li>
 <li>
@@ -4386,7 +4716,11 @@ for these test cases.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="js"><span class="keyword">var</span> testCase = <span class="keyword">new</span> TestCase(<span class="integer">20</span>,<span class="integer">30</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">path-to/image-folder-name</span><span class="delimiter">&quot;</span></span>);</code></pre>
+<pre class="CodeRay highlight"><code data-lang="js"><span class="comment">//new syntax since v1.2.0</span>
+<span class="keyword">var</span> testCase = <span class="keyword">new</span> TestCase([<span class="string"><span class="delimiter">&quot;</span><span class="content">own-case-id</span><span class="delimiter">&quot;</span></span>, <span class="integer">20</span>, <span class="integer">30</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">path-to/image-folder-name</span><span class="delimiter">&quot;</span></span>]);
+
+<span class="comment">//old syntax &amp;lt; v1.2.0</span>
+<span class="keyword">var</span> testCase = <span class="keyword">new</span> TestCase(<span class="integer">20</span>, <span class="integer">30</span>, [<span class="string"><span class="delimiter">&quot;</span><span class="content">path-to/image-folder-name</span><span class="delimiter">&quot;</span></span>]);</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4401,13 +4735,13 @@ for these test cases.</p>
 <p><a href="#TestCase.addImagePaths">TestCase.addImagePaths(imagePaths)</a></p>
 </li>
 <li>
-<p><a href="#TestCase.endOfStep">TestCase.endOfStep(stepName, optWarningTime)</a></p>
+<p><a href="#TestCase.endOfStep">TestCase.endOfStep(stepName, optWarningTime, optCriticalTime, optForward)</a></p>
 </li>
 <li>
 <p><a href="#TestCase.handleException">TestCase.handleException(e)</a></p>
 </li>
 <li>
-<p><a href="#TestCase.saveResult">TestCase.saveResult()</a></p>
+<p><a href="#TestCase.saveResult">TestCase.saveResult(optForward)</a></p>
 </li>
 <li>
 <p><a href="#TestCase.getID">TestCase.getID()</a></p>
@@ -4442,12 +4776,11 @@ If a relative path is assigned, the current testcase folder will be used as curr
 </ul>
 </div>
 <div id="TestCase.endOfStep" class="paragraph">
-<div class="title">TestCase.endOfStep(stepName, optWarningTime)</div>
+<div class="title">TestCase.endOfStep(stepName, optWarningTime, optCriticalTime, optForward)</div>
 <p>A step allows to sub-divide a case to measure logical units, such as "login", "load report" etc. in its
 particular runtime. When a case starts, Sakuli starts a "step" timer. It gets read out, stored with the
 step name, and the timer will set to <code>0</code> each time endOfStep() is called.
-If the step runtime exceeds the step threshold (second parameter, optional), the step is saved with state
-"WARNING" (there is no CRITICAL state).</p>
+If the step runtime exceeds the step warning resp. critical threshold (second resp. third parameter, both of them are optional), the step is saved with state "WARNING" resp. "CRITICAL".</p>
 </div>
 <div class="paragraph">
 <p><strong>Params</strong></p>
@@ -4460,6 +4793,15 @@ If the step runtime exceeds the step threshold (second parameter, optional), the
 <li>
 <p>optWarningTime <code>number</code> - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
 the execution time will never exceed, so the state will be always OK!</p>
+</li>
+<li>
+<p>optCriticalTime <code>number</code> - (optional) threshold in seconds, default = 0. If the threshold is set to 0,
+the execution time will never exceed, so the state will be always OK!</p>
+</li>
+<li>
+<p>optForward <code>boolean</code> - (optional) indicate whether the result of the test step shall be immediately
+processed by the enabled forwarders. This means before the test suite has been executed to
+the end. If not specified in another way, this option is disabled! Default: <code>false</code></p>
 </li>
 </ul>
 </div>
@@ -4494,11 +4836,21 @@ for further processing.</p>
 </div>
 </div>
 <div id="TestCase.saveResult" class="paragraph">
-<div class="title">TestCase.saveResult()</div>
+<div class="title">TestCase.saveResult(optForward)</div>
 <p>Saves the results of the current test case for further processing.</p>
 </div>
 <div class="paragraph">
 <p>Should be called in finally-block of the test case:</p>
+</div>
+<div class="paragraph">
+<p><strong>Params</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>optForward <code>boolean</code> - indicate whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled! Default: <code>false</code></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p><strong>Example</strong></p>
@@ -4556,9 +4908,9 @@ Will be called from sakuli.js or in side of 'org.sakuli.javaDSL.AbstractSakuliTe
 </div>
 </div>
 <div class="sect4">
-<h5 id="Application"><a class="anchor" href="#Application"></a>1.3.1.4. Application</h5>
+<h5 id="Application"><a class="anchor" href="#Application"></a>1.4.1.4. Application</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/sakuli-api-application.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/sakuli-api-application.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/sakuli-api-application.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/sakuli-api-application.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Application Class - Represents an application.</p>
@@ -4569,7 +4921,7 @@ Will be called from sakuli.js or in side of 'org.sakuli.javaDSL.AbstractSakuliTe
 <div class="ulist">
 <ul>
 <li>
-<p>applicationNameOrPath <code>String</code> - Path to the application file. <strong>Example:</strong> <code>C:\Windows\system32\notepad.exe</code></p>
+<p>applicationNameOrPath <code>String</code> - Path to the application file. Example: <code>C:\Windows\system32\notepad.exe</code></p>
 </li>
 <li>
 <p>optResumeOnException <code>Boolean</code> - Determines whether to ignore exceptions from this class. If this parameter is
@@ -4742,9 +5094,9 @@ The default sleep time is set to 1 seconds.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="Environment"><a class="anchor" href="#Environment"></a>1.3.1.5. Environment</h5>
+<h5 id="Environment"><a class="anchor" href="#Environment"></a>1.4.1.5. Environment</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/sakuli-api-environment.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/sakuli-api-environment.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/sakuli-api-environment.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/sakuli-api-environment.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Environment - Represents the environment of the current test host.</p>
@@ -4940,7 +5292,7 @@ If null or empty use property <code>sakuli.screenshot.format</code></p>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Returns</strong>: <code>String</code> - file path to the created screenshot OR null on errors
+<p><strong>Returns</strong>: <code>Path</code> - to the created screenshot OR null on errors
 <strong>Example</strong></p>
 </div>
 <div class="listingblock">
@@ -5359,9 +5711,9 @@ aware which os you are running, maybe us to check <code>Environment#isLinux()</c
 </div>
 </div>
 <div class="sect4">
-<h5 id="Key"><a class="anchor" href="#Key"></a>1.3.1.6. Key</h5>
+<h5 id="Key"><a class="anchor" href="#Key"></a>1.4.1.6. Key</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/sakuli-api-key.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/sakuli-api-key.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/sakuli-api-key.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/sakuli-api-key.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>All non-character keys are represented by <em>Key</em> constants which can be used in type functions.</p>
@@ -5448,9 +5800,9 @@ see <a href="http://unix.stackexchange.com/questions/157834/how-to-bind-altgr-to
 </div>
 </div>
 <div class="sect4">
-<h5 id="Logger"><a class="anchor" href="#Logger"></a>1.3.1.7. Logger</h5>
+<h5 id="Logger"><a class="anchor" href="#Logger"></a>1.4.1.7. Logger</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/sakuli-api-logger.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/sakuli-api-logger.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/sakuli-api-logger.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/sakuli-api-logger.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Logger - Logging functions to do 'debug, 'info', 'warning' and 'error' log entries.</p>
@@ -5536,9 +5888,9 @@ This won&#8217;t stop the execution of the test case.</p>
 </div>
 </div>
 <div class="sect4">
-<h5 id="MouseButton"><a class="anchor" href="#MouseButton"></a>1.3.1.8. MouseButton</h5>
+<h5 id="MouseButton"><a class="anchor" href="#MouseButton"></a>1.4.1.8. MouseButton</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/sakuli-api-mouse-button.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/sakuli-api-mouse-button.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/sakuli-api-mouse-button.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/sakuli-api-mouse-button.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>MouseButton - representing the possible mouse action button.</p>
@@ -5571,9 +5923,9 @@ region.mouseDown(MouseButton.RIGHT).sleep(<span class="integer">3</span>).mouseU
 </div>
 </div>
 <div class="sect4">
-<h5 id="Region"><a class="anchor" href="#Region"></a>1.3.1.9. Region</h5>
+<h5 id="Region"><a class="anchor" href="#Region"></a>1.4.1.9. Region</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/sakuli-api-region.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/sakuli-api-region.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/sakuli-api-region.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/sakuli-api-region.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Region - Represents a region as a part of or the hole screen.</p>
@@ -6515,14 +6867,14 @@ Default: false.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_additional_topics"><a class="anchor" href="#_additional_topics"></a>1.3.2. Additional Topics</h4>
+<h4 id="_additional_topics"><a class="anchor" href="#_additional_topics"></a>1.4.2. Additional Topics</h4>
 <div class="paragraph">
 <p>This page contains different topics regarding the configuration of both <strong>Sakuli</strong> and its components: <strong>Sahi</strong> and <strong>Sikuli</strong>.</p>
 </div>
 <div class="sect4">
-<h5 id="property-loading-mechanism"><a class="anchor" href="#property-loading-mechanism"></a>1.3.2.1. Property loading mechanism</h5>
+<h5 id="property-loading-mechanism"><a class="anchor" href="#property-loading-mechanism"></a>1.4.2.1. Property loading mechanism</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sakuli-property-loading.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sakuli-property-loading.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sakuli-property-loading.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sakuli-property-loading.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p><strong>Sakuli properties</strong> are predefined in <code><em>SAKULI_HOME</em>/config/sakuli-default.properties</code>; these values should/can be <strong>overwritten</strong> in the following order (last match wins):</p>
@@ -6842,6 +7194,16 @@ sakuli.forwarder.check_mk.spoolfile_prefix=sakuli_suite_
 # optional service description forwarded to the output check result, when not set, testsuite.id is used
 sakuli.forwarder.check_mk.service_description=${testsuite.id}
 
+
+##### JSON - FORWARDER
+# Save results into a json file. The JSON forwarder is enabled per default.
+
+# DEFAULT: true
+sakuli.forwarder.json.enabled=true
+## folder where to save the json file on the test execution host
+sakuli.forwarder.json.dir=${sakuli.log.folder}/_json
+
+
 ###############################
 # LOGGING &amp; ERROR-SCREENSHOT PROPERTIES
 # Common logging settings for Sakuli.
@@ -6903,7 +7265,9 @@ sakuli.screenshot.dir=${sakuli.log.folder}/_screenshots
 
 # screenshot file format (Possible values: jpg, png)
 sakuli.screenshot.format=png
-
+### URLs for documentation links
+sahi.doc.base.url=http://sahipro.com/docs/all-topics.html?q=
+sakuli.doc.base.url=http://consol.github.io/sakuli/latest/index.html#
 
 #######################################################################################
 # SAHI-SCRIPT-RUNNER-PROPERTIES
@@ -6923,8 +7287,10 @@ sahi.proxy.configurationPath=${sahi.proxy.homePath}/userdata
 sahi.proxy.maxConnectTries=25
 # wait time in seconds between retry attempts
 sahi.proxy.reconnectSeconds=1
-
-
+# amount of firefox profiles
+ff.profiles.max_number=1
+#### Sahi customisations done by Sakuli only
+#
 # Sahi delays on Sikuli input (put on helmet!)
 #
 # Sikuli keyboard events (type/paste) on a Sahi-controlled browser instance can get lost if
@@ -6945,6 +7311,12 @@ sahi.proxy.reconnectSeconds=1
 # (gets only enabled if delayPerKey is set)
 sahi.proxy.onSikuliInput.delayBeforeInput=500
 sahi.proxy.onSikuliInput.delayPerKey=
+#
+# Dis/Enable if Sahi should remove the authorization header.
+# See: http://consol.github.io/sakuli/latest/index.html#sahi-authorization-headers
+# (Default by Sahi OS: true)
+sahi.proxy.removeAuthorizationHeader.enabled=true
+
 
 ### HTTP/HTTPS proxy Settings
 ### Set a company proxy Sahi should use
@@ -6964,9 +7336,7 @@ ext.https.proxy.auth.name=user
 ext.https.proxy.auth.password=password
 # There is only one bypass list for both secure and insecure.
 ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.verisign.com
-
-
-### SSL-Certficate settings (experimental)
+### SSL-Certificate settings (experimental)
 # Uncomment the following lines to use a client certificate.
 # If there is no password, do not uncomment the password line.
 # keystore type can be JKS, PKCS12 etc.
@@ -6975,9 +7345,8 @@ ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.ve
 #ssl.client.keystore.type=JKS
 #ssl.client.cert.path=${sakuli.testsuite.folder}/sakuli_keystore
 #ssl.client.cert.password=sakuli
-
-#
-# log folder for sahi hmtl report
+### more logging options for Sahi:
+# log folder for sahi HTML report
 logs.dir=${sakuli.log.folder}
 # handlers to create in the root logger
 # (all loggers are children of the root logger)
@@ -7001,9 +7370,9 @@ java.util.logging.FileHandler.pattern=%t/sahi%g.log</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_exception_handling"><a class="anchor" href="#_exception_handling"></a>1.3.2.2. Exception handling</h5>
+<h5 id="_exception_handling"><a class="anchor" href="#_exception_handling"></a>1.4.2.2. Exception handling</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sakuli-exception-handling.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sakuli-exception-handling.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sakuli-exception-handling.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sakuli-exception-handling.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Some objects (<strong>Region, Application, Environment</strong>) allow on their creation to specify the optional boolean argument <code>resumeOnException</code>, which controls whether the script should resume on an exception which is related to the object or one of its method (default: false).</p>
@@ -7012,7 +7381,7 @@ java.util.logging.FileHandler.pattern=%t/sahi%g.log</code></pre>
 <p>Setting this to <em>true</em> can be useful if you want to raise a custom exception or no exception at all.</p>
 </div>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 3. Property values of <code>sakuli.exception.suppressResumedExceptions</code></caption>
+<caption class="title">Table 4. Property values of <code>sakuli.exception.suppressResumedExceptions</code></caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -7050,9 +7419,9 @@ java.util.logging.FileHandler.pattern=%t/sahi%g.log</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_logging"><a class="anchor" href="#_logging"></a>1.3.2.3. Logging</h5>
+<h5 id="_logging"><a class="anchor" href="#_logging"></a>1.4.2.3. Logging</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sakuli-logging.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sakuli-logging.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sakuli-logging.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sakuli-logging.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <div class="title">Verbosity</div>
@@ -7071,7 +7440,7 @@ java.util.logging.FileHandler.pattern=%t/sahi%g.log</code></pre>
 </table>
 </div>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 4. Log level verbosity properties</caption>
+<caption class="title">Table 5. Log level verbosity properties</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -7106,7 +7475,7 @@ java.util.logging.FileHandler.pattern=%t/sahi%g.log</code></pre>
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all spread">
-<caption class="title">Table 5. Log file folder / pattern</caption>
+<caption class="title">Table 6. Log file folder / pattern</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -7169,9 +7538,9 @@ __SUITE_FOLDER__/*/_logs/* __SUITE_FOLDER__/*/_logs/_screenshots/* {
 </div>
 </div>
 <div class="sect4">
-<h5 id="encryption"><a class="anchor" href="#encryption"></a>1.3.2.4. Secret De-/Encryption</h5>
+<h5 id="encryption"><a class="anchor" href="#encryption"></a>1.4.2.4. Secret De-/Encryption</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sakuli-encryption.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sakuli-encryption.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sakuli-encryption.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sakuli-encryption.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Neither Sahi nor Sikuli have a way to prevent <strong>sensible data</strong> (passwords, PINs, etc.) from being logged and stored in the script in <strong>clear text</strong>.</p>
@@ -7426,9 +7795,9 @@ sakuli.encryption.interface.autodetect=true</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_screenshot_settings"><a class="anchor" href="#_screenshot_settings"></a>1.3.2.5. Screenshot settings</h5>
+<h5 id="_screenshot_settings"><a class="anchor" href="#_screenshot_settings"></a>1.4.2.5. Screenshot settings</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sakuli-screenshot-settings.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sakuli-screenshot-settings.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sakuli-screenshot-settings.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sakuli-screenshot-settings.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>To set the format and destination folder for screenshots taken by Sakuli change the following <a href="#property-loading-mechanism">properties</a>:</p>
@@ -7465,9 +7834,9 @@ sakuli.encryption.interface.autodetect=true</code></pre>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_gui_only_tests"><a class="anchor" href="#_gui_only_tests"></a>1.3.2.6. GUI-only tests</h5>
+<h5 id="_gui_only_tests"><a class="anchor" href="#_gui_only_tests"></a>1.4.2.6. GUI-only tests</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sakuli-gui-only.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sakuli-gui-only.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sakuli-gui-only.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sakuli-gui-only.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>If you want to run tests which do not include any web technology, you can use phantomJS instead of firefox/chrome/IE and use the Sahi default start URL:</p>
@@ -7492,9 +7861,9 @@ Sakuli depends on Sahi running, which in turn needs a running browser instance. 
 </div>
 </div>
 <div class="sect4">
-<h5 id="sahi-controller"><a class="anchor" href="#sahi-controller"></a>1.3.2.7. Sahi Controller</h5>
+<h5 id="sahi-controller"><a class="anchor" href="#sahi-controller"></a>1.4.2.7. Sahi Controller</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sahi-controller.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sahi-controller.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sahi-controller.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sahi-controller.adoc" target="_blank">edit</a></p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -7618,9 +7987,9 @@ Perhaps you want Sahi to highlight the items it is acting on: just use the <code
 </div>
 </div>
 <div class="sect4">
-<h5 id="sahi-recorder"><a class="anchor" href="#sahi-recorder"></a>1.3.2.8. Sahi Recorder</h5>
+<h5 id="sahi-recorder"><a class="anchor" href="#sahi-recorder"></a>1.4.2.8. Sahi Recorder</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sahi-recorder.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sahi-recorder.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sahi-recorder.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sahi-recorder.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Another method to <a href="#sahi-controller-copy-paste">copy/paste code</a> is to record all steps into a file. For this, open the Sahi controller (<a href="#sahi-open-controller">Open the Sahi Controller</a>), enter a filename and click on "record":</p>
@@ -7645,11 +8014,11 @@ actions like clicks are written to file automatically. All other actions like as
 </div>
 </div>
 <div class="sect4">
-<h5 id="_sahi_settings"><a class="anchor" href="#_sahi_settings"></a>1.3.2.9. Sahi settings</h5>
+<h5 id="_sahi_settings"><a class="anchor" href="#_sahi_settings"></a>1.4.2.9. Sahi settings</h5>
 <div class="sect5">
 <h6 id="_browser_selection"><a class="anchor" href="#_browser_selection"></a>Browser selection</h6>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sahi-settings-browser-selection.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sahi-settings-browser-selection.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sahi-settings-browser-selection.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sahi-settings-browser-selection.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>You may want to change the browser due to the following reasons:</p>
@@ -7686,7 +8055,7 @@ actions like clicks are written to file automatically. All other actions like as
 <div class="sect5">
 <h6 id="sahi-browser-configuration"><a class="anchor" href="#sahi-browser-configuration"></a>Browser configuration</h6>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sahi-settings-browser-config.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sahi-settings-browser-config.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sahi-settings-browser-config.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sahi-settings-browser-config.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>If the Sahi dashboard does not show any browser or if you want to add another browser to the dashboard …</p>
@@ -7712,7 +8081,7 @@ actions like clicks are written to file automatically. All other actions like as
 <div class="sect5">
 <h6 id="sahi_behind_a_proxy"><a class="anchor" href="#sahi_behind_a_proxy"></a>Sahi behind a proxy</h6>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sahi-settings-proxy.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sahi-settings-proxy.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sahi-settings-proxy.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sahi-settings-proxy.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Set the following <a href="#property-loading-mechanism">properties</a> (globally in <code>sakuli.properties</code>) to define a proxy Sahi should connect to.</p>
@@ -7745,7 +8114,7 @@ ext.http.both.proxy.bypass_hosts=localhost|127.0.0.1|*.internaldomain.com|www.ve
 <div class="sect5">
 <h6 id="sahi-https"><a class="anchor" href="#sahi-https"></a>HTTPS support in Sahi</h6>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sahi-https.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sahi-https.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sahi-https.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sahi-https.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>This documentation is not complete yet. Any help is appreciated.</p>
@@ -7991,10 +8360,13 @@ cert_override.txt --&gt;  __SAKULI_ROOT__/sahi/config/ff_profile_template/</pre>
 </div>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_sahi_known_issues"><a class="anchor" href="#_sahi_known_issues"></a>1.4.2.10. Sahi known issues</h5>
 <div class="sect5">
 <h6 id="sahi-webpack-dev-server"><a class="anchor" href="#sahi-webpack-dev-server"></a>Sahi and webpack-dev-server</h6>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sahi-webpack.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sahi-webpack.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sahi-webpack.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sahi-webpack.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Due to issue <a href="https://github.com/ConSol/sakuli/issues/295">sahi test not run with webpack dev server #295</a> Sahi OS have currently some problems with the "auto loading" function of the <a href="https://github.com/webpack/webpack-dev-server">webpack-dev-server</a>. If you use the startup option <code>webpack-dev-server --inline</code> Sahi may will throw this error:</p>
@@ -8036,13 +8408,36 @@ CASE &quot;tests&quot;: _sahi.setServerVar('lastURL', window.document.location.h
 <p>For more the issue <a href="https://github.com/ConSol/sakuli/issues/295">#295</a>.</p>
 </div>
 </div>
+<div class="sect5">
+<h6 id="sahi-authorization-headers"><a class="anchor" href="#sahi-authorization-headers"></a>Sahi removes authorization headers</h6>
+<div id="git-edit-section" class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sahi-authorization-header.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sahi-authorization-header.adoc" target="_blank">edit</a></p>
+</div>
+<div class="paragraph">
+<p>Due to issue <a href="https://github.com/ConSol/sakuli/issues/306">Disable Sahi proxy method which remove the authorization header (e.g. Bearer Token) #306</a> Sahi OS have currently some problems with handling authorization tokens like Bearer Token correctly. This has been also discussed at <a href="https://community.sahipro.com/forums/discussion/3941/authorization-header-getting-stripped-out">Sahi Community - Authorization header getting stripped out</a> and is a Problem of Sahi OS.</p>
+</div>
+<div class="paragraph">
+<p>This behavior is not wanted, so the Sakuli team developed a solution which manipulates Sahi by some <a href="https://docs.spring.io/spring/docs/4.3.x/spring-framework-reference/html/aop.html">Spring AOP Advice</a>, for some details take look at <a href="https://github.com/ConSol/sakuli/blob/feature/%23306-sahi-header/src/core/src/main/java/org/sakuli/aop/SahiHeaderAspect.java#L59">Sahi Header Aspect</a></p>
+</div>
+<div class="paragraph">
+<p>By default nothing have been changed to avoid unexpected impact to other parts of Sahi OS.  To skip the execution of the Sahi action which removes the authorization header , see <a href="https://github.com/kevlened/Sahi/blob/744f77462badeb3deddce93ddf6374773f70833f/sahi/src/net/sf/sahi/request/HttpRequest.java#L272"><code>HttpRequest.removeHeader("Authorization")</code></a>, set the following <a href="#property loading mechanism">property</a> to <code>false</code>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>sahi.proxy.removeAuthorizationHeader.enabled=false</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For more details see issue <a href="https://github.com/ConSol/sakuli/issues/306">#306</a>.</p>
+</div>
+</div>
 </div>
 <div class="sect4">
-<h5 id="_sikuli_settings"><a class="anchor" href="#_sikuli_settings"></a>1.3.2.10. Sikuli settings</h5>
+<h5 id="_sikuli_settings"><a class="anchor" href="#_sikuli_settings"></a>1.4.2.11. Sikuli settings</h5>
 <div class="sect5">
 <h6 id="_highlighting_regions"><a class="anchor" href="#_highlighting_regions"></a>Highlighting Regions</h6>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc" target="_blank">edit</a></p>
 </div>
 <table class="tableblock frame-all grid-all spread">
 <colgroup>
@@ -8070,12 +8465,12 @@ CASE &quot;tests&quot;: _sahi.setServerVar('lastURL', window.document.location.h
 </div>
 </div>
 <div class="sect3">
-<h4 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>1.3.3. Troubleshooting</h4>
+<h4 id="_troubleshooting"><a class="anchor" href="#_troubleshooting"></a>1.4.3. Troubleshooting</h4>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/troubleshooting.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/testdefinition/troubleshooting.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/troubleshooting.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/testdefinition/troubleshooting.adoc" target="_blank">edit</a></p>
 </div>
 <div class="sect4">
-<h5 id="_growing_firefox_profile_folder"><a class="anchor" href="#_growing_firefox_profile_folder"></a>1.3.3.1. Growing Firefox profile folder</h5>
+<h5 id="_growing_firefox_profile_folder"><a class="anchor" href="#_growing_firefox_profile_folder"></a>1.4.3.1. Growing Firefox profile folder</h5>
 <div class="paragraph">
 <p>If you experience that the Sahi profile folders <code>sahi0-9</code> of Mozilla Firefox (located in <code>sahi\userdata\browser\ff\profiles</code>) are getting bigger and bigger: this is caused by two bugs:</p>
 </div>
@@ -8094,7 +8489,7 @@ CASE &quot;tests&quot;: _sahi.setServerVar('lastURL', window.document.location.h
 </div>
 </div>
 <div class="sect4">
-<h5 id="_hanging_applications"><a class="anchor" href="#_hanging_applications"></a>1.3.3.2. Hanging applications</h5>
+<h5 id="_hanging_applications"><a class="anchor" href="#_hanging_applications"></a>1.4.3.2. Hanging applications</h5>
 <div class="paragraph">
 <p>If you are testing applications which tend to hang/freeze, you can run a "tidy-up"-Script by using the <code>-pre-Hook</code> option of Sakuli:</p>
 </div>
@@ -8117,7 +8512,7 @@ java%sakuli.jar</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="image-recognition-problem"><a class="anchor" href="#image-recognition-problem"></a>1.3.3.3. Sikuli does not recognize images</h5>
+<h5 id="image-recognition-problem"><a class="anchor" href="#image-recognition-problem"></a>1.4.3.3. Sikuli does not recognize images</h5>
 <div class="paragraph">
 <p>If Sikuli does not recognize regions on the screen or does recognize the wrong ones, check the following list of possible reasons:</p>
 </div>
@@ -8136,7 +8531,7 @@ java%sakuli.jar</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_missing_keystrokes_on_type_or_failing_paste"><a class="anchor" href="#_missing_keystrokes_on_type_or_failing_paste"></a>1.3.3.4. Missing keystrokes on type or failing paste</h5>
+<h5 id="_missing_keystrokes_on_type_or_failing_paste"><a class="anchor" href="#_missing_keystrokes_on_type_or_failing_paste"></a>1.4.3.4. Missing keystrokes on type or failing paste</h5>
 <div class="paragraph">
 <p>Sikuli keyboard events <code>type()</code> and <code>paste()</code> on a Sahi-controlled browser instance can get lost if they are executed at the same time when Sahi internal status requests are sent from the browser to the Sahi proxy (default: 10x per sec).</p>
 </div>
@@ -8165,7 +8560,7 @@ This setting is not needed if Sikuli does keyboard actions on <strong>GUIs not c
 </div>
 </div>
 <div class="sect4">
-<h5 id="_application_getregion_returns_null"><a class="anchor" href="#_application_getregion_returns_null"></a>1.3.3.5. Application.getRegion() returns NULL</h5>
+<h5 id="_application_getregion_returns_null"><a class="anchor" href="#_application_getregion_returns_null"></a>1.4.3.5. Application.getRegion() returns NULL</h5>
 <div class="paragraph">
 <p>If the execution of <code>new Application("&#8230;&#8203;").open().getRegion()</code> throws a <code>NullPointerException</code> or retruns <code>null</code>, firstly turn on debug logging, see <a href="#logging">[logging]</a>. Then you mostly will see at the log output that an OS based library  is missing.</p>
 </div>
@@ -8181,18 +8576,20 @@ This setting is not needed if Sikuli does keyboard actions on <strong>GUIs not c
 </div>
 </div>
 <div class="sect2">
-<h3 id="integration_in_other_tools"><a class="anchor" href="#integration_in_other_tools"></a>1.4. Integration in other Tools</h3>
+<h3 id="integration_in_other_tools"><a class="anchor" href="#integration_in_other_tools"></a>1.5. Integration in other Tools</h3>
+<div class="sect4">
+<h5 id="forwarder"><a class="anchor" href="#forwarder"></a>1.5.1. Forwarder Concept</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/integration.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/integration.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/forwarder-concept.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/forwarder-concept.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
-<p>Sakuli can hand over test result to "<strong>Forwarder</strong>", which can be currently feed different tools like Nagios based monitoring systems or continuous integration server. If no forwarder is defined, a result summary is printed out in the end of a suite.</p>
+<p>After a test execution has been completed Sakuli can process or better <strong>forward</strong> the test results to a certain third party system, e.g. a monitoring system, file output or other third-party systems. The processing is done by a so called Sakuli Forwarder.</p>
 </div>
 <div class="paragraph">
-<p>Feel free to develop another forwarder or ask us to do this.</p>
+<p>Feel free to develop another forwarder or ask us to do this. Currently Sakuli is providing forwarder for following output formats:</p>
 </div>
 <table id="forwarders" class="tableblock frame-all grid-all spread">
-<caption class="title">Table 6. Sakuli forwarder modules</caption>
+<caption class="title">Table 7. Sakuli forwarder modules</caption>
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 25%;">
@@ -8212,6 +8609,12 @@ This setting is not needed if Sikuli does keyboard actions on <strong>GUIs not c
 - Command line output</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">- <a href="#continuous_integration">Continuous Integration</a> server<br>
 - Locale test runs</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#json-forwarder">json</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- Output files in JSON format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">- Sakuli GUI<br>
+- Interface to 3rd party systems</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="#sql-database">database</a></p></td>
@@ -8240,12 +8643,312 @@ This setting is not needed if Sikuli does keyboard actions on <strong>GUIs not c
 </tr>
 </tbody>
 </table>
-<div class="sect3">
-<h4 id="monitoring-integration"><a class="anchor" href="#monitoring-integration"></a>1.4.1. Monitoring integration</h4>
+<div class="sect5">
+<h6 id="forwarder-step-case"><a class="anchor" href="#forwarder-step-case"></a>Step / Case Forwarders</h6>
+<div class="paragraph">
+<p>Usually the forwarder is invoked after the whole test suite is completed and the result of the test suite is processed.
+With release <code>1.2</code> a new forwarder feature has been introduced, which allows to process the result of not only whole test suites, but also of test cases and test steps, which have been already executed. This behaviour can be controlled by the test developer, who can specify within the test case resp. test step, whether the results shall be immediately processed after the execution of the test case resp. step.</p>
+</div>
+<div class="paragraph">
+<p>To forward the results of a certain test case, the forward flag in the saveResult shall be set to true, as shown in the example below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    testCase.saveResult(<span class="predefined-constant">true</span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To forward the results of a certain test step, the forward flag in the endOfStep shall be set to true, as shown in the example below.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">    testCase.endOfStep(<span class="string"><span class="delimiter">&quot;</span><span class="content">Calculation</span><span class="delimiter">&quot;</span></span>,<span class="integer">30</span>, <span class="integer">50</span>, <span class="predefined-constant">true</span>);</code></pre>
+</div>
+</div>
+</div>
+</div>
 <div class="sect4">
-<h5 id="omd-preparation"><a class="anchor" href="#omd-preparation"></a>1.4.1.1. OMD preparation</h5>
+<h5 id="forwarder-templates"><a class="anchor" href="#forwarder-templates"></a>1.5.2. Forwarder Templates</h5>
+<div class="paragraph">
+<p>With release <code>1.1</code> Sakuli introduced the <a href="http://jtwig.org/">Jtwig</a> template engine, which is used for generating the output of the Sakuli test suite for certain forwarders. With release <code>1.2</code> in addition to <a href="checkmk.adoc">Check_MK Forwarder</a> also <a href="omd-gearman.adoc">Gearman Forwarder</a> supports Jtwig templates.</p>
+</div>
+<div class="paragraph">
+<p>Using templates for the forwarder output makes it possible to easily modify the output of Sakuli and adapt it without the need to release a new Sakuli version.</p>
+</div>
+<div class="paragraph">
+<p>Here we want to describe how Jtwig is working, how to use a customized template and what you have to pay attention to.</p>
+</div>
+<div class="sect5">
+<h6 id="_jtwig_template"><a class="anchor" href="#_jtwig_template"></a>JTwig template</h6>
+<div class="paragraph">
+<p><a href="http://jtwig.org/">Jtwig</a> is a template engine based on Java, which has a simple and understandable syntax und is easy to use. The following snippet shows an example of a Jtwig template used in Sakuli.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml">    {% for testStep in testCase.stepsAsSortedSet %}
+        , step &quot;{{ testStep.name }}&quot;$whitespace$
+        {% if (testStep.state.error) %}
+            EXCEPTION: {{ errorMessageCreator.exceptionMessage(testStep) }}
+        {% else %}
+            over runtime ({{ testStep.duration }}s/warn at {{ testStep.warningTime }}s)
+        {% endif %}
+    {% endfor %}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The input for this template is the <code>testCase</code> object, which has a set ot test steps. The template iterates over all the steps and prints certain step information based on the state of the test step.</p>
+</div>
+<div class="paragraph">
+<p>The whole <a href="http://jtwig.org/">Jtwig</a> feature set is supported and can be used within the Sakuli forwarder.
+For more detailed information about Jtwig templates, please refer to <a href="http://jtwig.org/">Jtwig</a>.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_customized_jtwig_functions"><a class="anchor" href="#_customized_jtwig_functions"></a>Customized Jtwig Functions</h6>
+<div class="paragraph">
+<p><a href="http://jtwig.org/">Jtwig</a> comes with a list of functions like <code>abs</code>, <code>concat</code> etc, which can be used within a template. In addition to the standard functions, Jtwig supports the implementation and injection of custom functions. Sakuli provides following custom functions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/AbbreviateFunction.java" target="_blank">abbreviate</a></code> - The function abbreviates a certain string to a specified length. The implementation is based on the StringUtils.abbreviate method from the Apache commons library.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/ExtractScreenshotFunction.java" target="_blank">extractScreenshot</a></code> - The function extracts the screenshot from a specified test data entity, which contains an exception.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputDurationFunction.java" target="_blank">getOutputDuration</a></code> - The function returns the formatted duration for a specified test entity.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputStateFunction.java" target="_blank">getOutputState</a></code> - The function returns the <code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/datamodel/state/SakuliState.java" target="_blank">OutputState</a></code> for a specified SakuliState.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/IsBlankFunction.java" target="_blank">isBlank</a></code> - The function checks whether the specified string parameter is blank.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/UnixTimestampConverterFunction.java" target="_blank">convertToUnixTimestamp</a></code> - The function converts a date object into an unix timestamp.</p>
+</li>
+<li>
+<p><code><a href="https://github.com/ConSol/sakuli/blob/dev/src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetTestDataEntityTypeFunction.java" target="_blank">getTestDataEntityType</a></code> - The function retrieves the type of a provided AbstractTestDataEntity, which currently could be one of: TestSuite, TestCase or TestCaseStep.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Please refer to the Sakuli <a href="https://github.com/ConSol/sakuli/blob/dev/src/common/src/main/resources/org/sakuli/common/config/templates" target="_blank">default Jtwig templates</a>, to see the custom functions in action.</p>
+</div>
+<div class="paragraph">
+<div class="title">Handling of white spaces and new lines</div>
+<p>The forwarder implementation provides a special handling of white spaces and new lines within the templates. For this feature the <code>jtwig-spaceless-extension</code> has been used, which comes with a SpaceRemover interface. This has been implemented by the <code>LeadingWhitespaceRemover</code>. The <code>LeadingWhitespaceRemover</code> is configured in the twig template engine and removes all leading whitespaces for every line and all line endings within the template. It can be activated by adding the text snippet or the whole template within the following tags <code>{% spaceless %}</code> and <code>{% endspaceless %}</code>.
+The <code>LeadingWhitespaceRemover</code> has been introduced, to make the implementation and maintaining of the templates easier.</p>
+</div>
+<div class="paragraph">
+<p>Since the leading white spaces and the new lines are removed, some special placeholder have been introduced, which are replaced by the real characters at the end of the template generation:
+* <code>$whitespace$</code> - the placeholder will be replaced by a real white space.
+* <code>$newline$</code> - the placeholder will be replaced by a new line <code>&#39;\n&#39;</code>.</p>
+</div>
+<div class="paragraph">
+<div class="title">Using a customized templates</div>
+<p>Sakuli provides a default template set, which is placed within the templates directory under <code><em>SAKULI_HOME</em>/config/templates</code> within the Sakuli home folder (e.g. the default Check_MK templates can be found in a subdirectory <code>check_mk</code>).</p>
+</div>
+<div class="paragraph">
+<p>The property <code>sakuli.forwarder.template.folder</code> defines the path to the main.twig template for the respective forwarder. The default value is set to <code>${sakuli.home.folder}/config/templates</code>.</p>
+</div>
+<div class="paragraph">
+<p>Before customizing a default template, it is essential to copy the templates to a new location and configure that location as the template location in Sakuli, otherwise installing a new Sakuli release would overwrite the modified templates within the config directory.</p>
+</div>
+<div class="paragraph">
+<div class="title">Structure of the default main template</div>
+<p>Generally the forwarder is expecting to find a certain template file named <code>main.twig</code> within the configured template directory. The default <code>main.twig</code> template doesn&#8217;t contain the whole output, but includes further templates to make the single templates more readable. Since the templates are fully customizable, the user can decide how the templates are structured, whether to use nested templates or to define everything within a single file.</p>
+</div>
+<div class="paragraph">
+<p>The following snippet shows the default <code>main.twig</code> template provided by Sakuli for the Check_MK forwarder. This template is also showing the use of the spaceless extension and the special character for a new line.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="xml">    {% spaceless %}
+    {% import 'error_message_creator.twig' as errorMessageCreator %}
+        <span class="error">&lt;</span><span class="error">&lt;</span><span class="tag">&lt;local&gt;</span><span class="error">&gt;</span><span class="error">&gt;</span>$newline$
+        {% include 'performance_data.twig' %}
+        {% include 'short_summary.twig' %}
+        {% include 'detailed_summary.twig' %}
+        $newline$
+    {% endspaceless %}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<div class="title">Supported Forwarder</div>
+<ul>
+<li>
+<p><a href="#check_mk">Check_MK</a> (since <code>1.1</code>)</p>
+</li>
+<li>
+<p><a href="#omd-gearman">Gearman forwarder</a> (since <code>1.2</code>)</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="sql-database"><a class="anchor" href="#sql-database"></a>1.5.3. SQL Database</h4>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/monitoring/omd-preparation.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/monitoring/omd-preparation.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/sql-database.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/sql-database.adoc" target="_blank">edit</a></p>
+</div>
+<div class="paragraph">
+<p>This page describes how the results of Sakuli can be stored into a <strong>MySQL database</strong> which can be read by other 3rd party systems.</p>
+</div>
+<div class="paragraph">
+<p><span class="image"><img src="images/sql_schema.png" alt="sakuli-db-schema"></span></p>
+</div>
+<div class="sect5">
+<h6 id="sql-database-create-db"><a class="anchor" href="#sql-database-create-db"></a>Create Sakuli DB</h6>
+<div class="paragraph">
+<p>Create the <strong>Sakuli database</strong> and the DB user:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ mysql &lt; __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/database/create_sakuli_database.sql</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create the <strong>database user</strong>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">$ mysql
+  grant ALL on sakuli.* to '__DB_USER__'@'%' identified by '__DB_PASSWORD__';
+  flush privileges;
+  quit</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check the connection with your favorit SQL tool:</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="sql-database-enable-forwarder"><a class="anchor" href="#sql-database-enable-forwarder"></a>Enable database forwarder</h6>
+<div class="paragraph">
+<p>On the Sakuli client you must set the <a href="#property-loading-mechanism">properties</a> for the database receiver. For this, edit <code>sakuli.properties</code> in the folder containing the test suites (you can copy the lines from <code><em>SAKULI_HOME</em>/conf/sakuli-default.properties</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties">__INST_DIR__/example_test_suites/sakuli.properties:
+
+# DEFAULT: false
+sakuli.forwarder.database.enabled=true
+
+#DEFAULT: mysql
+sakuli.forwarder.database.jdbc.driverClass=com.mysql.jdbc.Driver
+sakuli.forwarder.database.host=__DB_IP__
+sakuli.forwarder.database.port=__DB_PORT__
+sakuli.forwarder.database=sakuli
+sakuli.forwarder.database.user=__DB_USER__
+sakuli.forwarder.database.password=__DB_PW__</code></pre>
+</div>
+</div>
+<div id="sql-database-test-transmission" class="paragraph">
+<div class="title">Test result transmission</div>
+<p>Execute the example test case:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Ubuntu</strong>: <code>sakuli run <em>INST_DIR</em>/example_test_suites/example_ubuntu/</code></p>
+</li>
+<li>
+<p><strong>openSUSE</strong>: <code>sakuli run <em>INST_DIR</em>/example_test_suites/example_opensuse/</code></p>
+</li>
+<li>
+<p><strong>Windows 7</strong>: <code>sakuli run <em>INST_DIR</em>\example_test_suites\example_windows7\</code></p>
+</li>
+<li>
+<p><strong>Windows 8</strong>: <code>sakuli run <em>INST_DIR</em>\example_test_suites\example_windows8\</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The database should now contain the results.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="_integration_in_other_tools"><a class="anchor" href="#_integration_in_other_tools"></a>Integration in other tools</h6>
+<div class="paragraph">
+<p>You can find queries using the Sakuli DB in <code>/setup/nagios/CheckMySQLHealthSakuli.pm</code> in the extracted Sakuli sources folder.</p>
+</div>
+<div class="paragraph">
+<p>We are looking forward to reading your story of how you integrated the DB results in your toolchain.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="sql-database-optional-cleanup"><a class="anchor" href="#sql-database-optional-cleanup"></a>Database cleanup (optional)</h6>
+<div class="paragraph">
+<p>Sakuli&#8217;s database can get very large over time. Use the following database maintenance script to keep only the most recent data.</p>
+</div>
+<div class="paragraph">
+<p>Create a crontab entry for a automatic database cleanup of data older than 90 days:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="bash">~$ crontab -e
+00 12 * * * $SAKULI_HOME/bin/helper/mysql_purge.sh 90 &gt; /dev/null 2&gt;&amp;1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After that, the crontab should be active.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="json-forwarder"><a class="anchor" href="#json-forwarder"></a>1.5.4. JSON Forwarder</h4>
+<div id="git-edit-section" class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/json-forwarder.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/json-forwarder.adoc" target="_blank">edit</a></p>
+</div>
+<div class="paragraph">
+<p>This page describes how the test suite results of Sakuli can be serialized to a JSON file, which can be read by other 3rd party systems.</p>
+</div>
+<div class="sect5">
+<h6 id="json-forwarder-configuraiton"><a class="anchor" href="#json-forwarder-configuraiton"></a>Configuration of JSON forwarder</h6>
+<div class="paragraph">
+<p>The JSON forwarder provides two properties to customise its behaviour. Using those properties it is possible to enable resp. disable the forwarder and to change the folder, to which the json output is written. The JSON forwarder is enabled by default. Both properties can be edited in <code>testsuite.properties</code> in the folder containing the test suite. To read more about, how to overloading of properties work, see <a href="#property loading mechanism">properties</a>.  (you can copy the lines from <a href="#sakuli-default-properties">Property Reference</a>):</p>
+</div>
+<div class="listingblock">
+<div class="title"><code>testsuite.properties</code></div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="properties"># DEFAULT: true
+sakuli.forwarder.json.enabled
+
+#DEFAULT: ${sakuli.log.folder}/_json
+sakuli.forwarder.json.dir</code></pre>
+</div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="json-forwarder-output"><a class="anchor" href="#json-forwarder-output"></a>Output of JSON forwarder</h6>
+<div class="paragraph">
+<p>After executing the example test suite, the json output can be found under <code>_logs/_json</code> folder of the test suite. The name of the output file is based on the following pattern:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>`&lt;test_suite_id&gt;_&lt;timestamp&gt;.json`</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For every test suite run, a new json output is generated as soon as the forwarder is enabled.</p>
+</div>
+</div>
+<div class="sect5">
+<h6 id="json-forwarder-usage"><a class="anchor" href="#json-forwarder-usage"></a>Usage of JSON forwarder output</h6>
+<div class="paragraph">
+<p>Currently the output, generated by the JSON forwarder, is used as an input for the <a href="https://github.com/ConSol/sakuli-ui">Sakuli UI</a>. The Sakuli UI is displaying the result of the test suite executed by Sakuli. It is possible to navigate through all the test cases, test steps and test actions for a certain test suite.
+Furthermore the JSON output can be used as an input for third party systems, e.g. some monitoring system.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="monitoring-integration"><a class="anchor" href="#monitoring-integration"></a>1.5.5. Monitoring integration</h4>
+<div class="sect4">
+<h5 id="omd-preparation"><a class="anchor" href="#omd-preparation"></a>1.5.5.1. OMD preparation</h5>
+<div id="git-edit-section" class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/omd-preparation.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/omd-preparation.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>This chapter describes all necessary steps to prepare a OMD site with a <strong>Nagios</strong> compatible monitoring system to receive Sakuli test results with one of the forwarders <a href="#omd-gearman">gearman</a>, <a href="#omd-sql-database">database</a>, <a href="#check_mk">Check_MK</a> or <a href="#icinga2-integration">icinga2-api</a>. For some parts of this documentation, OMD with Thruk as web frontend will be presupposed, but any other Nagios based system will do also (the configuration steps may vary then).</p>
@@ -8307,9 +9010,9 @@ If you want to run OMD-Labs in a container then check out the <a href="https://g
 </div>
 </div>
 <div class="sect4">
-<h5 id="omd-gearman"><a class="anchor" href="#omd-gearman"></a>1.4.1.2. Gearman forwarder</h5>
+<h5 id="omd-gearman"><a class="anchor" href="#omd-gearman"></a>1.5.5.2. Gearman forwarder</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/monitoring/omd-gearman.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/monitoring/omd-gearman.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/omd-gearman.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/omd-gearman.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>This page describes how the results of Sakuli tests can be transmitted directly into the <strong>Gearman result queue</strong> of a monitoring system.</p>
@@ -8498,6 +9201,18 @@ need to enable unlimited strength security policies in your Java JRE. This is do
 </div>
 </div>
 <div class="sect5">
+<h6 id="_output_format_template"><a class="anchor" href="#_output_format_template"></a>Output format template</h6>
+<div class="paragraph">
+<p>With release <code>1.2</code> the implementation of the Gearman forwarder was changed to use the templating mechanism based on Jtwig and introduced in Sakuli in some releases ago. The new implementation decouples the output format from the Sakuli binary, which allows format adaptions to fulfill your needs at any time without installing a new version of Sakuli.</p>
+</div>
+<div class="paragraph">
+<p>Sakuli comes with default templates, which are placed in <code>$INSTALL_DIR/config/templates</code>. The <a href="https://github.com/ConSol/sakuli/blob/dev/src/common/src/main/resources/org/sakuli/common/config/templates/gearman" target="_blank">default Gearman templates</a> can be found in a subdirectory <code>gearman</code>.</p>
+</div>
+<div class="paragraph">
+<p>For further information how the default template directory can be changed or how the forwarder templates can be customized please refer to <a href="#forwarder-templates">Forwarder Templates</a>.</p>
+</div>
+</div>
+<div class="sect5">
 <h6 id="gearman_proxy"><a class="anchor" href="#gearman_proxy"></a>Gearman proxy (optional)</h6>
 <div class="paragraph">
 <p><span class="image"><img src="images/gearman_proxy.png" alt="gearman_proxy" width="780"></span></p>
@@ -8511,7 +9226,7 @@ need to enable unlimited strength security policies in your Java JRE. This is do
 <div class="ulist">
 <ul>
 <li>
-<p>Change parts of the messages Sakuki sends to the monitoring system &#8658; there are some examples contained already</p>
+<p>Change parts of the messages Sakuli sends to the monitoring system &#8658; there are some examples contained already</p>
 </li>
 <li>
 <p>Getting notified when Sakuli sends results to services which do not exists</p>
@@ -8614,9 +9329,9 @@ This change does affect other monitoring checks executed with mod-gearman, becau
 </div>
 </div>
 <div class="sect4">
-<h5 id="omd-sql-database"><a class="anchor" href="#omd-sql-database"></a>1.4.1.3. Database forwarder</h5>
+<h5 id="omd-sql-database"><a class="anchor" href="#omd-sql-database"></a>1.5.5.3. Database forwarder</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/monitoring/omd-sql-database.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/monitoring/omd-sql-database.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/omd-sql-database.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/omd-sql-database.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>This page describes how the results of the Sakuli tests (e.g. example_windows7/ubuntu/opensuse) can be written into a <strong>MySQL database</strong> which is then checked asynchronously by the monitoring system with <code>check_mysql_health</code>.</p>
@@ -8896,9 +9611,9 @@ Oct 21 17:08:21 omd2 kernel: [116300.215520] type=1400 audit(1413904101.323:27):
 </div>
 </div>
 <div class="sect4">
-<h5 id="icinga2-integration"><a class="anchor" href="#icinga2-integration"></a>1.4.1.4. Icinga2 forwarder</h5>
+<h5 id="icinga2-integration"><a class="anchor" href="#icinga2-integration"></a>1.5.5.4. Icinga2 forwarder</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/monitoring/icinga2api.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/monitoring/icinga2api.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/icinga2api.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/icinga2api.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>This page describes how the results of Sakuli tests can be sent to the <a href="http://docs.icinga.org/icinga2/snapshot/doc/module/icinga2/chapter/icinga2-api">REST API</a> of an <a href="https://www.icinga.org/">Icinga2</a> monitoring instance.</p>
@@ -9018,7 +9733,7 @@ sakuli.forwarder.icinga2.hostname=sakuliclient01</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>For other <strong>OPTIONAL</strong> gearman parameters you can adjust, see <a href="https://github.com/ConSol/sakuli/blob/master/src/common/src/main/resources/org/sakuli/common/config/sakuli-default.properties" target="_blank">sakuli-default.properties</a> file.</p>
+<p>For other <strong>OPTIONAL</strong> gearman parameters you can adjust, see <a href="https://github.com/ConSol/sakuli/blob/dev/src/common/src/main/resources/org/sakuli/common/config/sakuli-default.properties" target="_blank">sakuli-default.properties</a> file.</p>
 </div>
 <div class="paragraph">
 <div class="title">Test result transmission to Icinga2</div>
@@ -9081,9 +9796,9 @@ sakuli.forwarder.icinga2.hostname=sakuliclient01</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="check_mk"><a class="anchor" href="#check_mk"></a>1.4.1.5. Check_MK</h5>
+<h5 id="check_mk"><a class="anchor" href="#check_mk"></a>1.5.5.5. Check_MK</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/monitoring/checkmk.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/monitoring/checkmk.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/checkmk.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/checkmk.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>This page describes how to setup a Sakuli client to send results to a Check_MK monitoring system.</p>
@@ -9143,7 +9858,7 @@ sakuli.forwarder.check_mk.service_description=My_Custom_Service</code></pre>
 </div>
 </div>
 <div class="sect6">
-<h7 id="_output_format_template"><a class="anchor" href="#_output_format_template"></a>Output format template</h7>
+<h7 id="_output_format_template_2"><a class="anchor" href="#_output_format_template_2"></a>Output format template</h7>
 <div class="paragraph">
 <p>With the implementation of the Check_MK forwarder a new <a href="http://jtwig.org/">Jtwig</a> templating mechanism has been introduced in Sakuli, which decouples the output format from the Sakuli binary. This which allows format adaptions to fulfill your needs at any time without installing a new version of Sakuli.</p>
 </div>
@@ -9151,18 +9866,18 @@ sakuli.forwarder.check_mk.service_description=My_Custom_Service</code></pre>
 <p>In near time, all other forwarder modules of Sakuli will support the templating feature too.</p>
 </div>
 <div class="paragraph">
-<p>Sakuli comes with default templates, which are placed in <code>$INSTALL_DIR/config/templates</code>. The <a href="https://github.com/ConSol/sakuli/blob/master/src/common/src/main/resources/org/sakuli/common/config/templates/check_mk" target="_blank">default Check_MK templates</a> can be found in a subdirectory <code>check_mk</code>.</p>
+<p>Sakuli comes with default templates, which are placed in <code>$INSTALL_DIR/config/templates</code>. The <a href="https://github.com/ConSol/sakuli/blob/dev/src/common/src/main/resources/org/sakuli/common/config/templates/check_mk" target="_blank">default Check_MK templates</a> can be found in a subdirectory <code>check_mk</code>.</p>
 </div>
 <div class="paragraph">
-<p>For further information how the default template directory can be changed or how the forwarder templates can be customized please refer to <a href="#forwarder-template">Forwarder Templates</a>.</p>
+<p>For further information how the default template directory can be changed or how the forwarder templates can be customized please refer to <a href="#forwarder-templates">Forwarder Templates</a>.</p>
 </div>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="screenshot_history"><a class="anchor" href="#screenshot_history"></a>1.4.1.6. Screenshot history</h5>
+<h5 id="screenshot_history"><a class="anchor" href="#screenshot_history"></a>1.5.5.6. Screenshot history</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/monitoring/screenshot_history.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/monitoring/screenshot_history.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/screenshot_history.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/screenshot_history.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>INFO: This section applies to <a href="http://http://labs.consol.de/OMD/">OMD-Labs</a> and the web interface <a href="https://www.thruk.org/">Thruk</a>. To use the screenshot history functionality on other platforms/web interfaces, the steps may vary.</p>
@@ -9271,9 +9986,9 @@ For PNP4Nagios there is no such feature available.
 </div>
 </div>
 <div class="sect4">
-<h5 id="grafana_graphs"><a class="anchor" href="#grafana_graphs"></a>1.4.1.7. Grafana graphs</h5>
+<h5 id="grafana_graphs"><a class="anchor" href="#grafana_graphs"></a>1.5.5.7. Grafana graphs</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/monitoring/graph_grafana.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/monitoring/graph_grafana.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/graph_grafana.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/graph_grafana.adoc" target="_blank">edit</a></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -9336,9 +10051,9 @@ OMD-Labs already contains a graph template <code>check_sakuli</code> for <a href
 </div>
 </div>
 <div class="sect4">
-<h5 id="_pnp4nagios_graphs"><a class="anchor" href="#_pnp4nagios_graphs"></a>1.4.1.8. PNP4Nagios graphs</h5>
+<h5 id="_pnp4nagios_graphs"><a class="anchor" href="#_pnp4nagios_graphs"></a>1.5.5.8. PNP4Nagios graphs</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/monitoring/graph_pnp4nagios.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/monitoring/graph_pnp4nagios.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/monitoring/graph_pnp4nagios.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/monitoring/graph_pnp4nagios.adoc" target="_blank">edit</a></p>
 </div>
 <div class="sect5">
 <h6 id="_rrd_storage_type"><a class="anchor" href="#_rrd_storage_type"></a>RRD Storage Type</h6>
@@ -9610,248 +10325,24 @@ The Sakui graph should now contain also CPU/Memory values.</p>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="forwarder-template"><a class="anchor" href="#forwarder-template"></a>1.4.1.9. Forwarder Templates</h5>
-<div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/monitoring/advanced-topics/forwarder-templates.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/monitoring/advanced-topics/forwarder-templates.adoc" target="_blank">edit</a></p>
-</div>
-<div class="paragraph">
-<p>With release <code>1.1</code> Sakuli introduced the <a href="http://jtwig.org/">Jtwig</a> template engine, which is used for generating the output of the Sakuli test suite for certain forwarders. (Currently only the <a href="forwarder-checkmk.md">Check_MK forwarder</a> supports Jtwig templates.)</p>
-</div>
-<div class="paragraph">
-<p>Using templates for the forwarder output makes it possible to easily modify the output of Sakuli and adapt it without the need to release a new Sakuli version.</p>
-</div>
-<div class="paragraph">
-<p>Here we want to describe how Jtwig is working, how to use a customized template and what you have to pay attention to.</p>
-</div>
-<div class="sect5">
-<h6 id="_jtwig_template"><a class="anchor" href="#_jtwig_template"></a>JTwig template</h6>
-<div class="paragraph">
-<p><a href="http://jtwig.org/">Jtwig</a> is a template engine based on Java, which has a simple and understandable syntax und is easy to use. The following snippet shows an example of a Jtwig template used in Sakuli.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml">    {% for testStep in testCase.stepsAsSortedSet %}
-        , step &quot;{{ testStep.name }}&quot;$whitespace$
-        {% if (testStep.state.error) %}
-            EXCEPTION: {{ errorMessageCreator.exceptionMessage(testStep) }}
-        {% else %}
-            over runtime ({{ testStep.duration }}s/warn at {{ testStep.warningTime }}s)
-        {% endif %}
-    {% endfor %}</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The input for this template is the <code>testCase</code> object, which has a set ot test steps. The template iterates over all the steps and prints certain step information based on the state of the test step.</p>
-</div>
-<div class="paragraph">
-<p>The whole <a href="http://jtwig.org/">Jtwig</a> feature set is supported and can be used within the Sakuli forwarder.
-For more detailed information about Jtwig templates, please refer to <a href="http://jtwig.org/">Jtwig</a>.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_customized_jtwig_functions"><a class="anchor" href="#_customized_jtwig_functions"></a>Customized Jtwig Functions</h6>
-<div class="paragraph">
-<p><a href="http://jtwig.org/">Jtwig</a> comes with a list of functions like <code>abs</code>, <code>concat</code> etc, which can be used within a template. In addition to the standard functions, Jtwig supports the implementation and injection of custom functions. Sakuli provides following custom functions:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code><a href="https://github.com/ConSol/sakuli/blob/master/src/core/src/main/java/org/sakuli/services/forwarder/configuration/AbbreviateFunction.java" target="_blank">abbreviate</a></code> - The function abbreviates a certain string to a specified length. The implementation is based on the StringUtils.abbreviate method from the Apache commons library.</p>
-</li>
-<li>
-<p><code><a href="https://github.com/ConSol/sakuli/blob/master/src/core/src/main/java/org/sakuli/services/forwarder/configuration/ExtractScreenshotFunction.java" target="_blank">extractScreenshot</a></code> - The function extracts the screenshot from a specified test data entity, which contains an exception.</p>
-</li>
-<li>
-<p><code><a href="https://github.com/ConSol/sakuli/blob/master/src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputDurationFunction.java" target="_blank">getOutputDuration</a></code> - The function returns the formatted duration for a specified test entity.</p>
-</li>
-<li>
-<p><code><a href="https://github.com/ConSol/sakuli/blob/master/src/core/src/main/java/org/sakuli/services/forwarder/configuration/GetOutputStateFunction.java" target="_blank">getOutputState</a></code> - The function returns the <code><a href="https://github.com/ConSol/sakuli/blob/master/src/core/src/main/java/org/sakuli/datamodel/state/SakuliState.java" target="_blank">OutputState</a></code> for a specified SakuliState.</p>
-</li>
-<li>
-<p><code><a href="https://github.com/ConSol/sakuli/blob/master/src/core/src/main/java/org/sakuli/services/forwarder/configuration/IsBlankFunction.java" target="_blank">isBlank</a></code> - The function checks whether the specified string parameter is blank.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Please refer to the Sakuli <a href="https://github.com/ConSol/sakuli/blob/master/src/common/src/main/resources/org/sakuli/common/config/templates" target="_blank">default Jtwig templates</a>, to see the custom functions in action.</p>
-</div>
-<div class="paragraph">
-<div class="title">Handling of white spaces and new lines</div>
-<p>The forwarder implementation provides a special handling of white spaces and new lines within the templates. For this feature the <code>jtwig-spaceless-extension</code> has been used, which comes with a SpaceRemover interface. This has been implemented by the <code>LeadingWhitespaceRemover</code>. The <code>LeadingWhitespaceRemover</code> is configured in the twig template engine and removes all leading whitespaces for every line and all line endings within the template. It can be activated by adding the text snippet or the whole template within the following tags <code>{% spaceless %}</code> and <code>{% endspaceless %}</code>.
-The <code>LeadingWhitespaceRemover</code> has been introduced, to make the implementation and maintaining of the templates easier.</p>
-</div>
-<div class="paragraph">
-<p>Since the leading white spaces and the new lines are removed, some special placeholder have been introduced, which are replaced by the real characters at the end of the template generation:
-* <code>$whitespace$</code> - the placeholder will be replaced by a real white space.
-* <code>$newline$</code> - the placeholder will be replaced by a new line <code>&#39;\n&#39;</code>.</p>
-</div>
-<div class="paragraph">
-<div class="title">Using a customized templates</div>
-<p>Sakuli provides a default template set, which is placed within the templates directory under <code><em>SAKULI_HOME</em>/config/templates</code> within the Sakuli home folder (e.g. the default Check_MK templates can be found in a subdirectory <code>check_mk</code>).</p>
-</div>
-<div class="paragraph">
-<p>The property <code>sakuli.forwarder.template.folder</code> defines the path to the main.twig template for the respective forwarder. The default value is set to <code>${sakuli.home.folder}/config/templates</code>.</p>
-</div>
-<div class="paragraph">
-<p>Before customizing a default template, it is essential to copy the templates to a new location and configure that location as the template location in Sakuli, otherwise installing a new Sakuli release would overwrite the modified templates within the config directory.</p>
-</div>
-<div class="paragraph">
-<div class="title">Structure of the default main template</div>
-<p>Generally the forwarder is expecting to find a certain template file named <code>main.twig</code> within the configured template directory. The default <code>main.twig</code> template doesn&#8217;t contain the whole output, but includes further templates to make the single templates more readable. Since the templates are fully customizable, the user can decide how the templates are structured, whether to use nested templates or to define everything within a single file.</p>
-</div>
-<div class="paragraph">
-<p>The following snippet shows the default <code>main.twig</code> template provided by Sakuli for the Check_MK forwarder. This template is also showing the use of the spaceless extension and the special character for a new line.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="xml">    {% spaceless %}
-    {% import 'error_message_creator.twig' as errorMessageCreator %}
-        <span class="error">&lt;</span><span class="error">&lt;</span><span class="tag">&lt;local&gt;</span><span class="error">&gt;</span><span class="error">&gt;</span>$newline$
-        {% include 'performance_data.twig' %}
-        {% include 'short_summary.twig' %}
-        {% include 'detailed_summary.twig' %}
-        $newline$
-    {% endspaceless %}</code></pre>
-</div>
-</div>
-<div class="ulist">
-<div class="title">Supported Forwarder</div>
-<ul>
-<li>
-<p>Check_MK: see <a href="#check_mk">Check_MK</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
 </div>
 <div class="sect3">
-<h4 id="continuous_integration"><a class="anchor" href="#continuous_integration"></a>1.4.2. Continuous Integration</h4>
+<h4 id="continuous_integration"><a class="anchor" href="#continuous_integration"></a>1.5.6. Continuous Integration</h4>
 <div class="sect4">
-<h5 id="jenkins-integration"><a class="anchor" href="#jenkins-integration"></a>1.4.2.1. Jenkins</h5>
+<h5 id="jenkins-integration"><a class="anchor" href="#jenkins-integration"></a>1.5.6.1. Jenkins</h5>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/ci/jenkins.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/ci/jenkins.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/integration/ci/jenkins.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/integration/ci/jenkins.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Sakuli can also be integrated in <strong>continuous integration</strong> environments like <strong>Jenkins</strong>. Documentation is coming in the next time (…have one?)</p>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="sql-database"><a class="anchor" href="#sql-database"></a>1.4.3. SQL Database</h4>
-<div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/integration/sql-database.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/integration/sql-database.adoc" target="_blank">edit</a></p>
-</div>
-<div class="paragraph">
-<p>This page describes how the results of Sakuli can be stored into a <strong>MySQL database</strong> which can be read by other 3rd party systems.</p>
-</div>
-<div class="paragraph">
-<p><span class="image"><img src="images/sql_schema.png" alt="sakuli-db-schema"></span></p>
-</div>
-<div class="sect5">
-<h6 id="sql-database-create-db"><a class="anchor" href="#sql-database-create-db"></a>Create Sakuli DB</h6>
-<div class="paragraph">
-<p>Create the <strong>Sakuli database</strong> and the DB user:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ mysql &lt; __TEMP__/sakuli-vx.x.x-SNAPSHOT/setup/database/create_sakuli_database.sql</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Create the <strong>database user</strong>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">$ mysql
-  grant ALL on sakuli.* to '__DB_USER__'@'%' identified by '__DB_PASSWORD__';
-  flush privileges;
-  quit</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Check the connection with your favorit SQL tool:</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="sql-database-enable-forwarder"><a class="anchor" href="#sql-database-enable-forwarder"></a>Enable database forwarder</h6>
-<div class="paragraph">
-<p>On the Sakuli client you must set the <a href="#property-loading-mechanism">properties</a> for the database receiver. For this, edit <code>sakuli.properties</code> in the folder containing the test suites (you can copy the lines from <code><em>SAKULI_HOME</em>/conf/sakuli-default.properties</code>):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="properties">__INST_DIR__/example_test_suites/sakuli.properties:
-
-# DEFAULT: false
-sakuli.forwarder.database.enabled=true
-
-#DEFAULT: mysql
-sakuli.forwarder.database.jdbc.driverClass=com.mysql.jdbc.Driver
-sakuli.forwarder.database.host=__DB_IP__
-sakuli.forwarder.database.port=__DB_PORT__
-sakuli.forwarder.database=sakuli
-sakuli.forwarder.database.user=__DB_USER__
-sakuli.forwarder.database.password=__DB_PW__</code></pre>
-</div>
-</div>
-<div id="sql-database-test-transmission" class="paragraph">
-<div class="title">Test result transmission</div>
-<p>Execute the example test case:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Ubuntu</strong>: <code>sakuli run <em>INST_DIR</em>/example_test_suites/example_ubuntu/</code></p>
-</li>
-<li>
-<p><strong>openSUSE</strong>: <code>sakuli run <em>INST_DIR</em>/example_test_suites/example_opensuse/</code></p>
-</li>
-<li>
-<p><strong>Windows 7</strong>: <code>sakuli run <em>INST_DIR</em>\example_test_suites\example_windows7\</code></p>
-</li>
-<li>
-<p><strong>Windows 8</strong>: <code>sakuli run <em>INST_DIR</em>\example_test_suites\example_windows8\</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The database should now contain the results.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="_integration_in_other_tools"><a class="anchor" href="#_integration_in_other_tools"></a>Integration in other tools</h6>
-<div class="paragraph">
-<p>You can find queries using the Sakuli DB in <code>/setup/nagios/CheckMySQLHealthSakuli.pm</code> in the extracted Sakuli sources folder.</p>
-</div>
-<div class="paragraph">
-<p>We are looking forward to reading your story of how you integrated the DB results in your toolchain.</p>
-</div>
-</div>
-<div class="sect5">
-<h6 id="sql-database-optional-cleanup"><a class="anchor" href="#sql-database-optional-cleanup"></a>Database cleanup (optional)</h6>
-<div class="paragraph">
-<p>Sakuli&#8217;s database can get very large over time. Use the following database maintenance script to keep only the most recent data.</p>
-</div>
-<div class="paragraph">
-<p>Create a crontab entry for a automatic database cleanup of data older than 90 days:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">~$ crontab -e
-00 12 * * * $SAKULI_HOME/bin/helper/mysql_purge.sh 90 &gt; /dev/null 2&gt;&amp;1</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>After that, the crontab should be active.</p>
-</div>
-</div>
-</div>
 </div>
 <div class="sect2">
-<h3 id="_developer_documentation"><a class="anchor" href="#_developer_documentation"></a>1.5. Developer Documentation</h3>
+<h3 id="_developer_documentation"><a class="anchor" href="#_developer_documentation"></a>1.6. Developer Documentation</h3>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/development/README.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/development/README.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/development/README.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/development/README.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>In this section you will find a few helpful documentation for developers who want to contribute.</p>
@@ -9882,9 +10373,9 @@ sakuli.forwarder.database.password=__DB_PW__</code></pre>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="dev-installation"><a class="anchor" href="#dev-installation"></a>1.5.1. Installation guide for Sakuli-Developers</h4>
+<h4 id="dev-installation"><a class="anchor" href="#dev-installation"></a>1.6.1. Installation guide for Sakuli-Developers</h4>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/development/how-to-release.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/development/how-to-release.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/development/how-to-release.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/development/how-to-release.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <div class="title">Requirements</div>
@@ -10028,7 +10519,7 @@ You only need to install the components: Sahi Core, Tools Userdata
 <p><strong>Database:</strong> <code>sakuli</code></p>
 </li>
 <li>
-<p><strong>SQL-Script:</strong> <a href="https://github.com/ConSol/sakuli/blob/master/src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database.sql" target="_blank">create_sakuli_database.sql</a></p>
+<p><strong>SQL-Script:</strong> <a href="https://github.com/ConSol/sakuli/blob/dev/src/common/src/main/resources/org/sakuli/common/setup/database/create_sakuli_database.sql" target="_blank">create_sakuli_database.sql</a></p>
 </li>
 </ul>
 </div>
@@ -10092,7 +10583,7 @@ limitations under the License.</pre>
 <ul>
 <li>
 <p>In order to run Sakuli test cases directly from the IDE, you need to build up a run configuration. For IntelliJ see the predefined run configurations under
-<a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/development/intellij/runConfigurations" target="_blank">intellij/runConfigurations</a></p>
+<a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/development/intellij/runConfigurations" target="_blank">intellij/runConfigurations</a></p>
 </li>
 <li>
 <p><strong>classpath of module:</strong> <code>sakuli-core</code></p>
@@ -10167,176 +10658,9 @@ limitations under the License.</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="dev-new-release"><a class="anchor" href="#dev-new-release"></a>1.5.2. How to create a new release</h4>
+<h4 id="dev-maven-aspects"><a class="anchor" href="#dev-maven-aspects"></a>1.6.2. Maven aspects</h4>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/development/how-to-release.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/development/how-to-release.adoc" target="_blank">edit</a></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Check if all features are merged in dev</p>
-</li>
-<li>
-<p>Check if <code>changelog.adoc</code> is correct</p>
-</li>
-</ul>
-</div>
-<div class="olist arabic">
-<div class="title">(Jenkins CI) Perform a new official release</div>
-<ol class="arabic">
-<li>
-<p>Go to <a href="http://labs-build.consol.de/job/Sakuli_perform_release/">Jenkins - Sakuli_perform_release</a> and execute the job and set the parameters <code>REL_VERSION</code> and <code>DEV_VERSION</code></p>
-</li>
-<li>
-<p>Check if maven artifacts have been deployed at <a href="https://labs.consol.de/maven/repository/org/sakuli/">https://labs.consol.de/maven/repository/org/sakuli/</a></p>
-</li>
-<li>
-<p>Check the new taged verison on <a href="https://hub.docker.com/">DockerHub</a> with same <code>REL_VERSION</code> for the following images:
-<a href="https://hub.docker.com/search/?isAutomated=0&amp;isOfficial=0&amp;page=1&amp;pullCount=0&amp;q=sakuli&amp;starCount=0">DockerHub - Sakuli</a></p>
-</li>
-<li>
-<p>Test the new docker images as long the <a href="https://github.com/ConSol/sakuli-examples">sakuli-exampels</a> are not in the automated build</p>
-</li>
-<li>
-<p>Check te latest documentation is updated at <a href="http://consol.github.io/sakuli/" class="bare">http://consol.github.io/sakuli/</a>.</p>
-</li>
-<li>
-<p>Make a new <a href="https://github.com/ConSol/sakuli/releases">GitHub Release</a>:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Add <code>sakuli-vXXX-installer.jar</code> and <code>sakuli-vXXX.zip</code> from <a href="https://labs.consol.de/sakuli/install/">https://labs.consol.de/sakuli/install/</a> to a new release XXX</p>
-</li>
-<li>
-<p>Copy the latest changelog to the new release page</p>
-</li>
-<li>
-<p>Check and publish new release</p>
-</li>
-</ul>
-</div>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<div class="title">(local) Process a new release with maven</div>
-<p><strong>1. Dry-run (if needed)</strong></p>
-</div>
-<div class="paragraph">
-<p>Generate a new relase over <strong>jgitflow-maven-plugin</strong> (branch: <code>release/xxx</code>):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    mvn jgitflow:release-start -DnoDeploy=true -DpushReleases=false -DlocalOnly=true</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Do a dry-run <em>without</em> deploying and pushing any new files:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    mvn jgitflow:release-finish -DnoDeploy=true -DpushReleases=false -DlocalOnly=true</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Delete all local git changes and branches</p>
-</div>
-<div class="paragraph">
-<p><strong>2. Release</strong></p>
-</div>
-<div class="paragraph">
-<p>Generate a new relase over <strong>jgitflow-maven-plugin</strong> (branch: <code>release/xxx</code>):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    mvn jgitflow:release-start</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Execute the following commands, to update the Dockerfiles to the new release version at the branch <code>release/xxx</code> .</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    docker/update_sakuli_version.sh --new-version $REL_VERSION
-    git commit -am "update Dockerfiles to REL-Version v$REL_VERS"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Start the release deploying and pushing any new branches and tags if needed:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    mvn jgitflow:release-finish</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Go to the <code>dev</code> branch and adjust the version of the Dockerfiles:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>    docker/update_sakuli_version.sh --new-version $DEV_VERS
-    git commit -am "update Dockerfiles to DEV-Version v$DEV_VERS"</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Push your changes:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>git push --all</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Finally delete the no longer needed remote feature branch and do the manual release steps from above (after Jenkins job):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>git branch -d &lt;branchName&gt;
-git push origin --delete &lt;branchName&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<div class="title">Troubleshooting</div>
-<p><strong>Re-use a tag</strong></p>
-</div>
-<div class="paragraph">
-<p>To re-use an already set tag, remove it from git (local and remote):</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code># delete the tag locally:
-git tag -d sakuli-X.X.X`
-# push to remote:
-git push --delete origin sakuli-X.X.X`</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>General</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Check your maven settings in <code>~/.m2/settings.xml</code>:</p>
-</li>
-<li>
-<p>Ensure that your private key has access rights for user <code>sakuli@labs.consol.de</code></p>
-</li>
-<li>
-<p>Ensure that your private key is added to ssh-agent: <code>ssh-add &lt;path-to-key&gt;</code></p>
-</li>
-<li>
-<p>Check proxy settings - the server <code>labs.consol.de</code> must be reachable</p>
-</li>
-<li>
-<p>Ensure that the ConSol-Labs server is configured correctly, see <a href="#sql-database">SQL Database</a></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="dev-maven-aspects"><a class="anchor" href="#dev-maven-aspects"></a>1.5.3. Maven aspects</h4>
-<div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/development/maven-aspects.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/development/maven-aspects.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/development/maven-aspects.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/development/maven-aspects.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>Following default lifecycle actions are currently used:</p>
@@ -10375,6 +10699,29 @@ git push --delete origin sakuli-X.X.X`</code></pre>
 <div class="paragraph">
 <div class="title">Install locally <code>mvn install</code></div>
 <p>Runs all steps until step <strong>6</strong></p>
+</div>
+<div id="feature-branches" class="paragraph">
+<div class="title">Working with feature branches:</div>
+<p>For handling releases and feature branches, Sakuli uses the <a href="https://github.com/aleksandr-m/gitflow-maven-plugin">gitflow-maven-plugin</a>. For more information take a look at there <a href="https://github.com/aleksandr-m/gitflow-maven-plugin/blob/master/README.md">README</a>.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start a new feature: <code>mvn gitflow:feature-start</code></p>
+</li>
+<li>
+<p>Use as feature name the pattern <code>&lt;github-issue-no&gt;-&lt;feature-description&gt;</code></p>
+</li>
+<li>
+<p>Commit your work and do <code>git push</code>. Changes will be available at the remote feature branch <code>feature/&lt;github-issue-no&gt;-&lt;feature-description&gt;</code></p>
+</li>
+<li>
+<p>The build <a href="http://labs-build.consol.de/view/Sakuli/job/Sakuli_CI_feature_branch">Sakuli_CI_feature_branch</a> will automatic triggered and a new version will deployed with version <code>v1.X.X-&lt;github-issue-no&gt;-&lt;feature-description&gt;-SNAPSHOT</code>. This feature version is available as <a href="#download">Download</a> and as <a href="#docker-images">Sakuli Docker Images</a></p>
+</li>
+<li>
+<p>To finish the developed feature execute: <code>mvn gitflow:feature-finish</code></p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <div class="title">Build a new release</div>
@@ -10507,9 +10854,9 @@ mvn install:install-file -DgroupId=net.sf.sahi -DartifactId=sahi-install -Dversi
 </div>
 </div>
 <div class="sect3">
-<h4 id="dev-ascii-doc"><a class="anchor" href="#dev-ascii-doc"></a>1.5.4. AsciiDoc documentation aspects</h4>
+<h4 id="dev-ascii-doc"><a class="anchor" href="#dev-ascii-doc"></a>1.6.3. AsciiDoc documentation aspects</h4>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/development/ascii-doc-aspects.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/development/ascii-doc-aspects.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/development/ascii-doc-aspects.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/development/ascii-doc-aspects.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <div class="title">Generate AsciiDoc documentation</div>
@@ -10575,7 +10922,7 @@ live-server src/docs-manual/target/generated-docs <i class="conum" data-value="2
 </div>
 <div class="paragraph">
 <div class="title">Sakuli API generation</div>
-<p>Currently there is no fully automated way between the documented Sakuli API in <a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/sakuli-api.md">docs/manual/testdefinition/sakuli-api.md</a> and the final <a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/testdefinition/sakuli-api.adoc">docs/manual/testdefinition/sakuli-api.adoc</a> .</p>
+<p>Currently there is no fully automated way between the documented Sakuli API in <a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/sakuli-api.md">docs/manual/testdefinition/sakuli-api.md</a> and the final <a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/testdefinition/sakuli-api.adoc">docs/manual/testdefinition/sakuli-api.adoc</a> .</p>
 </div>
 <div class="paragraph">
 <p><strong>The following steps have to be executed:</strong></p>
@@ -10649,9 +10996,167 @@ docs/manual/testdefinition/sakuli-api-testcase.adoc</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="dev-sikuli-supplemental-pack"><a class="anchor" href="#dev-sikuli-supplemental-pack"></a>1.5.5. sikulix-supplemental package</h4>
+<h4 id="dev-new-release"><a class="anchor" href="#dev-new-release"></a>1.6.4. How to create a new release</h4>
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/manual/development/linux-native-libs/linux-sikuli-supplemental-pack.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/manual/development/linux-native-libs/linux-sikuli-supplemental-pack.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/development/how-to-release.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/development/how-to-release.adoc" target="_blank">edit</a></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Check if all features are merged in dev</p>
+</li>
+<li>
+<p>Check if <code>changelog.adoc</code> is correct</p>
+</li>
+</ul>
+</div>
+<div class="olist arabic">
+<div class="title">(Jenkins CI) Perform a new official release</div>
+<ol class="arabic">
+<li>
+<p>Go to <a href="http://labs-build.consol.de/job/Sakuli_perform_release/">Jenkins - Sakuli_perform_release</a> and execute the job and set the parameters <code>REL_VERSION</code> and <code>DEV_VERSION</code></p>
+</li>
+<li>
+<p>Check if maven artifacts have been deployed at <a href="https://labs.consol.de/maven/repository/org/sakuli/">https://labs.consol.de/maven/repository/org/sakuli/</a></p>
+</li>
+<li>
+<p>Check the new taged version on <a href="https://hub.docker.com/">DockerHub</a> with same <code>REL_VERSION</code> for the following images:
+<a href="https://hub.docker.com/search/?isAutomated=0&amp;isOfficial=0&amp;page=1&amp;pullCount=0&amp;q=sakuli&amp;starCount=0">DockerHub - Sakuli</a></p>
+</li>
+<li>
+<p>Test the new docker images as long the <a href="https://github.com/ConSol/sakuli-examples">sakuli-examples</a> are not in the automated build</p>
+</li>
+<li>
+<p>Check te latest documentation is updated at <a href="http://consol.github.io/sakuli/" class="bare">http://consol.github.io/sakuli/</a>.</p>
+</li>
+<li>
+<p>Make a new <a href="https://github.com/ConSol/sakuli/releases">GitHub Release</a>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Add <code>sakuli-vXXX-installer.jar</code> and <code>sakuli-vXXX.zip</code> from <a href="https://labs.consol.de/sakuli/install/">https://labs.consol.de/sakuli/install/</a> to a new release XXX</p>
+</li>
+<li>
+<p>Copy the latest changelog to the new release page</p>
+</li>
+<li>
+<p>Check and publish new release</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">(local) Process a new release with maven</div>
+<p><strong>1. Dry-run (if needed)</strong></p>
+</div>
+<div class="paragraph">
+<p>Generate a new release over <strong>gitflow-maven-plugin</strong> (branch: <code>release/xxx</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    mvn gitflow:release-start</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Do a dry-run <em>without</em> deploying and pushing any new files:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    mvn clean install -DperformRelease=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Delete all local git changes and branches</p>
+</div>
+<div class="paragraph">
+<p><strong>2. Release</strong></p>
+</div>
+<div class="paragraph">
+<p>Generate a new release (if not done in step 1) over <strong>gitflow-maven-plugin</strong> (branch: <code>release/xxx</code>):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    mvn gitflow:release-start</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Execute the following commands, to update the Dockerfiles to the new release version at the branch <code>release/xxx</code> .</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    docker/update_sakuli_version.sh --new-version $REL_VERSION
+    git commit -am "update Dockerfiles to REL-Version v$REL_VERS"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Start the release deploying and pushing any new branches and tags if needed:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    mvn gitflow:release-finish</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Go to the <code>dev</code> branch and adjust the version of the Dockerfiles:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>    docker/update_sakuli_version.sh --new-version $DEV_VERS
+    git commit -am "update Dockerfiles to DEV-Version v$DEV_VERS"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Push your changes in <code>dev</code> branch:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>git push --all</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="title">Troubleshooting</div>
+<p><strong>Re-use a tag</strong></p>
+</div>
+<div class="paragraph">
+<p>To re-use an already set tag, remove it from git (local and remote):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code># delete the tag locally:
+git tag -d sakuli-X.X.X`
+# push to remote:
+git push --delete origin sakuli-X.X.X`</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>General</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Check your maven settings in <code>~/.m2/settings.xml</code>:</p>
+</li>
+<li>
+<p>Ensure that your private key has access rights for user <code>sakuli@labs.consol.de</code></p>
+</li>
+<li>
+<p>Ensure that your private key is added to ssh-agent: <code>ssh-add &lt;path-to-key&gt;</code></p>
+</li>
+<li>
+<p>Check proxy settings - the server <code>labs.consol.de</code> must be reachable</p>
+</li>
+<li>
+<p>Ensure that the ConSol-Labs server is configured correctly, see <a href="#sql-database">SQL Database</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="dev-sikuli-supplemental-pack"><a class="anchor" href="#dev-sikuli-supplemental-pack"></a>1.6.5. sikulix-supplemental package</h4>
+<div id="git-edit-section" class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/manual/development/linux-native-libs/linux-sikuli-supplemental-pack.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/manual/development/linux-native-libs/linux-sikuli-supplemental-pack.adoc" target="_blank">edit</a></p>
 </div>
 <div class="admonitionblock caution">
 <table>
@@ -10725,7 +11230,7 @@ sudo apt-get install libtesseract-dev
 <h2 id="examples"><a class="anchor" href="#examples"></a>2. Example projects and Tutorials on GitHub</h2>
 <div class="sectionbody">
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/example-projects.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/example-projects.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/example-projects.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/example-projects.adoc" target="_blank">edit</a></p>
 </div>
 <div class="ulist">
 <ul>
@@ -10749,7 +11254,7 @@ sudo apt-get install libtesseract-dev
 <h2 id="publications"><a class="anchor" href="#publications"></a>3. Publications</h2>
 <div class="sectionbody">
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/publications.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/publications.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/publications.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/publications.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>03/2018: <a href="https://www.consol.de/fileadmin/pdf/news/presse/PI_Kunde_Continentale.pdf">Pressemitteilung:
@@ -10802,7 +11307,7 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen </a></p>
 <h2 id="events"><a class="anchor" href="#events"></a>4. Events</h2>
 <div class="sectionbody">
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/events.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/events.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/events.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/events.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>September 10, 2018: <a href="http://swanseacon.co.uk/">SwanseaCon 2018</a> (Tobias Schneck)<br>
@@ -10913,7 +11418,7 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen </a></p>
 <h2 id="media"><a class="anchor" href="#media"></a>5. Media</h2>
 <div class="sectionbody">
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/media.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/media.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/media.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/media.adoc" target="_blank">edit</a></p>
 </div>
 <div id="short-overview" class="paragraph">
 <div class="title">Sakuli Short Overview Presentation</div>
@@ -10923,6 +11428,15 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen </a></p>
 <div class="content">
 <a class="image" href="files/Sakuli_Short_Overview.pdf"><img src="images/Sakuli_Short_Overview.png" alt="Sakuli Short Overview Presentation"></a>
 </div>
+</div>
+<div class="videoblock">
+<div class="title">Sakuli UI Introduction</div>
+<div class="content">
+<iframe src="https://www.youtube.com/embed/5RJY_FD6YvQ?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/ConSol/sakuli-ui" class="bare">https://github.com/ConSol/sakuli-ui</a></p>
 </div>
 <div class="paragraph">
 <div class="title">YouTube: OpenShift-Build-Pipelines</div>
@@ -10954,7 +11468,69 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen </a></p>
 <h2 id="changelog"><a class="anchor" href="#changelog"></a>6. Change Log</h2>
 <div class="sectionbody">
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/changelog.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/changelog.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/changelog.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/changelog.adoc" target="_blank">edit</a></p>
+</div>
+<div id="version-1.2.0" class="ulist">
+<div class="title"><a href="http://consol.github.io/sakuli/v1.2.0/index.html"><strong>Version 1.2.0</strong></a></div>
+<ul>
+<li>
+<p>Sakuli UI (beta) for managing and developing Sakuli tests (<a href="https://github.com/ConSol/sakuli-ui/releases/tag/v0.10.0">github.com/ConSol/sakuli-ui</a>)</p>
+<div class="ulist">
+<ul>
+<li>
+<p>CLI option to start <a href="#sakuli-ui">Sakuli UI</a> (<a href="https://github.com/ConSol/sakuli/issues/308">#308</a>)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Add support to <a href="#forwarder-step-case">forward step and case results</a> (<a href="https://github.com/ConSol/sakuli/issues/304">#304</a>)</p>
+</li>
+<li>
+<p>Change Gearman forwarder to use <a href="#forwarder-templates">twig-based templates</a> (<a href="https://github.com/ConSol/sakuli/issues/310">#310</a>)</p>
+</li>
+<li>
+<p>Fix OMD event handler only firing on status changes (<a href="https://github.com/ConSol/sakuli/issues/322">#322</a>)</p>
+</li>
+<li>
+<p>Fix hanging execution on older Internet Explorer versions (<a href="https://github.com/ConSol/sakuli/issues/315">#315</a>)</p>
+</li>
+<li>
+<p>Harmonize CLI starter and Java starter options (<a href="https://github.com/ConSol/sakuli/issues/309">#309</a>)</p>
+</li>
+<li>
+<p>Fix Sahi proxy: Prevent <a href="#sahi-authorization-headers">removal of authorization headers</a> (e.g. Bearer Token) (<a href="https://github.com/ConSol/sakuli/issues/306">#306</a>)</p>
+</li>
+<li>
+<p><a href="#json-forwarder">JSON file output forwarder</a> (<a href="https://github.com/ConSol/sakuli/issues/274">#274</a>)</p>
+</li>
+<li>
+<p>Fix <code>takeScreenshot</code> not overwriting existing error screenshot on Windows (<a href="https://github.com/ConSol/sakuli/issues/303">#303</a>)</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="#Environment.takeScreenshot">Environment.takeScreenshot(filename)</a></p>
+</li>
+<li>
+<p><a href="#Region.takeScreenshot">Region.takeScreenshot(filename)</a></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="#docker-images">Docker images</a>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Added Sakuli UI to Docker images (<a href="https://github.com/ConSol/sakuli/issues/308">#308</a>)</p>
+</li>
+<li>
+<p>Changed default user to 1000 (<a href="https://github.com/ConSol/sakuli/issues/307">#307</a>)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
 </div>
 <div id="version-1.1.0" class="ulist">
 <div class="title"><a href="http://consol.github.io/sakuli/v1.1.0/index.html"><strong>Version 1.1.0</strong></a></div>
@@ -11011,7 +11587,7 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen </a></p>
 <div class="ulist">
 <ul>
 <li>
-<p>Update <a href="https://github.com/ConSol/sakuli/blob/master/docker" target="_blank">Templates</a> with latest optimizations</p>
+<p>Update <a href="https://github.com/ConSol/sakuli/blob/dev/docker" target="_blank">Templates</a> with latest optimizations</p>
 </li>
 <li>
 <p>Add <code>KUBERNETES_RUN_MODE</code> environment variable to have better <a href="#kubernetes-job-config">Job Config</a> support</p>
@@ -11057,13 +11633,13 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen </a></p>
 <p>Update <a href="https://github.com/ConSol/sakuli-examples/blob/master/first-steps/first-steps.md">first steps tutorial</a></p>
 </li>
 <li>
-<p>Add <code><a href="https://github.com/ConSol/sakuli/blob/master/example_test_suites/example_icewm" target="_blank">example_icewm</a></code> for icewm docker containers (<a href="https://github.com/ConSol/sakuli/issues/241">#241</a>)</p>
+<p>Add <code><a href="https://github.com/ConSol/sakuli/blob/dev/example_test_suites/example_icewm" target="_blank">example_icewm</a></code> for icewm docker containers (<a href="https://github.com/ConSol/sakuli/issues/241">#241</a>)</p>
 </li>
 <li>
-<p>Add validation of Sahi logo to <code><a href="https://github.com/ConSol/sakuli/blob/master/example_test_suites/example_icewm" target="_blank">example_icewm</a></code>, <code><a href="https://github.com/ConSol/sakuli/blob/master/example_test_suites/example_xfce" target="_blank">example_xfce</a></code> docker containers</p>
+<p>Add validation of Sahi logo to <code><a href="https://github.com/ConSol/sakuli/blob/dev/example_test_suites/example_icewm" target="_blank">example_icewm</a></code>, <code><a href="https://github.com/ConSol/sakuli/blob/dev/example_test_suites/example_xfce" target="_blank">example_xfce</a></code> docker containers</p>
 </li>
 <li>
-<p>Update <code><a href="https://github.com/ConSol/sakuli/blob/master/example_test_suites/example_windows8" target="_blank">example_windows8</a></code></p>
+<p>Update <code><a href="https://github.com/ConSol/sakuli/blob/dev/example_test_suites/example_windows8" target="_blank">example_windows8</a></code></p>
 </li>
 </ul>
 </div>
@@ -11073,7 +11649,7 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen </a></p>
 <div class="ulist">
 <ul>
 <li>
-<p>Update <a href="https://github.com/ConSol/sakuli/blob/master/README.adoc" target="_blank">README</a> page and change documentation to github-pages/ascii-doc setup, new official Documentation: <a href="http://consol.github.io/sakuli/" class="bare">http://consol.github.io/sakuli/</a> (<a href="https://github.com/ConSol/sakuli/issues/243">#243</a>)</p>
+<p>Update <a href="https://github.com/ConSol/sakuli/blob/dev/README.adoc" target="_blank">README</a> page and change documentation to github-pages/ascii-doc setup, new official Documentation: <a href="http://consol.github.io/sakuli/" class="bare">http://consol.github.io/sakuli/</a> (<a href="https://github.com/ConSol/sakuli/issues/243">#243</a>)</p>
 </li>
 <li>
 <p>Provide the latest documentation link (<a href="https://github.com/ConSol/sakuli/issues/283">#283</a>): <a href="http://consol.github.io/sakuli/latest" class="bare">http://consol.github.io/sakuli/latest</a></p>
@@ -11125,7 +11701,7 @@ Testautomatisierung darf nicht bei Unit-Tests Halt machen </a></p>
 <p>Fix linefeed problem under windows for <a href="#check_mk">Check_MK</a> template engine (<a href="https://github.com/ConSol/sakuli/issues/176">#176</a>)</p>
 </li>
 <li>
-<p>Moved OMD setup Ansible playbooks into separate folder <a href="https://github.com/ConSol/sakuli/blob/master/src/common/src/main/resources/org/sakuli/common/setup/omd" target="_blank">omd</a></p>
+<p>Moved OMD setup Ansible playbooks into separate folder <a href="https://github.com/ConSol/sakuli/blob/dev/src/common/src/main/resources/org/sakuli/common/setup/omd" target="_blank">omd</a></p>
 </li>
 <li>
 <p>Documentation: <a href="#omd-gearman">Gearman forwarder</a>, <a href="#omd-docker">OMD Docker image</a>, <a href="#gearman_proxy">Gearman proxy (optional)</a>, <a href="#screenshot_history">Screenshot history</a>, <a href="#grafana_graphs">Grafana graphs</a>, <a href="#check_mk">Check_MK</a>.</p>
@@ -12135,7 +12711,7 @@ will also be transferred. This will be fixed in the next version</p>
 <h2 id="support"><a class="anchor" href="#support"></a>7. Support</h2>
 <div class="sectionbody">
 <div id="git-edit-section" class="paragraph">
-<p><a href="https://github.com/ConSol/sakuli/blob/master/docs/support.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/master/docs/support.adoc" target="_blank">edit</a></p>
+<p><a href="https://github.com/ConSol/sakuli/blob/dev/docs/support.adoc" target="_blank">view</a> | <a href="https://github.com/ConSol/sakuli/edit/dev/docs/support.adoc" target="_blank">edit</a></p>
 </div>
 <div class="paragraph">
 <p>You want to use Sakuli in your project and need on-site help from our Sakuli experts? You&#8217;ve got a specific
@@ -12217,8 +12793,8 @@ Website: <a href="http://www.consol.de">www.consol.de</a></p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version v1.1.0<br>
-Last updated 2018-06-14 12:04:14 CEST
+Version v1.2.0<br>
+Last updated 2018-06-27 12:09:30 CEST
 </div>
 </div>
 <!--
