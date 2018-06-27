@@ -3,7 +3,7 @@
 FROM consol/centos-xfce-vnc:1.3.0
 
 MAINTAINER Tobias Schneck "tobias.schneck@consol.de"
-ENV REFRESHED_AT 2017-12-18
+ENV REFRESHED_AT 2018-06-27
 
 LABEL io.k8s.description="Sakuli headless testing container (maven java tests) with Xfce window manager, firefox and chromium" \
       io.k8s.display-name="Sakuli testing container (maven java tests) based on Centos and Xfce" \
@@ -45,7 +45,7 @@ ENV MAVEN_HOME $HOME/apps/maven
 RUN $INST_SCRIPTS/maven.sh
 
 ### Install Sakuli
-ARG SAKULI_VERSION=1.2.0-SNAPSHOT
+ARG SAKULI_VERSION=1.3.0-SNAPSHOT
 # SAKULI_UMASK: Testsuite folder default permissions after text execution
 # SAKULI_TEST_SUITE Define Sakuli default startup testsuite
 ENV SAKULI_UMASK=0000 SAKULI_TEST_SUITE=/opt/maven

@@ -51,7 +51,7 @@ Each Sakuli docker image is installed with the following components:
 * http://sahi.co.in[*Sahi OS 5*]
 * https://github.com/ConSol/sakuli[*Sakuli*] in the latest stable version
 
-Since version `1.1.0` all containers run as non-root user.
+Since version `1.1.0` all containers run as non-root user (UID 1000).
 The running containers are accessible with VNC (default password: `sakuli`) by:
 
 * *VNC viewer*: `DOCKER_HOST:5901`
