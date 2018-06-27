@@ -1,6 +1,6 @@
 image:./docs/images/sakuli_logo_small.png[sakuli-logo]
 
-:sakuli-latest-version: v1.2.0
+:sakuli-latest-version: v1.3.0-SNAPSHOT
 :sakuli-doc-base-url: http://consol.github.io/sakuli
 :sakuli-doc-url: {sakuli-doc-base-url}/latest
 
