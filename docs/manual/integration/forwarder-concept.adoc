@@ -4,7 +4,7 @@
 [[forwarder]]
 ==== Forwarder Concept
 [#git-edit-section]
-:page-path: docs/manual/integration/monitoring/advanced-topics/forwarder-templates.adoc
+:page-path: docs/manual/integration/forwarder-concept.adoc
 git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 After a test execution has been completed Sakuli can process or better *forward* the test results to a certain third party system, e.g. a monitoring system, file output or other third-party systems. The processing is done by a so called Sakuli Forwarder.
@@ -12,6 +12,9 @@ After a test execution has been completed Sakuli can process or better *forward*
 Feel free to develop another forwarder or ask us to do this. Currently Sakuli is providing forwarder for following output formats:
 
 include::forwarder-overview.adoc[]
+
+[[forwarder-step-case]]
+===== Step / Case Forwarders
 
 Usually the forwarder is invoked after the whole test suite is completed and the result of the test suite is processed.
 With release `1.2` a new forwarder feature has been introduced, which allows to process the result of not only whole test suites, but also of test cases and test steps, which have been already executed. This behaviour can be controlled by the test developer, who can specify within the test case resp. test step, whether the results shall be immediately processed after the execution of the test case resp. step.
@@ -28,6 +31,7 @@ To forward the results of a certain test step, the forward flag in the endOfStep
     testCase.endOfStep("Calculation",30, 50, true);
 ----
 
+[[forwarder-templates]]
 ==== Forwarder Templates
 With release `1.1` Sakuli introduced the http://jtwig.org/[Jtwig] template engine, which is used for generating the output of the Sakuli test suite for certain forwarders. With release `1.2` in addition to link:checkmk.adoc[Check_MK Forwarder] also link:omd-gearman.adoc[Gearman Forwarder] supports Jtwig templates.
 
