@@ -100,8 +100,4 @@ public class TestCaseStepHelper {
         return sb.toString();
     }
 
-    public static String checkWarningTime(int warningTime, String stepName) {
-        return TestDataEntityHelper.checkWarningAndCriticalTime(warningTime, 0,
-                String.format("TestCaseStep [name = %s]", stepName));
-    }
 }

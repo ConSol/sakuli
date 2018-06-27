@@ -1,0 +1,8 @@
+{% set testDataEntityType = getTestDataEntityType(testDataEntity) %}
+{% if ('TestSuite' == testDataEntityType) %}
+    {% include 'detailed_summary_suite.twig' with { testsuite: testDataEntity} %}
+{% elseif ('TestCase' == testDataEntityType) %}
+    {% include 'detailed_summary_case.twig' with { testCase: testDataEntity } %}
+{% elseif ('TestCaseStep' == testDataEntityType) %}
+    {% include 'detailed_summary_step.twig' with { testStep: testDataEntity } %}
+{% endif %}

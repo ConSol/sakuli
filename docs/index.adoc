@@ -82,6 +82,9 @@ include::manual/execution/containerized/docker-compose.adoc[]
 include::manual/execution/containerized/kubernetes.adoc[]
 include::manual/execution/containerized/openshift.adoc[]
 
+//Sakuli UI
+include::manual/ui/sakuli-ui.adoc[]
+
 //Testdefinition
 include::manual/testdefinition/testdefinition.adoc[]
 include::manual/testdefinition/test-in-javascript.adoc[]
@@ -115,7 +118,10 @@ include::manual/testdefinition/advanced-topics/sahi-settings-browser-selection.a
 include::manual/testdefinition/advanced-topics/sahi-settings-browser-config.adoc[]
 include::manual/testdefinition/advanced-topics/sahi-settings-proxy.adoc[]
 include::manual/testdefinition/advanced-topics/sahi-https.adoc[]
+
+==== Sahi known issues
 include::manual/testdefinition/advanced-topics/sahi-webpack.adoc[]
+include::manual/testdefinition/advanced-topics/sahi-authorization-header.adoc[]
 
 ==== Sikuli settings
 include::manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc[]
@@ -123,7 +129,11 @@ include::manual/testdefinition/advanced-topics/sikuli-settings-highlighting.adoc
 include::manual/testdefinition/troubleshooting.adoc[]
 
 //== Integration documentation
-include::manual/integration/integration.adoc[]
+[[integration_in_other_tools]]
+== Integration in other Tools
+include::manual/integration/forwarder-concept.adoc[]
+include::manual/integration/sql-database.adoc[]
+include::manual/integration/json-forwarder.adoc[]
 
 [[monitoring-integration]]
 === Monitoring integration
@@ -135,20 +145,17 @@ include::manual/integration/monitoring/checkmk.adoc[]
 include::manual/integration/monitoring/screenshot_history.adoc[]
 include::manual/integration/monitoring/graph_grafana.adoc[]
 include::manual/integration/monitoring/graph_pnp4nagios.adoc[]
-include::manual/integration/monitoring/forwarder-templates.adoc[]
-
 
 [[continuous_integration]]
 === Continuous Integration
 include::manual/integration/ci/jenkins.adoc[]
-include::manual/integration/sql-database.adoc[]
 
 //== Developer Documentation
 include::manual/development/README.adoc[]
 include::manual/development/installation-developers.adoc[]
-include::manual/development/how-to-release.adoc[]
 include::manual/development/maven-aspects.adoc[]
 include::manual/development/ascii-doc-aspects.adoc[]
+include::manual/development/how-to-release.adoc[]
 include::manual/development/linux-native-libs/linux-sikuli-supplemental-pack.adoc[]
 
 include::example-projects.adoc[]

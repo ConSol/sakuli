@@ -20,9 +20,9 @@ package org.sakuli.exceptions;
 
 /**
  * @author tschneck
- *         Date: 06.08.13
+ * Date: 06.08.13
  */
-public class SakuliCipherException extends SakuliException {
+public class SakuliCipherException extends SakuliCheckedException {
 
     public String cipherLog;
 
@@ -39,22 +39,22 @@ public class SakuliCipherException extends SakuliException {
     }
 
     /**
-     * @param e any {@link Throwable}
+     * @param e any {@link Exception}
      */
-    public SakuliCipherException(Throwable e, String cipherLog) {
+    public SakuliCipherException(Exception e, String cipherLog) {
         super(e);
         this.cipherLog = cipherLog;
     }
 
     /**
-     * creates a exception with the main message and adds the {@link Throwable}
+     * creates a exception with the main message and adds the {@link Exception}
      *
      * @param mainMessage
-     * @param suppressedThrowable
+     * @param suppressedException
      */
-    public SakuliCipherException(String mainMessage, String cipherLog, Throwable suppressedThrowable) {
+    public SakuliCipherException(String mainMessage, String cipherLog, Exception suppressedException) {
         super(mainMessage);
-        this.addSuppressed(suppressedThrowable);
+        this.addSuppressed(suppressedException);
         this.cipherLog = cipherLog;
     }
 

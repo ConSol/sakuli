@@ -19,7 +19,7 @@
 package org.sakuli.integration.dao;
 
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.integration.builder.TestSuiteBuilder;
 import org.sakuli.services.forwarder.database.dao.impl.DaoTestSuiteImpl;
 import org.testng.Assert;
@@ -32,13 +32,13 @@ import static org.sakuli.integration.IntegrationTest.GROUP;
 
 /**
  * @author tschneck
- *         Date: 25.07.13
+ * Date: 25.07.13
  */
 @Test(groups = GROUP)
 public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestSuiteImpl> {
 
     @Override
-    protected DaoTestSuiteImpl createTestling() throws SakuliException {
+    protected DaoTestSuiteImpl createTestling() throws SakuliCheckedException {
         return new DaoTestSuiteImpl(dataSource);
     }
 
@@ -61,7 +61,7 @@ public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestS
     }
 
     @Test
-    public void testSaveTestSuiteToSahiJobs() throws Throwable {
+    public void testSaveTestSuiteToSahiJobs() throws Exception {
         String guid = "JUNIT_123" + TestSuite.GUID_DATE_FORMATE.format(new Date());
         when(testSuiteMock.getGuid()).thenReturn(guid);
         Assert.assertTrue(testSuiteMock.getGuid().contains("JUNIT_123"));
@@ -72,8 +72,8 @@ public class DaoTestSuiteImplIntegrationTest extends DaoIntegrationTest<DaoTestS
     }
 
     @Test
-    public void testGetCountOfSahiJobs() throws Throwable {
-        Assert.assertNotNull(testling.getCountOfSahiJobs());
+    public void testGetCountOfSahiJobs() throws Exception {
+        Assert.assertTrue(testling.getCountOfSahiJobs() == 0);
 
     }
 }

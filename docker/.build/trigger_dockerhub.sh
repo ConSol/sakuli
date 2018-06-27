@@ -4,6 +4,7 @@ echo "trigger dockerhub builds for Tag $GIT_TAG:"
 
 URLS=(
     "https://registry.hub.docker.com/u/consol/sakuli-ubuntu-xfce/trigger/76b9b474-97e7-472a-a807-fa1829ef4b93/"
+    "https://registry.hub.docker.com/u/consol/sakuli-ui/trigger/afb8b1c4-66a9-43dd-8787-e30f1007e513/"
     "https://registry.hub.docker.com/u/consol/omd-labs-ubuntu-sakuli/trigger/6cdc0a55-5926-4fd7-81ce-d97e97aee63c/"
     "https://registry.hub.docker.com/u/consol/sakuli-ubuntu-xfce-java/trigger/62342ff8-d1cb-4111-b298-e43ffdf3d4f7/"
     "https://registry.hub.docker.com/u/consol/sakuli-ubuntu-icewm/trigger/453572ea-3272-46b6-a8fb-9ef95c4e655d/"

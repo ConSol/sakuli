@@ -18,9 +18,11 @@
 
 package org.sakuli.services.forwarder.configuration;
 
-import org.jtwig.functions.FunctionRequest;
 import org.sakuli.datamodel.state.SakuliState;
 import org.sakuli.services.forwarder.OutputState;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Custom JtwigFunction for retrieving the OutputState for a provided SakuliState.
@@ -35,10 +37,18 @@ public class GetOutputStateFunction extends AbstractFunction {
     }
 
     @Override
-    public Object execute(FunctionRequest request) {
-        verifyFunctionArguments(request, 1, SakuliState.class);
-        SakuliState sakuliState = (SakuliState) request.getArguments().get(0);
-        return OutputState.lookupSakuliState(sakuliState);
+    protected int getExpectedNumberOfArguments() {
+        return 1;
+    }
+
+    @Override
+    protected List<Class> getExpectedArgumentTypes() {
+        return Arrays.asList(SakuliState.class);
+    }
+
+    @Override
+    protected Object execute(List<Object> arguments) {
+        return OutputState.lookupSakuliState((SakuliState) arguments.get(0));
     }
 
 }

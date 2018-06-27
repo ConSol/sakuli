@@ -18,7 +18,7 @@
 
 package org.sakuli.integration.dao;
 
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.integration.builder.TestCaseBuilder;
 import org.sakuli.services.forwarder.database.dao.impl.DaoTestCaseImpl;
 import org.testng.Assert;
@@ -28,19 +28,19 @@ import static org.sakuli.integration.IntegrationTest.GROUP;
 
 /**
  * @author tschneck
- *         Date: 25.07.13
+ * Date: 25.07.13
  */
 @Test(groups = GROUP)
 public class DaoTestCaseImplIntegrationTest extends DaoIntegrationTest<DaoTestCaseImpl> {
 
 
     @Override
-    protected DaoTestCaseImpl createTestling() throws SakuliException {
+    protected DaoTestCaseImpl createTestling() throws SakuliCheckedException {
         return new DaoTestCaseImpl(dataSource);
     }
 
     @Test
-    public void testGetCountOfSahiCases() throws Throwable {
+    public void testGetCountOfSahiCases() throws Exception {
         int countOfSahiCases = testling.getCountOfSahiCases();
         Assert.assertTrue(countOfSahiCases >= 0);
 

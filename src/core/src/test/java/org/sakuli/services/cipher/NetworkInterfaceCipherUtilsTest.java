@@ -30,7 +30,7 @@ import java.io.IOException;
 
 /**
  * @author tschneck
- *         Date: 06.08.13
+ * Date: 06.08.13
  */
 public class NetworkInterfaceCipherUtilsTest {
 
@@ -48,7 +48,7 @@ public class NetworkInterfaceCipherUtilsTest {
     }
 
     @BeforeMethod
-    public void setUp() throws Throwable {
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         props = new CipherProperties();
         props.setEncryptionInterfaceAutodetect(true);
@@ -57,13 +57,13 @@ public class NetworkInterfaceCipherUtilsTest {
     }
 
     @Test(dataProvider = "secrects")
-    public void testEncrypt(String testSecrect) throws Throwable {
+    public void testEncrypt(String testSecrect) throws Exception {
         //check if MAC-Adrress is reachable
         Assert.assertNotNull(testling.encrypt(testSecrect));
     }
 
     @Test(dataProvider = "secrects")
-    public void testEncryptAndDecrypt(String testSecrect) throws Throwable {
+    public void testEncryptAndDecrypt(String testSecrect) throws Exception {
         String encrypted = testling.encrypt(testSecrect);
         final NetworkInterfaceCipher cipher2 = new NetworkInterfaceCipher(props);
         cipher2.scanNetworkInterfaces();
@@ -75,7 +75,7 @@ public class NetworkInterfaceCipherUtilsTest {
     }
 
     @Test(expectedExceptions = SakuliCipherException.class)
-    public void testNotEncryptedException() throws Throwable {
+    public void testNotEncryptedException() throws Exception {
         try {
             testling.decrypt("nonEncrypted");
         } catch (SakuliCipherException e) {
@@ -87,7 +87,7 @@ public class NetworkInterfaceCipherUtilsTest {
     }
 
     @Test(expectedExceptions = SakuliCipherException.class)
-    public void testEmptyTestException() throws Throwable {
+    public void testEmptyTestException() throws Exception {
         try {
             testling.decrypt("");
         } catch (SakuliCipherException e) {
@@ -99,7 +99,7 @@ public class NetworkInterfaceCipherUtilsTest {
     }
 
     @Test
-    public void testChipherException() throws Throwable {
+    public void testChipherException() throws Exception {
         try {
             CipherProperties props = new CipherProperties();
             props.setEncryptionInterfaceAutodetect(false);

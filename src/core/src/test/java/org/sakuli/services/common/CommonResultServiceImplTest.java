@@ -19,7 +19,6 @@
 package org.sakuli.services.common;
 
 import org.mockito.InjectMocks;
-import org.mockito.Spy;
 import org.sakuli.LoggerTest;
 import org.sakuli.builder.TestCaseExampleBuilder;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
@@ -28,11 +27,9 @@ import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.util.ReflectionTestUtils;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -40,11 +37,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static org.mockito.Mockito.doNothing;
-
 public class CommonResultServiceImplTest extends LoggerTest {
 
-    @Spy
     @InjectMocks
     private CommonResultServiceImpl testling;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -59,28 +53,21 @@ public class CommonResultServiceImplTest extends LoggerTest {
         };
     }
 
-    @Override
-    @BeforeMethod
-    public void init() {
-        super.init();
-        doNothing().when(testling).cleanUp();
-    }
-
     @Test(dataProvider = "states")
     public void testSaveAllResults(TestSuiteState testSuiteState, TestCaseState testCaseState, String stateOutputRegex) throws Exception {
         TestCaseStepState stepState = TestCaseStepState.WARNING;
         TestSuite testSuite = new TestSuiteExampleBuilder()
                 .withId("LOG_TEST_SUITE").withState(testSuiteState)
-                .withException(testSuiteState.isError() ? new SakuliException("TEST") : null)
+                .withException(testSuiteState.isError() ? new SakuliCheckedException("TEST") : null)
                 .withTestCases(Collections.singletonList(new TestCaseExampleBuilder()
-                                .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder().withState(stepState).buildExample()))
-                                .withState(testCaseState)
-                                .buildExample()
+                        .withTestCaseSteps(Collections.singletonList(new TestCaseStepExampleBuilder()
+                                .withState(stepState).buildExample()))
+                        .withState(testCaseState)
+                        .buildExample()
                 ))
                 .buildExample();
-        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
         Path logfile = Paths.get(properties.getLogFile());
-        testling.saveAllResults();
+        testling.tearDown(Optional.of(testSuite));
         String lastLineOfLogFile = getLastLineOfLogFile(logfile, testSuiteState.isError() ? 42 : 39);
         List<String> regExes = getValidationExpressions(testSuiteState, testCaseState, stepState, stateOutputRegex, "TEST");
 
@@ -102,7 +89,6 @@ public class CommonResultServiceImplTest extends LoggerTest {
 
     private List<String> getValidationExpressions(TestSuiteState testSuiteState, TestCaseState testCaseState, TestCaseStepState testCaseStepState, String stateOutputRegex, String errorMessage) {
         return Arrays.asList(
-                "INFO.*",
                 "=========== RESULT of SAKULI Testsuite \"LOG_TEST_SUITE\" - " + testSuiteState + " =================",
                 "test suite id: LOG_TEST_SUITE",
                 "guid: LOG_TEST_SUITE.*",
@@ -138,6 +124,7 @@ public class CommonResultServiceImplTest extends LoggerTest {
                 "\t\tdb primary key: -1*",
                 "\t\tduration: 3.0 sec.",
                 "\t\twarning time: 4 sec.",
+                "\t\tcritical time: 8 sec.",
                 "\t\tstart time: .*",
                 "\t\tend time: .*",
                 "===========  SAKULI Testsuite \"LOG_TEST_SUITE\" execution FINISHED - " + testSuiteState + " ======================",

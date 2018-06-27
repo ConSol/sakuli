@@ -42,7 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.sakuli.AbstractLogAwareTest.getResource;
 import static org.sakuli.BaseTest.assertRegExMatch;

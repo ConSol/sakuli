@@ -29,6 +29,17 @@
       copy:
         src: ./etc/nagios/conf.d/sakuli_nagios_templates.cfg
         dest: "{{ OMD_ROOT }}/etc/core/conf.d/"
+    - name: Enable obsessing
+      lineinfile: 
+        path: "{{ OMD_ROOT }}/etc/nagios/nagios.d/obsess.cfg"
+        regexp: '^obsess_over_services=\d$'
+        line: 'obsess_over_services=1'
+    - name: Change obsessing command
+      lineinfile: 
+        path: "{{ OMD_ROOT }}/etc/nagios/nagios.d/obsess.cfg"
+        regexp: '#ocsp_command=somecommand$'
+        line: 'ocsp_command=sakuli_screenshot_eventhandler'
+
     - name: Escape HTML tags
       lineinfile:
         path: "{{ item }}"

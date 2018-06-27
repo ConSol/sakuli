@@ -23,27 +23,26 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.sakuli.BaseTest;
+import org.sakuli.datamodel.TestAction;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
+import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseStepState;
 import org.sakuli.exceptions.NonScreenshotException;
 import org.sakuli.exceptions.SakuliActionException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliValidationException;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 
@@ -57,19 +56,23 @@ public class TestCaseActionTest extends BaseTest {
     private TestSuite testSuiteMock;
     @Mock
     private SakuliExceptionHandler exceptionHandlerMock;
-    private TestCase sample = new TestCase("testling", "1234_");
+    @Mock
+    private SakuliProperties sakuliProperties;
+    private TestCase sample;
     private Map<String, TestCase> testCases;
 
-
     @BeforeMethod
-    public void initMocks() throws Exception {
+    public void initMocks() {
         MockitoAnnotations.initMocks(this);
+        sample = new TestCase("testling", "1234_");
         testCases = new HashMap<>();
         testCases.put(sample.getId(), sample);
         reset(loaderMock);
         when(loaderMock.getTestSuite()).thenReturn(testSuiteMock);
         when(loaderMock.getCurrentTestCase()).thenReturn(sample);
+        when(loaderMock.getCurrentTestCaseStep()).thenCallRealMethod();
         when(loaderMock.getExceptionHandler()).thenReturn(exceptionHandlerMock);
+        when(loaderMock.getSakuliProperties()).thenReturn(sakuliProperties);
         when(testSuiteMock.getId()).thenReturn("");
         when(testSuiteMock.getTestCases()).thenReturn(testCases);
         when(testSuiteMock.getTestCase(sample.getId())).thenReturn(sample);
@@ -77,23 +80,26 @@ public class TestCaseActionTest extends BaseTest {
         when(testSuiteMock.getTestSuiteFolder()).thenReturn(Paths.get(TEST_FOLDER_PATH));
     }
 
-
-    @Test
-    public void testGetTestCaseId() throws Exception {
-        Assert.assertEquals(testling.getIdFromPath(
-                "testSuiteFolder"
+    @DataProvider
+    public Object[][] testGetTestCaseIdDP() {
+        return new Object[][]{
+                {"testSuiteFolder"
                         + File.separator
                         + "1234_"
                         + File.separator
-                        + "_tc.js"
-        ), sample.getId());
-        Assert.assertEquals(sample.getId(), testling.getIdFromPath(
-                "1234_" + File.separator + "_tc.js"));
+                        + "_tc.js", "1234_"},
+                {"1234_" + File.separator + "_tc.js", "1234_"},
+        };
+    }
 
+    @Test(dataProvider = "testGetTestCaseIdDP")
+    public void testGetTestCaseId(String pathToTestCaseFile, String expectedTestCaseId) throws Exception {
+        assertEquals(testling.getIdFromPath(pathToTestCaseFile), expectedTestCaseId);
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "getIdFromPath"}});
     }
 
     @Test
-    public void testSaveTestCaseResult() throws Throwable {
+    public void testSaveTestCaseResult() throws Exception {
         ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
 
         Date startDate = new Date(new Date().getTime() - 8000);
@@ -107,19 +113,19 @@ public class TestCaseActionTest extends BaseTest {
                 "" + startDate.getTime(),
                 "" + stopDate.getTime(),
                 url,
-                browser
+                browser,
+                false
         );
 
         assertEquals(startDate, testSuiteMock.getTestCases().get(sample.getId()).getStartDate());
         assertEquals(stopDate, testSuiteMock.getTestCases().get(sample.getId()).getStopDate());
         assertEquals(browser, argument.getValue());
         assertEquals(url, testSuiteMock.getTestCases().get(sample.getId()).getLastURL());
-
-
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "saveResult"}});
     }
 
     @Test
-    public void testAddTestCaseStep() throws Throwable {
+    public void testAddTestCaseStep() throws Exception {
         sample.setWarningTime(0);
         sample.setCriticalTime(0);
 
@@ -128,30 +134,35 @@ public class TestCaseActionTest extends BaseTest {
                 "step for JUnit",
                 "" + (now - 3000),
                 "" + now,
-                2 //warning
+                2,
+                5,
+                false
         );
         TestCaseStep step = testSuiteMock.getTestCases().get(sample.getId()).getSteps().get(0);
         assertNotNull(step);
         assertEquals(step.getName(), "step_for_JUnit");
         assertEquals(step.getDuration(), 3.0f, "duration is not correct");
         assertEquals(step.getState(), TestCaseStepState.WARNING);
+        verifyTestStepHasActions(step, new Object[][]{{"TestCaseAction", "addTestCaseStep"}});
 
         testling.addTestCaseStep(
                 "step2 for JUnit",
                 "" + (now + 300),
                 "" + (now + 4300),
-                5 //no warning
+                5,
+                5,
+                false
         );
         TestCaseStep step2 = testSuiteMock.getTestCases().get(sample.getId()).getSteps().get(1);
         assertNotNull(step2);
         assertEquals(step2.getName(), "step2_for_JUnit");
         assertEquals(step2.getDuration(), 4.0f, "duration is not correct");
         assertEquals(step2.getState(), TestCaseStepState.OK);
+        verifyTestStepHasActions(step2, new Object[][]{{"TestCaseAction", "addTestCaseStep"}});
     }
 
     @Test
-    public void testAddTestCaseStepWithAlreadyInitializedStep() throws Throwable {
-        when(loaderMock.getCurrentTestCase()).thenReturn(sample);
+    public void testAddTestCaseStepWithAlreadyInitializedStep() throws Exception {
         sample.setWarningTime(0);
         sample.setCriticalTime(0);
         TestCaseStep predefinedStep = new TestCaseStep();
@@ -170,14 +181,19 @@ public class TestCaseActionTest extends BaseTest {
                 "step for JUnit",
                 "" + (currentTime - 10000),
                 "" + currentTime,
-                9 //warning
+                9,
+                10,
+                false
         );
 
-        assertEquals(sample.getSteps().size(), 1);
-        assertNotNull(step);
-        assertEquals(step.getName(), "step_for_JUnit");
-        assertEquals(step.getDuration(), 10.0f, "duration is not correct");
-        assertEquals(step.getState(), TestCaseStepState.WARNING);
+        List<TestCaseStep> testCaseSteps = sample.getSteps();
+        assertEquals(testCaseSteps.size(), 1);
+        TestCaseStep testCaseStep = testCaseSteps.get(0);
+        assertNotNull(testCaseStep);
+        assertEquals(testCaseStep.getName(), "step_for_JUnit");
+        assertEquals(testCaseStep.getDuration(), 10.0f, "duration is not correct");
+        assertEquals(testCaseStep.getState(), TestCaseStepState.WARNING);
+        verifyTestStepHasActions(testCaseStep, new Object[][]{{"TestCaseAction", "addTestCaseStep"}});
     }
 
     @Test
@@ -186,36 +202,42 @@ public class TestCaseActionTest extends BaseTest {
         testling.init(tcID, 4, 5, ".");
 
         verify(loaderMock).init(anyString(), anyString());
-        Assert.assertEquals(testSuiteMock.getTestCase(tcID).getWarningTime(), 4);
-        Assert.assertEquals(testSuiteMock.getTestCase(tcID).getCriticalTime(), 5);
+        assertEquals(testSuiteMock.getTestCase(tcID).getWarningTime(), 4);
+        assertEquals(testSuiteMock.getTestCase(tcID).getCriticalTime(), 5);
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "init"}});
     }
 
     @Test
-    public void testInitTestCaseNegativTimes() throws Exception {
+    public void testInitTestCaseWithCustomID() throws Exception {
+
         String tcID = sample.getId();
-        testling.init(tcID, -4, -5, ".");
-        verify(exceptionHandlerMock, times(1)).handleException(anyString(), anyBoolean());
+        String newId = "new-id";
+        testling.initWithCaseID(tcID, newId, 4, 5, ".");
+
+        verify(loaderMock).init(eq(tcID), anyString());
+        assertEquals(sample.getId(), newId);
+        assertEquals(sample.getWarningTime(), 4);
+        assertEquals(sample.getCriticalTime(), 5);
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "initWithCaseID"}});
     }
 
-    @Test
-    public void testInitTestCaseNonsensTimes() throws Exception {
-        String tcID = sample.getId();
-        testling.init(tcID, 5, 4, ".");
-        verify(exceptionHandlerMock, times(1)).handleException(anyString(), anyBoolean());
+    @DataProvider
+    public Object[][] testInitTestCaseExceptionHandlingDP() {
+        return new Object[][]{
+                {-4, -5, true}, //negativ times
+                {5, 4, true},   //warning time bigger than critical time
+                {0, 0, false},   //zero times
+                {4, 5, false},   //zero times
+                {0, -8, true},  //negativ critical time
+        };
     }
 
-    @Test
-    public void testInitZeroTimes() throws Exception {
+    @Test(dataProvider = "testInitTestCaseExceptionHandlingDP")
+    public void testInitTestCaseExceptionHandling(int warningTime, int criticalTime, boolean expectedExceptionHandling) throws Exception {
         String tcID = sample.getId();
-        testling.init(tcID, 0, 0, ".");
-        verify(exceptionHandlerMock, times(0)).handleException(anyString(), anyBoolean());
-    }
-
-    @Test
-    public void testInitOnlyNegativCriticalTimes() throws Exception {
-        String tcID = sample.getId();
-        testling.init(tcID, 0, -8, ".");
-        verify(exceptionHandlerMock, times(1)).handleException(anyString(), anyBoolean());
+        testling.init(tcID, warningTime, criticalTime, ".");
+        verify(exceptionHandlerMock, times(expectedExceptionHandling ? 1 : 0)).handleException(anyString(), anyBoolean());
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "init"}});
     }
 
     @Test
@@ -233,12 +255,14 @@ public class TestCaseActionTest extends BaseTest {
 
         assertEquals(testling.getTestCaseFolderPath(),
                 Paths.get(TEST_FOLDER_PATH + File.separator + folderName).toAbsolutePath().toString());
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "getTestCaseFolderPath"}});
     }
 
     @Test
     public void testGetTestSuiteFolderPath() throws Exception {
         String expectedPath = Paths.get(TEST_FOLDER_PATH).toAbsolutePath().toString();
         assertEquals(testling.getTestSuiteFolderPath(), expectedPath);
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "getTestSuiteFolderPath"}});
     }
 
     @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
@@ -246,12 +270,13 @@ public class TestCaseActionTest extends BaseTest {
     public void testThrowExceptionNoScreenshot() throws Exception {
         String exMessage = "TEST";
         testling.throwException(exMessage, false);
-        ArgumentCaptor<Throwable> ac = ArgumentCaptor.forClass(Throwable.class);
+        ArgumentCaptor<Exception> ac = ArgumentCaptor.forClass(Exception.class);
         verify(exceptionHandlerMock).handleException(ac.capture());
         assertEquals(ac.getValue().getMessage(), exMessage);
         assertTrue(ac.getValue() instanceof SakuliValidationException);
         assertTrue(ac.getValue() instanceof NonScreenshotException);
         assertFalse(ac.getValue() instanceof SakuliActionException);
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "throwException"}});
     }
 
     @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
@@ -259,12 +284,13 @@ public class TestCaseActionTest extends BaseTest {
     public void testThrowExceptionWithScreenshot() throws Exception {
         String exMessage = "TEST";
         testling.throwException(exMessage, true);
-        ArgumentCaptor<Throwable> ac = ArgumentCaptor.forClass(Throwable.class);
+        ArgumentCaptor<Exception> ac = ArgumentCaptor.forClass(Exception.class);
         verify(exceptionHandlerMock).handleException(ac.capture());
         assertEquals(ac.getValue().getMessage(), exMessage);
         assertFalse(ac.getValue() instanceof SakuliValidationException);
         assertFalse(ac.getValue() instanceof NonScreenshotException);
         assertTrue(ac.getValue() instanceof SakuliActionException);
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "throwException"}});
     }
 
     @Test
@@ -273,6 +299,7 @@ public class TestCaseActionTest extends BaseTest {
         testling.addImagePathsAsString("/home");
         verify(loaderMock).addImagePaths((Path[]) path.capture());
         assertEquals(path.getValue().toString(), Paths.get("/home").normalize().toString());
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "addImagePaths"}});
     }
 
     @Test
@@ -284,5 +311,26 @@ public class TestCaseActionTest extends BaseTest {
         testling.addImagePathsAsString(picfolderName);
         verify(loaderMock).addImagePaths((Path[]) path.capture());
         assertEquals(path.getValue().toString(), currenPath.toString() + File.separator + picfolderName);
+        verifyTestCaseHasActions(loaderMock.getCurrentTestCase(), new Object[][]{{"TestCaseAction", "addImagePaths"}});
     }
+
+    private void verifyTestStepHasActions(TestCaseStep testCaseStepToVerify, Object[][] expectedActions) {
+        verifyTestActions(testCaseStepToVerify.getTestActions(), expectedActions);
+    }
+
+    private void verifyTestCaseHasActions(TestCase testCaseToVerify, Object[][] expectedActions) {
+        verifyTestActions(testCaseToVerify.getTestActions(), expectedActions);
+    }
+
+    private void verifyTestActions(List<TestAction> testActionsToVerify, Object[][] expectedActions) {
+        assertEquals(testActionsToVerify.size(), expectedActions.length);
+        for (int i = 0; i < expectedActions.length; i++) {
+            Object[] expectedAction = expectedActions[i];
+            TestAction testAction = testActionsToVerify.get(i);
+            assertEquals(testAction.getObject(), expectedAction[0]);
+            assertEquals(testAction.getMethod(), expectedAction[1]);
+
+        }
+    }
+
 }

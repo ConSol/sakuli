@@ -1,0 +1,11 @@
+{% set testScreenshotDiv = extractScreenshot(testDataEntity) %}
+{% if (testScreenshotDiv != null) %}
+    <div id="{{ testScreenshotDiv.id }}">
+        <div id="openModal_{{ testScreenshotDiv.id }}" class="modalDialog">
+            <a href="#close" title="Close" class="close">Close X</a>
+            <a href="#openModal_{{ testScreenshotDiv.id }}">
+                <img class="screenshot" src="data:image/{{ testScreenshotDiv.format }};base64,{{ testScreenshotDiv.base64screenshot }}" >
+            </a>
+        </div>
+    </div>
+{% endif %}

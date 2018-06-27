@@ -19,7 +19,9 @@
 package org.sakuli.services.forwarder.configuration;
 
 import org.apache.commons.lang.StringUtils;
-import org.jtwig.functions.FunctionRequest;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Custom JtwigFunction for checking whether the provided string is blank.
@@ -34,10 +36,18 @@ public class IsBlankFunction extends AbstractFunction {
     }
 
     @Override
-    public Object execute(FunctionRequest request) {
-        verifyFunctionArguments(request, 1, String.class);
-        String toCheck = (String) request.getArguments().get(0);
-        return StringUtils.isBlank(toCheck);
+    protected int getExpectedNumberOfArguments() {
+        return 1;
+    }
+
+    @Override
+    protected List<Class> getExpectedArgumentTypes() {
+        return Arrays.asList(String.class);
+    }
+
+    @Override
+    protected Object execute(List<Object> arguments) {
+        return StringUtils.isBlank((String) arguments.get(0));
     }
 
 }

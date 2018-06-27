@@ -20,7 +20,7 @@ package org.sakuli.starter.helper;
 
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,18 +35,18 @@ public class ConnectionTester {
 
     static Logger logger = LoggerFactory.getLogger(ConnectionTester.class);
 
-    public static void checkTestCaseInitURL(TestSuite testSuite) throws SakuliException {
+    public static void checkTestCaseInitURL(TestSuite testSuite) throws SakuliCheckedException {
         if (testSuite != null) {
             if (testSuite.getTestCases() != null) {
                 for (TestCase tc : testSuite.getTestCases().values()) {
                     pingURL(tc.getStartUrl());
                 }
             }
-            throw new SakuliException(String.format("no test cases for test suite '%s' have been loaded! Check the configuration in the file '%s'",
+            throw new SakuliCheckedException(String.format("no test cases for test suite '%s' have been loaded! Check the configuration in the file '%s'",
                     testSuite.getId(),
                     testSuite.getAbsolutePathOfTestSuiteFile()));
         }
-        throw new SakuliException("The test suite has not be configured correctly, please check your settings!");
+        throw new SakuliCheckedException("The test suite has not be configured correctly, please check your settings!");
     }
 
     //TODO TS finalize

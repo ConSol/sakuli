@@ -17,18 +17,19 @@
   ~ limitations under the License.
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>1.1.0</version>
+        <version>1.2.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>core</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <name>core</name>
 
     <description>core module for all sakuli functionality</description>
@@ -90,6 +91,14 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>test-jar</id>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- unpack sahi to include into the zip assembly -->
@@ -109,31 +118,9 @@
                                 <artifactItem>
                                     <groupId>net.sf.sahi</groupId>
                                     <artifactId>sahi-install</artifactId>
-                                    <version>${sahi.version}</version>
+                                    <version>${dependencies.sahi.version}</version>
                                     <type>zip</type>
                                 </artifactItem>
-                                <artifactItem>
-                                    <groupId>org.sakuli</groupId>
-                                    <artifactId>common</artifactId>
-                                    <version>${project.version}</version>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <!--Unpacks the config resources from the common module, e.g. for the twig templates,
-                    to be able to load it via java.nio.Path method in unit tests-->
-                    <execution>
-                        <id>unpack-test-resources</id>
-                        <phase>process-test-resources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.testOutputDirectory}</outputDirectory>
-                            <includes>**/common/config/**</includes>
-                            <artifactItems>
                                 <artifactItem>
                                     <groupId>org.sakuli</groupId>
                                     <artifactId>common</artifactId>
@@ -447,6 +434,11 @@
         <dependency>
             <groupId>org.jtwig</groupId>
             <artifactId>jtwig-spaceless-extension</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
         </dependency>
     </dependencies>
 

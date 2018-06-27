@@ -21,7 +21,9 @@ package org.sakuli.services.forwarder.icinga2;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Request;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Result;
 import org.sakuli.services.forwarder.icinga2.model.builder.Icinga2CheckResultBuilder;
@@ -40,12 +42,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
  * @author tschneck
- *         Date: 2/23/16
+ * Date: 2/23/16
  */
 public class Icinga2ResultServiceImplTest {
     @Mock
@@ -79,12 +81,13 @@ public class Icinga2ResultServiceImplTest {
         result.setResults(Collections.singletonList(map));
         mockAndReturn(result);
         when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
-        testling.saveAllResults();
+        testling.teardownTestSuite(new TestSuite());
         verify(exceptionHandler, never()).handleException(any(Exception.class));
         verify(icinga2CheckResultBuilder).build();
     }
 
-    @Test
+    @Test(expectedExceptions = SakuliForwarderException.class,
+            expectedExceptionsMessageRegExp = "Unexpected result of REST-POST.*")
     public void testSaveAllResultsWrongCode() throws Exception {
         Icinga2Result result = new Icinga2Result();
         Map<String, String> map = new HashMap<>();
@@ -93,12 +96,11 @@ public class Icinga2ResultServiceImplTest {
         result.setResults(Collections.singletonList(map));
         mockAndReturn(result);
         when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
-        testling.saveAllResults();
-        verify(exceptionHandler).handleException(any(Exception.class));
-        verify(icinga2CheckResultBuilder).build();
+        testling.teardownTestSuite(new TestSuite());
     }
 
-    @Test
+    @Test(expectedExceptions = SakuliForwarderException.class,
+            expectedExceptionsMessageRegExp = "Unexpected result of REST-POST.*")
     public void testSaveAllResultsWrongStatus() throws Exception {
         Icinga2Result result = new Icinga2Result();
         Map<String, String> map = new HashMap<>();
@@ -107,9 +109,7 @@ public class Icinga2ResultServiceImplTest {
         result.setResults(Collections.singletonList(map));
         when(icinga2CheckResultBuilder.build()).thenReturn(getRequestExample());
         mockAndReturn(result);
-        testling.saveAllResults();
-        verify(exceptionHandler).handleException(any(Exception.class));
-        verify(icinga2CheckResultBuilder).build();
+        testling.teardownTestSuite(new TestSuite());
     }
 
     @Test

@@ -1,8 +1,8 @@
 {% spaceless %}
 {% import 'error_message_creator.twig' as errorMessageCreator %}
     <<<local>>>$newline$
-    {% include 'performance_data.twig' %}
-    {% include 'short_summary.twig' %}
-    {% include 'detailed_summary.twig' %}
+    {% include 'performance_data.twig' with { testsuite: testDataEntity}%}
+    {% include 'short_summary.twig' with { testsuite: testDataEntity}%}
+    {% include 'detailed_summary.twig' with { testsuite: testDataEntity}%}
     $newline$
 {% endspaceless %}

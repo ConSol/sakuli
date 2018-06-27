@@ -30,15 +30,14 @@ import org.sakuli.exceptions.SakuliForwarderException;
 import org.sakuli.services.forwarder.database.dao.DaoTestCase;
 import org.sakuli.services.forwarder.database.dao.DaoTestCaseStep;
 import org.sakuli.services.forwarder.database.dao.DaoTestSuite;
-import org.springframework.dao.DataAccessException;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.*;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 public class DatabaseResultServiceImplTest {
@@ -63,24 +62,24 @@ public class DatabaseResultServiceImplTest {
     }
 
     @Test
-    public void testSaveResultsInDatabase() throws Exception {
-        when(testSuite.getTestCases()).thenReturn(null);
-        testling.saveAllResults();
+    public void testSaveResultsInDatabase() {
+        when(testSuite.getTestCases()).thenAnswer(a -> null);
+        testling.teardownTestSuite(testSuite);
         verify(daoTestSuite).saveTestSuiteResult();
         verify(daoTestSuite).saveTestSuiteToSahiJobs();
         verify(daoTestCase, never()).saveTestCaseResult(any(TestCase.class));
         verify(daoTestCaseStep, never()).saveTestCaseSteps(any(SortedSet.class), anyInt());
     }
 
-    @Test
-    public void testSaveResultsInDatabaseHandleException() throws Exception {
-        doThrow(DataAccessException.class).when(daoTestSuite).saveTestSuiteResult();
-        testling.saveAllResults();
-        verify(exceptionHandler).handleException(any(SakuliForwarderException.class), anyBoolean());
+    @Test(expectedExceptions = SakuliForwarderException.class,
+            expectedExceptionsMessageRegExp = "error by saving the results to the database.*")
+    public void testSaveResultsInDatabaseHandleException() {
+        doThrow(DataAccessResourceFailureException.class).when(daoTestSuite).saveTestSuiteResult();
+        testling.teardownTestSuite(testSuite);
     }
 
     @Test
-    public void testSaveResultsInDatabaseWithTestcases() throws Exception {
+    public void testSaveResultsInDatabaseWithTestcases() {
 
         Integer tcPrimaryKey = 22;
         TestCase tc1 = mock(TestCase.class);
@@ -98,9 +97,8 @@ public class DatabaseResultServiceImplTest {
 
         testSuite = new TestSuite();
         testSuite.setTestCases(testCaseMap);
-        ReflectionTestUtils.setField(testling, "testSuite", testSuite);
 
-        testling.saveAllResults();
+        testling.teardownTestSuite(testSuite);
 
         verify(daoTestSuite).saveTestSuiteResult();
         verify(daoTestSuite).saveTestSuiteToSahiJobs();

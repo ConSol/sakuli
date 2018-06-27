@@ -1,0 +1,16 @@
+{# This template renders the short summary for the specified test step. #}
+{{ getOutputState(testStep.state).shortState }} Step "{{testStep.id}}" in case "{{testCaseId}}" of Sakuli suite "{{testSuiteId}}"$whitespace$
+{% if (testStep.state.error) %}
+    {% set exceptionMessages = errorMessageCreator.exceptionMessage(testStep) %}
+    ({{ testStep.duration | number_format(2, '.') }}s) {{testStep.state.nagiosStateDescription}}: {{abbreviate(exceptionMessages, 200, true)}}
+{% else %}
+    {{testStep.state.nagiosStateDescription}}
+    {% if (testStep.state.ok) %}
+        $whitespace$({{ testStep.duration | number_format(2, '.') }}s)
+    {% elseif (testStep.state.name == 'WARNING') %}
+        $whitespace$ step "{{testStep.id}}" over runtime ({{ testStep.duration | number_format(2, '.') }}s/warn at {{ testStep.warningTime }}s)
+    {% elseif (testStep.state.name == 'CRITICAL') %}
+        $whitespace$ step "{{testStep.id}}" over runtime ({{ testStep.duration | number_format(2, '.') }}s/crit at {{ testStep.criticalTime }}s)
+    {% endif %}
+    .$whitespace$(Last test step run: {% if (empty(testStep.stopDate)) %}xx{% else %}{{ testStep.stopDate|date("dd.MM.YY HH:mm:ss") }}{% endif %})
+{% endif %}

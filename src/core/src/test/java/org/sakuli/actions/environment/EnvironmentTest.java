@@ -20,7 +20,7 @@ package org.sakuli.actions.environment;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.BaseTest;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.utils.CommandLineUtil;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -71,7 +71,7 @@ public class EnvironmentTest extends BaseTest {
         assertEquals(result.getExitCode(), 2);
     }
 
-    @Test(expectedExceptions = SakuliException.class)
+    @Test(expectedExceptions = SakuliCheckedException.class)
     public void testRunCmdException() throws Exception {
         Environment.runCommand("host?name");
     }

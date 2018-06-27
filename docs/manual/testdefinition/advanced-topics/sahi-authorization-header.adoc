@@ -1,0 +1,20 @@
+
+:imagesdir: ../../../images
+
+[[sahi-authorization-headers]]
+===== Sahi removes authorization headers
+[#git-edit-section]
+:page-path: docs/manual/testdefinition/advanced-topics/sahi-authorization-header.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Due to issue https://github.com/ConSol/sakuli/issues/306[Disable Sahi proxy method which remove the authorization header (e.g. Bearer Token) #306] Sahi OS have currently some problems with handling authorization tokens like Bearer Token correctly. This has been also discussed at https://community.sahipro.com/forums/discussion/3941/authorization-header-getting-stripped-out[Sahi Community - Authorization header getting stripped out] and is a Problem of Sahi OS.
+
+This behavior is not wanted, so the Sakuli team developed a solution which manipulates Sahi by some https://docs.spring.io/spring/docs/4.3.x/spring-framework-reference/html/aop.html[Spring AOP Advice], for some details take look at https://github.com/ConSol/sakuli/blob/feature/%23306-sahi-header/src/core/src/main/java/org/sakuli/aop/SahiHeaderAspect.java#L59[Sahi Header Aspect]
+
+By default nothing have been changed to avoid unexpected impact to other parts of Sahi OS.  To skip the execution of the Sahi action which removes the authorization header , see https://github.com/kevlened/Sahi/blob/744f77462badeb3deddce93ddf6374773f70833f/sahi/src/net/sf/sahi/request/HttpRequest.java#L272[`HttpRequest.removeHeader("Authorization")`], set the following <<property loading mechanism,property>> to `false`:
+
+    sahi.proxy.removeAuthorizationHeader.enabled=false
+
+
+For more details see issue https://github.com/ConSol/sakuli/issues/306[#306].
+

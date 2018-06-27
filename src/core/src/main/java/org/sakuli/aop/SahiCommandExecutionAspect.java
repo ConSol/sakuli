@@ -77,15 +77,15 @@ public class SahiCommandExecutionAspect extends BaseSakuliAspect {
     /**
      * Catch exceptions that would have been droped from {@link net.sf.sahi.util.Utils} of all 'execute*' methods and
      * forward it to the exception Handler.
-     *
+     * <p>
      * Exceptions which thrown by missing "keytool" command, will be ignored , due to the internal exception handling
      * strategie at the point {@link Configuration#getKeytoolPath()}.
      *
      * @param joinPoint the {@link JoinPoint} of the invoked method
-     * @param error     any {@link Throwable} thrown of the Method
+     * @param error     any {@link Exception} thrown of the Method
      */
     @AfterThrowing(pointcut = "execution(* net.sf.sahi.util.Utils.execute*(..))", throwing = "error")
-    public void catchSahiCommandExcecutionErrors(JoinPoint joinPoint, Throwable error) {
+    public void catchSahiCommandExcecutionErrors(JoinPoint joinPoint, Exception error) {
         String argString = printArgs(joinPoint, true);
         if (!argString.contains("keytool")) {
             BeanLoader.loadBaseActionLoader().getExceptionHandler().handleException(new SakuliInitException(error,

@@ -21,9 +21,7 @@ package org.sakuli.services.forwarder;
 import org.mockito.*;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliExceptionWithScreenshot;
-import org.sakuli.exceptions.SakuliForwarderException;
-import org.sakuli.services.forwarder.gearman.model.ScreenshotDiv;
-import org.sakuli.services.forwarder.gearman.model.builder.NagiosOutputBuilder;
+import org.sakuli.exceptions.SakuliForwarderCheckedException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -32,13 +30,12 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.*;
 
 public class ScreenshotDivConverterTest {
 
-    private static final String SCREENSHOT_DIV_WIDTH_DEFAULT = "640px";
     private final String base64String = "iVBORw0KGgoAAAANSUhEUgAAAE4AAAAQCAIAAAA3TN7NAAAAA3NCSVQICAjb4U/gAAAAGXRFWHRT" +
             "b2Z0d2FyZQBnbm9tZS1zY3JlZW5zaG907wO/PgAABPdJREFUSInllX9MU1cUx89997YIVGgV2bIh" +
             "AwXJWBSxAwRECuPHQAGVkMkQM4W5AYpMxR/RwRSjcYrBwVRANjEiDAY4lOAQg4zfY7gtGDPZ1HT8" +
@@ -84,7 +81,7 @@ public class ScreenshotDivConverterTest {
 
     @Test
     public void testWithException() throws Exception {
-        Path screenshotPath = Paths.get(NagiosOutputBuilder.class.getResource("computer.png").toURI());
+        Path screenshotPath = Paths.get(ScreenshotDivConverter.class.getResource("computer.png").toURI());
         assertTrue(Files.exists(screenshotPath));
 
         ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath));
@@ -107,9 +104,7 @@ public class ScreenshotDivConverterTest {
                 testling.extractScreenshotFormat(new SakuliExceptionWithScreenshot("test", Paths.get("bsald_w.jpg"))),
                 "jpg");
 
-        assertEquals(
-                testling.extractScreenshotFormat(new SakuliExceptionWithScreenshot("test", null)),
-                null);
+        assertNull(testling.extractScreenshotFormat(new SakuliExceptionWithScreenshot("test", null)));
     }
 
     @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
@@ -117,14 +112,14 @@ public class ScreenshotDivConverterTest {
     public void testThrowException() throws Exception {
         Path screenshotPath = Paths.get("computerNOTVALID.png");
 
-        ArgumentCaptor<Throwable> excpCaptor = ArgumentCaptor.forClass(Throwable.class);
+        ArgumentCaptor<Exception> excpCaptor = ArgumentCaptor.forClass(Exception.class);
         doNothing().when(sakuliExceptionHandler).handleException(excpCaptor.capture());
 
         ScreenshotDiv result = testling.convert(new SakuliExceptionWithScreenshot("test", screenshotPath));
         assertNull(result);
-        verify(sakuliExceptionHandler).handleException(any(SakuliForwarderException.class));
-        Throwable excp = excpCaptor.getValue();
-        assertTrue(excp instanceof SakuliForwarderException);
+        verify(sakuliExceptionHandler).handleException(any(SakuliForwarderCheckedException.class));
+        Exception excp = excpCaptor.getValue();
+        assertTrue(excp instanceof SakuliForwarderCheckedException);
         assertEquals(excp.getMessage(), "error during the BASE64 encoding of the screenshot 'computerNOTVALID.png'");
         assertTrue(excp.getSuppressed()[0] instanceof NoSuchFileException);
     }
@@ -139,10 +134,10 @@ public class ScreenshotDivConverterTest {
 
         String result = ScreenshotDivConverter.removeBase64ImageDataString(testling.getPayloadString());
         assertEquals(result, "<div id=\"test-id\">" +
-                    "<div id=\"openModal_test-id\" class=\"modalDialog\">" +
-                        "<a href=\"#close\" title=\"Close\" class=\"close\">Close X</a>" +
-                        "<a href=\"#openModal_test-id\"><img class=\"screenshot\" src=\"\" ></a>" +
-                    "</div>" +
+                "<div id=\"openModal_test-id\" class=\"modalDialog\">" +
+                "<a href=\"#close\" title=\"Close\" class=\"close\">Close X</a>" +
+                "<a href=\"#openModal_test-id\"><img class=\"screenshot\" src=\"\" ></a>" +
+                "</div>" +
                 "</div>");
 
         String srcString2 = "blas\nblakdfakdfjie";

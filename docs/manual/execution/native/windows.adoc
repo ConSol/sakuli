@@ -60,7 +60,8 @@ Read and accept the licence, choose the installation folder (any path the curren
 
 image:installer_2.png[inst_2]
 
-. install Sakuli
+. install Sakuli core (command line)
+. install <<sakuli-ui>>
 . install Sahi
 . set/update the environment variable `%SAKULI_HOME%` to the new version.
 . set/update environment settings which have proved as best practice for UI tests.

@@ -37,19 +37,19 @@ import org.springframework.stereotype.Component;
 public class ExceptionHandlerAspect extends BaseSakuliAspect {
 
     /**
-     * Throw the handled Exception after {@link SakuliExceptionHandler#processException(Throwable)} to stop the current
+     * Throw the handled Exception after {@link SakuliExceptionHandler#processException(Exception)} to stop the current
      * test case execution of an JAVA test.
      */
     @After("execution(* org.sakuli.exceptions.SakuliExceptionHandler.processException(..)) ")
-    public void processJavaException(JoinPoint joinPoint) throws Throwable {
+    public void processJavaException(JoinPoint joinPoint) throws Exception {
         Object[] args = joinPoint.getArgs();
         if (args != null && args.length == 1) {
             Object e = args[0];
             SakuliExceptionHandler exceptionHandler = BeanLoader.loadBaseActionLoader().getExceptionHandler();
-            if (e instanceof SakuliException && exceptionHandler.resumeToTestExcecution((SakuliException) e)) {
+            if (e instanceof SakuliException && exceptionHandler.resumeToTestExecution(((SakuliException) e).castTo())) {
                 return;
             }
-            throw (Throwable) e;
+            throw (Exception) e;
         }
     }
 

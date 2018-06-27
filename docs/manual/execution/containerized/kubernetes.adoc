@@ -61,7 +61,7 @@ If you want to watch the test execution you can connect to the container on the 
 
 [source]
 ----
-http://<kubernetes-cluster-ip>:32001/vnc_auto.html?password=sakuli&view_only=true
+http://<kubernetes-cluster-ip>:32001/?password=sakuli&view_only=true
 ----
 
 image:os_container_webvnc.png[kubernetes container via webvnc]

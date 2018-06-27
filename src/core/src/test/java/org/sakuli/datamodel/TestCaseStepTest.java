@@ -19,10 +19,12 @@
 package org.sakuli.datamodel;
 
 
+import org.joda.time.DateTime;
 import org.sakuli.builder.TestCaseExampleBuilder;
 import org.sakuli.builder.TestCaseStepExampleBuilder;
 import org.sakuli.datamodel.state.TestCaseStepState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
@@ -36,22 +38,32 @@ import static org.testng.Assert.assertEquals;
  *         Date: 19.07.13
  */
 public class TestCaseStepTest {
-    @Test
-    public void testRefreshState() throws Exception {
-        TestCaseStep testling = new TestCaseStep();
-        testling.refreshState();
-        assertEquals(TestCaseStepState.INIT, testling.getState());
 
-        Date currentDate = new Date();
-        testling.setStartDate(new Date(currentDate.getTime() - TimeUnit.SECONDS.toMillis(5)));
-        testling.stopDate = currentDate;
+    @DataProvider
+    public Object[][] refreshStateDP() {
+        DateTime currentDate = new DateTime();
+        return new Object[][] {
+                { null, currentDate.plusSeconds(5), -1, -1, TestCaseStepState.INIT},
+                { currentDate, null, -1, -1, TestCaseStepState.INIT},
+                { currentDate, currentDate.plusSeconds(5), -1, -1, TestCaseStepState.OK},
+                { currentDate, currentDate.plusSeconds(5), 5, -1, TestCaseStepState.OK},
+                { currentDate, currentDate.plusSeconds(5), 5, 5, TestCaseStepState.OK},
+                { currentDate, currentDate.plusSeconds(5), 3, 4, TestCaseStepState.CRITICAL},
+                { currentDate, currentDate.plusSeconds(5), 1, 5, TestCaseStepState.WARNING},
+        };
+    }
 
+    @Test(dataProvider = "refreshStateDP")
+    public void refreshState(DateTime startDate, DateTime stopDate, int warningTime, int criticalTime,TestCaseStepState expectedState) {
+        TestCaseStep testling = new TestCaseStepExampleBuilder()
+                .withState(null)
+                .withStartDate(startDate != null ? startDate.toDate() : null)
+                .withStopDate(stopDate != null ? stopDate.toDate() : null)
+                .withWarningTime(warningTime)
+                .withCriticalTime(criticalTime)
+                .buildExample();
         testling.refreshState();
-        assertEquals(TestCaseStepState.OK, testling.getState());
-
-        testling.setWarningTime(4);
-        testling.refreshState();
-        assertEquals(TestCaseStepState.WARNING, testling.getState());
+        assertEquals(testling.getState(), expectedState);
     }
 
     @Test
@@ -87,13 +99,13 @@ public class TestCaseStepTest {
 
     @Test
     public void testGetExceptionMessage() throws Exception {
-        TestCase testCase = new TestCaseExampleBuilder().withException(new SakuliException("CASE-EXCEPTION")).buildExample();
+        TestCase testCase = new TestCaseExampleBuilder().withException(new SakuliCheckedException("CASE-EXCEPTION")).buildExample();
         assertEquals(testCase.getExceptionMessages(true), "CASE-EXCEPTION");
         assertEquals(testCase.getExceptionMessages(false), "CASE-EXCEPTION");
 
         testCase.setSteps(Collections.singletonList(
                 new TestCaseStepExampleBuilder()
-                        .withException(new SakuliException("STEP-EXCEPTION"))
+                        .withException(new SakuliCheckedException("STEP-EXCEPTION"))
                         .buildExample()));
         assertEquals(testCase.getExceptionMessages(true), "CASE-EXCEPTION - STEP \"step_for_unit_test\": STEP-EXCEPTION");
         assertEquals(testCase.getExceptionMessages(false), "CASE-EXCEPTION\n\tSTEP \"step_for_unit_test\": STEP-EXCEPTION");

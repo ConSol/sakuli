@@ -30,6 +30,16 @@ Runs all steps until step *3*
 
 Runs all steps until step *6*
 
+[[feature-branches]]
+.Working with feature branches:
+For handling releases and feature branches, Sakuli uses the https://github.com/aleksandr-m/gitflow-maven-plugin[gitflow-maven-plugin]. For more information take a look at there https://github.com/aleksandr-m/gitflow-maven-plugin/blob/master/README.md[README].
+
+. Start a new feature: `mvn gitflow:feature-start`
+. Use as feature name the pattern `<github-issue-no>-<feature-description>`
+. Commit your work and do `git push`. Changes will be available at the remote feature branch `feature/<github-issue-no>-<feature-description>`
+. The build http://labs-build.consol.de/view/Sakuli/job/Sakuli_CI_feature_branch[Sakuli_CI_feature_branch] will automatic triggered and a new version will deployed with version `v1.X.X-<github-issue-no>-<feature-description>-SNAPSHOT`. This feature version is available as <<download>> and as <<docker-images>>
+. To finish the developed feature execute: `mvn gitflow:feature-finish`
+
 .Build a new release
 
 See the instruction: <<dev-new-release>>

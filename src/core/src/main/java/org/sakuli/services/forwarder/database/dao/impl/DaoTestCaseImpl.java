@@ -20,7 +20,7 @@ package org.sakuli.services.forwarder.database.dao.impl;
 
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.services.forwarder.database.ProfileJdbcDb;
 import org.sakuli.services.forwarder.database.dao.DaoTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ import java.util.Map;
 public class DaoTestCaseImpl extends Dao implements DaoTestCase {
 
     @Autowired
-    public DaoTestCaseImpl(DataSource dataSource) throws SakuliException {
+    public DaoTestCaseImpl(DataSource dataSource) throws SakuliCheckedException {
         super(dataSource);
     }
 

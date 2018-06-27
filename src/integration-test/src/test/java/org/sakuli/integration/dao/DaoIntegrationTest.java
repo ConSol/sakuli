@@ -25,7 +25,7 @@ import org.sakuli.actions.screenbased.RegionImpl;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.LogResult;
 import org.sakuli.datamodel.properties.SakuliProperties;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.integration.IntegrationTest;
 import org.sakuli.integration.builder.TestSuiteBuilder;
@@ -41,9 +41,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.sakuli.integration.IntegrationTest.GROUP;
 
@@ -65,7 +65,7 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
     @Mock
     private SakuliProperties sakuliProperties;
 
-    protected abstract D createTestling() throws SakuliException;
+    protected abstract D createTestling() throws SakuliCheckedException;
 
     @BeforeClass
     public void initTestFolder() {
@@ -86,7 +86,7 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
     }
 
     @BeforeMethod
-    public void init() throws SakuliException {
+    public void init() throws SakuliCheckedException {
         testling = createTestling();
         MockitoAnnotations.initMocks(this);
         testling.setDataSource(dataSource);
@@ -95,13 +95,13 @@ public abstract class DaoIntegrationTest<D extends Dao> implements IntegrationTe
 
     protected void initExceptionHandlerMock(SakuliExceptionHandler sakuliExceptionHandlerMock) {
         doAnswer(invocation -> {
-            throw (Throwable) invocation.getArguments()[0];
-        }).when(sakuliExceptionHandlerMock).handleException(any(Throwable.class));
-        doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(Throwable.class), anyBoolean());
+            throw (Exception) invocation.getArguments()[0];
+        }).when(sakuliExceptionHandlerMock).handleException(any(Exception.class));
+        doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(Exception.class), anyBoolean());
         doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(LogResult.class));
         doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(anyString(), anyBoolean());
         doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(anyString(), any(RegionImpl.class), anyBoolean());
-        doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(Throwable.class), any(RegionImpl.class), anyBoolean());
+        doCallRealMethod().when(sakuliExceptionHandlerMock).handleException(any(Exception.class), any(RegionImpl.class), anyBoolean());
     }
 
     protected void initDeafultTestSuiteMock() {

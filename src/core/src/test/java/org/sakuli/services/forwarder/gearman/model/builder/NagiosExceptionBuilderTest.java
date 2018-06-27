@@ -19,7 +19,7 @@
 package org.sakuli.services.forwarder.gearman.model.builder;
 
 import org.gearman.client.GearmanJobResult;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderRuntimeException;
 import org.testng.annotations.Test;
 
 import static org.mockito.Mockito.mock;
@@ -30,7 +30,7 @@ public class NagiosExceptionBuilderTest {
 
     @Test
     public void testBuildUnexpectedErrorException() throws Exception {
-        SakuliForwarderException sakuliForwarderException = NagiosExceptionBuilder.buildUnexpectedErrorException(new Exception("TEST"), "localhost", 4370);
+        SakuliForwarderRuntimeException sakuliForwarderException = NagiosExceptionBuilder.buildUnexpectedErrorException(new Exception("TEST"), "localhost", 4370);
         assertEquals(sakuliForwarderException.getMessage(),
                 "unexpected error by sending the results to the gearman forwarder 'localhost:'4370'");
     }
@@ -40,7 +40,7 @@ public class NagiosExceptionBuilderTest {
         GearmanJobResult result = mock(GearmanJobResult.class);
         when(result.getExceptions()).thenReturn("exceptions".getBytes());
         when(result.getWarnings()).thenReturn("warnings".getBytes());
-        SakuliForwarderException sakuliForwarderException = NagiosExceptionBuilder.buildTransferException("localhost", 4370, result);
+        SakuliForwarderRuntimeException sakuliForwarderException = NagiosExceptionBuilder.buildTransferException("localhost", 4370, result);
         assertEquals(sakuliForwarderException.getMessage(),
                 "something went wrong during the transfer of the results to the gearman forwarder 'localhost:'4370':\n" +
                         "EXCEPTIONS:\n" +

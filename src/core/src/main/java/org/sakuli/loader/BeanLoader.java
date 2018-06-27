@@ -62,8 +62,8 @@ public class BeanLoader {
                 + applicationNameOrPath + "\"");
         try {
             return new Application(applicationNameOrPath, Boolean.valueOf(resumeOnException));
-        } catch (Throwable throwable) {
-            loadBaseActionLoader().getExceptionHandler().handleException(new SakuliInitException(throwable,
+        } catch (Exception e) {
+            loadBaseActionLoader().getExceptionHandler().handleException(new SakuliInitException(e,
                     "Unexpected error during creating an instance of class '" + Application.class.getName() + "'"));
             return null;
         }
@@ -91,9 +91,9 @@ public class BeanLoader {
      */
     public static <T> T loadBean(Class<T> classDef) {
         try {
-            logger.debug("load bean '{}' from application context", classDef.getSimpleName());
+            logger.trace("load bean '{}' from application context", classDef.getSimpleName());
             return getBeanFactory().getBean(classDef);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             logger.error("error in BeanLoader", e);
             throw e;
         }

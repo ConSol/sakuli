@@ -20,20 +20,21 @@ package org.sakuli.actions;
 
 import org.apache.commons.lang.StringUtils;
 import org.sakuli.actions.logging.LogToResult;
+import org.sakuli.datamodel.AbstractTestDataEntity;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.ImageLib;
 import org.sakuli.datamodel.actions.LogLevel;
 import org.sakuli.datamodel.helper.TestCaseHelper;
-import org.sakuli.datamodel.helper.TestCaseStepHelper;
 import org.sakuli.datamodel.helper.TestDataEntityHelper;
 import org.sakuli.exceptions.SakuliActionException;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.exceptions.SakuliValidationException;
 import org.sakuli.loader.BaseActionLoader;
 import org.sakuli.loader.BaseActionLoaderImpl;
+import org.sakuli.services.TeardownServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ import org.springframework.stereotype.Component;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author tschneck Date: 19.06.13
@@ -51,10 +53,12 @@ import java.util.Date;
 public class TestCaseAction {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    @Autowired
+    private ExecutorService executorService;
 
     /**
      * Represents the current running TestCase. The object will be set at {@link #init(String, int, int, String...)} and
-     * releases at {@link #saveResult(String, String, String, String, String)}
+     * releases at {@link #saveResult(String, String, String, String, String, boolean)}
      */
     @Autowired
     @Qualifier(BaseActionLoaderImpl.QUALIFIER)
@@ -74,9 +78,16 @@ public class TestCaseAction {
      *                     the execution time will never exceed, so the state will be always OK!
      * @param imagePaths   multiple paths to images
      */
-    @LogToResult(message = "init a new test case")
+    @LogToResult(message = "init a new test case", logClassInstance = false)
     public void init(String testCaseID, int warningTime, int criticalTime, String... imagePaths) {
         loader.init(testCaseID, imagePaths);
+        initWarningAndCritical(warningTime, criticalTime);
+    }
+
+    @LogToResult(message = "init a new test case with caseID", logClassInstance = false)
+    public void initWithCaseID(String testCaseID, String newTestCaseID, int warningTime, int criticalTime, String... imagePaths) {
+        loader.init(testCaseID, imagePaths);
+        loader.getCurrentTestCase().setId(newTestCaseID);
         initWarningAndCritical(warningTime, criticalTime);
     }
 
@@ -90,7 +101,7 @@ public class TestCaseAction {
      *                     the execution time will never exceed, so the state will be always OK!
      * @param imagePaths   multiple paths to images
      */
-    @LogToResult(message = "init a new test case")
+    @LogToResult(message = "init a new test case", logClassInstance = false)
     public void initWithPaths(String testCaseID, int warningTime, int criticalTime, Path... imagePaths) {
         loader.init(testCaseID, imagePaths);
         initWarningAndCritical(warningTime, criticalTime);
@@ -101,9 +112,9 @@ public class TestCaseAction {
      * If a relative path is assigned, the current testcase folder will be used as current directory.
      *
      * @param imagePaths one or more paths as {@link String} elements
-     * @throws SakuliException if an IO error occurs
+     * @throws SakuliCheckedException if an IO error occurs
      */
-    public void addImagePathsAsString(String... imagePaths) throws SakuliException {
+    public void addImagePathsAsString(String... imagePaths) throws SakuliCheckedException {
         for (String path : imagePaths) {
             //check if absolute path
             if (!path.matches("(\\/\\S*|\\w:\\\\\\S*)")) {
@@ -118,10 +129,10 @@ public class TestCaseAction {
      * Adds the additional paths to the current {@link ImageLib} object.
      *
      * @param imagePaths one or more {@link Path} elements
-     * @throws SakuliException if an IO error occurs
+     * @throws SakuliCheckedException if an IO error occurs
      */
     @LogToResult
-    public void addImagePaths(Path... imagePaths) throws SakuliException {
+    public void addImagePaths(Path... imagePaths) throws SakuliCheckedException {
         loader.addImagePaths(imagePaths);
     }
 
@@ -150,10 +161,10 @@ public class TestCaseAction {
      * @param stopTime    end time in milliseconds
      * @param lastURL     URL to the last visited page during this test case
      * @param browserInfo detail information about the used browser
-     * @throws SakuliException
+     * @throws SakuliCheckedException
      */
-    @LogToResult(message = "save the result of the current test case")
-    public void saveResult(String testCaseId, String startTime, String stopTime, String lastURL, String browserInfo) throws SakuliException {
+    @LogToResult
+    public void saveResult(String testCaseId, String startTime, String stopTime, String lastURL, String browserInfo, boolean forward) throws SakuliCheckedException {
         if (!loader.getCurrentTestCase().getId().equals(testCaseId)) {
             handleException("testcaseID '" + testCaseId + "' to save the test case Result ist is not valid!");
         }
@@ -179,31 +190,35 @@ public class TestCaseAction {
 
         //release current test case -> indicates that this case is finished
         loader.setCurrentTestCase(null);
+        if (forward) {
+            forwardTestDataEntity(tc);
+        }
     }
 
     /**
-     * Wrapper for {@link #addTestCaseStep(String, String, String, int)} with warningTime '0'.
+     * Wrapper for {@link #addTestCaseStep(String, String, String, int, int, boolean)} with warningTime '0'.
      */
-    public void addTestCaseStep(String stepName, String startTime, String stopTime) throws SakuliException {
-        addTestCaseStep(stepName, startTime, stopTime, 0);
+    public void addTestCaseStep(String stepName, String startTime, String stopTime) throws SakuliCheckedException {
+        addTestCaseStep(stepName, startTime, stopTime, 0, 0, false);
     }
 
     /**
-     * Save a new step to a existing test case. Must be called before {@link #saveResult(String, String, String, String,
-     * String)}
+     * Save a new step to a existing test case. Must be called before {@link #saveResult(String, String, String, String, String, boolean)}
      *
-     * @param stepName    name of this step
-     * @param startTime   start time in milliseconds
-     * @param stopTime    end time in milliseconds
-     * @param warningTime warning threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
-     * @throws SakuliException
+     * @param stepName     name of this step
+     * @param startTime    start time in milliseconds
+     * @param stopTime     end time in milliseconds
+     * @param warningTime  warning threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
+     * @param criticalTime critical threshold in seconds. If the threshold is set to 0, the execution time will never exceed, so the state will be always OK!
+     * @param forward      boolean flag indicating whether the result of the test case shall be immediately processed by the enabled forwarders. This means before the test suite has been executed to the end. If not specified in another way, this option is disabled!
+     * @throws SakuliCheckedException
      */
-    @LogToResult(message = "add a step to the current test case")
-    public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime) throws SakuliException {
+    @LogToResult(message = "TestCase.endOfStep()", logClassInstance = false)
+    public void addTestCaseStep(String stepName, String startTime, String stopTime, int warningTime, int criticalTime, boolean forward) throws SakuliCheckedException {
         if (stepName == null || stepName.isEmpty() || stepName.equals("undefined")) {
             handleException("Please set a Name - all values of the test case step need to be set!");
         }
-        String errormsg = TestCaseStepHelper.checkWarningTime(warningTime, stepName);
+        String errormsg = TestDataEntityHelper.checkWarningAndCriticalTime(warningTime, criticalTime, String.format("TestCaseStep [name = %s]", stepName));
         if (errormsg != null) {
             handleException(errormsg);
         }
@@ -213,6 +228,9 @@ public class TestCaseAction {
             step.setStartDate(new Date(Long.parseLong(startTime)));
             step.setStopDate(new Date(Long.parseLong(stopTime)));
             step.setWarningTime(warningTime);
+            step.setCriticalTime(criticalTime);
+
+            step.addActions(loader.getCurrentTestCase().getAndResetTestActions());
         } catch (NullPointerException | NumberFormatException e) {
             loader.getExceptionHandler().handleException(e);
         }
@@ -225,6 +243,16 @@ public class TestCaseAction {
                 + "\" saved to test case \""
                 + loader.getCurrentTestCase().getId()
                 + "\"");
+        if (forward) {
+            forwardTestDataEntity(step);
+        }
+    }
+
+    private void forwardTestDataEntity(AbstractTestDataEntity abstractTestDataEntity) {
+        executorService.submit(() -> {
+            logger.info("======= TRIGGER ASYNC teardown of: {} =======", abstractTestDataEntity.toStringShort());
+            TeardownServiceHelper.invokeTeardownServices(abstractTestDataEntity, true);
+        });
     }
 
     protected TestCaseStep findStep(String stepName) {
@@ -251,11 +279,11 @@ public class TestCaseAction {
     }
 
     /**
-     * calls the method {@link SakuliExceptionHandler#handleException(Throwable)}
+     * calls the method {@link SakuliExceptionHandler#handleException(Exception)}
      *
      * @param e the original exception
      */
-    public void handleException(Throwable e) {
+    public void handleException(Exception e) {
         loader.getExceptionHandler().handleException(e, false);
     }
 
@@ -281,16 +309,16 @@ public class TestCaseAction {
      * @param pathToTestCaseFile path to the test case file "_tc.js"
      * @return returns test the currentTestCase Name
      */
-    @LogToResult(message = "convert the path of the test case file to a valid test case ID")
+    @LogToResult(message = "determine a valid test case ID from the test case file path", logClassInstance = false)
     public String getIdFromPath(String pathToTestCaseFile) {
-        logger.info("Return a test-case-id for \"" + pathToTestCaseFile + "\"");
+        logger.debug("determine a ID for testcase for file path '{}'", pathToTestCaseFile);
         String id = TestCaseHelper.convertTestCaseFileToID(pathToTestCaseFile);
         //check id
         if (loader.getTestSuite().checkTestCaseID(id)) {
-            logger.info("test-case-id = " + id);
+            logger.debug("determined testcase id: {}", id);
             return id;
         } else {
-            handleException("cannot identify testcase for pathToTestCaseFile=" + pathToTestCaseFile);
+            handleException("cannot determine testcase id for path of testcase file '" + pathToTestCaseFile + "'");
             return null;
         }
     }
@@ -298,7 +326,7 @@ public class TestCaseAction {
     /**
      * @return String value of the last URL
      */
-    @LogToResult(message = "return 'lastURL'")
+    @LogToResult
     public String getLastURL() {
         return loader.getCurrentTestCase().getLastURL();
     }
@@ -308,7 +336,7 @@ public class TestCaseAction {
      *
      * @param lastURL String value of the last URL
      */
-    @LogToResult(message = "set 'lastURL' to new value")
+    @LogToResult
     public void setLastURL(String lastURL) {
         loader.getCurrentTestCase().setLastURL(lastURL);
     }
@@ -321,7 +349,7 @@ public class TestCaseAction {
         try {
             return loader.getCurrentTestCase().getTcFile().getParent().toAbsolutePath().toString();
         } catch (Exception e) {
-            handleException(new SakuliException(e,
+            handleException(new SakuliCheckedException(e,
                     String.format("cannot resolve the folder path of the current testcase '%s'",
                             loader.getCurrentTestCase())));
             return null;
@@ -336,7 +364,7 @@ public class TestCaseAction {
         try {
             return loader.getTestSuite().getTestSuiteFolder().toAbsolutePath().toString();
         } catch (Exception e) {
-            handleException(new SakuliException(e,
+            handleException(new SakuliCheckedException(e,
                     String.format("cannot resolve the folder path of the current testsuite '%s'",
                             loader.getTestSuite())));
             return null;
