@@ -167,12 +167,12 @@ public class SahiConnector {
         String startUrl = String.format("http://%s:%s", sahiHost, sahiPort);
         logger.info("connect Sahi-TestRunner:{}", startUrl);
         return new TestRunner(
-                testSuite.getAbsolutePathOfTestSuiteFile(),  //path to the .suite file
+                testSuite.getAbsolutePathOfFilteredTestSuiteFile(),  //path to the .suite file
                 testSuite.getBrowserName(),   //the browser name, for example "firefox"
                 startUrl,                     //the start url, for example "http://localhost:9999"
-                sahiHost,                     //host on which the sahi proxy will started
-                sahiPort,                     //port on which the sahi port is opend
-                threads);                     //numer of parallel process in the sakuli application still 1
+                sahiHost,                     //host on which the Sahi proxy will started
+                sahiPort,                     //port on which the Sahi port is opened
+                threads);                     //number of parallel process in the Sakuli application still 1
     }
 
     protected String getIncludeFolderJsPath() {

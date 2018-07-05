@@ -29,7 +29,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.security.InvalidParameterException;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.sakuli.datamodel.TestCase;
@@ -46,7 +46,7 @@ public class TestSuiteHelperTest {
     public void testInit() throws Exception {
         TestSuiteProperties testProps = new TestSuitePropertiesBuilder(this.getClass(), "valid", "suite_id_001").build();
 
-        HashMap<String, TestCase> result = TestSuiteHelper.loadTestCases(testProps);
+        Map<String, TestCase> result = TestSuiteHelper.loadTestCases(testProps).getEnabledTests();
         assertEquals(1, result.size());
         //tests if onyl the valid testcase are in the suite, with there right names
         TestCase tc = result.values().iterator().next();

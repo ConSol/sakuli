@@ -25,8 +25,6 @@ import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -76,11 +74,16 @@ public class CommonInitializingServiceImplTest {
 
     @DataProvider(name = "filterTestCasesProvider")
     public static Object[][] filteredTestCaseDataProvider() {
-        return new Object[][] { { Arrays.asList("tc1/_tc.js", "tc2/_tc.js"), 2 }, { Arrays.asList("tc1/_tc.js"), 1 } };
+        return new Object[][] {
+                { new String[]{"tc1", "tc2"}, 2, 0 },
+                { new String[]{"tc1"}, 1, 1 },
+                { new String[]{}, 2, 0 },
+                { new String[]{"", "", ""}, 2, 0 }
+        };
     }
 
     @Test(dataProvider = "filterTestCasesProvider")
-    public void testInitWithFilter(List<String> filters, Integer amountOfTestCases) throws Exception {
+    public void testInitWithFilter(String[] filters, Integer amountOfTestCases, Integer amountOfSkippedTests) throws Exception {
         testSuiteProperties =
                 spy(new TestSuitePropertiesBuilder(this.getClass(), "filtered", "suite_id").withFilters(filters)
                         .build());
@@ -95,6 +98,7 @@ public class CommonInitializingServiceImplTest {
                 "test absolut path");
         assertEquals(ts.getDbPrimaryKey(), -1);
         assertEquals(ts.getTestCases().size(), (int) (amountOfTestCases));
+        assertEquals(ts.getSkippedTests().size(), (int) (amountOfSkippedTests));
         assertEquals(ts.getId(), "suite_id");
     }
 
