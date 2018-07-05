@@ -24,8 +24,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
 
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 
@@ -41,10 +39,6 @@ public class TestSuitePropertiesBuilder {
     }
 
     public TestSuitePropertiesBuilder withFilters(String... filters) {
-        return withFilters(Arrays.asList(filters));
-    }
-
-    public TestSuitePropertiesBuilder withFilters(List<String> filters) {
         this.testSuiteProperties.setTestCaseFilters(filters);
         return this;
     }

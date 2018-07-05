@@ -21,7 +21,10 @@ package org.sakuli.datamodel.properties;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 
@@ -72,8 +75,8 @@ public class TestSuiteProperties {
     @Value("${" + TEST_SUITE_IS_UI_TEST + ":false}") // default FALSE
     private boolean uiTest = false;
 
-    @Value("#{'${" + TEST_CASE_NAMES + "}'.split(',')}")
-    private List<String> testCaseFilters;
+    @Value("${" + TEST_CASE_NAMES + ":}#{new String[]{}}")
+    private String[] testCaseFilters;
 
     @PostConstruct
     public void initFolders() {
@@ -166,11 +169,12 @@ public class TestSuiteProperties {
     }
 
     public List<String> getTestCaseFilters() {
-        return testCaseFilters;
+        return (testCaseFilters != null) ?
+                Stream.of(testCaseFilters).filter(value -> !value.isEmpty()).collect(Collectors.toList()) :
+                new ArrayList<>();
     }
 
-    public void setTestCaseFilters(final List testCaseFilters) {
+    public void setTestCaseFilters(final String... testCaseFilters) {
         this.testCaseFilters = testCaseFilters;
     }
-
 }
