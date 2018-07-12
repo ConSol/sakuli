@@ -50,6 +50,7 @@
         <downloadJavadocs>true</downloadJavadocs>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <skip.gpg>false</skip.gpg>
 
         <!--properties for release process with gitflow-maven-plugin-->
         <maven.settings.hook/>
@@ -283,6 +284,28 @@
                     <version>1.9.5</version>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.6</version>
+                    <executions>
+                        <execution>
+                            <id>sign-artifacts</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <useAgent>true</useAgent>
+                        <keyname>sakuli@consol.de</keyname>
+                        <skip>${skip.gpg}</skip>
+                        <gpgArguments>
+                            <arg>--allow-weak-digest-algos</arg>
+                        </gpgArguments>
+                    </configuration>
+                </plugin>
             </plugins>
 
         </pluginManagement>
@@ -399,6 +422,31 @@
                     <url>scpexe://labs.consol.de/home/maven-repository/www/htdocs/snapshots-repository</url>
                 </snapshotRepository>
             </distributionManagement>
+        </profile>
+        <!-- profile for release to Maven central -->
+        <profile>
+            <id>upload-central</id>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>sonatype-nexus-snapshots</id>
+                    <name>Sonatype Nexus Snapshots</name>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>sonatype-nexus-staging</id>
+                    <name>Nexus Release Repository</name>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
