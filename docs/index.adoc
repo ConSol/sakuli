@@ -70,6 +70,7 @@ include::manual/execution/native/linux.adoc[]
 include::manual/execution/native/linux-native-headless.adoc[]
 include::manual/execution/native/linux-troubleshooting.adoc[]
 include::manual/execution/native/upgrade-process.adoc[]
+include::manual/execution/native/testcase-filtering.adoc[]
 
 [[maven-execution]]
 === Maven Execution
