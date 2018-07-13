@@ -18,10 +18,14 @@
 
 package org.sakuli.services.forwarder.database;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
-import org.sakuli.exceptions.SakuliForwarderException;
-import org.sakuli.services.common.AbstractResultService;
+import org.sakuli.datamodel.TestSuite;
+import org.sakuli.exceptions.SakuliExceptionHandler;
+import org.sakuli.exceptions.SakuliForwarderRuntimeException;
+import org.sakuli.services.ResultService;
+import org.sakuli.services.forwarder.AbstractTeardownService;
 import org.sakuli.services.forwarder.database.dao.DaoTestCase;
 import org.sakuli.services.forwarder.database.dao.DaoTestCaseStep;
 import org.sakuli.services.forwarder.database.dao.DaoTestSuite;
@@ -35,13 +39,15 @@ import java.util.SortedSet;
 
 /**
  * @author tschneck
- *         Date: 09.07.14
+ * Date: 09.07.14
  */
 @ProfileJdbcDb
 @Component
-public class DatabaseResultServiceImpl extends AbstractResultService {
+public class DatabaseResultServiceImpl extends AbstractTeardownService implements ResultService {
     private static Logger LOGGER = LoggerFactory.getLogger(DatabaseResultServiceImpl.class);
 
+    @Autowired
+    private SakuliExceptionHandler exceptionHandler;
     @Autowired
     private DaoTestCase daoTestCase;
     @Autowired
@@ -55,9 +61,8 @@ public class DatabaseResultServiceImpl extends AbstractResultService {
     }
 
     @Override
-    public void saveAllResults() {
+    public void teardownTestSuite(@NonNull TestSuite testSuite) throws RuntimeException {
         LOGGER.info("======= SAVE RESULTS TO DATABASE ======");
-        ;
         try {
             daoTestSuite.saveTestSuiteResult();
             daoTestSuite.saveTestSuiteToSahiJobs();
@@ -78,11 +83,10 @@ public class DatabaseResultServiceImpl extends AbstractResultService {
                 }
             }
             LOGGER.info("======= FINISHED: SAVE RESULTS TO DATABASE ======");
-        } catch (Throwable e) {
-            exceptionHandler.handleException(
-                    new SakuliForwarderException(e,
-                            String.format("error by saving the results to the database [%s]", testSuite.toString())),
-                    true);
+        } catch (Exception e) {
+            throw new SakuliForwarderRuntimeException(
+                    "error by saving the results to the database for: " + testSuite.toString(), e);
         }
     }
+
 }

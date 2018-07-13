@@ -48,10 +48,12 @@ public class SakuliProperties extends AbstractProperties {
     public static final String LOG_LEVEL_SPRING = "log.level.spring";
     public static final String LOG_LEVEL_ROOT = "log.level.root";
     public static final String FORWARDER_TEMPLATE_FOLDER = "sakuli.forwarder.template.folder";
+    public static final String SAHI_DOC_BASE_URL = "sahi.doc.base.url";
+    public static final String SAKULI_DOC_BASE_URL = "sakuli.doc.base.url";
     public static final String CONFIG_FOLDER_APPEDER = File.separator + "config";
     public static final String LIBS_FOLDER_APPEDER = File.separator + "libs";
     public static final String JS_LIB_FOLDER_APPEDER = LIBS_FOLDER_APPEDER + File.separator + "js";
-    // have to be the common/libs older, so that {@link TextRecognizer} can add "tessdata" to the path!
+    // have to be the common/libs folder, so that {@link TextRecognizer} can add "tessdata" to the path!
     public static final String TESSDATA_LIB_FOLDER_APPEDER = LIBS_FOLDER_APPEDER;
     private static final boolean SUPPRESS_RESUMED_EXCEPTIONS_DEFAULT = false;
     private static final boolean JAVASCRIPT_ENGINE_DEFAULT = true;
@@ -84,6 +86,11 @@ public class SakuliProperties extends AbstractProperties {
     private String logLevelRoot;
     @Value("${" + FORWARDER_TEMPLATE_FOLDER + ":}")
     private String forwarderTemplateFolder;
+    @Value("${" + SAHI_DOC_BASE_URL + "}")
+    private String sahiDocumentationBaseUrl;
+    @Value("${" + SAKULI_DOC_BASE_URL + "}")
+    private String sakuliDocumentationBaseUrl;
+
     private Path configFolder;
     private Path jsLibFolder;
     private Path tessDataLibFolder;
@@ -239,6 +246,14 @@ public class SakuliProperties extends AbstractProperties {
 
     public String getForwarderTemplateFolder() {
         return forwarderTemplateFolder;
+    }
+
+    public String getSahiDocBaseUrl() {
+        return sahiDocumentationBaseUrl;
+    }
+
+    public String getSakuliDocBaseUrl() {
+        return sakuliDocumentationBaseUrl;
     }
 
 }

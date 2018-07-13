@@ -22,3 +22,6 @@ mvn test clean -Duser.home=$HOME -Dtest=TriggerDownload -DfailIfNoTests=false -D
 echo "add  -Dsakuli.version=$SAKULI_VERSION to Maven startup"
 echo "export MAVEN_OPTS=-Dsakuli.version=$SAKULI_VERSION" >> $HOME/.bashrc
 echo 'echo MAVEN_OPTS=$MAVEN_OPTS' >> $HOME/.bashrc
+
+echo "set correct permissions"
+$INST_SCRIPTS/set_user_permission.sh $HOME $SAKULI_TEST_SUITE

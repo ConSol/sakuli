@@ -21,6 +21,7 @@ package org.sakuli.services.forwarder.icinga2;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.sakuli.datamodel.TestSuite;
 import org.sakuli.services.forwarder.icinga2.model.Icinga2Request;
 import org.sakuli.services.forwarder.icinga2.model.builder.Icinga2CheckResultBuilder;
 import org.sakuli.services.forwarder.icinga2.model.builder.Icinga2RequestBuilder;
@@ -32,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 /**
  * @author tschneck
- *         Date: 2/22/16
+ * Date: 2/22/16
  */
 public class ManualIcinga2ResultTest {
 
@@ -57,7 +58,7 @@ public class ManualIcinga2ResultTest {
         when(properties.getApiPassword()).thenReturn("rootroot");
         when(properties.getApiURL()).thenReturn("https://localhost:5665/v1/actions/process-check-result?service=sakuliclient01!sakuli_demo");
         ReflectionTestUtils.setField(testling, "icinga2RestCient", icinga2RestCient);
-        testling.saveAllResults();
+        testling.teardownTestSuite(new TestSuite());
     }
 
     protected Icinga2Request getRequestExample() {

@@ -1,0 +1,7 @@
+{% if (testStep.state.error) %}
+    , step "{{ testStep.id }}"$whitespace$
+    EXCEPTION: {{ errorMessageCreator.exceptionMessage(testStep) }}
+{% elseif (testStep.state.warning) %}
+    , step "{{ testStep.id }}"$whitespace$
+    over runtime ({{ testStep.duration | number_format(2, '.') }}s/warn at {{ testStep.warningTime }}s)
+{% endif %}

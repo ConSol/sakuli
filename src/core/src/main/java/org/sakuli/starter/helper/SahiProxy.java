@@ -90,7 +90,7 @@ public class SahiProxy {
             } catch (RuntimeException e) {
                 logger.error("RUNTIME EXCEPTION");
                 throw new SakuliInitException(e);
-            } catch (Throwable e) {
+            } catch (Exception e) {
                 logger.error("THROWABLE EXCEPTION");
                 throw new SakuliInitException(e.getMessage());
             }

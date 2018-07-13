@@ -22,11 +22,14 @@ import org.apache.commons.lang.time.DateUtils;
 import org.sakuli.datamodel.builder.TestCaseStepBuilder;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestSuiteState;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.*;
@@ -154,13 +157,13 @@ public class TestSuiteTest {
     public void testGetExceptionMessage() {
         TestSuite testSuite = new TestSuite();
         String message = "suite-exception";
-        testSuite.addException(new SakuliException(message));
+        testSuite.addException(new SakuliCheckedException(message));
         assertEquals(testSuite.getExceptionMessages(false), message);
         assertEquals(testSuite.getExceptionMessages(true), message);
 
         TestCase tc1 = new TestCase("case1", "case1");
         String messageCase = "case-exception";
-        tc1.addException(new SakuliException(messageCase));
+        tc1.addException(new SakuliCheckedException(messageCase));
         testSuite.addTestCase(tc1.getId(), tc1);
         assertEquals(testSuite.getExceptionMessages(false), message + "\n" + "CASE \"" + tc1.getId() + "\": " + messageCase);
         assertEquals(testSuite.getExceptionMessages(true), message + " -- CASE \"" + tc1.getId() + "\": " + messageCase);
@@ -170,18 +173,18 @@ public class TestSuiteTest {
     public void testGetExceptionMessageWithErrorInStep() {
         TestSuite testSuite = new TestSuite();
         String message = "suite-exception";
-        testSuite.addException(new SakuliException(message));
+        testSuite.addException(new SakuliCheckedException(message));
         assertEquals(testSuite.getExceptionMessages(false), message);
         assertEquals(testSuite.getExceptionMessages(true), message);
 
         TestCase tc1 = new TestCase("case1", "case1");
         String messageCase = "case-exception";
-        tc1.addException(new SakuliException(messageCase));
+        tc1.addException(new SakuliCheckedException(messageCase));
         testSuite.addTestCase(tc1.getId(), tc1);
 
         TestCaseStep step1 = new TestCaseStepBuilder("step1").build();
         String messageStep = "step-exception";
-        step1.addException(new SakuliException(messageStep));
+        step1.addException(new SakuliCheckedException(messageStep));
         tc1.addStep(step1);
 
         assertEquals(testSuite.getExceptionMessages(false),

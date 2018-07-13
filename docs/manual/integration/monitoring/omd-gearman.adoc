@@ -111,6 +111,14 @@ sakuli.forwarder.gearman.nagios.check_command=check_sakuli
 TIP: In case you get a `java.lang.security.InvalidKeyException` with error message _"Illegal key size or default parameters"_ you probably
 need to enable unlimited strength security policies in your Java JRE. This is done by installing http://openjdk.java.net/[OpenJDK] or by adding a special security policy JAR to the Java JRE lib directory. For the Java JRE 8, take a look at http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html[Oracle - Java Cryptography Extension 8].
 
+===== Output format template
+
+With release `1.2` the implementation of the Gearman forwarder was changed to use the templating mechanism based on Jtwig and introduced in Sakuli in some releases ago. The new implementation decouples the output format from the Sakuli binary, which allows format adaptions to fulfill your needs at any time without installing a new version of Sakuli.
+
+Sakuli comes with default templates, which are placed in `$INSTALL_DIR/config/templates`. The git-link:src/common/src/main/resources/org/sakuli/common/config/templates/gearman[link-text="default Gearman templates", mode="view", link-window="_blank"] can be found in a subdirectory `gearman`.
+
+For further information how the default template directory can be changed or how the forwarder templates can be customized please refer to <<forwarder-templates>>.
+
 [[gearman_proxy]]
 ===== Gearman proxy (optional)
 
@@ -120,7 +128,7 @@ Use the Sakuli gearman proxy script if you want to intervene into the communicat
 
 *Possible use cases*:
 
-* Change parts of the messages Sakuki sends to the monitoring system => there are some examples contained already
+* Change parts of the messages Sakuli sends to the monitoring system => there are some examples contained already
 * Getting notified when Sakuli sends results to services which do not exists
 * Auto-create services for incoming results (not yet implemented)
 

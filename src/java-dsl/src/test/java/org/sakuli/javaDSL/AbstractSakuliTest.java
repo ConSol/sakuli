@@ -25,7 +25,7 @@ import org.joda.time.DateTime;
 import org.sakuli.actions.TestCaseAction;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.builder.TestCaseBuilder;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliRuntimeException;
 import org.sakuli.javaDSL.service.SahiInitializingService;
 import org.sakuli.javaDSL.utils.SakuliJavaPropertyPlaceholderConfigurer;
@@ -126,7 +126,7 @@ public abstract class AbstractSakuliTest {
         String testCaseName = this.getClass().getSimpleName();
         initParameter = getTestCaseInitParameter();
         if (initParameter == null) {
-            throw new SakuliException("init parameter have to be set!");
+            throw new SakuliCheckedException("init parameter have to be set!");
         }
         testSuite = BeanLoader.loadBean(TestSuite.class);
 
@@ -173,11 +173,13 @@ public abstract class AbstractSakuliTest {
     }
 
     @AfterMethod(alwaysRun = true)
-    public void saveTcStep() throws Throwable {
+    public void saveTcStep() throws Exception {
         testCaseAction.addTestCaseStep("step " + counter,
                 String.valueOf(startTime.getMillis()),
                 String.valueOf(DateTime.now().getMillis()),
-                0
+                0,
+                0,
+                false
         );
     }
 
@@ -192,7 +194,8 @@ public abstract class AbstractSakuliTest {
                 String.valueOf(startTimeCase.getMillis()),
                 String.valueOf(DateTime.now().getMillis()),
                 null,
-                null
+                null,
+                false
         );
         if (browser != null) {
             browser.close();
@@ -238,7 +241,7 @@ public abstract class AbstractSakuliTest {
         if (testSuite != null) {
             LOGGER.info("========== TEAR-DOWN SAKULI TEST SUITE '{}' ==========", testSuite.getId());
             testSuite.setStopDate(DateTime.now().toDate());
-            TeardownServiceHelper.invokeTeardownServices();
+            TeardownServiceHelper.invokeTeardownServices(testSuite);
         }
         if (executorService != null) {
             executorService.shutdownNow();
@@ -249,4 +252,5 @@ public abstract class AbstractSakuliTest {
             ProcessHelper.killAll(browserProcessName);
         }
     }
+
 }

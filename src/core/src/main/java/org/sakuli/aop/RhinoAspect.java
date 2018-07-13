@@ -27,8 +27,12 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.sakuli.actions.logging.LogToResult;
+import org.sakuli.datamodel.TestAction;
+import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.actions.LogResult;
-import org.sakuli.loader.*;
+import org.sakuli.loader.BaseActionLoader;
+import org.sakuli.loader.BaseActionLoaderImpl;
+import org.sakuli.loader.BeanLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -70,7 +74,7 @@ public class RhinoAspect extends BaseSakuliAspect {
      * Pointcut for the {@link org.sakuli.actions.TestCaseAction} class to do an {@link
      * #addActionLog(org.aspectj.lang.JoinPoint, org.sakuli.actions.logging.LogToResult)}
      */
-    @Before("execution(* org.sakuli.actions.TestCaseAction.*(..)) &&" +
+    @Before("execution(* org.sakuli.actions.*.*(..)) &&" +
             "@annotation(logToResult)")
     public void doTestCaseActionLog(JoinPoint joinPoint, LogToResult logToResult) {
         addActionLog(joinPoint, logToResult);
@@ -118,6 +122,8 @@ public class RhinoAspect extends BaseSakuliAspect {
         if (logToResult != null) {
             StringBuilder message = createLoggingString(joinPoint, logToResult);
 
+            addActionsToCurrentTestCase(extractTestAction(joinPoint, logToResult));
+
             //log the action to log file and print
             switch (logToResult.level()) {
                 case ERROR:
@@ -145,6 +151,26 @@ public class RhinoAspect extends BaseSakuliAspect {
                 }
             }
         }
+    }
+
+    protected void addActionsToCurrentTestCase(TestAction currentTestAction) {
+        TestCase currentTestCase = BeanLoader.loadBaseActionLoader().getCurrentTestCase();
+        if (currentTestAction != null && currentTestCase != null) {
+            currentTestCase.addAction(currentTestAction);
+        }
+    }
+
+    protected TestAction extractTestAction(JoinPoint joinPoint, LogToResult logToResult) {
+        if (logToResult.logArgsOnly()) {
+            return null;
+        }
+        return TestAction.createSakuliTestAction(
+                        joinPoint.getSignature().getDeclaringType().getSimpleName(),
+                        joinPoint.getSignature().getName(),
+                        joinPoint.getArgs(),
+                        logToResult.message(),
+                        BeanLoader.loadBaseActionLoader().getSakuliProperties().getSakuliDocBaseUrl()
+                );
     }
 
     /**
@@ -213,6 +239,7 @@ public class RhinoAspect extends BaseSakuliAspect {
             else if (logResult.getDebugInfo() == null
                     || !logResult.getDebugInfo().startsWith("org.sakuli.actions.")) {
                 logger.info(logResult.getMessage());
+                addActionsToCurrentTestCase(TestAction.createSahiTestAction(logResult.getMessage(), BeanLoader.loadBaseActionLoader().getSakuliProperties().getSahiDocBaseUrl()));
             }
         }
 

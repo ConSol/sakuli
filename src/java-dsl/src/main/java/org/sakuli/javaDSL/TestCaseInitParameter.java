@@ -19,7 +19,7 @@
 package org.sakuli.javaDSL;
 
 import org.sakuli.datamodel.TestCase;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -63,12 +63,12 @@ public class TestCaseInitParameter {
         imagePaths = new ArrayList<>();
     }
 
-    public static Path checkFolder(String path) throws SakuliException {
+    public static Path checkFolder(String path) throws SakuliCheckedException {
         Path folder = Paths.get(path);
         if (Files.exists(folder)) {
             return folder;
         }
-        throw new SakuliException(String.format("The required folder '%s' does not exist!", folder.toAbsolutePath().toString()));
+        throw new SakuliCheckedException(String.format("The required folder '%s' does not exist!", folder.toAbsolutePath().toString()));
     }
 
     public TestCaseInitParameter withWarningTime(int warningTime) {
@@ -81,7 +81,7 @@ public class TestCaseInitParameter {
         return this;
     }
 
-    public TestCaseInitParameter addImagePath(String... imagePaths) throws SakuliException {
+    public TestCaseInitParameter addImagePath(String... imagePaths) throws SakuliCheckedException {
         if (imagePaths != null) {
             for (String imagePath : imagePaths) {
                 this.imagePaths.add(checkFolder(imagePath));

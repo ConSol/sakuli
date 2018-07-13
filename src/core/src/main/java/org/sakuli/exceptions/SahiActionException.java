@@ -23,7 +23,7 @@ import org.sakuli.datamodel.actions.LogResult;
 /**
  * @author Tobias Schneck
  */
-public class SahiActionException extends SakuliException {
+public class SahiActionException extends SakuliCheckedException {
 
     public SahiActionException(LogResult logResult) {
         super(logResult.toErrorMessage());

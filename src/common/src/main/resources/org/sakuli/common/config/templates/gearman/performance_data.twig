@@ -1,0 +1,16 @@
+{% set testDataEntityType = getTestDataEntityType(testDataEntity) %}
+|{% if ('TestSuite' == testDataEntityType) %}
+    {% include 'performance_data_suite.twig' with { testsuite: testDataEntity} %}
+{% elseif ('TestCase' == testDataEntityType) %}
+    {% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
+        {% set testCaseIndex = format("%03d", loop.index) %}
+        $whitespace$
+        {% include 'performance_data_case.twig' with { testCaseIndex: testCaseIndex, testCase: testDataEntity } %}
+    {% endfor %}
+{% elseif ('TestCaseStep' == testDataEntityType) %}
+    {% for testStep in testCase.steps %}
+        {% set testStepIndex = format("%03d", loop.index) %}
+        $whitespace$
+        {% include 'performance_data_step.twig' with { testCaseIndex: testCaseIndex, testStepIndex: testStepIndex, testStep: testDataEntity } %}
+    {% endfor %}
+{% endif %}

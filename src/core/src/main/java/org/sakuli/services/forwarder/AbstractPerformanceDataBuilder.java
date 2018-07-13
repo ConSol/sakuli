@@ -27,7 +27,6 @@ import org.apache.commons.lang.StringUtils;
 import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestCaseStep;
 import org.sakuli.datamodel.TestSuite;
-import org.sakuli.services.forwarder.gearman.model.builder.NagiosFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.SortedSet;
@@ -62,7 +61,7 @@ public abstract class AbstractPerformanceDataBuilder {
     static String addPerformanceDataRow(String performanceData, String name, float duration, int warningTime, int criticalTime) {
         String warningTimeString = (warningTime > 0) ? String.valueOf(warningTime) : null;
         String criticalTimeString = (criticalTime > 0) ? String.valueOf(criticalTime) : null;
-        return addPerformanceDataRow(performanceData, name, NagiosFormatter.formatToSec(duration), warningTimeString, criticalTimeString);
+        return addPerformanceDataRow(performanceData, name, TimeFormatter.formatToSec(duration), warningTimeString, criticalTimeString);
     }
 
     /**
@@ -70,10 +69,10 @@ public abstract class AbstractPerformanceDataBuilder {
      */
     static String addPerformanceDataRow4Threshold(String performanceData, String name, int warningTime, int criticalTime) {
         if (warningTime > 0) {
-            performanceData = addPerformanceDataRow(performanceData, name + "__warning", NagiosFormatter.formatToSec(warningTime), null, null);
+            performanceData = addPerformanceDataRow(performanceData, name + "__warning", TimeFormatter.formatToSec(warningTime), null, null);
         }
         if (criticalTime > 0) {
-            performanceData = addPerformanceDataRow(performanceData, name + "__critical", NagiosFormatter.formatToSec(criticalTime), null, null);
+            performanceData = addPerformanceDataRow(performanceData, name + "__critical", TimeFormatter.formatToSec(criticalTime), null, null);
         }
         return performanceData;
     }

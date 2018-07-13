@@ -1,0 +1,11 @@
+{# This template renders the performance data for the current test suite. #}
+suite_{{ testsuite.id }}={{getOutputDuration(testsuite)}};{{ testsuite.warningTime }};{{ testsuite.criticalTime }};;
+$whitespace$graph_type_suite=0;;;;
+$whitespace$suite__state={{getOutputState(testsuite.state).errorCode}};;;;
+$whitespace$suite__warning={{ testsuite.warningTime }}s;;;;
+$whitespace$suite__critical={{ testsuite.criticalTime }}s;;;;
+{% for testCaseId, testCase in testsuite.testCasesAsSortedSet %}
+    {% set testCaseIndex = format("%03d", loop.index) %}
+    $whitespace$
+    {% include 'performance_data_case.twig' with { testCaseIndex: testCaseIndex, testCase: testCase } %}
+{% endfor %}

@@ -16,18 +16,16 @@
  * limitations under the License.
  */
 
-Sahi.prototype.originalEx = Sahi.prototype.ex;
+//ATTENTION: console.log can cause some issues in older IE version :-/ (see https://github.com/ConSol/sakuli/issues/315)
+
+var originalEx = Sahi.prototype.ex;
 
 Sahi.prototype.ex = function (isStep) {
-    //console.log("init sakuli func!");
 
     //determine if custom delay is active
     if (this.isSakuliDelayActive == undefined) {
-        var sakuliDelayActive = this.getServerVar("sakuli-delay-active");
-        if (sakuliDelayActive != undefined) {
-            this.isSakuliDelayActive = sakuliDelayActive;
-            console.log("set isSakuliDelayActive = " + this.isSakuliDelayActive);
-        }
+        this.isSakuliDelayActive = this.getServerVar("sakuli-delay-active");
+        //console.log("set isSakuliDelayActive = " + this.isSakuliDelayActive);
     }
 
     if (this.isSakuliDelayActive == true) {
@@ -36,12 +34,10 @@ Sahi.prototype.ex = function (isStep) {
         var delayTime = this.getServerVar("sakuli-delay-time");
         if (delayTime != undefined && delayTime > 0) {
             this.interval = delayTime;
-//            console.log("set sahi-request-delay to " + delayTime);
+            //console.log("set sahi-request-delay to " + delayTime);
         } else {
             this.interval = this.INTERVAL;
         }
     }
-
-    //console.log("execute orig ex");
-    return this.originalEx(isStep);
+    return originalEx.apply(this, arguments);
 };

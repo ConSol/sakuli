@@ -18,12 +18,18 @@
 
 package org.sakuli.exceptions;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
+
+import java.util.Optional;
+
 /**
- * Wrapper for alle sakuli runtime exceptins
+ * Wrapper for all sakuli runtime exceptions
  *
  * @author Tobias Schneck
  */
-public class SakuliRuntimeException extends RuntimeException {
+public class SakuliRuntimeException extends RuntimeException implements SakuliException {
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    private Optional<? extends AbstractTestDataEntity> asyncTestDataRef = Optional.empty();
 
     public SakuliRuntimeException(String reason, Exception e) {
         super(reason, e);
@@ -35,5 +41,29 @@ public class SakuliRuntimeException extends RuntimeException {
 
     public SakuliRuntimeException(Exception e) {
         super(e);
+    }
+
+    /**
+     * Provides the meta information on which execution step this exception is thrown, like e.g. {@link org.sakuli.services.TeardownService#handleTeardownException(Exception, boolean, AbstractTestDataEntity)} will use it.
+     *
+     * @return a reference on the {@link AbstractTestDataEntity} which was executed at the point of the exception is thrown.
+     */
+    public Optional<? extends AbstractTestDataEntity> getAsyncTestDataRef() {
+        return asyncTestDataRef;
+    }
+
+    /**
+     * Set additional meta information to provide on which execution step in async code like the {@link org.sakuli.services.TeardownService#handleTeardownException(Exception, boolean, AbstractTestDataEntity)} will use it.
+     *
+     * @param testDataRef extends {@link AbstractTestDataEntity}
+     */
+    @Override
+    public <T extends AbstractTestDataEntity> void setAsyncTestDataRef(T testDataRef) {
+        this.asyncTestDataRef = Optional.ofNullable(testDataRef);
+    }
+
+    @Override
+    public String toString() {
+        return getLocalizedMessage();
     }
 }

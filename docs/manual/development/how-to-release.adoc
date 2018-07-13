@@ -14,9 +14,9 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 . Go to http://labs-build.consol.de/job/Sakuli_perform_release/[Jenkins - Sakuli_perform_release] and execute the job and set the parameters `REL_VERSION` and `DEV_VERSION`
 . Check if maven artifacts have been deployed at https://labs.consol.de/maven/repository/org/sakuli/[https://labs.consol.de/maven/repository/org/sakuli/]
-. Check the new taged verison on https://hub.docker.com/[DockerHub] with same `REL_VERSION` for the following images:
+. Check the new taged version on https://hub.docker.com/[DockerHub] with same `REL_VERSION` for the following images:
 https://hub.docker.com/search/?isAutomated=0&isOfficial=0&page=1&pullCount=0&q=sakuli&starCount=0[DockerHub - Sakuli]
-. Test the new docker images as long the https://github.com/ConSol/sakuli-examples[sakuli-exampels] are not in the automated build
+. Test the new docker images as long the https://github.com/ConSol/sakuli-examples[sakuli-examples] are not in the automated build
 . Check te latest documentation is updated at http://consol.github.io/sakuli/.
 . Make a new https://github.com/ConSol/sakuli/releases[GitHub Release]:
 ** Add `sakuli-vXXX-installer.jar` and `sakuli-vXXX.zip` from https://labs.consol.de/sakuli/install/[https://labs.consol.de/sakuli/install/] to a new release XXX
@@ -27,29 +27,29 @@ https://hub.docker.com/search/?isAutomated=0&isOfficial=0&page=1&pullCount=0&q=s
 
 *1. Dry-run (if needed)*
 
-Generate a new relase over *jgitflow-maven-plugin* (branch: `release/xxx`):
+Generate a new release over *gitflow-maven-plugin* (branch: `release/xxx`):
 
 [source]
 ----
-    mvn jgitflow:release-start -DnoDeploy=true -DpushReleases=false -DlocalOnly=true      
+    mvn gitflow:release-start
 ----
 
 Do a dry-run _without_ deploying and pushing any new files:
 
 [source]
 ----
-    mvn jgitflow:release-finish -DnoDeploy=true -DpushReleases=false -DlocalOnly=true
+    mvn clean install -DperformRelease=true
 ----
 
 Delete all local git changes and branches
 
 *2. Release*
 
-Generate a new relase over *jgitflow-maven-plugin* (branch: `release/xxx`):
+Generate a new release (if not done in step 1) over *gitflow-maven-plugin* (branch: `release/xxx`):
 
 [source]
 ----
-    mvn jgitflow:release-start
+    mvn gitflow:release-start
 ----
 
 Execute the following commands, to update the Dockerfiles to the new release version at the branch `release/xxx` .
@@ -64,7 +64,7 @@ Start the release deploying and pushing any new branches and tags if needed:
 
 [source]
 ----
-    mvn jgitflow:release-finish
+    mvn gitflow:release-finish
 ----
 
 Go to the `dev` branch and adjust the version of the Dockerfiles:
@@ -75,19 +75,11 @@ Go to the `dev` branch and adjust the version of the Dockerfiles:
     git commit -am "update Dockerfiles to DEV-Version v$DEV_VERS"
 ----
 
-Push your changes:
+Push your changes in `dev` branch:
 
 [source]
 ----
 git push --all
-----
-
-Finally delete the no longer needed remote feature branch and do the manual release steps from above (after Jenkins job):
-
-[source]
-----
-git branch -d <branchName>
-git push origin --delete <branchName>
 ----
 
 .Troubleshooting

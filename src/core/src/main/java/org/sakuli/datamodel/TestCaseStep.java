@@ -19,9 +19,10 @@
 package org.sakuli.datamodel;
 
 import org.apache.commons.lang.StringUtils;
-import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.state.TestCaseStepState;
-import org.sakuli.exceptions.SakuliException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * test case step based Exceptions and critical times will be currently not supported in {@link
@@ -29,7 +30,9 @@ import org.sakuli.exceptions.SakuliException;
  *
  * @author tschneck Date: 18.06.13
  */
-public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCaseStepState> {
+public class TestCaseStep extends AbstractTestDataEntity<TestCaseStepState> {
+
+    private List<TestAction> testActions = new ArrayList<>();
 
     /**
      * {@inheritDoc}
@@ -43,7 +46,9 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
         }
         //if a step exceed the runtime set WARNING
         TestCaseStepState newState;
-        if (warningTime > 0 && getDuration() > warningTime) {
+        if (criticalTime > 0 && getDuration() > criticalTime) {
+            newState = TestCaseStepState.CRITICAL;
+        } else if (warningTime > 0 && getDuration() > warningTime) {
             newState = TestCaseStepState.WARNING;
         } else if (startDate != null && stopDate != null) {
             newState = TestCaseStepState.OK;
@@ -85,4 +90,13 @@ public class TestCaseStep extends AbstractTestDataEntity<SakuliException, TestCa
     public void setId(String id) {
         this.setName(id);
     }
+
+    public void addActions(List<TestAction> testActions) {
+        this.testActions.addAll(testActions);
+    }
+
+    public List<TestAction> getTestActions() {
+        return testActions;
+    }
+
 }

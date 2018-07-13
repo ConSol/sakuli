@@ -21,12 +21,12 @@ package org.sakuli.exceptions;
 import org.sakuli.actions.screenbased.RegionImpl;
 
 /**
- * Wraper for Sakuli Exceptions from a {@link org.sakuli.actions.screenbased.Region}.
+ * Wrapper for Sakuli Exceptions from a {@link org.sakuli.actions.screenbased.Region}.
  *
  * @author tschneck
- *         Date: 01.09.13
+ * Date: 01.09.13
  */
-public class SakuliActionException extends SakuliException {
+public class SakuliActionException extends SakuliCheckedException {
 
     protected RegionImpl lastRegion;
 
@@ -39,7 +39,7 @@ public class SakuliActionException extends SakuliException {
         this.lastRegion = lastRegion;
     }
 
-    public SakuliActionException(Throwable e, RegionImpl lastRegion) {
+    public SakuliActionException(Exception e, RegionImpl lastRegion) {
         super(e);
         this.lastRegion = lastRegion;
     }

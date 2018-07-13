@@ -18,7 +18,7 @@
 
 package org.sakuli.datamodel.actions;
 
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sikuli.script.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ public class ImageLibObject {
     private Pattern pattern;
 
 
-    public ImageLibObject(Path imageFile) throws SakuliException {
+    public ImageLibObject(Path imageFile) throws SakuliCheckedException {
         this.imageFile = imageFile;
 
         if (Files.exists(imageFile)) {
@@ -66,7 +66,7 @@ public class ImageLibObject {
                 logger.info("internal image library: '" + imageFile.toFile().getAbsolutePath() + "' is no .png picture");
             }
         } else {
-            throw new SakuliException("Image-File '" + imageFile.toFile().getAbsolutePath() + "' does not exists!");
+            throw new SakuliCheckedException("Image-File '" + imageFile.toFile().getAbsolutePath() + "' does not exists!");
         }
     }
 

@@ -51,6 +51,7 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String RECONNECT_SECONDS = "sahi.proxy.reconnectSeconds";
     public static final String REQUEST_DELAY_MS = "sahi.proxy.onSikuliInput.delayPerKey";
     public static final String REQUEST_DELAY_REFRESH_MS = "sahi.proxy.onSikuliInput.delayBeforeInput";
+    public static final String REMOVE_AUTHORIZATION_HEADER = "sahi.proxy.removeAuthorizationHeader.enabled";
     public static final String DEFAULT_PROXY_PORT = "9999";
     public static final String DEFAULT_RECONNECT_SECONDS = "1";
     public static final String DEFAULT_MAX_CONNECT_TRIES = "25";
@@ -67,6 +68,7 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String SAHI_JS_INJECT_TARGET_FILE_APPENDER = SAHI_JS_INJECT_TARGET_FOLDER_APPENDER + File.separator + SAHI_JS_INJECT_CODE_FILENAME;
 
     public static final String SAHI_LOG_DIR = "logs.dir";
+    public static final String SAHI_FF_MAX_PROFILES = "ff.profiles.max_number";
     public static final String HTTP_PROXY_ENABLED = "ext.http.proxy.enable";
     public static final String HTTP_PROXY_HOST = "ext.http.proxy.host";
     public static final String HTTP_PROXY_PORT = "ext.http.proxy.port";
@@ -83,7 +85,7 @@ public class SahiProxyProperties extends AbstractProperties {
     public static final String SSL_CLIENT_KEYSTORE = "ssl.client.keystore.type";
     public static final String SSL_CLIENT_CERT_PATH = "ssl.client.cert.path";
     public static final String SSL_CLIENT_CERT_PASSWORD = "ssl.client.cert.password";
-    public static final List<String> userdataPropertyNames = Arrays.asList(SAHI_LOG_DIR,
+    public static final List<String> userdataPropertyNames = Arrays.asList(SAHI_LOG_DIR, SAHI_FF_MAX_PROFILES,
             HTTP_PROXY_ENABLED, HTTP_PROXY_HOST, HTTP_PROXY_PORT, HTTP_PROXY_AUTH_ENABLED,
             HTTP_PROXY_AUTH_NAME, HTTP_PROXY_AUTH_PASSWORD,
             HTTPS_PROXY_ENABLED, HTTPS_PROXY_HOST, HTTPS_PROXY_PORT, HTTPS_PROXY_AUTH_ENABLED,
@@ -123,6 +125,11 @@ public class SahiProxyProperties extends AbstractProperties {
     private Integer requestDelayMs;
     @Value("${" + REQUEST_DELAY_REFRESH_MS + ":500}")
     private Integer requestDelayRefreshMs;
+    /**
+     * Default behaviour of Sahi OS
+     */
+    @Value("${" + REMOVE_AUTHORIZATION_HEADER + ":true}")
+    private Boolean removeAuthorizationHeader;
     @Autowired
     private SakuliProperties sakuliProperties;
     @Autowired
@@ -254,5 +261,13 @@ public class SahiProxyProperties extends AbstractProperties {
 
     public void setRequestDelayRefreshMs(Integer requestDelayRefreshMs) {
         this.requestDelayRefreshMs = requestDelayRefreshMs;
+    }
+
+    public Boolean getRemoveAuthorizationHeader() {
+        return removeAuthorizationHeader;
+    }
+
+    public void setRemoveAuthorizationHeader(Boolean removeAuthorizationHeader) {
+        this.removeAuthorizationHeader = removeAuthorizationHeader;
     }
 }

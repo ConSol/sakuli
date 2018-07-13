@@ -41,7 +41,7 @@ import static org.testng.Assert.*;
 public class TestSuiteHelperTest extends TestSuitePropertiesTestUtils {
 
     @Test
-    public void testInit() throws Throwable {
+    public void testInit() throws Exception {
         TestSuiteProperties testProps = TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "valid", "suite_id_001");
 
         HashMap<String, TestCase> result = TestSuiteHelper.loadTestCases(testProps);
@@ -55,7 +55,7 @@ public class TestSuiteHelperTest extends TestSuitePropertiesTestUtils {
     }
 
     @Test(expectedExceptions = FileNotFoundException.class, expectedExceptionsMessageRegExp = "test case path \".*unValidTestCase.*\" doesn't exists - check your \"testsuite.suite\" file")
-    public void testInitExceptionForTestCase() throws Throwable {
+    public void testInitExceptionForTestCase() throws Exception {
         TestSuiteProperties testProps = TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "unvalid", "unvalid_id");
         TestSuiteHelper.loadTestCases(testProps);
     }

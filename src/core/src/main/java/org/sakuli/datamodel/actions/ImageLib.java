@@ -19,7 +19,7 @@
 package org.sakuli.datamodel.actions;
 
 import org.sakuli.actions.settings.ScreenBasedSettings;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sikuli.script.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +56,7 @@ public class ImageLib extends HashMap<String, ImageLibObject> {
                         if (imageLibObject.getId() != null) {
                             put(imageLibObject.getId(), imageLibObject);
                         }
-                    } catch (SakuliException e) {
+                    } catch (SakuliCheckedException e) {
                         logger.error(e.getMessage());
                     }
                 }
@@ -66,17 +66,17 @@ public class ImageLib extends HashMap<String, ImageLibObject> {
 
     /**
      * getter, which checks the format of the pic names.
-     * The function should prevent typos and throws a {@link SakuliException}
+     * The function should prevent typos and throws a {@link SakuliCheckedException}
      * if the pic is not loaded in the picLib
      *
      * @param imageName imageName with or without the ending ".png".
      * @return the corresponding {@link Pattern} object to the imageName.
      */
-    public Pattern getPattern(String imageName) throws SakuliException {
+    public Pattern getPattern(String imageName) throws SakuliCheckedException {
         return getImage(imageName).getPattern();
     }
 
-    public ImageLibObject getImage(String imageName) throws SakuliException {
+    public ImageLibObject getImage(String imageName) throws SakuliCheckedException {
         String key = imageName;
         if (ImageLibObject.isValidInputImageFileEnding(imageName)) {
             key = imageName.substring(0, imageName.lastIndexOf("."));
@@ -84,7 +84,7 @@ public class ImageLib extends HashMap<String, ImageLibObject> {
 
         //if the set imageName is not loaded in the piclib throw a exception and log it
         if (!this.containsKey(key)) {
-            throw new SakuliException("SIKULI-PIC \"" + imageName + "\" not found in the loaded picLib folders! ... available pictures are: " + this.values());
+            throw new SakuliCheckedException("SIKULI-PIC \"" + imageName + "\" not found in the loaded picLib folders! ... available pictures are: " + this.values());
         }
         ImageLibObject imageLibObject = get(key);
         imageLibObject.setMinSimilarity(ScreenBasedSettings.MinSimilarity);

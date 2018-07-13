@@ -20,27 +20,27 @@ package org.sakuli.services.forwarder.gearman.model.builder;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.gearman.client.GearmanJobResult;
-import org.sakuli.exceptions.SakuliForwarderException;
+import org.sakuli.exceptions.SakuliForwarderRuntimeException;
 
 import java.nio.charset.Charset;
 
 /**
  * @author tschneck
- *         Date: 11.07.14
+ * Date: 11.07.14
  */
 public class NagiosExceptionBuilder {
 
 
-    public static SakuliForwarderException buildUnexpectedErrorException(Throwable e, String host, int port) {
-        return new SakuliForwarderException(e,
+    public static SakuliForwarderRuntimeException buildUnexpectedErrorException(Exception e, String host, int port) {
+        return new SakuliForwarderRuntimeException(
                 String.format("unexpected error by sending the results to the gearman forwarder '%s:'%s'",
                         host,
                         port
-                ));
+                ), e);
     }
 
-    public static SakuliForwarderException buildTransferException(String host, int port, GearmanJobResult result) {
-        return new SakuliForwarderException(
+    public static SakuliForwarderRuntimeException buildTransferException(String host, int port, GearmanJobResult result) {
+        return new SakuliForwarderRuntimeException(
                 String.format("something went wrong during the transfer of the results to the gearman forwarder '%s:'%s':\n%s",
                         host,
                         port,

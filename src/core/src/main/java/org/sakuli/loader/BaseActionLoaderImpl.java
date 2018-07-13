@@ -28,7 +28,7 @@ import org.sakuli.datamodel.properties.ActionProperties;
 import org.sakuli.datamodel.properties.SahiProxyProperties;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.datamodel.properties.TestSuiteProperties;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.exceptions.SakuliExceptionHandler;
 import org.sakuli.services.cipher.CipherService;
 import org.sakuli.utils.CleanUpHelper;
@@ -97,7 +97,7 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
         try {
             //set the current test case
             if (testSuite.getTestCase(testCaseID) == null) {
-                throw new SakuliException("Can't identify current test case in function init() in class SakuliBasedAction");
+                throw new SakuliCheckedException("Can't identify current test case in function init() in class SakuliBasedAction");
             }
             this.currentTestCase = testSuite.getTestCase(testCaseID);
             addImagePaths(imagePaths);
@@ -106,7 +106,7 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
                 //add the "sakuli-delay-active" var to the script runner context
                 if (rhinoScriptRunner == null || rhinoScriptRunner.getSession() == null) {
                     //could be possible if the aspectj compiler won't worked correctly, see RhinoAspect#getRhinoScriptRunner
-                    throw new SakuliException(String.format("cannot init rhino script runner with sakuli custom delay variable '%s'",
+                    throw new SakuliCheckedException(String.format("cannot init rhino script runner with sakuli custom delay variable '%s'",
                             SahiProxyProperties.SAHI_REQUEST_DELAY_ACTIVE_VAR));
                 }
                 String isRequestDelayActive = String.valueOf(sahiProxyProperties.isRequestDelayActive());
@@ -114,7 +114,7 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
                 LOGGER.info("set isRequestDelayActive={}", isRequestDelayActive);
             }
             cleanUp();
-        } catch (SakuliException e) {
+        } catch (SakuliCheckedException e) {
             exceptionHandler.handleException(e);
         }
     }
@@ -124,13 +124,13 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
     }
 
     @Override
-    public void addImagePaths(Path... imagePaths) throws SakuliException {
+    public void addImagePaths(Path... imagePaths) throws SakuliCheckedException {
         //load the images for the screenbased actions
         if (imagePaths != null && imagePaths.length > 0) {
             try {
                 imageLib.addImagesFromFolder(imagePaths);
             } catch (IOException e) {
-                throw new SakuliException(e);
+                throw new SakuliCheckedException(e);
             }
         } else {
             LOGGER.warn("No folder have been added to the test case image library!");
@@ -202,8 +202,8 @@ public class BaseActionLoaderImpl implements BaseActionLoader {
 
     @Override
     public TestCaseStep getCurrentTestCaseStep() {
-        if (currentTestCase != null) {
-            SortedSet<TestCaseStep> steps = currentTestCase.getStepsAsSortedSet();
+        if (getCurrentTestCase() != null) {
+            SortedSet<TestCaseStep> steps = getCurrentTestCase().getStepsAsSortedSet();
             if (!steps.isEmpty()) {
                 for (TestCaseStep step : steps) {
                     step.refreshState();

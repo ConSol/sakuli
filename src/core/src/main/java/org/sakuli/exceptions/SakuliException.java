@@ -1,7 +1,7 @@
 /*
  * Sakuli - Testing and Monitoring-Tool for Websites and common UIs.
  *
- * Copyright 2013 - 2015 the original author or authors.
+ * Copyright 2013 - 2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,45 +18,32 @@
 
 package org.sakuli.exceptions;
 
+import org.sakuli.datamodel.AbstractTestDataEntity;
+
+import java.util.Optional;
+
 /**
- * @author tschneck
- *         Date: 20.06.13
+ * Marker interface for all SakuliExceptions
  */
-public class SakuliException extends Exception {
+public interface SakuliException {
 
     /**
-     * creates a new {@link SakuliException} from type {@link Throwable}
+     * Provides the meta information on which execution step this exception is thrown, like e.g. {@link org.sakuli.services.TeardownService#handleTeardownException(Exception, boolean, AbstractTestDataEntity)} will use it.
      *
-     * @param message message of the exception
+     * @return a reference on the {@link AbstractTestDataEntity} which was executed at the point of the exception is thrown.
      */
-    public SakuliException(String message) {
-        super(message);
-    }
+    Optional<? extends AbstractTestDataEntity> getAsyncTestDataRef();
 
     /**
-     * wraps a {@link Throwable} to a {@link SakuliException}
+     * Set additional meta information to provide on which execution step in async code like the {@link org.sakuli.services.TeardownService#handleTeardownException(Exception, boolean, AbstractTestDataEntity)} will use it.
      *
-     * @param e
+     * @param testDataRef extends {@link AbstractTestDataEntity}
      */
-    public SakuliException(Throwable e) {
-        //use this constructor to avoid to get the classname as prefix in the exception message
-        super(e.getLocalizedMessage(), e);
-    }
+    <T extends AbstractTestDataEntity> void setAsyncTestDataRef(T testDataRef);
 
-    /**
-     * wraps a {@link Throwable} to a {@link SakuliException}
-     *
-     * @param suppressedException
-     * @param message
-     */
-    public SakuliException(Throwable suppressedException, String message) {
-        super(message);
-        this.addSuppressed(suppressedException);
-    }
+    String getMessage();
 
-    @Override
-    public String toString() {
-        return getLocalizedMessage();
+    default Exception castTo() {
+        return SakuliExceptionHandler.castTo(this);
     }
-
 }

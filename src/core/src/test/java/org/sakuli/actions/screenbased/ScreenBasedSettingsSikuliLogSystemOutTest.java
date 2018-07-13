@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 public class ScreenBasedSettingsSikuliLogSystemOutTest extends AopBaseTest {
 
     @Test
-    public void testDoHandleSikuliLog() throws Throwable {
+    public void testDoHandleSikuliLog() throws Exception {
         ScreenBasedSettings testling = BeanLoader.loadBean(ScreenBasedSettings.class);
         testling.setDefaults();
         BeanLoader.loadBean(LoggerInitializer.class).initLoggerContext();

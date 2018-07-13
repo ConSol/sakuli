@@ -34,16 +34,16 @@ import java.util.Date;
 
 /**
  * @author tschneck
- *         Date: 12.07.13
+ * Date: 12.07.13
  */
-public abstract class AbstractTestDataEntity<E extends Throwable, S extends SakuliState> implements Comparable<AbstractTestDataEntity> {
+public abstract class AbstractTestDataEntity<S extends SakuliState> implements Comparable<AbstractTestDataEntity> {
 
     public final static DateFormat GUID_DATE_FORMATE = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_SS");
     public final static DateFormat PRINT_DATE_FORMATE = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    protected transient final Logger logger = LoggerFactory.getLogger(this.getClass());
     protected Date startDate;
     protected Date stopDate;
-    protected E exception;
+    protected Exception exception;
     protected S state;
     protected String name;
     /**
@@ -52,7 +52,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
      */
     protected int dbPrimaryKey = -1;
     /**
-     * needed to be set to -1, so the function {@link org.sakuli.actions.TestCaseAction#addTestCaseStep(String, String, String, int)}
+     * needed to be set to -1, so the function {@link org.sakuli.actions.TestCaseAction#addTestCaseStep(String, String, String, int, int, boolean)}
      * can check if the method {@link org.sakuli.actions.TestCaseAction#initWarningAndCritical(int, int)}
      * have been called at the beginning of this test case.
      */
@@ -127,7 +127,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         return createUnixTimestamp(stopDate);
     }
 
-    public void addException(E e) {
+    public void addException(Exception e) {
         if (exception == null) {
             this.exception = e;
         } else {
@@ -135,7 +135,7 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
         }
     }
 
-    public Throwable getException() {
+    public Exception getException() {
         return exception;
     }
 
@@ -254,6 +254,14 @@ public abstract class AbstractTestDataEntity<E extends Throwable, S extends Saku
             stout += "\nend time: " + PRINT_DATE_FORMATE.format(this.getStopDate());
         }
         return stout;
+    }
+
+    /**
+     * @return a unique identifier for each execution of the test data entity
+     */
+    public String getGuid() {
+        Date guidDate = startDate != null ? startDate : new Date();
+        return id + "__" + GUID_DATE_FORMATE.format(guidDate);
     }
 
     public S getState() {

@@ -23,7 +23,7 @@ import org.sakuli.datamodel.TestCase;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.actions.Screen;
 import org.sakuli.datamodel.properties.ActionProperties;
-import org.sakuli.exceptions.SakuliException;
+import org.sakuli.exceptions.SakuliCheckedException;
 import org.sakuli.loader.BaseActionLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +95,12 @@ public class ScreenshotActions {
      */
     static Path createPictureFromBufferedImage(Path pictureFile, String screenshotFormat, BufferedImage bufferedImage) throws IOException {
         Path absPath = pictureFile.normalize().toAbsolutePath();
+
+        //checked allowed format
+        if (!allowedScreenshotFormats.contains(screenshotFormat)) {
+            throw new IOException("Format '" + screenshotFormat + "' is not supported! Use " + allowedScreenshotFormats.toString());
+        }
+
         //check Folder
         if (!Files.exists(absPath.getParent())) {
             Files.createDirectory(absPath.getParent());
@@ -102,19 +108,14 @@ public class ScreenshotActions {
 
         if (Files.exists(absPath)) {
             LOGGER.info("overwrite screenshot '{}'", absPath);
-            Files.delete(absPath);
+        } else {
+            absPath = Files.createFile(absPath);
         }
-
-        Files.createFile(pictureFile);
-        OutputStream outputStream = Files.newOutputStream(pictureFile);
-
-        if (!allowedScreenshotFormats.contains(screenshotFormat)) {
-            throw new IOException("Format '" + screenshotFormat + "' is not supported! Use " + allowedScreenshotFormats.toString());
-        }
+        OutputStream outputStream = Files.newOutputStream(absPath);
         //write image
         ImageIO.write(bufferedImage, screenshotFormat, outputStream);
-        LOGGER.info("screen shot saved to file \"" + pictureFile.toFile().getAbsolutePath() + "\"");
-        return pictureFile;
+        LOGGER.info("screen shot saved to file \"" + absPath + "\"");
+        return absPath;
     }
 
     private static String replaceSpecialCharacters(String string) {
@@ -172,7 +173,7 @@ public class ScreenshotActions {
             }
             return createPictureFromBufferedImage(picturePath, format, createBufferedImage(rectangle));
         } catch (Exception e) {
-            baseActionLoader.getExceptionHandler().handleException(new SakuliException(e,
+            baseActionLoader.getExceptionHandler().handleException(new SakuliCheckedException(e,
                     "Can't create Screenshot for path '" + picturePath + "'"));
             return null;
         }
@@ -209,7 +210,7 @@ public class ScreenshotActions {
         try {
             return takeScreenshotWithTimestampThrowIOException(message, folderPath, format, rectangle);
         } catch (IOException e) {
-            baseActionLoader.getExceptionHandler().handleException(new SakuliException(e,
+            baseActionLoader.getExceptionHandler().handleException(new SakuliCheckedException(e,
                     "Can't execute 'takeScreenshotWithTimestamp()' for '" + message + ", " + folderPath + ", " + format + "'"));
             return null;
         }

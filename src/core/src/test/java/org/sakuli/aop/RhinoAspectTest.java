@@ -39,7 +39,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -232,7 +232,7 @@ public class RhinoAspectTest extends AopBaseTest {
         testAction.init("testID", 3, 4, "imagefolder1", "imagefolder2");
 
         assertLastLine(logFile, testAction.getClass().getSimpleName(), LogLevel.INFO,
-                "\"test case [" + sampleTc.getActionValueString() + "]\" TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
+                "TestCaseAction.init() - init a new test case with arg(s) [testID, 3, 4, [imagefolder1, imagefolder2]]");
     }
 
     @Test

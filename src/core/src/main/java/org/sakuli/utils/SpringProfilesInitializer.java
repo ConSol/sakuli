@@ -45,6 +45,7 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
     public static final String GEARMAN = "GEARMAN";
     public static final String INCINGA2 = "ICINGA2";
     public static final String CHECK_MK = "CHECK_MK";
+    public static final String JSON = "JSON";
     public static final String CIPHER_INTERFACE = "CIPHER_INTERFACE";
     public static final String CIPHER_ENV = "CIPHER_ENV";
 
@@ -84,6 +85,9 @@ public class SpringProfilesInitializer implements InitializingBean, ApplicationC
         }
         if (forwarderProperties.isCheckMKEnabled()) {
             profileNames.add(CHECK_MK);
+        }
+        if (forwarderProperties.isJsonEnabled()) {
+            profileNames.add(JSON);
         }
 
         //cipher profiles
