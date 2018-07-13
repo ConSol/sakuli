@@ -18,11 +18,9 @@
 
 package org.sakuli.datamodel.helper;
 
-import org.apache.commons.io.FileUtils;
-import org.sakuli.datamodel.TestCase;
-import org.sakuli.datamodel.properties.TestSuiteProperties;
-import org.sakuli.utils.TestSuitePropertiesTestUtils;
-import org.testng.annotations.Test;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNull;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Files;
@@ -31,20 +29,24 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileTime;
 import java.security.InvalidParameterException;
-import java.util.HashMap;
+import java.util.Map;
 
-import static org.testng.Assert.*;
+import org.apache.commons.io.FileUtils;
+import org.sakuli.datamodel.TestCase;
+import org.sakuli.datamodel.properties.TestSuiteProperties;
+import org.sakuli.utils.TestSuitePropertiesBuilder;
+import org.testng.annotations.Test;
 
 /**
  * @author tschneck Date: 17.07.13
  */
-public class TestSuiteHelperTest extends TestSuitePropertiesTestUtils {
+public class TestSuiteHelperTest {
 
     @Test
     public void testInit() throws Exception {
-        TestSuiteProperties testProps = TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "valid", "suite_id_001");
+        TestSuiteProperties testProps = new TestSuitePropertiesBuilder(this.getClass(), "valid", "suite_id_001").build();
 
-        HashMap<String, TestCase> result = TestSuiteHelper.loadTestCases(testProps);
+        Map<String, TestCase> result = TestSuiteHelper.loadTestCases(testProps).getEnabledTests();
         assertEquals(1, result.size());
         //tests if onyl the valid testcase are in the suite, with there right names
         TestCase tc = result.values().iterator().next();
@@ -56,7 +58,7 @@ public class TestSuiteHelperTest extends TestSuitePropertiesTestUtils {
 
     @Test(expectedExceptions = FileNotFoundException.class, expectedExceptionsMessageRegExp = "test case path \".*unValidTestCase.*\" doesn't exists - check your \"testsuite.suite\" file")
     public void testInitExceptionForTestCase() throws Exception {
-        TestSuiteProperties testProps = TestSuitePropertiesTestUtils.getTestProps(this.getClass(), "unvalid", "unvalid_id");
+        TestSuiteProperties testProps = new TestSuitePropertiesBuilder(this.getClass(), "unvalid", "unvalid_id").build();
         TestSuiteHelper.loadTestCases(testProps);
     }
 

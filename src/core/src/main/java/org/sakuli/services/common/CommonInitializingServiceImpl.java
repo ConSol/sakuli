@@ -18,6 +18,12 @@
 
 package org.sakuli.services.common;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.nio.file.Path;
+import java.util.Date;
+
 import org.apache.commons.lang3.StringUtils;
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.helper.TestSuiteHelper;
@@ -30,11 +36,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Date;
 
 /**
  * @author tschneck Date: 22.05.14
@@ -87,9 +88,24 @@ public class CommonInitializingServiceImpl implements InitializingService {
         if (testSuiteProperties.isLoadTestCasesAutomatic()) {
             try {
                 testSuite.setTestCases(null);
-                testSuite.setTestCases(TestSuiteHelper.loadTestCases(testSuiteProperties));
+                TestSuiteHelper.TestCaseCollection testCases = TestSuiteHelper.loadTestCases(testSuiteProperties);
+                testSuite.setTestCases(testCases.getEnabledTests());
+                testSuite.setSkippedTests(testCases.getSkippedTests());
             } catch (IOException e) {
                 throw new SakuliInitException(e, String.format("Cannot read testsuite.suite '%s' file", testSuiteProperties.getTestSuiteSuiteFile().toString()));
+            }
+
+            if (!testSuite.getSkippedTests().isEmpty()) {
+                logger.info("Test case filters applied, generating a temporary .suite file");
+                if (testSuite.getTestCases().isEmpty()) {
+                    throw new SakuliInitException(String.format("Suite file '%s' does not contain test cases.", testSuite.getAbsolutePathOfFilteredTestSuiteFile()));
+                }
+                try {
+                    Path filteredSuiteFile = TestSuiteHelper.generateFilteredTestSuiteFile(testSuite);
+                    testSuite.setAbsolutePathOfFilteredTestSuiteFile(filteredSuiteFile);
+                } catch (IOException e) {
+                    throw new SakuliInitException(e, String.format("Failed to create filtered testsuite.suite '%s' file", testSuite.getAbsolutePathOfFilteredTestSuiteFile()));
+                }
             }
         }
         logger.info("test suite with guid '{}' has been initialized!", testSuite.getGuid());

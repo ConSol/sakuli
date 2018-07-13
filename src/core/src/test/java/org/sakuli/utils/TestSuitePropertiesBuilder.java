@@ -18,21 +18,36 @@
 
 package org.sakuli.utils;
 
-import org.sakuli.datamodel.properties.TestSuiteProperties;
+import static org.testng.Assert.assertTrue;
 
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.testng.Assert.assertTrue;
+import org.sakuli.datamodel.properties.TestSuiteProperties;
 
 /**
  * @author tschneck Date: 22.05.14
  */
-public abstract class TestSuitePropertiesTestUtils {
+public class TestSuitePropertiesBuilder {
 
-    public static TestSuiteProperties getTestProps(Class<?> classDef, String resourcePath, String suiteId) throws URISyntaxException {
+    private TestSuiteProperties testSuiteProperties;
+
+    public TestSuitePropertiesBuilder(Class<?> classDef, String resourcePath, String suiteId) throws URISyntaxException {
+        this.testSuiteProperties = getTestProps(classDef, resourcePath, suiteId);
+    }
+
+    public TestSuitePropertiesBuilder withFilters(String... filters) {
+        this.testSuiteProperties.setTestCaseFilters(filters);
+        return this;
+    }
+
+    public TestSuiteProperties build() {
+        return this.testSuiteProperties;
+    }
+
+    private TestSuiteProperties getTestProps(Class<?> classDef, String resourcePath, String suiteId) throws URISyntaxException {
         Path folderPath = Paths.get(classDef.getResource(resourcePath).toURI());
         assertTrue(Files.exists(folderPath));
         assertTrue(Files.isDirectory(folderPath));

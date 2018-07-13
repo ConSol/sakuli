@@ -1,0 +1,34 @@
+
+:imagesdir: ../../../images
+
+[[testcase-filtering]]
+==== Testcase Filtering
+[#git-edit-section]
+:page-path: docs/manual/execution/native/testcase-filtering.adoc
+git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
+
+Sometimes it's desirable to just run some specific test cases instead of the whole test suite.
+Sakuli provides an option `testcase.names` to filter a test suite by passing a list of tests via comma separated list, without having to modify the `*.suite` file.
+
+===== Filtering
+
+Assuming a test suite with multiple test cases, e.g. `test1`, `test2`, `test3`:
+
+----
+sakuli run INST_DIR/example_test_suites/example_suite -D testcase.names=test1,test3
+----
+
+Running Sakuli with the shown option `-D testcase.names=test1,test3` would only run testcases `test1` and `test3` in the given suite `example_suite`.
+
+
+===== Filter Hierarchy
+
+Test case filters provided via CLI do not override test suite settings.
+Tests which are disabled in the `*.suite` file can not be enabled via CLI.
+
+Providing filters which result in an empty test suite raises an error.
+
+===== Troubleshooting
+
+In order to enable test case filtering, Sakuli generates a temporary suite file which gets deleted after test execution.
+So to be able to filter test cases, Sakuli has to be able to create temporary files in the respective TMPDIR.
