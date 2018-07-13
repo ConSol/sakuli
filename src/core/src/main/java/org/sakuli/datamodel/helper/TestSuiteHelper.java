@@ -172,7 +172,7 @@ public class TestSuiteHelper {
         File tmp = File.createTempFile(suite.getId(), ".suite");
         tmp.deleteOnExit();
         ArrayList<String> testCaseLines = new ArrayList<>();
-        suite.getTestCases().forEach((k, v) -> testCaseLines.add(v.getTcFile().toString() + " " + v.getStartUrl()));
+        suite.getTestCases().forEach((k, v) -> testCaseLines.add(v.getTcFile().toString().replace("\\", "\\\\") + " " + v.getStartUrl()));
 
         Files.write(tmp.getAbsoluteFile().toPath(), testCaseLines, Charset.forName("UTF-8"));
         return tmp.getAbsoluteFile().toPath();
