@@ -18,6 +18,17 @@
 
 package org.sakuli.datamodel;
 
+import static org.apache.commons.lang.StringUtils.isEmpty;
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.StringUtils.trimToEmpty;
+
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import org.sakuli.datamodel.properties.TestSuiteProperties;
 import org.sakuli.datamodel.state.TestCaseState;
 import org.sakuli.datamodel.state.TestSuiteState;
@@ -25,14 +36,6 @@ import org.sakuli.exceptions.SakuliCheckedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import static org.apache.commons.lang.StringUtils.*;
 
 /**
  * @author tschneck Date: 10.06.13
@@ -47,8 +50,10 @@ public class TestSuite extends AbstractTestDataEntity<TestSuiteState> {
     private String host;
     private Path testSuiteFolder;
     private Path testSuiteFile;
+    private Path filteredTestSuiteFile;
     private int dbJobPrimaryKey = -1;
     private Map<String, TestCase> testCases;
+    private List<String> skippedTests;
 
     public TestSuite() {
     }
@@ -65,6 +70,7 @@ public class TestSuite extends AbstractTestDataEntity<TestSuiteState> {
         criticalTime = properties.getCriticalTime();
         testSuiteFolder = properties.getTestSuiteFolder();
         testSuiteFile = properties.getTestSuiteSuiteFile();
+        filteredTestSuiteFile = testSuiteFile;
         browserName = properties.getBrowserName();
     }
 
@@ -161,6 +167,18 @@ public class TestSuite extends AbstractTestDataEntity<TestSuiteState> {
         return testSuiteFile == null ? null : testSuiteFile.toAbsolutePath().toString();
     }
 
+    public String getAbsolutePathOfFilteredTestSuiteFile() {
+        return filteredTestSuiteFile == null ? null : filteredTestSuiteFile.toAbsolutePath().toString();
+    }
+
+    public void setAbsolutePathOfFilteredTestSuiteFile(Path filteredTestSuiteFile) {
+        this.filteredTestSuiteFile = filteredTestSuiteFile;
+    }
+
+    public Boolean hasCustomTestSuiteFile() {
+        return !this.testSuiteFile.equals(this.filteredTestSuiteFile);
+    }
+
     public Path getTestSuiteFolder() {
         return testSuiteFolder;
     }
@@ -226,6 +244,15 @@ public class TestSuite extends AbstractTestDataEntity<TestSuiteState> {
         return null;
     }
 
+    public List<String> getSkippedTests() {
+        return skippedTests;
+    }
+
+    public void setSkippedTests(final List<String> skippedTests) {
+        this.skippedTests = skippedTests;
+    }
+
+
     /**
      * checks if the test case id is valid
      *
@@ -247,6 +274,7 @@ public class TestSuite extends AbstractTestDataEntity<TestSuiteState> {
                 ", testSuiteFile=" + testSuiteFile +
                 ", dbJobPrimaryKey=" + dbJobPrimaryKey +
                 ", testCases=" + testCases +
+                ", skipped testCases=" + skippedTests +
                 '}';
     }
 

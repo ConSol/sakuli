@@ -24,12 +24,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>sakuli-root</artifactId>
-        <version>1.2.0-247-sakuli-se-SNAPSHOT</version>
+        <version>1.3.0-247-sakuli-se-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>sakuli-sahi-setup</artifactId>
-    <version>1.2.0-247-sakuli-se-SNAPSHOT</version>
+    <version>1.3.0-247-sakuli-se-SNAPSHOT</version>
     <name>${project.artifactId}</name>
 
     <description>module for all sahi based functionality</description>

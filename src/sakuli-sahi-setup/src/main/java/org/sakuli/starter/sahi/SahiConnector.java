@@ -18,9 +18,12 @@
 
 package org.sakuli.starter.sahi;
 
-import net.sf.sahi.ant.Report;
-import net.sf.sahi.test.TestRunner;
-import net.sf.sahi.util.Utils;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.ConnectException;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import org.sakuli.datamodel.TestSuite;
 import org.sakuli.datamodel.properties.SakuliProperties;
 import org.sakuli.exceptions.SakuliCheckedException;
@@ -34,11 +37,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.ConnectException;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import net.sf.sahi.ant.Report;
+import net.sf.sahi.test.TestRunner;
+import net.sf.sahi.util.Utils;
 
 @Component
 public class SahiConnector {
@@ -166,12 +167,12 @@ public class SahiConnector {
         String startUrl = String.format("http://%s:%s", sahiHost, sahiPort);
         logger.info("connect Sahi-TestRunner:{}", startUrl);
         return new TestRunner(
-                testSuite.getAbsolutePathOfTestSuiteFile(),  //path to the .suite file
+                testSuite.getAbsolutePathOfFilteredTestSuiteFile(),  //path to the .suite file
                 testSuite.getBrowserName(),   //the browser name, for example "firefox"
                 startUrl,                     //the start url, for example "http://localhost:9999"
-                sahiHost,                     //host on which the sahi proxy will started
-                sahiPort,                     //port on which the sahi port is opend
-                threads);                     //numer of parallel process in the sakuli application still 1
+                sahiHost,                     //host on which the Sahi proxy will started
+                sahiPort,                     //port on which the Sahi port is opened
+                threads);                     //number of parallel process in the Sakuli application still 1
     }
 
     protected String getIncludeFolderJsPath() {

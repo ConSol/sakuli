@@ -18,8 +18,18 @@
 
 package org.sakuli.javaDSL;
 
-import net.sf.sahi.client.Browser;
-import net.sf.sahi.test.ProcessHelper;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.sakuli.actions.testcase.JavaScriptTestCaseActionImpl;
@@ -36,19 +46,15 @@ import org.sakuli.utils.ResourceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import net.sf.sahi.client.Browser;
+import net.sf.sahi.test.ProcessHelper;
 
 /**
  * @author Tobias Schneck
@@ -69,7 +75,8 @@ public abstract class AbstractSakuliTest {
 
     public static Path resolveResource(Class<?> aClass, String resourceName) {
         try {
-            return ResourceHelper.getClasspathResource(aClass, resourceName, "cannot resolve resource '" + resourceName + "' from classpath!");
+            return ResourceHelper.getClasspathResource(aClass, resourceName,
+                    "cannot resolve resource '" + resourceName + "' from classpath!");
         } catch (NoSuchFileException e) {
             throw new SakuliRuntimeException("cannot resolve resource '" + resourceName + "' from classpath!", e);
         }
@@ -114,7 +121,8 @@ public abstract class AbstractSakuliTest {
         if (Files.exists(sahHomeFolder)) {
             return sahHomeFolder.normalize().toAbsolutePath().toString();
         }
-        throw new SakuliRuntimeException("Cannot load SAHI_HOME folder! Should be normally under 'target/classes/" + packageName + "'");
+        throw new SakuliRuntimeException(
+                "Cannot load SAHI_HOME folder! Should be normally under 'target/classes/" + packageName + "'");
     }
 
     @BeforeClass(alwaysRun = true)
@@ -141,7 +149,8 @@ public abstract class AbstractSakuliTest {
             initParameter.addImagePath(getTestCaseFolder().toString());
         }
         initTestCaseAction(initParameter);
-        LOGGER.info("............................START TEST-CASE '{}' - {}", initParameter.getTestCaseId(), testCaseName);
+        LOGGER.info("............................START TEST-CASE '{}' - {}", initParameter.getTestCaseId(),
+                testCaseName);
         counter = 0;
         startTimeCase = DateTime.now();
     }
@@ -155,7 +164,8 @@ public abstract class AbstractSakuliTest {
      * Initialize the image folders, warning time and critical time for the current testcase with the assigned
      * initParameter.
      *
-     * @param initParameter a initialized object of {@link TestCaseInitParameter}.
+     * @param initParameter
+     *         a initialized object of {@link TestCaseInitParameter}.
      */
     protected void initTestCaseAction(TestCaseInitParameter initParameter) {
         List<Path> imagePaths = initParameter.getImagePaths();
@@ -207,7 +217,8 @@ public abstract class AbstractSakuliTest {
         if (Files.exists(resourcePath)) {
             return resourcePath.normalize().toAbsolutePath().toString();
         }
-        throw new SakuliRuntimeException("Cannot load test suites root folder! Should be at normal test 'src/test/resources'");
+        throw new SakuliRuntimeException(
+                "Cannot load test suites root folder! Should be at normal test 'src/test/resources'");
     }
 
     /**
@@ -218,7 +229,8 @@ public abstract class AbstractSakuliTest {
         if (Files.exists(suiteFolder)) {
             return suiteFolder.normalize().toAbsolutePath().toString();
         }
-        throw new SakuliRuntimeException(String.format("Cannot load test suite folder from classpath! Should be at normal test 'src/test/resources/%s'",
+        throw new SakuliRuntimeException(String.format(
+                "Cannot load test suite folder from classpath! Should be at normal test 'src/test/resources/%s'",
                 StringUtils.replace(this.getClass().getCanonicalName(), ".", "/")));
     }
 
@@ -232,9 +244,9 @@ public abstract class AbstractSakuliTest {
         if (Files.exists(sakuliHomeFolder)) {
             return sakuliHomeFolder.normalize().toAbsolutePath().toString();
         }
-        throw new SakuliRuntimeException("Cannot load SAKULI_HOME folder! Should be normally under 'target/classes/" + packageName + "'");
+        throw new SakuliRuntimeException(
+                "Cannot load SAKULI_HOME folder! Should be normally under 'target/classes/" + packageName + "'");
     }
-
 
     @AfterSuite(alwaysRun = true)
     public void tearDown() throws Exception {

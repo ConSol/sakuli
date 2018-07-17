@@ -18,6 +18,8 @@
 
 package org.sakuli.services.cipher;
 
+import java.io.IOException;
+
 import org.mockito.MockitoAnnotations;
 import org.sakuli.datamodel.properties.CipherProperties;
 import org.sakuli.exceptions.SakuliCipherException;
@@ -25,8 +27,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import java.io.IOException;
 
 /**
  * @author tschneck
@@ -56,22 +56,22 @@ public class NetworkInterfaceCipherUtilsTest {
         testling.scanNetworkInterfaces();
     }
 
-    @Test(dataProvider = "secrects")
-    public void testEncrypt(String testSecrect) throws Exception {
+    @Test(dataProvider = "secrets")
+    public void testEncrypt(String testSecret) throws Exception {
         //check if MAC-Adrress is reachable
-        Assert.assertNotNull(testling.encrypt(testSecrect));
+        Assert.assertNotNull(testling.encrypt(testSecret));
     }
 
-    @Test(dataProvider = "secrects")
-    public void testEncryptAndDecrypt(String testSecrect) throws Exception {
-        String encrypted = testling.encrypt(testSecrect);
+    @Test(dataProvider = "secrets")
+    public void testEncryptAndDecrypt(String testSecret) throws Exception {
+        String encrypted = testling.encrypt(testSecret);
         final NetworkInterfaceCipher cipher2 = new NetworkInterfaceCipher(props);
         cipher2.scanNetworkInterfaces();
         final String result = cipher2.decrypt(encrypted);
         System.out.println("RESULT:   " + result);
-        System.out.println("EXPECTED: " + testSecrect);
-        Assert.assertEquals(testSecrect.getBytes(), result.getBytes());
-        Assert.assertEquals(testSecrect, result);
+        System.out.println("EXPECTED: " + testSecret);
+        Assert.assertEquals(testSecret.getBytes(), result.getBytes());
+        Assert.assertEquals(testSecret, result);
     }
 
     @Test(expectedExceptions = SakuliCipherException.class)

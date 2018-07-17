@@ -10,7 +10,21 @@ git-link:{page-path}{git-view} | git-link:{page-path}{git-edit}
 
 [[version-1.2.0]]
 .http://consol.github.io/sakuli/v1.2.0/index.html[*Version 1.2.0*]
-* Sakuli UI for managing and developing Sakuli tests (https://github.com/ConSol/sakuli/issues/308https://github.com/ConSol/sakuli/issues/308[#308], https://github.com/ConSol/sakuli-ui[github.com/ConSol/sakuli-ui])
+* Sakuli UI (beta) for managing and developing Sakuli tests (https://github.com/ConSol/sakuli-ui/releases/tag/v0.10.0[github.com/ConSol/sakuli-ui])
+** CLI option to start <<sakuli-ui, Sakuli UI>> (https://github.com/ConSol/sakuli/issues/308[#308])
+* Add support to <<forwarder-step-case,forward step and case results>> (https://github.com/ConSol/sakuli/issues/304[#304])
+* Change Gearman forwarder to use <<forwarder-templates,twig-based templates>> (https://github.com/ConSol/sakuli/issues/310[#310])
+* Fix OMD event handler only firing on status changes (https://github.com/ConSol/sakuli/issues/322[#322])
+* Fix hanging execution on older Internet Explorer versions (https://github.com/ConSol/sakuli/issues/315[#315])
+* Harmonize CLI starter and Java starter options (https://github.com/ConSol/sakuli/issues/309[#309])
+* Fix Sahi proxy: Prevent <<sahi-authorization-headers, removal of authorization headers>> (e.g. Bearer Token) (https://github.com/ConSol/sakuli/issues/306[#306])
+* <<json-forwarder, JSON file output forwarder>> (https://github.com/ConSol/sakuli/issues/274[#274])
+* Fix `takeScreenshot` not overwriting existing error screenshot on Windows (https://github.com/ConSol/sakuli/issues/303[#303])
+** <<Environment.takeScreenshot>>
+** <<Region.takeScreenshot>>
+* <<docker-images, Docker images>>:
+** Added Sakuli UI to Docker images (https://github.com/ConSol/sakuli/issues/308[#308])
+** Changed default user to 1000 (https://github.com/ConSol/sakuli/issues/307[#307])
 
 [[version-1.1.0]]
 .http://consol.github.io/sakuli/v1.1.0/index.html[*Version 1.1.0*]
