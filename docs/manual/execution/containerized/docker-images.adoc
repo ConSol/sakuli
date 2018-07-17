@@ -127,7 +127,7 @@ CMD can be overwritten in two ways:
 
 [source, bash]
 ----
-~$ docker run -it -p 5901:5901 -p 6901:6901 -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites" consol/sakuli-centos-xfce 'run /my-sakuli-testsuites/suite_1'
+~$ docker run -it -p 5901:5901 -p 6901:6901 -v "/home/myuser/my-sakuli-testsuites:/my-sakuli-testsuites" consol/sakuli-centos-xfce run /my-sakuli-testsuites/suite_1
 ----
 
 This command will
