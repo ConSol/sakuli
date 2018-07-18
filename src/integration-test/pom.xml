@@ -23,14 +23,14 @@
 
     <parent>
         <groupId>org.sakuli</groupId>
-        <artifactId>root</artifactId>
+        <artifactId>sakuli-parent</artifactId>
         <version>1.3.0-maven-central-pgp-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>integration-test</artifactId>
+    <artifactId>sakuli-integration-test</artifactId>
     <version>1.3.0-maven-central-pgp-SNAPSHOT</version>
-    <name>integration-test</name>
+    <name>Sakuli :: Integration Test</name>
     <description>integration test module for sakuli</description>
 
     <packaging>jar</packaging>
@@ -42,6 +42,14 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
             <!-- prepare integration-test env-var-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -61,7 +69,7 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>org.sakuli</groupId>
-                                    <artifactId>common</artifactId>
+                                    <artifactId>sakuli-common</artifactId>
                                     <version>${project.version}</version>
                                     <type>jar</type>
                                     <overWrite>true</overWrite>
@@ -137,7 +145,7 @@
                                     <artifactItems>
                                         <artifactItem>
                                             <groupId>org.sakuli</groupId>
-                                            <artifactId>java-dsl</artifactId>
+                                            <artifactId>sakuli-java-dsl</artifactId>
                                             <version>${project.version}</version>
                                             <type>jar</type>
                                             <overWrite>true</overWrite>
@@ -157,22 +165,22 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>core</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>sakuli-core</artifactId>
+            <version>${project.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>java-dsl</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>sakuli-java-dsl</artifactId>
+            <version>${project.version}</version>
             <type>jar</type>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>java-dsl</artifactId>
-            <version>${project.parent.version}</version>
+            <artifactId>sakuli-java-dsl</artifactId>
+            <version>${project.version}</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>

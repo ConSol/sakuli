@@ -22,15 +22,15 @@
 
     <parent>
         <groupId>org.sakuli</groupId>
-        <artifactId>root</artifactId>
+        <artifactId>sakuli-parent</artifactId>
         <version>1.3.0-maven-central-pgp-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>docs-sakuli-api</artifactId>
+    <artifactId>sakuli-docs-api</artifactId>
     <version>1.3.0-maven-central-pgp-SNAPSHOT</version>
-    <name>${project.artifactId}</name>
     <description>maven module to build the markdown api docs from jsdoc</description>
+    <name>Sakuli :: Docs API</name>
 
     <packaging>pom</packaging>
 
@@ -41,6 +41,18 @@
         <js-src.source>${project.parent.basedir}/src/common/src/main/resources/org/sakuli/common/libs/js</js-src.source>
         <markdown.output.directory>${project.parent.basedir}/docs/manual/testdefinition</markdown.output.directory>
     </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <profiles>
         <!--TODO integrate into AsciiDoc process https://github.com/ConSol/sakuli/issues/255-->
