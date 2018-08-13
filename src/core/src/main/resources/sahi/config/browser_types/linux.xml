@@ -47,5 +47,15 @@
         <processName>chrome</processName>
         <capacity>5</capacity>
     </browserType>
+
+    <browserType>
+        <name>chrome_headless</name>
+        <displayName>Chrome Headless</displayName>
+        <icon>chrome.png</icon>
+        <path>/usr/bin/google-chrome</path>
+        <options>--incognito --headless --disable-gpu --remote-debugging-port=9222 --user-data-dir=$userDir/browser/chrome/profiles/sahi$threadNo --start-maximized --no-default-browser-check --no-first-run --disable-infobars --proxy-server=localhost:9999 --disable-popup-blocking</options>
+        <processName>chrome</processName>
+        <capacity>5</capacity>
+    </browserType>
 </browserTypes>
 <!-- @formatter:on -->

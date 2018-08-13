@@ -96,6 +96,16 @@
     </browserType>
 
     <browserType>
+        <name>chrome_headless</name>
+        <displayName>Chrome Headless</displayName>
+        <icon>chrome.png</icon>
+        <path>$ProgramFiles (x86)\Google\Chrome\Application\chrome.exe</path>
+        <options>--incognito --headless --disable-gpu --remote-debugging-port=9222 --user-data-dir="$userDir/browser/chrome/profiles/sahi$threadNo" --start-maximized --no-default-browser-check --no-first-run --disable-infobars --proxy-server=localhost:9999 --disable-popup-blocking</options>
+        <processName>chrome.exe</processName>
+        <capacity>5</capacity>
+    </browserType>
+
+    <browserType>
         <name>safari</name>
         <displayName>Safari</displayName>
         <icon>safari.png</icon>
