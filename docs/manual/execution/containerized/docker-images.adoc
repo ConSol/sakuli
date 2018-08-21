@@ -362,7 +362,7 @@ Depending on the Sahi proxy, Sakuli will break the HTTPS connections between the
 
 . Update the permissions to ensure that the files can be read by container user:
 
-    ~$ chmod a+rw ssl_files/
+    ~$ chmod -R a+rw ssl_files/
 
 . At least you have just to add the files to the correct place in Docker image `Dockerfile`:
 
