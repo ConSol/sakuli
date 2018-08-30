@@ -34,9 +34,6 @@ try {
     env.type("calculator").sleep(1);
     env.type(Key.ENTER);
 
-    env.setSimilarity(0.8); // This is necessary to ensure that sakuli can identify the pictures, as the calculator
-                            // is semi transparent and hence small differences in colour can occur.
-
     screen.waitForImage("calculator.png", 10).highlight();
     env.type("525").sleep(1);
     screen.find("plus.png").highlight().click().type("100");  
