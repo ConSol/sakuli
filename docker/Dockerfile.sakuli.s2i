@@ -14,5 +14,5 @@ RUN chmod 775 /opt/sakuli/s2i/* && \
 
 USER 1000
 
-ENTRYPOINT []
+ENTRYPOINT [""]
 CMD ["/opt/sakuli/s2i/usage"]
