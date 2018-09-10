@@ -14,5 +14,6 @@ RUN chmod 775 /opt/sakuli/s2i/* && \
 
 USER 1000
 
-ENTRYPOINT []
+# Set ENTRYPOINT to an empty string, since S2I doesn't parse an empty tag correctly
+ENTRYPOINT [""]
 CMD ["/opt/sakuli/s2i/usage"]
