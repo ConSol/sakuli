@@ -1,0 +1,11 @@
+<!--SAHI_INJECT_START-->
+<script>/*<![CDATA[*//*---->*/__sahiDebugStr__="";__sahiDebug__=function(s){__sahiDebugStr__+=(s+"\n");};/*--*//*]]>*/</script>
+<script src="/_s_/dyn/SessionState_domainfix/domainfix.js"></script>
+<script src='/_s_/spr/concat.js' id='_sahi_concat'></script>
+<script src='/_s_/dyn/SessionState/state.js'></script>
+<script src='/_s_/spr/language_pack.js' id='langpack'></script>
+<script>/*<![CDATA[*//*---->*/_sahi.createCookie('sahisid', _sahi.sid);_sahi.loadXPathScript()/*--*//*]]>*/</script>
+<script>/*<![CDATA[*//*---->*/eval(_sahi.sendToServer("/_s_/dyn/Player_script/script.js"));/*--*//*]]>*/</script>
+<script src="/_s_/dyn/SessionState_userExtensions/user_extensions.js"></script>
+<script src='/_s_/spr/playback.js'></script>
+<!--SAHI_INJECT_END-->
