@@ -24,12 +24,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>1.3.0-SNAPSHOT</version>
+        <version>1.3.0-340-GEARMAN_MAX_UNIQUE_SIZE-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>core</artifactId>
-    <version>1.3.0-SNAPSHOT</version>
+    <version>1.3.0-340-GEARMAN_MAX_UNIQUE_SIZE-SNAPSHOT</version>
     <name>core</name>
 
     <description>core module for all sakuli functionality</description>
