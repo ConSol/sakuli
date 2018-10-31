@@ -178,8 +178,14 @@ public class GearmanResultServiceImpl extends AbstractTeardownService implements
         } else {
             bytesBase64 = Base64.encodeBase64(checkResult.getPayload().getBytes());
         }
+        final String uniqueId;
+        if (properties.isIdHashing()) {
+            uniqueId = String.valueOf(checkResult.getUuid().hashCode());
+        }  else {
+            uniqueId = checkResult.getUuid();
+        }
 
-        return GearmanJobImpl.createBackgroundJob(checkResult.getQueueName(), bytesBase64, checkResult.getUuid());
+        return GearmanJobImpl.createBackgroundJob(checkResult.getQueueName(), bytesBase64, uniqueId);
     }
 
     protected GearmanJobServerConnection getGearmanConnection(String hostname, int port) {
