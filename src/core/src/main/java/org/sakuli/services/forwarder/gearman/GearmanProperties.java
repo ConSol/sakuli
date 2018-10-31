@@ -43,6 +43,7 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private static final String JOB_INTERVAL = "sakuli.forwarder.gearman.job.interval";
     private static final String ENCRYPTION = "sakuli.forwarder.gearman.encryption";
     private static final String SECRET_KEY = "sakuli.forwarder.gearman.secret.key";
+    private static final String HASH_IDS = "sakuli.forwarder.gearman.hash.ids";
     private static final String NAGIOS_HOSTNAME = "sakuli.forwarder.gearman.nagios.hostname";
     private static final String NAGIOS_CHECK_COMMAND = "sakuli.forwarder.gearman.nagios.check_command";
     private static final String NAGIOS_SERVICE_DESCRIPTION = "sakuli.forwarder.gearman.nagios.service_description";
@@ -77,6 +78,8 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private boolean encryption;
     @Value("${" + SECRET_KEY + "}")
     private String secretKey;
+    @Value("${" + HASH_IDS + "}")
+    private boolean idHashing;
     @Value("${" + NAGIOS_HOSTNAME + "}")
     private String nagiosHost;
     @Value("${" + NAGIOS_CHECK_COMMAND + "}")
@@ -254,4 +257,13 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     public void setTemplateScreenshotDivWidth(String templateScreenshotDivWidth) {
         this.templateScreenshotDivWidth = templateScreenshotDivWidth;
     }
+
+    public boolean isIdHashing() {
+        return idHashing;
+    }
+
+    public void setIdHashing(boolean idHashing) {
+        this.idHashing = idHashing;
+    }
+
 }
