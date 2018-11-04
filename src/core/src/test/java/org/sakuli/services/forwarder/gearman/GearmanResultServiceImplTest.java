@@ -97,7 +97,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
     public void testSaveAllResults() throws Exception {
 
         GearmanJob job = mock(GearmanJob.class);
-        doReturn(job).when(testling).creatJob(any(NagiosCheckResult.class));
+        doReturn(job).when(testling).createJob(any(NagiosCheckResult.class));
         Future future = mock(Future.class);
         when(gearmanClient.submit(job)).thenReturn(future);
         GearmanJobResult jobResult = mock(GearmanJobResult.class);
@@ -131,7 +131,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
         verify(future).get();
         verify(gearmanClient).shutdown();
         ArgumentCaptor<NagiosCheckResult> checkresult = ArgumentCaptor.forClass(NagiosCheckResult.class);
-        verify(testling).creatJob(checkresult.capture());
+        verify(testling).createJob(checkresult.capture());
         assertEquals(checkresult.getValue().getQueueName(), queueName);
         assertEquals(checkresult.getValue().getUuid(), testSuite.getGuid());
         assertEquals(checkresult.getValue().getPayload(), testResult);
@@ -139,7 +139,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
 
     @Test
     public void testCreateJobEncryptionDisabled() throws Exception {
-        GearmanJob gearmanJob = testling.creatJob(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        GearmanJob gearmanJob = testling.createJob(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
         assertEquals(new String(Base64.decodeBase64(gearmanJob.getData())), testResult);
     }
 
@@ -149,8 +149,24 @@ public class GearmanResultServiceImplTest extends BaseTest {
         final String secretKey = "abcdefghijklmnopqrstuvwxyz";
         when(properties.getSecretKey()).thenReturn(secretKey);
 
-        GearmanJob gearmanJob = testling.creatJob(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
+        GearmanJob gearmanJob = testling.createJob(new NagiosCheckResult(queueName, "sakuli_demo22__2015_03_07_12_59_00_00", testResult));
         assertEquals(Aes.decrypt(gearmanJob.getData(), secretKey), testResult);
+    }
+
+    @Test
+    public void testCreateJobIdHashingDisabled() {
+        final String uuid = "test_uuid";
+        final GearmanJob gearmanJob = testling.createJob(new NagiosCheckResult(queueName, uuid, testResult));
+        assertEquals(new String(gearmanJob.getID()), uuid);
+    }
+
+    @Test
+    public void testCreateJobIdHashingEnabled() throws Exception {
+        when(properties.isIdHashing()).thenReturn(true);
+
+        final String uuid = "test_uuid";
+        final GearmanJob gearmanJob = testling.createJob(new NagiosCheckResult(queueName, uuid, testResult));
+        assertEquals(new String(gearmanJob.getID()), String.valueOf(uuid.hashCode()));
     }
 
     @Test
@@ -207,7 +223,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
         when(properties.isCacheEnabled()).thenReturn(true);
 
         GearmanJob job = mock(GearmanJob.class);
-        doReturn(job).when(testling).creatJob(any(NagiosCheckResult.class));
+        doReturn(job).when(testling).createJob(any(NagiosCheckResult.class));
         when(gearmanClient.submit(job)).thenThrow(new SakuliRuntimeException("Something went wrong!"));
 
         NagiosCheckResult mockedResult1 = Mockito.mock(NagiosCheckResult.class);
@@ -255,7 +271,7 @@ public class GearmanResultServiceImplTest extends BaseTest {
         when(properties.isCacheEnabled()).thenReturn(true);
 
         GearmanJob job = mock(GearmanJob.class);
-        doReturn(job).when(testling).creatJob(any(NagiosCheckResult.class));
+        doReturn(job).when(testling).createJob(any(NagiosCheckResult.class));
         when(gearmanClient.addJobServer(connection)).thenReturn(false);
 
         NagiosCheckResult mockedResult1 = Mockito.mock(NagiosCheckResult.class);

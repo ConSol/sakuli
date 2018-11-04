@@ -78,7 +78,7 @@ public class GearmanProperties extends AbstractMonitoringTemplateProperties {
     private boolean encryption;
     @Value("${" + SECRET_KEY + "}")
     private String secretKey;
-    @Value("${" + HASH_IDS + "}")
+    @Value("${" + HASH_IDS + ":false}")
     private boolean idHashing;
     @Value("${" + NAGIOS_HOSTNAME + "}")
     private String nagiosHost;

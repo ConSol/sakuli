@@ -126,7 +126,7 @@ public class GearmanResultServiceImpl extends AbstractTeardownService implements
         }
 
         logGearmanMessage(checkResult.getPayload());
-        GearmanJob job = creatJob(checkResult);
+        GearmanJob job = createJob(checkResult);
 
         //send results to gearman
         try {
@@ -171,7 +171,7 @@ public class GearmanResultServiceImpl extends AbstractTeardownService implements
         }
     }
 
-    protected GearmanJob creatJob(NagiosCheckResult checkResult) {
+    protected GearmanJob createJob(NagiosCheckResult checkResult) {
         byte[] bytesBase64;
         if (properties.isEncryption()) {
             bytesBase64 = Aes.encrypt(checkResult.getPayload(), properties.getSecretKey());
