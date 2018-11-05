@@ -94,9 +94,10 @@ __INST_DIR__/example_test_suites/sakuli.properties:
 sakuli.forwarder.gearman.enabled=true
 sakuli.forwarder.gearman.encryption=true <1>
 sakuli.forwarder.gearman.secret.key=secret_password <1>
+sakuli.forwarder.gearman.hash.ids=false <2>
 sakuli.forwarder.gearman.server.host=__GEARMAN_IP__
 sakuli.forwarder.gearman.server.port=[Gearman Port defined in "omd config" (default:4730)]
-sakuli.forwarder.gearman.server.queue=check_results <2>
+sakuli.forwarder.gearman.server.queue=check_results <3>
 
 # Nagios host where all Sakuli services are defined on. If neccessary, override this value per test suite.
 # (Nagios service name is defined by testsuite.properties -> suiteID)
@@ -105,7 +106,8 @@ sakuli.forwarder.gearman.nagios.check_command=check_sakuli
 ----
 
 <1> Enable encryption and set the key only if you did not activate `accept_clear_results` in mod_gearman. Otherwise, set encryption to `false`.
-<2> Change this queue name if you use the <<gearman_proxy,Sakuli Gearman proxy>>
+<2> Enable id hashing. For details, see <<gearman_id_hashing,Gearman ID hashing>>
+<3> Change this queue name if you use the <<gearman_proxy,Sakuli Gearman proxy>>
 
 [[invalid-key-exception-aes-cryptography]]
 TIP: In case you get a `java.lang.security.InvalidKeyException` with error message _"Illegal key size or default parameters"_ you probably
@@ -118,6 +120,19 @@ With release `1.2` the implementation of the Gearman forwarder was changed to us
 Sakuli comes with default templates, which are placed in `$INSTALL_DIR/config/templates`. The git-link:src/common/src/main/resources/org/sakuli/common/config/templates/gearman[link-text="default Gearman templates", mode="view", link-window="_blank"] can be found in a subdirectory `gearman`.
 
 For further information how the default template directory can be changed or how the forwarder templates can be customized please refer to <<forwarder-templates>>.
+
+[[gearman_id_hashing]]
+===== Gearman ID hashing
+
+Gearman limits the length of unique ids to 64 characters.
+
+In case of longer ids, Gearman will report the following error:
+
+`unique value too large gearman_server_run_command(The argument was too large for Gearman to handle.`
+
+By enabling `sakuli.forwarder.gearman.hash.ids`, Sakuli will use the unique id's hash value instead of the value itself.
+
+This way we're avoiding possible naming conflicts which might occur when truncating these ids.
 
 [[gearman_proxy]]
 ===== Gearman proxy (optional)
