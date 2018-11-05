@@ -23,12 +23,12 @@
     <parent>
         <groupId>org.sakuli</groupId>
         <artifactId>root</artifactId>
-        <version>1.3.0-340-GEARMAN_MAX_UNIQUE_SIZE-SNAPSHOT</version>
+        <version>1.3.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>docs-sakuli-api</artifactId>
-    <version>1.3.0-340-GEARMAN_MAX_UNIQUE_SIZE-SNAPSHOT</version>
+    <version>1.3.0-SNAPSHOT</version>
     <name>${project.artifactId}</name>
     <description>maven module to build the markdown api docs from jsdoc</description>
 
