@@ -6,6 +6,8 @@ image:./docs/images/sakuli_logo_small.png[sakuli-logo]
 
 _An end-to-end testing tool for web sites and common UIs with multiple monitoring integrations_
 
+*Attention: Sakuli 1 will go into maintenance mode mid of 2019. There is an ongoing re-implementation which is also on https://github.com/sakuli/sakuli[GitHub]*
+
 = About the project
 image:./docs/images/sakuli_concept.png[sakuli concept]
 
