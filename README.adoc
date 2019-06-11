@@ -4,6 +4,7 @@
 :sakuli-doc-url: {sakuli-doc-base-url}/latest
 
 = *Attention:* EOL of Sakuli 1
+
 Sakuli was completely rewritten in node and typescript and is now available in version 2:
 
 *https://sakuli.io*
@@ -11,6 +12,7 @@ Sakuli was completely rewritten in node and typescript and is now available in v
 *https://github.com/sakuli*
 
 There will be no further maintenance of Sakuli 1, it is easily possible and suggested to migrate existing tests to Sakuli 2.
+
 
 image:./docs/images/sakuli_logo_small.png[sakuli-logo]
 
