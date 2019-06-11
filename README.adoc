@@ -1,8 +1,18 @@
-image:./docs/images/sakuli_logo_small.png[sakuli-logo]
 
 :sakuli-latest-version: v1.2.0
 :sakuli-doc-base-url: http://consol.github.io/sakuli
 :sakuli-doc-url: {sakuli-doc-base-url}/latest
+
+= *Attention:* EOL of Sakuli 1
+Sakuli was completely rewritten in node and typescript and is now available in version 2:
+
+*https://sakuli.io*
+
+*https://github.com/sakuli*
+
+There will be no further maintenance of Sakuli 1, it is easily possible and suggested to migrate existing tests to Sakuli 2.
+
+image:./docs/images/sakuli_logo_small.png[sakuli-logo]
 
 _An end-to-end testing tool for web sites and common UIs with multiple monitoring integrations_
 
