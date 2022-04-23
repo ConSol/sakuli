@@ -65,7 +65,7 @@
         <dependencies.sahi.version>5.1</dependencies.sahi.version>
 
         <!--other java dependencies-->
-        <dependencies.spring.version>4.1.4.RELEASE</dependencies.spring.version>
+        <dependencies.spring.version>5.3.19</dependencies.spring.version>
         <dependencies.aspectj.version>1.8.2</dependencies.aspectj.version>
         <dependencies.jersey-client.version>2.22.2</dependencies.jersey-client.version>
         <dependencies.izpack.version>5.0.6</dependencies.izpack.version>
